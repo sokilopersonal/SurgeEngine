@@ -165,3 +165,48 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   components:
   - {fileID: -2067754267871440501}
+  - {fileID: 8701177710390384146}
+--- !u!114 &8701177710390384146
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ddcec8a8eb2d684d833ac8f5d26aebd, type: 3}
+  m_Name: HDShadowSettings
+  m_EditorClassIdentifier: 
+  active: 1
+  interCascadeBorders: 1
+  maxShadowDistance:
+    m_OverrideState: 1
+    m_Value: 300
+  directionalTransmissionMultiplier:
+    m_OverrideState: 1
+    m_Value: 1
+  cascadeShadowSplitCount:
+    m_OverrideState: 1
+    m_Value: 4
+  cascadeShadowSplit0:
+    m_OverrideState: 1
+    m_Value: 0.040566042
+  cascadeShadowSplit1:
+    m_OverrideState: 1
+    m_Value: 0.13113204
+  cascadeShadowSplit2:
+    m_OverrideState: 1
+    m_Value: 0.27877355
+  cascadeShadowBorder0:
+    m_OverrideState: 1
+    m_Value: 0.41085267
+  cascadeShadowBorder1:
+    m_OverrideState: 1
+    m_Value: 0.18402787
+  cascadeShadowBorder2:
+    m_OverrideState: 1
+    m_Value: 0.11288605
+  cascadeShadowBorder3:
+    m_OverrideState: 1
+    m_Value: 0.023108784
