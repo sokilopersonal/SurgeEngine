@@ -147,7 +147,7 @@ Light:
   serializedVersion: 11
   m_Type: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 130000
+  m_Intensity: 100000
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -209,13 +209,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 157207112}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.38268343, y: 0, z: 0, w: 0.92387956}
-  m_LocalPosition: {x: 0, y: 7, z: 0}
+  m_LocalRotation: {x: 0.35355338, y: 0.35355338, z: -0.1464466, w: 0.8535535}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 45, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 45, y: 45, z: 0}
 --- !u!114 &157207115
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -455,7 +455,7 @@ Mesh:
       format: 0
       dimension: 0
     m_DataSize: 192
-    _typelessdata: 0000fac3000000000000fac3000000000000803f000000000000803f0000000000000000000080bf0000fac30000fac30000fac3000000000000fa43000000000000803f000000000000803f0000000000000000000080bf0000fac30000fa430000fa43000000000000fac3000000000000803f000000000000803f0000000000000000000080bf0000fa430000fac30000fa43000000000000fa43000000000000803f000000000000803f0000000000000000000080bf0000fa430000fa43
+    _typelessdata: 0000fac3000000000000fac3000000000000803f000000000000803f0000000000000000000080bf0000fac20000fac20000fac3000000000000fa43000000000000803f000000000000803f0000000000000000000080bf0000fac20000fa420000fa43000000000000fac3000000000000803f000000000000803f0000000000000000000080bf0000fa420000fac20000fa43000000000000fa43000000000000803f000000000000803f0000000000000000000080bf0000fa420000fa42
   m_CompressedMesh:
     m_Vertices:
       m_NumItems: 0
@@ -556,7 +556,7 @@ MonoBehaviour:
   priority: 0
   blendDistance: 0
   weight: 1
-  sharedProfile: {fileID: 0}
+  sharedProfile: {fileID: 11400000, guid: 003979569be9d2e498b9cf74f576c28b, type: 2}
 --- !u!4 &561887110
 Transform:
   m_ObjectHideFlags: 0
@@ -646,7 +646,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c22777d6e868e4f2fb421913386b154e, type: 2}
+  - {fileID: 2100000, guid: 7dba0ed7135272948b63f31f59e945b8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -659,7 +659,7 @@ MeshRenderer:
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
   m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
+  m_SelectedEditorRenderState: 2
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -716,7 +716,7 @@ MonoBehaviour:
       m_FlipV: 0
       m_SwapUV: 0
       m_Fill: 1
-      m_Scale: {x: 1, y: 1}
+      m_Scale: {x: 0.25, y: 0.25}
       m_Offset: {x: 0, y: 0}
       m_Rotation: 0
       m_Anchor: 9
@@ -737,10 +737,10 @@ MonoBehaviour:
   - {x: 500, y: 0, z: -500}
   - {x: 500, y: 0, z: 500}
   m_Textures0:
-  - {x: -500, y: -500}
-  - {x: -500, y: 500}
-  - {x: 500, y: -500}
-  - {x: 500, y: 500}
+  - {x: -125, y: -125}
+  - {x: -125, y: 125}
+  - {x: 125, y: -125}
+  - {x: 125, y: 125}
   m_Textures2: []
   m_Textures3: []
   m_Tangents:
@@ -757,7 +757,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 310577262}
-  m_VersionIndex: 18
+  m_VersionIndex: 42
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
