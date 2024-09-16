@@ -1,4 +1,6 @@
-﻿using SurgeEngine.Code.CameraSystem;
+﻿using SurgeEngine.Code.ActorStates;
+using SurgeEngine.Code.CameraSystem;
+using SurgeEngine.Code.StateMachine;
 using UnityEngine;
 
 namespace SurgeEngine.Code.ActorSystem
@@ -7,11 +9,43 @@ namespace SurgeEngine.Code.ActorSystem
     {
         public ActorInput input;
         public new ActorCamera camera;
+        
+        public FStateMachine stateMachine;
+        public FActorState[] states;
 
         private void Awake()
         {
+            stateMachine = new FStateMachine();
+            foreach (var state in states)
+            {
+                state.SetOwner(this);
+                stateMachine.AddState(state);
+            }
+            
+            stateMachine.SetState<FStateIdle>();
+            
+            InitializeComponents();
+        }
+
+        private void InitializeComponents()
+        {
             input.SetOwner(this);
             camera.SetOwner(this);
+        }
+        
+        private void Update()
+        {
+            stateMachine.Tick(Time.deltaTime);
+        }
+
+        private void FixedUpdate()
+        {
+            stateMachine.FixedTick(Time.fixedDeltaTime);
+        }
+
+        private void LateUpdate()
+        {
+            stateMachine.LateTick(Time.deltaTime);
         }
     }
 }

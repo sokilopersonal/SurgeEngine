@@ -1,16 +1,38 @@
-﻿namespace SurgeEngine.Code.StateMachine
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace SurgeEngine.Code.StateMachine
 {
+    [Serializable]
     public class FStateMachine
     {
         public FState CurrentState { get; private set; }
+        public string currentStateName;
         
-        public void SetState(FState state)
+        private Dictionary<Type, FState> _states = new Dictionary<Type, FState>();
+        
+        public void AddState(FState state)
+        {
+            _states.Add(state.GetType(), state);
+        }
+        
+        public void SetState<TState>() where TState : FState
         {
             if (CurrentState != null)
+            {
                 CurrentState.OnExit();
+            }
             
-            CurrentState = state;
+            CurrentState = _states[typeof(TState)];
             CurrentState.OnEnter();
+            
+            currentStateName = CurrentState.GetType().Name;
+        }
+        
+        public TState GetState<TState>() where TState : FState
+        {
+            return _states[typeof(TState)] as TState;
         }
 
         public void Tick(float dt)
@@ -27,14 +49,5 @@
         {
             CurrentState?.OnLateTick(dt);
         }
-    }
-
-	public class FState : FStateMachine
-	{
-        public virtual void OnEnter() { }
-        public virtual void OnExit() { }
-        public virtual void OnTick(float dt) { }
-        public virtual void OnFixedTick(float dt) { }
-        public virtual void OnLateTick(float dt) { }
     }
 }
