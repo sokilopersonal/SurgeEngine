@@ -4,11 +4,11 @@ namespace SurgeEngine.Code.ActorSystem
 {
     public class ActorComponent : MonoBehaviour
     {
-        protected Actor owner;
+        protected Actor actor;
         
         public void SetOwner(Actor actor)
         {
-            owner = actor;
+            this.actor = actor;
         }
     }
 }

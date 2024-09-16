@@ -9,6 +9,8 @@ namespace SurgeEngine.Code.ActorSystem
     {
         public ActorInput input;
         public new ActorCamera camera;
+        public ActorStats stats;
+        public new ActorAnimation animation;
         
         public FStateMachine stateMachine;
         public FActorState[] states;
@@ -29,8 +31,10 @@ namespace SurgeEngine.Code.ActorSystem
 
         private void InitializeComponents()
         {
-            input.SetOwner(this);
-            camera.SetOwner(this);
+            input?.SetOwner(this);
+            camera?.SetOwner(this);
+            stats?.SetOwner(this);
+            animation?.SetOwner(this);
         }
         
         private void Update()

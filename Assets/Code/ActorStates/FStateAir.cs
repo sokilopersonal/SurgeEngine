@@ -8,22 +8,13 @@ namespace SurgeEngine.Code.ActorStates
         [SerializeField] private MoveParameters moveParameters;
         [SerializeField] private AirParameters airParameters;
         
-        private Vector3 _movementVector;
-        private Vector3 _planarVelocity;
-
         private Transform _cameraTransform;
-
-        private float _turnRate;
-        
-        private Vector3 _inputDir;
-        private Vector3 _groundNormal;
-        private Vector3 _transformNormal;
         
         public override void OnEnter()
         {
             base.OnEnter();
 
-            _groundNormal = Vector3.up;
+            actor.stats.groundNormal = Vector3.up;
             _cameraTransform = actor.camera.GetCameraTransform();
         }
 
@@ -34,7 +25,7 @@ namespace SurgeEngine.Code.ActorStates
             if (!Physics.Raycast(actor.transform.position, -actor.transform.up, out var hit,
                     1.25f, LayerMask.GetMask("Default")))
             {
-                _groundNormal = Vector3.up;
+                actor.stats.groundNormal = Vector3.up;
                 
                 Movement(dt, false);
                 Rotate(dt);
@@ -50,44 +41,47 @@ namespace SurgeEngine.Code.ActorStates
         private void Movement(float dt, bool grounded)
         {
             Vector3 velocity = _rigidbody.linearVelocity;
-            SurgeMath.SplitPlanarVector(velocity, _groundNormal, out Vector3 planar, out Vector3 airVelocity);
+            var stats = actor.stats;
+            var normal = stats.groundNormal;
+            SurgeMath.SplitPlanarVector(velocity, normal, out Vector3 planar, out Vector3 airVelocity);
 
-            _movementVector = planar;
-            _planarVelocity = planar;
+            stats.movementVector = planar;
+            stats.planarVelocity = planar;
 
-            Vector3 transformedInput = Quaternion.FromToRotation(_cameraTransform.up, _groundNormal) *
+            Vector3 transformedInput = Quaternion.FromToRotation(_cameraTransform.up, normal) *
                                        (_cameraTransform.rotation * actor.input.moveVector);
-            transformedInput = Vector3.ProjectOnPlane(transformedInput, _groundNormal);
-            _inputDir = transformedInput.normalized * actor.input.moveVector.magnitude;
+            transformedInput = Vector3.ProjectOnPlane(transformedInput, normal);
+            stats.inputDir = transformedInput.normalized * actor.input.moveVector.magnitude;
 
-            if (_inputDir.magnitude > 0.2f)
+            if (stats.inputDir.magnitude > 0.2f)
             {
-                _turnRate = Mathf.Lerp(_turnRate, moveParameters.turnSpeed, dt * moveParameters.turnSmoothing);
-                var accelRateMod = moveParameters.accelCurve.Evaluate(_planarVelocity.magnitude / moveParameters.topSpeed);
-                if (_planarVelocity.magnitude < moveParameters.topSpeed)
-                    _planarVelocity += _inputDir * (moveParameters.accelRate * accelRateMod * dt);
-                float handling = _turnRate * 0.25f;
-                handling *= moveParameters.turnCurve.Evaluate(_planarVelocity.magnitude / moveParameters.topSpeed);
-                _movementVector = Vector3.Lerp(_planarVelocity, _inputDir.normalized * _planarVelocity.magnitude, 
+                stats.turnRate = Mathf.Lerp(stats.turnRate, moveParameters.turnSpeed, dt * moveParameters.turnSmoothing);
+                var accelRateMod = moveParameters.accelCurve.Evaluate(stats.planarVelocity.magnitude / moveParameters.topSpeed);
+                if (stats.planarVelocity.magnitude < moveParameters.topSpeed)
+                    stats.planarVelocity += stats.inputDir * (moveParameters.accelRate * accelRateMod * dt);
+                float handling = stats.turnRate * 0.2f;
+                handling *= moveParameters.turnCurve.Evaluate(stats.planarVelocity.magnitude / moveParameters.topSpeed);
+                stats.movementVector = Vector3.Lerp(stats.planarVelocity, stats.inputDir.normalized * stats.planarVelocity.magnitude, 
                     dt * handling);
             }
             
             airVelocity = Vector3.ClampMagnitude(airVelocity, 125f);
-            Vector3 movementVelocity = _movementVector + airVelocity;
+            Vector3 movementVelocity = stats.movementVector + airVelocity;
             _rigidbody.linearVelocity = movementVelocity;
         }
 
         private void Rotate(float dt)
         {
-            _transformNormal = Vector3.Slerp(_transformNormal, _groundNormal, dt * 4.5f);
+            var stats = actor.stats;
+            stats.transformNormal = Vector3.Slerp(stats.transformNormal, stats.groundNormal, dt * 3f);
 
             Vector3 vel = _rigidbody.linearVelocity;
-            vel = Vector3.ProjectOnPlane(vel, _groundNormal);
+            vel = Vector3.ProjectOnPlane(vel, stats.groundNormal);
 
             if (vel.magnitude > 0.1f)
             {
-                Quaternion rot = Quaternion.LookRotation(vel, _transformNormal);
-                actor.transform.rotation = Quaternion.Slerp(actor.transform.rotation, rot, dt * 4);
+                Quaternion rot = Quaternion.LookRotation(vel, stats.transformNormal);
+                actor.transform.rotation = Quaternion.Slerp(actor.transform.rotation, rot, dt * 4f);
             }
         }
     }

@@ -9,6 +9,10 @@ namespace SurgeEngine.Code.ActorSystem
         
         private SurgeInput _input;
 
+#if UNITY_EDITOR
+        private bool lockCamera; // lock camera in editor if we press ESC
+#endif
+
         private void Awake()
         {
             _input = new SurgeInput();
@@ -30,6 +34,23 @@ namespace SurgeEngine.Code.ActorSystem
             var temp = _input.Gameplay.Movement.ReadValue<Vector2>();
             moveVector = new Vector3(temp.x, 0, temp.y);
             lookVector = _input.Gameplay.Camera.ReadValue<Vector2>();
+
+#if UNITY_EDITOR
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                lockCamera = true;
+            }
+            
+            if (Input.GetMouseButtonDown(0))
+            {
+                lockCamera = false;
+            }
+
+            if (lockCamera)
+            {
+                lookVector = Vector2.zero;
+            }
+#endif
         }
     }
 }
