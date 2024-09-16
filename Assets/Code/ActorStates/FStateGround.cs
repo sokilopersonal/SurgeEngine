@@ -5,12 +5,7 @@ namespace SurgeEngine.Code.ActorStates
 {
     public class FStateGround : FStateMove
     {
-        [SerializeField] private float topSpeed;
-        [SerializeField] private float turnSpeed;
-        [SerializeField] private AnimationCurve turnCurve;
-        [SerializeField] private float turnSmoothing;
-        [SerializeField] private float accelRate;
-        [SerializeField] private AnimationCurve accelCurve;
+        [SerializeField] private MoveParameters moveParameters;
         [SerializeField] private Vector3 _groundCheckOffset;
         
         private Vector3 _movementVector;
@@ -46,7 +41,7 @@ namespace SurgeEngine.Code.ActorStates
             }
             else
             {
-                
+                actor.stateMachine.SetState<FStateAir>();
             }
             
             //_rigidbody.linearVelocity = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, _groundNormal);
@@ -67,18 +62,18 @@ namespace SurgeEngine.Code.ActorStates
 
             if (_inputDir.magnitude > 0.2f)
             {
-                _turnRate = Mathf.Lerp(_turnRate, turnSpeed, dt * turnSmoothing);
-                var accelRateMod = accelCurve.Evaluate(_planarVelocity.magnitude / topSpeed);
-                if (_planarVelocity.magnitude < topSpeed)
-                    _planarVelocity += _inputDir * (accelRate * accelRateMod * dt);
+                _turnRate = Mathf.Lerp(_turnRate, moveParameters.turnSpeed, dt * moveParameters.turnSmoothing);
+                var accelRateMod = moveParameters.accelCurve.Evaluate(_planarVelocity.magnitude / moveParameters.topSpeed);
+                if (_planarVelocity.magnitude < moveParameters.topSpeed)
+                    _planarVelocity += _inputDir * (moveParameters.accelRate * accelRateMod * dt);
                 float handling = _turnRate;
-                handling *= turnCurve.Evaluate(_planarVelocity.magnitude / topSpeed);
+                handling *= moveParameters.turnCurve.Evaluate(_planarVelocity.magnitude / moveParameters.topSpeed);
                 _movementVector = Vector3.Lerp(_planarVelocity, _inputDir.normalized * _planarVelocity.magnitude, 
                     dt * handling);
             }
             else
             {
-                float f = Mathf.Lerp(12, 4, _movementVector.magnitude / topSpeed);
+                float f = Mathf.Lerp(12, 4, _movementVector.magnitude / moveParameters.topSpeed);
                 if (_movementVector.magnitude > 1f)
                     _movementVector = Vector3.MoveTowards(_movementVector, Vector3.zero, Time.fixedDeltaTime * f);
                 else

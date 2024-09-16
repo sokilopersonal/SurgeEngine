@@ -21,13 +21,13 @@ MonoBehaviour:
     m_Value: 1
   length:
     m_OverrideState: 1
-    m_Value: 0.4
+    m_Value: 0.1
   opacity:
     m_OverrideState: 1
     m_Value: 1
   distanceScaleFactor:
     m_OverrideState: 1
-    m_Value: 0.5
+    m_Value: 0.35
   maxDistance:
     m_OverrideState: 1
     m_Value: 50
@@ -42,13 +42,59 @@ MonoBehaviour:
     m_Value: 0
   rayBias:
     m_OverrideState: 1
-    m_Value: 0.6
+    m_Value: 0.283
   thicknessScale:
     m_OverrideState: 1
-    m_Value: 0.2
+    m_Value: 0.5
   m_SampleCount:
     m_OverrideState: 1
     m_Value: 16
+--- !u!114 &-2333462575304410951
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcf384b154398e341b6b29969c078198, type: 3}
+  m_Name: MotionBlur
+  m_EditorClassIdentifier: 
+  active: 1
+  quality:
+    m_OverrideState: 1
+    m_Value: 1
+  intensity:
+    m_OverrideState: 1
+    m_Value: 2
+  maximumVelocity:
+    m_OverrideState: 1
+    m_Value: 200
+  minimumVelocity:
+    m_OverrideState: 1
+    m_Value: 2
+  cameraMotionBlur:
+    m_OverrideState: 1
+    m_Value: 1
+  specialCameraClampMode:
+    m_OverrideState: 1
+    m_Value: 0
+  cameraVelocityClamp:
+    m_OverrideState: 1
+    m_Value: 0.05
+  cameraTranslationVelocityClamp:
+    m_OverrideState: 1
+    m_Value: 0.05
+  cameraRotationVelocityClamp:
+    m_OverrideState: 1
+    m_Value: 0.03
+  depthComparisonExtent:
+    m_OverrideState: 1
+    m_Value: 1
+  m_SampleCount:
+    m_OverrideState: 1
+    m_Value: 8
 --- !u!114 &-2067754267871440501
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -64,10 +110,10 @@ MonoBehaviour:
   active: 1
   mode:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 4
   meteringMode:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 2
   luminanceSource:
     m_OverrideState: 1
     m_Value: 1
@@ -75,11 +121,11 @@ MonoBehaviour:
     m_OverrideState: 1
     m_Value: 0
   compensation:
-    m_OverrideState: 1
-    m_Value: 0
+    m_OverrideState: 0
+    m_Value: -1.25
   limitMin:
     m_OverrideState: 1
-    m_Value: 2
+    m_Value: 7
   limitMax:
     m_OverrideState: 1
     m_Value: 14
@@ -166,7 +212,7 @@ MonoBehaviour:
     m_Value: 1
   adaptationSpeedDarkToLight:
     m_OverrideState: 1
-    m_Value: 3
+    m_Value: 2
   adaptationSpeedLightToDark:
     m_OverrideState: 1
     m_Value: 1
@@ -216,6 +262,7 @@ MonoBehaviour:
   - {fileID: -2067754267871440501}
   - {fileID: 8701177710390384146}
   - {fileID: -2977186039261176110}
+  - {fileID: -2333462575304410951}
 --- !u!114 &8701177710390384146
 MonoBehaviour:
   m_ObjectHideFlags: 3
