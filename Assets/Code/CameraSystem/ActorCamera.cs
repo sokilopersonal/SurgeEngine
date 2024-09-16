@@ -7,6 +7,7 @@ namespace SurgeEngine.Code.CameraSystem
     {
         [SerializeField] private Transform target;
         [SerializeField] private LayerMask collisionMask;
+        [SerializeField] private float distance;
         
         private Transform _cameraTransform;
         private float _x;
@@ -46,19 +47,19 @@ namespace SurgeEngine.Code.CameraSystem
         {
             var ray = new Ray(target.position, -_cameraTransform.forward);
             float radius = 0.2f;
-            var distance = Vector3.Distance(target.position, _cameraTransform.position);
+            var maxDistance = Vector3.Distance(target.position, _cameraTransform.position);
 
             float result = Physics.SphereCast(ray, radius, out RaycastHit hit, 
-                distance, collisionMask) 
+                maxDistance, collisionMask) 
                 ? hit.distance
-                : 10f;
+                : distance;
             
             _cameraTransform.position = target.position - _cameraTransform.forward * result;
         }
 
         private Vector3 GetTarget()
         {
-            Vector3 v = owner.transform.position + Quaternion.Euler(_y, _x, 0) * new Vector3(0, 0, -10f);
+            Vector3 v = owner.transform.position + Quaternion.Euler(_y, _x, 0) * new Vector3(0, 0, -distance);
             return v;
         }
 

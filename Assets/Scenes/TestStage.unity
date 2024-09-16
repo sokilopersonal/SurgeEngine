@@ -322,7 +322,7 @@ MonoBehaviour:
     m_UseOverride: 1
     m_Level: 0
   m_RayTracedContactShadow: 0
-  m_ShadowTint: {r: 0.3679245, g: 0.25858846, b: 0.25858846, a: 1}
+  m_ShadowTint: {r: 0.5754717, g: 0.33388218, b: 0.3483054, a: 1}
   m_PenumbraTint: 1
   m_NormalBias: 0.75
   m_SlopeBias: 0.5
@@ -360,7 +360,7 @@ MonoBehaviour:
   m_ObsoleteContactShadows: 0
 --- !u!43 &310577262
 Mesh:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 32
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -610,6 +610,7 @@ MonoBehaviour:
   collisionMask:
     serializedVersion: 2
     m_Bits: 1
+  distance: 4
 --- !u!114 &859371959
 MonoBehaviour:
   m_ObjectHideFlags: 0
