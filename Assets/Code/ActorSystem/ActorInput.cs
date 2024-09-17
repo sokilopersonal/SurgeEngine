@@ -8,6 +8,12 @@ namespace SurgeEngine.Code.ActorSystem
         public Vector2 lookVector;
         
         private SurgeInput _input;
+        
+        // Boost
+        public bool BoostPressed => _input.Gameplay.Boost.WasPressedThisFrame();
+        public bool BoostHeld => _input.Gameplay.Boost.IsPressed();
+
+        private float _lastLookInputTime;
 
 #if UNITY_EDITOR
         private bool lockCamera; // lock camera in editor if we press ESC
@@ -34,6 +40,11 @@ namespace SurgeEngine.Code.ActorSystem
             var temp = _input.Gameplay.Movement.ReadValue<Vector2>();
             moveVector = new Vector3(temp.x, 0, temp.y);
             lookVector = _input.Gameplay.Camera.ReadValue<Vector2>();
+            
+            if (lookVector.sqrMagnitude > 0.1f)
+            {
+                _lastLookInputTime = Time.time;
+            }
 
 #if UNITY_EDITOR
             if (Input.GetKeyDown(KeyCode.Escape))
@@ -51,6 +62,11 @@ namespace SurgeEngine.Code.ActorSystem
                 lookVector = Vector2.zero;
             }
 #endif
+        }
+        
+        public float GetLastLookInputTime()
+        {
+            return _lastLookInputTime;
         }
     }
 }

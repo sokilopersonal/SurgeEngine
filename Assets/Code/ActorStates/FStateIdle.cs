@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using SurgeEngine.Code.ActorStates.SonicSubStates;
+using UnityEngine;
 
 namespace SurgeEngine.Code.ActorStates
 {
@@ -26,9 +27,14 @@ namespace SurgeEngine.Code.ActorStates
             
             _rigidbody.Sleep();
 
-            if (actor.input.moveVector.magnitude > deadZone)
+            if (actor.input.moveVector.magnitude > deadZone || _rigidbody.linearVelocity.magnitude > deadZone)
             {
                 actor.stateMachine.SetState<FStateGround>();
+            }
+
+            if (actor.input.BoostPressed)
+            {
+                _rigidbody.linearVelocity = _rigidbody.transform.forward * actor.stateMachine.GetSubState<FBoost>().startForce;
             }
         }
     }

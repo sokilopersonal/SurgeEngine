@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.ActorSystem
 {
+    [DefaultExecutionOrder(-1000)]
     public class Actor : MonoBehaviour
     {
         public ActorInput input;
@@ -14,6 +15,7 @@ namespace SurgeEngine.Code.ActorSystem
         
         public FStateMachine stateMachine;
         public FActorState[] states;
+        public FActorSubState[] subStates;
 
         private void Awake()
         {
@@ -22,6 +24,12 @@ namespace SurgeEngine.Code.ActorSystem
             {
                 state.SetOwner(this);
                 stateMachine.AddState(state);
+            }
+
+            foreach (var subState in subStates)
+            {
+                subState.SetOwner(this);
+                stateMachine.AddSubState(subState);
             }
             
             stateMachine.SetState<FStateIdle>();

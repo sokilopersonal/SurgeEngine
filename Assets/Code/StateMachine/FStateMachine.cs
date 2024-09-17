@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace SurgeEngine.Code.StateMachine
 {
@@ -11,21 +10,30 @@ namespace SurgeEngine.Code.StateMachine
         public string currentStateName;
         
         private Dictionary<Type, FState> _states = new Dictionary<Type, FState>();
+        private Dictionary<Type, FSubState> _subStates = new Dictionary<Type, FSubState>();
+        
+        public event Action<FState> OnStateEnter; 
         
         public void AddState(FState state)
         {
             _states.Add(state.GetType(), state);
         }
         
-        public void SetState<TState>() where TState : FState
+        public void AddSubState(FSubState subState)
+        {
+            _subStates.Add(subState.GetType(), subState);
+        }
+        
+        public void SetState<T>() where T : FState
         {
             if (CurrentState != null)
             {
                 CurrentState.OnExit();
             }
             
-            CurrentState = _states[typeof(TState)];
+            CurrentState = _states[typeof(T)];
             CurrentState.OnEnter();
+            OnStateEnter?.Invoke(CurrentState);
             
             currentStateName = CurrentState.GetType().Name;
         }
@@ -33,6 +41,11 @@ namespace SurgeEngine.Code.StateMachine
         public TState GetState<TState>() where TState : FState
         {
             return _states[typeof(TState)] as TState;
+        }
+        
+        public T GetSubState<T>() where T : FSubState
+        {
+            return _subStates[typeof(T)] as T;
         }
 
         public void Tick(float dt)

@@ -1,20 +1,30 @@
-using SurgeEngine.Code.ActorStates;
 using SurgeEngine.Code.ActorSystem;
 using UnityEngine;
+using Quaternion = UnityEngine.Quaternion;
+using Vector3 = UnityEngine.Vector3;
 
 namespace SurgeEngine.Code.CameraSystem
 {
     public class ActorCamera : ActorComponent
     {
+        [Header("Target")]
         [SerializeField] private Transform target;
+        [SerializeField] private Vector3 offset;
+        
+        [Header("Collision")]
         [SerializeField] private LayerMask collisionMask;
-        [SerializeField] private float distance;
+        [SerializeField] private float collisionRadius;
+        
+        [Header("Follow")]
+        [SerializeField] private float distance = 2.4f;
+        [SerializeField, Range(0, 0.05f)] private float followPower = 0.02f;
+        [SerializeField] private float timeToStartFollow = 2f;
         
         private Transform _cameraTransform;
         private float _x;
         private float _y;
         private float _collisionDistance;
-        private Vector2 _lookRotation;
+        private float _autoLookDirectionX;
 
         private void Awake()
         {
@@ -34,18 +44,35 @@ namespace SurgeEngine.Code.CameraSystem
         private void Following()
         {
             var lookVector = actor.input.lookVector;
-            _x += lookVector.x + _lookRotation.x * 0.01f;
+            _x += lookVector.x + _autoLookDirectionX * followPower;
             _y -= lookVector.y;
-            const float clampValue = 90f * 0.99f;
-            _y = Mathf.Clamp(_y, -clampValue, clampValue);
+            _y = Mathf.Clamp(_y, -25, 50);
             
-            _cameraTransform.position = GetTarget();
-            //_lookRotation.x = actor.stats.GetSignedAngle();
+            _cameraTransform.position = GetTarget() + offset;
+            
+            if (actor.input.GetLastLookInputTime() + timeToStartFollow < Time.time)
+            {
+                float dot = Vector3.Dot(actor.stats.inputDir, actor.transform.forward);
+                bool enable = dot is < 0.999f and > -0.7f && actor.stats.inputDir.magnitude > 0.2f;
+                if (actor.stats.planarVelocity.magnitude > 1f && enable)
+                {
+                    float fwd = actor.stats.GetForwardSignedAngle();
+                    _autoLookDirectionX = Mathf.Lerp(_autoLookDirectionX, fwd, 12 * Time.deltaTime);
+                }
+                else
+                {
+                    _autoLookDirectionX = Mathf.Lerp(_autoLookDirectionX, 0, 6 * Time.deltaTime);
+                }
+            }
+            else
+            {
+                _autoLookDirectionX = 0;
+            }
         }
 
         private void LookAt()
         {
-            Quaternion quaternion = Quaternion.LookRotation(target.position - _cameraTransform.position);
+            Quaternion quaternion = Quaternion.LookRotation(target.position + offset - _cameraTransform.position);
             _cameraTransform.rotation = quaternion;
         }
 

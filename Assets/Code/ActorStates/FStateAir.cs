@@ -18,16 +18,26 @@ namespace SurgeEngine.Code.ActorStates
             _cameraTransform = actor.camera.GetCameraTransform();
         }
 
+        public override void OnTick(float dt)
+        {
+            base.OnTick(dt);
+
+            if (actor.input.BoostPressed)
+            {
+                actor.stateMachine.SetState<FStateAirBoost>();
+            }
+        }
+
         public override void OnFixedTick(float dt)
         {
             base.OnFixedTick(dt);
 
             if (!Physics.Raycast(actor.transform.position, -actor.transform.up, out var hit,
-                    1.25f, LayerMask.GetMask("Default")))
+                    moveParameters.castParameters.castDistance, LayerMask.GetMask("Default")))
             {
                 actor.stats.groundNormal = Vector3.up;
                 
-                Movement(dt, false);
+                Movement(dt);
                 Rotate(dt);
 
                 _rigidbody.linearVelocity += new Vector3(0, -airParameters.gravity, 0) * dt;
@@ -38,7 +48,7 @@ namespace SurgeEngine.Code.ActorStates
             }
         }
 
-        private void Movement(float dt, bool grounded)
+        private void Movement(float dt)
         {
             Vector3 velocity = _rigidbody.linearVelocity;
             var stats = actor.stats;
@@ -73,7 +83,7 @@ namespace SurgeEngine.Code.ActorStates
         private void Rotate(float dt)
         {
             var stats = actor.stats;
-            stats.transformNormal = Vector3.Slerp(stats.transformNormal, stats.groundNormal, dt * 3f);
+            stats.transformNormal = Vector3.Slerp(stats.transformNormal, Vector3.up, dt * 8f);
 
             Vector3 vel = _rigidbody.linearVelocity;
             vel = Vector3.ProjectOnPlane(vel, stats.groundNormal);
@@ -81,7 +91,7 @@ namespace SurgeEngine.Code.ActorStates
             if (vel.magnitude > 0.1f)
             {
                 Quaternion rot = Quaternion.LookRotation(vel, stats.transformNormal);
-                actor.transform.rotation = Quaternion.Slerp(actor.transform.rotation, rot, dt * 4f);
+                actor.transform.rotation = Quaternion.Slerp(actor.transform.rotation, rot, dt * 7f);
             }
         }
     }
