@@ -1,4 +1,4 @@
-﻿using SurgeEngine.Code.ActorStates;
+﻿using SurgeEngine.Code.Parameters;
 using SurgeEngine.Code.CameraSystem;
 using SurgeEngine.Code.StateMachine;
 using UnityEngine;
@@ -9,9 +9,11 @@ namespace SurgeEngine.Code.ActorSystem
     public class Actor : MonoBehaviour
     {
         public ActorInput input;
-        public new ActorCamera camera;
         public ActorStats stats;
+        public ActorSounds sounds;
+        public new ActorCamera camera;
         public new ActorAnimation animation;
+        public ActorEffects effects;
         
         public FStateMachine stateMachine;
         public FActorState[] states;
@@ -40,9 +42,11 @@ namespace SurgeEngine.Code.ActorSystem
         private void InitializeComponents()
         {
             input?.SetOwner(this);
-            camera?.SetOwner(this);
             stats?.SetOwner(this);
+            sounds?.SetOwner(this);
+            camera?.SetOwner(this);
             animation?.SetOwner(this);
+            effects?.SetOwner(this);
         }
         
         private void Update()

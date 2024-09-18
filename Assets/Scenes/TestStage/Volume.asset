@@ -148,7 +148,7 @@ MonoBehaviour:
     m_Value: 1
   intensity:
     m_OverrideState: 1
-    m_Value: 2
+    m_Value: 1
   maximumVelocity:
     m_OverrideState: 1
     m_Value: 200
@@ -209,7 +209,7 @@ MonoBehaviour:
     m_Value: 7
   limitMax:
     m_OverrideState: 1
-    m_Value: 14
+    m_Value: 15
   curveMap:
     m_OverrideState: 1
     m_Value:
@@ -347,6 +347,77 @@ MonoBehaviour:
   - {fileID: 7980837980760978976}
   - {fileID: 3077944042481857843}
   - {fileID: -3712230343484456432}
+  - {fileID: 201056001896840590}
+--- !u!114 &201056001896840590
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f086a068d4c5889438831b3ae9afc11c, type: 3}
+  m_Name: Tonemapping
+  m_EditorClassIdentifier: 
+  active: 1
+  mode:
+    m_OverrideState: 1
+    m_Value: 2
+  useFullACES:
+    m_OverrideState: 1
+    m_Value: 1
+  toeStrength:
+    m_OverrideState: 1
+    m_Value: 0.361
+  toeLength:
+    m_OverrideState: 1
+    m_Value: 0.824
+  shoulderStrength:
+    m_OverrideState: 1
+    m_Value: 0.25
+  shoulderLength:
+    m_OverrideState: 1
+    m_Value: 1
+  shoulderAngle:
+    m_OverrideState: 1
+    m_Value: 1
+  gamma:
+    m_OverrideState: 1
+    m_Value: 0.98
+  lutTexture:
+    m_OverrideState: 1
+    m_Value: {fileID: 11700000, guid: 41475a8f4afc186489a0f3c1446efcd1, type: 3}
+  lutContribution:
+    m_OverrideState: 1
+    m_Value: 1
+  neutralHDRRangeReductionMode:
+    m_OverrideState: 1
+    m_Value: 2
+  acesPreset:
+    m_OverrideState: 1
+    m_Value: 3
+  fallbackMode:
+    m_OverrideState: 1
+    m_Value: 1
+  hueShiftAmount:
+    m_OverrideState: 1
+    m_Value: 0
+  detectPaperWhite:
+    m_OverrideState: 1
+    m_Value: 0
+  paperWhite:
+    m_OverrideState: 1
+    m_Value: 300
+  detectBrightnessLimits:
+    m_OverrideState: 1
+    m_Value: 1
+  minNits:
+    m_OverrideState: 1
+    m_Value: 0.005
+  maxNits:
+    m_OverrideState: 1
+    m_Value: 1000
 --- !u!114 &3077944042481857843
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -377,22 +448,22 @@ MonoBehaviour:
     m_Value: 0.8
   m_SmoothnessFadeStart:
     m_OverrideState: 1
-    m_Value: 0.9
+    m_Value: 0.8
   reflectSky:
     m_OverrideState: 1
     m_Value: 1
   usedAlgorithm:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 1
   depthBufferThickness:
     m_OverrideState: 1
-    m_Value: 0.02
+    m_Value: 0.3
   screenFadeDistance:
     m_OverrideState: 1
-    m_Value: 0.173
+    m_Value: 0.055
   accumulationFactor:
     m_OverrideState: 1
-    m_Value: 0.75
+    m_Value: 1
   biasFactor:
     m_OverrideState: 1
     m_Value: 0.5
@@ -479,7 +550,7 @@ MonoBehaviour:
   active: 1
   indirectDiffuseLightingMultiplier:
     m_OverrideState: 1
-    m_Value: 2.75
+    m_Value: 3
   indirectDiffuseLightingLayers:
     m_OverrideState: 1
     m_Value: -1

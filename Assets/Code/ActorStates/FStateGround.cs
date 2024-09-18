@@ -1,12 +1,13 @@
 ﻿using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Custom;
+using SurgeEngine.Code.Parameters.SonicSubStates;
 using UnityEngine;
 
-namespace SurgeEngine.Code.ActorStates
+namespace SurgeEngine.Code.Parameters
 {
     public class FStateGround : FStateMove
     {
-        [SerializeField] public MoveParameters moveParameters;
+        public MoveParameters moveParameters;
         [SerializeField] private Vector3 _groundCheckOffset;
 
         private Transform _cameraTransform;
@@ -22,19 +23,51 @@ namespace SurgeEngine.Code.ActorStates
             stats.groundNormal = Vector3.up;
             _cameraTransform = actor.camera.GetCameraTransform();
             
+            UpdateNormal();
             ConvertAirToGroundVelocity();
         }
 
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
-            
-            if (actor.input.BoostPressed)
+
+            FBoost boost = stats.boost;
+            if (input.BoostPressed && _rigidbody.linearVelocity.magnitude < boost.startForce)
             {
-                float maxSpeed = moveParameters.maxSpeed * (stats.boost.active ? stats.boost.maxSpeedMultiplier : 1f);
-                _rigidbody.linearVelocity = _rigidbody.transform.forward * maxSpeed;
+                _rigidbody.linearVelocity = _rigidbody.transform.forward * boost.startForce;
+                boost.restoringTopSpeed = true;
+                animation.TransitionToState(AnimatorParams.RunCycle, 0f);
+            }
+    
+            if (stats.boost.Active)
+            {
+                _rigidbody.linearVelocity += _rigidbody.transform.forward * (boost.boostForce * dt);
+                float maxSpeed = moveParameters.maxSpeed * boost.maxSpeedMultiplier;
+                _rigidbody.linearVelocity = Vector3.ClampMagnitude(_rigidbody.linearVelocity, maxSpeed);
+            }
+            else if (boost.restoringTopSpeed)
+            {
+                float normalMaxSpeed = moveParameters.topSpeed;
+                if (_rigidbody.linearVelocity.magnitude > normalMaxSpeed)
+                {
+                    _rigidbody.linearVelocity = Vector3.Lerp(
+                        _rigidbody.linearVelocity, 
+                        _rigidbody.transform.forward * normalMaxSpeed, 
+                        dt * boost.restoreSpeed 
+                    );
+                }
+                else
+                {
+                    boost.restoringTopSpeed = false;
+                }
+            }
+
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                _rigidbody.linearVelocity = Vector3.zero;
             }
         }
+
 
         public override void OnFixedTick(float dt)
         {
@@ -46,20 +79,20 @@ namespace SurgeEngine.Code.ActorStates
                 var point = hit.point;
                 var normal = hit.normal;
                 stats.groundNormal = normal;
+                
+                stats.transformNormal = Vector3.Slerp(stats.transformNormal, normal, dt * 6f);
 
                 if (_rigidbody.linearVelocity.magnitude > SLOPE_PREDICTION_ACTIVATE_SPEED)
                 {
                     SlopePrediction(dt);
                 }
 
-                var target = point + normal;
-                Vector3 lerped = Vector3.Lerp(_rigidbody.position, target, 13 * Time.fixedDeltaTime);
-                _rigidbody.position = lerped;
-                
                 Movement(dt);
+                SlopePhysics();
                 Rotate(dt);
+                Snap(point, normal);
                 
-                _rigidbody.linearVelocity = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, normal);
+                //_rigidbody.linearVelocity = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, normal);
             }
             else
             {
@@ -83,30 +116,13 @@ namespace SurgeEngine.Code.ActorStates
 
             if (stats.inputDir.magnitude > INPUT_DEADZONE)
             {
-                stats.turnRate = Mathf.Lerp(stats.turnRate, moveParameters.turnSpeed
-                                                            * (stats.boost.active ? stats.boost.turnSpeedReduction : 1), dt * moveParameters.turnSmoothing);
-                var accelRateMod = moveParameters.accelCurve.Evaluate(stats.planarVelocity.magnitude / moveParameters.topSpeed);
-                if (stats.planarVelocity.magnitude < moveParameters.topSpeed)
-                    stats.planarVelocity += stats.inputDir * (moveParameters.accelRate * accelRateMod * dt);
-                
-                var maxSpeed = moveParameters.maxSpeed * (stats.boost.active ? stats.boost.maxSpeedMultiplier : 1);
-                stats.planarVelocity = Vector3.ClampMagnitude(stats.planarVelocity, maxSpeed);
-                
-                // float handling = stats.turnRate;
-                // handling *= moveParameters.turnCurve.Evaluate(stats.planarVelocity.magnitude / moveParameters.topSpeed);
-                // stats.movementVector = Vector3.Lerp(stats.planarVelocity, stats.inputDir.normalized * stats.planarVelocity.magnitude, 
-                //     dt * handling);
-                
-                Vector3 newVelocity = Quaternion.FromToRotation(stats.planarVelocity.normalized, stats.inputDir.normalized) * stats.planarVelocity;
-                float handling = stats.turnRate;
-                handling *= moveParameters.turnCurve.Evaluate(stats.planarVelocity.magnitude / moveParameters.topSpeed);
-                stats.movementVector = Vector3.Slerp(stats.planarVelocity, newVelocity, Time.fixedDeltaTime * handling);
+                CalculateVelocity(dt);
             }
             else
             {
-                if (stats.boost.active) return;
+                if (stats.boost.Active) return;
                 
-                float f = Mathf.Lerp(12, 4, stats.movementVector.magnitude / moveParameters.topSpeed);
+                float f = Mathf.Lerp(14, 6, stats.movementVector.magnitude / moveParameters.topSpeed);
                 if (stats.movementVector.magnitude > 1f)
                     stats.movementVector = Vector3.MoveTowards(stats.movementVector, Vector3.zero, Time.fixedDeltaTime * f);
                 else
@@ -120,7 +136,47 @@ namespace SurgeEngine.Code.ActorStates
             Vector3 movementVelocity = stats.movementVector;
             _rigidbody.linearVelocity = movementVelocity;
         }
-        
+
+        private void CalculateVelocity(float dt)
+        {
+            stats.turnRate = Mathf.Lerp(stats.turnRate, moveParameters.turnSpeed
+                                                        * (stats.boost.Active ? stats.boost.turnSpeedReduction : 1), dt * moveParameters.turnSmoothing);
+            var accelRateMod = moveParameters.accelCurve.Evaluate(stats.planarVelocity.magnitude / moveParameters.topSpeed);
+            if (stats.planarVelocity.magnitude < moveParameters.topSpeed)
+                stats.planarVelocity += stats.inputDir * (moveParameters.accelRate * accelRateMod * dt);
+                
+            Vector3 newVelocity = Quaternion.FromToRotation(stats.planarVelocity.normalized, stats.inputDir.normalized) * stats.planarVelocity;
+            float handling = stats.turnRate;
+            handling *= moveParameters.turnCurve.Evaluate(stats.planarVelocity.magnitude / moveParameters.topSpeed);
+            stats.movementVector = Vector3.Slerp(stats.planarVelocity, newVelocity, Time.fixedDeltaTime * handling);
+        }
+
+        protected virtual void SlopePhysics()
+        {
+            stats.groundAngle = Vector3.Angle(stats.groundNormal, Vector3.up);
+            // if (_rigidbody.linearVelocity.magnitude < 5 && stats.groundAngle >= 75)
+            // {
+            //     _rigidbody.AddForce(groundNormal * 0.15f, ForceMode.Impulse);
+            //     groundNormal = Vector3.up;
+            //     grounded = false;
+            // }
+            
+            float dot = Vector3.Dot(transform.up, Vector3.up);
+            
+            if (stats.groundAngle > 5 && stats.movementVector.magnitude > 10f)
+            {
+                bool uphill = Vector3.Dot(_rigidbody.linearVelocity.normalized, Vector3.down) < 0;
+                //float groundSpeedMod = slopeForceOverSpeed.Evaluate(rb.velocity.sqrMagnitude / topSpeed / topSpeed);
+                Vector3 slopeForce = Vector3.ProjectOnPlane(Vector3.down, stats.groundNormal) * (1 * (uphill ? 1f : 5.5f));
+                _rigidbody.linearVelocity += slopeForce * Time.fixedDeltaTime;
+            }
+        }
+
+        private void Snap(Vector3 point, Vector3 normal)
+        {
+            _rigidbody.position = Vector3.Slerp(_rigidbody.position, point + normal, 12 * Time.fixedDeltaTime);
+        }
+
         private void SlopePrediction(float dt)
         {
             var lowerValue = 0.43f;
@@ -190,7 +246,6 @@ namespace SurgeEngine.Code.ActorStates
 
         private void Rotate(float dt)
         {
-            var stats = actor.stats;
             stats.transformNormal = Vector3.Slerp(stats.transformNormal, stats.groundNormal, dt * 8);
 
             Vector3 vel = _rigidbody.linearVelocity;
@@ -200,6 +255,19 @@ namespace SurgeEngine.Code.ActorStates
             {
                 Quaternion rot = Quaternion.LookRotation(vel, stats.transformNormal);
                 actor.transform.rotation = Quaternion.Slerp(actor.transform.rotation, rot, dt * 12);
+            }
+        }
+
+        private void UpdateNormal()
+        {
+            if (Physics.Raycast(actor.transform.position, -actor.transform.up, out var hit,
+                    moveParameters.castParameters.castDistance, moveParameters.castParameters.collisionMask))
+            {
+                var point = hit.point;
+                var normal = hit.normal;
+                stats.groundNormal = normal;
+
+                _rigidbody.position = point + normal;
             }
         }
         

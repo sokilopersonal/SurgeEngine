@@ -1,13 +1,11 @@
-﻿using SurgeEngine.Code.ActorSystem;
-
-namespace SurgeEngine.Code.ActorStates
+﻿namespace SurgeEngine.Code.Parameters
 {
     public class FStateAirBoost : FStateMove
     {
         public override void OnEnter()
         {
             base.OnEnter();
-
+            
             if (actor.stats.boost.canAirBoost)
             {
                 animation.TransitionToState("Air Boost", 0.5f);

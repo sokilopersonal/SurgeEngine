@@ -9,6 +9,10 @@ namespace SurgeEngine.Code.ActorSystem
         public void SetOwner(Actor actor)
         {
             this.actor = actor;
+            
+            OnInitialized();
         }
+        
+        protected virtual void OnInitialized() { }
     }
 }

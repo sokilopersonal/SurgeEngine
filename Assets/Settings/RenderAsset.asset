@@ -118,7 +118,7 @@ MonoBehaviour:
       maxShadowRequests: 128
       directionalShadowsDepthBits: 32
       punctualShadowFilteringQuality: 1
-      directionalShadowFilteringQuality: 1
+      directionalShadowFilteringQuality: 2
       areaShadowFilteringQuality: 0
       punctualLightShadowAtlas:
         shadowAtlasResolution: 4096
@@ -159,7 +159,7 @@ MonoBehaviour:
           m_Id: With3Levels
       perChannelMask: 0
     postProcessSettings:
-      m_LutSize: 32
+      m_LutSize: 64
       lutFormat: 48
       bufferFormat: 74
     dynamicResolutionSettings:
@@ -543,4 +543,4 @@ MonoBehaviour:
   m_ObsoleteShaderVariantLogLevel: 0
   m_ObsoleteLensAttenuation: 0
   m_ObsoleteDiffusionProfileSettingsList: []
-  m_PrefilterUseLegacyLightmaps: 0
+  m_PrefilterUseLegacyLightmaps: 1

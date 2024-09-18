@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace SurgeEngine.Code.StateMachine
 {
@@ -11,8 +12,9 @@ namespace SurgeEngine.Code.StateMachine
         
         private Dictionary<Type, FState> _states = new Dictionary<Type, FState>();
         private Dictionary<Type, FSubState> _subStates = new Dictionary<Type, FSubState>();
+        private List<FSubState> _subStatesList = new List<FSubState>();
         
-        public event Action<FState> OnStateEnter; 
+        public event Action<FState> OnStateAssign; 
         
         public void AddState(FState state)
         {
@@ -22,20 +24,27 @@ namespace SurgeEngine.Code.StateMachine
         public void AddSubState(FSubState subState)
         {
             _subStates.Add(subState.GetType(), subState);
+            _subStatesList.Add(subState);
         }
         
         public void SetState<T>() where T : FState
         {
-            if (CurrentState != null)
+            var type = typeof(T);
+
+            if (CurrentState != null && CurrentState.GetType() == type)
             {
-                CurrentState.OnExit();
+                return;
             }
-            
-            CurrentState = _states[typeof(T)];
-            CurrentState.OnEnter();
-            OnStateEnter?.Invoke(CurrentState);
-            
-            currentStateName = CurrentState.GetType().Name;
+
+            if (_states.TryGetValue(type, out var newState))
+            {
+                CurrentState?.OnExit();
+                CurrentState = newState;
+                OnStateAssign?.Invoke(CurrentState);
+                CurrentState.OnEnter();
+                
+                currentStateName = CurrentState.GetType().Name;
+            }
         }
         
         public TState GetState<TState>() where TState : FState
@@ -51,16 +60,31 @@ namespace SurgeEngine.Code.StateMachine
         public void Tick(float dt)
         {
             CurrentState?.OnTick(dt);
+
+            foreach (var subState in _subStatesList)
+            {
+                subState?.OnTick(dt);
+            }
         }
         
         public void FixedTick(float dt)
         {
             CurrentState?.OnFixedTick(dt);
+            
+            foreach (var subState in _subStatesList)
+            {
+                subState?.OnFixedTick(dt);
+            }
         }
         
         public void LateTick(float dt)
         {
             CurrentState?.OnLateTick(dt);
+            
+            foreach (var subState in _subStatesList)
+            {
+                subState?.OnLateTick(dt);
+            }
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SurgeEngine.Code.ActorStates
+namespace SurgeEngine.Code.Parameters
 {
     [Serializable]
     public class AirParameters

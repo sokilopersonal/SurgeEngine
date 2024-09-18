@@ -10,7 +10,7 @@ namespace SurgeEngine.Code.ActorSystem
         {
             SetBool(AnimatorParams.Idle, actor.stateMachine.currentStateName == "FStateIdle");
             SetBool(AnimatorParams.InAir, actor.stateMachine.currentStateName == "FStateAir");
-            SetFloat(AnimatorParams.GroundSpeed, actor.stats.planarVelocity.magnitude);
+            SetFloat(AnimatorParams.GroundSpeed, Mathf.Clamp(actor.stats.planarVelocity.magnitude, 0, 23));
             SetFloat(AnimatorParams.VerticalSpeed, actor.stats.planarVelocity.y);
             SetFloat(AnimatorParams.TurnAngle, actor.transform.InverseTransformDirection(actor.stats.planarVelocity).x * 0.2f);
         }

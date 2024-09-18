@@ -1,7 +1,7 @@
 ﻿using SurgeEngine.Code.Custom;
 using UnityEngine;
 
-namespace SurgeEngine.Code.ActorStates
+namespace SurgeEngine.Code.Parameters
 {
     public class FStateAir : FStateMove
     {
@@ -33,9 +33,9 @@ namespace SurgeEngine.Code.ActorStates
             base.OnFixedTick(dt);
 
             if (!Physics.Raycast(actor.transform.position, -actor.transform.up, out var hit,
-                    moveParameters.castParameters.castDistance, LayerMask.GetMask("Default")))
+                    moveParameters.castParameters.castDistance, moveParameters.castParameters.collisionMask))
             {
-                actor.stats.groundNormal = Vector3.up;
+                stats.groundNormal = Vector3.up;
                 
                 Movement(dt);
                 Rotate(dt);
@@ -51,7 +51,6 @@ namespace SurgeEngine.Code.ActorStates
         private void Movement(float dt)
         {
             Vector3 velocity = _rigidbody.linearVelocity;
-            var stats = actor.stats;
             var normal = stats.groundNormal;
             SurgeMath.SplitPlanarVector(velocity, normal, out Vector3 planar, out Vector3 airVelocity);
 
@@ -59,9 +58,9 @@ namespace SurgeEngine.Code.ActorStates
             stats.planarVelocity = planar;
 
             Vector3 transformedInput = Quaternion.FromToRotation(_cameraTransform.up, normal) *
-                                       (_cameraTransform.rotation * actor.input.moveVector);
+                                       (_cameraTransform.rotation * input.moveVector);
             transformedInput = Vector3.ProjectOnPlane(transformedInput, normal);
-            stats.inputDir = transformedInput.normalized * actor.input.moveVector.magnitude;
+            stats.inputDir = transformedInput.normalized * input.moveVector.magnitude;
 
             if (stats.inputDir.magnitude > 0.2f)
             {
@@ -69,7 +68,7 @@ namespace SurgeEngine.Code.ActorStates
                 var accelRateMod = moveParameters.accelCurve.Evaluate(stats.planarVelocity.magnitude / moveParameters.topSpeed);
                 if (stats.planarVelocity.magnitude < moveParameters.topSpeed)
                     stats.planarVelocity += stats.inputDir * (moveParameters.accelRate * accelRateMod * dt);
-                float handling = stats.turnRate * 0.2f;
+                float handling = stats.turnRate * 0.1f;
                 handling *= moveParameters.turnCurve.Evaluate(stats.planarVelocity.magnitude / moveParameters.topSpeed);
                 stats.movementVector = Vector3.Lerp(stats.planarVelocity, stats.inputDir.normalized * stats.planarVelocity.magnitude, 
                     dt * handling);
@@ -82,7 +81,6 @@ namespace SurgeEngine.Code.ActorStates
 
         private void Rotate(float dt)
         {
-            var stats = actor.stats;
             stats.transformNormal = Vector3.Slerp(stats.transformNormal, Vector3.up, dt * 8f);
 
             Vector3 vel = _rigidbody.linearVelocity;

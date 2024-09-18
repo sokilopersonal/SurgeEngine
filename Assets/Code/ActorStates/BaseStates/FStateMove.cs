@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace SurgeEngine.Code.ActorStates
+namespace SurgeEngine.Code.Parameters
 {
     public abstract class FStateMove : FActorState
     {

@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace SurgeEngine.Code.ActorSystem
 {
@@ -12,6 +14,8 @@ namespace SurgeEngine.Code.ActorSystem
         // Boost
         public bool BoostPressed => _input.Gameplay.Boost.WasPressedThisFrame();
         public bool BoostHeld => _input.Gameplay.Boost.IsPressed();
+        
+        public Action<InputAction.CallbackContext> BoostAction;
 
         private float _lastLookInputTime;
 
@@ -28,6 +32,9 @@ namespace SurgeEngine.Code.ActorSystem
         private void OnEnable()
         {
             _input.Enable();
+            
+            _input.Gameplay.Boost.started += context => BoostAction?.Invoke(context);
+            _input.Gameplay.Boost.canceled += context => BoostAction?.Invoke(context);
         }
 
         private void OnDisable()
