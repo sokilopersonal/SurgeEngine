@@ -41,7 +41,7 @@ namespace SurgeEngine.Code.Parameters
     
             if (stats.boost.Active)
             {
-                _rigidbody.linearVelocity += _rigidbody.transform.forward * (boost.boostForce * dt);
+                _rigidbody.AddForce(_rigidbody.transform.forward * boost.boostForce * dt, ForceMode.Impulse);
                 float maxSpeed = moveParameters.maxSpeed * boost.maxSpeedMultiplier;
                 _rigidbody.linearVelocity = Vector3.ClampMagnitude(_rigidbody.linearVelocity, maxSpeed);
             }
