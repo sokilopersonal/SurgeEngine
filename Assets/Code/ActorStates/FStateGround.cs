@@ -113,6 +113,7 @@ namespace SurgeEngine.Code.Parameters
                                        (_cameraTransform.rotation * actor.input.moveVector);
             transformedInput = Vector3.ProjectOnPlane(transformedInput, normal);
             stats.inputDir = transformedInput.normalized * actor.input.moveVector.magnitude;
+            if (input.moveVector == Vector3.zero && stats.boost.Active) stats.inputDir = _rigidbody.transform.forward;
 
             if (stats.inputDir.magnitude > INPUT_DEADZONE)
             {

@@ -40,7 +40,7 @@ namespace SurgeEngine.Code.ActorSystem
             SetBool("InAction", value);
         }
         
-        public void TransitionToState(string stateName, float transitionTime = 0.25f, bool isAction = true)
+        public void TransitionToState(string stateName, float transitionTime = 0.25f, bool isAction = false)
         {
             animator.CrossFade(stateName, transitionTime);
             
