@@ -27,6 +27,8 @@ namespace SurgeEngine.Code.ActorSystem
         {
             _input = new SurgeInput();
             _input.Enable();
+
+            _lastLookInputTime = Time.time - 1f;
         }
 
         private void OnEnable()

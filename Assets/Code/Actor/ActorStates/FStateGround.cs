@@ -72,7 +72,7 @@ namespace SurgeEngine.Code.Parameters
         {
             base.OnFixedTick(dt);
             
-            if (Physics.SphereCast(actor.transform.position, 0.1f, -actor.transform.up, out var hit,
+            if (Physics.Raycast(actor.transform.position, -actor.transform.up, out var hit,
                     stats.moveParameters.castParameters.castDistance, stats.moveParameters.castParameters.collisionMask))
             {
                 var point = hit.point;

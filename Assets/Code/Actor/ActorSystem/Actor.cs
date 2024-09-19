@@ -19,8 +19,12 @@ namespace SurgeEngine.Code.ActorSystem
         public FActorState[] states;
         public FActorSubState[] subStates;
 
+        public int ID { get; private set; }
+
         private void Awake()
         {
+            ID = gameObject.GetInstanceID();
+            
             stateMachine = new FStateMachine();
             foreach (var state in states)
             {

@@ -1,12 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Numerics;
 using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.Parameters;
 using SurgeEngine.Code.Parameters.SonicSubStates;
 using SurgeEngine.Code.StateMachine;
+using Unity.Mathematics;
 using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
 using Vector2 = UnityEngine.Vector2;
@@ -30,7 +30,9 @@ namespace SurgeEngine.Code.CameraSystem
         private float _x;
         private float _y;
         private float _collisionDistance;
+        private float _timeToStartFollow;
 
+        private Vector3 _tempFollowVector;
         private Vector2 _autoLookDirection;
 
         private CameraParameters _currentParameters;
@@ -47,12 +49,22 @@ namespace SurgeEngine.Code.CameraSystem
             _cameraTransform = _camera.transform;
 
             _currentParameters = _parameters[0];
-
+            _timeToStartFollow = _currentParameters.timeToStartFollow;
+            
             _distance = _currentParameters.distance;
             _fov = _currentParameters.fov;
 
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
+        }
+
+        protected override void OnInitialized()
+        {
+            base.OnInitialized();
+            
+            Quaternion dir = Quaternion.LookRotation(actor.transform.forward);
+            _x = dir.eulerAngles.y;
+            _y = dir.eulerAngles.x;
         }
 
         private void OnEnable()
@@ -80,8 +92,8 @@ namespace SurgeEngine.Code.CameraSystem
             _y = Mathf.Clamp(_y, -35, 50);
 
             _cameraTransform.position = GetTarget();
-
-            if (actor.input.GetLastLookInputTime() + _currentParameters.timeToStartFollow < Time.time)
+            
+            if (actor.input.GetLastLookInputTime() + _timeToStartFollow < Time.time)
             {
                 float dot = Vector3.Dot(Vector3.ProjectOnPlane(actor.stats.inputDir, Vector3.up), 
                     Vector3.Cross(_cameraTransform.right, Vector3.up));
@@ -163,6 +175,8 @@ namespace SurgeEngine.Code.CameraSystem
 
         private IEnumerator ChangeParametersCoroutine(CameraParameters target, Action<CameraParameters> callback = null)
         {
+            _timeToStartFollow = target.timeToStartFollow;
+            
             float tDistance = 0f;
             float tFov = 0f;
 
