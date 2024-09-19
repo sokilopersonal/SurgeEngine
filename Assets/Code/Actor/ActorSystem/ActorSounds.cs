@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using SurgeEngine.Code.ActorSoundEffects;
 using SurgeEngine.Code.Parameters.SonicSubStates;
 using SurgeEngine.Code.StateMachine;
 using UnityEngine;
@@ -10,6 +11,7 @@ namespace SurgeEngine.Code.ActorSystem
     public class ActorSounds : ActorComponent
     {
         [SerializeField] private List<SoundData> sounds;
+        [SerializeField] private BoostAudioDistortion distortion;
 
         protected override void OnInitialized()
         {
@@ -30,10 +32,14 @@ namespace SurgeEngine.Code.ActorSystem
                 PlaySound("BoostLoop", true);
                 PlaySound("BoostForce", false);
                 PlaySound("BoostImpulse", false);
+                
+                distortion.ToggleDistortion();
             }
             else if (arg1 is FBoost && !arg2)
             {
                 StopSound("BoostLoop", true);
+                
+                distortion.ToggleDistortion();
             }
         }
 
