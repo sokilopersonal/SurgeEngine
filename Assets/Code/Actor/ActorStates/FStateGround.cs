@@ -7,11 +7,10 @@ namespace SurgeEngine.Code.Parameters
 {
     public class FStateGround : FStateMove
     {
-        public MoveParameters moveParameters;
         [SerializeField] private Vector3 _groundCheckOffset;
 
         private Transform _cameraTransform;
-        private const float INPUT_DEADZONE = 0.2f;
+        private const float INPUT_DEADZONE = 0.3f;
         private const float SLOPE_PREDICTION_ACTIVATE_SPEED = 10f;
 
         public override void OnEnter()
@@ -31,8 +30,8 @@ namespace SurgeEngine.Code.Parameters
         {
             base.OnTick(dt);
 
-            FBoost boost = stats.boost;
-            if (input.BoostPressed && _rigidbody.linearVelocity.magnitude < boost.startForce)
+            FBoost boost = stateMachine.GetSubState<FBoost>();
+            if (input.BoostPressed && stats.currentSpeed < boost.startForce)
             {
                 _rigidbody.linearVelocity = _rigidbody.transform.forward * boost.startForce;
                 boost.restoringTopSpeed = true;
@@ -42,18 +41,18 @@ namespace SurgeEngine.Code.Parameters
             if (stats.boost.Active)
             {
                 _rigidbody.AddForce(Vector3.ProjectOnPlane(_rigidbody.transform.forward, stats.groundNormal) * (boost.boostForce * dt), ForceMode.Impulse);
-                float maxSpeed = moveParameters.maxSpeed * boost.maxSpeedMultiplier;
+                float maxSpeed = stats.moveParameters.maxSpeed * boost.maxSpeedMultiplier;
                 _rigidbody.linearVelocity = Vector3.ClampMagnitude(_rigidbody.linearVelocity, maxSpeed);
             }
             else if (boost.restoringTopSpeed)
             {
-                float normalMaxSpeed = moveParameters.topSpeed;
+                float normalMaxSpeed = stats.moveParameters.topSpeed;
                 if (stats.currentSpeed > normalMaxSpeed)
                 {
                     _rigidbody.linearVelocity = Vector3.MoveTowards(
                         _rigidbody.linearVelocity, 
                         _rigidbody.transform.forward * normalMaxSpeed, 
-                        dt * 24 
+                        dt * boost.restoreSpeed
                     );
                 }
                 else if (stats.currentSpeed * 0.99f < normalMaxSpeed)
@@ -74,7 +73,7 @@ namespace SurgeEngine.Code.Parameters
             base.OnFixedTick(dt);
             
             if (Physics.SphereCast(actor.transform.position, 0.1f, -actor.transform.up, out var hit,
-                    moveParameters.castParameters.castDistance, moveParameters.castParameters.collisionMask))
+                    stats.moveParameters.castParameters.castDistance, stats.moveParameters.castParameters.collisionMask))
             {
                 var point = hit.point;
                 var normal = hit.normal;
@@ -121,9 +120,10 @@ namespace SurgeEngine.Code.Parameters
             }
             else
             {
-                if (stats.boost.Active) return;
+                if (stateMachine.GetSubState<FBoost>().Active) return;
                 
-                float f = Mathf.Lerp(14, 6, stats.movementVector.magnitude / moveParameters.topSpeed);
+                float f = Mathf.Lerp(stats.moveParameters.maxDeacceleration, stats.moveParameters.minDeacceleration, 
+                    stats.movementVector.magnitude / stats.moveParameters.topSpeed);
                 if (stats.movementVector.magnitude > 1f)
                     stats.movementVector = Vector3.MoveTowards(stats.movementVector, Vector3.zero, Time.fixedDeltaTime * f);
                 else
@@ -140,15 +140,15 @@ namespace SurgeEngine.Code.Parameters
 
         private void CalculateVelocity(float dt)
         {
-            stats.turnRate = Mathf.Lerp(stats.turnRate, moveParameters.turnSpeed
-                                                        * (stats.boost.Active ? stats.boost.turnSpeedReduction : 1), dt * moveParameters.turnSmoothing);
-            var accelRateMod = moveParameters.accelCurve.Evaluate(stats.planarVelocity.magnitude / moveParameters.topSpeed);
-            if (stats.planarVelocity.magnitude < moveParameters.topSpeed)
-                stats.planarVelocity += stats.inputDir * (moveParameters.accelRate * accelRateMod * dt);
+            stats.turnRate = Mathf.Lerp(stats.turnRate, stats.moveParameters.turnSpeed
+                                                        * (stats.boost.Active ? stats.boost.turnSpeedReduction : 1), dt * stats.moveParameters.turnSmoothing);
+            var accelRateMod = stats.moveParameters.accelCurve.Evaluate(stats.planarVelocity.magnitude / stats.moveParameters.topSpeed);
+            if (stats.planarVelocity.magnitude < stats.moveParameters.topSpeed)
+                stats.planarVelocity += stats.inputDir * (stats.moveParameters.accelRate * accelRateMod * dt);
                 
             Vector3 newVelocity = Quaternion.FromToRotation(stats.planarVelocity.normalized, stats.inputDir.normalized) * stats.planarVelocity;
             float handling = stats.turnRate;
-            handling *= moveParameters.turnCurve.Evaluate(stats.planarVelocity.magnitude / moveParameters.topSpeed);
+            handling *= stats.moveParameters.turnCurve.Evaluate(stats.planarVelocity.magnitude / stats.moveParameters.topSpeed);
             stats.movementVector = Vector3.Slerp(stats.planarVelocity, newVelocity, Time.fixedDeltaTime * handling);
         }
 
@@ -186,7 +186,7 @@ namespace SurgeEngine.Code.Parameters
             var predictedVelocity = _rigidbody.linearVelocity;
             var speedFrame = _rigidbody.linearVelocity.magnitude * dt;
             var lerpJump = 0.015f;
-            var mask = moveParameters.castParameters.collisionMask;
+            var mask = stats.moveParameters.castParameters.collisionMask;
             
             if (!Physics.Raycast(predictedPosition, predictedVelocity.normalized, 
                     out var pGround, speedFrame * 1.3f, mask)) { HighSpeedFix(dt); return; }
@@ -196,7 +196,7 @@ namespace SurgeEngine.Code.Parameters
                 if (!Physics.Raycast(predictedPosition, Vector3.Lerp(predictedVelocity.normalized, stats.groundNormal, lerp), out pGround, speedFrame * 1.3f, mask))
                 {
                     lerp += lerpJump;
-                    Physics.Raycast(predictedPosition + Vector3.Lerp(predictedVelocity.normalized, stats.groundNormal, lerp) * (speedFrame * 1.3f), -predictedNormal, out pGround, moveParameters.castParameters.castDistance + 0.2f, mask);
+                    Physics.Raycast(predictedPosition + Vector3.Lerp(predictedVelocity.normalized, stats.groundNormal, lerp) * (speedFrame * 1.3f), -predictedNormal, out pGround, stats.moveParameters.castParameters.castDistance + 0.2f, mask);
 
                     predictedPosition = predictedPosition + Vector3.Lerp(predictedVelocity.normalized, stats.groundNormal, lerp) * speedFrame + pGround.normal * lowerValue;
                     predictedVelocity = Quaternion.FromToRotation(stats.groundNormal, pGround.normal) * predictedVelocity;
@@ -214,12 +214,12 @@ namespace SurgeEngine.Code.Parameters
             var predictedNormal = actor.stats.groundNormal;
             var predictedVelocity = _rigidbody.linearVelocity;
             var steps = 8;
-            var mask = moveParameters.castParameters.collisionMask;
+            var mask = stats.moveParameters.castParameters.collisionMask;
             int i;
             for (i = 0; i < steps; i++)
             {
                 predictedPosition += predictedVelocity * dt / steps;
-                if (Physics.Raycast(predictedPosition, -predictedNormal, out var pGround, moveParameters.castParameters.castDistance + 0.2f, mask))
+                if (Physics.Raycast(predictedPosition, -predictedNormal, out var pGround, stats.moveParameters.castParameters.castDistance + 0.2f, mask))
                 {
                     if (Vector3.Angle (predictedNormal, pGround.normal) < 45)
                     {
@@ -261,7 +261,7 @@ namespace SurgeEngine.Code.Parameters
         private void UpdateNormal()
         {
             if (Physics.Raycast(actor.transform.position, -actor.transform.up, out var hit,
-                    moveParameters.castParameters.castDistance, moveParameters.castParameters.collisionMask))
+                    stats.moveParameters.castParameters.castDistance, stats.moveParameters.castParameters.collisionMask))
             {
                 var point = hit.point;
                 var normal = hit.normal;
@@ -273,9 +273,8 @@ namespace SurgeEngine.Code.Parameters
         
         private void ConvertAirToGroundVelocity()
         {
-            if (Physics.Raycast(actor.transform.position, _rigidbody.linearVelocity.normalized, out RaycastHit velocityFix, _rigidbody.linearVelocity.magnitude, moveParameters.castParameters.collisionMask))
+            if (Physics.Raycast(actor.transform.position, _rigidbody.linearVelocity.normalized, out RaycastHit velocityFix, _rigidbody.linearVelocity.magnitude, stats.moveParameters.castParameters.collisionMask))
             {
-                //Check if the angle is good
                 float nextGroundAngle = Vector3.Angle(velocityFix.normal, Vector3.up);
                 if (nextGroundAngle <= 20)
                 {

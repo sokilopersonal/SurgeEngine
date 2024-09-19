@@ -7,6 +7,7 @@ namespace SurgeEngine.Code.ActorSystem
 {
     public class ActorStats : ActorComponent
     {
+        public MoveParameters moveParameters;
         public float turnRate;
         public float currentSpeed;
         public Vector3 movementVector;

@@ -1,51 +1,58 @@
-using SurgeEngine.Code.Parameters;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Numerics;
 using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.Custom;
+using SurgeEngine.Code.Parameters;
 using SurgeEngine.Code.Parameters.SonicSubStates;
 using SurgeEngine.Code.StateMachine;
 using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
+using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
 
 namespace SurgeEngine.Code.CameraSystem
 {
     public class ActorCamera : ActorComponent
     {
-        [SerializeField] private CameraParameters _defaultParameters;
-        [SerializeField] private CameraParameters _boostParameters;
+        [Header("Target")]
+        public Transform target;
         
-        private Camera _camera; 
+        [Header("Collision")]
+        public LayerMask collisionMask;
+        public float collisionRadius = 0.2f;
+        
+        [SerializeField] private List<CameraParameters> _parameters;
+
+        private Camera _camera;
         private Transform _cameraTransform;
         private float _x;
         private float _y;
         private float _collisionDistance;
-        
+
         private Vector2 _autoLookDirection;
-        
+
         private CameraParameters _currentParameters;
 
         private float _followPower;
         private float _fov;
         private float _distance;
 
+        private Coroutine _parameterChangeCoroutine;
+
         private void Awake()
         {
-            _camera = Camera.main; 
+            _camera = Camera.main;
             _cameraTransform = _camera.transform;
-            
-            _currentParameters = _defaultParameters;
-            
+
+            _currentParameters = _parameters[0];
+
             _distance = _currentParameters.distance;
             _fov = _currentParameters.fov;
 
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
-        }
-
-        protected override void OnInitialized()
-        {
-            base.OnInitialized();
-            
-            //actor.stats.boost.OnActiveChanged += OnBoostActivate;
         }
 
         private void OnEnable()
@@ -60,17 +67,9 @@ namespace SurgeEngine.Code.CameraSystem
 
         private void Update()
         {
-            LerpValues();
-            
             Following();
             LookAt();
             Collision();
-        }
-
-        private void LerpValues()
-        {
-            _distance = Mathf.Lerp(_distance, _currentParameters.distance, _currentParameters.distanceChangeSpeed * Time.deltaTime);
-            _fov = Mathf.Lerp(_fov, _currentParameters.fov, _currentParameters.fovChangeSpeed * Time.deltaTime); 
         }
 
         private void Following()
@@ -79,13 +78,13 @@ namespace SurgeEngine.Code.CameraSystem
             _x += lookVector.x + _autoLookDirection.x * _currentParameters.followPower * Time.deltaTime;
             _y -= lookVector.y;
             _y = Mathf.Clamp(_y, -35, 50);
-            
+
             _cameraTransform.position = GetTarget();
-            
+
             if (actor.input.GetLastLookInputTime() + _currentParameters.timeToStartFollow < Time.time)
             {
-                float dot = Vector3.Dot(actor.stats.inputDir, actor.transform.forward);
-                bool enable = dot is < 0.999f and > -0.7f && actor.stats.inputDir.magnitude > 0.2f;
+                float dot = Vector3.Dot(actor.stats.inputDir, Vector3.Cross(actor.transform.right, Vector3.up));
+                bool enable = dot is < 0.999f and > -0.99f && actor.stats.inputDir.magnitude > 0.2f;
                 if (actor.stats.planarVelocity.magnitude > 1f && enable)
                 {
                     float fwd = actor.stats.GetForwardSignedAngle();
@@ -104,24 +103,24 @@ namespace SurgeEngine.Code.CameraSystem
 
         private void LookAt()
         {
-            Quaternion quaternion = Quaternion.LookRotation(_currentParameters.target.position - _cameraTransform.position);
+            Quaternion quaternion = Quaternion.LookRotation(target.position - _cameraTransform.position);
             _cameraTransform.rotation = quaternion;
-            
+
             _camera.fieldOfView = _fov;
         }
 
         private void Collision()
         {
-            var ray = new Ray(_currentParameters.target.position, -_cameraTransform.forward);
-            float radius = _currentParameters.collisionRadius;
-            var maxDistance = Vector3.Distance(_currentParameters.target.position, _cameraTransform.position);
+            var ray = new Ray(target.position, -_cameraTransform.forward);
+            float radius = collisionRadius;
+            var maxDistance = Vector3.Distance(target.position, _cameraTransform.position);
 
-            float result = Physics.SphereCast(ray, radius, out RaycastHit hit, 
-                maxDistance, _currentParameters.collisionMask) 
+            float result = Physics.SphereCast(ray, radius, out RaycastHit hit,
+                maxDistance, collisionMask)
                 ? hit.distance
                 : _distance;
-            
-            _cameraTransform.position = _currentParameters.target.position - _cameraTransform.forward * result;
+
+            _cameraTransform.position = target.position - _cameraTransform.forward * result;
         }
 
         private Vector3 GetTarget()
@@ -132,14 +131,68 @@ namespace SurgeEngine.Code.CameraSystem
 
         private void OnBoostActivate(FSubState obj, bool value)
         {
+            if (_parameterChangeCoroutine != null)
+            {
+                StopCoroutine(_parameterChangeCoroutine);
+            }
+            
             if (obj is FBoost && value)
             {
-                _currentParameters = _boostParameters;
+                TransitionTo("BoostOut", _ =>
+                {
+                    TransitionTo("BoostIn");
+                });
             }
-            else 
+            else
             {
-                _currentParameters = _defaultParameters;
+                TransitionTo("Default");
             }
+        }
+
+        private void TransitionTo(string parameter, Action<CameraParameters> callback = null)
+        {
+            if (_parameterChangeCoroutine != null)
+            {
+                StopCoroutine(_parameterChangeCoroutine);
+            }
+
+            var param = _parameters.Find(x => x.name == parameter);
+            _parameterChangeCoroutine = StartCoroutine(ChangeParametersCoroutine(param, callback));
+        }
+
+        private IEnumerator ChangeParametersCoroutine(CameraParameters target, Action<CameraParameters> callback = null)
+        {
+            float tDistance = 0f;
+            float tFov = 0f;
+
+            float startDistance = _distance;
+            float startFov = _fov;
+            float targetDistance = target.distance;
+            float targetFov = target.fov;
+
+            while (tDistance < target.distanceDuration || tFov < target.fovDuration)
+            {
+                if (tDistance < target.distanceDuration)
+                {
+                    tDistance += Time.deltaTime;
+                    _distance = Mathf.Lerp(startDistance, targetDistance, Easings.Get(target.distanceEasing, tDistance / target.distanceDuration));
+                }
+
+                if (tFov < target.fovDuration)
+                {
+                    tFov += Time.deltaTime;
+                    _fov = Mathf.Lerp(startFov, targetFov, Easings.Get(target.fovEasing, tFov / target.fovDuration));
+                }
+
+                yield return null;
+            }
+
+            _distance = targetDistance;
+            _fov = targetFov;
+
+            _currentParameters = target;
+            callback?.Invoke(target);
+            Debug.Log($"[Actor Camera] Camera changed to {_currentParameters.name}");
         }
 
         public Camera GetCamera()

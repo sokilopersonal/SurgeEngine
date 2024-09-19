@@ -5,7 +5,6 @@ namespace SurgeEngine.Code.Parameters
 {
     public class FStateAir : FStateMove
     {
-        [SerializeField] private MoveParameters moveParameters;
         [SerializeField] private AirParameters airParameters;
         
         private Transform _cameraTransform;
@@ -33,7 +32,7 @@ namespace SurgeEngine.Code.Parameters
             base.OnFixedTick(dt);
 
             if (!Physics.Raycast(actor.transform.position, -actor.transform.up, out var hit,
-                    moveParameters.castParameters.castDistance, moveParameters.castParameters.collisionMask))
+                    stats.moveParameters.castParameters.castDistance, stats.moveParameters.castParameters.collisionMask))
             {
                 stats.groundNormal = Vector3.up;
                 
@@ -64,12 +63,12 @@ namespace SurgeEngine.Code.Parameters
 
             if (stats.inputDir.magnitude > 0.2f)
             {
-                stats.turnRate = Mathf.Lerp(stats.turnRate, moveParameters.turnSpeed, dt * moveParameters.turnSmoothing);
-                var accelRateMod = moveParameters.accelCurve.Evaluate(stats.planarVelocity.magnitude / moveParameters.topSpeed);
-                if (stats.planarVelocity.magnitude < moveParameters.topSpeed)
-                    stats.planarVelocity += stats.inputDir * (moveParameters.accelRate * accelRateMod * dt);
-                float handling = stats.turnRate * 0.1f;
-                handling *= moveParameters.turnCurve.Evaluate(stats.planarVelocity.magnitude / moveParameters.topSpeed);
+                stats.turnRate = Mathf.Lerp(stats.turnRate, stats.moveParameters.turnSpeed, dt * stats.moveParameters.turnSmoothing);
+                var accelRateMod = stats.moveParameters.accelCurve.Evaluate(stats.planarVelocity.magnitude / stats.moveParameters.topSpeed);
+                if (stats.planarVelocity.magnitude < stats.moveParameters.topSpeed)
+                    stats.planarVelocity += stats.inputDir * (stats.moveParameters.accelRate * accelRateMod * dt);
+                float handling = stats.turnRate * 0.2f;
+                //handling *= stats.moveParameters.turnCurve.Evaluate(stats.planarVelocity.magnitude / stats.moveParameters.topSpeed);
                 stats.movementVector = Vector3.Lerp(stats.planarVelocity, stats.inputDir.normalized * stats.planarVelocity.magnitude, 
                     dt * handling);
             }
@@ -81,7 +80,7 @@ namespace SurgeEngine.Code.Parameters
 
         private void Rotate(float dt)
         {
-            stats.transformNormal = Vector3.Slerp(stats.transformNormal, Vector3.up, dt * 4f);
+            stats.transformNormal = Vector3.Slerp(stats.transformNormal, Vector3.up, dt * 5f);
 
             Vector3 vel = _rigidbody.linearVelocity;
             vel = Vector3.ProjectOnPlane(vel, stats.groundNormal);
@@ -89,7 +88,7 @@ namespace SurgeEngine.Code.Parameters
             if (vel.magnitude > 0.1f)
             {
                 Quaternion rot = Quaternion.LookRotation(vel, stats.transformNormal);
-                actor.transform.rotation = Quaternion.Slerp(actor.transform.rotation, rot, dt * 7f);
+                actor.transform.rotation = Quaternion.Slerp(actor.transform.rotation, rot, dt * 4f);
             }
         }
     }

@@ -11,6 +11,9 @@ namespace SurgeEngine.Code.Parameters
             if (_rigidbody == null)
             {
                 _rigidbody = actor.GetComponent<Rigidbody>();
+
+                _rigidbody.solverIterations = 12;
+                _rigidbody.solverVelocityIterations = 4;
             }
         }
     }
