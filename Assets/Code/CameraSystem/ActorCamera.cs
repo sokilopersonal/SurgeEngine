@@ -83,8 +83,9 @@ namespace SurgeEngine.Code.CameraSystem
 
             if (actor.input.GetLastLookInputTime() + _currentParameters.timeToStartFollow < Time.time)
             {
-                float dot = Vector3.Dot(actor.stats.inputDir, Vector3.Cross(actor.transform.right, Vector3.up));
-                bool enable = dot is < 0.999f and > -0.99f && actor.stats.inputDir.magnitude > 0.2f;
+                float dot = Vector3.Dot(Vector3.ProjectOnPlane(actor.stats.inputDir, Vector3.up), 
+                    Vector3.Cross(_cameraTransform.right, Vector3.up));
+                bool enable = dot is < 1f and > -0.8f && actor.stats.inputDir.magnitude > 0.2f;
                 if (actor.stats.planarVelocity.magnitude > 1f && enable)
                 {
                     float fwd = actor.stats.GetForwardSignedAngle();
