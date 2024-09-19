@@ -31,7 +31,7 @@ namespace SurgeEngine.Code.Parameters
             base.OnTick(dt);
 
             FBoost boost = stateMachine.GetSubState<FBoost>();
-            if (input.BoostPressed && stats.currentSpeed < boost.startForce)
+            if (boost.Active && stats.currentSpeed < boost.startForce)
             {
                 _rigidbody.linearVelocity = _rigidbody.transform.forward * boost.startForce;
                 boost.restoringTopSpeed = true;
