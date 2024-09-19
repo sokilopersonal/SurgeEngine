@@ -11,16 +11,16 @@ namespace SurgeEngine.Code.Parameters.SonicSubStates
         public float maxSpeedMultiplier;
         public float startForce;
         public float airStartForce;
-        public float airTime;
+        public float boostInAirTime;
+        public float airBoostTime;
         public bool canAirBoost;
         public float boostForce;
-        public float lastBoostTime;
         
         public bool restoringTopSpeed;
         [Range(0.2f, 3f)] public float restoreSpeed;
 
-        private Coroutine airBoostTime;
-        private Coroutine boostInAirTime;
+        private Coroutine airBoostTimeCoroutine;
+        private Coroutine boostInAirTimeCoroutine;
 
         private void Awake()
         {
@@ -32,13 +32,11 @@ namespace SurgeEngine.Code.Parameters.SonicSubStates
         private void OnEnable()
         {
             actor.stateMachine.OnStateAssign += OnStateAssign;
-            OnActiveChanged += OnActiveChange;
         }
 
         private void OnDisable()
         {
             actor.stateMachine.OnStateAssign -= OnStateAssign;
-            OnActiveChanged -= OnActiveChange;
         }
 
         private void OnStateAssign(FState obj)
@@ -52,19 +50,19 @@ namespace SurgeEngine.Code.Parameters.SonicSubStates
             {
                 if (canAirBoost)
                 {
-                    if (boostInAirTime != null) 
-                        StopCoroutine(boostInAirTime);
+                    if (boostInAirTimeCoroutine != null) 
+                        StopCoroutine(boostInAirTimeCoroutine);
 
-                    boostInAirTime = StartCoroutine(BoostInAirTime());
+                    boostInAirTimeCoroutine = StartCoroutine(BoostInAirTime());
                 }
             }
             
             if (obj is FStateAirBoost)
             {
-                if (airBoostTime != null)
-                    StopCoroutine(airBoostTime);
+                if (airBoostTimeCoroutine != null)
+                    StopCoroutine(airBoostTimeCoroutine);
                 
-                airBoostTime = StartCoroutine(AirBoostTime());
+                airBoostTimeCoroutine = StartCoroutine(AirBoostTime());
             }
         }
 
@@ -76,24 +74,16 @@ namespace SurgeEngine.Code.Parameters.SonicSubStates
             {
                 if (actor.input.BoostHeld)
                 {
-                    if (boostInAirTime != null)
+                    if (boostInAirTimeCoroutine != null)
                     {
-                        StopCoroutine(boostInAirTime);
+                        StopCoroutine(boostInAirTimeCoroutine);
                     }
 
-                    if (airBoostTime != null)
+                    if (airBoostTimeCoroutine != null)
                     {
-                        StopCoroutine(airBoostTime);
+                        StopCoroutine(airBoostTimeCoroutine);
                     }
                 }
-            }
-        }
-
-        private void OnActiveChange(FSubState arg1, bool arg2)
-        {
-            if (arg2)
-            {
-                lastBoostTime = Time.time;
             }
         }
 
@@ -106,13 +96,13 @@ namespace SurgeEngine.Code.Parameters.SonicSubStates
 
         private IEnumerator BoostInAirTime()
         {
-            yield return new WaitForSeconds(airTime);
+            yield return new WaitForSeconds(boostInAirTime);
             Active = false;
         }
 
         private IEnumerator AirBoostTime()
         {
-            yield return new WaitForSeconds(airTime);
+            yield return new WaitForSeconds(airBoostTime);
             Active = false;
         }
     }

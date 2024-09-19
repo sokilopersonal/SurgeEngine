@@ -163,7 +163,6 @@ namespace SurgeEngine.Code.Parameters
             // }
             
             float dot = Vector3.Dot(transform.up, Vector3.up);
-            
             if (stats.groundAngle > 5 && stats.movementVector.magnitude > 10f)
             {
                 bool uphill = Vector3.Dot(_rigidbody.linearVelocity.normalized, Vector3.down) < 0;
