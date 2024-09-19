@@ -76,7 +76,7 @@ namespace SurgeEngine.Code.CameraSystem
         private void Following()
         {
             var lookVector = actor.input.lookVector;
-            _x += lookVector.x + _autoLookDirection.x * 1 * Time.deltaTime;
+            _x += lookVector.x + _autoLookDirection.x * _currentParameters.followPower * Time.deltaTime;
             _y -= lookVector.y;
             _y = Mathf.Clamp(_y, -35, 50);
             
@@ -95,9 +95,6 @@ namespace SurgeEngine.Code.CameraSystem
                 {
                     _autoLookDirection.x = Mathf.Lerp(_autoLookDirection.x, 0, 6 * Time.deltaTime);
                 }
-                
-                Quaternion dir = Quaternion.LookRotation(actor.transform.forward);
-                _autoLookDirection.y = Mathf.Lerp(_autoLookDirection.y, dir.y, 6 * Time.deltaTime);
             }
             else
             {
@@ -129,7 +126,7 @@ namespace SurgeEngine.Code.CameraSystem
 
         private Vector3 GetTarget()
         {
-            Vector3 v = actor.transform.position + Quaternion.Euler(_y + -_autoLookDirection.y, _x, 0) * new Vector3(0, 0, -_distance);
+            Vector3 v = actor.transform.position + Quaternion.Euler(_y, _x, 0) * new Vector3(0, 0, -_distance);
             return v;
         }
 

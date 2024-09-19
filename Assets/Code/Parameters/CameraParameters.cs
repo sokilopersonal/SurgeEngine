@@ -16,7 +16,7 @@ namespace SurgeEngine.Code.Parameters
         [Header("Follow")]
         public float distance = 2.4f;
         public float distanceChangeSpeed = 2f;
-        [Range(0, 0.05f)] public float followPower = 0.0225f;
+        [Range(1, 3f)] public float followPower = 0.125f;
         public float timeToStartFollow = 2f;
         
         [Header("FOV")]
