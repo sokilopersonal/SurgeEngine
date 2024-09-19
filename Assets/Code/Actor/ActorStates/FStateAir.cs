@@ -81,7 +81,7 @@ namespace SurgeEngine.Code.Parameters
 
         private void Rotate(float dt)
         {
-            stats.transformNormal = Vector3.Slerp(stats.transformNormal, Vector3.up, dt * 8f);
+            stats.transformNormal = Vector3.Slerp(stats.transformNormal, Vector3.up, dt * 4f);
 
             Vector3 vel = _rigidbody.linearVelocity;
             vel = Vector3.ProjectOnPlane(vel, stats.groundNormal);

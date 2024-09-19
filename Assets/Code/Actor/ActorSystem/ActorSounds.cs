@@ -5,6 +5,7 @@ using SurgeEngine.Code.ActorSoundEffects;
 using SurgeEngine.Code.Parameters.SonicSubStates;
 using SurgeEngine.Code.StateMachine;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace SurgeEngine.Code.ActorSystem
 {
@@ -12,12 +13,17 @@ namespace SurgeEngine.Code.ActorSystem
     {
         [SerializeField] private List<SoundData> sounds;
         [SerializeField] private BoostAudioDistortion distortion;
+        
+        private float _lastBoostVoiceTime;
+        
+        private const float BOOST_VOICE_DELAY = 1.5f;
 
         protected override void OnInitialized()
         {
             base.OnInitialized();
             
             actor.stats.boost.OnActiveChanged += OnBoostActivate;
+            _lastBoostVoiceTime = Time.time - BOOST_VOICE_DELAY;
         }
 
         private void OnDisable()
@@ -29,6 +35,12 @@ namespace SurgeEngine.Code.ActorSystem
         {
             if (arg1 is FBoost && arg2)
             {
+                if (_lastBoostVoiceTime + BOOST_VOICE_DELAY < Time.time)
+                {
+                    PlaySound($"Boost_Start{Random.Range(1, 4)}", false);
+                    _lastBoostVoiceTime = Time.time;
+                }
+                
                 PlaySound("BoostLoop", true);
                 PlaySound("BoostForce", false);
                 PlaySound("BoostImpulse", false);

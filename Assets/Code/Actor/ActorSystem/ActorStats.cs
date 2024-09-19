@@ -8,6 +8,7 @@ namespace SurgeEngine.Code.ActorSystem
     public class ActorStats : ActorComponent
     {
         public float turnRate;
+        public float currentSpeed;
         public Vector3 movementVector;
         public Vector3 planarVelocity;
         public Vector3 inputDir;
@@ -22,6 +23,11 @@ namespace SurgeEngine.Code.ActorSystem
             base.OnInitialized();
             
             boost = actor.stateMachine.GetSubState<FBoost>();
+        }
+
+        private void Update()
+        {
+            currentSpeed = planarVelocity.magnitude;
         }
 
         public float GetForwardSignedAngle()

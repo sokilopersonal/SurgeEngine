@@ -41,22 +41,22 @@ namespace SurgeEngine.Code.Parameters
     
             if (stats.boost.Active)
             {
-                _rigidbody.AddForce(_rigidbody.transform.forward * boost.boostForce * dt, ForceMode.Impulse);
+                _rigidbody.AddForce(Vector3.ProjectOnPlane(_rigidbody.transform.forward, stats.groundNormal) * (boost.boostForce * dt), ForceMode.Impulse);
                 float maxSpeed = moveParameters.maxSpeed * boost.maxSpeedMultiplier;
                 _rigidbody.linearVelocity = Vector3.ClampMagnitude(_rigidbody.linearVelocity, maxSpeed);
             }
             else if (boost.restoringTopSpeed)
             {
                 float normalMaxSpeed = moveParameters.topSpeed;
-                if (_rigidbody.linearVelocity.magnitude > normalMaxSpeed)
+                if (stats.currentSpeed > normalMaxSpeed)
                 {
-                    _rigidbody.linearVelocity = Vector3.Lerp(
+                    _rigidbody.linearVelocity = Vector3.MoveTowards(
                         _rigidbody.linearVelocity, 
                         _rigidbody.transform.forward * normalMaxSpeed, 
-                        dt * boost.restoreSpeed 
+                        dt * 24 
                     );
                 }
-                else
+                else if (stats.currentSpeed * 0.99f < normalMaxSpeed)
                 {
                     boost.restoringTopSpeed = false;
                 }
@@ -72,15 +72,15 @@ namespace SurgeEngine.Code.Parameters
         public override void OnFixedTick(float dt)
         {
             base.OnFixedTick(dt);
-
-            if (Physics.Raycast(actor.transform.position, -actor.transform.up, out var hit,
+            
+            if (Physics.SphereCast(actor.transform.position, 0.1f, -actor.transform.up, out var hit,
                     moveParameters.castParameters.castDistance, moveParameters.castParameters.collisionMask))
             {
                 var point = hit.point;
                 var normal = hit.normal;
                 stats.groundNormal = normal;
                 
-                stats.transformNormal = Vector3.Slerp(stats.transformNormal, normal, dt * 6f);
+                stats.transformNormal = Vector3.Slerp(stats.transformNormal, normal, dt * 14f);
 
                 if (_rigidbody.linearVelocity.magnitude > SLOPE_PREDICTION_ACTIVATE_SPEED)
                 {
@@ -167,7 +167,7 @@ namespace SurgeEngine.Code.Parameters
             {
                 bool uphill = Vector3.Dot(_rigidbody.linearVelocity.normalized, Vector3.down) < 0;
                 //float groundSpeedMod = slopeForceOverSpeed.Evaluate(rb.velocity.sqrMagnitude / topSpeed / topSpeed);
-                Vector3 slopeForce = Vector3.ProjectOnPlane(Vector3.down, stats.groundNormal) * (1 * (uphill ? 1f : 5.5f));
+                Vector3 slopeForce = Vector3.ProjectOnPlane(Vector3.down, stats.groundNormal) * (1 * (uphill ? 1f : 6.5f));
                 _rigidbody.linearVelocity += slopeForce * Time.fixedDeltaTime;
             }
         }
@@ -246,7 +246,7 @@ namespace SurgeEngine.Code.Parameters
 
         private void Rotate(float dt)
         {
-            stats.transformNormal = Vector3.Slerp(stats.transformNormal, stats.groundNormal, dt * 8);
+            stats.transformNormal = stats.groundNormal;
 
             Vector3 vel = _rigidbody.linearVelocity;
             vel = Vector3.ProjectOnPlane(vel, stats.groundNormal);
@@ -254,7 +254,7 @@ namespace SurgeEngine.Code.Parameters
             if (vel.magnitude > 0.1f)
             {
                 Quaternion rot = Quaternion.LookRotation(vel, stats.transformNormal);
-                actor.transform.rotation = Quaternion.Slerp(actor.transform.rotation, rot, dt * 12);
+                actor.transform.rotation = Quaternion.Slerp(actor.transform.rotation, rot, dt * 10);
             }
         }
 

@@ -16,11 +16,11 @@ namespace SurgeEngine.Code.ActorSoundEffects
 
             if (_enabled)
             {
-                distortedSnapshot.TransitionTo(1f);
+                distortedSnapshot.TransitionTo(0.2f);
             }
             else
             {
-                normalSnapshot.TransitionTo(0.5f);
+                normalSnapshot.TransitionTo(0.2f);
             }
         }
     }
