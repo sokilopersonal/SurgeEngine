@@ -36,13 +36,13 @@ namespace SurgeEngine.Code.Parameters
             
             _rigidbody.Sleep();
 
-            if (actor.input.moveVector.magnitude > deadZone)
+            if (input.moveVector.magnitude > deadZone)
             {
                 stateMachine.SetState<FStateGround>();
                 _rigidbody.WakeUp();
             }
 
-            if (actor.input.BoostPressed)
+            if (stats.boost.Active)
             {
                 _rigidbody.linearVelocity += _rigidbody.transform.forward * actor.stats.boost.startForce;
                 _rigidbody.WakeUp();

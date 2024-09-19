@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using SurgeEngine.Code.Parameters.SonicSubStates;
 using SurgeEngine.Code.StateMachine;
@@ -26,29 +27,34 @@ namespace SurgeEngine.Code.ActorSystem
         {
             if (arg1 is FBoost && arg2)
             {
-                PlaySound("Boost", true);
+                PlaySound("BoostLoop", true);
+                PlaySound("BoostForce", false);
+                PlaySound("BoostImpulse", false);
             }
             else if (arg1 is FBoost && !arg2)
             {
-                StopSound("Boost");
+                StopSound("BoostLoop", true);
             }
         }
 
-        private void PlaySound(string name, bool loop = false)
+        private void PlaySound(string name, bool loop)
         {
             SoundData sound = sounds.Find(x => x.name == name);
-            sound.PlayAllClips();
-            
             if (loop)
             {
-                sound.PlayLoop();
+                sound.StopCoroutine(this);
+                
+                sound.Play();
             }
+            else sound.PlayOneShot();
         }
 
-        private void StopSound(string name)
+        private void StopSound(string name, bool loop)
         {
             SoundData sound = sounds.Find(x => x.name == name);
-            sound.source.Stop();
+            
+            if (loop) sound.StopFade(this, 0.3f);
+            else sound.source.Stop();
         }
     }
 
@@ -57,26 +63,53 @@ namespace SurgeEngine.Code.ActorSystem
     {
         public string name;
         public AudioSource source;
-        public AudioClip[] clips;
+        public AudioClip clip;
+        [Range(0, 1)] public float volume = 1;
+        
+        public Coroutine fadeCoroutine;
 
-        public void PlayAllClips()
+        public void Play()
         {
-            foreach (var clip in clips)
-            {
-                source.PlayOneShot(clip);
-            }
-        }
-
-        public void PlayLoop()
-        {
-            if (source.clip == null)
-            {
-                Debug.LogWarning($"There is no clip set for sound {name}");
-                return;
-            }
-            
-            source.loop = true;
+            source.clip = clip;
+            source.volume = volume;
             source.Play();
         }
+        
+        public void PlayOneShot()
+        {
+            source.Stop();
+            source.PlayOneShot(clip, volume);
+        }
+
+        public void StopFade(MonoBehaviour owner, float time)
+        {
+            fadeCoroutine = owner.StartCoroutine(FadeVolume(time));
+        }
+        
+        public void StopCoroutine(MonoBehaviour owner)
+        {
+            if (fadeCoroutine != null) owner.StopCoroutine(fadeCoroutine);
+        }
+
+        private IEnumerator FadeVolume(float time)
+        {
+            float t = 0;
+            float duration = time;
+
+            while (t < duration)
+            {
+                source.volume = Mathf.Lerp(volume, 0, t / duration);
+                t += Time.deltaTime;
+                yield return null;
+            }
+            
+            source.volume = 0;
+            source.Stop();
+        }
+    }
+
+    public class Sound
+    {
+        
     }
 }
