@@ -860,14 +860,14 @@ MonoBehaviour:
   diameterMultiplerMode: 0
   diameterMultiplier: 1
   diameterOverride: 0.5
-  celestialBodyShadingSource: 1
+  celestialBodyShadingSource: 2
   sunLightOverride: {fileID: 0}
   sunColor: {r: 1, g: 1, b: 1, a: 1}
-  sunIntensity: 130000
-  moonPhase: 0.2
+  sunIntensity: 10000000
+  moonPhase: 1
   moonPhaseRotation: 0
-  earthshine: 1
-  flareSize: 2
+  earthshine: 35
+  flareSize: 0.75
   flareTint: {r: 1, g: 1, b: 1, a: 1}
   flareFalloff: 4
   flareMultiplier: 1
@@ -907,7 +907,7 @@ MonoBehaviour:
   m_ShadowResolution:
     m_Override: 512
     m_UseOverride: 0
-    m_Level: 2
+    m_Level: 3
   m_ShadowDimmer: 1
   m_VolumetricShadowDimmer: 1
   m_ShadowFadeDistance: 10000
