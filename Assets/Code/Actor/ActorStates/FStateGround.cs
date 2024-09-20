@@ -95,7 +95,7 @@ namespace SurgeEngine.Code.Parameters
                 stats.groundNormal = normal;
                 
                 Vector3 stored = _rigidbody.linearVelocity;
-                //_rigidbody.linearVelocity = Quaternion.FromToRotation(_rigidbody.transform.up, prevNormal) * stored;
+                _rigidbody.linearVelocity = Quaternion.FromToRotation(_rigidbody.transform.up, prevNormal) * stored;
                 
                 stats.transformNormal = Vector3.Slerp(stats.transformNormal, normal, dt * 14f);
 
@@ -114,8 +114,6 @@ namespace SurgeEngine.Code.Parameters
                 {
                     _rigidbody.linearVelocity += Vector3.down * (14f * dt);
                 }
-                
-                _rigidbody.linearVelocity = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, normal);
             }
             else
             {
