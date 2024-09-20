@@ -22,7 +22,7 @@ namespace SurgeEngine.Code.Parameters
         {
             base.OnEnter();
             
-            animation.TransitionToState(AnimatorParams.RunCycle, 0.1f);
+            animation.TransitionToState("Run Cycle", 0.1f);
 
             stats.groundNormal = Vector3.up;
             _cameraTransform = actor.camera.GetCameraTransform();
@@ -40,7 +40,7 @@ namespace SurgeEngine.Code.Parameters
             {
                 _rigidbody.linearVelocity = _rigidbody.transform.forward * boost.startForce;
                 boost.restoringTopSpeed = true;
-                animation.TransitionToState(AnimatorParams.RunCycle, 0f);
+                animation.TransitionToState("Run Cycle", 0f);
             }
     
             if (boost.Active)
@@ -173,12 +173,11 @@ namespace SurgeEngine.Code.Parameters
         protected virtual void SlopePhysics()
         {
             stats.groundAngle = Vector3.Angle(stats.groundNormal, Vector3.up);
-            // if (_rigidbody.linearVelocity.magnitude < 5 && stats.groundAngle >= 75)
-            // {
-            //     _rigidbody.AddForce(groundNormal * 0.15f, ForceMode.Impulse);
-            //     groundNormal = Vector3.up;
-            //     grounded = false;
-            // }
+            if (stats.currentSpeed < 10 && stats.groundAngle >= 80)
+            {
+                SetDetachTime(0.5f);
+                _rigidbody.AddForce(stats.groundNormal * 4f, ForceMode.Impulse);
+            }
             
             float dot = Vector3.Dot(transform.up, Vector3.up);
             if (stats.groundAngle > 5 && stats.movementVector.magnitude > 10f)
@@ -325,7 +324,6 @@ namespace SurgeEngine.Code.Parameters
             else
             {
                 _canAttach = true;
-                Debug.Log("balalb");
 
                 _detachTimer = 0f;
             }

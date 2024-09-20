@@ -17,7 +17,7 @@ namespace SurgeEngine.Code.ActorSystem
             SetFloat(AnimatorParams.TurnAngle, Mathf.Lerp(animator.GetFloat("TurnAngle"), 
                 -actor.transform.InverseTransformDirection(actor.stats.planarVelocity).x * 2f, 6 * Time.deltaTime));
 
-            model.localPosition = actor.transform.position;
+            model.localPosition = actor.transform.localPosition;
             model.localRotation = Quaternion.Slerp(model.localRotation, Quaternion.LookRotation(actor.transform.forward, actor.transform.up),
                 12 * Time.deltaTime);
         }
@@ -62,6 +62,7 @@ namespace SurgeEngine.Code.ActorSystem
         public static readonly int VerticalSpeed = Animator.StringToHash("VerticalSpeed");
         public static readonly int GroundSpeed = Animator.StringToHash("GroundSpeed");
         public static readonly int TurnAngle = Animator.StringToHash("TurnAngle");
-        public static readonly string RunCycle = "Run Cycle"; 
+        public static readonly int RunCycle = Animator.StringToHash("Run Cycle");
+        public static readonly int AirCycle = Animator.StringToHash("Air Cycle");
     }
 }

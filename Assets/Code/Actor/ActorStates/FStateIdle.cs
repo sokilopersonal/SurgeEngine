@@ -14,14 +14,11 @@ namespace SurgeEngine.Code.Parameters
             
             animation.SetBool("Idle", true);
             
-            // if (Physics.Raycast(actor.transform.position, -actor.transform.up, out var hit,
-            //         moveParameters.castParameters.castDistance, moveParameters.castParameters.collisionMask))
-            // {
-            //     var point = hit.point;
-            //     var normal = hit.normal;
-            //
-            //     _rigidbody.position = point + normal;
-            // }
+            stats.groundAngle = Vector3.Angle(stats.groundNormal, Vector3.up);
+            if (stats.currentSpeed < 10 && stats.groundAngle >= 80)
+            {
+                _rigidbody.AddForce(stats.groundNormal * 4f, ForceMode.Impulse);
+            }
         }
         
         public override void OnExit()

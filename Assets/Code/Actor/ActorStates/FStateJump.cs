@@ -9,7 +9,7 @@ namespace SurgeEngine.Code.Parameters
             base.OnEnter();
             
             animation.TransitionToState("Ball", 0, true);
-            _rigidbody.AddForce(actor.transform.up * stats.jumpParameters.jumpForce, ForceMode.Impulse);
+            _rigidbody.AddForce(stats.groundNormal * stats.jumpParameters.jumpForce, ForceMode.Impulse);
             
             actor.transform.rotation = Quaternion.Euler(0, actor.transform.rotation.eulerAngles.y, 0);
         }
@@ -18,12 +18,19 @@ namespace SurgeEngine.Code.Parameters
         {
             base.OnTick(dt);
             
-            stateMachine.GetState<FStateGround>().CalculateDetachState();
+            stats.transformNormal = Vector3.up;
 
-            if (stats.currentVerticalSpeed < -15f)
+            Vector3 vel = _rigidbody.linearVelocity;
+            vel = Vector3.ProjectOnPlane(vel, Vector3.up);
+
+            if (vel.magnitude > 0.1f)
             {
-                stateMachine.GetState<FStateGround>().SetAttachState(true);
-                
+                Quaternion rot = Quaternion.LookRotation(vel, stats.transformNormal);
+                actor.transform.rotation = rot;
+            }
+
+            if (GetAirTime() > 1f && stats.currentVerticalSpeed < -15f)
+            {
                 stateMachine.SetState<FStateAir>();
             }
         }

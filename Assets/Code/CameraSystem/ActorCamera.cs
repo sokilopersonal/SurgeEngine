@@ -112,6 +112,12 @@ namespace SurgeEngine.Code.CameraSystem
             {
                 _autoLookDirection.x = 0;
             }
+            
+            if (actor.stateMachine.GetSubState<FBoost>().Active)
+            {
+                _autoLookDirection.y = 11;
+                if (actor.stats.groundAngle < 15) _y = Mathf.Lerp(_y, _autoLookDirection.y, 1.75f * Time.deltaTime);
+            }
         }
 
         private void LookAt()

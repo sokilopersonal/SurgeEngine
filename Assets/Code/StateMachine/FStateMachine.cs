@@ -8,6 +8,7 @@ namespace SurgeEngine.Code.StateMachine
     public class FStateMachine
     {
         public FState CurrentState { get; private set; }
+        public FState PreviousState { get; private set; }
         public string currentStateName;
         
         private Dictionary<Type, FState> _states = new Dictionary<Type, FState>();
@@ -39,6 +40,7 @@ namespace SurgeEngine.Code.StateMachine
             if (_states.TryGetValue(type, out var newState))
             {
                 CurrentState?.OnExit();
+                PreviousState = CurrentState;
                 CurrentState = newState;
                 OnStateAssign?.Invoke(CurrentState);
                 CurrentState.OnEnter();
@@ -50,6 +52,11 @@ namespace SurgeEngine.Code.StateMachine
         public TState GetState<TState>() where TState : FState
         {
             return _states[typeof(TState)] as TState;
+        }
+
+        public bool IsPreviousState<TState>() where TState : FState
+        {
+            return PreviousState != null && PreviousState is TState;
         }
         
         public T GetSubState<T>() where T : FSubState

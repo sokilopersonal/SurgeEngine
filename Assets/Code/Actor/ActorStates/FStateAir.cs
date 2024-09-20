@@ -17,6 +17,9 @@ namespace SurgeEngine.Code.Parameters
 
             _airTime = 0f;
 
+            if (!stateMachine.IsPreviousState<FStateAirBoost>()) 
+                animation.TransitionToState("Air Cycle", 0.2f);
+            
             actor.stats.groundNormal = Vector3.up;
             _cameraTransform = actor.camera.GetCameraTransform();
         }
@@ -26,6 +29,7 @@ namespace SurgeEngine.Code.Parameters
             base.OnTick(dt);
             
             CalculateAirTime(dt);
+            stateMachine.GetState<FStateGround>().CalculateDetachState();
 
             if (actor.input.BoostPressed)
             {
