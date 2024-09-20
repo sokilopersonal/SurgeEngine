@@ -6,7 +6,6 @@ using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.Parameters;
 using SurgeEngine.Code.Parameters.SonicSubStates;
 using SurgeEngine.Code.StateMachine;
-using Unity.Mathematics;
 using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
 using Vector2 = UnityEngine.Vector2;

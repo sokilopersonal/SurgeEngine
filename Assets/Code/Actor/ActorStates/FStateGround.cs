@@ -22,7 +22,7 @@ namespace SurgeEngine.Code.Parameters
         {
             base.OnEnter();
             
-            animation.TransitionToState("Run Cycle", 0.1f);
+            //animation.TransitionToState("Run Cycle", 0.1f);
 
             stats.groundNormal = Vector3.up;
             _cameraTransform = actor.camera.GetCameraTransform();
@@ -200,7 +200,7 @@ namespace SurgeEngine.Code.Parameters
         {
             if (!_canAttach) return;
             
-            _rigidbody.position = Vector3.Lerp(_rigidbody.position, point + normal, 14 * Time.fixedDeltaTime);
+            _rigidbody.position = point + normal;
         }
 
         private void SlopePrediction(float dt)
