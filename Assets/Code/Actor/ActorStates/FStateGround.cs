@@ -183,7 +183,7 @@ namespace SurgeEngine.Code.Parameters
             if (stats.currentSpeed < 10 && stats.groundAngle >= 70)
             {
                 SetDetachTime(0.5f);
-                _rigidbody.AddForce(stats.groundNormal * 4f, ForceMode.Impulse);
+                _rigidbody.AddForce(stats.groundNormal * 8f, ForceMode.Impulse);
             }
             
             float dot = Vector3.Dot(transform.up, Vector3.up);
@@ -200,7 +200,7 @@ namespace SurgeEngine.Code.Parameters
         {
             if (!_canAttach) return;
             
-            _rigidbody.position = point + normal;
+            _rigidbody.position = Vector3.Lerp(_rigidbody.position, point + normal, 14 * Time.fixedDeltaTime);
         }
 
         private void SlopePrediction(float dt)
