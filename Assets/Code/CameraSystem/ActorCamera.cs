@@ -136,7 +136,7 @@ namespace SurgeEngine.Code.CameraSystem
             var maxDistance = Vector3.Distance(target.position, _cameraTransform.position);
 
             float result = Physics.SphereCast(ray, radius, out RaycastHit hit,
-                maxDistance, collisionMask)
+                maxDistance, collisionMask, QueryTriggerInteraction.Ignore)
                 ? hit.distance
                 : _distance;
 
