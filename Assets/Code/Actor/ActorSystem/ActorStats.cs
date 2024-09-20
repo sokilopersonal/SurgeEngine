@@ -34,7 +34,10 @@ namespace SurgeEngine.Code.ActorSystem
 
         public float GetForwardSignedAngle()
         {
-            return Vector3.SignedAngle(Vector3.Cross(actor.transform.right, Vector3.up), Vector3.Cross(actor.camera.GetCameraTransform().right, Vector3.up), -Vector3.up);
+            // return Vector3.SignedAngle(Vector3.Cross(actor.transform.right, Vector3.up), 
+            //     Vector3.Cross(actor.camera.GetCameraTransform().right, Vector3.up), -Vector3.up);
+            
+            return Vector3.SignedAngle(actor.transform.forward, actor.camera.GetCameraTransform().forward, -Vector3.up);
         }
 
         public float GetUpwardSignedAngle()

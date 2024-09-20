@@ -87,7 +87,7 @@ namespace SurgeEngine.Code.CameraSystem
         private void Following()
         {
             var lookVector = actor.input.lookVector;
-            _x += lookVector.x + _autoLookDirection.x * _currentParameters.followPower * Time.deltaTime;
+            _x += lookVector.x + _autoLookDirection.x * _currentParameters.followPower * 0.5f * Time.deltaTime;
             _y -= lookVector.y;
             _y = Mathf.Clamp(_y, -35, 50);
 
@@ -97,8 +97,8 @@ namespace SurgeEngine.Code.CameraSystem
             {
                 float dot = Vector3.Dot(Vector3.ProjectOnPlane(actor.stats.inputDir, Vector3.up), 
                     Vector3.Cross(_cameraTransform.right, Vector3.up));
-                bool enable = dot is < 1f and > -0.8f && actor.stats.inputDir.magnitude > 0.2f;
-                if (actor.stats.planarVelocity.magnitude > 1f && enable)
+                bool enable = dot is < 1f && actor.stats.inputDir.magnitude > 0.2f;
+                if (actor.stats.currentSpeed > 10f && enable)
                 {
                     float fwd = actor.stats.GetForwardSignedAngle();
                     _autoLookDirection.x = Mathf.Lerp(_autoLookDirection.x, fwd, 12 * Time.deltaTime);
@@ -107,16 +107,17 @@ namespace SurgeEngine.Code.CameraSystem
                 {
                     _autoLookDirection.x = Mathf.Lerp(_autoLookDirection.x, 0, 6 * Time.deltaTime);
                 }
+                
+                if (actor.input.moveVector != Vector3.zero)
+                {
+                    _autoLookDirection.y = 11;
+                    if (actor.stats.groundAngle < 15) _y = Mathf.Lerp(_y, _autoLookDirection.y, 
+                        0.125f * actor.stats.currentSpeed * Time.deltaTime);
+                }
             }
             else
             {
                 _autoLookDirection.x = 0;
-            }
-            
-            if (actor.stateMachine.GetSubState<FBoost>().Active)
-            {
-                _autoLookDirection.y = 11;
-                if (actor.stats.groundAngle < 15) _y = Mathf.Lerp(_y, _autoLookDirection.y, 1.75f * Time.deltaTime);
             }
         }
 

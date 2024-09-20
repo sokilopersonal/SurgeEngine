@@ -15,7 +15,7 @@ namespace SurgeEngine.Code.ActorSystem
             SetFloat(AnimatorParams.GroundSpeed, Mathf.Clamp(actor.stats.planarVelocity.magnitude, 0, 25f));
             SetFloat(AnimatorParams.VerticalSpeed, actor.stats.currentVerticalSpeed);
             SetFloat(AnimatorParams.TurnAngle, Mathf.Lerp(animator.GetFloat("TurnAngle"), 
-                -actor.transform.InverseTransformDirection(actor.stats.planarVelocity).x * 2f, 6 * Time.deltaTime));
+                -actor.transform.InverseTransformDirection(actor.stats.planarVelocity).x * 2f, 3.75f * Time.deltaTime));
             
             // float dot = Vector3.Dot(Vector3.up, actor.transform.right);
             // SetBool("OnWall", Mathf.Abs(dot) > 0.1f);
