@@ -85,39 +85,33 @@ namespace SurgeEngine.Code.CameraSystem
 
         private void Following()
         {
-            var lookVector = actor.input.lookVector;
-            _x += lookVector.x + _autoLookDirection.x * _currentParameters.followPower * 0.5f * Time.deltaTime;
-            _y -= lookVector.y;
-            _y = Mathf.Clamp(_y, -35, 50);
-
-            _cameraTransform.position = GetTarget();
-            
             if (actor.input.GetLastLookInputTime() + _timeToStartFollow < Time.time)
             {
-                float dot = Vector3.Dot(Vector3.ProjectOnPlane(actor.stats.inputDir, Vector3.up), 
-                    Vector3.Cross(_cameraTransform.right, Vector3.up));
-                bool enable = dot is < 1f && actor.stats.inputDir.magnitude > 0.2f;
-                if (actor.stats.currentSpeed > 10f && enable)
+                if (!(1 - Mathf.Abs(Vector3.Dot(actor.transform.forward, Vector3.up)) < 0.01f))
                 {
                     float fwd = actor.stats.GetForwardSignedAngle();
-                    _autoLookDirection.x = Mathf.Lerp(_autoLookDirection.x, fwd, 12 * Time.deltaTime);
+                    _autoLookDirection.x = fwd * _currentParameters.followPower * Time.deltaTime;
                 }
                 else
                 {
-                    _autoLookDirection.x = Mathf.Lerp(_autoLookDirection.x, 0, 6 * Time.deltaTime);
+                    _autoLookDirection.x = 0;
                 }
                 
-                if (actor.input.moveVector != Vector3.zero)
-                {
-                    _autoLookDirection.y = 11;
-                    if (actor.stats.groundAngle < 15) _y = Mathf.Lerp(_y, _autoLookDirection.y, 
-                        0.125f * actor.stats.currentSpeed * Time.deltaTime);
-                }
+                _autoLookDirection.y = 0;
+                if (actor.stats.groundAngle < 15) _y = Mathf.Lerp(_y, _autoLookDirection.y, 
+                    0.125f * actor.stats.currentSpeed * Time.deltaTime);
             }
             else
             {
                 _autoLookDirection.x = 0;
             }
+            
+            var lookVector = actor.input.lookVector;
+            _x += lookVector.x + _autoLookDirection.x;
+            _y -= lookVector.y;
+            _y = Mathf.Clamp(_y, -35, 50);
+
+            _cameraTransform.position = GetTarget();
         }
 
         private void LookAt()
