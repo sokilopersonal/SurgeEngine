@@ -81,7 +81,6 @@ namespace SurgeEngine.Code.Parameters
             }
         }
 
-
         public override void OnFixedTick(float dt)
         {
             base.OnFixedTick(dt);

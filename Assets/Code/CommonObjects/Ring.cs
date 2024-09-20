@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using SurgeEngine.Code.ActorSystem;
+using UnityEngine;
 
 namespace SurgeEngine.Code.CommonObjects
 {
@@ -14,6 +15,8 @@ namespace SurgeEngine.Code.CommonObjects
         protected override void OnTriggerContact(Collider msg)
         {
             base.OnTriggerContact(msg);
+            
+            ActorEvents.OnRingCollected?.Invoke(this);
             
             gameObject.SetActive(false);
         }
