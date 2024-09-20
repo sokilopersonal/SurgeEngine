@@ -8,16 +8,17 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Ring
-  m_Shader: {fileID: -6465566751694194690, guid: e482f360c172d1e4d887117e816b2145, type: 3}
+  m_Shader: {fileID: 4800000, guid: 6e4ae4064600d784cac1e41a9e6f2e59, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - _DISABLE_SSR
   - _DISABLE_SSR_TRANSPARENT
-  m_InvalidKeywords:
+  - _ENABLE_GEOMETRIC_SPECULAR_AA
   - _NORMALMAP_TANGENT_SPACE
+  m_InvalidKeywords: []
   m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
+  m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: 2225
   stringTagMap:
@@ -346,7 +347,7 @@ Material:
     - _BASE_COLOR: {r: 1, g: 0.7535237, b: 0, a: 1}
     - _BaseColor: {r: 0.8980392, g: 0.7011833, b: 0, a: 1}
     - _COAT_COLOR: {r: 0, g: 0, b: 0, a: 0}
-    - _Color: {r: 1, g: 0.78961587, b: 0, a: 1}
+    - _Color: {r: 0.8980392, g: 0.7011833, b: 0, a: 1}
     - _DiffusionProfileAsset: {r: 0, g: 0, b: 0, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _EMISSION_COLOR: {r: 0, g: 0, b: 0, a: 1}
