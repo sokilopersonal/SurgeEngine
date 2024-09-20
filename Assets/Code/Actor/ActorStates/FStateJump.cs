@@ -9,7 +9,8 @@ namespace SurgeEngine.Code.Parameters
             base.OnEnter();
             
             animation.TransitionToState("Ball", 0, true);
-            _rigidbody.AddForce(stats.groundNormal * stats.jumpParameters.jumpForce, ForceMode.Impulse);
+            //_rigidbody.linearVelocity = new Vector3(_rigidbody.linearVelocity.x, 0f, _rigidbody.linearVelocity.z);
+            _rigidbody.AddForce(actor.transform.up * stats.jumpParameters.jumpForce, ForceMode.Impulse);
             
             actor.transform.rotation = Quaternion.Euler(0, actor.transform.rotation.eulerAngles.y, 0);
         }

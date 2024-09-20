@@ -14,10 +14,13 @@ namespace SurgeEngine.Code.Parameters
             
             animation.SetBool("Idle", true);
             
-            stats.groundAngle = Vector3.Angle(stats.groundNormal, Vector3.up);
-            if (stats.currentSpeed < 10 && stats.groundAngle >= 80)
+            if (Physics.Raycast(actor.transform.position, -actor.transform.up, out var hit,
+                    moveParameters.castParameters.castDistance, moveParameters.castParameters.collisionMask))
             {
-                _rigidbody.AddForce(stats.groundNormal * 4f, ForceMode.Impulse);
+                var point = hit.point;
+                var normal = hit.normal;
+
+                _rigidbody.position = point + normal;
             }
         }
         
@@ -44,14 +47,6 @@ namespace SurgeEngine.Code.Parameters
             {
                 _rigidbody.linearVelocity += _rigidbody.transform.forward * stateMachine.GetSubState<FBoost>().startForce;
                 _rigidbody.WakeUp();
-                if (Physics.Raycast(actor.transform.position, -actor.transform.up, out var hit,
-                        moveParameters.castParameters.castDistance, moveParameters.castParameters.collisionMask))
-                {
-                    var point = hit.point;
-                    var normal = hit.normal;
-
-                    //_rigidbody.position = point + normal;
-                }
                 stateMachine.SetState<FStateGround>();
             }
         }
@@ -66,13 +61,20 @@ namespace SurgeEngine.Code.Parameters
                 var point = hit.point;
                 var normal = hit.normal;
 
-                //_rigidbody.position = point + normal;
+                _rigidbody.position = point + normal;
                 
                 stats.transformNormal = stats.groundNormal;
             }
             else
             {
                 stateMachine.SetState<FStateAir>();
+            }
+            
+            stats.groundAngle = Vector3.Angle(stats.groundNormal, Vector3.up);
+            if (stats.currentSpeed < 10 && stats.groundAngle >= 70)
+            {
+                _rigidbody.WakeUp();
+                _rigidbody.AddForce(stats.groundNormal * 4f, ForceMode.Impulse);
             }
         }
     }

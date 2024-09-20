@@ -104,6 +104,7 @@ namespace SurgeEngine.Code.Parameters.SonicSubStates
         {
             yield return new WaitForSeconds(airBoostTime);
             Active = false;
+            Debug.Log("hey");
         }
     }
 }
