@@ -2,6 +2,8 @@
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.Parameters.SonicSubStates;
 using UnityEngine;
+using Quaternion = UnityEngine.Quaternion;
+using Vector3 = UnityEngine.Vector3;
 
 namespace SurgeEngine.Code.Parameters
 {
@@ -12,6 +14,9 @@ namespace SurgeEngine.Code.Parameters
         private Transform _cameraTransform;
         private const float INPUT_DEADZONE = 0.3f;
         private const float SLOPE_PREDICTION_ACTIVATE_SPEED = 10f;
+        
+        private float _detachTimer;
+        private bool _canAttach;
 
         public override void OnEnter()
         {
@@ -22,8 +27,8 @@ namespace SurgeEngine.Code.Parameters
             stats.groundNormal = Vector3.up;
             _cameraTransform = actor.camera.GetCameraTransform();
             
-            UpdateNormal();
-            ConvertAirToGroundVelocity();
+            //UpdateNormal();
+            //ConvertAirToGroundVelocity();
         }
 
         public override void OnTick(float dt)
@@ -38,7 +43,7 @@ namespace SurgeEngine.Code.Parameters
                 animation.TransitionToState(AnimatorParams.RunCycle, 0f);
             }
     
-            if (stats.boost.Active)
+            if (boost.Active)
             {
                 _rigidbody.AddForce(Vector3.ProjectOnPlane(_rigidbody.transform.forward, stats.groundNormal) * (boost.boostForce * dt), ForceMode.Impulse);
                 float maxSpeed = stats.moveParameters.maxSpeed * boost.maxSpeedMultiplier;
@@ -60,6 +65,15 @@ namespace SurgeEngine.Code.Parameters
                     boost.restoringTopSpeed = false;
                 }
             }
+            
+            if (actor.input.JumpPressed)
+            {
+                SetDetachTime(0.2f);
+
+                actor.stateMachine.SetState<FStateJump>();
+            }
+            
+            CalculateDetachState();
 
             if (Input.GetKeyDown(KeyCode.Q))
             {
@@ -72,12 +86,16 @@ namespace SurgeEngine.Code.Parameters
         {
             base.OnFixedTick(dt);
             
+            Vector3 prevNormal = stats.groundNormal; 
             if (Physics.Raycast(actor.transform.position, -actor.transform.up, out var hit,
                     stats.moveParameters.castParameters.castDistance, stats.moveParameters.castParameters.collisionMask))
             {
                 var point = hit.point;
                 var normal = hit.normal;
                 stats.groundNormal = normal;
+                
+                Vector3 stored = _rigidbody.linearVelocity;
+                //_rigidbody.linearVelocity = Quaternion.FromToRotation(_rigidbody.transform.up, prevNormal) * stored;
                 
                 stats.transformNormal = Vector3.Slerp(stats.transformNormal, normal, dt * 14f);
 
@@ -91,7 +109,7 @@ namespace SurgeEngine.Code.Parameters
                 Rotate(dt);
                 Snap(point, normal);
                 
-                //_rigidbody.linearVelocity = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, normal);
+                _rigidbody.linearVelocity = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, normal);
             }
             else
             {
@@ -112,7 +130,7 @@ namespace SurgeEngine.Code.Parameters
                                        (_cameraTransform.rotation * actor.input.moveVector);
             transformedInput = Vector3.ProjectOnPlane(transformedInput, normal);
             stats.inputDir = transformedInput.normalized * actor.input.moveVector.magnitude;
-            if (input.moveVector == Vector3.zero && stats.boost.Active) stats.inputDir = _rigidbody.transform.forward;
+            if (input.moveVector == Vector3.zero && stateMachine.GetSubState<FBoost>().Active) stats.inputDir = _rigidbody.transform.forward;
 
             if (stats.inputDir.magnitude > INPUT_DEADZONE)
             {
@@ -141,7 +159,7 @@ namespace SurgeEngine.Code.Parameters
         private void CalculateVelocity(float dt)
         {
             stats.turnRate = Mathf.Lerp(stats.turnRate, stats.moveParameters.turnSpeed
-                                                        * (stats.boost.Active ? stats.boost.turnSpeedReduction : 1), dt * stats.moveParameters.turnSmoothing);
+                                                        * (stateMachine.GetSubState<FBoost>().Active ? stateMachine.GetSubState<FBoost>().turnSpeedReduction : 1), dt * stats.moveParameters.turnSmoothing);
             var accelRateMod = stats.moveParameters.accelCurve.Evaluate(stats.planarVelocity.magnitude / stats.moveParameters.topSpeed);
             if (stats.planarVelocity.magnitude < stats.moveParameters.topSpeed)
                 stats.planarVelocity += stats.inputDir * (stats.moveParameters.accelRate * accelRateMod * dt);
@@ -174,7 +192,9 @@ namespace SurgeEngine.Code.Parameters
 
         private void Snap(Vector3 point, Vector3 normal)
         {
-            _rigidbody.position = Vector3.Slerp(_rigidbody.position, point + normal, 12 * Time.fixedDeltaTime);
+            if (!_canAttach) return;
+            
+            _rigidbody.position = Vector3.Lerp(_rigidbody.position, point + normal, Time.fixedDeltaTime * 12f);
         }
 
         private void SlopePrediction(float dt)
@@ -196,7 +216,8 @@ namespace SurgeEngine.Code.Parameters
                 if (!Physics.Raycast(predictedPosition, Vector3.Lerp(predictedVelocity.normalized, stats.groundNormal, lerp), out pGround, speedFrame * 1.3f, mask))
                 {
                     lerp += lerpJump;
-                    Physics.Raycast(predictedPosition + Vector3.Lerp(predictedVelocity.normalized, stats.groundNormal, lerp) * (speedFrame * 1.3f), -predictedNormal, out pGround, stats.moveParameters.castParameters.castDistance + 0.2f, mask);
+                    Physics.Raycast(predictedPosition + Vector3.Lerp(predictedVelocity.normalized, stats.groundNormal, lerp) * (speedFrame * 1.3f), -predictedNormal, 
+                        out pGround, stats.moveParameters.castParameters.castDistance + 0.2f, mask);
 
                     predictedPosition = predictedPosition + Vector3.Lerp(predictedVelocity.normalized, stats.groundNormal, lerp) * speedFrame + pGround.normal * lowerValue;
                     predictedVelocity = Quaternion.FromToRotation(stats.groundNormal, pGround.normal) * predictedVelocity;
@@ -251,10 +272,10 @@ namespace SurgeEngine.Code.Parameters
             Vector3 vel = _rigidbody.linearVelocity;
             vel = Vector3.ProjectOnPlane(vel, stats.groundNormal);
 
-            if (vel.magnitude > 0.1f)
+            if (vel.magnitude > 0.2f)
             {
                 Quaternion rot = Quaternion.LookRotation(vel, stats.transformNormal);
-                actor.transform.rotation = Quaternion.Slerp(actor.transform.rotation, rot, dt * 10);
+                actor.transform.rotation = rot;
             }
         }
 
@@ -283,8 +304,35 @@ namespace SurgeEngine.Code.Parameters
                     _rigidbody.linearVelocity = fixedVelocity;
                 }
             }
-
         }
+
+        public void SetDetachTime(float t)
+        {
+            _detachTimer = 0;
+            _canAttach = false;
+            
+            _detachTimer = t;
+        }
+
+        public void CalculateDetachState()
+        {
+            if (_detachTimer > 0f)
+            {
+                _canAttach = false;
+                
+                _detachTimer -= Time.deltaTime;
+            }
+            else
+            {
+                _canAttach = true;
+                Debug.Log("balalb");
+
+                _detachTimer = 0f;
+            }
+        }
+
+        public void SetAttachState(bool value) => _canAttach = value; 
+        public bool GetAttachState() => _canAttach;
 
         private void OnDrawGizmosSelected()
         {

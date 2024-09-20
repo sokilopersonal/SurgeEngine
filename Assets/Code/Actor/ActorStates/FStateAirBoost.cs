@@ -1,16 +1,19 @@
-﻿namespace SurgeEngine.Code.Parameters
+﻿using SurgeEngine.Code.Parameters.SonicSubStates;
+
+namespace SurgeEngine.Code.Parameters
 {
     public class FStateAirBoost : FStateMove
     {
         public override void OnEnter()
         {
             base.OnEnter();
-            
-            if (actor.stats.boost.canAirBoost)
+
+            FBoost boost = stateMachine.GetSubState<FBoost>();
+            if (boost.canAirBoost)
             {
                 animation.TransitionToState("Air Boost", 0.5f);
-                _rigidbody.linearVelocity = _rigidbody.transform.forward * actor.stats.boost.airStartForce;
-                stats.boost.canAirBoost = false;
+                _rigidbody.linearVelocity = _rigidbody.transform.forward * boost.airStartForce;
+                boost.canAirBoost = false;
             }
             
             stateMachine.SetState<FStateAir>();

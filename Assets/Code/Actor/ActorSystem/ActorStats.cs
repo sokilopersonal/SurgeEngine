@@ -1,6 +1,4 @@
 ﻿using SurgeEngine.Code.Parameters;
-using SurgeEngine.Code.Parameters.SonicSubStates;
-using SurgeEngine.Code.StateMachine;
 using UnityEngine;
 
 namespace SurgeEngine.Code.ActorSystem
@@ -8,8 +6,10 @@ namespace SurgeEngine.Code.ActorSystem
     public class ActorStats : ActorComponent
     {
         public MoveParameters moveParameters;
+        public JumpParameters jumpParameters;
         public float turnRate;
         public float currentSpeed;
+        public float currentVerticalSpeed;
         public Vector3 movementVector;
         public Vector3 planarVelocity;
         public Vector3 inputDir;
@@ -17,18 +17,19 @@ namespace SurgeEngine.Code.ActorSystem
         public Vector3 transformNormal;
         public float groundAngle;
 
-        public FBoost boost;
+        private Rigidbody _rigidbody;
 
         protected override void OnInitialized()
         {
             base.OnInitialized();
-            
-            boost = actor.stateMachine.GetSubState<FBoost>();
+
+            _rigidbody = GetComponent<Rigidbody>();
         }
 
         private void Update()
         {
             currentSpeed = planarVelocity.magnitude;
+            currentVerticalSpeed = _rigidbody.linearVelocity.y;
         }
 
         public float GetForwardSignedAngle()

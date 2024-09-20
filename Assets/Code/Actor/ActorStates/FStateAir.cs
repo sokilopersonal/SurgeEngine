@@ -8,10 +8,14 @@ namespace SurgeEngine.Code.Parameters
         [SerializeField] private AirParameters airParameters;
         
         private Transform _cameraTransform;
+
+        private float _airTime;
         
         public override void OnEnter()
         {
             base.OnEnter();
+
+            _airTime = 0f;
 
             actor.stats.groundNormal = Vector3.up;
             _cameraTransform = actor.camera.GetCameraTransform();
@@ -20,6 +24,8 @@ namespace SurgeEngine.Code.Parameters
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
+            
+            CalculateAirTime(dt);
 
             if (actor.input.BoostPressed)
             {
@@ -43,7 +49,7 @@ namespace SurgeEngine.Code.Parameters
             }
             else
             {
-                actor.stateMachine.SetState<FStateGround>();
+                if (stateMachine.GetState<FStateGround>().GetAttachState()) stateMachine.SetState<FStateGround>();
             }
         }
 
@@ -88,8 +94,15 @@ namespace SurgeEngine.Code.Parameters
             if (vel.magnitude > 0.1f)
             {
                 Quaternion rot = Quaternion.LookRotation(vel, stats.transformNormal);
-                actor.transform.rotation = Quaternion.Slerp(actor.transform.rotation, rot, dt * 4f);
+                actor.transform.rotation = rot;
             }
+        }
+
+        protected float GetAirTime() => _airTime;
+        
+        private void CalculateAirTime(float dt)
+        {
+            _airTime += dt;
         }
     }
 }

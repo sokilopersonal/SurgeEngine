@@ -6,13 +6,20 @@ namespace SurgeEngine.Code.ActorSystem
     {
         public Animator animator;
 
+        public Transform model;
+
         private void Update()
         {
             SetBool(AnimatorParams.Idle, actor.stateMachine.currentStateName == "FStateIdle");
-            SetBool(AnimatorParams.InAir, actor.stateMachine.currentStateName == "FStateAir");
+            SetBool(AnimatorParams.InAir, actor.stateMachine.currentStateName == "FStateAir" || actor.stateMachine.currentStateName == "FStateJump");
             SetFloat(AnimatorParams.GroundSpeed, Mathf.Clamp(actor.stats.planarVelocity.magnitude, 0, 21.5f));
-            SetFloat(AnimatorParams.VerticalSpeed, actor.stats.planarVelocity.y);
-            SetFloat(AnimatorParams.TurnAngle, actor.transform.InverseTransformDirection(actor.stats.planarVelocity).x * 0.2f);
+            SetFloat(AnimatorParams.VerticalSpeed, actor.stats.currentVerticalSpeed);
+            SetFloat(AnimatorParams.TurnAngle, Mathf.Lerp(animator.GetFloat("TurnAngle"), 
+                -actor.transform.InverseTransformDirection(actor.stats.planarVelocity).x * 2f, 6 * Time.deltaTime));
+
+            model.localPosition = actor.transform.position;
+            model.localRotation = Quaternion.Slerp(model.localRotation, Quaternion.LookRotation(actor.transform.forward, actor.transform.up),
+                12 * Time.deltaTime);
         }
         
         public void SetFloat(string state, float value)

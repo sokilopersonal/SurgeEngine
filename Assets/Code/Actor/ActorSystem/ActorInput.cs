@@ -16,6 +16,10 @@ namespace SurgeEngine.Code.ActorSystem
         public bool BoostHeld => _input.Gameplay.Boost.IsPressed();
         
         public Action<InputAction.CallbackContext> BoostAction;
+        
+        // Jump
+        public bool JumpPressed => _input.Gameplay.Jump.WasPressedThisFrame();
+        public Action<InputAction.CallbackContext> JumpAction;
 
         private float _lastLookInputTime;
 
@@ -37,6 +41,9 @@ namespace SurgeEngine.Code.ActorSystem
             
             _input.Gameplay.Boost.started += context => BoostAction?.Invoke(context);
             _input.Gameplay.Boost.canceled += context => BoostAction?.Invoke(context);
+            
+            _input.Gameplay.Jump.started += context => JumpAction?.Invoke(context);
+            _input.Gameplay.Jump.canceled += context => JumpAction?.Invoke(context);
         }
 
         private void OnDisable()

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using SurgeEngine.Code.ActorSoundEffects;
+using SurgeEngine.Code.Parameters;
 using SurgeEngine.Code.Parameters.SonicSubStates;
 using SurgeEngine.Code.StateMachine;
 using UnityEngine;
@@ -22,13 +23,14 @@ namespace SurgeEngine.Code.ActorSystem
         {
             base.OnInitialized();
             
-            actor.stats.boost.OnActiveChanged += OnBoostActivate;
+            actor.stateMachine.GetSubState<FBoost>().OnActiveChanged += OnBoostActivate;
+            actor.stateMachine.OnStateAssign += OnStateAssign;
             _lastBoostVoiceTime = Time.time - BOOST_VOICE_DELAY;
         }
 
         private void OnDisable()
         {
-            actor.stats.boost.OnActiveChanged -= OnBoostActivate;
+            actor.stateMachine.GetSubState<FBoost>().OnActiveChanged -= OnBoostActivate;
         }
 
         private void OnBoostActivate(FSubState arg1, bool arg2)
@@ -42,6 +44,7 @@ namespace SurgeEngine.Code.ActorSystem
                 }
                 
                 PlaySound("BoostLoop", true);
+                PlaySound("BoostJet", false);
                 PlaySound("BoostForce", false);
                 PlaySound("BoostImpulse", false);
                 
@@ -50,8 +53,19 @@ namespace SurgeEngine.Code.ActorSystem
             else if (arg1 is FBoost && !arg2)
             {
                 StopSound("BoostLoop", true);
+                StopSound("BoostJet", false);
                 
                 distortion.ToggleDistortion();
+            }
+        }
+
+        private void OnStateAssign(FState obj)
+        {
+            if (obj is FStateJump)
+            {
+                PlaySound($"Jump_Start{Random.Range(1, 4)}", false);
+                
+                PlaySound("Spin", false);
             }
         }
 

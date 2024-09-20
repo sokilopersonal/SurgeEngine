@@ -69,12 +69,12 @@ namespace SurgeEngine.Code.CameraSystem
 
         private void OnEnable()
         {
-            if (actor.stats != null) actor.stats.boost.OnActiveChanged += OnBoostActivate;
+            if (actor.stats != null) actor.stateMachine.GetSubState<FBoost>().OnActiveChanged += OnBoostActivate;
         }
 
         private void OnDisable()
         {
-            actor.stats.boost.OnActiveChanged -= OnBoostActivate;
+            actor.stateMachine.GetSubState<FBoost>().OnActiveChanged -= OnBoostActivate;
         }
 
         private void Update()

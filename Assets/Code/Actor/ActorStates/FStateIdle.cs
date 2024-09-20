@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using SurgeEngine.Code.Parameters.SonicSubStates;
+using UnityEngine;
 
 namespace SurgeEngine.Code.Parameters
 {
@@ -13,14 +14,14 @@ namespace SurgeEngine.Code.Parameters
             
             animation.SetBool("Idle", true);
             
-            if (Physics.Raycast(actor.transform.position, -actor.transform.up, out var hit,
-                    moveParameters.castParameters.castDistance, moveParameters.castParameters.collisionMask))
-            {
-                var point = hit.point;
-                var normal = hit.normal;
-
-                _rigidbody.position = point + normal;
-            }
+            // if (Physics.Raycast(actor.transform.position, -actor.transform.up, out var hit,
+            //         moveParameters.castParameters.castDistance, moveParameters.castParameters.collisionMask))
+            // {
+            //     var point = hit.point;
+            //     var normal = hit.normal;
+            //
+            //     _rigidbody.position = point + normal;
+            // }
         }
         
         public override void OnExit()
@@ -42,9 +43,9 @@ namespace SurgeEngine.Code.Parameters
                 _rigidbody.WakeUp();
             }
 
-            if (stats.boost.Active)
+            if (stateMachine.GetSubState<FBoost>().Active)
             {
-                _rigidbody.linearVelocity += _rigidbody.transform.forward * actor.stats.boost.startForce;
+                _rigidbody.linearVelocity += _rigidbody.transform.forward * stateMachine.GetSubState<FBoost>().startForce;
                 _rigidbody.WakeUp();
                 if (Physics.Raycast(actor.transform.position, -actor.transform.up, out var hit,
                         moveParameters.castParameters.castDistance, moveParameters.castParameters.collisionMask))
@@ -52,7 +53,7 @@ namespace SurgeEngine.Code.Parameters
                     var point = hit.point;
                     var normal = hit.normal;
 
-                    _rigidbody.position = point + normal;
+                    //_rigidbody.position = point + normal;
                 }
                 stateMachine.SetState<FStateGround>();
             }
@@ -62,8 +63,17 @@ namespace SurgeEngine.Code.Parameters
         {
             base.OnFixedTick(dt);
             
-            if (!Physics.Raycast(actor.transform.position, -actor.transform.up, out _,
+            if (Physics.Raycast(actor.transform.position, -actor.transform.up, out var hit,
                     moveParameters.castParameters.castDistance, moveParameters.castParameters.collisionMask))
+            {
+                var point = hit.point;
+                var normal = hit.normal;
+
+                //_rigidbody.position = point + normal;
+                
+                stats.transformNormal = stats.groundNormal;
+            }
+            else
             {
                 stateMachine.SetState<FStateAir>();
             }
