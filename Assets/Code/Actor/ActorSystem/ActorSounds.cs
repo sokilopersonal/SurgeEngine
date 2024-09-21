@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using SurgeEngine.Code.ActorSoundEffects;
+using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.Parameters;
 using SurgeEngine.Code.Parameters.SonicSubStates;
 using SurgeEngine.Code.StateMachine;
@@ -25,12 +26,14 @@ namespace SurgeEngine.Code.ActorSystem
             
             actor.stateMachine.GetSubState<FBoost>().OnActiveChanged += OnBoostActivate;
             actor.stateMachine.OnStateAssign += OnStateAssign;
+            ActorEvents.OnRingCollected += OnRingCollected;
             _lastBoostVoiceTime = Time.time - BOOST_VOICE_DELAY;
         }
 
         private void OnDisable()
         {
             actor.stateMachine.GetSubState<FBoost>().OnActiveChanged -= OnBoostActivate;
+            ActorEvents.OnRingCollected -= OnRingCollected;
         }
 
         private void OnBoostActivate(FSubState arg1, bool arg2)
@@ -67,6 +70,11 @@ namespace SurgeEngine.Code.ActorSystem
                 
                 PlaySound("Spin", false);
             }
+        }
+
+        private void OnRingCollected(Ring obj)
+        {
+            PlaySound("Ring", false);
         }
 
         private void PlaySound(string name, bool loop)

@@ -15,6 +15,7 @@ namespace SurgeEngine.Code.Parameters.SonicSubStates
         public float airBoostTime;
         public bool canAirBoost;
         public float boostForce;
+        public float magnetRadius;
         
         public bool restoringTopSpeed;
         [Range(10f, 30f)] public float restoreSpeed;
