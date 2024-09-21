@@ -12,7 +12,7 @@ namespace SurgeEngine.Code.CommonObjects
 
         private void OnCollisionEnter(Collision msg)
         {
-            if (ActorContext.Context.ID == msg.gameObject.GetInstanceID())
+            if (ActorContext.Context.gameObject == msg.gameObject)
             {
                 OnCollisionContact(msg);
             }
@@ -20,7 +20,7 @@ namespace SurgeEngine.Code.CommonObjects
 
         private void OnTriggerEnter(Collider msg)
         {
-            if (ActorContext.Context.ID == msg.gameObject.GetInstanceID())
+            if (ActorContext.Context.gameObject == msg.gameObject)
             {
                 OnTriggerContact(msg);
             }

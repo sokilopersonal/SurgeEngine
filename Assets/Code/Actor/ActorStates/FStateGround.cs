@@ -22,7 +22,7 @@ namespace SurgeEngine.Code.Parameters
         {
             base.OnEnter();
             
-            //animation.TransitionToState("Run Cycle", 0.1f);
+            if (stateMachine.IsPreviousState<FStateAir>()) animation.TransitionToState("Run Cycle", 0.1f);
 
             stats.groundNormal = Vector3.up;
             _cameraTransform = actor.camera.GetCameraTransform();
