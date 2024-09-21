@@ -19,7 +19,7 @@ namespace SurgeEngine.Code.ActorSystem
                 -actor.transform.InverseTransformDirection(actor.stats.planarVelocity).x * 2f, 3.75f * Time.deltaTime));
             
             float dot = Vector3.Dot(Vector3.up, actor.transform.right);
-            SetBool("OnWall", Mathf.Abs(dot) > 0.1f && Mathf.Abs(actor.stats.groundAngle - 90) < 0.01f);
+            SetBool("OnWall", Mathf.Abs(dot) > 0.1f && actor.stats.groundAngle == 90);
             SetFloat("WallDot", -dot);
             SetFloat("AbsWallDot", Mathf.Abs(dot));
 
