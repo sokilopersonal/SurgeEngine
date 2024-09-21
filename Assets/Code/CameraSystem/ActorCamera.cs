@@ -87,19 +87,22 @@ namespace SurgeEngine.Code.CameraSystem
         {
             if (actor.input.GetLastLookInputTime() + _timeToStartFollow < Time.time)
             {
-                if (!(1 - Mathf.Abs(Vector3.Dot(actor.transform.forward, Vector3.up)) < 0.01f))
+                if (actor.stats.currentSpeed > 1f)
                 {
-                    float fwd = actor.stats.GetForwardSignedAngle();
-                    _autoLookDirection.x = fwd * _currentParameters.followPower * Time.deltaTime;
-                }
-                else
-                {
-                    _autoLookDirection.x = 0;
+                    if (!(1 - Mathf.Abs(Vector3.Dot(actor.transform.forward, Vector3.up)) < 0.01f))
+                    {
+                        float fwd = actor.stats.GetForwardSignedAngle();
+                        _autoLookDirection.x = fwd * _currentParameters.followPower * Time.deltaTime;
+                    }
+                    else
+                    {
+                        _autoLookDirection.x = 0;
+                    }
                 }
                 
-                _autoLookDirection.y = 0;
+                _autoLookDirection.y = 11;
                 if (actor.stats.groundAngle < 15) _y = Mathf.Lerp(_y, _autoLookDirection.y, 
-                    0.125f * actor.stats.currentSpeed * Time.deltaTime);
+                    actor.stats.currentSpeed * 0.1f * Time.deltaTime);
             }
             else
             {
@@ -175,17 +178,19 @@ namespace SurgeEngine.Code.CameraSystem
 
         private IEnumerator ChangeParametersCoroutine(CameraParameters target, Action<CameraParameters> callback = null)
         {
-            _timeToStartFollow = target.timeToStartFollow;
-            
             float tDistance = 0f;
             float tFov = 0f;
+            float tFollow = 0f;
 
             float startDistance = _distance;
             float startFov = _fov;
+            float startFollow = _timeToStartFollow;
+            
             float targetDistance = target.distance;
             float targetFov = target.fov;
+            float targetFollow = target.timeToStartFollow;
 
-            while (tDistance < target.distanceDuration || tFov < target.fovDuration)
+            while (tDistance < target.distanceDuration || tFov < target.fovDuration || tFollow < targetFollow)
             {
                 if (tDistance < target.distanceDuration)
                 {
@@ -197,6 +202,12 @@ namespace SurgeEngine.Code.CameraSystem
                 {
                     tFov += Time.deltaTime;
                     _fov = Mathf.Lerp(startFov, targetFov, Easings.Get(target.fovEasing, tFov / target.fovDuration));
+                }
+                
+                if (tFollow < targetFollow)
+                {
+                    tFollow += Time.deltaTime;
+                    _timeToStartFollow = Mathf.Lerp(startFollow, targetFollow, Easings.Get(Easing.Linear, tFollow / targetFollow));
                 }
 
                 yield return null;

@@ -17,6 +17,11 @@ namespace SurgeEngine.Code.Parameters
         [Header("Deacceleration")]
         public float minDeacceleration = 9f;
         public float maxDeacceleration = 9f;
+
+        [Header("Skidding")] 
+        public float skidMinRate;
+        public float skidMaxRate;
+        public float skidThreshold = -0.6f;
         
         [Header("Turning")]
         public float turnSpeed = 12;

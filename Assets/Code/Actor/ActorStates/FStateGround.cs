@@ -22,7 +22,7 @@ namespace SurgeEngine.Code.Parameters
         {
             base.OnEnter();
             
-            if (stateMachine.IsPreviousState<FStateAir>()) animation.TransitionToState("Run Cycle", 0.1f);
+            if (stateMachine.IsPreviousState<FStateAir>()) animation.TransitionToState("Run Cycle", 0.3f);
 
             stats.groundNormal = Vector3.up;
             _cameraTransform = actor.camera.GetCameraTransform();
@@ -137,27 +137,45 @@ namespace SurgeEngine.Code.Parameters
 
             if (stats.inputDir.magnitude > INPUT_DEADZONE)
             {
-                CalculateVelocity(dt);
+                float skiddingDot = Vector3.Dot(stats.inputDir.normalized, stats.planarVelocity.normalized);
+                stats.skidding = skiddingDot < stats.moveParameters.skidThreshold;
+                if (!stats.skidding)
+                {
+                    CalculateVelocity(dt);
+                }
+                else
+                {
+                    if (stateMachine.GetSubState<FBoost>().Active) return;
+                    
+                    Deacceleration(stats.moveParameters.skidMaxRate, stats.moveParameters.skidMinRate);
+                }
             }
             else
             {
                 if (stateMachine.GetSubState<FBoost>().Active) return;
-                
-                float f = Mathf.Lerp(stats.moveParameters.maxDeacceleration, stats.moveParameters.minDeacceleration, 
-                    stats.movementVector.magnitude / stats.moveParameters.topSpeed);
-                if (stats.movementVector.magnitude > 1f)
-                    stats.movementVector = Vector3.MoveTowards(stats.movementVector, Vector3.zero, Time.fixedDeltaTime * f);
-                else
-                {
-                    stats.movementVector = Vector3.zero;
-                    
-                    stateMachine.SetState<FStateIdle>();
-                }
+
+                Deacceleration(stats.moveParameters.maxDeacceleration, stats.moveParameters.minDeacceleration);
             }
+            
+            
             
             Vector3 movementVelocity = stats.movementVector;
             if (!stateMachine.GetSubState<FBoost>().Active) movementVelocity = Vector3.ClampMagnitude(movementVelocity, stats.moveParameters.maxSpeed); 
             _rigidbody.linearVelocity = movementVelocity;
+        }
+
+        private void Deacceleration(float min, float max)
+        {
+            float f = Mathf.Lerp(max, min, 
+                stats.movementVector.magnitude / stats.moveParameters.topSpeed);
+            if (stats.movementVector.magnitude > 1f)
+                stats.movementVector = Vector3.MoveTowards(stats.movementVector, Vector3.zero, Time.fixedDeltaTime * f);
+            else
+            {
+                stats.movementVector = Vector3.zero;
+                    
+                stateMachine.SetState<FStateIdle>();
+            }
         }
 
         private void CalculateVelocity(float dt)
@@ -167,7 +185,7 @@ namespace SurgeEngine.Code.Parameters
             var accelRateMod = stats.moveParameters.accelCurve.Evaluate(stats.planarVelocity.magnitude / stats.moveParameters.topSpeed);
             if (stats.planarVelocity.magnitude < stats.moveParameters.topSpeed)
                 stats.planarVelocity += stats.inputDir * (stats.moveParameters.accelRate * accelRateMod * dt);
-                
+            
             Vector3 newVelocity = Quaternion.FromToRotation(stats.planarVelocity.normalized, stats.inputDir.normalized) * stats.planarVelocity;
             float handling = stats.turnRate;
             handling *= stats.moveParameters.turnCurve.Evaluate(stats.planarVelocity.magnitude / stats.moveParameters.topSpeed);

@@ -15,6 +15,7 @@ namespace SurgeEngine.Code.ActorSystem
         public Vector3 inputDir;
         public Vector3 groundNormal;
         public Vector3 transformNormal;
+        public bool skidding;
         public float groundAngle;
 
         private Rigidbody _rigidbody;
