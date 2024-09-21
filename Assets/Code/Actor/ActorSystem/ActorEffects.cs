@@ -13,7 +13,7 @@ namespace SurgeEngine.Code.ActorSystem
         [SerializeField] private BoostDistortion boostDistortion;
 
         [Header("Spinball")] 
-        [SerializeField] private Spinball spinball;
+        public Spinball spinball;
 
         protected override void OnInitialized()
         {

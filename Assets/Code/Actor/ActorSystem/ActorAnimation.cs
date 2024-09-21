@@ -22,10 +22,6 @@ namespace SurgeEngine.Code.ActorSystem
             SetBool("OnWall", Mathf.Abs(dot) > 0.1f && actor.stats.groundAngle == 90);
             SetFloat("WallDot", -dot);
             SetFloat("AbsWallDot", Mathf.Abs(dot));
-
-            model.localPosition = actor.transform.localPosition;
-            model.localRotation = Quaternion.Slerp(model.localRotation, Quaternion.LookRotation(actor.transform.forward, actor.transform.up),
-                12 * Time.deltaTime);
         }
         
         public void SetFloat(string state, float value)

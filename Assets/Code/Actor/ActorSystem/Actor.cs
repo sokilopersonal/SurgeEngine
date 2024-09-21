@@ -14,6 +14,7 @@ namespace SurgeEngine.Code.ActorSystem
         public new ActorCamera camera;
         public new ActorAnimation animation;
         public ActorEffects effects;
+        public ActorModel model;
         
         public FStateMachine stateMachine;
         public FActorState[] states;
@@ -51,6 +52,7 @@ namespace SurgeEngine.Code.ActorSystem
             camera?.SetOwner(this);
             animation?.SetOwner(this);
             effects?.SetOwner(this);
+            model?.SetOwner(this);
         }
         
         private void Update()
