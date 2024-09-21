@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.StateMachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -7,6 +8,10 @@ namespace SurgeEngine.Code.Parameters.SonicSubStates
 {
     public class FBoost : FActorSubState
     {
+        [Range(0, 100)] public float boostEnergy;
+        [SerializeField] private float boostDrain = 3;
+        [SerializeField] private float startBoostDrain = 10;
+        
         public float turnSpeedReduction;
         public float maxSpeedMultiplier;
         public float startForce;
@@ -20,8 +25,8 @@ namespace SurgeEngine.Code.Parameters.SonicSubStates
         public bool restoringTopSpeed;
         [Range(10f, 30f)] public float restoreSpeed;
 
-        private Coroutine airBoostTimeCoroutine;
-        private Coroutine boostInAirTimeCoroutine;
+        private Coroutine cancelBoostCoroutine;
+        private Coroutine boostDrainCoroutine;
 
         private void Awake()
         {
@@ -33,6 +38,8 @@ namespace SurgeEngine.Code.Parameters.SonicSubStates
         private void OnEnable()
         {
             actor.stateMachine.OnStateAssign += OnStateAssign;
+
+            ActorEvents.OnRingCollected += _ => boostEnergy += 2;
         }
 
         private void OnDisable()
@@ -51,19 +58,19 @@ namespace SurgeEngine.Code.Parameters.SonicSubStates
             {
                 if (canAirBoost)
                 {
-                    if (boostInAirTimeCoroutine != null) 
-                        StopCoroutine(boostInAirTimeCoroutine);
+                    if (cancelBoostCoroutine != null) 
+                        StopCoroutine(cancelBoostCoroutine);
 
-                    boostInAirTimeCoroutine = StartCoroutine(BoostInAirTime());
+                    cancelBoostCoroutine = StartCoroutine(CancelBoost(boostInAirTime));
                 }
             }
             
             if (obj is FStateAirBoost)
             {
-                if (airBoostTimeCoroutine != null)
-                    StopCoroutine(airBoostTimeCoroutine);
+                if (cancelBoostCoroutine != null)
+                    StopCoroutine(cancelBoostCoroutine);
                 
-                airBoostTimeCoroutine = StartCoroutine(AirBoostTime());
+                cancelBoostCoroutine = StartCoroutine(CancelBoost(airBoostTime));
             }
         }
 
@@ -75,36 +82,67 @@ namespace SurgeEngine.Code.Parameters.SonicSubStates
             {
                 if (actor.input.BoostHeld)
                 {
-                    if (boostInAirTimeCoroutine != null)
+                    if (cancelBoostCoroutine != null)
                     {
-                        StopCoroutine(boostInAirTimeCoroutine);
+                        StopCoroutine(cancelBoostCoroutine);
                     }
 
-                    if (airBoostTimeCoroutine != null)
+                    if (cancelBoostCoroutine != null)
                     {
-                        StopCoroutine(airBoostTimeCoroutine);
+                        StopCoroutine(cancelBoostCoroutine);
                     }
                 }
             }
+            
+            boostEnergy = Mathf.Clamp(boostEnergy, 0, 100);
+        }
+
+        public bool CanBoost() => boostEnergy > 0;
+
+        public bool ApplyAirForce(Rigidbody rb, Vector3 force)
+        {
+            if (!CanBoost()) return false;
+            
+            rb.linearVelocity = force;
+            return true;
         }
 
         private void BoostAction(InputAction.CallbackContext obj)
         {
             if (actor.stateMachine.CurrentState is FStateAir && !canAirBoost) return;
             
-            Active = obj.ReadValueAsButton();
+            if (CanBoost()) Active = obj.ReadValueAsButton();
+            
+            if (Active)
+            {
+                boostDrainCoroutine = StartCoroutine(BoostDrain());
+            }
+            else
+            {
+                if (boostDrainCoroutine != null)
+                    StopCoroutine(boostDrainCoroutine);
+            }
         }
 
-        private IEnumerator BoostInAirTime()
+        private IEnumerator BoostDrain()
         {
-            yield return new WaitForSeconds(boostInAirTime);
+            boostEnergy -= startBoostDrain;
+            
+            while (boostEnergy > 0)
+            {
+                boostEnergy -= boostDrain * Time.deltaTime;
+                yield return null;
+            }
+
             Active = false;
         }
-
-        private IEnumerator AirBoostTime()
+        
+        private IEnumerator CancelBoost(float time)
         {
-            yield return new WaitForSeconds(airBoostTime);
+            yield return new WaitForSeconds(time);
             Active = false;
+            
+            if (boostDrainCoroutine != null) StopCoroutine(boostDrainCoroutine);
         }
     }
 }

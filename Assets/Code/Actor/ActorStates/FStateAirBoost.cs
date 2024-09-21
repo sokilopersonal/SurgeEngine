@@ -1,5 +1,4 @@
 ﻿using SurgeEngine.Code.Parameters.SonicSubStates;
-using UnityEngine;
 
 namespace SurgeEngine.Code.Parameters
 {
@@ -12,9 +11,11 @@ namespace SurgeEngine.Code.Parameters
             FBoost boost = stateMachine.GetSubState<FBoost>();
             if (boost.canAirBoost)
             {
-                animation.TransitionToState("Air Boost", 1f, true);
-                _rigidbody.linearVelocity = _rigidbody.transform.forward * boost.airStartForce;
-                boost.canAirBoost = false;
+                if (boost.ApplyAirForce(_rigidbody, _rigidbody.transform.forward * boost.airStartForce))
+                {
+                    animation.TransitionToState("Air Boost", 1f, true);
+                    boost.canAirBoost = false;
+                }
             }
             
             stateMachine.SetState<FStateAir>();

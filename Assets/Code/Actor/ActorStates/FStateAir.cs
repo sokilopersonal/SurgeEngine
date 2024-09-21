@@ -1,4 +1,5 @@
 ﻿using SurgeEngine.Code.Custom;
+using SurgeEngine.Code.Parameters.SonicSubStates;
 using UnityEngine;
 
 namespace SurgeEngine.Code.Parameters
@@ -31,9 +32,9 @@ namespace SurgeEngine.Code.Parameters
             CalculateAirTime(dt);
             stateMachine.GetState<FStateGround>().CalculateDetachState();
 
-            if (actor.input.BoostPressed)
+            if (input.BoostPressed && stateMachine.GetSubState<FBoost>().CanBoost())
             {
-                actor.stateMachine.SetState<FStateAirBoost>();
+                stateMachine.SetState<FStateAirBoost>();
             }
         }
 
@@ -95,11 +96,8 @@ namespace SurgeEngine.Code.Parameters
             Vector3 vel = _rigidbody.linearVelocity;
             vel = Vector3.ProjectOnPlane(vel, stats.groundNormal);
 
-            if (vel.magnitude > 0.1f)
-            {
-                Quaternion rot = Quaternion.LookRotation(vel, stats.transformNormal);
-                actor.transform.rotation = rot;
-            }
+            Quaternion rot = Quaternion.LookRotation(vel, stats.transformNormal);
+            actor.transform.rotation = rot;
         }
 
         protected float GetAirTime() => _airTime;

@@ -22,7 +22,7 @@ namespace SurgeEngine.Code.CommonObjects
             if ((transform.position - _actor.transform.position).magnitude < _actor.stateMachine.GetSubState<FBoost>().magnetRadius
                 && _actor.stateMachine.GetSubState<FBoost>().Active && !_magneted)
             {
-                _initialPosition = transform.position + Random.insideUnitSphere * 0.15f;
+                _initialPosition = transform.position + Random.insideUnitSphere * 0.25f;
                 _magneted = true;
             }
 
