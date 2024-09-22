@@ -12,7 +12,7 @@ namespace SurgeEngine.Code.CommonObjects
 
         private void OnCollisionEnter(Collision msg)
         {
-            if (ActorContext.Context.gameObject == msg.transform.parent.gameObject)
+            if (ActorContext.Context.gameObject == msg.transform.parent.gameObject) // Check for ContactCollision instead
             {
                 OnCollisionContact(msg);
             }
@@ -20,7 +20,7 @@ namespace SurgeEngine.Code.CommonObjects
 
         private void OnTriggerEnter(Collider msg)
         {
-            if (ActorContext.Context.gameObject == msg.transform.parent.gameObject)
+            if (ActorContext.Context.gameObject == msg.transform.parent.gameObject) // Check for ContactCollision instead
             {
                 OnTriggerContact(msg);
             }

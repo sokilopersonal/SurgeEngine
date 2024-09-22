@@ -1,27 +1,45 @@
-﻿using UnityEngine;
-using UnityEngine.Audio;
+﻿using System.Collections;
+using FMODUnity;
+using UnityEngine;
 
 namespace SurgeEngine.Code.ActorSoundEffects
 {
     public class BoostAudioDistortion : MonoBehaviour
     {
-        [SerializeField] private AudioMixerSnapshot normalSnapshot;
-        [SerializeField] private AudioMixerSnapshot distortedSnapshot;
-
         private bool _enabled;
         
-        public void ToggleDistortion()
+        private Coroutine _fadeCoroutine;
+        
+        public void Toggle()
         {
             _enabled = !_enabled;
 
             if (_enabled)
             {
-                distortedSnapshot.TransitionTo(0.2f);
+                if (_fadeCoroutine != null)
+                    StopCoroutine(_fadeCoroutine);
+                _fadeCoroutine = StartCoroutine(FadeDistort(1f, 0.2f));
             }
             else
             {
-                normalSnapshot.TransitionTo(0.2f);
+                if (_fadeCoroutine != null)
+                    StopCoroutine(_fadeCoroutine);
+                _fadeCoroutine = StartCoroutine(FadeDistort(0f, 0.2f));
             }
+        }
+
+        private IEnumerator FadeDistort(float value, float duration)
+        {
+            float t = 0;
+
+            while (t < duration)
+            {
+                RuntimeManager.StudioSystem.setParameterByName("Distort", value);
+                t += Time.deltaTime;
+                yield return null;
+            }
+            
+            RuntimeManager.StudioSystem.setParameterByName("Distort", value);
         }
     }
 }

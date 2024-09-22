@@ -1,5 +1,5 @@
-﻿using SurgeEngine.Code.ActorSystem;
-using SurgeEngine.Code.Custom;
+﻿using FMODUnity;
+using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Parameters.SonicSubStates;
 using UnityEngine;
 
@@ -10,6 +10,8 @@ namespace SurgeEngine.Code.CommonObjects
         [SerializeField] private float rotationSpeed = 360f;
         [SerializeField] private float flyDuration = 1f;
         [SerializeField] private AnimationCurve heightCurve;
+        
+        [SerializeField] private EventReference ringSound;
 
         private Actor _actor => ActorContext.Context;
         private bool _magneted;
@@ -61,6 +63,8 @@ namespace SurgeEngine.Code.CommonObjects
         protected override void OnTriggerContact(Collider msg)
         {
             base.OnTriggerContact(msg);
+            
+            RuntimeManager.PlayOneShot(ringSound);
 
             ActorEvents.OnRingCollected?.Invoke(this);
             gameObject.SetActive(false);

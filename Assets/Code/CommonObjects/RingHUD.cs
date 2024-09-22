@@ -49,9 +49,9 @@ namespace SurgeEngine.Code.CommonObjects
                 Easings.Get(Easing.InCubic, _factor));
             
             Matrix4x4 viewMatrix = _camera.worldToCameraMatrix;
-            Vector3 cameraForward = viewMatrix.inverse.MultiplyVector(Vector3.right);
+            Vector3 cameraForward = viewMatrix.inverse.MultiplyVector(Vector3.forward);
             _targetRotation = Quaternion.LookRotation(cameraForward, _camera.transform.up);
-            transform.rotation = Quaternion.Lerp(_initialRotation, _targetRotation, 
+            transform.localRotation = Quaternion.Lerp(_initialRotation, _targetRotation, 
                 Easings.Get(Easing.OutCubic, _factor));
             
             transform.localScale = Vector3.Lerp(_initialScale, Vector3.one * 0.065f, _factor * 1.5f); // Need to multiply factor to fix scale

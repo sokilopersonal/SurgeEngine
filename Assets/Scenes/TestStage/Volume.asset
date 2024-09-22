@@ -18,13 +18,13 @@ MonoBehaviour:
     m_Value: 3
   threshold:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 1.2
   intensity:
     m_OverrideState: 1
-    m_Value: 0.75
+    m_Value: 1
   scatter:
     m_OverrideState: 1
-    m_Value: 0.8
+    m_Value: 0.7
   tint:
     m_OverrideState: 1
     m_Value: {r: 1, g: 1, b: 1, a: 1}
@@ -39,7 +39,7 @@ MonoBehaviour:
     m_Value: 1
   m_Resolution:
     m_OverrideState: 1
-    m_Value: 4
+    m_Value: 2
   m_HighQualityPrefiltering:
     m_OverrideState: 1
     m_Value: 0
@@ -176,6 +176,52 @@ MonoBehaviour:
   m_SampleCount:
     m_OverrideState: 1
     m_Value: 16
+--- !u!114 &-2896791029593750090
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bd486065ce11414fa40e631affc4900, type: 3}
+  m_Name: ProbeVolumesOptions
+  m_EditorClassIdentifier: 
+  active: 1
+  normalBias:
+    m_OverrideState: 1
+    m_Value: 0.3
+  viewBias:
+    m_OverrideState: 1
+    m_Value: 0.05
+  scaleBiasWithMinProbeDistance:
+    m_OverrideState: 1
+    m_Value: 0
+  samplingNoise:
+    m_OverrideState: 1
+    m_Value: 1
+  animateSamplingNoise:
+    m_OverrideState: 1
+    m_Value: 1
+  leakReductionMode:
+    m_OverrideState: 1
+    m_Value: 2
+  minValidDotProductValue:
+    m_OverrideState: 1
+    m_Value: 0.1
+  occlusionOnlyReflectionNormalization:
+    m_OverrideState: 1
+    m_Value: 1
+  intensityMultiplier:
+    m_OverrideState: 1
+    m_Value: 1
+  skyOcclusionIntensityMultiplier:
+    m_OverrideState: 1
+    m_Value: 1
+  worldOffset:
+    m_OverrideState: 1
+    m_Value: {x: 0, y: 0, z: 0}
 --- !u!114 &-2333462575304410951
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -191,16 +237,16 @@ MonoBehaviour:
   active: 1
   quality:
     m_OverrideState: 1
-    m_Value: 2
+    m_Value: 3
   intensity:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 2
   maximumVelocity:
     m_OverrideState: 1
-    m_Value: 200
+    m_Value: 1500
   minimumVelocity:
     m_OverrideState: 1
-    m_Value: 2
+    m_Value: 0
   cameraMotionBlur:
     m_OverrideState: 1
     m_Value: 1
@@ -209,19 +255,19 @@ MonoBehaviour:
     m_Value: 0
   cameraVelocityClamp:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 0.3
   cameraTranslationVelocityClamp:
     m_OverrideState: 1
     m_Value: 0.3
   cameraRotationVelocityClamp:
     m_OverrideState: 1
-    m_Value: 0.01
+    m_Value: 0.3
   depthComparisonExtent:
     m_OverrideState: 1
-    m_Value: 3
+    m_Value: 5
   m_SampleCount:
     m_OverrideState: 1
-    m_Value: 12
+    m_Value: 16
 --- !u!114 &-2067754267871440501
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -252,10 +298,10 @@ MonoBehaviour:
     m_Value: -1.25
   limitMin:
     m_OverrideState: 1
-    m_Value: 7
+    m_Value: 14
   limitMax:
     m_OverrideState: 1
-    m_Value: 14
+    m_Value: 14.5
   curveMap:
     m_OverrideState: 1
     m_Value:
@@ -395,6 +441,7 @@ MonoBehaviour:
   - {fileID: -3712230343484456432}
   - {fileID: 201056001896840590}
   - {fileID: -7849337482526815904}
+  - {fileID: -2896791029593750090}
 --- !u!114 &201056001896840590
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -597,7 +644,7 @@ MonoBehaviour:
   active: 1
   indirectDiffuseLightingMultiplier:
     m_OverrideState: 1
-    m_Value: 3
+    m_Value: 4
   indirectDiffuseLightingLayers:
     m_OverrideState: 1
     m_Value: -1
@@ -609,7 +656,7 @@ MonoBehaviour:
     m_Value: 65535
   reflectionProbeIntensityMultiplier:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 1.1
 --- !u!114 &8701177710390384146
 MonoBehaviour:
   m_ObjectHideFlags: 3

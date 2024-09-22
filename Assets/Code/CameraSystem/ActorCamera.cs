@@ -85,7 +85,7 @@ namespace SurgeEngine.Code.CameraSystem
 
         private void Following()
         {
-            if (actor.input.GetLastLookInputTime() + _timeToStartFollow < Time.time)
+            if (Common.InDelayTime(actor.input.GetLastLookInputTime(), _timeToStartFollow))
             {
                 if (actor.stats.currentSpeed > 1f)
                 {
@@ -94,15 +94,19 @@ namespace SurgeEngine.Code.CameraSystem
                         float fwd = actor.stats.GetForwardSignedAngle();
                         _autoLookDirection.x = fwd * _currentParameters.followPower * Time.deltaTime;
                     }
-                    else if (actor.input.lookVector != Vector2.zero)
-                    {
-                        _autoLookDirection.x = 0;
-                    }
+                }
+                else
+                {
+                    _autoLookDirection.x = 0;
                 }
                 
                 _autoLookDirection.y = 11;
                 if (actor.stats.groundAngle < 15) _y = Mathf.Lerp(_y, _autoLookDirection.y, 
                     actor.stats.currentSpeed * 0.1f * Time.deltaTime);
+            }
+            else if (actor.stats.currentSpeed < 0.2f)
+            {
+                _autoLookDirection.x = 0;
             }
             else
             {

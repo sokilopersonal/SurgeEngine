@@ -1,5 +1,4 @@
-﻿using SurgeEngine.Code.ActorSystem;
-using SurgeEngine.Code.Custom;
+﻿using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.Parameters.SonicSubStates;
 using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
@@ -17,6 +16,7 @@ namespace SurgeEngine.Code.Parameters
         
         private float _detachTimer;
         private bool _canAttach;
+        private string _surfaceTag;
 
         public override void OnEnter()
         {
@@ -95,7 +95,6 @@ namespace SurgeEngine.Code.Parameters
                 
                 Vector3 stored = _rigidbody.linearVelocity;
                 _rigidbody.linearVelocity = Quaternion.FromToRotation(_rigidbody.transform.up, prevNormal) * stored;
-                
                 stats.transformNormal = Vector3.Slerp(stats.transformNormal, normal, dt * 14f);
 
                 if (_rigidbody.linearVelocity.magnitude > SLOPE_PREDICTION_ACTIVATE_SPEED)
@@ -104,15 +103,11 @@ namespace SurgeEngine.Code.Parameters
                 }
 
                 Movement(dt);
-                SlopePhysics();
+                SlopePhysics(dt);
                 Rotate(dt);
                 Snap(point, normal);
                 
-                float dot = Vector3.Dot(Vector3.up, actor.transform.right);
-                if (Mathf.Abs(dot) > 0.1f)
-                {
-                    _rigidbody.linearVelocity += Vector3.down * (9f * dt);
-                }
+                _surfaceTag = hit.transform.gameObject.GetGroundTag();
             }
             else
             {
@@ -190,7 +185,7 @@ namespace SurgeEngine.Code.Parameters
             stats.movementVector = Vector3.Slerp(stats.planarVelocity, newVelocity, Time.fixedDeltaTime * handling);
         }
 
-        protected virtual void SlopePhysics()
+        protected virtual void SlopePhysics(float dt)
         {
             stats.groundAngle = Vector3.Angle(stats.groundNormal, Vector3.up);
             if (stats.currentSpeed < 10 && stats.groundAngle >= 70)
@@ -206,6 +201,12 @@ namespace SurgeEngine.Code.Parameters
                 //float groundSpeedMod = slopeForceOverSpeed.Evaluate(rb.velocity.sqrMagnitude / topSpeed / topSpeed);
                 Vector3 slopeForce = Vector3.ProjectOnPlane(Vector3.down, stats.groundNormal) * (1 * (uphill ? 1f : 6.5f));
                 _rigidbody.linearVelocity += slopeForce * Time.fixedDeltaTime;
+            }
+            
+            float rDot = Vector3.Dot(Vector3.up, actor.transform.right);
+            if (Mathf.Abs(rDot) > 0.1f && stats.groundAngle == 90)
+            {
+                _rigidbody.linearVelocity += Vector3.down * (9f * dt);
             }
         }
 
@@ -351,6 +352,7 @@ namespace SurgeEngine.Code.Parameters
 
         public void SetAttachState(bool value) => _canAttach = value; 
         public bool GetAttachState() => _canAttach;
+        public string GetSurfaceTag() => _surfaceTag;
 
         private void OnDrawGizmosSelected()
         {
