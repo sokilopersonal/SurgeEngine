@@ -35,8 +35,8 @@ namespace SurgeEngine.Code.ActorHUD
 
         private void OnRingCollected(Ring obj)
         {
-            RingHUD ringHUDInstance = Instantiate(ringHUDPrefab, obj.transform.position, Quaternion.identity);
-            ringHUDInstance.Initialize(0.45f);
+            RingHUD ringHUDInstance = Instantiate(ringHUDPrefab, obj.transform.position + _actor.transform.forward * 0.1f, Quaternion.identity);
+            ringHUDInstance.Initialize(0.55f);
         }
     }
 }

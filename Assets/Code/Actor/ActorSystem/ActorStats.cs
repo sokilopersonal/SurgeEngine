@@ -42,7 +42,9 @@ namespace SurgeEngine.Code.ActorSystem
 
         public float GetUpwardSignedAngle()
         {
-            return Vector3.SignedAngle(actor.transform.up, Vector3.up, Vector3.down);
+            Vector3 f = Vector3.ProjectOnPlane(actor.transform.up, Vector3.up).normalized;
+            Vector3 c = Vector3.ProjectOnPlane(actor.camera.GetCameraTransform().up, Vector3.up).normalized;
+            return Vector3.SignedAngle(f, c, -Vector3.up);
         }
     }
 }

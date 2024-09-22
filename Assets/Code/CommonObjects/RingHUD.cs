@@ -16,7 +16,8 @@ namespace SurgeEngine.Code.CommonObjects
 
         public void Initialize(float time)
         {
-            transform.localScale = Vector3.one * 1.25f;
+            transform.localScale = Vector3.one * 1.1f;
+            transform.parent = _camera.transform;
             
             _initialRotation = transform.rotation;
 
@@ -40,11 +41,17 @@ namespace SurgeEngine.Code.CommonObjects
 
         private void Move()
         {
+            Vector3 targetPosition = SurgeMath.GetCameraMatrixPosition(_camera, 100, 100);
+            transform.position = Vector3.Lerp(transform.position, targetPosition, 
+                Easings.Get(Easing.InCubic, _factor));
+            
             Matrix4x4 viewMatrix = _camera.worldToCameraMatrix;
             Vector3 cameraForward = viewMatrix.inverse.MultiplyVector(Vector3.right);
             _targetRotation = Quaternion.LookRotation(cameraForward, _camera.transform.up);
             transform.rotation = Quaternion.Lerp(_initialRotation, _targetRotation, 
                 Easings.Get(Easing.OutCubic, _factor));
+            
+            transform.localScale = Vector3.Lerp(Vector3.one * 1.1f, Vector3.one * 0.01f, _factor);
         }
     }
 }
