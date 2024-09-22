@@ -11,7 +11,7 @@ namespace SurgeEngine.Code.ActorSystem
             model.localPosition = actor.transform.localPosition;
             model.localRotation = Quaternion.Slerp(model.localRotation,
                 Quaternion.LookRotation(actor.transform.forward, actor.transform.up),
-                8 * Time.deltaTime);
+                15 * Time.deltaTime);
             
             actor.effects.spinball.transform.SetParent(model, false);
         }

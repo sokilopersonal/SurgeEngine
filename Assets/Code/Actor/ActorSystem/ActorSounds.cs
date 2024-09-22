@@ -75,6 +75,7 @@ namespace SurgeEngine.Code.ActorSystem
         private void OnRingCollected(Ring obj)
         {
             PlaySound("Ring", false);
+            PlaySound($"Ring_Sparkle{Random.Range(1, 4)}", false);
         }
 
         private void PlaySound(string name, bool loop)

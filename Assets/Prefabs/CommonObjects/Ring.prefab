@@ -71,7 +71,15 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9b8d20838e6f8c5459942bd996c63033, type: 3}
       insertIndex: -1
       addedObject: {fileID: 9157802862194048415}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9b8d20838e6f8c5459942bd996c63033, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3285230481626263639}
   m_SourcePrefab: {fileID: 100100000, guid: 9b8d20838e6f8c5459942bd996c63033, type: 3}
+--- !u!23 &5601309943413383512 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 9b8d20838e6f8c5459942bd996c63033, type: 3}
+  m_PrefabInstance: {fileID: 6519607071110217180}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &6249630446023016589 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 9b8d20838e6f8c5459942bd996c63033, type: 3}
@@ -94,3 +102,56 @@ MonoBehaviour:
   collisionHeight: 0.4
   collisionDepth: 0.4
   rotationSpeed: 190
+  flyDuration: 1
+  heightCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 1
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.75
+      value: 1.8
+      inSlope: 0.031625595
+      outSlope: 0.031625595
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.1573646
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -1.4658749
+      outSlope: -0.010508312
+      tangentMode: 1
+      weightedMode: 0
+      inWeight: 0.096153736
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!205 &3285230481626263639
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6249630446023016589}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: 0, y: 0, z: 0}
+  m_Size: 1
+  m_FadeMode: 1
+  m_AnimateCrossFading: 1
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0.008049161
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 5601309943413383512}
+  m_Enabled: 1

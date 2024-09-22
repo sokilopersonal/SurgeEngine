@@ -111,7 +111,7 @@ namespace SurgeEngine.Code.Parameters
                 float dot = Vector3.Dot(Vector3.up, actor.transform.right);
                 if (Mathf.Abs(dot) > 0.1f)
                 {
-                    _rigidbody.linearVelocity += Vector3.down * (14f * dt);
+                    _rigidbody.linearVelocity += Vector3.down * (9f * dt);
                 }
             }
             else
@@ -156,8 +156,6 @@ namespace SurgeEngine.Code.Parameters
 
                 Deacceleration(stats.moveParameters.maxDeacceleration, stats.moveParameters.minDeacceleration);
             }
-            
-            
             
             Vector3 movementVelocity = stats.movementVector;
             if (!stateMachine.GetSubState<FBoost>().Active) movementVelocity = Vector3.ClampMagnitude(movementVelocity, stats.moveParameters.maxSpeed); 

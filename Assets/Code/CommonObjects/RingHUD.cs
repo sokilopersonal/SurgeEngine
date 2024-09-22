@@ -32,10 +32,9 @@ namespace SurgeEngine.Code.CommonObjects
         {
             _factor = 0;
             
-            while (_factor < 1f)
+            while (_factor < 0.75f) // For some reason it doesn't work with 1
             {
                 Move();
-
                 _factor += Time.deltaTime / time;
                 yield return null;
             }
@@ -55,7 +54,7 @@ namespace SurgeEngine.Code.CommonObjects
             transform.rotation = Quaternion.Lerp(_initialRotation, _targetRotation, 
                 Easings.Get(Easing.OutCubic, _factor));
             
-            transform.localScale = Vector3.Lerp(_initialScale, Vector3.one * 0.035f, _factor * 1.5f); // Need to multiply factor to fix scale
+            transform.localScale = Vector3.Lerp(_initialScale, Vector3.one * 0.065f, _factor * 1.5f); // Need to multiply factor to fix scale
         }
     }
 }
