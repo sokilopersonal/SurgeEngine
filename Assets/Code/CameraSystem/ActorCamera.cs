@@ -26,7 +26,6 @@ namespace SurgeEngine.Code.CameraSystem
 
         private Camera _camera;
         private Transform _cameraTransform;
-        private NormalCamera _normalCamera;
         private float _x;
         private float _y;
         private float _collisionDistance;
@@ -46,7 +45,6 @@ namespace SurgeEngine.Code.CameraSystem
         {
             _camera = Camera.main;
             _cameraTransform = _camera.transform;
-            _normalCamera = _camera.GetComponentInParent<NormalCamera>();
 
             _currentParameters = _parameters[0];
             _timeToStartFollow = _currentParameters.timeToStartFollow;
@@ -79,6 +77,7 @@ namespace SurgeEngine.Code.CameraSystem
 
         private void Update()
         {
+            AutoFollow();
             Following();
             LookAt();
             Collision();
@@ -86,7 +85,17 @@ namespace SurgeEngine.Code.CameraSystem
 
         private void Following()
         {
-            if (Common.InDelayTime(actor.input.GetLastLookInputTime(), _timeToStartFollow) && !_normalCamera.active)
+            var lookVector = actor.input.lookVector;
+            _x += lookVector.x + _autoLookDirection.x;
+            _y -= lookVector.y;
+            _y = Mathf.Clamp(_y, -35, 50);
+
+            _cameraTransform.localPosition = GetTarget();
+        }
+
+        private void AutoFollow()
+        {
+            if (Common.InDelayTime(actor.input.GetLastLookInputTime(), _timeToStartFollow))
             {
                 if (actor.stats.currentSpeed > 1f)
                 {
@@ -100,28 +109,34 @@ namespace SurgeEngine.Code.CameraSystem
                 {
                     _autoLookDirection.x = 0;
                 }
+
+                if (actor.stateMachine.CurrentState is FStateGround)
+                {
+                    _autoLookDirection.y = 10f * (actor.stateMachine.GetSubState<FBoost>().Active ? 1.45f : 1f);
+                    _autoLookDirection.y -= actor.stats.currentVerticalSpeed * 1.25f;
+                    
+                    if (Mathf.Approximately(actor.stats.groundAngle, 90))
+                    {
+                        _autoLookDirection.y = 0f;
+                    }
+                }
+                else
+                {
+                    _autoLookDirection.y = 0f;
+                }
                 
-                _autoLookDirection.y = 11;
-                if (actor.stats.groundAngle < 15) _y = Mathf.Lerp(_y, _autoLookDirection.y, 
-                    actor.stats.currentSpeed * 0.1f * Time.deltaTime);
+                _y = Mathf.Lerp(_y, _autoLookDirection.y, 2.25f * Time.deltaTime);
             }
             else
             {
                 _autoLookDirection.x = 0;
             }
-            
-            var lookVector = actor.input.lookVector;
-            _x += lookVector.x + _autoLookDirection.x;
-            _y -= lookVector.y;
-            _y = Mathf.Clamp(_y, -35, 50);
-
-            _cameraTransform.localPosition = GetTarget();
         }
 
         private void LookAt()
         {
-            Quaternion quaternion = Quaternion.LookRotation(target.position - _cameraTransform.position, 
-                _cameraTransform.parent.up);
+            Quaternion quaternion = 
+                Quaternion.LookRotation(target.position - _cameraTransform.position);
             _cameraTransform.rotation = quaternion;
 
             _camera.fieldOfView = _fov;
@@ -143,7 +158,7 @@ namespace SurgeEngine.Code.CameraSystem
 
         private Vector3 GetTarget()
         {
-            Vector3 v = Quaternion.Euler(_y, _x, 0) * new Vector3(0, 0, -_distance);
+            Vector3 v = actor.transform.position + Quaternion.Euler(_y, _x, 0) * new Vector3(0, 0, -_distance);
             return v;
         }
 
@@ -226,11 +241,6 @@ namespace SurgeEngine.Code.CameraSystem
         public Camera GetCamera()
         {
             return _camera;
-        }
-        
-        public NormalCamera GetNormalCamera()
-        {
-            return _normalCamera;
         }
 
         public Transform GetCameraTransform() => _cameraTransform;

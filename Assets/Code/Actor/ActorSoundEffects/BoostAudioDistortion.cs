@@ -16,15 +16,11 @@ namespace SurgeEngine.Code.ActorSoundEffects
 
             if (_enabled)
             {
-                if (_fadeCoroutine != null)
-                    StopCoroutine(_fadeCoroutine);
-                _fadeCoroutine = StartCoroutine(FadeDistort(1f, 0.2f));
+                RuntimeManager.StudioSystem.setParameterByName("Distort", 1);
             }
             else
             {
-                if (_fadeCoroutine != null)
-                    StopCoroutine(_fadeCoroutine);
-                _fadeCoroutine = StartCoroutine(FadeDistort(0f, 0.2f));
+                RuntimeManager.StudioSystem.setParameterByName("Distort", 0);
             }
         }
 

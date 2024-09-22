@@ -27,6 +27,8 @@ namespace SurgeEngine.Code.Parameters
             _cameraTransform = actor.camera.GetCameraTransform();
             stats.groundNormal = Vector3.up;
             
+            SetDetachTime(0f);
+            
             //UpdateNormal();
             //ConvertAirToGroundVelocity();
         }
