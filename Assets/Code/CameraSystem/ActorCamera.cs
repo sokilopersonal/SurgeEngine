@@ -94,7 +94,7 @@ namespace SurgeEngine.Code.CameraSystem
                         float fwd = actor.stats.GetForwardSignedAngle();
                         _autoLookDirection.x = fwd * _currentParameters.followPower * Time.deltaTime;
                     }
-                    else
+                    else if (actor.input.lookVector != Vector2.zero)
                     {
                         _autoLookDirection.x = 0;
                     }

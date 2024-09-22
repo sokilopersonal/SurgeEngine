@@ -126,7 +126,7 @@ namespace SurgeEngine.Code.Parameters.SonicSubStates
 
         private IEnumerator BoostDrain()
         {
-            boostEnergy -= startBoostDrain;
+            if (boostEnergy > 10) boostEnergy -= startBoostDrain;
             
             while (boostEnergy > 0)
             {

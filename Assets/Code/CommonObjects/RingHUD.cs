@@ -10,20 +10,16 @@ namespace SurgeEngine.Code.CommonObjects
         private float _factor;
 
         private Camera _camera => ActorContext.Context.camera.GetCamera();
-        
-        private Vector3 _initialPosition;
+
         private Quaternion _initialRotation;
-        private Vector3 _initialScale;
-        
+        private Quaternion _targetRotation;
+
         public void Initialize(float time)
         {
-            transform.localScale = Vector3.one * 1.3f;
-            transform.parent = _camera.transform;
+            transform.localScale = Vector3.one * 1.25f;
             
-            _initialPosition = transform.position;
             _initialRotation = transform.rotation;
-            _initialScale = transform.localScale;
-            
+
             StartCoroutine(MoveToHUD(time));
         }
 
@@ -44,12 +40,11 @@ namespace SurgeEngine.Code.CommonObjects
 
         private void Move()
         {
-            Vector3 targetWorldPosition = SurgeMath.GetCameraMatrixPosition(_camera, 100, 100);
-            transform.position = Vector3.Lerp(_initialPosition, targetWorldPosition, Easings.Get(Easing.OutCubic, _factor));
-            transform.rotation = Quaternion.Slerp(_initialRotation, 
-                Quaternion.LookRotation(transform.position - _camera.transform.position, _camera.transform.up) * Quaternion.Euler(0, 90, 0), 
-                _factor);
-            transform.localScale = Vector3.Lerp(_initialScale, Vector3.one * 0.13f, _factor);
+            Matrix4x4 viewMatrix = _camera.worldToCameraMatrix;
+            Vector3 cameraForward = viewMatrix.inverse.MultiplyVector(Vector3.right);
+            _targetRotation = Quaternion.LookRotation(cameraForward, _camera.transform.up);
+            transform.rotation = Quaternion.Lerp(_initialRotation, _targetRotation, 
+                Easings.Get(Easing.OutCubic, _factor));
         }
     }
 }
