@@ -10,15 +10,19 @@ namespace SurgeEngine.Code.CommonObjects
         private float _factor;
 
         private Camera _camera => ActorContext.Context.camera.GetCamera();
-
+        
+        private Vector3 _targetPosition;
+        private Vector3 _initialScale;
+        
         private Quaternion _initialRotation;
         private Quaternion _targetRotation;
 
         public void Initialize(float time)
         {
-            transform.localScale = Vector3.one * 1.1f;
+            transform.localScale = Vector3.one * 1.5f;
             transform.parent = _camera.transform;
             
+            _initialScale = transform.localScale;
             _initialRotation = transform.rotation;
 
             StartCoroutine(MoveToHUD(time));
@@ -41,8 +45,8 @@ namespace SurgeEngine.Code.CommonObjects
 
         private void Move()
         {
-            Vector3 targetPosition = SurgeMath.GetCameraMatrixPosition(_camera, 100, 100);
-            transform.position = Vector3.Lerp(transform.position, targetPosition, 
+            _targetPosition = SurgeMath.GetCameraMatrixPosition(_camera, 100, 100);
+            transform.position = Vector3.Lerp(transform.position, _targetPosition, 
                 Easings.Get(Easing.InCubic, _factor));
             
             Matrix4x4 viewMatrix = _camera.worldToCameraMatrix;
@@ -51,7 +55,7 @@ namespace SurgeEngine.Code.CommonObjects
             transform.rotation = Quaternion.Lerp(_initialRotation, _targetRotation, 
                 Easings.Get(Easing.OutCubic, _factor));
             
-            transform.localScale = Vector3.Lerp(Vector3.one * 1.1f, Vector3.one * 0.01f, _factor);
+            transform.localScale = Vector3.Lerp(_initialScale, Vector3.one * 0.035f, _factor * 1.5f); // Need to multiply factor to fix scale
         }
     }
 }

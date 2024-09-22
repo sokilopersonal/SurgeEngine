@@ -12,7 +12,7 @@ namespace SurgeEngine.Code.Custom
         
         public static Vector3 GetCameraMatrixPosition(Camera camera, float x, float y)
         {
-            var screenPosition = new Vector3(x, y, camera.nearClipPlane * 0.01f);
+            var screenPosition = new Vector3(x, y, camera.nearClipPlane * 0.1f);
             
             Matrix4x4 projectionMatrix = camera.projectionMatrix;
             Matrix4x4 viewMatrix = camera.worldToCameraMatrix;
