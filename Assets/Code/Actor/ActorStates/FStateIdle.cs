@@ -12,6 +12,7 @@ namespace SurgeEngine.Code.Parameters
         {
             base.OnEnter();
             
+            _rigidbody.Sleep();
             animation.SetBool("Idle", true);
             
             if (Physics.Raycast(actor.transform.position, -actor.transform.up, out var hit,
@@ -21,6 +22,7 @@ namespace SurgeEngine.Code.Parameters
                 var normal = hit.normal;
 
                 _rigidbody.position = point + normal;
+                _rigidbody.linearVelocity = Vector3.zero;
             }
         }
         
@@ -34,8 +36,6 @@ namespace SurgeEngine.Code.Parameters
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
-            
-            _rigidbody.Sleep();
 
             if (input.moveVector.magnitude > deadZone)
             {
@@ -61,7 +61,7 @@ namespace SurgeEngine.Code.Parameters
                 var point = hit.point;
                 var normal = hit.normal;
 
-                _rigidbody.position = point + normal;
+                //_rigidbody.position = point + normal;
                 
                 stats.transformNormal = stats.groundNormal;
             }

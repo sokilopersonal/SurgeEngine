@@ -4,14 +4,6 @@ namespace SurgeEngine.Code.Custom
 {
     public static class Common
     {
-        public static bool CheckForGroundTag(this GameObject gameObject, string tag)
-        {
-            if (tag.Contains("@"))
-                tag = tag.Replace("@", "");
-            
-            return gameObject.name.Contains($"@{tag}");
-        }
-        
         public static string GetGroundTag(this GameObject gameObject)
         {
             string input = gameObject.name;

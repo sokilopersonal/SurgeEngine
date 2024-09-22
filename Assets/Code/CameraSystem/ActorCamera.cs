@@ -26,12 +26,12 @@ namespace SurgeEngine.Code.CameraSystem
 
         private Camera _camera;
         private Transform _cameraTransform;
+        private NormalCamera _normalCamera;
         private float _x;
         private float _y;
         private float _collisionDistance;
         private float _timeToStartFollow;
-
-        private Vector3 _tempFollowVector;
+        
         private Vector2 _autoLookDirection;
 
         private CameraParameters _currentParameters;
@@ -46,6 +46,7 @@ namespace SurgeEngine.Code.CameraSystem
         {
             _camera = Camera.main;
             _cameraTransform = _camera.transform;
+            _normalCamera = _camera.GetComponentInParent<NormalCamera>();
 
             _currentParameters = _parameters[0];
             _timeToStartFollow = _currentParameters.timeToStartFollow;
@@ -85,7 +86,7 @@ namespace SurgeEngine.Code.CameraSystem
 
         private void Following()
         {
-            if (Common.InDelayTime(actor.input.GetLastLookInputTime(), _timeToStartFollow))
+            if (Common.InDelayTime(actor.input.GetLastLookInputTime(), _timeToStartFollow) && !_normalCamera.active)
             {
                 if (actor.stats.currentSpeed > 1f)
                 {
@@ -104,10 +105,6 @@ namespace SurgeEngine.Code.CameraSystem
                 if (actor.stats.groundAngle < 15) _y = Mathf.Lerp(_y, _autoLookDirection.y, 
                     actor.stats.currentSpeed * 0.1f * Time.deltaTime);
             }
-            else if (actor.stats.currentSpeed < 0.2f)
-            {
-                _autoLookDirection.x = 0;
-            }
             else
             {
                 _autoLookDirection.x = 0;
@@ -118,12 +115,13 @@ namespace SurgeEngine.Code.CameraSystem
             _y -= lookVector.y;
             _y = Mathf.Clamp(_y, -35, 50);
 
-            _cameraTransform.position = GetTarget();
+            _cameraTransform.localPosition = GetTarget();
         }
 
         private void LookAt()
         {
-            Quaternion quaternion = Quaternion.LookRotation(target.position - _cameraTransform.position);
+            Quaternion quaternion = Quaternion.LookRotation(target.position - _cameraTransform.position, 
+                _cameraTransform.parent.up);
             _cameraTransform.rotation = quaternion;
 
             _camera.fieldOfView = _fov;
@@ -145,7 +143,7 @@ namespace SurgeEngine.Code.CameraSystem
 
         private Vector3 GetTarget()
         {
-            Vector3 v = actor.transform.position + Quaternion.Euler(_y, _x, 0) * new Vector3(0, 0, -_distance);
+            Vector3 v = Quaternion.Euler(_y, _x, 0) * new Vector3(0, 0, -_distance);
             return v;
         }
 
@@ -228,6 +226,11 @@ namespace SurgeEngine.Code.CameraSystem
         public Camera GetCamera()
         {
             return _camera;
+        }
+        
+        public NormalCamera GetNormalCamera()
+        {
+            return _normalCamera;
         }
 
         public Transform GetCameraTransform() => _cameraTransform;

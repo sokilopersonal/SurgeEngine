@@ -24,8 +24,8 @@ namespace SurgeEngine.Code.Parameters
             
             if (stateMachine.IsPreviousState<FStateAir>()) animation.TransitionToState("Run Cycle", 0f);
 
-            stats.groundNormal = Vector3.up;
             _cameraTransform = actor.camera.GetCameraTransform();
+            stats.groundNormal = Vector3.up;
             
             //UpdateNormal();
             //ConvertAirToGroundVelocity();
@@ -34,7 +34,7 @@ namespace SurgeEngine.Code.Parameters
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
-
+            
             FBoost boost = stateMachine.GetSubState<FBoost>();
             if (boost.Active && stats.currentSpeed < boost.startForce)
             {
@@ -123,7 +123,7 @@ namespace SurgeEngine.Code.Parameters
 
             stats.movementVector = planar;
             stats.planarVelocity = planar;
-
+            
             Vector3 transformedInput = Quaternion.FromToRotation(_cameraTransform.up, normal) *
                                        (_cameraTransform.rotation * actor.input.moveVector);
             transformedInput = Vector3.ProjectOnPlane(transformedInput, normal);
@@ -214,7 +214,8 @@ namespace SurgeEngine.Code.Parameters
         {
             if (!_canAttach) return;
             
-            _rigidbody.position = point + normal;
+            //_rigidbody.position = point + normal;
+            _rigidbody.position = Vector3.Lerp(_rigidbody.position, point + normal, 14 * Time.fixedDeltaTime);
         }
 
         private void SlopePrediction(float dt)

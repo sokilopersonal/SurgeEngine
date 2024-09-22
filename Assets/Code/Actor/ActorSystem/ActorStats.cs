@@ -29,7 +29,8 @@ namespace SurgeEngine.Code.ActorSystem
 
         private void Update()
         {
-            currentSpeed = planarVelocity.magnitude;
+            currentSpeed = _rigidbody.linearVelocity.magnitude;
+            Debug.Log(currentSpeed);
             currentVerticalSpeed = _rigidbody.linearVelocity.y;
         }
 

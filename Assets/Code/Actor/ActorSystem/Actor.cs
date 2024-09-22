@@ -44,7 +44,6 @@ namespace SurgeEngine.Code.ActorSystem
             }
             
             stateMachine.SetState<FStateIdle>();
-            
             InitializeComponents();
         }
 
