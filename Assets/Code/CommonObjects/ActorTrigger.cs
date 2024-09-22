@@ -4,7 +4,7 @@ namespace SurgeEngine.Code.CommonObjects
 {
     public class ActorTrigger : ContactBase
     {
-        private void Awake()
+       protected virtual void Awake()
         {
             var collision = gameObject.AddComponent<BoxCollider>();
             collision.center = offset;

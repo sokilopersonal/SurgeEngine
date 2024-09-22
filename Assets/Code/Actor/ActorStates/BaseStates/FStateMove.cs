@@ -8,13 +8,10 @@ namespace SurgeEngine.Code.Parameters
         
         public override void OnEnter()
         {
-            if (_rigidbody == null)
-            {
-                _rigidbody = actor.GetComponent<Rigidbody>();
-
-                _rigidbody.solverIterations = 12;
-                _rigidbody.solverVelocityIterations = 4;
-            }
+            _rigidbody = actor._rigidbody;
+            
+            _rigidbody.solverIterations = 12;
+            _rigidbody.solverVelocityIterations = 4;
         }
     }
 }

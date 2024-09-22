@@ -22,9 +22,13 @@ namespace SurgeEngine.Code.ActorSystem
 
         public int ID { get; private set; }
 
+        [HideInInspector] public Rigidbody _rigidbody;
+
         private void Awake()
         {
             ID = gameObject.GetInstanceID();
+            
+            _rigidbody = GetComponent<Rigidbody>();
             
             stateMachine = new FStateMachine();
             foreach (var state in states)

@@ -12,7 +12,7 @@ namespace SurgeEngine.Code.CommonObjects
 
         private void OnCollisionEnter(Collision msg)
         {
-            if (ActorContext.Context.gameObject == msg.gameObject)
+            if (ActorContext.Context.gameObject == msg.transform.parent.gameObject)
             {
                 OnCollisionContact(msg);
             }
@@ -20,7 +20,7 @@ namespace SurgeEngine.Code.CommonObjects
 
         private void OnTriggerEnter(Collider msg)
         {
-            if (ActorContext.Context.gameObject == msg.gameObject)
+            if (ActorContext.Context.gameObject == msg.transform.parent.gameObject)
             {
                 OnTriggerContact(msg);
             }
@@ -38,8 +38,9 @@ namespace SurgeEngine.Code.CommonObjects
         
         protected virtual void Draw()
         {
+            Gizmos.matrix = transform.localToWorldMatrix;
             Gizmos.color = Color.white;
-            Gizmos.DrawWireCube(transform.position + offset, new Vector3(collisionWidth, collisionHeight, collisionDepth));
+            Gizmos.DrawWireCube(Vector3.zero + offset, new Vector3(collisionWidth, collisionHeight, collisionDepth));
         }
 
         private void OnDrawGizmos()
