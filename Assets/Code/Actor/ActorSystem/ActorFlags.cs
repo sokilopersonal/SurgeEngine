@@ -18,8 +18,6 @@ namespace SurgeEngine.Code.ActorSystem
         public void AddFlag(Flag flag)
         {
             hash.Add(flag);
-
-            Debug.Log($"Added flag: {flag.type}");
         }
         
         public void RemoveFlag(Flag flag)

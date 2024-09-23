@@ -96,8 +96,11 @@ namespace SurgeEngine.Code.Parameters
             Vector3 vel = _rigidbody.linearVelocity;
             vel = Vector3.ProjectOnPlane(vel, stats.groundNormal);
 
-            Quaternion rot = Quaternion.LookRotation(vel, stats.transformNormal);
-            actor.transform.rotation = rot;
+            if (vel != Vector3.zero)
+            {
+                Quaternion rot = Quaternion.LookRotation(vel, stats.transformNormal);
+                actor.transform.rotation = rot;
+            }
         }
 
         protected float GetAirTime() => _airTime;

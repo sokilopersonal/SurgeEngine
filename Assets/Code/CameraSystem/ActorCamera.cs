@@ -235,7 +235,6 @@ namespace SurgeEngine.Code.CameraSystem
 
             _currentParameters = target;
             callback?.Invoke(target);
-            Debug.Log($"[Actor Camera] Camera changed to {_currentParameters.name}");
         }
 
         public Camera GetCamera()
