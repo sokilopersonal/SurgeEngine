@@ -78,6 +78,11 @@ namespace SurgeEngine.Code.ActorSystem
                 lookVector = Vector2.zero;
             }
 #endif
+
+            if (actor.flags.HasFlag(FlagType.OutOfControl))
+            {
+                moveVector = Vector3.zero;
+            }
         }
         
         public float GetLastLookInputTime()

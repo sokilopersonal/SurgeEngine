@@ -19,7 +19,7 @@ namespace SurgeEngine.Code.CommonObjects
 
         public void Initialize(float time)
         {
-            transform.localScale = Vector3.one * 1.5f;
+            transform.localScale = Vector3.one * 1.2f;
             transform.parent = _camera.transform;
             
             _initialScale = transform.localScale;
@@ -49,8 +49,8 @@ namespace SurgeEngine.Code.CommonObjects
                 Easings.Get(Easing.InCubic, _factor));
             
             Matrix4x4 viewMatrix = _camera.worldToCameraMatrix;
-            Vector3 cameraForward = viewMatrix.inverse.MultiplyVector(Vector3.forward);
-            _targetRotation = Quaternion.LookRotation(cameraForward, _camera.transform.up);
+            Vector3 cameraForward = viewMatrix.inverse.MultiplyVector(_camera.transform.right);
+            _targetRotation = Quaternion.LookRotation(cameraForward, Vector3.up);
             transform.localRotation = Quaternion.Lerp(_initialRotation, _targetRotation, 
                 Easings.Get(Easing.OutCubic, _factor));
             

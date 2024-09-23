@@ -15,6 +15,7 @@ namespace SurgeEngine.Code.ActorSystem
         public new ActorAnimation animation;
         public ActorEffects effects;
         public ActorModel model;
+        public ActorFlags flags;
         
         public FStateMachine stateMachine;
         public FActorState[] states;
@@ -22,13 +23,13 @@ namespace SurgeEngine.Code.ActorSystem
 
         public int ID { get; private set; }
 
-        [HideInInspector] public Rigidbody _rigidbody;
+        [HideInInspector] public new Rigidbody rigidbody;
 
         private void Awake()
         {
             ID = gameObject.GetInstanceID();
             
-            _rigidbody = GetComponent<Rigidbody>();
+            rigidbody = GetComponent<Rigidbody>();
             
             stateMachine = new FStateMachine();
             foreach (var state in states)
@@ -56,6 +57,7 @@ namespace SurgeEngine.Code.ActorSystem
             animation?.SetOwner(this);
             effects?.SetOwner(this);
             model?.SetOwner(this);
+            flags?.SetOwner(this);
         }
         
         private void Update()
@@ -71,6 +73,11 @@ namespace SurgeEngine.Code.ActorSystem
         private void LateUpdate()
         {
             stateMachine.LateTick(Time.deltaTime);
+        }
+
+        public void AddImpulse(Vector3 impulse)
+        {
+            rigidbody.AddForce(impulse, ForceMode.Impulse);
         }
     }
 }

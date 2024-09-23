@@ -5,10 +5,11 @@ namespace SurgeEngine.Code.CommonObjects
 {
     public abstract class ContactBase : MonoBehaviour
     {
+        [Header("Collision")]
         [SerializeField] protected Vector3 offset;
-        [SerializeField] protected float collisionWidth = 2f;
-        [SerializeField] protected float collisionHeight = 2f;
-        [SerializeField] protected float collisionDepth = 0.5f;
+        [SerializeField] protected float collisionWidth = 0.3f;
+        [SerializeField] protected float collisionHeight = 0.3f;
+        [SerializeField] protected float collisionDepth = 0.3f;
 
         private void OnCollisionEnter(Collision msg)
         {

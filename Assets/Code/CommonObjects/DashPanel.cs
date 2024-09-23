@@ -22,7 +22,7 @@ namespace SurgeEngine.Code.CommonObjects
             base.OnTriggerContact(msg);
             
             var context = ActorContext.Context;
-            context._rigidbody.linearVelocity = transform.forward * speed;
+            context.rigidbody.linearVelocity = transform.forward * speed;
             context.stateMachine.SetState<FStateGround>();
         }
     }

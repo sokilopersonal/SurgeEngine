@@ -1,4 +1,5 @@
-﻿using SurgeEngine.Code.Custom;
+﻿using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.Parameters.SonicSubStates;
 using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
@@ -47,7 +48,7 @@ namespace SurgeEngine.Code.Parameters
     
             if (boost.Active)
             {
-                _rigidbody.AddForce(Vector3.ProjectOnPlane(_rigidbody.transform.forward, stats.groundNormal) * (boost.boostForce * dt), ForceMode.Impulse);
+                _rigidbody.AddForce(Vector3.ProjectOnPlane(stats.planarVelocity.normalized, stats.groundNormal) * (boost.boostForce * dt), ForceMode.Impulse);
                 float maxSpeed = stats.moveParameters.maxSpeed * boost.maxSpeedMultiplier;
                 _rigidbody.linearVelocity = Vector3.ClampMagnitude(_rigidbody.linearVelocity, maxSpeed);
             }
@@ -88,7 +89,7 @@ namespace SurgeEngine.Code.Parameters
             base.OnFixedTick(dt);
             
             Vector3 prevNormal = stats.groundNormal; 
-            if (Physics.Raycast(actor.transform.position, -actor.transform.up, out var hit,
+            if (Physics.Raycast(_rigidbody.worldCenterOfMass, -actor.transform.up, out var hit,
                     stats.moveParameters.castParameters.castDistance, stats.moveParameters.castParameters.collisionMask))
             {
                 var point = hit.point;
@@ -101,11 +102,10 @@ namespace SurgeEngine.Code.Parameters
 
                 if (_rigidbody.linearVelocity.magnitude > SLOPE_PREDICTION_ACTIVATE_SPEED)
                 {
-                    SlopePrediction(dt);
+                    //SlopePrediction(dt);
                 }
 
                 Movement(dt);
-                SlopePhysics(dt);
                 Rotate(dt);
                 Snap(point, normal);
                 
@@ -154,6 +154,8 @@ namespace SurgeEngine.Code.Parameters
                 Deacceleration(stats.moveParameters.maxDeacceleration, stats.moveParameters.minDeacceleration);
             }
             
+            SlopePhysics(dt);
+            
             Vector3 movementVelocity = stats.movementVector;
             if (!stateMachine.GetSubState<FBoost>().Active) movementVelocity = Vector3.ClampMagnitude(movementVelocity, stats.moveParameters.maxSpeed); 
             _rigidbody.linearVelocity = movementVelocity;
@@ -161,6 +163,8 @@ namespace SurgeEngine.Code.Parameters
 
         private void Deacceleration(float min, float max)
         {
+            if (actor.flags.HasFlag(FlagType.OutOfControl)) return;
+            
             float f = Mathf.Lerp(max, min, 
                 stats.movementVector.magnitude / stats.moveParameters.topSpeed);
             if (stats.movementVector.magnitude > 1f)
@@ -217,7 +221,7 @@ namespace SurgeEngine.Code.Parameters
             if (!_canAttach) return;
             
             //_rigidbody.position = point + normal;
-            _rigidbody.position = Vector3.Lerp(_rigidbody.position, point + normal, 14 * Time.fixedDeltaTime);
+            _rigidbody.position = Vector3.Slerp(_rigidbody.position, point + normal, 20 * Time.fixedDeltaTime);
         }
 
         private void SlopePrediction(float dt)

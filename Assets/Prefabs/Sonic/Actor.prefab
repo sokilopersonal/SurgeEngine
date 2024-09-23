@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 8151943423241765112}
   - component: {fileID: 5212509988277264324}
   - component: {fileID: 7099733658116403469}
+  - component: {fileID: 1696099844310411520}
   - component: {fileID: 2248048767635427180}
   - component: {fileID: 5828909329531261166}
   m_Layer: 3
@@ -99,6 +100,7 @@ MonoBehaviour:
   animation: {fileID: 2248048767635427180}
   effects: {fileID: 289070888726962416}
   model: {fileID: 6916054324571523613}
+  flags: {fileID: 1696099844310411520}
   stateMachine:
     currentStateName: 
   states:
@@ -109,7 +111,7 @@ MonoBehaviour:
   - {fileID: 586481136528311057}
   subStates:
   - {fileID: 1674226627464673938}
-  _rigidbody: {fileID: 0}
+  rigidbody: {fileID: 0}
 --- !u!114 &8151943423241765112
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -276,6 +278,18 @@ MonoBehaviour:
   transformNormal: {x: 0, y: 0, z: 0}
   skidding: 0
   groundAngle: 0
+--- !u!114 &1696099844310411520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100729958831981340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10537bbdaf744484a584312d63000c13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &2248048767635427180
 MonoBehaviour:
   m_ObjectHideFlags: 0
