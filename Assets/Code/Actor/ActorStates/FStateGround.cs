@@ -102,7 +102,7 @@ namespace SurgeEngine.Code.Parameters
 
                 if (_rigidbody.linearVelocity.magnitude > SLOPE_PREDICTION_ACTIVATE_SPEED)
                 {
-                    //SlopePrediction(dt);
+                    SlopePrediction(dt);
                 }
 
                 Movement(dt);
@@ -216,7 +216,7 @@ namespace SurgeEngine.Code.Parameters
             }
         }
 
-        private void Snap(Vector3 point, Vector3 normal)
+        private void Snap(Vector3 point, Vector3 normal) // TODO: Fix snapping
         {
             if (!_canAttach) return;
             
