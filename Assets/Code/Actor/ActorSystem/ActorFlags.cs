@@ -34,9 +34,9 @@ namespace SurgeEngine.Code.ActorSystem
 
         private void Update()
         {
-            foreach (var flag in hash)
+            foreach (var flag in hash.ToList())
             {
-                flag?.Count(Time.deltaTime);
+                flag.Count(Time.deltaTime);
             }
         }
     }
@@ -47,7 +47,6 @@ namespace SurgeEngine.Code.ActorSystem
         public FlagType type;
         private readonly bool isTemporary;
         private readonly float time;
-        
         private float timer;
         
         public Flag(FlagType type, bool isTemporary = true, float time = 1) // We need HashSet link to remove this flag
