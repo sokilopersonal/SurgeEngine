@@ -1,4 +1,5 @@
-﻿using SurgeEngine.Code.Parameters;
+﻿using SurgeEngine.Code.CommonObjects;
+using SurgeEngine.Code.Parameters;
 using UnityEngine;
 
 namespace SurgeEngine.Code.ActorSystem
@@ -17,6 +18,7 @@ namespace SurgeEngine.Code.ActorSystem
         public Vector3 transformNormal;
         public bool skidding;
         public float groundAngle;
+        public ContactBase lastContactObject;
 
         private Rigidbody _rigidbody;
 

@@ -7,12 +7,19 @@ namespace SurgeEngine.Code.Parameters
         public override void OnEnter()
         {
             base.OnEnter();
-            
-            animation.TransitionToState("Ball", 0, true);
+
+            animation.TransitionToState("JumpStart", 0f, true);
             //_rigidbody.linearVelocity = new Vector3(_rigidbody.linearVelocity.x, 0f, _rigidbody.linearVelocity.z);
             _rigidbody.AddForce(actor.transform.up * stats.jumpParameters.jumpForce, ForceMode.Impulse);
             
             actor.transform.rotation = Quaternion.Euler(0, actor.transform.rotation.eulerAngles.y, 0);
+        }
+
+        public override void OnExit()
+        {
+            base.OnExit();
+            
+            animation.ResetAction();
         }
 
         public override void OnTick(float dt)
@@ -30,7 +37,7 @@ namespace SurgeEngine.Code.Parameters
                 actor.transform.rotation = rot;
             }
 
-            if (GetAirTime() > 1f && stats.currentVerticalSpeed < -15f)
+            if (GetAirTime() > 0.85f)
             {
                 stateMachine.SetState<FStateAir>();
             }

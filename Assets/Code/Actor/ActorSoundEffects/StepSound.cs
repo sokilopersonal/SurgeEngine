@@ -21,7 +21,7 @@ namespace SurgeEngine.Code.ActorSoundEffects
 
         public void Play()
         {
-            if (_stepSoundInstance.isValid())
+            if (_stepSoundInstance.isValid() && actor.stateMachine.CurrentState is FStateGround)
             {
                 RuntimeManager.AttachInstanceToGameObject(_stepSoundInstance, transform);
                 _stepSoundInstance.setParameterByNameWithLabel("GroundTag", actor.stateMachine.GetState<FStateGround>().GetSurfaceTag());

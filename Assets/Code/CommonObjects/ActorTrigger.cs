@@ -6,10 +6,10 @@ namespace SurgeEngine.Code.CommonObjects
     {
        protected virtual void Awake()
         {
-            var collision = gameObject.AddComponent<BoxCollider>();
-            collision.center = offset;
-            collision.size = new Vector3(collisionWidth, collisionHeight, collisionDepth);
-            collision.isTrigger = true;
+            // var collision = gameObject.AddComponent<BoxCollider>();
+            // collision.center = offset;
+            // collision.size = new Vector3(collisionWidth, collisionHeight, collisionDepth);
+            // collision.isTrigger = true;
 
             gameObject.layer = LayerMask.NameToLayer("Trigger");
         }

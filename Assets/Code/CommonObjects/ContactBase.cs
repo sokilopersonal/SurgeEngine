@@ -1,15 +1,12 @@
-﻿using SurgeEngine.Code.ActorSystem;
+﻿using System;
+using SurgeEngine.Code.ActorSystem;
 using UnityEngine;
 
 namespace SurgeEngine.Code.CommonObjects
 {
     public abstract class ContactBase : MonoBehaviour
     {
-        [Header("Collision")]
-        [SerializeField] protected Vector3 offset;
-        [SerializeField] protected float collisionWidth = 0.3f;
-        [SerializeField] protected float collisionHeight = 0.3f;
-        [SerializeField] protected float collisionDepth = 0.3f;
+        public Action<ContactBase> OnContact; 
 
         private void OnCollisionEnter(Collision msg)
         {
@@ -27,21 +24,23 @@ namespace SurgeEngine.Code.CommonObjects
             }
         }
 
-        protected virtual void OnCollisionContact(Collision msg)
+        public virtual void OnCollisionContact(Collision msg)
         {
+            ActorContext.Context.stats.lastContactObject = this;
             
+            OnContact?.Invoke(this);
         }
-        
-        protected virtual void OnTriggerContact(Collider msg)
+
+        public virtual void OnTriggerContact(Collider msg)
         {
+            ActorContext.Context.stats.lastContactObject = this;
             
+            OnContact?.Invoke(this);
         }
         
         protected virtual void Draw()
         {
             Gizmos.matrix = transform.localToWorldMatrix;
-            Gizmos.color = Color.white;
-            Gizmos.DrawWireCube(Vector3.zero + offset, new Vector3(collisionWidth, collisionHeight, collisionDepth));
         }
 
         private void OnDrawGizmos()

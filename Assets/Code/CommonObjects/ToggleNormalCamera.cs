@@ -7,7 +7,7 @@ namespace SurgeEngine.Code.CommonObjects
     {
         [SerializeField] private bool bothSide = true;
 
-        protected override void OnTriggerContact(Collider msg)
+        public override void OnTriggerContact(Collider msg)
         {
             base.OnTriggerContact(msg);
         }

@@ -17,7 +17,7 @@ namespace SurgeEngine.Code.CommonObjects
             source = GetComponent<AudioSource>();
         }
 
-        protected override void OnTriggerContact(Collider msg)
+        public override void OnTriggerContact(Collider msg)
         {
             base.OnTriggerContact(msg);
             

@@ -46,6 +46,10 @@ namespace SurgeEngine.Code.ActorSystem
             
             stateMachine.SetState<FStateIdle>();
             InitializeComponents();
+
+            transform.rotation = transform.parent.rotation;
+            model.root.transform.rotation = transform.parent.rotation;
+            transform.parent.rotation = Quaternion.identity;
         }
 
         private void InitializeComponents()

@@ -4,16 +4,16 @@ namespace SurgeEngine.Code.ActorSystem
 {
     public class ActorModel : ActorComponent
     {
-        [SerializeField] private Transform model;
+        public Transform root;
 
         private void Update()
         {
-            model.localPosition = actor.transform.localPosition;
-            model.localRotation = Quaternion.Slerp(model.localRotation,
+            root.localPosition = actor.transform.localPosition;
+            root.localRotation = Quaternion.Slerp(root.localRotation,
                 Quaternion.LookRotation(actor.transform.forward, actor.transform.up),
                 15 * Time.deltaTime);
             
-            actor.effects.spinball.transform.SetParent(model, false);
+            actor.effects.spinball.transform.SetParent(root, false);
         }
     }
 }

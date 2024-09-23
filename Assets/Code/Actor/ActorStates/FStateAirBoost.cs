@@ -13,19 +13,12 @@ namespace SurgeEngine.Code.Parameters
             {
                 if (boost.ApplyAirForce(_rigidbody, _rigidbody.transform.forward * boost.airStartForce))
                 {
-                    animation.TransitionToState("Air Boost", 1f, true);
+                    animation.TransitionToState("Air Boost", 0.2f, true);
                     boost.canAirBoost = false;
                 }
             }
             
             stateMachine.SetState<FStateAir>();
-        }
-
-        public override void OnExit()
-        {
-            base.OnExit();
-            
-            animation.SetAction(false);
         }
     }
 }

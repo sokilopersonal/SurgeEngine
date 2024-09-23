@@ -60,7 +60,7 @@ namespace SurgeEngine.Code.CommonObjects
             }
         }
 
-        protected override void OnTriggerContact(Collider msg)
+        public override void OnTriggerContact(Collider msg)
         {
             base.OnTriggerContact(msg);
             

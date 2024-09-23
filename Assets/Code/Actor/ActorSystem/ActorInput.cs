@@ -12,8 +12,8 @@ namespace SurgeEngine.Code.ActorSystem
         private SurgeInput _input;
         
         // Boost
-        public bool BoostPressed => _input.Gameplay.Boost.WasPressedThisFrame();
-        public bool BoostHeld => _input.Gameplay.Boost.IsPressed();
+        public bool BoostPressed => _input.Gameplay.Boost.WasPressedThisFrame() && !actor.flags.HasFlag(FlagType.OutOfControl);
+        public bool BoostHeld => _input.Gameplay.Boost.IsPressed() && !actor.flags.HasFlag(FlagType.OutOfControl);
         
         public Action<InputAction.CallbackContext> BoostAction;
         
@@ -39,16 +39,25 @@ namespace SurgeEngine.Code.ActorSystem
         {
             _input.Enable();
             
-            _input.Gameplay.Boost.started += context => BoostAction?.Invoke(context);
-            _input.Gameplay.Boost.canceled += context => BoostAction?.Invoke(context);
+            _input.Gameplay.Boost.started += BoostInput;
+            _input.Gameplay.Boost.canceled += BoostInput;
             
-            _input.Gameplay.Jump.started += context => JumpAction?.Invoke(context);
-            _input.Gameplay.Jump.canceled += context => JumpAction?.Invoke(context);
+            _input.Gameplay.Jump.started += JumpInput;
+            _input.Gameplay.Jump.canceled += JumpInput;
         }
 
         private void OnDisable()
         {
             _input.Disable();
+            
+            moveVector = Vector3.zero;
+            lookVector = Vector2.zero;
+            
+            _input.Gameplay.Boost.started -= BoostInput;
+            _input.Gameplay.Boost.canceled -= BoostInput;
+            
+            _input.Gameplay.Jump.started -= JumpInput;
+            _input.Gameplay.Jump.canceled -= JumpInput;
         }
 
         private void Update()
@@ -78,13 +87,33 @@ namespace SurgeEngine.Code.ActorSystem
                 lookVector = Vector2.zero;
             }
 #endif
-
+            
             if (actor.flags.HasFlag(FlagType.OutOfControl))
             {
                 moveVector = Vector3.zero;
             }
         }
-        
+
+        private void JumpInput(InputAction.CallbackContext obj)
+        {
+            if (actor.flags.HasFlag(FlagType.OutOfControl))
+            {
+                return;
+            }
+            
+            JumpAction?.Invoke(obj);
+        }
+
+        private void BoostInput(InputAction.CallbackContext obj)
+        {
+            if (actor.flags.HasFlag(FlagType.OutOfControl))
+            {
+                return;
+            }
+            
+            BoostAction?.Invoke(obj);
+        }
+
         public float GetLastLookInputTime()
         {
             return _lastLookInputTime;

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.Parameters;
@@ -17,6 +18,7 @@ namespace SurgeEngine.Code.CameraSystem
     {
         [Header("Target")]
         public Transform target;
+        [SerializeField] private Vector3 lookOffset;
         
         [Header("Collision")]
         public LayerMask collisionMask;
@@ -29,15 +31,20 @@ namespace SurgeEngine.Code.CameraSystem
         private float _x;
         private float _y;
         private float _collisionDistance;
-        private float _timeToStartFollow;
+        private bool _autoActive;
+
+        private Vector3 _tempFollowPoint;
+        private float _tempY;
         
         private Vector2 _autoLookDirection;
+        private Vector3 _forwardLookPoint;
 
         private CameraParameters _currentParameters;
 
         private float _followPower;
         private float _fov;
         private float _distance;
+        private float _timeToStartFollow;
 
         private Coroutine _parameterChangeCoroutine;
 
@@ -79,8 +86,8 @@ namespace SurgeEngine.Code.CameraSystem
         {
             AutoFollow();
             Following();
-            LookAt();
             Collision();
+            LookAt();
         }
 
         private void Following()
@@ -88,15 +95,19 @@ namespace SurgeEngine.Code.CameraSystem
             var lookVector = actor.input.lookVector;
             _x += lookVector.x + _autoLookDirection.x;
             _y -= lookVector.y;
-            _y = Mathf.Clamp(_y, -35, 50);
-
-            _cameraTransform.localPosition = GetTarget();
+            _y = Mathf.Clamp(_y, -65, 65);
+            
+            _tempY = Mathf.Lerp(_tempY, target.position.y, Time.deltaTime * Mathf.Max(Mathf.Abs(actor.stats.currentVerticalSpeed * 1.25f), 12f));
+            _tempFollowPoint = target.position;
+            _tempFollowPoint.y = _tempY;
         }
 
         private void AutoFollow()
         {
             if (Common.InDelayTime(actor.input.GetLastLookInputTime(), _timeToStartFollow))
             {
+                _autoActive = true;
+                
                 if (actor.stats.currentSpeed > 1f)
                 {
                     if (!(1 - Mathf.Abs(Vector3.Dot(actor.transform.forward, Vector3.up)) < 0.01f))
@@ -112,7 +123,7 @@ namespace SurgeEngine.Code.CameraSystem
 
                 if (actor.stateMachine.CurrentState is FStateGround)
                 {
-                    _autoLookDirection.y = 10f * (actor.stateMachine.GetSubState<FBoost>().Active ? 1.45f : 1f);
+                    _autoLookDirection.y = 4f * (actor.stateMachine.GetSubState<FBoost>().Active ? 1.75f : 1f);
                     _autoLookDirection.y -= actor.stats.currentVerticalSpeed * 1.25f;
                     
                     if (Mathf.Approximately(actor.stats.groundAngle, 90))
@@ -130,15 +141,16 @@ namespace SurgeEngine.Code.CameraSystem
             else
             {
                 _autoLookDirection.x = 0;
+
+                _autoActive = false;
             }
         }
 
         private void LookAt()
         {
-            Quaternion quaternion = 
-                Quaternion.LookRotation(target.position - _cameraTransform.position);
-            _cameraTransform.rotation = quaternion;
-
+            Quaternion targetRotation = Quaternion.LookRotation(_tempFollowPoint - _cameraTransform.position);
+            _cameraTransform.rotation = targetRotation;
+            
             _camera.fieldOfView = _fov;
         }
 
@@ -146,19 +158,20 @@ namespace SurgeEngine.Code.CameraSystem
         {
             var ray = new Ray(target.position, -_cameraTransform.forward);
             float radius = collisionRadius;
-            var maxDistance = Vector3.Distance(target.position, _cameraTransform.position);
+            var maxDistance = _distance;
 
             float result = Physics.SphereCast(ray, radius, out RaycastHit hit,
                 maxDistance, collisionMask, QueryTriggerInteraction.Ignore)
                 ? hit.distance
                 : _distance;
-
-            _cameraTransform.position = target.position - _cameraTransform.forward * result;
+            
+            _cameraTransform.position = GetTarget(result);
         }
 
-        private Vector3 GetTarget()
+        private Vector3 GetTarget(float distance)
         {
-            Vector3 v = actor.transform.position + Quaternion.Euler(_y, _x, 0) * new Vector3(0, 0, -_distance);
+            Vector3 targetPosition = _tempFollowPoint;
+            Vector3 v = targetPosition - Quaternion.Euler(_y, _x, 0) * Vector3.forward * distance;
             return v;
         }
 

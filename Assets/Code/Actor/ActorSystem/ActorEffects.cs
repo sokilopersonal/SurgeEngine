@@ -35,14 +35,20 @@ namespace SurgeEngine.Code.ActorSystem
 
         private void OnStateAssign(FState obj)
         {
-            if (obj is FStateJump)
+            if (obj is FStateAir or FStateGround or FStateAirBoost)
             {
-                spinball.enabled = true;
+                DisableSpinball();
             }
-            else
-            {
-                spinball.enabled = false;
-            }
+        }
+
+        public void EnableSpinball()
+        {
+            spinball.enabled = true;
+        }
+        
+        public void DisableSpinball()
+        {
+            spinball.enabled = false;
         }
     }
 }

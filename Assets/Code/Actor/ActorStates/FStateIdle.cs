@@ -14,6 +14,7 @@ namespace SurgeEngine.Code.Parameters
             
             _rigidbody.Sleep();
             animation.SetBool("Idle", true);
+            stats.planarVelocity = Vector3.zero;
             
             if (Physics.Raycast(actor.transform.position, -actor.transform.up, out var hit,
                     moveParameters.castParameters.castDistance, moveParameters.castParameters.collisionMask))

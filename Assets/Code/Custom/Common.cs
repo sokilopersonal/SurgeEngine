@@ -17,5 +17,12 @@ namespace SurgeEngine.Code.Custom
         {
             return last + delay < Time.time;
         }
+        
+        public static Vector3 GetCross(Transform transform, float pitch, bool inverse = false)
+        {
+            Vector3 cross = Vector3.Cross(Vector3.up, inverse ? transform.right : -transform.right);
+            cross = Quaternion.AngleAxis(inverse ? pitch : -pitch, transform.right) * cross;
+            return cross;
+        }
     }
 }

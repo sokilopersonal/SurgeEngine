@@ -19,8 +19,8 @@ namespace SurgeEngine.Code.Custom
             Matrix4x4 viewProjectionMatrix = projectionMatrix * viewMatrix;
 
             Vector3 ndcPosition = new Vector3(
-                screenPosition.x / Screen.width * 2 - 1,
-                screenPosition.y / Screen.height * 2 - 1,
+                screenPosition.x,
+                screenPosition.y,
                 screenPosition.z
             );
             
