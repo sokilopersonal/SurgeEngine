@@ -18,7 +18,8 @@ namespace SurgeEngine.Code.ActorSystem
         public Action<InputAction.CallbackContext> BoostAction;
         
         // Jump
-        public bool JumpPressed => _input.Gameplay.Jump.WasPressedThisFrame();
+        public bool JumpPressed => _input.Gameplay.Jump.WasPressedThisFrame() && !actor.flags.HasFlag(FlagType.OutOfControl);
+        public bool JumpHeld => _input.Gameplay.Jump.IsPressed() && !actor.flags.HasFlag(FlagType.OutOfControl);
         public Action<InputAction.CallbackContext> JumpAction;
 
         private float _lastLookInputTime;
