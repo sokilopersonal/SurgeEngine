@@ -1,4 +1,5 @@
 ﻿using System;
+using SurgeEngine.Code.Custom;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -12,8 +13,10 @@ namespace SurgeEngine.Code.ActorSystem
         private SurgeInput _input;
         
         // Boost
-        public bool BoostPressed => _input.Gameplay.Boost.WasPressedThisFrame() && !actor.flags.HasFlag(FlagType.OutOfControl);
-        public bool BoostHeld => _input.Gameplay.Boost.IsPressed() && !actor.flags.HasFlag(FlagType.OutOfControl);
+        public bool BoostPressed => _input.Gameplay.Boost.WasPressedThisFrame()
+                                    && !actor.flags.HasFlag(FlagType.OutOfControl) && !actor.flags.CheckForTag(Tags.AllowBoost);
+        public bool BoostHeld => _input.Gameplay.Boost.IsPressed() 
+                                 && !actor.flags.HasFlag(FlagType.OutOfControl) && !actor.flags.CheckForTag(Tags.AllowBoost);
         
         public Action<InputAction.CallbackContext> BoostAction;
         
@@ -104,10 +107,10 @@ namespace SurgeEngine.Code.ActorSystem
             
             JumpAction?.Invoke(obj);
         }
-
+    
         private void BoostInput(InputAction.CallbackContext obj)
         {
-            if (actor.flags.HasFlag(FlagType.OutOfControl))
+            if (actor.flags.HasFlag(FlagType.OutOfControl) && !actor.flags.CheckForTag(Tags.AllowBoost))
             {
                 return;
             }

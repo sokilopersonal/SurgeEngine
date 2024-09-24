@@ -1,7 +1,6 @@
 ﻿using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.Parameters.SonicSubStates;
-using SurgeEngine.Code.SurgeDebug;
 using UnityEngine;
 
 namespace SurgeEngine.Code.CommonObjects
@@ -46,7 +45,7 @@ namespace SurgeEngine.Code.CommonObjects
                         context.rigidbody.linearVelocity = Vector3.ClampMagnitude(context.rigidbody.linearVelocity, impulse);
                     }
                 
-                    context.flags.AddFlag(new Flag(FlagType.OutOfControl, true, outOfControl));
+                    context.flags.AddFlag(new Flag(FlagType.OutOfControl, null, true, outOfControl));
                 }
             }
         }

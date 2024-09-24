@@ -1,4 +1,5 @@
 ﻿using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.Parameters.SonicSubStates;
 using UnityEngine;
@@ -22,8 +23,12 @@ namespace SurgeEngine.Code.Parameters
         public override void OnEnter()
         {
             base.OnEnter();
-            
-            if (stateMachine.IsPreviousState<FStateAir>()) animation.TransitionToState("Run Cycle", 0f);
+
+            if (stateMachine.IsPreviousState<FStateAir>() || !stateMachine.IsPreviousState<FStateSpecialJump>() ||
+                stats.lastContactObject is not DashPanel)
+            {
+                animation.TransitionToState("Run Cycle", 0f);
+            }
 
             _cameraTransform = actor.camera.GetCameraTransform();
             stats.groundNormal = Vector3.up;
@@ -48,7 +53,7 @@ namespace SurgeEngine.Code.Parameters
     
             if (boost.Active)
             {
-                _rigidbody.AddForce(Vector3.ProjectOnPlane(stats.planarVelocity.normalized, stats.groundNormal) * (boost.boostForce * dt), ForceMode.Impulse);
+                _rigidbody.AddForce(Vector3.ProjectOnPlane(_rigidbody.transform.forward, stats.groundNormal) * (boost.boostForce * dt), ForceMode.Impulse);
                 float maxSpeed = stats.moveParameters.maxSpeed * boost.maxSpeedMultiplier;
                 _rigidbody.linearVelocity = Vector3.ClampMagnitude(_rigidbody.linearVelocity, maxSpeed);
             }
@@ -105,7 +110,7 @@ namespace SurgeEngine.Code.Parameters
                 }
 
                 Movement(dt);
-                Rotate(dt);
+                actor.model.RotateBody(normal);
                 Snap(point, normal);
                 
                 _surfaceTag = hit.transform.gameObject.GetGroundTag();
@@ -287,20 +292,6 @@ namespace SurgeEngine.Code.Parameters
             {
                 actor.stats.groundNormal = predictedNormal;
                 _rigidbody.position = Vector3.MoveTowards(_rigidbody.position, predictedPosition, dt);
-            }
-        }
-
-        private void Rotate(float dt)
-        {
-            stats.transformNormal = stats.groundNormal;
-
-            Vector3 vel = _rigidbody.linearVelocity;
-            vel = Vector3.ProjectOnPlane(vel, stats.groundNormal);
-
-            if (vel.magnitude > 0.2f)
-            {
-                Quaternion rot = Quaternion.LookRotation(vel, stats.transformNormal);
-                actor.transform.rotation = rot;
             }
         }
 

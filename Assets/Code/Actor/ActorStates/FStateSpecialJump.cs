@@ -1,4 +1,5 @@
 ﻿using System;
+using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.Custom;
 using UnityEngine;
 
@@ -7,11 +8,14 @@ namespace SurgeEngine.Code.Parameters
     public class FStateSpecialJump : FStateMove
     {
         private float _jumpTimer;
+        private SpecialJumpData _data;
+        
+        private float _keepVelocityTimer;
 
         public override void OnEnter()
         {
             base.OnEnter();
-
+            
             _jumpTimer = 0.25f;
         }
 
@@ -27,6 +31,8 @@ namespace SurgeEngine.Code.Parameters
             {
                 _jumpTimer = 0;
             }
+            
+            SpecialTick(dt);
         }
 
         public override void OnFixedTick(float dt)
@@ -40,37 +46,71 @@ namespace SurgeEngine.Code.Parameters
                     stateMachine.SetState<FStateGround>();
                 }
             }
-            
-            Common.ApplyGravity(35f, dt);
         }
 
         public override void OnExit()
         {
             base.OnExit();
             
-            animation.TransitionToState("Run Cycle", 0f);
+            //animation.TransitionToState("Run Cycle", 0f);
         }
 
-        public void PlaySpecialAnimation(SpecialAnimationType type, float time)
+        private void SpecialTick(float dt)
         {
-            switch (type)
+            switch (_data.type)
             {
-                case SpecialAnimationType.JumpBoard:
-                    animation.TransitionToState("Jump Delux", time, true);
+                case SpecialJumpType.JumpBoard:
+                    Common.ApplyGravity(35, dt);
                     break;
-                case SpecialAnimationType.TrickJumper:
-                    animation.TransitionToState("Jump Spring", time, true);
+                case SpecialJumpType.TrickJumper:
                     break;
-                case SpecialAnimationType.Spring:
-                    animation.TransitionToState("Spring", time, true);
+                case SpecialJumpType.Spring:
+                    if (_keepVelocityTimer > 0)
+                    {
+                        _keepVelocityTimer -= dt;
+                        
+                        if (_keepVelocityTimer <= 0)
+                        {
+                            stateMachine.SetState<FStateAir>();
+                        }
+                    }
+                    
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(type), type, null);
+                    throw new ArgumentOutOfRangeException();
             }
+        }
+
+        public void SetSpecialData(SpecialJumpData data)
+        {
+            _data = data;
+        }
+        
+        public void PlaySpecialAnimation(float time)
+        {
+            switch (_data.type)
+            {
+                case SpecialJumpType.JumpBoard:
+                    animation.TransitionToState("Jump Delux", time, true);
+                    break;
+                case SpecialJumpType.TrickJumper:
+                    animation.TransitionToState("Jump Spring", time, true);
+                    break;
+                case SpecialJumpType.Spring:
+                    animation.TransitionToState("Jump Spring", time, true);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(_data), _data, null);
+            }
+        }
+        
+        public void SetKeepVelocity(float time)
+        {
+            _keepVelocityTimer = Mathf.Max(0.2f, time - (time * 0.075f));
         }
     }
 
-    public enum SpecialAnimationType
+    public enum SpecialJumpType
     {
         JumpBoard,
         TrickJumper,

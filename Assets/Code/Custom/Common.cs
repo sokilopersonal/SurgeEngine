@@ -30,6 +30,7 @@ namespace SurgeEngine.Code.Custom
         {
             var context = ActorContext.Context;
             context.rigidbody.linearVelocity = Vector3.zero;
+            context.rigidbody.angularVelocity = Vector3.zero;
             context.stats.planarVelocity = Vector3.zero;
             context.stats.movementVector = Vector3.zero;
             
@@ -47,7 +48,7 @@ namespace SurgeEngine.Code.Custom
         {
             var context = ActorContext.Context;
             return Physics.Raycast(context.transform.position, -context.transform.up, out result,
-                context.stats.moveParameters.castParameters.castDistance, context.stats.moveParameters.castParameters.collisionMask);
+                context.stats.moveParameters.castParameters.castDistance, context.stats.moveParameters.castParameters.collisionMask, QueryTriggerInteraction.Ignore);
         }
     }
 }

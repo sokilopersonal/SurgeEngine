@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using SurgeEngine.Code.ActorSystem;
+﻿using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Custom;
 using UnityEngine;
 

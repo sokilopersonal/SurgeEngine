@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using SurgeEngine.Code.ActorSystem;
+﻿using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.Parameters.SonicSubStates;
 using TMPro;

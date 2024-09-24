@@ -26,7 +26,6 @@ namespace SurgeEngine.Code.Parameters.SonicSubStates
         [Range(10f, 30f)] public float restoreSpeed;
 
         private Coroutine cancelBoostCoroutine;
-        private Coroutine boostDrainCoroutine;
 
         private void Awake()
         {
@@ -93,6 +92,18 @@ namespace SurgeEngine.Code.Parameters.SonicSubStates
                     }
                 }
             }
+
+            if (Active)
+            {
+                if (boostEnergy > 0)
+                {
+                    boostEnergy -= boostDrain * Time.deltaTime;
+                }
+                else
+                {
+                    Active = false;
+                }
+            }
             
             boostEnergy = Mathf.Clamp(boostEnergy, 0, 100);
         }
@@ -115,12 +126,7 @@ namespace SurgeEngine.Code.Parameters.SonicSubStates
             
             if (Active)
             {
-                boostDrainCoroutine = StartCoroutine(BoostDrain());
-            }
-            else
-            {
-                if (boostDrainCoroutine != null)
-                    StopCoroutine(boostDrainCoroutine);
+                boostEnergy -= startBoostDrain;
             }
         }
 
@@ -142,7 +148,7 @@ namespace SurgeEngine.Code.Parameters.SonicSubStates
             yield return new WaitForSeconds(time);
             Active = false;
             
-            if (boostDrainCoroutine != null) StopCoroutine(boostDrainCoroutine);
+            //if (boostDrainCoroutine != null) StopCoroutine(boostDrainCoroutine);
         }
     }
 }

@@ -30,6 +30,15 @@ namespace SurgeEngine.Code.ActorSystem
             return hash.Any(f => f.type == type);
         }
 
+        public bool CheckForTag(string tag)
+        {
+            return hash.Any(f =>
+            {
+                if (f.tags == null) return false;
+                return f.tags.Contains(tag);
+            });
+        }
+
         private void Update()
         {
             foreach (var flag in hash.ToList())
@@ -43,15 +52,17 @@ namespace SurgeEngine.Code.ActorSystem
     {
         private HashSet<Flag> hs;
         public FlagType type;
+        public string[] tags;
         private readonly bool isTemporary;
         private readonly float time;
         private float timer;
         
-        public Flag(FlagType type, bool isTemporary = true, float time = 1) // We need HashSet link to remove this flag
+        public Flag(FlagType type, string[] tags, bool isTemporary = true, float time = 1) // We need HashSet link to remove this flag
         {
             hs = ActorContext.Context.flags.hash;
             
             this.type = type;
+            this.tags = tags;
             this.isTemporary = isTemporary;
             this.time = time;
         }

@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.Parameters;
@@ -112,7 +111,7 @@ namespace SurgeEngine.Code.CameraSystem
 
             float yPos = target.position.y;
             _tempY = Mathf.Lerp(_tempY, yPos, SurgeMath.Smooth(1 - _tempTime));
-            _tempY = Mathf.Clamp(_tempY, yPos - 1.5f, yPos + 0.25f);
+            _tempY = Mathf.Clamp(_tempY, yPos - 0.75f, yPos + 0.5f);
             _tempFollowPoint = target.position;
             _tempFollowPoint.y = _tempY;
         }

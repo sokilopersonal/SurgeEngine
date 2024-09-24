@@ -1,5 +1,4 @@
-﻿using System;
-using SurgeEngine.Code.Parameters.SonicSubStates;
+﻿using SurgeEngine.Code.Parameters.SonicSubStates;
 using UnityEngine;
 
 namespace SurgeEngine.Code.ActorSystem
@@ -61,7 +60,7 @@ namespace SurgeEngine.Code.ActorSystem
         public void TransitionToState(string stateName, float transitionTime = 0.25f, bool isAction = false)
         {
             animator.CrossFadeInFixedTime(stateName, transitionTime);
-            
+
             if (isAction) SetAction(true);
         }
     }

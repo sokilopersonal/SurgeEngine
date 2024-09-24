@@ -21,6 +21,11 @@ namespace SurgeEngine.Code.Parameters
 
             if (!stateMachine.IsPreviousState<FStateAirBoost>()) 
                 animation.TransitionToState("Air Cycle", 0f);
+
+            if (stateMachine.IsPreviousState<FStateSpecialJump>())
+            {
+                animation.TransitionToState("Air Cycle", 1f);
+            }
             
             if (stats.lastContactObject is JumpCollision)
             {
@@ -54,7 +59,7 @@ namespace SurgeEngine.Code.Parameters
                 stats.groundNormal = Vector3.up;
                 
                 Movement(dt);
-                Rotate(dt);
+                actor.model.RotateBody(Vector3.up);
 
                 Common.ApplyGravity(airParameters.gravity, dt);
             }
@@ -97,10 +102,10 @@ namespace SurgeEngine.Code.Parameters
 
         private void Rotate(float dt)
         {
-            stats.transformNormal = Vector3.Slerp(stats.transformNormal, Vector3.up, dt * 5f);
+            stats.transformNormal = Vector3.Slerp(stats.transformNormal, Vector3.up, dt * 0.1f);
 
             Vector3 vel = _rigidbody.linearVelocity;
-            vel = Vector3.ProjectOnPlane(vel, stats.groundNormal);
+            vel = Vector3.ProjectOnPlane(vel, Vector3.up);
 
             if (vel != Vector3.zero)
             {

@@ -29,9 +29,11 @@ namespace SurgeEngine.Code.CommonObjects
                 context.transform.forward = Vector3.Cross(-startPoint.right, Vector3.up);
                 Common.ApplyImpulse(GetImpulse());
                 
-                context.stateMachine.SetState<FStateSpecialJump>().PlaySpecialAnimation(SpecialAnimationType.JumpBoard, 0.2f);
+                var specialJump = context.stateMachine.SetState<FStateSpecialJump>();
+                specialJump.SetSpecialData(new SpecialJumpData(SpecialJumpType.JumpBoard));
+                specialJump.PlaySpecialAnimation(0.2f);
                     
-                context.flags.AddFlag(new Flag(FlagType.OutOfControl, true, Mathf.Abs(outOfControl)));
+                context.flags.AddFlag(new Flag(FlagType.OutOfControl, null, true, Mathf.Abs(outOfControl)));
             }
         }
 
@@ -39,7 +41,7 @@ namespace SurgeEngine.Code.CommonObjects
         {
             base.Draw();
             
-            TrajectoryDrawer.DrawTrajectory(startPoint.position, GetImpulse(), impulse, Color.green);
+            TrajectoryDrawer.DrawTrajectory(startPoint.position, GetImpulse(), Color.green, impulse);
         }
 
         private Vector3 GetImpulse()
