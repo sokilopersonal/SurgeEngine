@@ -174,7 +174,7 @@ namespace SurgeEngine.Code.CameraSystem
 
         private void LookAt()
         {
-            Quaternion targetRotation = Quaternion.LookRotation(_tempFollowPoint + _cameraTransform.TransformDirection(lookOffset) - _cameraTransform.position);
+            Quaternion targetRotation = Quaternion.LookRotation(_tempFollowPoint + lookOffset - _cameraTransform.position);
             _cameraTransform.rotation = targetRotation;
             
             _camera.fieldOfView = _fov;

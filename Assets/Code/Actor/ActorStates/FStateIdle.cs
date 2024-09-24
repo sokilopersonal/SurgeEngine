@@ -1,4 +1,5 @@
-﻿using SurgeEngine.Code.Parameters.SonicSubStates;
+﻿using SurgeEngine.Code.Custom;
+using SurgeEngine.Code.Parameters.SonicSubStates;
 using UnityEngine;
 
 namespace SurgeEngine.Code.Parameters
@@ -16,8 +17,7 @@ namespace SurgeEngine.Code.Parameters
             animation.SetBool("Idle", true);
             stats.planarVelocity = Vector3.zero;
             
-            if (Physics.Raycast(actor.transform.position, -actor.transform.up, out var hit,
-                    moveParameters.castParameters.castDistance, moveParameters.castParameters.collisionMask))
+            if (Common.CheckForGround(out var hit))
             {
                 var point = hit.point;
                 var normal = hit.normal;
@@ -63,8 +63,7 @@ namespace SurgeEngine.Code.Parameters
         {
             base.OnFixedTick(dt);
             
-            if (Physics.Raycast(actor.transform.position, -actor.transform.up, out var hit,
-                    moveParameters.castParameters.castDistance, moveParameters.castParameters.collisionMask))
+            if (Common.CheckForGround(out var hit))
             {
                 var point = hit.point;
                 var normal = hit.normal;

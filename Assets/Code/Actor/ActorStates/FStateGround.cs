@@ -89,8 +89,7 @@ namespace SurgeEngine.Code.Parameters
             base.OnFixedTick(dt);
             
             Vector3 prevNormal = stats.groundNormal; 
-            if (Physics.Raycast(_rigidbody.worldCenterOfMass, -actor.transform.up, out var hit,
-                    stats.moveParameters.castParameters.castDistance, stats.moveParameters.castParameters.collisionMask))
+            if (Common.CheckForGround(out var hit))
             {
                 var point = hit.point;
                 var normal = hit.normal;
@@ -134,8 +133,7 @@ namespace SurgeEngine.Code.Parameters
 
             if (stats.inputDir.magnitude > INPUT_DEADZONE)
             {
-                float skiddingDot = Vector3.Dot(stats.inputDir.normalized, stats.planarVelocity.normalized);
-                stats.skidding = skiddingDot < stats.moveParameters.skidThreshold;
+                
                 if (!stats.skidding)
                 {
                     CalculateVelocity(dt);

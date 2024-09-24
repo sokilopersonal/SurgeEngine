@@ -28,13 +28,13 @@ namespace SurgeEngine.Code.StateMachine
             _subStatesList.Add(subState);
         }
         
-        public void SetState<T>() where T : FState
+        public T SetState<T>() where T : FState
         {
             var type = typeof(T);
 
             if (CurrentState != null && CurrentState.GetType() == type)
             {
-                return;
+                return null;
             }
 
             if (_states.TryGetValue(type, out var newState))
@@ -46,7 +46,11 @@ namespace SurgeEngine.Code.StateMachine
                 CurrentState.OnEnter();
                 
                 currentStateName = CurrentState.GetType().Name;
+                
+                return CurrentState as T;
             }
+            
+            return null;
         }
         
         public TState GetState<TState>() where TState : FState

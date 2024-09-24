@@ -10,8 +10,8 @@ namespace SurgeEngine.Code.Parameters
         {
             _rigidbody = actor.rigidbody;
             
-            _rigidbody.solverIterations = 12;
-            _rigidbody.solverVelocityIterations = 4;
+            _rigidbody.solverIterations = 16;
+            _rigidbody.solverVelocityIterations = 8;
         }
     }
 }

@@ -35,6 +35,9 @@ namespace SurgeEngine.Code.ActorSystem
         {
             currentSpeed = _rigidbody.linearVelocity.magnitude;
             currentVerticalSpeed = _rigidbody.linearVelocity.y;
+            
+            float skiddingDot = Vector3.Dot(inputDir.normalized, planarVelocity.normalized);
+            skidding = skiddingDot < moveParameters.skidThreshold;
 
             var state = actor.stateMachine.CurrentState;
             isGrounded = state is FStateGround;

@@ -1,29 +1,24 @@
 ﻿using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.Parameters;
 using UnityEngine;
 
 namespace SurgeEngine.Code.CommonObjects
 {
-    public class DashPanel : ActorTrigger, ISoundPlayer
+    public class DashPanel : ContactBase
     {
         [SerializeField] private float speed = 35f;
-        
-        public AudioSource source { get; set; }
-
-        protected override void Awake()
-        {
-            base.Awake();
-
-            source = GetComponent<AudioSource>();
-        }
+        [SerializeField] private float outOfControl = 0.5f;
 
         public override void OnTriggerContact(Collider msg)
         {
             base.OnTriggerContact(msg);
             
             var context = ActorContext.Context;
-            context.rigidbody.linearVelocity = transform.forward * speed;
+            Common.ApplyImpulse(transform.forward * speed);
             context.stateMachine.SetState<FStateGround>();
+
+            context.flags.AddFlag(new Flag(FlagType.OutOfControl, true, Mathf.Abs(outOfControl)));
         }
     }
 }

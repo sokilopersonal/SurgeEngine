@@ -9,7 +9,7 @@ namespace SurgeEngine.Code.CommonObjects
     /// <summary>
     /// Trigger for applying and clamping an impulse to the player
     /// </summary>
-    public class JumpCollision : ActorTrigger
+    public class JumpCollision : ContactBase
     {
         [Header("Properties")] 
         [SerializeField] private float speedRequired = 20f;
@@ -55,8 +55,8 @@ namespace SurgeEngine.Code.CommonObjects
         {
             base.Draw();
 
-            TrajectoryDrawer.DrawTrajectory(transform.position, Common.GetCross(transform, pitch), impulseOnNormal, Color.green);
-            TrajectoryDrawer.DrawTrajectory(transform.position, Common.GetCross(transform, pitch), impulseOnBoost, Color.cyan);
+            //TrajectoryDrawer.DrawTrajectory(transform.position, Common.GetCross(transform, pitch), impulseOnNormal, Color.green);
+            //TrajectoryDrawer.DrawTrajectory(transform.position, Common.GetCross(transform, pitch), impulseOnBoost, Color.cyan);
         }
 
     }

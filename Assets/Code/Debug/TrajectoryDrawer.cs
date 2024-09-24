@@ -16,7 +16,7 @@ namespace SurgeEngine.Code.SurgeDebug
         {
             Vector3 impulseDirection = direction;
 
-            int trajectoryPoints = 80;
+            int trajectoryPoints = 240;
             float timeStep = 0.1f;
             int layerMask = 1 << LayerMask.NameToLayer("Default");
 

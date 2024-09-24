@@ -37,7 +37,6 @@ namespace SurgeEngine.Code.CommonObjects
             shouldRotate = Random.value < 0.5f;
             rotationDuration = 15f * Mathf.RoundToInt(Random.Range(1, 4));
             rotationDuration *= Random.value < 0.5f ? 1 : -1;
-            Debug.Log(rotationDuration);
 
             if (shouldRotate)
             {

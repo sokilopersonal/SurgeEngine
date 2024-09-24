@@ -11,7 +11,10 @@ namespace SurgeEngine.Code.ActorSystem
         private void Update()
         {
             SetBool(AnimatorParams.Idle, actor.stateMachine.currentStateName == "FStateIdle");
-            SetBool(AnimatorParams.InAir, actor.stateMachine.currentStateName == "FStateAir" || actor.stateMachine.currentStateName == "FStateJump");
+            SetBool(AnimatorParams.InAir, actor.stateMachine.currentStateName == "FStateAir" ||
+                                          actor.stateMachine.currentStateName == "FStateJump" ||
+                                          actor.stateMachine.currentStateName == "FStateSpecialJump" ||
+                                          actor.stateMachine.currentStateName == "FStateAirBoost");
             SetFloat(AnimatorParams.GroundSpeed, Mathf.Clamp(actor.stats.currentSpeed, 0, 25f));
             SetFloat(AnimatorParams.VerticalSpeed, actor.stats.currentVerticalSpeed);
             SetFloat(AnimatorParams.TurnAngle, Mathf.Lerp(animator.GetFloat("TurnAngle"), 

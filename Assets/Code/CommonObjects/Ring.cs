@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.CommonObjects
 {
-    public class Ring : ActorTrigger
+    public class Ring : ContactBase
     {
         [SerializeField] private float rotationSpeed = 360f;
         [SerializeField] private float flyDuration = 1f;

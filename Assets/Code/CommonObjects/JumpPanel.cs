@@ -7,38 +7,29 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.CommonObjects
 {
-    public class JumpPanel : ActorCollision
+    public class JumpPanel : ContactBase
     {
         [Header("Properties")]
         [SerializeField, Min(0)] private float impulse = 15f;
-        [SerializeField, Range(0, 75)] private float pitch = 10f;
+        [SerializeField, Range(15, 90)] private float pitch = 10f;
         [SerializeField] private float outOfControl = 0.5f;
+        [SerializeField] private Transform startPoint;
 
         public override void OnTriggerContact(Collider msg)
         {
             base.OnTriggerContact(msg);
             
             var context = ActorContext.Context;
-            //float impulse = context.stateMachine.GetSubState<FBoost>().Active ? impulseOnBoost : impulseOnNormal;
             Vector3 cross = Common.GetCross(transform, pitch, true);
             if (impulse > 0)
             {
                 context.stateMachine.GetSubState<FBoost>().Active = false;
-                
-                context.rigidbody.linearVelocity = Vector3.zero;
-                context.stats.planarVelocity = Vector3.zero;
-                context.stats.movementVector = Vector3.zero;
 
-                context.transform.position = transform.position + Vector3.up * 1.2f;
-                context.transform.forward = cross;
+                context.transform.position = startPoint.position ;
+                context.transform.forward = Vector3.Cross(-startPoint.right, Vector3.up);
+                Common.ApplyImpulse(GetImpulse());
                 
-                context.stateMachine.SetState<FStateAir>();
-                context.animation.TransitionToState("Jump Delux", 0.2f, true);
-
-                Vector3 impulseV = cross.normalized * impulse;
-                        
-                context.AddImpulse(impulseV);
-                context.rigidbody.linearVelocity = Vector3.ClampMagnitude(context.rigidbody.linearVelocity, impulse);
+                context.stateMachine.SetState<FStateSpecialJump>().PlaySpecialAnimation(SpecialAnimationType.JumpBoard, 0.2f);
                     
                 context.flags.AddFlag(new Flag(FlagType.OutOfControl, true, Mathf.Abs(outOfControl)));
             }
@@ -48,7 +39,15 @@ namespace SurgeEngine.Code.CommonObjects
         {
             base.Draw();
             
-            TrajectoryDrawer.DrawTrajectory(transform.position + Vector3.up, Common.GetCross(transform, pitch, true), impulse, Color.green);
+            TrajectoryDrawer.DrawTrajectory(startPoint.position, GetImpulse(), impulse, Color.green);
+        }
+
+        private Vector3 GetImpulse()
+        {
+            Vector3 dir = -transform.forward;
+            dir = Quaternion.AngleAxis(pitch, transform.right) * dir;
+            Vector3 impulseV = dir * impulse;
+            return impulseV;
         }
     }
 }

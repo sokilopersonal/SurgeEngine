@@ -49,15 +49,14 @@ namespace SurgeEngine.Code.Parameters
         {
             base.OnFixedTick(dt);
 
-            if (!Physics.Raycast(actor.transform.position, -actor.transform.up, out var hit,
-                    stats.moveParameters.castParameters.castDistance, stats.moveParameters.castParameters.collisionMask))
+            if (!Common.CheckForGround(out _))
             {
                 stats.groundNormal = Vector3.up;
                 
                 Movement(dt);
                 Rotate(dt);
 
-                _rigidbody.linearVelocity += new Vector3(0, -airParameters.gravity, 0) * dt;
+                Common.ApplyGravity(airParameters.gravity, dt);
             }
             else
             {
