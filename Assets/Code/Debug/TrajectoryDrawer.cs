@@ -22,7 +22,7 @@ namespace SurgeEngine.Code.SurgeDebug
 
             Vector3 position = startPosition;
             Vector3 velocity = impulseDirection.normalized * impulse;
-            Vector3 gravity = -27 * Vector3.up;
+            Vector3 gravity = -35 * Vector3.up;
 
             for (int j = 0; j < trajectoryPoints; j++)
             {

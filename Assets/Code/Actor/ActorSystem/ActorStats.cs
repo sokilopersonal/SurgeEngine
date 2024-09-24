@@ -21,7 +21,6 @@ namespace SurgeEngine.Code.ActorSystem
         public ContactBase lastContactObject;
         public bool isGrounded;
         public bool isInAir;
-        public float airTime;
 
         private Rigidbody _rigidbody;
 

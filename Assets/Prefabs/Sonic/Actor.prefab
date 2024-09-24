@@ -278,7 +278,9 @@ MonoBehaviour:
       castDistance: 1.175
       castRadius: 0.1
   jumpParameters:
-    jumpForce: 13
+    jumpForce: 7
+    jumpHoldForce: 24
+    jumpStartTime: 0.275
   turnRate: 0
   currentSpeed: 0
   currentVerticalSpeed: 0
@@ -10873,7 +10875,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   airParameters:
-    gravity: 27
+    gravity: 35
 --- !u!1 &8207533398117105643
 GameObject:
   m_ObjectHideFlags: 0
@@ -12799,9 +12801,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b5197d4abc58dd14180947022fd32ae9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5607367696785925358}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b5197d4abc58dd14180947022fd32ae9, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2483433725933775713}
   m_SourcePrefab: {fileID: 100100000, guid: b5197d4abc58dd14180947022fd32ae9, type: 3}
 --- !u!4 &3911659134670193167 stripped
 Transform:
@@ -12858,17 +12857,5 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 00a597ae1ed078f44a0abf8e0a4eba50, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &2483433725933775713
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4396307008796334261}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b15d6ca976a4a4da0ff71003412e856, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

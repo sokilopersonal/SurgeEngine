@@ -4,18 +4,15 @@ namespace SurgeEngine.Code.Parameters
 {
     public class FStateJump : FStateAir
     {
-        private float _jumpStartTime;
         private float _jumpTime;
         
         public override void OnEnter()
         {
             base.OnEnter();
-
-            _jumpStartTime = 0.3f;
             
             animation.TransitionToState("Ball", 0f, true);
             _rigidbody.AddForce(actor.transform.up * stats.jumpParameters.jumpForce, ForceMode.Impulse);
-            _jumpTime = _jumpStartTime;
+            _jumpTime = stats.jumpParameters.jumpStartTime;
             
             actor.transform.rotation = Quaternion.Euler(0, actor.transform.rotation.eulerAngles.y, 0);
         }
@@ -36,7 +33,7 @@ namespace SurgeEngine.Code.Parameters
                 if (_jumpTime > 0)
                 {
                     if (_rigidbody.linearVelocity.y > 0) 
-                        _rigidbody.linearVelocity += actor.transform.up * (stats.jumpParameters.jumpForce * 9f * dt);
+                        _rigidbody.linearVelocity += actor.transform.up * (stats.jumpParameters.jumpHoldForce * dt);
                     _jumpTime -= dt;
                 }
             }

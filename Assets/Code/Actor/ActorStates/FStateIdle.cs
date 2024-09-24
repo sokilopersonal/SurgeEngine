@@ -50,6 +50,13 @@ namespace SurgeEngine.Code.Parameters
                 _rigidbody.WakeUp();
                 stateMachine.SetState<FStateGround>();
             }
+            
+            if (actor.input.JumpPressed)
+            {
+                actor.stateMachine.GetState<FStateGround>().SetDetachTime(0.2f);
+
+                actor.stateMachine.SetState<FStateJump>();
+            }
         }
 
         public override void OnFixedTick(float dt)

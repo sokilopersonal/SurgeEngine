@@ -6,5 +6,7 @@ namespace SurgeEngine.Code.Parameters
     public class JumpParameters
     {
         public float jumpForce;
+        public float jumpHoldForce;
+        public float jumpStartTime = 0.275f;
     }
 }

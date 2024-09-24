@@ -13,7 +13,7 @@ namespace SurgeEngine.Code.Parameters
             {
                 if (boost.ApplyAirForce(_rigidbody, _rigidbody.transform.forward * boost.airStartForce))
                 {
-                    animation.TransitionToState("Air Boost", 0.2f, true);
+                    animation.TransitionToState("Air Boost", 0f, true);
                     boost.canAirBoost = false;
                 }
             }
