@@ -19,6 +19,9 @@ namespace SurgeEngine.Code.ActorSystem
         public bool skidding;
         public float groundAngle;
         public ContactBase lastContactObject;
+        public bool isGrounded;
+        public bool isInAir;
+        public float airTime;
 
         private Rigidbody _rigidbody;
 
@@ -33,6 +36,10 @@ namespace SurgeEngine.Code.ActorSystem
         {
             currentSpeed = _rigidbody.linearVelocity.magnitude;
             currentVerticalSpeed = _rigidbody.linearVelocity.y;
+
+            var state = actor.stateMachine.CurrentState;
+            isGrounded = state is FStateGround;
+            isInAir = state is FStateAir or FStateAirBoost or FStateJump;
         }
 
         public float GetForwardSignedAngle()

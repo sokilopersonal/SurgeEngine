@@ -16,8 +16,9 @@ namespace SurgeEngine.Code.CameraSystem
 {
     public class ActorCamera : ActorComponent
     {
-        [Header("Target")]
+        [Header("Target")] 
         public Transform target;
+        [SerializeField, Range(0, 1)] private float yFollowTime;
         [SerializeField] private Vector3 lookOffset;
         
         [Header("Collision")]
@@ -34,10 +35,11 @@ namespace SurgeEngine.Code.CameraSystem
         private bool _autoActive;
 
         private Vector3 _tempFollowPoint;
+        private Vector3 _tempLookPoint;
         private float _tempY;
+        private float _tempTime;
         
         private Vector2 _autoLookDirection;
-        private Vector3 _forwardLookPoint;
 
         private CameraParameters _currentParameters;
 
@@ -54,8 +56,10 @@ namespace SurgeEngine.Code.CameraSystem
             _cameraTransform = _camera.transform;
 
             _currentParameters = _parameters[0];
+
+            _tempY = target.position.y;
+            _tempTime = yFollowTime;
             _timeToStartFollow = _currentParameters.timeToStartFollow;
-            
             _distance = _currentParameters.distance;
             _fov = _currentParameters.fov;
 
@@ -97,7 +101,18 @@ namespace SurgeEngine.Code.CameraSystem
             _y -= lookVector.y;
             _y = Mathf.Clamp(_y, -65, 65);
             
-            _tempY = Mathf.Lerp(_tempY, target.position.y, Time.deltaTime * Mathf.Max(Mathf.Abs(actor.stats.currentVerticalSpeed * 1.25f), 12f));
+            if (actor.stats.isGrounded)
+            {
+                _tempTime = Mathf.Lerp(_tempTime, 0, SurgeMath.Smooth(1 - 0.965f));
+            }
+            else if (actor.stats.isInAir)
+            {
+                _tempTime = Mathf.Lerp(_tempTime, yFollowTime, SurgeMath.Smooth(1f));
+            }
+
+            float yPos = target.position.y;
+            _tempY = Mathf.Lerp(_tempY, yPos, SurgeMath.Smooth(1 - _tempTime));
+            _tempY = Mathf.Clamp(_tempY, yPos - 1.5f, yPos + 0.25f);
             _tempFollowPoint = target.position;
             _tempFollowPoint.y = _tempY;
         }
@@ -112,8 +127,18 @@ namespace SurgeEngine.Code.CameraSystem
                 {
                     if (!(1 - Mathf.Abs(Vector3.Dot(actor.transform.forward, Vector3.up)) < 0.01f))
                     {
-                        float fwd = actor.stats.GetForwardSignedAngle();
-                        _autoLookDirection.x = fwd * _currentParameters.followPower * Time.deltaTime;
+                        float fwd = actor.stats.GetForwardSignedAngle() * Time.deltaTime;
+                        _autoLookDirection.x = fwd * _currentParameters.followPower; 
+                        if (actor.stats.isInAir)
+                        {
+                            Vector3 vel = Vector3.ClampMagnitude(actor.rigidbody.linearVelocity, 2f);
+                            vel.y = Mathf.Lerp(vel.y, Mathf.Clamp(vel.y, -0.5f, 0.15f), SurgeMath.Smooth(1f));
+                            lookOffset.y = Mathf.Lerp(lookOffset.y, vel.y, SurgeMath.Smooth(0.05f));
+                        }
+                        else
+                        {
+                            lookOffset.y = Mathf.Lerp(lookOffset.y, 0f, 4f * Time.deltaTime);
+                        }
                     }
                 }
                 else
@@ -141,14 +166,15 @@ namespace SurgeEngine.Code.CameraSystem
             else
             {
                 _autoLookDirection.x = 0;
-
+                lookOffset.y = Mathf.Lerp(lookOffset.y, 0f, SurgeMath.Smooth(0.1f));
+                
                 _autoActive = false;
             }
         }
 
         private void LookAt()
         {
-            Quaternion targetRotation = Quaternion.LookRotation(_tempFollowPoint - _cameraTransform.position);
+            Quaternion targetRotation = Quaternion.LookRotation(_tempFollowPoint + _cameraTransform.TransformDirection(lookOffset) - _cameraTransform.position);
             _cameraTransform.rotation = targetRotation;
             
             _camera.fieldOfView = _fov;

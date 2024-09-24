@@ -48,7 +48,7 @@ namespace SurgeEngine.Code.CommonObjects
         {
             base.Draw();
             
-            TrajectoryDrawer.DrawTrajectory(transform.position + Vector3.up * 0.75f, Common.GetCross(transform, pitch, true), impulse, Color.green);
+            TrajectoryDrawer.DrawTrajectory(transform.position + Vector3.up, Common.GetCross(transform, pitch, true), impulse, Color.green);
         }
     }
 }

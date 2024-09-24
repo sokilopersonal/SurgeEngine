@@ -37,7 +37,7 @@ namespace SurgeEngine.Code.CommonObjects
                         context.stats.planarVelocity = Vector3.zero;
                         context.stats.movementVector = Vector3.zero;
 
-                        context.transform.position += Vector3.up * 0.5f;
+                        context.transform.position += Vector3.up * 0.25f;
                         context.transform.forward = Common.GetCross(transform, 0);
 
                         Vector3 impulseV = cross.normalized * impulse;

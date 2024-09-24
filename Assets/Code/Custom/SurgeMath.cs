@@ -29,5 +29,12 @@ namespace SurgeEngine.Code.Custom
 
             return worldPosition;
         }
+        
+        public static float Smooth(float t, float f = 0.5f, float a1 = 0.1f)
+        {
+            return Mathf.Approximately(t, 1)
+                ? 1
+                : Mathf.Clamp01(((1 / (1 - t)) - 1) * Mathf.Pow(1 - Mathf.Pow(1 - f, Time.deltaTime), a1));
+        }
     }
 }

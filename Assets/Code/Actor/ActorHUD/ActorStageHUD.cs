@@ -30,13 +30,13 @@ namespace SurgeEngine.Code.ActorHUD
         private void Update()
         {
             //ringCounter.text = ringCounter.text.Replace("{v}", )
-            boostCounter.text = $"Boost Energy: {Mathf.RoundToInt(_actor.stateMachine.GetSubState<FBoost>().boostEnergy)}";
+            if (boostCounter != null) boostCounter.text = $"Boost Energy: {Mathf.RoundToInt(_actor.stateMachine.GetSubState<FBoost>().boostEnergy)}";
         }
 
         private void OnRingCollected(Ring obj)
         {
             RingHUD ringHUDInstance = Instantiate(ringHUDPrefab, obj.transform.position + _actor.transform.forward * 0.05f, Quaternion.identity);
-            ringHUDInstance.Initialize(0.65f);
+            ringHUDInstance.Initialize(0.85f);
         }
     }
 }

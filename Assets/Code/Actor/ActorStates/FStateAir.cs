@@ -37,6 +37,7 @@ namespace SurgeEngine.Code.Parameters
             base.OnTick(dt);
             
             CalculateAirTime(dt);
+            stats.airTime = GetAirTime();
             stateMachine.GetState<FStateGround>().CalculateDetachState();
 
             if (input.BoostPressed && stateMachine.GetSubState<FBoost>().CanBoost())
