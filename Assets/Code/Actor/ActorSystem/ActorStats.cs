@@ -8,6 +8,7 @@ namespace SurgeEngine.Code.ActorSystem
     {
         public MoveParameters moveParameters;
         public JumpParameters jumpParameters;
+        public HomingParameters homingParameters;
         public float turnRate;
         public float currentSpeed;
         public float currentVerticalSpeed;
@@ -41,7 +42,7 @@ namespace SurgeEngine.Code.ActorSystem
 
             var state = actor.stateMachine.CurrentState;
             isGrounded = state is FStateGround;
-            isInAir = state is FStateAir or FStateAirBoost or FStateJump;
+            isInAir = state is FStateAir or FStateAirBoost or FStateJump or FStateSpecialJump;
         }
 
         public float GetForwardSignedAngle()

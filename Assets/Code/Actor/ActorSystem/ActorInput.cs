@@ -13,16 +13,14 @@ namespace SurgeEngine.Code.ActorSystem
         private SurgeInput _input;
         
         // Boost
-        public bool BoostPressed => _input.Gameplay.Boost.WasPressedThisFrame()
-                                    && !actor.flags.HasFlag(FlagType.OutOfControl) && !actor.flags.CheckForTag(Tags.AllowBoost);
-        public bool BoostHeld => _input.Gameplay.Boost.IsPressed() 
-                                 && !actor.flags.HasFlag(FlagType.OutOfControl) && !actor.flags.CheckForTag(Tags.AllowBoost);
+        public bool BoostPressed => _input.Gameplay.Boost.WasPressedThisFrame();
+        public bool BoostHeld => _input.Gameplay.Boost.IsPressed();
         
         public Action<InputAction.CallbackContext> BoostAction;
         
         // Jump
-        public bool JumpPressed => _input.Gameplay.Jump.WasPressedThisFrame() && !actor.flags.HasFlag(FlagType.OutOfControl);
-        public bool JumpHeld => _input.Gameplay.Jump.IsPressed() && !actor.flags.HasFlag(FlagType.OutOfControl);
+        public bool JumpPressed => _input.Gameplay.Jump.WasPressedThisFrame();
+        public bool JumpHeld => _input.Gameplay.Jump.IsPressed();
         public Action<InputAction.CallbackContext> JumpAction;
 
         private float _lastLookInputTime;

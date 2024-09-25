@@ -1,4 +1,5 @@
-﻿using SurgeEngine.Code.Custom;
+﻿using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.Parameters.SonicSubStates;
 using UnityEngine;
 
@@ -50,12 +51,14 @@ namespace SurgeEngine.Code.Parameters
                 _rigidbody.WakeUp();
                 stateMachine.SetState<FStateGround>();
             }
-            
-            if (actor.input.JumpPressed)
-            {
-                actor.stateMachine.GetState<FStateGround>().SetDetachTime(0.2f);
 
-                actor.stateMachine.SetState<FStateJump>();
+            if (!actor.flags.HasFlag(FlagType.OutOfControl))
+            {
+                if (actor.input.JumpPressed)
+                {
+                    actor.stateMachine.GetState<FStateGround>().SetDetachTime(0.2f);
+                    actor.stateMachine.SetState<FStateJump>();
+                }
             }
         }
 

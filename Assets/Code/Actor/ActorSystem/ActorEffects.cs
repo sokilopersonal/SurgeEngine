@@ -35,7 +35,7 @@ namespace SurgeEngine.Code.ActorSystem
 
         private void OnStateAssign(FState obj)
         {
-            if (obj is FStateJump)
+            if (obj is FStateJump or FStateHoming)
             {
                 spinball.enabled = true;
             }

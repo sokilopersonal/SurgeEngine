@@ -1,4 +1,5 @@
-﻿using SurgeEngine.Code.CommonObjects;
+﻿using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.Parameters.SonicSubStates;
 using UnityEngine;
@@ -44,9 +45,12 @@ namespace SurgeEngine.Code.Parameters
             CalculateAirTime(dt);
             stateMachine.GetState<FStateGround>().CalculateDetachState();
 
-            if (input.BoostPressed && stateMachine.GetSubState<FBoost>().CanBoost())
+            if (!actor.flags.HasFlag(FlagType.OutOfControl))
             {
-                stateMachine.SetState<FStateAirBoost>();
+                if (input.BoostPressed && stateMachine.GetSubState<FBoost>().CanBoost())
+                {
+                    stateMachine.SetState<FStateAirBoost>();
+                }
             }
         }
 
@@ -66,6 +70,26 @@ namespace SurgeEngine.Code.Parameters
             else
             {
                 if (stateMachine.GetState<FStateGround>().GetAttachState()) stateMachine.SetState<FStateGround>();
+            }
+
+            if (GetAirTime() > 0.1f)
+            {
+                if (!actor.flags.HasFlag(FlagType.OutOfControl))
+                {
+                    Transform homingTarget = Common.FindHomingTarget();
+
+                    if (input.JumpPressed)
+                    {
+                        if (homingTarget != null)
+                        {
+                            stateMachine.SetState<FStateHoming>().SetTarget(homingTarget);
+                        }
+                        else
+                        {
+                            stateMachine.SetState<FStateHoming>();
+                        }
+                    }
+                }
             }
         }
 
@@ -112,6 +136,11 @@ namespace SurgeEngine.Code.Parameters
                 Quaternion rot = Quaternion.LookRotation(vel, stats.transformNormal);
                 actor.transform.rotation = rot;
             }
+        }
+
+        private void OnDrawGizmos()
+        {
+            
         }
 
         protected float GetAirTime() => _airTime;

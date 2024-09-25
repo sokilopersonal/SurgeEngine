@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using SurgeEngine.Code.ActorSystem;
+using UnityEngine;
 
 namespace SurgeEngine.Code.Parameters
 {
@@ -28,13 +29,16 @@ namespace SurgeEngine.Code.Parameters
         {
             base.OnTick(dt);
 
-            if (input.JumpHeld)
+            if (!actor.flags.HasFlag(FlagType.OutOfControl))
             {
-                if (_jumpTime > 0)
+                if (input.JumpHeld)
                 {
-                    if (_rigidbody.linearVelocity.y > 0) 
-                        _rigidbody.linearVelocity += actor.transform.up * (stats.jumpParameters.jumpHoldForce * dt);
-                    _jumpTime -= dt;
+                    if (_jumpTime > 0)
+                    {
+                        if (_rigidbody.linearVelocity.y > 0) 
+                            _rigidbody.linearVelocity += actor.transform.up * (stats.jumpParameters.jumpHoldForce * dt);
+                        _jumpTime -= dt;
+                    }
                 }
             }
             

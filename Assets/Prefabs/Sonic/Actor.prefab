@@ -109,6 +109,8 @@ MonoBehaviour:
   - {fileID: 4039533213070817133}
   - {fileID: 3770738215433268896}
   - {fileID: 586481136528311057}
+  - {fileID: 1469195711732499889}
+  - {fileID: 3317942713379759928}
   subStates:
   - {fileID: 1674226627464673938}
   rigidbody: {fileID: 0}
@@ -278,9 +280,16 @@ MonoBehaviour:
       castDistance: 1.175
       castRadius: 0.1
   jumpParameters:
-    jumpForce: 8
-    jumpHoldForce: 28
-    jumpStartTime: 0.275
+    jumpForce: 6.5
+    jumpHoldForce: 24
+    jumpStartTime: 0.2
+  homingParameters:
+    maxHomingDistance: 0
+    homingSpeed: 55
+    homingFindRadius: 15
+    homingMask:
+      serializedVersion: 2
+      m_Bits: 1024
   turnRate: 0
   currentSpeed: 0
   currentVerticalSpeed: 0
@@ -10688,6 +10697,50 @@ MonoBehaviour:
   magnetRadius: 2.5
   restoringTopSpeed: 0
   restoreSpeed: 10
+--- !u!1 &3642419585124732036
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4389381489739694859}
+  - component: {fileID: 3317942713379759928}
+  m_Layer: 3
+  m_Name: Homing
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4389381489739694859
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3642419585124732036}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6881262772616937385}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3317942713379759928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3642419585124732036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2823aef595424000885e683951a1dffb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3999411662334716339
 GameObject:
   m_ObjectHideFlags: 0
@@ -10702,6 +10755,7 @@ GameObject:
   - component: {fileID: 5677909171274304080}
   - component: {fileID: 4778545105552515917}
   - component: {fileID: 4193459189463378298}
+  - component: {fileID: 2517253991312522078}
   m_Layer: 3
   m_Name: Audio
   m_TagString: Untagged
@@ -10828,6 +10882,25 @@ MonoBehaviour:
       Data3: -334232907
       Data4: -859768452
     Path: event:/Sonic/JumpVoice
+--- !u!114 &2517253991312522078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3999411662334716339}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d794b9face54468db427be38aecc6d39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  homingSound:
+    Guid:
+      Data1: 1184327838
+      Data2: 1121443854
+      Data3: -761567866
+      Data4: -384552547
+    Path: event:/Sonic/Homing
 --- !u!1 &4232932930214798659
 GameObject:
   m_ObjectHideFlags: 0
@@ -10990,6 +11063,7 @@ Transform:
   - {fileID: 2285467240967586268}
   - {fileID: 1959437871111154036}
   - {fileID: 5941079693090265162}
+  - {fileID: 4389381489739694859}
   m_Father: {fileID: 2456151525592967584}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &3289541728204073209

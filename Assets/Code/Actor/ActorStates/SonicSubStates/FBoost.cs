@@ -79,16 +79,19 @@ namespace SurgeEngine.Code.Parameters.SonicSubStates
 
             if (actor.stateMachine.CurrentState is FStateGround)
             {
-                if (actor.input.BoostHeld)
+                if (!actor.flags.HasFlag(FlagType.OutOfControl))
                 {
-                    if (cancelBoostCoroutine != null)
+                    if (actor.input.BoostHeld)
                     {
-                        StopCoroutine(cancelBoostCoroutine);
-                    }
+                        if (cancelBoostCoroutine != null)
+                        {
+                            StopCoroutine(cancelBoostCoroutine);
+                        }
 
-                    if (cancelBoostCoroutine != null)
-                    {
-                        StopCoroutine(cancelBoostCoroutine);
+                        if (cancelBoostCoroutine != null)
+                        {
+                            StopCoroutine(cancelBoostCoroutine);
+                        }
                     }
                 }
             }
