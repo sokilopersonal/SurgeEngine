@@ -27,7 +27,7 @@ namespace SurgeEngine.Code.Parameters
             if (stateMachine.IsPreviousState<FStateAir>() || !stateMachine.IsPreviousState<FStateSpecialJump>() ||
                 stats.lastContactObject is not DashPanel)
             {
-                animation.TransitionToState("Run Cycle", 0f);
+                animation.TransitionToState(AnimatorParams.RunCycle, 0f);
             }
 
             _cameraTransform = actor.camera.GetCameraTransform();
@@ -162,7 +162,7 @@ namespace SurgeEngine.Code.Parameters
             {
                 _rigidbody.linearVelocity = _rigidbody.transform.forward * boost.startForce;
                 boost.restoringTopSpeed = true;
-                animation.TransitionToState("Run Cycle", 0f);
+                animation.TransitionToState(AnimatorParams.RunCycle, 0f);
             }
     
             if (boost.Active)

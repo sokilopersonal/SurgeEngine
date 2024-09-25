@@ -1,4 +1,5 @@
 ﻿using System;
+using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.Custom;
 using UnityEngine;
@@ -51,6 +52,11 @@ namespace SurgeEngine.Code.Parameters
         public override void OnExit()
         {
             base.OnExit();
+
+            if (_data.type == SpecialJumpType.Spring)
+            {
+                animation.TransitionToState(AnimatorParams.AirCycle, 0.2f);
+            }
             
             //animation.TransitionToState("Run Cycle", 0f);
         }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.Parameters;
@@ -39,6 +38,7 @@ namespace SurgeEngine.Code.CommonObjects
 
         private List<QTESequence> _qteSequences;
         private int _buttonId;
+        private int _sequenceId;
         private QuickTimeEventUI _currentQTEUI;
         private float timer;
 
@@ -125,25 +125,40 @@ namespace SurgeEngine.Code.CommonObjects
             }
 
             _qteSequences.Add(sequence);
-            Debug.Log(_qteSequences.Count);
-            _currentQTEUI.CreateButtonIcon(sequence);
-            timer = sequence.time;
+            if (_qteSequences.Count == 1)
+            {
+                timer = sequence.time;
+            }
         }
 
         private void OnButtonPressed(ButtonType button)
         {
-            foreach (var sequence in _qteSequences)
+            for (int i = 0; i < _qteSequences.Count; i++)
             {
+                var sequence = _qteSequences[_sequenceId];
                 ButtonType sequenceButton = sequence.buttons[_buttonId].type;
                 if (sequenceButton == button)
                 {
                     _buttonId++;
-                    
                     OnCorrectButton?.Invoke();
 
-                    if (_buttonId >= sequence.buttons.Count)
+                    if (_buttonId >= sequence.buttons.Count) // all buttons pressed
                     {
-                        OnQTEResultReceived.Invoke(QTEResult.Success);
+                        _sequenceId++;
+                        
+                        if (_sequenceId >= _qteSequences.Count)
+                        {
+                            OnQTEResultReceived.Invoke(QTEResult.Success);
+                        }
+                        else
+                        {
+                            _buttonId = 0;
+                            timer = _qteSequences[_sequenceId].time;
+                            Destroy(_currentQTEUI.gameObject);
+                            _currentQTEUI = Instantiate(qteUI);
+                            _currentQTEUI.SetTrickJumper(this);
+                            _currentQTEUI.CreateButtonIcon(_qteSequences[_sequenceId]);
+                        }
                     }
                     
                     break;
@@ -155,16 +170,6 @@ namespace SurgeEngine.Code.CommonObjects
                     break;
                 }
             }
-        }
-
-        public float GetTimer()
-        {
-            return timer;
-        }
-
-        public QTESequence GetCurrentSequence()
-        {
-            return _qteSequences[^1];
         }
 
         private IEnumerator ChangeTimeScaleOverTime(float targetScale, float duration)
@@ -201,9 +206,11 @@ namespace SurgeEngine.Code.CommonObjects
                     {
                         break;
                     }
-                    
+
                     CreateSequence(trickCount[i], trickTime[i]);
                 }
+                
+                _currentQTEUI.CreateButtonIcon(_qteSequences[0]);
                 
                 ActorContext.Context.input.OnButtonPressed += OnButtonPressed;
             }
@@ -259,6 +266,7 @@ namespace SurgeEngine.Code.CommonObjects
             
             _qteSequences.Clear();
             _buttonId = 0;
+            _sequenceId = 0;
             
             context.stateMachine.SetState<FStateAir>();
             StartCoroutine(ChangeTimeScaleOverTime(1f, 0.3f));
@@ -267,6 +275,16 @@ namespace SurgeEngine.Code.CommonObjects
             if (_currentQTEUI) Destroy(_currentQTEUI.gameObject);
 
             yield return null;
+        }
+
+        public float GetTimer()
+        {
+            return timer;
+        }
+
+        public QTESequence GetCurrentSequence()
+        {
+            return _qteSequences[_sequenceId];
         }
 
         protected override void Draw()

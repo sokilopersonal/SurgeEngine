@@ -25,7 +25,7 @@ namespace SurgeEngine.Code.CommonObjects
         [SerializeField] private Image lbButtonKeyboard;
         [SerializeField] private Image rbButtonKeyboard;
         
-        private List<GameObject> _buttons = new List<GameObject>();
+        private List<Image> _buttons = new List<Image>();
 
         private TrickJumper _trickJumperObject;
 
@@ -50,9 +50,9 @@ namespace SurgeEngine.Code.CommonObjects
 
         private void OnCorrectButtonPressed()
         {
-            GameObject button = _buttons[0];
+            Image button = _buttons[0];
             _buttons.RemoveAt(0);
-            Destroy(button);
+            button.enabled = false;
         }
 
         public void CreateButtonIcon(QTESequence sequence)
@@ -84,7 +84,7 @@ namespace SurgeEngine.Code.CommonObjects
                         break;
                 }
                 
-                _buttons.Add(button.gameObject);
+                _buttons.Add(button);
             }
         }
 

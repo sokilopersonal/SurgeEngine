@@ -6,6 +6,8 @@ namespace SurgeEngine.Code.ActorSystem
     public class ActorAnimation : ActorComponent
     {
         public Animator animator;
+        
+        private string _currentAnimation;
 
         private void Update()
         {
@@ -59,7 +61,12 @@ namespace SurgeEngine.Code.ActorSystem
 
         public void TransitionToState(string stateName, float transitionTime = 0.25f, bool isAction = false)
         {
-            animator.CrossFadeInFixedTime(stateName, transitionTime);
+            if (_currentAnimation != stateName)
+            {
+                animator.CrossFadeInFixedTime(stateName, transitionTime);
+            }
+            
+            _currentAnimation = stateName;
 
             if (isAction) SetAction(true);
         }
@@ -72,7 +79,7 @@ namespace SurgeEngine.Code.ActorSystem
         public static readonly int VerticalSpeed = Animator.StringToHash("VerticalSpeed");
         public static readonly int GroundSpeed = Animator.StringToHash("GroundSpeed");
         public static readonly int TurnAngle = Animator.StringToHash("TurnAngle");
-        public static readonly int RunCycle = Animator.StringToHash("Run Cycle");
-        public static readonly int AirCycle = Animator.StringToHash("Air Cycle");
+        public static readonly string RunCycle = "Run Cycle";
+        public static readonly string AirCycle = "Air Cycle";
     }
 }
