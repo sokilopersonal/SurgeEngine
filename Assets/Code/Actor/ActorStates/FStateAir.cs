@@ -20,13 +20,13 @@ namespace SurgeEngine.Code.Parameters
 
             _airTime = 0f;
 
-            if (!stateMachine.IsPreviousState<FStateAirBoost>()) 
-                animation.TransitionToState("Air Cycle", 0f);
-
-            if (stateMachine.IsPreviousState<FStateSpecialJump>())
-            {
-                animation.TransitionToState("Air Cycle", 1f);
-            }
+            // if (!stateMachine.IsPreviousState<FStateAirBoost>()) 
+            //     animation.TransitionToState("Air Cycle", 0f);
+            //
+            // if (stateMachine.IsPreviousState<FStateSpecialJump>())
+            // {
+            //     animation.TransitionToState("Air Cycle", 1f);
+            // }
             
             if (stats.lastContactObject is JumpCollision)
             {
@@ -52,6 +52,29 @@ namespace SurgeEngine.Code.Parameters
                     stateMachine.SetState<FStateAirBoost>();
                 }
             }
+            
+            if (GetAirTime() > 0.1f)
+            {
+                if (!actor.flags.HasFlag(FlagType.OutOfControl))
+                {
+                    stats.homingTarget = Common.FindHomingTarget();
+                    var homingTarget = stats.homingTarget;
+
+                    if (input.JumpPressed)
+                    {
+                        if (homingTarget != null)
+                        {
+                            stateMachine.SetState<FStateHoming>().SetTarget(homingTarget);
+                            Debug.Log("hey");
+                            stats.homingTarget = null;
+                        }
+                        else
+                        {
+                            //stateMachine.SetState<FStateHoming>();
+                        }
+                    }
+                }
+            }
         }
 
         public override void OnFixedTick(float dt)
@@ -63,33 +86,13 @@ namespace SurgeEngine.Code.Parameters
                 stats.groundNormal = Vector3.up;
                 
                 Movement(dt);
-                actor.model.RotateBody(Vector3.up);
+                Rotate(dt);
 
                 Common.ApplyGravity(airParameters.gravity, dt);
             }
             else
             {
                 if (stateMachine.GetState<FStateGround>().GetAttachState()) stateMachine.SetState<FStateGround>();
-            }
-
-            if (GetAirTime() > 0.1f)
-            {
-                if (!actor.flags.HasFlag(FlagType.OutOfControl))
-                {
-                    Transform homingTarget = Common.FindHomingTarget();
-
-                    if (input.JumpPressed)
-                    {
-                        if (homingTarget != null)
-                        {
-                            stateMachine.SetState<FStateHoming>().SetTarget(homingTarget);
-                        }
-                        else
-                        {
-                            stateMachine.SetState<FStateHoming>();
-                        }
-                    }
-                }
             }
         }
 
@@ -107,16 +110,19 @@ namespace SurgeEngine.Code.Parameters
             transformedInput = Vector3.ProjectOnPlane(transformedInput, normal);
             stats.inputDir = transformedInput.normalized * input.moveVector.magnitude;
 
-            if (stats.inputDir.magnitude > 0.2f)
+            if (!stats.skidding)
             {
-                stats.turnRate = Mathf.Lerp(stats.turnRate, stats.moveParameters.turnSpeed, dt * stats.moveParameters.turnSmoothing);
-                var accelRateMod = stats.moveParameters.accelCurve.Evaluate(stats.planarVelocity.magnitude / stats.moveParameters.topSpeed);
-                if (stats.planarVelocity.magnitude < stats.moveParameters.topSpeed)
-                    stats.planarVelocity += stats.inputDir * (stats.moveParameters.accelRate * accelRateMod * dt);
-                float handling = stats.turnRate * 0.2f;
-                //handling *= stats.moveParameters.turnCurve.Evaluate(stats.planarVelocity.magnitude / stats.moveParameters.topSpeed);
-                stats.movementVector = Vector3.Lerp(stats.planarVelocity, stats.inputDir.normalized * stats.planarVelocity.magnitude, 
-                    dt * handling);
+                if (stats.inputDir.magnitude > 0.2f)
+                {
+                    stats.turnRate = Mathf.Lerp(stats.turnRate, stats.moveParameters.turnSpeed, dt * stats.moveParameters.turnSmoothing);
+                    var accelRateMod = stats.moveParameters.accelCurve.Evaluate(stats.planarVelocity.magnitude / stats.moveParameters.topSpeed);
+                    if (stats.planarVelocity.magnitude < stats.moveParameters.topSpeed)
+                        stats.planarVelocity += stats.inputDir * (stats.moveParameters.accelRate * accelRateMod * dt);
+                    float handling = stats.turnRate * 0.2f;
+                    //handling *= stats.moveParameters.turnCurve.Evaluate(stats.planarVelocity.magnitude / stats.moveParameters.topSpeed);
+                    stats.movementVector = Vector3.Lerp(stats.planarVelocity, stats.inputDir.normalized * stats.planarVelocity.magnitude, 
+                        dt * handling);
+                }
             }
             
             airVelocity = Vector3.ClampMagnitude(airVelocity, 125f);
@@ -126,12 +132,12 @@ namespace SurgeEngine.Code.Parameters
 
         private void Rotate(float dt)
         {
-            stats.transformNormal = Vector3.Slerp(stats.transformNormal, Vector3.up, dt * 0.1f);
+            stats.transformNormal = Vector3.Slerp(stats.transformNormal, Vector3.up, dt * 8f);
 
             Vector3 vel = _rigidbody.linearVelocity;
-            vel = Vector3.ProjectOnPlane(vel, Vector3.up);
+            vel.y = 0f;
 
-            if (vel != Vector3.zero)
+            if (vel.magnitude > 1f)
             {
                 Quaternion rot = Quaternion.LookRotation(vel, stats.transformNormal);
                 actor.transform.rotation = rot;

@@ -1,6 +1,7 @@
 ﻿using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.Parameters;
+using SurgeEngine.Code.Parameters.SonicSubStates;
 using SurgeEngine.Code.SurgeDebug;
 using UnityEngine;
 
@@ -22,6 +23,7 @@ namespace SurgeEngine.Code.CommonObjects
 
             float dot = Vector3.Dot(transform.up, Vector3.up);
             context.stateMachine.SetState<FStateAir>();
+            context.stateMachine.GetSubState<FBoost>().Active = false;
             
             context.transform.rotation = Quaternion.LookRotation(transform.forward, transform.up);
             context.model.transform.localRotation = Quaternion.LookRotation(transform.forward, transform.up);

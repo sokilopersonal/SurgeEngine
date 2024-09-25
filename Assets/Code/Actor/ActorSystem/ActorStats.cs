@@ -22,6 +22,7 @@ namespace SurgeEngine.Code.ActorSystem
         public ContactBase lastContactObject;
         public bool isGrounded;
         public bool isInAir;
+        public Transform homingTarget;
 
         private Rigidbody _rigidbody;
 

@@ -63,6 +63,7 @@ namespace SurgeEngine.Code.Parameters
                     Common.ApplyGravity(35, dt);
                     break;
                 case SpecialJumpType.TrickJumper:
+                    Common.ApplyGravity(35, dt);
                     break;
                 case SpecialJumpType.Spring:
                     if (_keepVelocityTimer > 0)

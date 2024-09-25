@@ -62,6 +62,42 @@ public partial class @SurgeInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""YButton"",
+                    ""type"": ""Button"",
+                    ""id"": ""2f347998-65cd-42b4-9667-902a87378ba9"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""BButton"",
+                    ""type"": ""Button"",
+                    ""id"": ""0289de73-bbde-461d-adc8-05961005f8d5"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""LBButton"",
+                    ""type"": ""Button"",
+                    ""id"": ""65098382-d03c-41ab-bc27-3a86cab73e80"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RBButton"",
+                    ""type"": ""Button"",
+                    ""id"": ""f0fc04bc-2a5d-4eb2-a74f-557c186b5a25"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -196,6 +232,50 @@ public partial class @SurgeInput: IInputActionCollection2, IDisposable
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b727028c-e1cf-4669-8f9b-651ba1e47e66"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""YButton"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""906f06e6-ebd3-40a6-ada4-891f9e03a845"",
+                    ""path"": ""<Keyboard>/leftCtrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""BButton"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""566b6e4e-379f-4f0b-aa96-1605a7b57051"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LBButton"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0a2c1665-1467-4fd3-88b9-1e0562c2c607"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RBButton"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -208,6 +288,10 @@ public partial class @SurgeInput: IInputActionCollection2, IDisposable
         m_Gameplay_Camera = m_Gameplay.FindAction("Camera", throwIfNotFound: true);
         m_Gameplay_Boost = m_Gameplay.FindAction("Boost", throwIfNotFound: true);
         m_Gameplay_Jump = m_Gameplay.FindAction("Jump", throwIfNotFound: true);
+        m_Gameplay_YButton = m_Gameplay.FindAction("YButton", throwIfNotFound: true);
+        m_Gameplay_BButton = m_Gameplay.FindAction("BButton", throwIfNotFound: true);
+        m_Gameplay_LBButton = m_Gameplay.FindAction("LBButton", throwIfNotFound: true);
+        m_Gameplay_RBButton = m_Gameplay.FindAction("RBButton", throwIfNotFound: true);
     }
 
     ~@SurgeInput()
@@ -278,6 +362,10 @@ public partial class @SurgeInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_Camera;
     private readonly InputAction m_Gameplay_Boost;
     private readonly InputAction m_Gameplay_Jump;
+    private readonly InputAction m_Gameplay_YButton;
+    private readonly InputAction m_Gameplay_BButton;
+    private readonly InputAction m_Gameplay_LBButton;
+    private readonly InputAction m_Gameplay_RBButton;
     public struct GameplayActions
     {
         private @SurgeInput m_Wrapper;
@@ -286,6 +374,10 @@ public partial class @SurgeInput: IInputActionCollection2, IDisposable
         public InputAction @Camera => m_Wrapper.m_Gameplay_Camera;
         public InputAction @Boost => m_Wrapper.m_Gameplay_Boost;
         public InputAction @Jump => m_Wrapper.m_Gameplay_Jump;
+        public InputAction @YButton => m_Wrapper.m_Gameplay_YButton;
+        public InputAction @BButton => m_Wrapper.m_Gameplay_BButton;
+        public InputAction @LBButton => m_Wrapper.m_Gameplay_LBButton;
+        public InputAction @RBButton => m_Wrapper.m_Gameplay_RBButton;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -307,6 +399,18 @@ public partial class @SurgeInput: IInputActionCollection2, IDisposable
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
+            @YButton.started += instance.OnYButton;
+            @YButton.performed += instance.OnYButton;
+            @YButton.canceled += instance.OnYButton;
+            @BButton.started += instance.OnBButton;
+            @BButton.performed += instance.OnBButton;
+            @BButton.canceled += instance.OnBButton;
+            @LBButton.started += instance.OnLBButton;
+            @LBButton.performed += instance.OnLBButton;
+            @LBButton.canceled += instance.OnLBButton;
+            @RBButton.started += instance.OnRBButton;
+            @RBButton.performed += instance.OnRBButton;
+            @RBButton.canceled += instance.OnRBButton;
         }
 
         private void UnregisterCallbacks(IGameplayActions instance)
@@ -323,6 +427,18 @@ public partial class @SurgeInput: IInputActionCollection2, IDisposable
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
+            @YButton.started -= instance.OnYButton;
+            @YButton.performed -= instance.OnYButton;
+            @YButton.canceled -= instance.OnYButton;
+            @BButton.started -= instance.OnBButton;
+            @BButton.performed -= instance.OnBButton;
+            @BButton.canceled -= instance.OnBButton;
+            @LBButton.started -= instance.OnLBButton;
+            @LBButton.performed -= instance.OnLBButton;
+            @LBButton.canceled -= instance.OnLBButton;
+            @RBButton.started -= instance.OnRBButton;
+            @RBButton.performed -= instance.OnRBButton;
+            @RBButton.canceled -= instance.OnRBButton;
         }
 
         public void RemoveCallbacks(IGameplayActions instance)
@@ -346,5 +462,9 @@ public partial class @SurgeInput: IInputActionCollection2, IDisposable
         void OnCamera(InputAction.CallbackContext context);
         void OnBoost(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
+        void OnYButton(InputAction.CallbackContext context);
+        void OnBButton(InputAction.CallbackContext context);
+        void OnLBButton(InputAction.CallbackContext context);
+        void OnRBButton(InputAction.CallbackContext context);
     }
 }

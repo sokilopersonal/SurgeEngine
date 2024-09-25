@@ -18,15 +18,16 @@ namespace SurgeEngine.Code.CommonObjects
             
             var context = ActorContext.Context;
             
-            context.stateMachine.GetSubState<FBoost>().Active = false;
-            
-            Common.ApplyImpulse(transform.forward * speed);
+            context.transform.forward = transform.forward;
+            if (context.stats.currentSpeed < speed)
+            {
+                Common.ApplyImpulse(transform.forward * speed, ResetVelocityType.Both);
+            }
             context.stateMachine.SetState<FStateGround>();
 
             if (center)
             {
                 context.transform.position = transform.position;
-                context.transform.forward = Vector3.Cross(-transform.right, Vector3.up);
             }
 
             context.flags.AddFlag(new Flag(FlagType.OutOfControl, 

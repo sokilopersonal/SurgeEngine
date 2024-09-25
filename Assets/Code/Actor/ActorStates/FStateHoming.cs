@@ -1,4 +1,5 @@
 ﻿using SurgeEngine.Code.Custom;
+using SurgeEngine.Code.Parameters.SonicSubStates;
 using UnityEngine;
 
 namespace SurgeEngine.Code.Parameters
@@ -10,10 +11,11 @@ namespace SurgeEngine.Code.Parameters
         public override void OnEnter()
         {
             base.OnEnter();
-            
+
+            stateMachine.GetSubState<FBoost>().Active = false;
             animation.TransitionToState("Homing", 0f, true);
 
-            Common.ResetVelocity();
+            Common.ResetVelocity(ResetVelocityType.Both);
         }
 
         public override void OnExit()
@@ -27,8 +29,11 @@ namespace SurgeEngine.Code.Parameters
         {
             base.OnFixedTick(dt);
 
-            Vector3 direction = (_target.position - actor.transform.position).normalized;
-            _rigidbody.linearVelocity = direction * actor.stats.homingParameters.homingSpeed;
+            if (_target != null)
+            {
+                Vector3 direction = (_target.position - actor.transform.position).normalized;
+                _rigidbody.linearVelocity = direction * actor.stats.homingParameters.homingSpeed;
+            }
         }
 
         public void SetTarget(Transform target)

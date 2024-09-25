@@ -20,14 +20,19 @@ namespace SurgeEngine.Code.ActorSystem
             hash.Add(flag);
         }
         
-        public void RemoveFlag(Flag flag)
+        public void RemoveFlag(FlagType type)
         {
-            hash.Remove(flag);
+            hash.Remove(hash.FirstOrDefault(f => f.type == type));
         }
         
         public bool HasFlag(FlagType type)
         {
             return hash.Any(f => f.type == type);
+        }
+
+        public Flag GetFlag(FlagType type)
+        {
+            return hash.FirstOrDefault(f => f.type == type);
         }
 
         public bool CheckForTag(string tag)
@@ -78,6 +83,8 @@ namespace SurgeEngine.Code.ActorSystem
                 }
             }
         }
+
+        public float GetTime() => timer;
     }
 
     public enum FlagType

@@ -69,7 +69,7 @@ namespace SurgeEngine.Code.CommonObjects
 
             transform.localScale = Vector3.Lerp(_initialScale, Vector3.one * 0.065f, _factor * 1.5f); // Need to multiply factor to fix scale
             
-            _factor += Time.fixedDeltaTime / time;
+            _factor += Time.fixedUnscaledDeltaTime / time;
 
             if (_factor >= 0.75f)
             {

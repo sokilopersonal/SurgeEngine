@@ -34,19 +34,25 @@ namespace SurgeEngine.Code.Custom
             return impulseV;
         }
 
-        public static void ResetVelocity()
+        public static void ResetVelocity(ResetVelocityType type)
         {
             var context = ActorContext.Context;
-            context.rigidbody.linearVelocity = Vector3.zero;
-            context.rigidbody.angularVelocity = Vector3.zero;
-            context.stats.planarVelocity = Vector3.zero;
-            context.stats.movementVector = Vector3.zero;
+
+            if (context.rigidbody.isKinematic) return;
+            
+            if (type is ResetVelocityType.Linear or ResetVelocityType.Both)
+            {
+                context.stats.planarVelocity = Vector3.zero;
+                context.stats.movementVector = Vector3.zero;
+                context.rigidbody.linearVelocity = Vector3.zero;
+            }
+            if (type is ResetVelocityType.Angular or ResetVelocityType.Both) context.rigidbody.angularVelocity = Vector3.zero;
         }
         
-        public static void ApplyImpulse(Vector3 impulse)
+        public static void ApplyImpulse(Vector3 impulse, ResetVelocityType type = ResetVelocityType.Both)
         {
             var context = ActorContext.Context;
-            ResetVelocity();
+            ResetVelocity(type);
             
             context.rigidbody.AddForce(impulse, ForceMode.Impulse);
             context.rigidbody.linearVelocity = Vector3.ClampMagnitude(context.rigidbody.linearVelocity, impulse.magnitude);
@@ -55,7 +61,7 @@ namespace SurgeEngine.Code.Custom
         public static void ApplyGravity(float yGravity, float dt)
         {
             var context = ActorContext.Context;
-            context.rigidbody.linearVelocity += Vector3.down * (yGravity * dt);
+            if (!context.rigidbody.isKinematic) context.rigidbody.linearVelocity += Vector3.down * (yGravity * dt);
         }
         
         public static bool CheckForGround(out RaycastHit result)
@@ -64,6 +70,47 @@ namespace SurgeEngine.Code.Custom
             return Physics.Raycast(context.transform.position, -context.transform.up, out result,
                 context.stats.moveParameters.castParameters.castDistance, context.stats.moveParameters.castParameters.collisionMask, QueryTriggerInteraction.Ignore);
         }
+
+        public static Vector3 GetArcPosition(Vector3 startPosition, Vector3 direction, float impulse)
+        {
+            Vector3 impulseDirection = direction;
+
+            int trajectoryPoints = 240;
+            float timeStep = 0.1f;
+            int layerMask = 1 << LayerMask.NameToLayer("Default");
+
+            Vector3 position = startPosition;
+            Vector3 velocity = impulseDirection.normalized * impulse;
+            Vector3 gravity = -35 * Vector3.up;
+
+            float totalTime = 0f;
+            Vector3 peakPosition = startPosition;
+            float highestY = startPosition.y;
+            
+            for (int j = 0; j < trajectoryPoints; j++)
+            {
+                totalTime += timeStep;
+
+                Vector3 newPosition = position + velocity * timeStep + gravity * (0.5f * Mathf.Pow(timeStep, 2));
+
+                if (Physics.Linecast(position, newPosition, out _, layerMask))
+                {
+                    break;
+                }
+                
+                if (newPosition.y - 1f > highestY)
+                {
+                    highestY = newPosition.y;
+                    peakPosition = newPosition;
+                }
+
+                position = newPosition;
+                velocity += gravity * timeStep;
+            }
+
+            return peakPosition;
+        }
+
 
         public static Transform FindHomingTarget()
         {
@@ -87,7 +134,7 @@ namespace SurgeEngine.Code.Custom
 
                             if (Vector3.Dot(dir.normalized, context.transform.forward) > 0.1f)
                             {
-                                if (!Physics.Linecast(context.transform.position, collider.transform.position, out var hit, 
+                                if (!Physics.Linecast(context.transform.position, collider.transform.position + collider.transform.up * 0.2f, out _, 
                                         context.stats.moveParameters.castParameters.collisionMask))
                                 {
                                     result = collider.transform;
@@ -102,5 +149,13 @@ namespace SurgeEngine.Code.Custom
 
             return null;
         }
+    }
+
+    public enum ResetVelocityType
+    {
+        None,
+        Angular,
+        Linear,
+        Both
     }
 }

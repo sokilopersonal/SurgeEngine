@@ -69,10 +69,8 @@ namespace SurgeEngine.Code.CameraSystem
         protected override void OnInitialized()
         {
             base.OnInitialized();
-            
-            Quaternion dir = Quaternion.LookRotation(actor.transform.forward);
-            _x = dir.eulerAngles.y;
-            _y = dir.eulerAngles.x;
+
+            SetRotationAxis(actor.transform.forward);
         }
 
         private void OnEnable()
@@ -191,6 +189,13 @@ namespace SurgeEngine.Code.CameraSystem
                 : _distance;
             
             _cameraTransform.position = GetTarget(result);
+        }
+
+        public void SetRotationAxis(Vector3 dir)
+        {
+            Quaternion rotation = Quaternion.LookRotation(dir);
+            _x = rotation.eulerAngles.y;
+            _y = rotation.eulerAngles.x;
         }
 
         private Vector3 GetTarget(float distance)

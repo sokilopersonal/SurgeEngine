@@ -36,44 +36,15 @@ namespace SurgeEngine.Code.Parameters
             SetDetachTime(0f);
             
             //UpdateNormal();
-            //ConvertAirToGroundVelocity();
+            ConvertAirToGroundVelocity();
         }
 
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
             
-            FBoost boost = stateMachine.GetSubState<FBoost>();
-            if (boost.Active && stats.currentSpeed < boost.startForce)
-            {
-                _rigidbody.linearVelocity = _rigidbody.transform.forward * boost.startForce;
-                boost.restoringTopSpeed = true;
-                animation.TransitionToState("Run Cycle", 0f);
-            }
-    
-            if (boost.Active)
-            {
-                _rigidbody.AddForce(Vector3.ProjectOnPlane(_rigidbody.transform.forward, stats.groundNormal) * (boost.boostForce * dt), ForceMode.Impulse);
-                float maxSpeed = stats.moveParameters.maxSpeed * boost.maxSpeedMultiplier;
-                _rigidbody.linearVelocity = Vector3.ClampMagnitude(_rigidbody.linearVelocity, maxSpeed);
-            }
-            else if (boost.restoringTopSpeed)
-            {
-                float normalMaxSpeed = stats.moveParameters.topSpeed;
-                if (stats.currentSpeed > normalMaxSpeed)
-                {
-                    _rigidbody.linearVelocity = Vector3.MoveTowards(
-                        _rigidbody.linearVelocity, 
-                        _rigidbody.transform.forward * normalMaxSpeed, 
-                        dt * boost.restoreSpeed
-                    );
-                }
-                else if (stats.currentSpeed * 0.99f < normalMaxSpeed)
-                {
-                    boost.restoringTopSpeed = false;
-                }
-            }
-            
+            BoostHandle(dt);
+
             if (actor.input.JumpPressed)
             {
                 SetDetachTime(0.2f);
@@ -138,7 +109,6 @@ namespace SurgeEngine.Code.Parameters
 
             if (stats.inputDir.magnitude > INPUT_DEADZONE)
             {
-                
                 if (!stats.skidding)
                 {
                     CalculateVelocity(dt);
@@ -160,7 +130,12 @@ namespace SurgeEngine.Code.Parameters
             SlopePhysics(dt);
             
             Vector3 movementVelocity = stats.movementVector;
-            if (!stateMachine.GetSubState<FBoost>().Active) movementVelocity = Vector3.ClampMagnitude(movementVelocity, stats.moveParameters.maxSpeed); 
+            if (!stateMachine.GetSubState<FBoost>().Active)
+            {
+                movementVelocity = Vector3.Lerp(movementVelocity,
+                    Vector3.ClampMagnitude(movementVelocity, stats.moveParameters.maxSpeed),
+                    SurgeMath.Smooth(1 - 0.95f));
+            } 
             _rigidbody.linearVelocity = movementVelocity;
         }
 
@@ -177,6 +152,40 @@ namespace SurgeEngine.Code.Parameters
                 stats.movementVector = Vector3.zero;
                     
                 stateMachine.SetState<FStateIdle>();
+            }
+        }
+
+        private void BoostHandle(float dt)
+        {
+            FBoost boost = stateMachine.GetSubState<FBoost>();
+            if (boost.Active && stats.currentSpeed < boost.startForce)
+            {
+                _rigidbody.linearVelocity = _rigidbody.transform.forward * boost.startForce;
+                boost.restoringTopSpeed = true;
+                animation.TransitionToState("Run Cycle", 0f);
+            }
+    
+            if (boost.Active)
+            {
+                float maxSpeed = stats.moveParameters.maxSpeed * boost.maxSpeedMultiplier;
+                if (stats.currentSpeed < maxSpeed) _rigidbody.AddForce(_rigidbody.transform.forward * (boost.boostForce * dt), ForceMode.VelocityChange);
+                    
+            }
+            else if (boost.restoringTopSpeed)
+            {
+                float normalMaxSpeed = stats.moveParameters.topSpeed;
+                if (stats.currentSpeed > normalMaxSpeed)
+                {
+                    _rigidbody.linearVelocity = Vector3.MoveTowards(
+                        _rigidbody.linearVelocity, 
+                        _rigidbody.transform.forward * normalMaxSpeed, 
+                        dt * boost.restoreSpeed
+                    );
+                }
+                else if (stats.currentSpeed * 0.99f < normalMaxSpeed)
+                {
+                    boost.restoringTopSpeed = false;
+                }
             }
         }
 
