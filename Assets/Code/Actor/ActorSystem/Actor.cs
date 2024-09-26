@@ -2,6 +2,7 @@
 using SurgeEngine.Code.CameraSystem;
 using SurgeEngine.Code.StateMachine;
 using UnityEngine;
+using UnityEngine.Splines;
 
 namespace SurgeEngine.Code.ActorSystem
 {
@@ -24,12 +25,14 @@ namespace SurgeEngine.Code.ActorSystem
         public int ID { get; private set; }
 
         [HideInInspector] public new Rigidbody rigidbody;
+        public SplineContainer bezierPath;
 
         private void Awake()
         {
             ID = gameObject.GetInstanceID();
             
             rigidbody = GetComponent<Rigidbody>();
+            bezierPath = null;
             
             stateMachine = new FStateMachine();
             foreach (var state in states)

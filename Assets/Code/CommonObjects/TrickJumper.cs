@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using FMODUnity;
 using SurgeEngine.Code.ActorHUD;
 using SurgeEngine.Code.ActorSystem;
@@ -54,8 +55,8 @@ namespace SurgeEngine.Code.CommonObjects
         {
             _qteSequences = new List<QTESequence>();
             
-            _targetTimeScale = 0.045f;
-            _timeScaleDuration = 1.1f;
+            _targetTimeScale = 0.0375f;
+            _timeScaleDuration = 1.25f;
         }
 
         private void OnEnable()
@@ -107,8 +108,8 @@ namespace SurgeEngine.Code.CommonObjects
                 
                 context.flags.AddFlag(new Flag(FlagType.OutOfControl, null));
                 context.flags.AddFlag(new Flag(FlagType.DontClampVerticalSpeed, null));
-                
-                StartCoroutine(ChangeTimeScaleOverTime(_targetTimeScale, _timeScaleDuration));
+
+                _ = ChangeTimeScaleOverTime(_targetTimeScale, _timeScaleDuration);
             }
         }
 
@@ -178,7 +179,7 @@ namespace SurgeEngine.Code.CommonObjects
             }
         }
 
-        private IEnumerator ChangeTimeScaleOverTime(float targetScale, float duration)
+        private async UniTask ChangeTimeScaleOverTime(float targetScale, float duration)
         {
             float startScale = Time.timeScale;
             float elapsed = 0f;
@@ -187,7 +188,7 @@ namespace SurgeEngine.Code.CommonObjects
             {
                 Time.timeScale = Mathf.Lerp(startScale, targetScale, elapsed / duration);
                 elapsed += Time.unscaledDeltaTime;
-                yield return null;
+                await UniTask.Yield();
             }
 
             if (Mathf.Approximately(targetScale, _targetTimeScale))
@@ -224,7 +225,7 @@ namespace SurgeEngine.Code.CommonObjects
             Time.timeScale = targetScale;
         }
 
-        private IEnumerator ChangeRigidbodyPositionOverTime(Rigidbody rigidbody, Vector3 targetPosition, float duration)
+        private async UniTask ChangeRigidbodyPositionOverTime(Rigidbody rigidbody, Vector3 targetPosition, float duration)
         {
             Vector3 startPosition = rigidbody.position;
             float elapsed = 0f;
@@ -234,19 +235,14 @@ namespace SurgeEngine.Code.CommonObjects
             {
                 rigidbody.position = Vector3.Lerp(startPosition, targetPosition, elapsed / duration);
                 elapsed += Time.unscaledDeltaTime;
-                yield return null;
+                await UniTask.Yield(PlayerLoopTiming.Update);
             }
-
+            
             rigidbody.isKinematic = false;
             Common.ResetVelocity(ResetVelocityType.Both);
         }
 
-        private void OnResultReceived(QTEResult result)
-        {
-            StartCoroutine(OnResultReceivedCoroutine(result));
-        }
-
-        private IEnumerator OnResultReceivedCoroutine(QTEResult result)
+        private async void OnResultReceived(QTEResult result)
         {
             _qteSequences.Clear();
             _buttonId = 0;
@@ -265,8 +261,7 @@ namespace SurgeEngine.Code.CommonObjects
                 Common.ResetVelocity(ResetVelocityType.Both);
                 Vector3 arcPeak = Common.GetArcPosition(startPoint.position,
                     Common.GetCross(transform, firstPitch, true), firstSpeed);
-                context.rigidbody.position = arcPeak;
-                //yield return StartCoroutine(ChangeRigidbodyPositionOverTime(context.rigidbody, arcPeak, 0.05f)); // should snap Sonic to the arc point
+                await ChangeRigidbodyPositionOverTime(context.rigidbody, arcPeak, 0.075f); // should snap Sonic to the arc point
                 context.animation.TransitionToState($"Trick {Random.Range(1, 8)}", 0f);
                 
                 Vector3 impulse = Common.GetImpulseWithPitch(Vector3.Cross(-startPoint.right, Vector3.up), startPoint.right, secondPitch, secondSpeed);
@@ -284,11 +279,9 @@ namespace SurgeEngine.Code.CommonObjects
             context.stats.planarVelocity = context.rigidbody.linearVelocity;
             
             context.stateMachine.SetState<FStateAir>();
-            StartCoroutine(ChangeTimeScaleOverTime(1f, 0.3f));
+            _ = ChangeTimeScaleOverTime(1, 0.1f);
 
             context.input.OnButtonPressed -= OnButtonPressed;
-
-            yield return null;
         }
 
         public float GetTimer()

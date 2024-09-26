@@ -2,7 +2,9 @@
 using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.Parameters.SonicSubStates;
+using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Splines;
 using Quaternion = UnityEngine.Quaternion;
 using Vector3 = UnityEngine.Vector3;
 
@@ -85,6 +87,26 @@ namespace SurgeEngine.Code.Parameters
             else
             {
                 stateMachine.SetState<FStateAir>();
+            }
+            
+            var path = actor.bezierPath;
+            if (path != null)
+            {
+                SplineUtility.GetNearestPoint(path.Spline, SurgeMath.Vector3ToFloat3(path.transform.InverseTransformPoint(_rigidbody.position)), out var near, out var t);
+                path.Evaluate(t, out var point, out var tangent, out var up);
+                var planeNormal = Vector3.Cross(tangent, up);
+                
+                if (stats.currentSpeed < stats.moveParameters.topSpeed)
+                {
+                    _rigidbody.AddForce(_rigidbody.transform.forward * (dt * 25), ForceMode.Impulse);
+                }
+                
+                _rigidbody.linearVelocity = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, planeNormal);
+                stats.inputDir = Vector3.ProjectOnPlane(stats.inputDir, planeNormal);
+
+                Vector3 nearPoint = path.transform.TransformPoint(near);
+                _rigidbody.position = Vector3.Lerp(_rigidbody.position, nearPoint, 16f * dt);
+                _rigidbody.rotation = Quaternion.LookRotation(tangent, up);
             }
         }
 

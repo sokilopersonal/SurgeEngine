@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Unity.Mathematics;
+using UnityEngine;
 
 namespace SurgeEngine.Code.Custom
 {
@@ -35,6 +36,23 @@ namespace SurgeEngine.Code.Custom
             return Mathf.Approximately(t, 1)
                 ? 1
                 : Mathf.Clamp01(((1 / (1 - t)) - 1) * Mathf.Pow(1 - Mathf.Pow(1 - f, Time.deltaTime), a1));
+        }
+        
+        public static float3 Vector3ToFloat3(Vector3 vector3)
+        {
+            return new float3(vector3.x, vector3.y, vector3.z);
+        }
+        
+        public static Vector3 Float3ToVector3(float3 float3)
+        {
+            return new Vector3(float3.x, float3.y, float3.z);
+        }
+        
+        public static Vector3 DivideVector3(Vector3 a, Vector3 b)
+        {
+            return new Vector3(a.x / b.x,
+                a.y / b.y,
+                a.z / b.z);
         }
     }
 }

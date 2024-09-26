@@ -125,12 +125,10 @@ namespace SurgeEngine.Code.ActorSystem
                 if (device is Keyboard && device.wasUpdatedThisFrame)
                 {
                     isKeyboard = true;
-                    Debug.Log("Keyboard");
                 }
                 else if (device is Gamepad && device.wasUpdatedThisFrame)
                 {
                     isKeyboard = false;
-                    Debug.Log("Gamepad");
                 }
             }
 
