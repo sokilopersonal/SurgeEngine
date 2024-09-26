@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using FMODUnity;
 using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.Parameters;
@@ -19,13 +20,17 @@ namespace SurgeEngine.Code.CommonObjects
         [SerializeField] private float secondSpeed = 45f;
         [SerializeField] private float secondPitch = 50f;
         [SerializeField] private float secondOutOfControl = 1f;
-        [SerializeField] private float trickTime1 = 3f;
+        [SerializeField] private float trickTime1 = 3.5f;
         [SerializeField] private float trickTime2;
         [SerializeField] private float trickTime3;
-        [SerializeField] private int trickCount1 = 3;
-        [SerializeField] private int trickCount2;
-        [SerializeField] private int trickCount3;
+        [SerializeField, Range(0, 5)] private int trickCount1 = 3;
+        [SerializeField, Range(0, 5)] private int trickCount2;
+        [SerializeField, Range(0, 5)] private int trickCount3;
         
+        [SerializeField] private EventReference qteHitSound;
+        [SerializeField] private EventReference qteSuccessSound;
+        [SerializeField] private EventReference qteEndSuccessSound;
+        [SerializeField] private EventReference qteFailSound;
         [SerializeField] private QuickTimeEventUI qteUI;
         
         private float _targetTimeScale = 0.045f;
@@ -47,7 +52,7 @@ namespace SurgeEngine.Code.CommonObjects
             _qteSequences = new List<QTESequence>();
             
             _targetTimeScale = 0.055f;
-            _timeScaleDuration = 1.15f;
+            _timeScaleDuration = 1.25f;
         }
 
         private void OnEnable()
@@ -81,6 +86,7 @@ namespace SurgeEngine.Code.CommonObjects
                 if (timer <= 0)
                 {
                     OnQTEResultReceived?.Invoke(QTEResult.Fail);
+                    RuntimeManager.PlayOneShot(qteFailSound);
                 }
             }
         }
@@ -141,14 +147,17 @@ namespace SurgeEngine.Code.CommonObjects
                 {
                     _buttonId++;
                     OnCorrectButton?.Invoke();
+                    RuntimeManager.PlayOneShot(qteHitSound);
 
                     if (_buttonId >= sequence.buttons.Count) // all buttons pressed
                     {
                         _sequenceId++;
+                        RuntimeManager.PlayOneShot(qteSuccessSound);
                         
                         if (_sequenceId >= _qteSequences.Count)
                         {
                             OnQTEResultReceived.Invoke(QTEResult.Success);
+                            RuntimeManager.PlayOneShot(qteEndSuccessSound);
                         }
                         else
                         {
@@ -164,9 +173,11 @@ namespace SurgeEngine.Code.CommonObjects
                     break;
                 }
 
+                // you fucked up
                 if (sequenceButton != button)
                 {
                     OnQTEResultReceived.Invoke(QTEResult.Fail);
+                    RuntimeManager.PlayOneShot(qteFailSound);
                     break;
                 }
             }
@@ -222,7 +233,7 @@ namespace SurgeEngine.Code.CommonObjects
         {
             Vector3 startPosition = rigidbody.position;
             float elapsed = 0f;
-            rigidbody.isKinematic = true;
+            //rigidbody.isKinematic = true;
             
             while (elapsed < duration)
             {
@@ -231,7 +242,7 @@ namespace SurgeEngine.Code.CommonObjects
                 yield return null;
             }
 
-            rigidbody.isKinematic = false;
+            //rigidbody.isKinematic = false;
             Common.ResetVelocity(ResetVelocityType.Both);
         }
 
@@ -242,16 +253,22 @@ namespace SurgeEngine.Code.CommonObjects
 
         private IEnumerator OnResultReceivedCoroutine(QTEResult result)
         {
+            _qteSequences.Clear();
+            _buttonId = 0;
+            _sequenceId = 0;
+            if (_currentQTEUI) Destroy(_currentQTEUI.gameObject);
+            
             var context = ActorContext.Context;
             if (result.success)
             {
                 context.flags.RemoveFlag(FlagType.OutOfControl);
                 context.flags.AddFlag(new Flag(FlagType.OutOfControl, null, true, secondOutOfControl));
 
+                Common.ResetVelocity(ResetVelocityType.Both);
                 Vector3 arcPeak = Common.GetArcPosition(startPoint.position,
                     Common.GetCross(transform, firstPitch, true), firstSpeed);
-                context.rigidbody.position = arcPeak;
-                //yield return StartCoroutine(ChangeRigidbodyPositionOverTime(context.rigidbody, arcPeak, 0.02f));
+                //context.rigidbody.position = arcPeak;
+                yield return StartCoroutine(ChangeRigidbodyPositionOverTime(context.rigidbody, arcPeak, 0.05f)); // should snap Sonic to the arc point
                 context.animation.TransitionToState($"Trick {Random.Range(1, 8)}", 0f);
                 
                 Common.ApplyImpulse(Common.GetImpulseWithPitch(transform, secondPitch, secondSpeed));
@@ -264,15 +281,10 @@ namespace SurgeEngine.Code.CommonObjects
                 context.animation.TransitionToState("Air Cycle");
             }
             
-            _qteSequences.Clear();
-            _buttonId = 0;
-            _sequenceId = 0;
-            
             context.stateMachine.SetState<FStateAir>();
             StartCoroutine(ChangeTimeScaleOverTime(1f, 0.3f));
 
             context.input.OnButtonPressed -= OnButtonPressed;
-            if (_currentQTEUI) Destroy(_currentQTEUI.gameObject);
 
             yield return null;
         }

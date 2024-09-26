@@ -24,12 +24,6 @@ namespace SurgeEngine.Code.Parameters
         {
             base.OnEnter();
 
-            if (stateMachine.IsPreviousState<FStateAir>() || !stateMachine.IsPreviousState<FStateSpecialJump>() ||
-                stats.lastContactObject is not DashPanel)
-            {
-                animation.TransitionToState(AnimatorParams.RunCycle, 0f);
-            }
-
             _cameraTransform = actor.camera.GetCameraTransform();
             stats.groundNormal = Vector3.up;
             
@@ -43,6 +37,7 @@ namespace SurgeEngine.Code.Parameters
         {
             base.OnTick(dt);
             
+            animation.TransitionToState(AnimatorParams.RunCycle, 0f);
             BoostHandle(dt);
 
             if (actor.input.JumpPressed)

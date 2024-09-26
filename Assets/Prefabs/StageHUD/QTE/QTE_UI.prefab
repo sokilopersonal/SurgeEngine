@@ -85,6 +85,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2034362125250714350}
   - component: {fileID: 3106339314173991710}
+  - component: {fileID: 5807497835691604996}
   m_Layer: 5
   m_Name: Group
   m_TagString: Untagged
@@ -124,6 +125,28 @@ CanvasGroup:
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
+--- !u!95 &5807497835691604996
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 825719293529964447}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 1cf0b65d5c6b48b43ac24862ae142a12, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 2
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &3304771526947668942
 GameObject:
   m_ObjectHideFlags: 0
@@ -338,19 +361,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   barFill: {fileID: 4376551952958951849}
   buttonParent: {fileID: 7325076194208650425}
-  dummyButton: {fileID: 0}
-  aButton: {fileID: 6620530853705909865, guid: fe6e5e0e210b687479afd6336ca24628, type: 3}
-  xButton: {fileID: 6620530853705909865, guid: c4655787161a5ba429ac69f5975493bb, type: 3}
-  bButton: {fileID: 6620530853705909865, guid: c8377a0b5f8782a419bbd690272a94eb, type: 3}
-  yButton: {fileID: 6620530853705909865, guid: 08d0cfb0466889341a9d7f8dd47bd537, type: 3}
-  lbButton: {fileID: 6620530853705909865, guid: 80dd34a235ad60e43a7de2116854979d, type: 3}
-  rbButton: {fileID: 6620530853705909865, guid: 7920b45824d19d84aae2c2b470f1ff87, type: 3}
+  aButton: {fileID: -3101399697389754375, guid: fe6e5e0e210b687479afd6336ca24628, type: 3}
+  xButton: {fileID: 2965983551354786811, guid: 9f492ea1a3df8474fb47517e3ce57f9d, type: 3}
+  bButton: {fileID: 2965983551354786811, guid: c8377a0b5f8782a419bbd690272a94eb, type: 3}
+  yButton: {fileID: 2965983551354786811, guid: 706d43286990e254995b90c04aae77e7, type: 3}
+  lbButton: {fileID: 2965983551354786811, guid: 2513c70725e59044caeaa6e827142963, type: 3}
+  rbButton: {fileID: 2965983551354786811, guid: 01f6a0976c04ace4f888742a5f2e32c3, type: 3}
   aButtonKeyboard: {fileID: 0}
   xButtonKeyboard: {fileID: 0}
   bButtonKeyboard: {fileID: 0}
   yButtonKeyboard: {fileID: 0}
   lbButtonKeyboard: {fileID: 0}
   rbButtonKeyboard: {fileID: 0}
+  qteClick: {fileID: 1686842920252267672, guid: e5ddf7107b38fb846bc2fc2346be3e06, type: 3}
 --- !u!1 &6448622628332923525
 GameObject:
   m_ObjectHideFlags: 0

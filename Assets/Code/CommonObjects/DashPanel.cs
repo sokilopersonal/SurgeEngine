@@ -19,9 +19,10 @@ namespace SurgeEngine.Code.CommonObjects
             var context = ActorContext.Context;
             
             context.transform.forward = transform.forward;
+            context.animation.TransitionToState(AnimatorParams.RunCycle, 0f);
             if (context.stats.currentSpeed < speed)
             {
-                Common.ApplyImpulse(transform.forward * speed, ResetVelocityType.Both);
+                Common.ApplyImpulse(transform.forward * speed);
             }
             context.stateMachine.SetState<FStateGround>();
 

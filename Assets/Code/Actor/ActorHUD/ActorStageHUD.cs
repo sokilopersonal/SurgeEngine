@@ -3,20 +3,27 @@ using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.Parameters.SonicSubStates;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace SurgeEngine.Code.ActorHUD
 {
     public class ActorStageHUD : MonoBehaviour
     {
-        [SerializeField] private RingHUD ringHUDPrefab;
-        [SerializeField] private Camera mainCamera;
+        private static ActorStageHUD _instance;
 
+        public static ActorStageHUD Context => _instance;
+
+        [SerializeField] private RingHUD ringHUDPrefab;
+        
         [SerializeField] private TMP_Text ringCounter;
         [SerializeField] private TMP_Text boostCounter;
         [SerializeField] private RectTransform homingImage;
         
         private Actor _actor => ActorContext.Context;
+
+        private void Awake()
+        {
+            _instance = this;
+        }
 
         private void OnEnable()
         {

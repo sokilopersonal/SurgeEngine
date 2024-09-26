@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using SurgeEngine.Code.ActorHUD;
+using SurgeEngine.Code.ActorSystem;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,22 +12,23 @@ namespace SurgeEngine.Code.CommonObjects
         [SerializeField] private Image barFill;
 
         [SerializeField] private Transform buttonParent;
-        [SerializeField] private Image dummyButton;
-        [SerializeField] private Image aButton;
-        [SerializeField] private Image xButton;
-        [SerializeField] private Image bButton;
-        [SerializeField] private Image yButton;
-        [SerializeField] private Image lbButton;
-        [SerializeField] private Image rbButton;
         
-        [SerializeField] private Image aButtonKeyboard;
-        [SerializeField] private Image xButtonKeyboard;
-        [SerializeField] private Image bButtonKeyboard;
-        [SerializeField] private Image yButtonKeyboard;
-        [SerializeField] private Image lbButtonKeyboard;
-        [SerializeField] private Image rbButtonKeyboard;
+        [SerializeField] private QuickTimeEventUIButton aButton;
+        [SerializeField] private QuickTimeEventUIButton xButton;
+        [SerializeField] private QuickTimeEventUIButton bButton;
+        [SerializeField] private QuickTimeEventUIButton yButton;
+        [SerializeField] private QuickTimeEventUIButton lbButton;
+        [SerializeField] private QuickTimeEventUIButton rbButton;
+        [SerializeField] private QuickTimeEventUIButton aButtonKeyboard;
+        [SerializeField] private QuickTimeEventUIButton xButtonKeyboard;
+        [SerializeField] private QuickTimeEventUIButton bButtonKeyboard;
+        [SerializeField] private QuickTimeEventUIButton yButtonKeyboard;
+        [SerializeField] private QuickTimeEventUIButton lbButtonKeyboard;
+        [SerializeField] private QuickTimeEventUIButton rbButtonKeyboard;
+
+        [SerializeField] private GameObject qteClick;
         
-        private List<Image> _buttons = new List<Image>();
+        private List<QuickTimeEventUIButton> _buttons = new List<QuickTimeEventUIButton>();
 
         private TrickJumper _trickJumperObject;
 
@@ -50,41 +53,35 @@ namespace SurgeEngine.Code.CommonObjects
 
         private void OnCorrectButtonPressed()
         {
-            Image button = _buttons[0];
+            var click = Instantiate(qteClick, ActorStageHUD.Context.transform);
+            click.transform.position = _buttons[0].transform.position;
+            Destroy(click, 0.65f);
+            _buttons[0].Destroy();
             _buttons.RemoveAt(0);
-            button.enabled = false;
         }
 
         public void CreateButtonIcon(QTESequence sequence)
         {
+            _buttons.Capacity = sequence.buttons.Count;
             for (int i = 0; i < sequence.buttons.Count; i++)
             {
-                Image button = null;
-                switch (sequence.buttons[i].type)
+                var buttonType = sequence.buttons[i].type;
+                QuickTimeEventUIButton button = null;
+                
+                switch (buttonType)
                 {
-                    case ButtonType.A:
-                        button = Instantiate(aButton, buttonParent);
-                        break;
-                    case ButtonType.B:
-                        button = Instantiate(bButton, buttonParent);
-                        break;
-                    case ButtonType.X:
-                        button = Instantiate(xButton, buttonParent);
-                        break;
-                    case ButtonType.Y:
-                        button = Instantiate(yButton, buttonParent);
-                        break;
-                    case ButtonType.LB:
-                        button = Instantiate(lbButton, buttonParent);
-                        break;
-                    case ButtonType.RB:
-                        button = Instantiate(rbButton, buttonParent);
-                        break;
-                    case ButtonType.COUNT:
-                        break;
+                    case ButtonType.A: button = aButton; break;
+                    case ButtonType.B: button = bButton; break;
+                    case ButtonType.X: button = xButton; break;
+                    case ButtonType.Y: button = yButton; break;
+                    case ButtonType.LB: button = lbButton; break;
+                    case ButtonType.RB: button = rbButton; break;
                 }
                 
-                _buttons.Add(button);
+                if (button != null)
+                {
+                    _buttons.Add(Instantiate(button, buttonParent));
+                }
             }
         }
 
