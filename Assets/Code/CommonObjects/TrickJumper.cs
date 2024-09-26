@@ -93,7 +93,7 @@ namespace SurgeEngine.Code.CommonObjects
                 }
             }
         }
-
+        
         public override void OnTriggerContact(Collider msg)
         {
             base.OnTriggerContact(msg);
@@ -119,7 +119,6 @@ namespace SurgeEngine.Code.CommonObjects
                 specialJump.PlaySpecialAnimation(0);
                 
                 context.flags.AddFlag(new Flag(FlagType.OutOfControl, null));
-                //context.camera.SetRotationAxis(-transform.forward);
                 
                 StartCoroutine(ChangeTimeScaleOverTime(_targetTimeScale, _timeScaleDuration));
             }
