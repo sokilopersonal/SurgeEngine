@@ -27,6 +27,9 @@ namespace SurgeEngine.Code.CommonObjects
         [SerializeField, Range(0, 5)] private int trickCount1 = 3;
         [SerializeField, Range(0, 5)] private int trickCount2;
         [SerializeField, Range(0, 5)] private int trickCount3;
+
+        [SerializeField] private Collider box;
+        [SerializeField] private Collider impulseBox;
         
         [SerializeField] private EventReference qteHitSound;
         [SerializeField] private EventReference qteSuccessSound;
@@ -51,8 +54,8 @@ namespace SurgeEngine.Code.CommonObjects
         {
             _qteSequences = new List<QTESequence>();
             
-            _targetTimeScale = 0.055f;
-            _timeScaleDuration = 1.25f;
+            _targetTimeScale = 0.045f;
+            _timeScaleDuration = 1.1f;
         }
 
         private void OnEnable()
@@ -98,12 +101,17 @@ namespace SurgeEngine.Code.CommonObjects
             var context = ActorContext.Context;
             if (firstSpeed > 0)
             {
+                box.enabled = false;
+                impulseBox.enabled = false;
+                
                 context.stateMachine.GetSubState<FBoost>().Active = false;
                 
-                context.transform.position = startPoint.position;
+                context.transform.position = transform.position + Vector3.up * 1.25f;
                 context.transform.forward = Vector3.Cross(-startPoint.right, Vector3.up);
                 context.model.transform.forward = Vector3.Cross(-startPoint.right, Vector3.up);
-                Common.ApplyImpulse(Common.GetImpulseWithPitch(transform, firstPitch, firstSpeed));
+                
+                Vector3 impulse = Common.GetImpulseWithPitch(Vector3.Cross(-startPoint.right, Vector3.up), startPoint.right, firstPitch, firstSpeed);
+                Common.ApplyImpulse(impulse);
                 
                 var specialJump = context.stateMachine.CurrentState is FStateSpecialJump ? 
                     context.stateMachine.GetState<FStateSpecialJump>() : context.stateMachine.SetState<FStateSpecialJump>();
@@ -233,7 +241,7 @@ namespace SurgeEngine.Code.CommonObjects
         {
             Vector3 startPosition = rigidbody.position;
             float elapsed = 0f;
-            //rigidbody.isKinematic = true;
+            rigidbody.isKinematic = true;
             
             while (elapsed < duration)
             {
@@ -242,7 +250,7 @@ namespace SurgeEngine.Code.CommonObjects
                 yield return null;
             }
 
-            //rigidbody.isKinematic = false;
+            rigidbody.isKinematic = false;
             Common.ResetVelocity(ResetVelocityType.Both);
         }
 
@@ -258,6 +266,9 @@ namespace SurgeEngine.Code.CommonObjects
             _sequenceId = 0;
             if (_currentQTEUI) Destroy(_currentQTEUI.gameObject);
             
+            box.enabled = true;
+            impulseBox.enabled = true;
+            
             var context = ActorContext.Context;
             if (result.success)
             {
@@ -271,7 +282,8 @@ namespace SurgeEngine.Code.CommonObjects
                 yield return StartCoroutine(ChangeRigidbodyPositionOverTime(context.rigidbody, arcPeak, 0.05f)); // should snap Sonic to the arc point
                 context.animation.TransitionToState($"Trick {Random.Range(1, 8)}", 0f);
                 
-                Common.ApplyImpulse(Common.GetImpulseWithPitch(transform, secondPitch, secondSpeed));
+                Vector3 impulse = Common.GetImpulseWithPitch(Vector3.Cross(-startPoint.right, Vector3.up), startPoint.right, secondPitch, secondSpeed);
+                Common.ApplyImpulse(impulse);
             }
             else
             {
@@ -305,9 +317,9 @@ namespace SurgeEngine.Code.CommonObjects
 
             if (startPoint == null) return;
             
-            TrajectoryDrawer.DrawTrickTrajectory(startPoint.position, Common.GetCross(transform, firstPitch, true), Color.red, firstSpeed);
-            Vector3 peakPosition = Common.GetArcPosition(startPoint.position, Common.GetCross(transform, firstPitch, true), firstSpeed);
-            TrajectoryDrawer.DrawTrickTrajectory(peakPosition, Common.GetCross(transform, secondPitch, true), Color.green, secondSpeed);
+            TrajectoryDrawer.DrawTrickTrajectory(startPoint.position, Common.GetCross(startPoint, firstPitch, true), Color.red, firstSpeed);
+            Vector3 peakPosition = Common.GetArcPosition(startPoint.position, Common.GetCross(startPoint, firstPitch, true), firstSpeed);
+            TrajectoryDrawer.DrawTrickTrajectory(peakPosition, Common.GetCross(startPoint, secondPitch, true), Color.green, secondSpeed);
         }
     }
 

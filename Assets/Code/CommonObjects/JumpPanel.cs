@@ -27,7 +27,8 @@ namespace SurgeEngine.Code.CommonObjects
 
                 context.transform.position = startPoint.position ;
                 context.transform.forward = Vector3.Cross(-startPoint.right, Vector3.up);
-                Common.ApplyImpulse(Common.GetImpulseWithPitch(transform, pitch, impulse));
+                
+                Common.ApplyImpulse(Common.GetImpulseWithPitch(Vector3.Cross(-startPoint.right, Vector3.up), startPoint.right, pitch, impulse));
                 
                 var specialJump = context.stateMachine.CurrentState is FStateSpecialJump ? 
                     context.stateMachine.GetState<FStateSpecialJump>() : context.stateMachine.SetState<FStateSpecialJump>();
@@ -42,7 +43,7 @@ namespace SurgeEngine.Code.CommonObjects
         {
             base.Draw();
             
-            TrajectoryDrawer.DrawTrajectory(startPoint.position, Common.GetImpulseWithPitch(transform, pitch, impulse), Color.green, impulse);
+            TrajectoryDrawer.DrawTrajectory(startPoint.position, Common.GetImpulseWithPitch(Vector3.Cross(-startPoint.right, Vector3.up), startPoint.right, pitch, impulse), Color.green, impulse);
         }
     }
 }

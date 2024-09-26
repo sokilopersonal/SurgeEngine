@@ -26,10 +26,10 @@ namespace SurgeEngine.Code.Custom
             return cross;
         }
 
-        public static Vector3 GetImpulseWithPitch(Transform transform, float pitch, float impulse)
+        public static Vector3 GetImpulseWithPitch(Vector3 forward, Vector3 right, float pitch, float impulse)
         {
-            Vector3 dir = -transform.forward;
-            dir = Quaternion.AngleAxis(pitch, transform.right) * dir;
+            Vector3 dir = forward;
+            dir = Quaternion.AngleAxis(pitch, right) * dir;
             Vector3 impulseV = dir * impulse;
             return impulseV;
         }

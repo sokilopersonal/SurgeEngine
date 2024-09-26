@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2462623610664270705}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.70710677, z: -0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -57.1, y: 0.43, z: -41}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -49,33 +49,48 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc379773a49a44e192dd1c36da47fdf3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  firstSpeed: 40
-  firstPitch: 46.1
-  firstOutOfControl: 1.35
-  secondSpeed: 50
-  secondPitch: 75
-  secondOutOfControl: 1
-  trickTime1: 3
-  trickTime2: 3
+  firstSpeed: 35
+  firstPitch: 35
+  firstOutOfControl: 2
+  secondSpeed: 42
+  secondPitch: 38
+  secondOutOfControl: 1.5
+  trickTime1: 4
+  trickTime2: 3.5
   trickTime3: 0
   trickCount1: 3
-  trickCount2: 3
+  trickCount2: 5
   trickCount3: 0
+  box: {fileID: 7360664701626324355}
+  impulseBox: {fileID: 4968577596811486630}
   qteHitSound:
     Guid:
       Data1: 2097526164
       Data2: 1074879663
       Data3: 808852130
       Data4: -2123045885
-    Path: event:/Sonic/QTE_Hit
+    Path: event:/Sonic/QTE/QTE_Hit
   qteSuccessSound:
     Guid:
       Data1: -1466147709
       Data2: 1281696125
       Data3: 607370637
       Data4: -963477742
-    Path: event:/Sonic/QTE_Success
-  qteUI: {fileID: 7335746949611303066, guid: 4da0cd9ea121ab84596be05cf29a100c, type: 3}
+    Path: event:/Sonic/QTE/QTE_Success
+  qteEndSuccessSound:
+    Guid:
+      Data1: 1558547632
+      Data2: 1328275192
+      Data3: 53869489
+      Data4: -1357867817
+    Path: event:/Sonic/QTE/QTE_Sonic_Voice
+  qteFailSound:
+    Guid:
+      Data1: 6654783
+      Data2: 1334970528
+      Data3: -1021464908
+      Data4: -1190174372
+    Path: event:/Sonic/QTE/QTE_Fail_Voice
   startPoint: {fileID: 5242136653606973595}
 --- !u!114 &8731062220765025212
 MonoBehaviour:
@@ -233,8 +248,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.1155565, y: 0.081656985, z: 2.546999}
-  m_Center: {x: 0, y: -0.0000006251326, z: -0.06608194}
+  m_Size: {x: 1.6696923, y: 0.081656985, z: 2.546999}
+  m_Center: {x: 2.0949381e-11, y: -0.0000006218134, z: -0.06608194}
 --- !u!114 &6543019877669174900
 MonoBehaviour:
   m_ObjectHideFlags: 0
