@@ -4719,7 +4719,7 @@ Transform:
   m_GameObject: {fileID: 601403719}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -101.64, y: 21.61, z: -41.11788}
+  m_LocalPosition: {x: -113.8, y: 33, z: -41.11788}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -10393,16 +10393,24 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2361913074576162231, guid: 59de549af667c94418067990c04b52b2, type: 3}
+      propertyPath: firstPitch
+      value: 59
+      objectReference: {fileID: 0}
+    - target: {fileID: 2361913074576162231, guid: 59de549af667c94418067990c04b52b2, type: 3}
+      propertyPath: firstSpeed
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 2361913074576162231, guid: 59de549af667c94418067990c04b52b2, type: 3}
       propertyPath: secondPitch
-      value: 45
+      value: 67
       objectReference: {fileID: 0}
     - target: {fileID: 2361913074576162231, guid: 59de549af667c94418067990c04b52b2, type: 3}
       propertyPath: secondSpeed
-      value: 42
+      value: 46
       objectReference: {fileID: 0}
     - target: {fileID: 2361913074576162231, guid: 59de549af667c94418067990c04b52b2, type: 3}
       propertyPath: trickCount2
-      value: 3
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2361913074576162231, guid: 59de549af667c94418067990c04b52b2, type: 3}
       propertyPath: qteHitSound.Path

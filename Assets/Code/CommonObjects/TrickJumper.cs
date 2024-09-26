@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using FMODUnity;
+using SurgeEngine.Code.ActorHUD;
 using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.Parameters;
@@ -31,7 +32,6 @@ namespace SurgeEngine.Code.CommonObjects
         [SerializeField] private EventReference qteSuccessSound;
         [SerializeField] private EventReference qteEndSuccessSound;
         [SerializeField] private EventReference qteFailSound;
-        [SerializeField] private QuickTimeEventUI qteUI;
         
         private float _targetTimeScale = 0.045f;
         private float _timeScaleDuration = 1f;
@@ -164,7 +164,7 @@ namespace SurgeEngine.Code.CommonObjects
                             _buttonId = 0;
                             timer = _qteSequences[_sequenceId].time;
                             Destroy(_currentQTEUI.gameObject);
-                            _currentQTEUI = Instantiate(qteUI);
+                            _currentQTEUI = Instantiate(ActorStageHUD.Context.GetQTEUI());
                             _currentQTEUI.SetTrickJumper(this);
                             _currentQTEUI.CreateButtonIcon(_qteSequences[_sequenceId]);
                         }
@@ -197,7 +197,7 @@ namespace SurgeEngine.Code.CommonObjects
 
             if (Mathf.Approximately(targetScale, _targetTimeScale))
             {
-                _currentQTEUI = Instantiate(qteUI);
+                _currentQTEUI = Instantiate(ActorStageHUD.Context.GetQTEUI());
                 _currentQTEUI.SetTrickJumper(this);
 
                 int[] trickCount = {

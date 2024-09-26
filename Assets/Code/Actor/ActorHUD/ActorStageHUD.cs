@@ -17,6 +17,7 @@ namespace SurgeEngine.Code.ActorHUD
         [SerializeField] private TMP_Text ringCounter;
         [SerializeField] private TMP_Text boostCounter;
         [SerializeField] private RectTransform homingImage;
+        [SerializeField] private QuickTimeEventUI qteUI;
         
         private Actor _actor => ActorContext.Context;
 
@@ -57,6 +58,11 @@ namespace SurgeEngine.Code.ActorHUD
         {
             RingHUD ringHUDInstance = Instantiate(ringHUDPrefab, obj.transform.position + _actor.transform.forward * 0.05f, Quaternion.identity);
             ringHUDInstance.Initialize(0.85f);
+        }
+        
+        public QuickTimeEventUI GetQTEUI()
+        {
+            return qteUI;
         }
     }
 }
