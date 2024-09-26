@@ -70,19 +70,6 @@ namespace SurgeEngine.Code.CommonObjects
 
         private void Update()
         {
-            // if (_qteActive)
-            // {
-            //     if (ActorContext.Context.input.JumpPressed)
-            //     {
-            //         OnQTEResultReceived.Invoke(QTEResult.Success);
-            //     }
-            //
-            //     if (ActorContext.Context.input.BoostPressed)
-            //     {
-            //         OnQTEResultReceived.Invoke(QTEResult.Fail);
-            //     }
-            // }
-
             if (_qteSequences.Count > 0)
             {
                 timer -= Time.unscaledDeltaTime;
@@ -119,6 +106,7 @@ namespace SurgeEngine.Code.CommonObjects
                 specialJump.PlaySpecialAnimation(0);
                 
                 context.flags.AddFlag(new Flag(FlagType.OutOfControl, null));
+                context.flags.AddFlag(new Flag(FlagType.DontClampVerticalSpeed, null));
                 
                 StartCoroutine(ChangeTimeScaleOverTime(_targetTimeScale, _timeScaleDuration));
             }
@@ -277,8 +265,8 @@ namespace SurgeEngine.Code.CommonObjects
                 Common.ResetVelocity(ResetVelocityType.Both);
                 Vector3 arcPeak = Common.GetArcPosition(startPoint.position,
                     Common.GetCross(transform, firstPitch, true), firstSpeed);
-                //context.rigidbody.position = arcPeak;
-                yield return StartCoroutine(ChangeRigidbodyPositionOverTime(context.rigidbody, arcPeak, 0.05f)); // should snap Sonic to the arc point
+                context.rigidbody.position = arcPeak;
+                //yield return StartCoroutine(ChangeRigidbodyPositionOverTime(context.rigidbody, arcPeak, 0.05f)); // should snap Sonic to the arc point
                 context.animation.TransitionToState($"Trick {Random.Range(1, 8)}", 0f);
                 
                 Vector3 impulse = Common.GetImpulseWithPitch(Vector3.Cross(-startPoint.right, Vector3.up), startPoint.right, secondPitch, secondSpeed);
@@ -291,6 +279,9 @@ namespace SurgeEngine.Code.CommonObjects
                 
                 context.animation.TransitionToState("Air Cycle");
             }
+
+            context.stats.movementVector = context.rigidbody.linearVelocity;
+            context.stats.planarVelocity = context.rigidbody.linearVelocity;
             
             context.stateMachine.SetState<FStateAir>();
             StartCoroutine(ChangeTimeScaleOverTime(1f, 0.3f));
@@ -326,12 +317,6 @@ namespace SurgeEngine.Code.CommonObjects
     {
         public List<QTEButton> buttons = new List<QTEButton>();
         public float time;
-        private float timer;
-
-        public void Calculate(float dt)
-        {
-            timer += dt;
-        }
     }
     
     public class QTEButton

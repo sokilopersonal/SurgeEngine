@@ -63,6 +63,7 @@ namespace SurgeEngine.Code.CommonObjects
         public void CreateButtonIcon(QTESequence sequence)
         {
             _buttons.Capacity = sequence.buttons.Count;
+            var context = ActorContext.Context.input;
             for (int i = 0; i < sequence.buttons.Count; i++)
             {
                 var buttonType = sequence.buttons[i].type;
@@ -70,12 +71,12 @@ namespace SurgeEngine.Code.CommonObjects
                 
                 switch (buttonType)
                 {
-                    case ButtonType.A: button = aButton; break;
-                    case ButtonType.B: button = bButton; break;
-                    case ButtonType.X: button = xButton; break;
-                    case ButtonType.Y: button = yButton; break;
-                    case ButtonType.LB: button = lbButton; break;
-                    case ButtonType.RB: button = rbButton; break;
+                    case ButtonType.A: button = context.isKeyboard ? aButtonKeyboard : aButton; break;
+                    case ButtonType.B: button = context.isKeyboard ? bButtonKeyboard : bButton; break;
+                    case ButtonType.X: button = context.isKeyboard ? xButtonKeyboard : xButton; break;
+                    case ButtonType.Y: button = context.isKeyboard ? yButtonKeyboard : yButton; break;
+                    case ButtonType.LB: button = context.isKeyboard ? lbButtonKeyboard : lbButton; break;
+                    case ButtonType.RB: button = context.isKeyboard ? rbButtonKeyboard : rbButton; break;
                 }
                 
                 if (button != null)

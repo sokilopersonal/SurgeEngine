@@ -80,6 +80,7 @@ namespace SurgeEngine.Code.Parameters
                 Snap(point, normal);
                 
                 _surfaceTag = hit.transform.gameObject.GetGroundTag();
+                _rigidbody.linearVelocity = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, normal);
             }
             else
             {
@@ -227,8 +228,8 @@ namespace SurgeEngine.Code.Parameters
         {
             if (!_canAttach) return;
             
-            //_rigidbody.position = point + normal;
-            _rigidbody.position = Vector3.Slerp(_rigidbody.position, point + normal, 20 * Time.fixedDeltaTime);
+            _rigidbody.position = point + normal;
+            //_rigidbody.position = Vector3.Slerp(_rigidbody.position, point + normal, 20 * Time.fixedDeltaTime);
         }
 
         private void SlopePrediction(float dt)

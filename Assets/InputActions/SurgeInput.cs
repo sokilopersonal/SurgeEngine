@@ -236,7 +236,7 @@ public partial class @SurgeInput: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""b727028c-e1cf-4669-8f9b-651ba1e47e66"",
-                    ""path"": ""<Keyboard>/f"",
+                    ""path"": ""<Keyboard>/z"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",

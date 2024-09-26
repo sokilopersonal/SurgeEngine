@@ -53,6 +53,8 @@ namespace SurgeEngine.Code.ActorSystem
 
         public event Action<ButtonType> OnButtonPressed;
 
+        public bool isKeyboard;
+
         private void Awake()
         {
             _input = new SurgeInput();
@@ -115,6 +117,22 @@ namespace SurgeEngine.Code.ActorSystem
             var temp = _input.Gameplay.Movement.ReadValue<Vector2>();
             moveVector = new Vector3(temp.x, 0, temp.y);
             lookVector = _input.Gameplay.Camera.ReadValue<Vector2>();
+            
+            var devices = InputSystem.devices;
+
+            foreach (var device in devices)
+            {
+                if (device is Keyboard && device.wasUpdatedThisFrame)
+                {
+                    isKeyboard = true;
+                    Debug.Log("Keyboard");
+                }
+                else if (device is Gamepad && device.wasUpdatedThisFrame)
+                {
+                    isKeyboard = false;
+                    Debug.Log("Gamepad");
+                }
+            }
 
             if (lookVector.sqrMagnitude > 0.1f)
             {

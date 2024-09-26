@@ -38,6 +38,16 @@ namespace SurgeEngine.Code.Parameters
             _cameraTransform = actor.camera.GetCameraTransform();
         }
 
+        public override void OnExit()
+        {
+            base.OnExit();
+
+            if (actor.flags.HasFlag(FlagType.DontClampVerticalSpeed))
+            {
+                actor.flags.RemoveFlag(FlagType.DontClampVerticalSpeed);
+            }
+        }
+
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
@@ -65,7 +75,6 @@ namespace SurgeEngine.Code.Parameters
                         if (homingTarget != null)
                         {
                             stateMachine.SetState<FStateHoming>().SetTarget(homingTarget);
-                            Debug.Log("hey");
                             stats.homingTarget = null;
                         }
                         else
@@ -110,22 +119,18 @@ namespace SurgeEngine.Code.Parameters
             transformedInput = Vector3.ProjectOnPlane(transformedInput, normal);
             stats.inputDir = transformedInput.normalized * input.moveVector.magnitude;
 
-            if (!stats.skidding)
+            if (stats.inputDir.magnitude > 0.2f)
             {
-                if (stats.inputDir.magnitude > 0.2f)
-                {
-                    stats.turnRate = Mathf.Lerp(stats.turnRate, stats.moveParameters.turnSpeed, dt * stats.moveParameters.turnSmoothing);
-                    var accelRateMod = stats.moveParameters.accelCurve.Evaluate(stats.planarVelocity.magnitude / stats.moveParameters.topSpeed);
-                    if (stats.planarVelocity.magnitude < stats.moveParameters.topSpeed)
-                        stats.planarVelocity += stats.inputDir * (stats.moveParameters.accelRate * accelRateMod * dt);
-                    float handling = stats.turnRate * 0.2f;
-                    //handling *= stats.moveParameters.turnCurve.Evaluate(stats.planarVelocity.magnitude / stats.moveParameters.topSpeed);
-                    stats.movementVector = Vector3.Lerp(stats.planarVelocity, stats.inputDir.normalized * stats.planarVelocity.magnitude, 
-                        dt * handling);
-                }
+                stats.turnRate = Mathf.Lerp(stats.turnRate, stats.moveParameters.turnSpeed, dt * stats.moveParameters.turnSmoothing);
+                var accelRateMod = stats.moveParameters.accelCurve.Evaluate(stats.planarVelocity.magnitude / stats.moveParameters.topSpeed);
+                if (stats.planarVelocity.magnitude < stats.moveParameters.topSpeed)
+                    stats.planarVelocity += stats.inputDir * (stats.moveParameters.accelRate * accelRateMod * dt);
+                float handling = stats.turnRate * 0.075f;
+                stats.movementVector = Vector3.Lerp(stats.planarVelocity, stats.inputDir.normalized * stats.planarVelocity.magnitude, 
+                    dt * handling);
             }
-            
-            airVelocity = Vector3.ClampMagnitude(airVelocity, 125f);
+
+            if (stats.lastContactObject is not TrickJumper) airVelocity = Vector3.ClampMagnitude(airVelocity, 125f); // Trick Jumper fix
             Vector3 movementVelocity = stats.movementVector + airVelocity;
             _rigidbody.linearVelocity = movementVelocity;
         }

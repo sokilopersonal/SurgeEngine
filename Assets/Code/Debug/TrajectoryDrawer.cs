@@ -52,7 +52,7 @@ namespace SurgeEngine.Code.SurgeDebug
 
             Vector3 position = startPosition;
             Vector3 velocity = impulseDirection.normalized * impulse;
-            Vector3 gravity = -35 * Vector3.up;
+            Vector3 gravity = -35f * Vector3.up;
 
             float totalTime = 0f;
             

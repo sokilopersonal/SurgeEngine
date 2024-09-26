@@ -89,6 +89,7 @@ namespace SurgeEngine.Code.ActorSystem
 
     public enum FlagType
     {
-        OutOfControl
+        OutOfControl,
+        DontClampVerticalSpeed
     }
 }
