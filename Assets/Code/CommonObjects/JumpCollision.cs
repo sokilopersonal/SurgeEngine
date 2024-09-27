@@ -1,6 +1,7 @@
 ﻿using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.Parameters.SonicSubStates;
+using SurgeEngine.Code.SurgeDebug;
 using UnityEngine;
 
 namespace SurgeEngine.Code.CommonObjects
@@ -54,8 +55,8 @@ namespace SurgeEngine.Code.CommonObjects
         {
             base.Draw();
 
-            //TrajectoryDrawer.DrawTrajectory(transform.position, Common.GetCross(transform, pitch), impulseOnNormal, Color.green);
-            //TrajectoryDrawer.DrawTrajectory(transform.position, Common.GetCross(transform, pitch), impulseOnBoost, Color.cyan);
+            TrajectoryDrawer.DrawTrajectory(transform.position, Common.GetCross(transform, pitch), Color.green, impulseOnNormal);
+            TrajectoryDrawer.DrawTrajectory(transform.position, Common.GetCross(transform, pitch), Color.cyan, impulseOnBoost);
         }
 
     }

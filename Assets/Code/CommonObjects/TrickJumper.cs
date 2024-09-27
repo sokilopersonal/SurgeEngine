@@ -29,9 +29,6 @@ namespace SurgeEngine.Code.CommonObjects
         [SerializeField, Range(0, 5)] private int trickCount2;
         [SerializeField, Range(0, 5)] private int trickCount3;
 
-        [SerializeField] private Collider box;
-        [SerializeField] private Collider impulseBox;
-        
         [SerializeField] private EventReference qteHitSound;
         [SerializeField] private EventReference qteSuccessSound;
         [SerializeField] private EventReference qteSuccessVoiceSound;
@@ -78,7 +75,6 @@ namespace SurgeEngine.Code.CommonObjects
                 if (timer <= 0)
                 {
                     OnQTEResultReceived?.Invoke(QTEResult.Fail);
-                    RuntimeManager.PlayOneShot(qteFailVoiceSound);
                 }
             }
         }
@@ -88,11 +84,10 @@ namespace SurgeEngine.Code.CommonObjects
             base.OnTriggerContact(msg);
 
             var context = ActorContext.Context;
+
+            if (context.stateMachine.CurrentState is FStateSpecialJump) return;
             if (firstSpeed > 0)
             {
-                box.enabled = false;
-                impulseBox.enabled = false;
-                
                 context.stateMachine.GetSubState<FBoost>().Active = false;
                 
                 context.transform.position = transform.position + Vector3.up * 1.25f;
@@ -248,9 +243,6 @@ namespace SurgeEngine.Code.CommonObjects
             _buttonId = 0;
             _sequenceId = 0;
             if (_currentQTEUI) Destroy(_currentQTEUI.gameObject);
-            
-            box.enabled = true;
-            impulseBox.enabled = true;
             
             var context = ActorContext.Context;
             if (result.success)

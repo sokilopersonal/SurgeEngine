@@ -18,7 +18,7 @@ namespace SurgeEngine.Code.CommonObjects
         public override void OnTriggerContact(Collider msg)
         {
             base.OnTriggerContact(msg);
-            
+
             var context = ActorContext.Context;
             Vector3 cross = Common.GetCross(transform, pitch, true);
             if (impulse > 0)

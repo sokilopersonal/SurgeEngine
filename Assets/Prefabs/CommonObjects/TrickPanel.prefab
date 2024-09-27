@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3608644608425657608}
   - component: {fileID: 2361913074576162231}
   - component: {fileID: 8731062220765025212}
+  - component: {fileID: 3783265974239594460}
   m_Layer: 0
   m_Name: TrickPanel
   m_TagString: Untagged
@@ -31,9 +32,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 5242136653606973595}
-  - {fileID: 4714845521719265051}
   - {fileID: 4703881183440888961}
+  - {fileID: 4714845521719265051}
+  - {fileID: 5242136653606973595}
   - {fileID: 8400530824298066838}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
@@ -61,8 +62,6 @@ MonoBehaviour:
   trickCount1: 3
   trickCount2: 5
   trickCount3: 0
-  box: {fileID: 7360664701626324355}
-  impulseBox: {fileID: 4968577596811486630}
   qteHitSound:
     Guid:
       Data1: 2097526164
@@ -118,6 +117,22 @@ MonoBehaviour:
       Data3: -970028388
       Data4: -1059937011
     Path: event:/CommonObjects/JumpPanel
+--- !u!114 &3783265974239594460
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2462623610664270705}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ece8829cbb9743c1b9068e2f6a722a18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _colliders:
+  - {fileID: 7360664701626324355}
+  - {fileID: 4968577596811486630}
+  time: 0.25
 --- !u!1 &4453286092968102352
 GameObject:
   m_ObjectHideFlags: 0

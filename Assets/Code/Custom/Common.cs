@@ -1,4 +1,6 @@
-﻿using SurgeEngine.Code.ActorSystem;
+﻿using System;
+using Cysharp.Threading.Tasks;
+using SurgeEngine.Code.ActorSystem;
 using UnityEngine;
 
 namespace SurgeEngine.Code.Custom
@@ -69,6 +71,13 @@ namespace SurgeEngine.Code.Custom
             var context = ActorContext.Context;
             return Physics.Raycast(context.transform.position, -context.transform.up, out result,
                 context.stats.moveParameters.castParameters.castDistance, context.stats.moveParameters.castParameters.collisionMask, QueryTriggerInteraction.Ignore);
+        }
+
+        public static async UniTask TemporarilyDisableCollider(Collider collider, float time = 0.25f)
+        {
+            collider.enabled = false;
+            await UniTask.Delay(TimeSpan.FromSeconds(time), true);
+            collider.enabled = true;
         }
 
         public static Vector3 GetArcPosition(Vector3 startPosition, Vector3 direction, float impulse)

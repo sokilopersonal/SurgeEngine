@@ -98,14 +98,14 @@ namespace SurgeEngine.Code.Parameters
                 
                 if (stats.currentSpeed < stats.moveParameters.topSpeed)
                 {
-                    _rigidbody.AddForce(_rigidbody.transform.forward * (dt * 25), ForceMode.Impulse);
+                    _rigidbody.AddForce(_rigidbody.transform.forward * (dt * stats.moveParameters.topSpeed), ForceMode.Impulse);
                 }
                 
                 _rigidbody.linearVelocity = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, planeNormal);
                 stats.inputDir = Vector3.ProjectOnPlane(stats.inputDir, planeNormal);
 
                 Vector3 nearPoint = path.transform.TransformPoint(near);
-                _rigidbody.position = Vector3.Lerp(_rigidbody.position, nearPoint, dt * 8);
+                _rigidbody.position = Vector3.Lerp(_rigidbody.position, nearPoint, dt * 14);
             }
         }
 
