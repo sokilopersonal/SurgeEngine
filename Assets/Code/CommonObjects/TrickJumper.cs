@@ -34,8 +34,9 @@ namespace SurgeEngine.Code.CommonObjects
         
         [SerializeField] private EventReference qteHitSound;
         [SerializeField] private EventReference qteSuccessSound;
-        [SerializeField] private EventReference qteEndSuccessSound;
+        [SerializeField] private EventReference qteSuccessVoiceSound;
         [SerializeField] private EventReference qteFailSound;
+        [SerializeField] private EventReference qteFailVoiceSound;
         
         private float _targetTimeScale = 0.045f;
         private float _timeScaleDuration = 1f;
@@ -77,7 +78,7 @@ namespace SurgeEngine.Code.CommonObjects
                 if (timer <= 0)
                 {
                     OnQTEResultReceived?.Invoke(QTEResult.Fail);
-                    RuntimeManager.PlayOneShot(qteFailSound);
+                    RuntimeManager.PlayOneShot(qteFailVoiceSound);
                 }
             }
         }
@@ -153,7 +154,7 @@ namespace SurgeEngine.Code.CommonObjects
                         if (_sequenceId >= _qteSequences.Count)
                         {
                             OnQTEResultReceived.Invoke(QTEResult.Success);
-                            RuntimeManager.PlayOneShot(qteEndSuccessSound);
+                            RuntimeManager.PlayOneShot(qteSuccessVoiceSound);
                         }
                         else
                         {
@@ -173,7 +174,6 @@ namespace SurgeEngine.Code.CommonObjects
                 if (sequenceButton != button)
                 {
                     OnQTEResultReceived.Invoke(QTEResult.Fail);
-                    RuntimeManager.PlayOneShot(qteFailSound);
                     break;
                 }
             }
@@ -273,6 +273,9 @@ namespace SurgeEngine.Code.CommonObjects
                 context.flags.AddFlag(new Flag(FlagType.OutOfControl, null, true, firstOutOfControl));
                 
                 context.animation.TransitionToState("Air Cycle");
+                
+                RuntimeManager.PlayOneShot(qteFailSound);
+                RuntimeManager.PlayOneShot(qteFailVoiceSound);
             }
 
             context.stats.movementVector = context.rigidbody.linearVelocity;

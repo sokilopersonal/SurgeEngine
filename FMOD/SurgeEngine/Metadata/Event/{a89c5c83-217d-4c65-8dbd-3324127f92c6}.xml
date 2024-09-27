@@ -5,7 +5,7 @@
 			<value>QTE_Success</value>
 		</property>
 		<property name="outputFormat">
-			<value>1</value>
+			<value>0</value>
 		</property>
 		<relationship name="folder">
 			<destination>{35f1b341-0880-4329-8b68-561e7127b346}</destination>
@@ -60,7 +60,7 @@
 	<object class="MarkerTrack" id="{7a3b4694-3da0-40e3-81c9-807af561a08f}" />
 	<object class="GroupTrack" id="{22416eb5-21a0-4985-a344-8830a4707786}">
 		<relationship name="modules">
-			<destination>{65428ed1-d174-4102-a042-d20df014d5de}</destination>
+			<destination>{b39b736d-0e64-4928-a2b0-76cbbcd790d0}</destination>
 		</relationship>
 		<relationship name="mixerGroup">
 			<destination>{fb28a52c-1355-4eb0-a791-cbfd7b330e61}</destination>
@@ -68,13 +68,10 @@
 	</object>
 	<object class="Timeline" id="{de9a3e1e-fad4-4f9c-bbef-e9424766610c}">
 		<relationship name="modules">
-			<destination>{65428ed1-d174-4102-a042-d20df014d5de}</destination>
+			<destination>{b39b736d-0e64-4928-a2b0-76cbbcd790d0}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{8f14f6bf-e74a-49c3-838c-992727394a03}">
-		<property name="volume">
-			<value>1</value>
-		</property>
 		<relationship name="effectChain">
 			<destination>{21b2d481-f73d-4299-b50d-8ab927c57a1b}</destination>
 		</relationship>
@@ -91,18 +88,15 @@
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{5843bb6b-890b-41aa-870c-9d0141bdbf72}" />
-	<object class="SingleSound" id="{65428ed1-d174-4102-a042-d20df014d5de}">
+	<object class="SingleSound" id="{b39b736d-0e64-4928-a2b0-76cbbcd790d0}">
 		<property name="length">
-			<value>1.7414965986394557</value>
+			<value>2.9858503401360545</value>
 		</property>
 		<relationship name="audioFile">
-			<destination>{7de38139-ed2f-428b-b4ad-17b3149ea4f2}</destination>
+			<destination>{04d36cfe-4807-4a65-9251-2eb48a2292c8}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{fb28a52c-1355-4eb0-a791-cbfd7b330e61}">
-		<property name="volume">
-			<value>3.5</value>
-		</property>
 		<property name="name">
 			<value>Audio 2</value>
 		</property>
