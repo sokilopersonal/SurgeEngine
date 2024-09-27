@@ -1,8 +1,10 @@
-﻿using SurgeEngine.Code.ActorSystem;
+﻿
+using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.Parameters;
 using SurgeEngine.Code.Parameters.SonicSubStates;
 using UnityEngine;
+using Quaternion = UnityEngine.Quaternion;
 
 namespace SurgeEngine.Code.CommonObjects
 {
@@ -18,13 +20,9 @@ namespace SurgeEngine.Code.CommonObjects
             
             var context = ActorContext.Context;
             
-            context.rigidbody.linearVelocity = Quaternion.FromToRotation(transform.forward, transform.up) * transform.forward * speed; // Rotate velocity to prevent high speed/boost issues
             context.rigidbody.transform.rotation = Quaternion.LookRotation(transform.forward, transform.up);
             context.animation.TransitionToState(AnimatorParams.RunCycle, 0f);
-            if (context.stats.currentSpeed < speed)
-            {
-                Common.ApplyImpulse(transform.forward * speed);
-            }
+            Common.ApplyImpulse(transform.forward * speed);
             context.stateMachine.SetState<FStateGround>();
 
             if (center)
