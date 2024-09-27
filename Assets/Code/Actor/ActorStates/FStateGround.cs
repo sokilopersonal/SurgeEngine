@@ -105,7 +105,7 @@ namespace SurgeEngine.Code.Parameters
                 stats.inputDir = Vector3.ProjectOnPlane(stats.inputDir, planeNormal);
 
                 Vector3 nearPoint = path.transform.TransformPoint(near);
-                _rigidbody.position = Vector3.Lerp(_rigidbody.position, nearPoint, 16f * dt);
+                _rigidbody.position = Vector3.Lerp(_rigidbody.position, nearPoint, 8f * dt);
                 _rigidbody.rotation = Quaternion.LookRotation(tangent, up);
             }
         }
