@@ -16,6 +16,7 @@ namespace SurgeEngine.Code.Parameters
             
             _rigidbody.Sleep();
             animation.SetBool("Idle", true);
+            animation.TransitionToState("Idle", 0.2f);
             stats.planarVelocity = Vector3.zero;
             
             if (Common.CheckForGround(out var hit))

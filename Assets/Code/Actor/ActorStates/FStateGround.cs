@@ -105,8 +105,7 @@ namespace SurgeEngine.Code.Parameters
                 stats.inputDir = Vector3.ProjectOnPlane(stats.inputDir, planeNormal);
 
                 Vector3 nearPoint = path.transform.TransformPoint(near);
-                _rigidbody.position = Vector3.Lerp(_rigidbody.position, nearPoint, 8f * dt);
-                _rigidbody.rotation = Quaternion.LookRotation(tangent, up);
+                _rigidbody.position = Vector3.Lerp(_rigidbody.position, nearPoint, dt * 8);
             }
         }
 
@@ -186,7 +185,7 @@ namespace SurgeEngine.Code.Parameters
             if (boost.Active)
             {
                 float maxSpeed = stats.moveParameters.maxSpeed * boost.maxSpeedMultiplier;
-                if (stats.currentSpeed < maxSpeed) _rigidbody.AddForce(_rigidbody.transform.forward * (boost.boostForce * dt), ForceMode.VelocityChange);
+                if (stats.currentSpeed < maxSpeed) _rigidbody.linearVelocity += _rigidbody.linearVelocity.normalized * (boost.boostForce * dt);
                     
             }
             else if (boost.restoringTopSpeed)

@@ -18,7 +18,8 @@ namespace SurgeEngine.Code.CommonObjects
             
             var context = ActorContext.Context;
             
-            context.transform.forward = transform.forward;
+            context.rigidbody.linearVelocity = Quaternion.FromToRotation(transform.forward, transform.up) * transform.forward * speed; // Rotate velocity to prevent high speed/boost issues
+            context.rigidbody.transform.rotation = Quaternion.LookRotation(transform.forward, transform.up);
             context.animation.TransitionToState(AnimatorParams.RunCycle, 0f);
             if (context.stats.currentSpeed < speed)
             {
@@ -28,11 +29,18 @@ namespace SurgeEngine.Code.CommonObjects
 
             if (center)
             {
-                context.transform.position = transform.position;
+                context.rigidbody.position = transform.position;
             }
 
             context.flags.AddFlag(new Flag(FlagType.OutOfControl, 
                 new [] { Tags.AllowBoost }, true, Mathf.Abs(outOfControl)));
+        }
+
+        protected override void Draw()
+        {
+            base.Draw();    
+            
+            Debug.DrawRay(transform.position, transform.forward * speed * outOfControl, Color.green);
         }
     }
 }
