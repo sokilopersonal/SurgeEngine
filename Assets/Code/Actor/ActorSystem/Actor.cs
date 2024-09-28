@@ -1,5 +1,6 @@
 ﻿using SurgeEngine.Code.Parameters;
 using SurgeEngine.Code.CameraSystem;
+using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.StateMachine;
 using UnityEngine;
 using UnityEngine.Splines;
@@ -25,14 +26,16 @@ namespace SurgeEngine.Code.ActorSystem
         public int ID { get; private set; }
 
         [HideInInspector] public new Rigidbody rigidbody;
-        public SplineContainer bezierPath;
+        [HideInInspector] public PathData pathData;
+        [HideInInspector] public SplineContainer container;
 
         private void Awake()
         {
             ID = gameObject.GetInstanceID();
             
             rigidbody = GetComponent<Rigidbody>();
-            bezierPath = null;
+            pathData = null;
+            container = null;
             
             stateMachine = new FStateMachine();
             foreach (var state in states)

@@ -1,27 +1,28 @@
 ﻿using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.Custom;
 using UnityEngine;
-using UnityEngine.Splines;
 
 namespace SurgeEngine.Code.CommonObjects
 {
     public class BezierPathHolder : ContactBase
     {
-        [SerializeField] private SplineContainer splineContainer;
+        [SerializeField] private PathData data;
 
         public override void OnTriggerContact(Collider msg)
         {
             base.OnTriggerContact(msg);
             
             var context = ActorContext.Context;
-            if (context.bezierPath == null)
+            if (context.pathData == null)
             {
-                context.bezierPath = splineContainer;
-                Debug.Log("Created");
+                context.pathData = data;
+                
+                if (data.outOfControl > 0)
+                    context.flags.AddFlag(new Flag(FlagType.OutOfControl, new []{ Tags.AllowBoost }, true, data.outOfControl));
             }
             else
             {
-                context.bezierPath = null;
-                Debug.Log("Deleted");
+                context.pathData = null;
             }
         }
     }

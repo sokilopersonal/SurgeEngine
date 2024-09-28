@@ -37,11 +37,7 @@ namespace SurgeEngine.Code.ActorSystem
 
         public bool CheckForTag(string tag)
         {
-            return hash.Any(f =>
-            {
-                if (f.tags == null) return false;
-                return f.tags.Contains(tag);
-            });
+            return hash.Any(f => f.tags != null && f.tags.Contains(tag));
         }
 
         private void Update()

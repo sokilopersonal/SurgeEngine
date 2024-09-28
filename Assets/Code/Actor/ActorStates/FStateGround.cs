@@ -89,23 +89,25 @@ namespace SurgeEngine.Code.Parameters
                 stateMachine.SetState<FStateAir>();
             }
             
-            var path = actor.bezierPath;
-            if (path != null)
+            var path = actor.pathData;
+            if (actor.pathData != null)
             {
-                SplineUtility.GetNearestPoint(path.Spline, SurgeMath.Vector3ToFloat3(path.transform.InverseTransformPoint(_rigidbody.position)), out var near, out var t);
-                path.Evaluate(t, out var point, out var tangent, out var up);
+                var container = path.splineContainer;
+                SplineUtility.GetNearestPoint(container.Spline, SurgeMath.Vector3ToFloat3(container.transform.InverseTransformPoint(_rigidbody.position)), out var near, out var t);
+                container.Evaluate(t, out var point, out var tangent, out var up);
                 var planeNormal = Vector3.Cross(tangent, up);
                 
-                if (stats.currentSpeed < stats.moveParameters.topSpeed)
+                if (stats.currentSpeed < path.maxAutoRunSpeed)
                 {
-                    _rigidbody.AddForce(_rigidbody.transform.forward * (dt * stats.moveParameters.topSpeed), ForceMode.Impulse);
+                    _rigidbody.AddForce(_rigidbody.transform.forward * (dt * path.autoRunSpeed), ForceMode.Impulse);
                 }
                 
                 _rigidbody.linearVelocity = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, planeNormal);
                 stats.inputDir = Vector3.ProjectOnPlane(stats.inputDir, planeNormal);
-
-                Vector3 nearPoint = path.transform.TransformPoint(near);
-                _rigidbody.position = Vector3.Lerp(_rigidbody.position, nearPoint, dt * 14);
+                
+                Vector3 nearPoint = container.transform.TransformPoint(near);
+                _rigidbody.position = Vector3.Lerp(_rigidbody.position, nearPoint, 16f * dt);
+                _rigidbody.rotation = Quaternion.LookRotation(tangent, up);
             }
         }
 
