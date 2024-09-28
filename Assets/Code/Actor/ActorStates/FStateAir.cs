@@ -79,7 +79,7 @@ namespace SurgeEngine.Code.Parameters
                         }
                         else
                         {
-                            //stateMachine.SetState<FStateHoming>();
+                            stateMachine.SetState<FStateHoming>();
                         }
                     }
                 }
