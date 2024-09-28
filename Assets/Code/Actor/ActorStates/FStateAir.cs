@@ -87,6 +87,11 @@ namespace SurgeEngine.Code.Parameters
                     }
                 }
             }
+            
+            if (input.BPressed)
+            {
+                stateMachine.SetState<FStateStomp>();
+            }
         }
 
         public override void OnFixedTick(float dt)

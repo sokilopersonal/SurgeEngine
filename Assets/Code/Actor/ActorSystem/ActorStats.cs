@@ -1,4 +1,5 @@
-﻿using SurgeEngine.Code.CommonObjects;
+﻿using System;
+using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.Parameters;
 using UnityEngine;
 
@@ -9,6 +10,7 @@ namespace SurgeEngine.Code.ActorSystem
         public MoveParameters moveParameters;
         public JumpParameters jumpParameters;
         public HomingParameters homingParameters;
+        public StompParameters stompParameters;
         public float turnRate;
         public float currentSpeed;
         public float currentVerticalSpeed;
@@ -59,5 +61,12 @@ namespace SurgeEngine.Code.ActorSystem
             Vector3 c = Vector3.ProjectOnPlane(actor.camera.GetCameraTransform().up, Vector3.up).normalized;
             return Vector3.SignedAngle(f, c, -Vector3.up);
         }
+    }
+
+    [Serializable]
+    public class StompParameters
+    {
+        public float stompSpeed;
+        public AnimationCurve stompCurve;
     }
 }

@@ -29,6 +29,8 @@ namespace SurgeEngine.Code.Parameters
             _cameraTransform = actor.camera.GetCameraTransform();
             stats.groundNormal = Vector3.up;
             
+            animation.TransitionToState(AnimatorParams.RunCycle, 0.2f);
+            
             SetDetachTime(0f);
             
             //UpdateNormal();
@@ -39,7 +41,6 @@ namespace SurgeEngine.Code.Parameters
         {
             base.OnTick(dt);
             
-            animation.TransitionToState(AnimatorParams.RunCycle, 0.2f);
             BoostHandle(dt);
 
             if (actor.input.JumpPressed)

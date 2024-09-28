@@ -14,19 +14,11 @@ namespace SurgeEngine.Code.Parameters
         {
             base.OnEnter();
             
+            Common.ResetVelocity(ResetVelocityType.Both);
+            
             _rigidbody.Sleep();
             animation.SetBool("Idle", true);
-            animation.TransitionToState("Idle", 0.2f);
-            stats.planarVelocity = Vector3.zero;
-            
-            if (Common.CheckForGround(out var hit))
-            {
-                var point = hit.point;
-                var normal = hit.normal;
-
-                _rigidbody.position = point + normal;
-                _rigidbody.linearVelocity = Vector3.zero;
-            }
+            if (stateMachine.PreviousState is not FStateStomp) animation.TransitionToState("Idle", 0.2f);
         }
         
         public override void OnExit()
@@ -72,7 +64,8 @@ namespace SurgeEngine.Code.Parameters
                 var point = hit.point;
                 var normal = hit.normal;
 
-                //_rigidbody.position = point + normal;
+                _rigidbody.position = point + normal;
+                Common.ResetVelocity(ResetVelocityType.Both);
                 
                 stats.transformNormal = stats.groundNormal;
             }
