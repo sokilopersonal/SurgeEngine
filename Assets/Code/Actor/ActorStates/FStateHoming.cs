@@ -33,6 +33,7 @@ namespace SurgeEngine.Code.Parameters
             {
                 Vector3 direction = (_target.position - actor.transform.position).normalized;
                 _rigidbody.linearVelocity = direction * actor.stats.homingParameters.homingSpeed;
+                _rigidbody.rotation = Quaternion.LookRotation(direction, Vector3.up);
             }
         }
 
