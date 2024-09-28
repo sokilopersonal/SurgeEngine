@@ -14,9 +14,18 @@ namespace SurgeEngine.Code.ActorSystem
         private Vector3 forward;
         private Vector3 normal;
 
+        private void Start()
+        {
+            root.localPosition = actor.transform.localPosition;
+            actor.transform.rotation = actor.transform.parent.rotation;
+            root.localRotation = actor.transform.rotation;
+            
+            actor.transform.parent.rotation = Quaternion.identity;
+        }
+
         private void Update()
         {
-            float speed = 0;
+            float speed;
             var state = actor.stateMachine.CurrentState;
             if (state is FStateJump)
             {
@@ -33,7 +42,7 @@ namespace SurgeEngine.Code.ActorSystem
             
             root.localPosition = actor.transform.localPosition;
             root.localRotation = Quaternion.Slerp(root.localRotation,
-                Quaternion.LookRotation(actor.transform.forward, actor.transform.up),
+                actor.transform.rotation,
                 speed * Time.deltaTime);
             
             actor.effects.spinball.transform.SetParent(root, false);

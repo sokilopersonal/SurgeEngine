@@ -119,7 +119,7 @@ namespace SurgeEngine.Code.CameraSystem
             _tempFollowPoint.y = _tempY;
 
             float speed = actor.stats.currentSpeed;
-            float zLagMod = Mathf.Lerp(0.075f, 0.02f, speed / actor.stats.moveParameters.topSpeed);
+            float zLagMod = Mathf.Lerp(0.08f, 0.02f, speed / actor.stats.moveParameters.topSpeed);
             float zLag = speed * zLagMod;
             zLag = Mathf.Clamp(zLag, 0, zLagMax);
             _tempZ = Mathf.Lerp(_tempZ, zLag, zLagSmoothness * Time.deltaTime);
