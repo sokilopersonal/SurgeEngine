@@ -35,6 +35,7 @@ namespace SurgeEngine.Code.CommonObjects
             specialJump.SetKeepVelocity(keepVelocity);
 
             Common.ApplyImpulse(transform.up * speed);
+            context.rigidbody.linearVelocity = Vector3.ClampMagnitude(context.rigidbody.linearVelocity, speed);
             context.flags.AddFlag(new Flag(FlagType.OutOfControl, 
                 null, true, Mathf.Abs(outOfControl)));
         }

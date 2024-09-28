@@ -39,7 +39,7 @@ namespace SurgeEngine.Code.Parameters
         {
             base.OnTick(dt);
             
-            animation.TransitionToState(AnimatorParams.RunCycle, 0f);
+            animation.TransitionToState(AnimatorParams.RunCycle, 0.2f);
             BoostHandle(dt);
 
             if (actor.input.JumpPressed)
@@ -90,24 +90,27 @@ namespace SurgeEngine.Code.Parameters
             }
             
             var path = actor.pathData;
-            if (actor.pathData != null)
+            if (path != null)
             {
-                var container = path.splineContainer;
-                SplineUtility.GetNearestPoint(container.Spline, SurgeMath.Vector3ToFloat3(container.transform.InverseTransformPoint(_rigidbody.position)), out var near, out var t);
-                container.Evaluate(t, out var point, out var tangent, out var up);
-                var planeNormal = Vector3.Cross(tangent, up);
-                
-                if (stats.currentSpeed < path.maxAutoRunSpeed)
+                if (path.splineContainer != null)
                 {
-                    _rigidbody.AddForce(_rigidbody.transform.forward * (dt * path.autoRunSpeed), ForceMode.Impulse);
+                    var container = path.splineContainer;
+                    SplineUtility.GetNearestPoint(container.Spline, SurgeMath.Vector3ToFloat3(container.transform.InverseTransformPoint(_rigidbody.position)), out var near, out var t);
+                    container.Evaluate(t, out var point, out var tangent, out var up);
+                    var planeNormal = Vector3.Cross(tangent, up);
+                
+                    if (stats.currentSpeed < path.maxAutoRunSpeed)
+                    {
+                        _rigidbody.AddForce(_rigidbody.transform.forward * (dt * path.autoRunSpeed), ForceMode.Impulse);
+                    }
+                
+                    _rigidbody.linearVelocity = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, planeNormal);
+                    stats.inputDir = Vector3.ProjectOnPlane(stats.inputDir, planeNormal);
+                
+                    Vector3 nearPoint = container.transform.TransformPoint(near);
+                    _rigidbody.position = Vector3.Lerp(_rigidbody.position, nearPoint, 16f * dt);
+                    _rigidbody.rotation = Quaternion.LookRotation(tangent, up);
                 }
-                
-                _rigidbody.linearVelocity = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, planeNormal);
-                stats.inputDir = Vector3.ProjectOnPlane(stats.inputDir, planeNormal);
-                
-                Vector3 nearPoint = container.transform.TransformPoint(near);
-                _rigidbody.position = Vector3.Lerp(_rigidbody.position, nearPoint, 16f * dt);
-                _rigidbody.rotation = Quaternion.LookRotation(tangent, up);
             }
         }
 

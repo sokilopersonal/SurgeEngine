@@ -267,10 +267,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4901799316948868998}
-  - component: {fileID: 1810045973365951493}
   - component: {fileID: 8424456529054588640}
   - component: {fileID: 3870915650241184016}
   - component: {fileID: 5456566345517890436}
+  - component: {fileID: 1810045973365951493}
   m_Layer: 10
   m_Name: Spring
   m_TagString: Untagged
@@ -295,27 +295,6 @@ Transform:
   - {fileID: 1046327837389901012}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &1810045973365951493
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5690914750632315915}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1.185, y: 0.75, z: 1.185}
-  m_Center: {x: 0, y: 0.35, z: 0}
 --- !u!114 &8424456529054588640
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -364,6 +343,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particle: {fileID: 3897873273319466384}
+--- !u!65 &1810045973365951493
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5690914750632315915}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.185, y: 0.75, z: 1.185}
+  m_Center: {x: 0, y: 0.35, z: 0}
 --- !u!1 &8497731207516475806
 GameObject:
   m_ObjectHideFlags: 0
