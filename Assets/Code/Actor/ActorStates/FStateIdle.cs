@@ -14,11 +14,21 @@ namespace SurgeEngine.Code.Parameters
         {
             base.OnEnter();
             
-            Common.ResetVelocity(ResetVelocityType.Both);
+            if (Common.CheckForGround(out var hit))
+            {
+                var point = hit.point;
+                var normal = hit.normal;
+
+                _rigidbody.position = point + normal;
+                stats.transformNormal = stats.groundNormal;
+            }
             
             _rigidbody.Sleep();
             animation.SetBool("Idle", true);
-            if (stateMachine.PreviousState is not FStateStomp) animation.TransitionToState("Idle", 0.2f);
+            if (stateMachine.PreviousState is not FStateSliding && stateMachine.PreviousState is not FStateStomp)
+            {
+                animation.TransitionToState("Idle", 0.2f);
+            }
         }
         
         public override void OnExit()
@@ -31,6 +41,8 @@ namespace SurgeEngine.Code.Parameters
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
+            
+            Common.ResetVelocity(ResetVelocityType.Both);
 
             if (input.moveVector.magnitude > deadZone)
             {
@@ -58,21 +70,6 @@ namespace SurgeEngine.Code.Parameters
         public override void OnFixedTick(float dt)
         {
             base.OnFixedTick(dt);
-            
-            if (Common.CheckForGround(out var hit))
-            {
-                var point = hit.point;
-                var normal = hit.normal;
-
-                _rigidbody.position = point + normal;
-                Common.ResetVelocity(ResetVelocityType.Both);
-                
-                stats.transformNormal = stats.groundNormal;
-            }
-            else
-            {
-                stateMachine.SetState<FStateAir>();
-            }
             
             stats.groundAngle = Vector3.Angle(stats.groundNormal, Vector3.up);
             if (stats.currentSpeed < 10 && stats.groundAngle >= 70)

@@ -28,6 +28,7 @@ namespace SurgeEngine.Code.ActorSystem
         
         // B Button
         public bool BPressed => _input.Gameplay.BButton.WasPressedThisFrame();
+        public bool BReleased => _input.Gameplay.BButton.WasReleasedThisFrame();
         public bool BHeld => _input.Gameplay.BButton.IsPressed();
         public Action<InputAction.CallbackContext> BAction;
         

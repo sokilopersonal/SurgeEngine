@@ -6,6 +6,8 @@ namespace SurgeEngine.Code.ActorSystem
     public class ActorModel : ActorComponent
     {
         public Transform root;
+        public CapsuleCollider collision;
+        [HideInInspector] public float collisionStartHeight;
 
         [SerializeField] private float groundSmoothness = 16f;
         [SerializeField] private float airSmoothness = 3f;
@@ -16,6 +18,8 @@ namespace SurgeEngine.Code.ActorSystem
 
         private void Start()
         {
+            collisionStartHeight = collision.height;
+            
             root.localPosition = actor.transform.localPosition;
             actor.transform.rotation = actor.transform.parent.rotation;
             root.localRotation = actor.transform.rotation;

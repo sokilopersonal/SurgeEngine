@@ -1,6 +1,8 @@
-﻿using SurgeEngine.Code.Custom;
+﻿using System.Numerics;
+using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.Parameters.SonicSubStates;
 using UnityEngine;
+using Vector3 = UnityEngine.Vector3;
 
 namespace SurgeEngine.Code.Parameters
 {
@@ -15,13 +17,15 @@ namespace SurgeEngine.Code.Parameters
             animation.TransitionToState("Stomp", 0, true);
             stateMachine.GetSubState<FBoost>().Active = false;
 
+            _rigidbody.linearVelocity = new Vector3(_rigidbody.linearVelocity.x, 0f, _rigidbody.linearVelocity.z);
+
             _timer = 0;
         }
 
-        public override void OnFixedTick(float dt)
+        public override void OnTick(float dt)
         {
-            base.OnFixedTick(dt);
-    
+            base.OnTick(dt);
+            
             if (Common.CheckForGround(out var hit))
             {
                 animation.ResetAction();
@@ -34,27 +38,31 @@ namespace SurgeEngine.Code.Parameters
                 _rigidbody.position = point + normal;
                 _rigidbody.linearVelocity = Vector3.zero;
 
-                if (!Mathf.Approximately(stats.groundAngle, 0))
-                {
-                    stateMachine.SetState<FStateGround>();
-                }
-                else
-                {
-                    Debug.Log("hey");
-                    stateMachine.SetState<FStateIdle>();
-                }
+                stateMachine.SetState<FStateIdle>();
             }
+        }
 
-            _timer += dt;
+        public override void OnFixedTick(float dt)
+        {
+            base.OnFixedTick(dt);
 
-            if (_timer > 0.5f)
-            {
-                _timer = 0.5f;
-            }
+            Vector3 velocity = _rigidbody.linearVelocity;
+
+            float smoothingFactor = 1f;
+            Vector3 xzVelocity = new Vector3(velocity.x, 0, velocity.z);
+            Vector3 smoothedXZVelocity = Vector3.Lerp(xzVelocity, Vector3.zero, smoothingFactor * dt);
+
+            float stompSpeed = -stats.stompParameters.stompSpeed;
             
-            Vector3 downVelocity = Vector3.down * stats.stompParameters.stompSpeed;
-            _rigidbody.linearVelocity += downVelocity;
-            _rigidbody.linearVelocity = Vector3.ClampMagnitude(_rigidbody.linearVelocity, stats.stompParameters.stompSpeed);
+            float minYVelocity = -40f;
+            float maxYVelocity = 10f;
+
+            velocity = new Vector3(smoothedXZVelocity.x, 
+                Mathf.Clamp(velocity.y + stompSpeed, minYVelocity, maxYVelocity), 
+                smoothedXZVelocity.z);
+
+            _rigidbody.linearVelocity = velocity;
+
         }
 
     }

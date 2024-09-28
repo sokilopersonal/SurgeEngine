@@ -7,18 +7,18 @@ using STOP_MODE = FMOD.Studio.STOP_MODE;
 
 namespace SurgeEngine.Code.ActorSoundEffects
 {
-    public class StompSound : ActorSound
+    public class SlideSound : ActorSound
     {
-        [SerializeField] private EventReference stompLoopSound;
-        [SerializeField] private EventReference stompLandSound;
-
-        private EventInstance _stompLoopInstance;
+        [SerializeField] private EventReference slideLoopSound;
+        
+        private EventInstance slideLoop;
 
         public override void Initialize()
         {
             base.Initialize();
             
-            _stompLoopInstance = RuntimeManager.CreateInstance(stompLoopSound);
+            slideLoop = RuntimeManager.CreateInstance(slideLoopSound);
+            slideLoop.set3DAttributes(transform.To3DAttributes());
         }
 
         private void OnEnable()
@@ -33,18 +33,14 @@ namespace SurgeEngine.Code.ActorSoundEffects
 
         private void OnStateAssign(FState obj)
         {
-            if (obj is FStateStomp)
+            if (obj is FStateSliding)
             {
-                _stompLoopInstance.start();
+                slideLoop.set3DAttributes(transform.To3DAttributes());
+                slideLoop.start();
             }
             else
             {
-                _stompLoopInstance.stop(STOP_MODE.IMMEDIATE);
-            }
-
-            if (obj is FStateGround or FStateIdle or FStateSpecialJump && actor.stateMachine.PreviousState is FStateStomp)
-            {
-                RuntimeManager.PlayOneShot(stompLandSound);
+                slideLoop.stop(STOP_MODE.ALLOWFADEOUT);
             }
         }
     }

@@ -47,7 +47,7 @@ namespace SurgeEngine.Code.Parameters
             Vector3 vel = _rigidbody.linearVelocity;
             vel = Vector3.ProjectOnPlane(vel, Vector3.up);
 
-            if (vel.magnitude > 0.1f)
+            if (vel.magnitude > 0.5f)
             {
                 Quaternion rot = Quaternion.LookRotation(vel, stats.transformNormal);
                 actor.transform.rotation = rot;

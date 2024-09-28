@@ -21,6 +21,7 @@ namespace SurgeEngine.Code.Parameters
         private float _detachTimer;
         private bool _canAttach;
         private string _surfaceTag;
+        private bool _canSlide = true;
 
         public override void OnEnter()
         {
@@ -49,13 +50,23 @@ namespace SurgeEngine.Code.Parameters
 
                 actor.stateMachine.SetState<FStateJump>();
             }
+
+            float activateSpeed = stateMachine.GetState<FStateSliding>().slideDeactivationSpeed;
+            activateSpeed += activateSpeed * 1.5f;
+
+            if (!_canSlide)
+            {
+                if (input.BReleased)
+                    _canSlide = true;
+            }
+            
+            if (input.BHeld && stats.currentSpeed > activateSpeed)
+            {
+                stateMachine.SetState<FStateSliding>();
+                _canSlide = false;
+            }
             
             CalculateDetachState();
-
-            if (Input.GetKeyDown(KeyCode.Q))
-            {
-                _rigidbody.linearVelocity = Vector3.zero;
-            }
         }
 
         public override void OnFixedTick(float dt)
@@ -235,11 +246,9 @@ namespace SurgeEngine.Code.Parameters
                 _rigidbody.AddForce(stats.groundNormal * 8f, ForceMode.Impulse);
             }
             
-            float dot = Vector3.Dot(transform.up, Vector3.up);
             if (stats.groundAngle > 5 && stats.movementVector.magnitude > 10f)
             {
                 bool uphill = Vector3.Dot(_rigidbody.linearVelocity.normalized, Vector3.down) < 0;
-                //float groundSpeedMod = slopeForceOverSpeed.Evaluate(rb.velocity.sqrMagnitude / topSpeed / topSpeed);
                 Vector3 slopeForce = Vector3.ProjectOnPlane(Vector3.down, stats.groundNormal) * (1 * (uphill ? 1f : 6.5f));
                 _rigidbody.linearVelocity += slopeForce * Time.fixedDeltaTime;
             }
