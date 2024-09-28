@@ -45,6 +45,11 @@ namespace SurgeEngine.Code.Parameters
             }
             else
             {
+                if (Common.CheckForGround(out _, CheckGroundType.PredictJump))
+                {
+                    stateMachine.SetState<FStateAir>();
+                }
+                
                 Vector3 direction = actor.transform.forward;
                 _rigidbody.linearVelocity = direction * (stats.homingParameters.homingDistance *
                                                          stats.homingParameters.homingCurve.Evaluate(_timer));

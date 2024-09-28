@@ -46,7 +46,7 @@ namespace SurgeEngine.Code.CommonObjects
             }
         }
 
-        private void FixedUpdate()
+        private void Update()
         {
             _targetPosition = SurgeMath.GetCameraMatrixPosition(_camera, -0.875f, -0.75f);
             transform.position = Vector3.Lerp(transform.position, _targetPosition, 
@@ -69,7 +69,7 @@ namespace SurgeEngine.Code.CommonObjects
 
             transform.localScale = Vector3.Lerp(_initialScale, Vector3.one * 0.065f, _factor * 1.5f); // Need to multiply factor to fix scale
             
-            _factor += Time.fixedUnscaledDeltaTime / time;
+            _factor += Time.unscaledDeltaTime / time;
 
             if (_factor >= 0.75f)
             {

@@ -72,14 +72,17 @@ namespace SurgeEngine.Code.Parameters
 
                     if (input.JumpPressed)
                     {
-                        if (homingTarget != null)
+                        if (stateMachine.PreviousState is not FStateHoming or FStateAirBoost)
                         {
-                            stateMachine.SetState<FStateHoming>().SetTarget(homingTarget);
-                            stats.homingTarget = null;
-                        }
-                        else
-                        {
-                            stateMachine.SetState<FStateHoming>();
+                            if (homingTarget != null)
+                            {
+                                stateMachine.SetState<FStateHoming>().SetTarget(homingTarget);
+                                stats.homingTarget = null;
+                            }
+                            else
+                            {
+                                stateMachine.SetState<FStateHoming>();
+                            }
                         }
                     }
                 }

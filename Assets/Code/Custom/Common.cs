@@ -66,10 +66,32 @@ namespace SurgeEngine.Code.Custom
             if (!context.rigidbody.isKinematic) context.rigidbody.linearVelocity += Vector3.down * (yGravity * dt);
         }
         
-        public static bool CheckForGround(out RaycastHit result)
+        public static bool CheckForGround(out RaycastHit result, CheckGroundType type = CheckGroundType.Default)
         {
             var context = ActorContext.Context;
-            return Physics.Raycast(context.transform.position, -context.transform.up, out result,
+            Vector3 origin;
+            Vector3 direction;
+            switch (type)
+            {
+                case CheckGroundType.Default:
+                    origin = context.transform.position;
+                    direction = -context.transform.up;
+                    break;
+                case CheckGroundType.Predict:
+                    origin = context.transform.position;
+                    direction = context.rigidbody.linearVelocity.normalized;
+                    break;
+                case CheckGroundType.PredictJump:
+                    origin = context.transform.position - context.transform.up * 0.5f;
+                    direction = context.rigidbody.linearVelocity.normalized;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(type), type, null);
+            }
+            Ray ray = new Ray(origin, direction);
+            Debug.DrawRay(ray.origin, ray.direction);
+            
+            return Physics.Raycast(ray, out result,
                 context.stats.moveParameters.castParameters.castDistance, context.stats.moveParameters.castParameters.collisionMask, QueryTriggerInteraction.Ignore);
         }
 
@@ -166,5 +188,12 @@ namespace SurgeEngine.Code.Custom
         Angular,
         Linear,
         Both
+    }
+
+    public enum CheckGroundType
+    {
+        Default,
+        Predict,
+        PredictJump
     }
 }
