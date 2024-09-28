@@ -124,6 +124,7 @@ namespace SurgeEngine.Code.Parameters.SonicSubStates
         private void BoostAction(InputAction.CallbackContext obj)
         {
             if (actor.stateMachine.CurrentState is FStateAir && !canAirBoost) return;
+            if (actor.stateMachine.CurrentState is FStateStomp) return;
             
             if (CanBoost()) Active = obj.ReadValueAsButton();
             

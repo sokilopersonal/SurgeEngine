@@ -1,4 +1,5 @@
 ﻿using SurgeEngine.Code.Custom;
+using SurgeEngine.Code.Parameters.SonicSubStates;
 using UnityEngine;
 
 namespace SurgeEngine.Code.Parameters
@@ -12,6 +13,7 @@ namespace SurgeEngine.Code.Parameters
             base.OnEnter();
             
             animation.TransitionToState("Stomp", 0, true);
+            stateMachine.GetSubState<FBoost>().Active = false;
 
             _timer = 0;
         }
@@ -24,14 +26,23 @@ namespace SurgeEngine.Code.Parameters
             {
                 animation.ResetAction();
                 
-                
-                stateMachine.SetState<FStateIdle>();
+                stats.groundAngle = Vector3.Angle(hit.normal, Vector3.up);
                 
                 var point = hit.point;
                 var normal = hit.normal;
 
                 _rigidbody.position = point + normal;
                 _rigidbody.linearVelocity = Vector3.zero;
+
+                if (!Mathf.Approximately(stats.groundAngle, 0))
+                {
+                    stateMachine.SetState<FStateGround>();
+                }
+                else
+                {
+                    Debug.Log("hey");
+                    stateMachine.SetState<FStateIdle>();
+                }
             }
 
             _timer += dt;

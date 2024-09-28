@@ -14,12 +14,16 @@ namespace SurgeEngine.Code.ActorSystem
 
         [Header("Spinball")] 
         public Spinball spinball;
+        
+        [Header("Stomping")]
+        public Stomping stomping;
 
         protected override void OnInitialized()
         {
             base.OnInitialized();
             boostAura.enabled = false;
             spinball.enabled = false;
+            stomping.enabled = false;
             
             actor.stateMachine.GetSubState<FBoost>().OnActiveChanged += OnBoostActivate;
             actor.stateMachine.OnStateAssign += OnStateAssign;
@@ -43,6 +47,13 @@ namespace SurgeEngine.Code.ActorSystem
             {
                 spinball.enabled = false;
             }
+
+            if (obj is FStateGround or FStateIdle && actor.stateMachine.PreviousState is FStateStomp)
+            {
+                stomping.Land();
+            }
+            
+            stomping.enabled = obj is FStateStomp;
         }
     }
 }

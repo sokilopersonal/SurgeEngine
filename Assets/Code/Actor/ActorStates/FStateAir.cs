@@ -87,10 +87,13 @@ namespace SurgeEngine.Code.Parameters
                     }
                 }
             }
-            
-            if (input.BPressed)
+
+            if (!actor.flags.HasFlag(FlagType.OutOfControl))
             {
-                stateMachine.SetState<FStateStomp>();
+                if (input.BPressed)
+                {
+                    stateMachine.SetState<FStateStomp>();
+                }
             }
         }
 

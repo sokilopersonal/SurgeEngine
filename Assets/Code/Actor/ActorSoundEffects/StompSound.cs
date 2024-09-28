@@ -38,7 +38,7 @@ namespace SurgeEngine.Code.ActorSoundEffects
                 _stompLoopInstance.start();
             }
 
-            if (obj is FStateGround or FStateIdle && actor.stateMachine.PreviousState is FStateStomp)
+            if (obj is FStateGround or FStateIdle or FStateSpecialJump && actor.stateMachine.PreviousState is FStateStomp)
             {
                 RuntimeManager.PlayOneShot(stompLandSound);
                 _stompLoopInstance.stop(STOP_MODE.IMMEDIATE);
