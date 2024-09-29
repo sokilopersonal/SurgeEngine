@@ -48,10 +48,9 @@ namespace SurgeEngine.Code.Parameters
 
             Vector3 velocity = _rigidbody.linearVelocity;
 
-            float smoothingFactor = 1f;
-            Vector3 xzVelocity = new Vector3(velocity.x, 0, velocity.z);
-            Vector3 smoothedXZVelocity = Vector3.Lerp(xzVelocity, Vector3.zero, smoothingFactor * dt);
-
+            float horizontalSpeedMultiplier = stats.stompParameters.stompCurve.Evaluate(_timer);
+            Vector3 smoothedXZVelocity = new Vector3(velocity.x * horizontalSpeedMultiplier, velocity.y, velocity.z * horizontalSpeedMultiplier);
+            
             float stompSpeed = -stats.stompParameters.stompSpeed;
             
             float minYVelocity = -40f;
@@ -62,8 +61,8 @@ namespace SurgeEngine.Code.Parameters
                 smoothedXZVelocity.z);
 
             _rigidbody.linearVelocity = velocity;
-
+            
+            _timer += dt;
         }
-
     }
 }

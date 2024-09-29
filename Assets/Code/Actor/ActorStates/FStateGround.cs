@@ -30,7 +30,7 @@ namespace SurgeEngine.Code.Parameters
             _cameraTransform = actor.camera.GetCameraTransform();
             stats.groundNormal = Vector3.up;
             
-            animation.TransitionToState(AnimatorParams.RunCycle, 0.2f);
+            animation.TransitionToState(AnimatorParams.RunCycle, 0f);
             
             SetDetachTime(0f);
             
@@ -46,9 +46,9 @@ namespace SurgeEngine.Code.Parameters
 
             if (actor.input.JumpPressed)
             {
-                SetDetachTime(0.2f);
+                //SetDetachTime(0.2f);
 
-                actor.stateMachine.SetState<FStateJump>();
+                actor.stateMachine.SetState<FStateJump>(0.1f);
             }
 
             float activateSpeed = stateMachine.GetState<FStateSliding>().slideDeactivationSpeed;
@@ -62,7 +62,7 @@ namespace SurgeEngine.Code.Parameters
             
             if (input.BHeld && stats.currentSpeed > activateSpeed)
             {
-                stateMachine.SetState<FStateSliding>();
+                stateMachine.SetState<FStateSliding>(0.2f);
                 _canSlide = false;
             }
             

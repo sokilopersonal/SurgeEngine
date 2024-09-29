@@ -31,7 +31,7 @@ namespace SurgeEngine.Code.CommonObjects
                 Common.ApplyImpulse(Common.GetImpulseWithPitch(Vector3.Cross(-startPoint.right, Vector3.up), startPoint.right, pitch, impulse));
                 
                 var specialJump = context.stateMachine.CurrentState is FStateSpecialJump ? 
-                    context.stateMachine.GetState<FStateSpecialJump>() : context.stateMachine.SetState<FStateSpecialJump>();
+                    context.stateMachine.GetState<FStateSpecialJump>() : context.stateMachine.SetState<FStateSpecialJump>(0.1f);
                 specialJump.SetSpecialData(new SpecialJumpData(SpecialJumpType.JumpBoard));
                 specialJump.PlaySpecialAnimation(0.2f);
                     

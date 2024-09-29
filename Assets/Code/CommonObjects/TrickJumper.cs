@@ -98,7 +98,7 @@ namespace SurgeEngine.Code.CommonObjects
                 Common.ApplyImpulse(impulse);
                 
                 var specialJump = context.stateMachine.CurrentState is FStateSpecialJump ? 
-                    context.stateMachine.GetState<FStateSpecialJump>() : context.stateMachine.SetState<FStateSpecialJump>();
+                    context.stateMachine.GetState<FStateSpecialJump>() : context.stateMachine.SetState<FStateSpecialJump>(0.1f);
                 specialJump.SetSpecialData(new SpecialJumpData(SpecialJumpType.TrickJumper));
                 specialJump.PlaySpecialAnimation(0);
                 

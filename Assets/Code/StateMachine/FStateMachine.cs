@@ -78,7 +78,6 @@ namespace SurgeEngine.Code.StateMachine
             if (_inactiveDelay > 0f)
             {
                 _inactiveDelay -= dt;
-                return;
             }
             
             CurrentState?.OnTick(dt);
@@ -91,12 +90,6 @@ namespace SurgeEngine.Code.StateMachine
         
         public void FixedTick(float dt)
         {
-            if (_inactiveDelay > 0f)
-            {
-                _inactiveDelay -= dt;
-                return;
-            }
-            
             CurrentState?.OnFixedTick(dt);
             
             foreach (var subState in _subStatesList)
@@ -107,12 +100,6 @@ namespace SurgeEngine.Code.StateMachine
         
         public void LateTick(float dt)
         {
-            if (_inactiveDelay > 0f)
-            {
-                _inactiveDelay -= dt;
-                return;
-            }
-            
             CurrentState?.OnLateTick(dt);
             
             foreach (var subState in _subStatesList)

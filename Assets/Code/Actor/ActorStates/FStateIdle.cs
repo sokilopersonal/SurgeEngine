@@ -69,6 +69,11 @@ namespace SurgeEngine.Code.Parameters
                     stateMachine.GetState<FStateGround>().SetDetachTime(0.2f);
                     stateMachine.SetState<FStateJump>();
                 }
+
+                if (input.BPressed)
+                {
+                    stateMachine.SetState<FStateSit>(0.1f);
+                }
             }
         }
 

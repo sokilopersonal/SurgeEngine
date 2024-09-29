@@ -43,14 +43,12 @@ namespace SurgeEngine.Code.Parameters
 
             if (stats.currentSpeed < slideDeactivationSpeed || input.BReleased)
             {
-                if (stats.inputDir.magnitude > 0.2f)
+                if (stats.currentSpeed > slideDeactivationSpeed)
                 {
-                    stateMachine.SetState<FStateGround>();
+                    stateMachine.SetState<FStateGround>(0.2f);
                 }
                 else
-                {
                     stateMachine.SetState<FStateIdle>();
-                }
             }
         }
 
