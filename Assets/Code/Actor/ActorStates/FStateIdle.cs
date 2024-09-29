@@ -44,6 +44,11 @@ namespace SurgeEngine.Code.Parameters
             
             Common.ResetVelocity(ResetVelocityType.Both);
 
+            if (!Common.CheckForGround(out _))
+            {
+                stateMachine.SetState<FStateAir>();
+            }
+
             if (input.moveVector.magnitude > deadZone)
             {
                 stateMachine.SetState<FStateGround>();
@@ -59,10 +64,10 @@ namespace SurgeEngine.Code.Parameters
 
             if (!actor.flags.HasFlag(FlagType.OutOfControl))
             {
-                if (actor.input.JumpPressed)
+                if (input.JumpPressed)
                 {
-                    actor.stateMachine.GetState<FStateGround>().SetDetachTime(0.2f);
-                    actor.stateMachine.SetState<FStateJump>();
+                    stateMachine.GetState<FStateGround>().SetDetachTime(0.2f);
+                    stateMachine.SetState<FStateJump>();
                 }
             }
         }

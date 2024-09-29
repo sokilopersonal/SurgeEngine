@@ -48,7 +48,6 @@ namespace SurgeEngine.Code.Parameters
                 }
                 else
                 {
-                    Debug.Log("123");
                     stateMachine.SetState<FStateIdle>();
                 }
             }
