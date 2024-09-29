@@ -19,6 +19,7 @@ namespace SurgeEngine.Code.Parameters
             base.OnEnter();
             
             animation.TransitionToState("Sliding", 0.2f, true);
+            stateMachine.GetSubState<FBoost>().Active = false;
 
             _cameraTransform = actor.camera.GetCameraTransform();
             

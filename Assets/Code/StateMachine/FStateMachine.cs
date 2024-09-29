@@ -14,7 +14,9 @@ namespace SurgeEngine.Code.StateMachine
         private Dictionary<Type, FSubState> _subStates = new Dictionary<Type, FSubState>();
         private List<FSubState> _subStatesList = new List<FSubState>();
         
-        public event Action<FState> OnStateAssign; 
+        public event Action<FState> OnStateAssign;
+        
+        private float _inactiveDelay = 0f;
         
         public void AddState(FState state)
         {
@@ -27,8 +29,10 @@ namespace SurgeEngine.Code.StateMachine
             _subStatesList.Add(subState);
         }
         
-        public T SetState<T>() where T : FState
+        public T SetState<T>(float inactiveDelay = 0) where T : FState
         {
+            if (_inactiveDelay > 0f) return null;
+
             var type = typeof(T);
 
             if (CurrentState != null && CurrentState.GetType() == type)
@@ -45,6 +49,8 @@ namespace SurgeEngine.Code.StateMachine
                 CurrentState.OnEnter();
                 
                 currentStateName = CurrentState.GetType().Name;
+                
+                _inactiveDelay = inactiveDelay;
                 
                 return CurrentState as T;
             }
@@ -69,6 +75,12 @@ namespace SurgeEngine.Code.StateMachine
 
         public void Tick(float dt)
         {
+            if (_inactiveDelay > 0f)
+            {
+                _inactiveDelay -= dt;
+                return;
+            }
+            
             CurrentState?.OnTick(dt);
 
             foreach (var subState in _subStatesList)
@@ -79,6 +91,12 @@ namespace SurgeEngine.Code.StateMachine
         
         public void FixedTick(float dt)
         {
+            if (_inactiveDelay > 0f)
+            {
+                _inactiveDelay -= dt;
+                return;
+            }
+            
             CurrentState?.OnFixedTick(dt);
             
             foreach (var subState in _subStatesList)
@@ -89,6 +107,12 @@ namespace SurgeEngine.Code.StateMachine
         
         public void LateTick(float dt)
         {
+            if (_inactiveDelay > 0f)
+            {
+                _inactiveDelay -= dt;
+                return;
+            }
+            
             CurrentState?.OnLateTick(dt);
             
             foreach (var subState in _subStatesList)

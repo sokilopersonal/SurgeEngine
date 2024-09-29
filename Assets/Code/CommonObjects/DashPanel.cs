@@ -19,15 +19,14 @@ namespace SurgeEngine.Code.CommonObjects
             base.OnTriggerContact(msg);
             
             var context = ActorContext.Context;
-            
             context.rigidbody.transform.rotation = Quaternion.LookRotation(transform.forward, transform.up);
             context.animation.TransitionToState(AnimatorParams.RunCycle, 0f);
             Common.ApplyImpulse(transform.forward * speed);
-            context.stateMachine.SetState<FStateGround>();
+            context.stateMachine.SetState<FStateGround>(outOfControl);
 
             if (center)
             {
-                context.rigidbody.position = transform.position;
+                context.rigidbody.position = transform.position + transform.up * 0.5f;
             }
 
             context.flags.AddFlag(new Flag(FlagType.OutOfControl, 

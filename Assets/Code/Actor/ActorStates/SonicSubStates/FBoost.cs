@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.StateMachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -107,6 +108,11 @@ namespace SurgeEngine.Code.Parameters.SonicSubStates
                     Active = false;
                 }
             }
+
+            if (Common.CheckForGround(out _, CheckGroundType.Predict))
+            {
+                Active = false;
+            }
             
             boostEnergy = Mathf.Clamp(boostEnergy, 0, 100);
         }
@@ -125,6 +131,7 @@ namespace SurgeEngine.Code.Parameters.SonicSubStates
         {
             if (actor.stateMachine.CurrentState is FStateAir && !canAirBoost) return;
             if (actor.stateMachine.CurrentState is FStateStomp) return;
+            if (actor.stateMachine.CurrentState is FStateSliding) return;
             
             if (CanBoost()) Active = obj.ReadValueAsButton();
             
