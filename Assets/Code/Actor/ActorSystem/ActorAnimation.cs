@@ -105,7 +105,7 @@ namespace SurgeEngine.Code.ActorSystem
                 {
                     TransitionToState(AnimatorParams.RunCycle, 0.2f);
                 }
-                else if (prev is FStateAir)
+                else if (prev is FStateAir or FStateSpecialJump)
                 {
                     TransitionToState(AnimatorParams.RunCycle, 0f);
                 }
