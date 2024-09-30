@@ -24,18 +24,11 @@ namespace SurgeEngine.Code.Parameters
             }
             
             _rigidbody.Sleep();
-            animation.SetBool("Idle", true);
-            if (stateMachine.PreviousState is not FStateSliding && stateMachine.PreviousState is not FStateStomp)
-            {
-                animation.TransitionToState("Idle", 0.2f);
-            }
         }
         
         public override void OnExit()
         {
             base.OnExit();
-            
-            animation.SetBool("Idle", false);
         }
 
         public override void OnTick(float dt)

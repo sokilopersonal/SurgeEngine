@@ -16,8 +16,6 @@ namespace SurgeEngine.Code.Parameters
             base.OnEnter();
 
             stateMachine.GetSubState<FBoost>().Active = false;
-            animation.TransitionToState("Homing", 0f, true);
-            
             stats.transformNormal = Vector3.up;
 
             _timer = 0f;

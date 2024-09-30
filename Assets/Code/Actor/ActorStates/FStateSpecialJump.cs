@@ -57,8 +57,6 @@ namespace SurgeEngine.Code.Parameters
             {
                 animation.TransitionToState(AnimatorParams.AirCycle, 0.2f);
             }
-            
-            //animation.TransitionToState("Run Cycle", 0f);
         }
 
         private void SpecialTick(float dt)

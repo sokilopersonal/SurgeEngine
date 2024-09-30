@@ -89,6 +89,7 @@ namespace SurgeEngine.Code.CommonObjects
             if (firstSpeed > 0)
             {
                 context.stateMachine.GetSubState<FBoost>().Active = false;
+                Common.ResetVelocity(ResetVelocityType.Both);
                 
                 context.transform.position = transform.position + Vector3.up * 1.25f;
                 context.transform.forward = Vector3.Cross(-startPoint.right, Vector3.up);
@@ -97,8 +98,7 @@ namespace SurgeEngine.Code.CommonObjects
                 Vector3 impulse = Common.GetImpulseWithPitch(Vector3.Cross(-startPoint.right, Vector3.up), startPoint.right, firstPitch, firstSpeed);
                 Common.ApplyImpulse(impulse);
                 
-                var specialJump = context.stateMachine.CurrentState is FStateSpecialJump ? 
-                    context.stateMachine.GetState<FStateSpecialJump>() : context.stateMachine.SetState<FStateSpecialJump>(0.1f);
+                var specialJump = context.stateMachine.SetState<FStateSpecialJump>(0.2f, true);
                 specialJump.SetSpecialData(new SpecialJumpData(SpecialJumpType.TrickJumper));
                 specialJump.PlaySpecialAnimation(0);
                 

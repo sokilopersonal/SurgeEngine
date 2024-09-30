@@ -29,9 +29,9 @@ namespace SurgeEngine.Code.StateMachine
             _subStatesList.Add(subState);
         }
         
-        public T SetState<T>(float inactiveDelay = 0) where T : FState
+        public T SetState<T>(float inactiveDelay = 0, bool ignoreInactiveDelay = false) where T : FState
         {
-            if (_inactiveDelay > 0f) return null;
+            if (_inactiveDelay > 0f && !ignoreInactiveDelay) return null;
 
             var type = typeof(T);
 

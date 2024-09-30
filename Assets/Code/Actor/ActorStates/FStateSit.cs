@@ -8,8 +8,6 @@ namespace SurgeEngine.Code.Parameters
         {
             base.OnEnter();
             
-            animation.TransitionToState("Sit", 0.15f, true);
-            
             Common.ResetVelocity(ResetVelocityType.Both);
         }
 

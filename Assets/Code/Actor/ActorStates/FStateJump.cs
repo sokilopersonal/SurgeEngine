@@ -11,7 +11,6 @@ namespace SurgeEngine.Code.Parameters
         {
             base.OnEnter();
             
-            animation.TransitionToState("Ball", 0f, true);
             _rigidbody.AddForce(actor.transform.up * stats.jumpParameters.jumpForce, ForceMode.Impulse);
             _jumpTime = stats.jumpParameters.jumpStartTime;
             

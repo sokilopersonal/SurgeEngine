@@ -30,11 +30,7 @@ namespace SurgeEngine.Code.Parameters
             _cameraTransform = actor.camera.GetCameraTransform();
             stats.groundNormal = Vector3.up;
             
-            animation.TransitionToState(AnimatorParams.RunCycle, 0f);
-            
             SetDetachTime(0f);
-            
-            //UpdateNormal();
             ConvertAirToGroundVelocity();
         }
 
@@ -46,8 +42,6 @@ namespace SurgeEngine.Code.Parameters
 
             if (actor.input.JumpPressed)
             {
-                //SetDetachTime(0.2f);
-
                 actor.stateMachine.SetState<FStateJump>(0.1f);
             }
 
@@ -62,7 +56,7 @@ namespace SurgeEngine.Code.Parameters
             
             if (input.BHeld && stats.currentSpeed > activateSpeed)
             {
-                stateMachine.SetState<FStateSliding>(0.2f);
+                stateMachine.SetState<FStateSliding>();
                 _canSlide = false;
             }
             
@@ -196,7 +190,6 @@ namespace SurgeEngine.Code.Parameters
             {
                 _rigidbody.linearVelocity = _rigidbody.transform.forward * boost.startForce;
                 boost.restoringTopSpeed = true;
-                animation.TransitionToState(AnimatorParams.RunCycle, 0f);
             }
     
             if (boost.Active)

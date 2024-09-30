@@ -18,7 +18,6 @@ namespace SurgeEngine.Code.Parameters
         {
             base.OnEnter();
             
-            animation.TransitionToState("Sliding", 0.2f, true);
             stateMachine.GetSubState<FBoost>().Active = false;
 
             _cameraTransform = actor.camera.GetCameraTransform();
@@ -45,7 +44,7 @@ namespace SurgeEngine.Code.Parameters
             {
                 if (stats.currentSpeed > slideDeactivationSpeed)
                 {
-                    stateMachine.SetState<FStateGround>(0.2f);
+                    stateMachine.SetState<FStateGround>();
                 }
                 else
                     stateMachine.SetState<FStateIdle>();
@@ -91,7 +90,6 @@ namespace SurgeEngine.Code.Parameters
             }
             else
             {
-                animation.TransitionToState(AnimatorParams.AirCycle, 0.2f);
                 stateMachine.SetState<FStateAir>();
             }
         }

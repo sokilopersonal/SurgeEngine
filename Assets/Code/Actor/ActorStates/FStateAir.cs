@@ -19,20 +19,6 @@ namespace SurgeEngine.Code.Parameters
             base.OnEnter();
 
             _airTime = 0f;
-
-            // if (!stateMachine.IsPreviousState<FStateAirBoost>()) 
-            //     animation.TransitionToState("Air Cycle", 0f);
-            //
-            // if (stateMachine.IsPreviousState<FStateSpecialJump>())
-            // {
-            //     animation.TransitionToState("Air Cycle", 1f);
-            // }
-            
-            if (stats.lastContactObject is JumpCollision)
-            {
-                animation.TransitionToState("Air Cycle", 0.2f);
-                stats.lastContactObject = null;
-            }
             
             actor.stats.groundNormal = Vector3.up;
             _cameraTransform = actor.camera.GetCameraTransform();

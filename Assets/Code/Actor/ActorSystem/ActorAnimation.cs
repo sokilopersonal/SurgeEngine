@@ -1,4 +1,6 @@
-﻿using SurgeEngine.Code.Parameters.SonicSubStates;
+﻿using SurgeEngine.Code.Parameters;
+using SurgeEngine.Code.Parameters.SonicSubStates;
+using SurgeEngine.Code.StateMachine;
 using UnityEngine;
 
 namespace SurgeEngine.Code.ActorSystem
@@ -8,6 +10,16 @@ namespace SurgeEngine.Code.ActorSystem
         public Animator animator;
         
         private string _currentAnimation;
+
+        private void OnEnable()
+        {
+            actor.stateMachine.OnStateAssign += ChangeStateAnimation;
+        }
+        
+        private void OnDisable()
+        {
+            actor.stateMachine.OnStateAssign -= ChangeStateAnimation;
+        }
 
         private void Update()
         {
@@ -28,22 +40,22 @@ namespace SurgeEngine.Code.ActorSystem
             
             SetBool("Skidding", actor.stats.skidding && !actor.stateMachine.GetSubState<FBoost>().Active);
         }
-        
+
         public void SetFloat(string state, float value)
         {
             animator.SetFloat(state, value);
         }
-        
+
         public void SetBool(string state, bool value)
         {
             animator.SetBool(state, value);
         }
-        
+
         public void SetFloat(int id, float value)
         {
             animator.SetFloat(id, value);
         }
-        
+
         public void SetBool(int id, bool value)
         {
             animator.SetBool(id, value);
@@ -69,6 +81,70 @@ namespace SurgeEngine.Code.ActorSystem
             _currentAnimation = stateName;
 
             if (isAction) SetAction(true);
+        }
+
+        private void ChangeStateAnimation(FState obj)
+        {
+            var prev = actor.stateMachine.PreviousState;
+            
+            if (obj is FStateIdle)
+            {
+                if (prev is FStateGround or FStateSit)
+                {
+                    TransitionToState("Idle", 0.2f);
+                }
+                else if (prev is FStateStomp)
+                {
+                    TransitionToState("StompSquat", 0.1f);
+                }
+            }
+            
+            if (obj is FStateGround)
+            {
+                if (prev is FStateIdle or FStateSliding)
+                {
+                    TransitionToState(AnimatorParams.RunCycle, 0.2f);
+                }
+                else if (prev is FStateAir)
+                {
+                    TransitionToState(AnimatorParams.RunCycle, 0f);
+                }
+            }
+            
+            if (obj is FStateAir && prev is not FStateSpecialJump and not FStateAirBoost)
+            {
+                TransitionToState(AnimatorParams.AirCycle, prev switch
+                {
+                    FStateGround => 0.2f,
+                    FStateJump or FStateHoming => 0f,
+                    _ => 0.2f
+                });
+            }
+
+            if (obj is FStateSliding)
+            {
+                TransitionToState("Sliding", 0.2f, true);
+            }
+            
+            if (obj is FStateSit)
+            {
+                TransitionToState("Sit", 0.2f, true);
+            }
+            
+            if (obj is FStateJump or FStateHoming)
+            {
+                TransitionToState("Ball", 0f, true);
+            }
+
+            if (obj is FStateStomp)
+            {
+                TransitionToState("Stomp", 0.1f, true);
+            }
+
+            if (obj is FStateAirBoost)
+            {
+                TransitionToState("Air Boost", 0f, true);
+            }
         }
     }
 

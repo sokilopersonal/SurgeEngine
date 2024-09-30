@@ -14,12 +14,17 @@ namespace SurgeEngine.Code.Parameters
         {
             base.OnEnter();
             
-            animation.TransitionToState("Stomp", 0, true);
             stateMachine.GetSubState<FBoost>().Active = false;
-
             _rigidbody.linearVelocity = new Vector3(_rigidbody.linearVelocity.x, 0f, _rigidbody.linearVelocity.z);
 
             _timer = 0;
+        }
+
+        public override void OnExit()
+        {
+            base.OnExit();
+            
+            animation.ResetAction();
         }
 
         public override void OnTick(float dt)
@@ -53,8 +58,8 @@ namespace SurgeEngine.Code.Parameters
             
             float stompSpeed = -stats.stompParameters.stompSpeed;
             
-            float minYVelocity = -40f;
-            float maxYVelocity = 10f;
+            float minYVelocity = stompSpeed * 1.25f;
+            float maxYVelocity = 5f;
 
             velocity = new Vector3(smoothedXZVelocity.x, 
                 Mathf.Clamp(velocity.y + stompSpeed, minYVelocity, maxYVelocity), 
