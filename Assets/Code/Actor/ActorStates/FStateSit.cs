@@ -24,7 +24,7 @@ namespace SurgeEngine.Code.Parameters
         {
             base.OnTick(dt);
 
-            if (input.BReleased)
+            if (!input.BHeld)
             {
                 stateMachine.SetState<FStateIdle>(0.1f);
             }

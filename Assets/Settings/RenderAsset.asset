@@ -48,10 +48,10 @@ MonoBehaviour:
     supportTransparentBackface: 1
     supportTransparentDepthPrepass: 1
     supportTransparentDepthPostpass: 1
-    colorBufferFormat: 74
+    colorBufferFormat: 48
     supportCustomPass: 1
     customBufferFormat: 8
-    supportedLitShaderMode: 2
+    supportedLitShaderMode: 3
     planarReflectionResolution:
       m_Values: 000100000004000000080000
       m_SchemaId:
@@ -77,7 +77,7 @@ MonoBehaviour:
     oldLightProbeSystem: 0
     probeVolumeMemoryBudget: 1024
     supportProbeVolumeGPUStreaming: 1
-    supportProbeVolumeDiskStreaming: 0
+    supportProbeVolumeDiskStreaming: 1
     probeVolumeSHBands: 2
     supportProbeVolumeScenarios: 0
     supportProbeVolumeScenarioBlending: 1
@@ -94,12 +94,12 @@ MonoBehaviour:
       reflectionProbeCacheSize: 0
       reflectionCubemapSize: 0
       maxEnvLightsOnScreen: 0
-      reflectionCacheCompressed: 1
+      reflectionCacheCompressed: 0
       reflectionProbeFormat: 48
       reflectionProbeTexCacheSize: 2048
-      reflectionProbeTexLastValidCubeMip: 3
+      reflectionProbeTexLastValidCubeMip: 4
       reflectionProbeTexLastValidPlanarMip: 0
-      reflectionProbeDecreaseResToFit: 0
+      reflectionProbeDecreaseResToFit: 1
       skyReflectionSize: 512
       skyLightingOverrideLayerMask:
         serializedVersion: 2

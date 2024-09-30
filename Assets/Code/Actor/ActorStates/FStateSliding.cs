@@ -41,7 +41,7 @@ namespace SurgeEngine.Code.Parameters
         {
             base.OnTick(dt);
 
-            if (stats.currentSpeed < slideDeactivationSpeed || input.BReleased)
+            if (stats.currentSpeed < slideDeactivationSpeed || !input.BHeld)
             {
                 if (stats.currentSpeed > slideDeactivationSpeed)
                 {

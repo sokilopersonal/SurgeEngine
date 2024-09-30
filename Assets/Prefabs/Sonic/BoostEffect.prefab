@@ -4862,7 +4862,6 @@ GameObject:
   - component: {fileID: 4894437833673752107}
   - component: {fileID: 3111513347673921166}
   - component: {fileID: 6844501969905408469}
-  - component: {fileID: 9033267369371253772}
   m_Layer: 0
   m_Name: BoostEffect
   m_TagString: Untagged
@@ -4923,43 +4922,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   customPass: {fileID: 2100000, guid: 98c33dd0dc64c734dad3e15148f2b798, type: 2}
   duration: 0.85
---- !u!114 &9033267369371253772
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 918901109560652366}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26d6499a6bd256e47b859377446493a1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IsGlobal: 1
-  fadeRadius: 0
-  priority: 0
-  customPasses:
-  - rid: 8654222353207656516
-  injectionPoint: 2
-  m_TargetCamera: {fileID: 0}
-  useTargetCamera: 0
-  references:
-    version: 2
-    RefIds:
-    - rid: 8654222353207656516
-      type: {class: FullScreenCustomPass, ns: UnityEngine.Rendering.HighDefinition, asm: Unity.RenderPipelines.HighDefinition.Runtime}
-      data:
-        m_Name: Boost Distortion
-        enabled: 1
-        targetColorBuffer: 0
-        targetDepthBuffer: 0
-        clearFlags: 0
-        passFoldout: 0
-        m_Version: 0
-        fullscreenPassMaterial: {fileID: 2100000, guid: 98c33dd0dc64c734dad3e15148f2b798, type: 2}
-        materialPassIndex: 0
-        materialPassName: Custom Pass 0
-        fetchColorBuffer: 0
 --- !u!1 &1375005219779449885
 GameObject:
   m_ObjectHideFlags: 0
