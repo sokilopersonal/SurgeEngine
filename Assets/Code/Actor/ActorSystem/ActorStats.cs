@@ -1,5 +1,6 @@
 ﻿using System;
 using SurgeEngine.Code.CommonObjects;
+using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.Parameters;
 using UnityEngine;
 
@@ -19,6 +20,7 @@ namespace SurgeEngine.Code.ActorSystem
         public Vector3 inputDir;
         public Vector3 groundNormal;
         public Vector3 transformNormal;
+        public float moveDot;
         public bool skidding;
         public float groundAngle;
         public ContactBase lastContactObject;
@@ -40,8 +42,8 @@ namespace SurgeEngine.Code.ActorSystem
             currentSpeed = _rigidbody.linearVelocity.magnitude;
             currentVerticalSpeed = _rigidbody.linearVelocity.y;
             
-            float skiddingDot = Vector3.Dot(inputDir.normalized, planarVelocity.normalized);
-            skidding = skiddingDot < moveParameters.skidThreshold;
+            moveDot = Vector3.Dot(inputDir.normalized, _rigidbody.linearVelocity.normalized);
+            skidding = moveDot < moveParameters.skidThreshold;
 
             var state = actor.stateMachine.CurrentState;
             isGrounded = state is FStateGround;

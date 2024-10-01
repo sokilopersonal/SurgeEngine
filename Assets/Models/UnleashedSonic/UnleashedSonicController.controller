@@ -702,6 +702,53 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!206 &-3232157378261281465
+BlendTree:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Blend Tree
+  m_Childs:
+  - serializedVersion: 2
+    m_Motion: {fileID: 7400000, guid: 41e890a656b88cb42afb01c047c74d10, type: 2}
+    m_Threshold: -1
+    m_Position: {x: 0, y: 0}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: GroundSpeed
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: 7400000, guid: 41e890a656b88cb42afb01c047c74d10, type: 2}
+    m_Threshold: -0.1
+    m_Position: {x: 0, y: 0}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: GroundSpeed
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: 7400000, guid: ff86711bc050b5842977ed31627b93ed, type: 2}
+    m_Threshold: 0.1
+    m_Position: {x: 0, y: 0}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: GroundSpeed
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: 7400000, guid: ff86711bc050b5842977ed31627b93ed, type: 2}
+    m_Threshold: 1
+    m_Position: {x: 0, y: 0}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: GroundSpeed
+    m_Mirror: 0
+  m_BlendParameter: TurnAngle
+  m_BlendParameterY: GroundSpeed
+  m_MinThreshold: -1
+  m_MaxThreshold: 1
+  m_UseAutomaticThresholds: 0
+  m_NormalizedBlendValues: 0
+  m_BlendType: 0
 --- !u!1101 &-3208791215932787880
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -769,6 +816,32 @@ BlendTree:
   m_UseAutomaticThresholds: 1
   m_NormalizedBlendValues: 0
   m_BlendType: 0
+--- !u!1102 &-1800911497422727837
+AnimatorState:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Drift Start
+  m_Speed: 1
+  m_CycleOffset: 0
+  m_Transitions: []
+  m_StateMachineBehaviours: []
+  m_Position: {x: 50, y: 50, z: 0}
+  m_IKOnFeet: 0
+  m_WriteDefaultValues: 1
+  m_Mirror: 0
+  m_SpeedParameterActive: 0
+  m_MirrorParameterActive: 0
+  m_CycleOffsetParameterActive: 0
+  m_TimeParameterActive: 0
+  m_Motion: {fileID: 7400000, guid: da33fbf30d99a8a42863db995f133c8a, type: 2}
+  m_Tag: 
+  m_SpeedParameter: 
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 
 --- !u!1102 &-1744972538304180784
 AnimatorState:
   serializedVersion: 6
@@ -792,6 +865,32 @@ AnimatorState:
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
   m_Motion: {fileID: 7400000, guid: d7e5c5461824fce43bc1b49b8ebbdfdc, type: 2}
+  m_Tag: 
+  m_SpeedParameter: 
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 
+--- !u!1102 &-1707540364316096915
+AnimatorState:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Drift
+  m_Speed: 1
+  m_CycleOffset: 0
+  m_Transitions: []
+  m_StateMachineBehaviours: []
+  m_Position: {x: 50, y: 50, z: 0}
+  m_IKOnFeet: 0
+  m_WriteDefaultValues: 1
+  m_Mirror: 0
+  m_SpeedParameterActive: 0
+  m_MirrorParameterActive: 0
+  m_CycleOffsetParameterActive: 0
+  m_TimeParameterActive: 0
+  m_Motion: {fileID: -3232157378261281465}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -1453,7 +1552,7 @@ AnimatorStateMachine:
     m_Position: {x: 200, y: -400, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -8361346310192624403}
-    m_Position: {x: -140, y: -260, z: 0}
+    m_Position: {x: -350, y: -350, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 7306112907836920212}
     m_Position: {x: -350, y: -400, z: 0}
@@ -1465,31 +1564,31 @@ AnimatorStateMachine:
     m_Position: {x: 500, y: -270, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -7633306900855117216}
-    m_Position: {x: -140, y: -190, z: 0}
+    m_Position: {x: -350, y: -300, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -2990964578600268080}
-    m_Position: {x: -140, y: -120, z: 0}
+    m_Position: {x: -350, y: -250, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 801407803153052772}
-    m_Position: {x: -700, y: -260, z: 0}
+    m_Position: {x: -350, y: -810, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 2349960654477517421}
-    m_Position: {x: -700, y: -220, z: 0}
+    m_Position: {x: -350, y: -770, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 2457684449767442913}
-    m_Position: {x: -700, y: -180, z: 0}
+    m_Position: {x: -350, y: -730, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 8888027590661579377}
-    m_Position: {x: -700, y: -140, z: 0}
+    m_Position: {x: -350, y: -690, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -6567826076033531662}
-    m_Position: {x: -700, y: -100, z: 0}
+    m_Position: {x: -350, y: -650, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -7784202084774980323}
-    m_Position: {x: -700, y: -60, z: 0}
+    m_Position: {x: -350, y: -610, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 6536569751540215199}
-    m_Position: {x: -700, y: -20, z: 0}
+    m_Position: {x: -350, y: -570, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 2740771552197579283}
     m_Position: {x: -520, y: 40, z: 0}
@@ -1505,12 +1604,18 @@ AnimatorStateMachine:
   - serializedVersion: 1
     m_State: {fileID: 1746655289578975431}
     m_Position: {x: 200, y: 80, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: -1707540364316096915}
+    m_Position: {x: -350, y: -200, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: -1800911497422727837}
+    m_Position: {x: -740, y: -200, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
   m_StateMachineTransitions: {}
   m_StateMachineBehaviours: []
-  m_AnyStatePosition: {x: -560, y: -300, z: 0}
+  m_AnyStatePosition: {x: -330, y: -520, z: 0}
   m_EntryPosition: {x: 430, y: -10, z: 0}
   m_ExitPosition: {x: 800, y: 120, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}

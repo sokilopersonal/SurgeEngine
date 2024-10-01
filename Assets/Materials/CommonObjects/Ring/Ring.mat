@@ -15,6 +15,7 @@ Material:
   - _DISABLE_DECALS
   - _DISABLE_SSR
   - _DISABLE_SSR_TRANSPARENT
+  - _MATERIAL_FEATURE_SPECULAR_COLOR
   m_InvalidKeywords:
   - _NORMALMAP_TANGENT_SPACE
   - _NORMALMAP_TANGENT_SPACE0
@@ -28,11 +29,11 @@ Material:
   stringTagMap:
     MotionVector: User
   disabledShaderPasses:
-  - RayTracingPrepass
+  - TransparentBackface
   - MOTIONVECTORS
   - TransparentDepthPrepass
   - TransparentDepthPostpass
-  - TransparentBackface
+  - RayTracingPrepass
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -480,8 +481,8 @@ Material:
     - _EnableGeometricSpecularAA: 1
     - _EnergyConservingSpecularColor: 1
     - _ExcludeFromTUAndAA: 0
-    - _FresnelPower: 0
-    - _FresnelShine: 0
+    - _FresnelPower: 16
+    - _FresnelShine: 6
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
@@ -556,7 +557,7 @@ Material:
     - _LinkDetailsWithBase2: 1
     - _LinkDetailsWithBase3: 1
     - _METALNESS: 0.8
-    - _MaterialID: 1
+    - _MaterialID: 4
     - _MaterialTypeMask: 2
     - _Metallic: 1
     - _Metallic0: 0
@@ -606,11 +607,11 @@ Material:
     - _RayTracing: 0
     - _ReceivesSSR: 0
     - _ReceivesSSRTransparent: 0
-    - _ReflectionExposure: 1
+    - _ReflectionExposure: 0.1
     - _RefractionModel: 0
     - _RenderQueueType: 1
     - _RequireSplitLighting: 0
-    - _Smoothness: 0.825
+    - _Smoothness: 0.804
     - _Smoothness0: 0.5
     - _Smoothness1: 0.5
     - _Smoothness2: 0.5
@@ -715,7 +716,7 @@ Material:
     - _BaseColor2: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColor3: {r: 1, g: 1, b: 1, a: 1}
     - _COAT_COLOR: {r: 0, g: 0, b: 0, a: 0}
-    - _Color: {r: 0.6603774, g: 0.43356603, b: 0, a: 1}
+    - _Color: {r: 1, g: 0.5287268, b: 0, a: 1}
     - _DiffusionProfileAsset: {r: 0, g: 0, b: 0, a: 0}
     - _DiffusionProfileAsset0: {r: 0, g: 0, b: 0, a: 0}
     - _DiffusionProfileAsset1: {r: 0, g: 0, b: 0, a: 0}
@@ -729,6 +730,7 @@ Material:
     - _InvPrimScale: {r: 1, g: 1, b: 0, a: 0}
     - _IridescenceThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
     - _REFLECTIONS_COLOR: {r: 1, g: 1, b: 1, a: 1}
+    - _Specular: {r: 0.0625, g: 0.0625, b: 0.0625, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
     - _TRANSPARENCY: {r: 1, g: 1, b: 1, a: 1}
     - _ThicknessRemap: {r: 0, g: 1, b: 0, a: 0}

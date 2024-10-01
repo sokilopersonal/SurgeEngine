@@ -1,8 +1,6 @@
 ﻿using SurgeEngine.Code.ActorSystem;
-using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.Parameters.SonicSubStates;
-using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Splines;
 using Quaternion = UnityEngine.Quaternion;
@@ -54,10 +52,12 @@ namespace SurgeEngine.Code.Parameters
                     _canSlide = true;
             }
             
-            if (input.BHeld && stats.currentSpeed > activateSpeed)
+            if (input.BHeld)
             {
-                stateMachine.SetState<FStateSliding>();
-                _canSlide = false;
+                if (stats.currentSpeed > activateSpeed)
+                {
+                    stateMachine.SetState<FStateSliding>();
+                }
             }
             
             CalculateDetachState();

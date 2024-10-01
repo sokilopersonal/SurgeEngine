@@ -119,7 +119,7 @@ namespace SurgeEngine.Code.CameraSystem
             _tempFollowPoint.y = _tempY;
 
             float speed = actor.stats.currentSpeed;
-            float zLagMod = Mathf.Lerp(0.08f, 0.02f, speed / actor.stats.moveParameters.topSpeed);
+            float zLagMod = Mathf.Lerp(0.2f, 0.1f, speed / actor.stats.moveParameters.topSpeed);
             float zLag = speed * zLagMod;
             zLag = Mathf.Clamp(zLag, 0, zLagMax);
             _tempZ = Mathf.Lerp(_tempZ, zLag, zLagSmoothness * Time.deltaTime);
@@ -191,16 +191,16 @@ namespace SurgeEngine.Code.CameraSystem
 
         private void Collision()
         {
-            var ray = new Ray(target.position, -_cameraTransform.forward);
+            var ray = new Ray(target.position + Vector3.forward * _tempZ, -_cameraTransform.forward);
             float radius = collisionRadius;
-            var maxDistance = _distance;
+            var maxDistance = _distance + _tempZ;
 
             float result = Physics.SphereCast(ray, radius, out RaycastHit hit,
                 maxDistance, collisionMask, QueryTriggerInteraction.Ignore)
                 ? hit.distance
-                : _distance;
+                : _distance + _tempZ;
             
-            _cameraTransform.position = GetTarget(result);
+            _cameraTransform.position = GetTarget(result - _tempZ);
         }
 
         public void SetRotationAxis(Vector3 dir)

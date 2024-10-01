@@ -46,8 +46,6 @@ Material:
   - _DISABLE_SSR_TRANSPARENT
   - _HEIGHTMAP
   - _MASKMAP
-  - _MATERIAL_FEATURE_SUBSURFACE_SCATTERING
-  - _MATERIAL_FEATURE_TRANSMISSION
   - _NORMALMAP
   - _NORMALMAP_TANGENT_SPACE
   m_InvalidKeywords: []
@@ -55,13 +53,14 @@ Material:
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: 2225
-  stringTagMap: {}
+  stringTagMap:
+    MotionVector: User
   disabledShaderPasses:
-  - TransparentDepthPrepass
+  - MOTIONVECTORS
   - TransparentDepthPostpass
   - TransparentBackface
   - RayTracingPrepass
-  - MOTIONVECTORS
+  - TransparentDepthPrepass
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -120,6 +119,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _NormalMapOS:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalTex:
+        m_Texture: {fileID: 2800000, guid: a1fa298568e1d7e4a8ac2be8232dfc74, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecularColorMap:
@@ -182,6 +185,7 @@ Material:
     - _BlendMode: 0
     - _BumpScale: 1
     - _CoatMask: 0
+    - _ConservativeDepthOffsetEnable: 0
     - _CullMode: 2
     - _CullModeForward: 2
     - _Cutoff: 0.5
@@ -192,6 +196,7 @@ Material:
     - _DetailSmoothnessScale: 1
     - _DiffusionProfile: 0
     - _DiffusionProfileHash: 3.9039385
+    - _Diffusion_Profile: 3.9039385
     - _DisplacementLockObjectScale: 1
     - _DisplacementLockTilingScale: 1
     - _DisplacementMode: 0
@@ -208,6 +213,9 @@ Material:
     - _EnableFogOnTransparent: 1
     - _EnableGeometricSpecularAA: 0
     - _EnergyConservingSpecularColor: 1
+    - _ExcludeFromTUAndAA: 0
+    - _FalloffIntensity: 0.2
+    - _FalloffPower: 8
     - _GlossMapScale: 1
     - _Glossiness: 0
     - _GlossyReflections: 1
@@ -225,7 +233,8 @@ Material:
     - _IridescenceMask: 1
     - _IridescenceThickness: 1
     - _LinkDetailsWithBase: 1
-    - _MaterialID: 0
+    - _MaterialID: 1
+    - _MaterialTypeMask: 3
     - _Metallic: 0
     - _MetallicRemapMax: 1
     - _MetallicRemapMin: 0
@@ -247,6 +256,9 @@ Material:
     - _ReceivesSSR: 1
     - _ReceivesSSRTransparent: 0
     - _RefractionModel: 0
+    - _RenderQueueType: 4
+    - _RequireSplitLighting: 1
+    - _SSSThickness: 1.32
     - _Smoothness: 0
     - _SmoothnessRemapMax: 0
     - _SmoothnessRemapMin: 0
@@ -256,12 +268,14 @@ Material:
     - _SpecularHighlights: 1
     - _SpecularOcclusionMode: 1
     - _SrcBlend: 1
-    - _StencilRef: 4
+    - _StencilRef: 0
     - _StencilRefDepth: 8
-    - _StencilRefGBuffer: 14
+    - _StencilRefDistortionVec: 4
+    - _StencilRefGBuffer: 10
     - _StencilRefMV: 40
     - _StencilWriteMask: 6
     - _StencilWriteMaskDepth: 9
+    - _StencilWriteMaskDistortionVec: 4
     - _StencilWriteMaskGBuffer: 15
     - _StencilWriteMaskMV: 41
     - _SubsurfaceMask: 1
@@ -270,15 +284,15 @@ Material:
     - _TexWorldScale: 1
     - _TexWorldScaleEmissive: 1
     - _Thickness: 0.35
-    - _TransmissionEnable: 1
+    - _TransmissionEnable: 0
     - _TransmissionMask: 1
     - _TransparentBackfaceEnable: 0
     - _TransparentCullMode: 2
     - _TransparentDepthPostpassEnable: 0
-    - _TransparentDepthPrepassEnable: 0
+    - _TransparentDepthPrepassEnable: 1
     - _TransparentSortPriority: 0
     - _TransparentWritingMotionVec: 0
-    - _TransparentZWrite: 0
+    - _TransparentZWrite: 1
     - _UVBase: 0
     - _UVDetail: 0
     - _UVEmissive: 0
@@ -293,6 +307,7 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _DiffusionProfileAsset: {r: 9.216921e+29, g: -5.594172e+12, b: 1.7470733e+11, a: -1.7174521e+12}
+    - _Diffusion_Profile_Asset: {r: 9.216921e+29, g: -5.594172e+12, b: 1.7470733e+11, a: -1.7174521e+12}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}

@@ -22,7 +22,7 @@ namespace SurgeEngine.Code.SurgeDebug
             var actor = ActorContext.Context;
 
             position.text = $"Position: {actor.transform.position}";
-            rotation.text = $"Rotation: {actor.transform.rotation}";
+            rotation.text = $"Move Dot: {actor.stats.moveDot}";
             eulerAngles.text = $"Euler Angles: {actor.transform.rotation.eulerAngles}";
             currentSpeed.text = $"Current Speed: {actor.stats.currentSpeed}";
             currentVerticalSpeed.text = $"Current Vertical Speed: {actor.stats.currentVerticalSpeed}";

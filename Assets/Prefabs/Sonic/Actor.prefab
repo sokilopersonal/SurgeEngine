@@ -113,6 +113,7 @@ MonoBehaviour:
   - {fileID: 3317942713379759928}
   - {fileID: 4177744926151052449}
   - {fileID: 3100381796102152677}
+  - {fileID: 8833603604032329403}
   subStates:
   - {fileID: 1674226627464673938}
   rigidbody: {fileID: 0}
@@ -345,10 +346,28 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 1024
   stompParameters:
-    stompSpeed: 15
+    stompSpeed: 45
     stompCurve:
       serializedVersion: 2
-      m_Curve: []
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: -0.02180093
+        outSlope: -0.02180093
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0.06492665
+      - serializedVersion: 3
+        time: 2.5
+        value: 0
+        inSlope: -1.2479798
+        outSlope: -1.2479798
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.02394476
+        outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
@@ -20917,6 +20936,50 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slidingParticle: {fileID: 4029303546438136769}
+--- !u!1 &6812604187988443775
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 680982311876978453}
+  - component: {fileID: 8833603604032329403}
+  m_Layer: 3
+  m_Name: Sit
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &680982311876978453
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6812604187988443775}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6881262772616937385}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8833603604032329403
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6812604187988443775}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24b9870e8e1245e5b363399366431fda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8207533398117105643
 GameObject:
   m_ObjectHideFlags: 0
@@ -20987,6 +21050,7 @@ Transform:
   - {fileID: 4389381489739694859}
   - {fileID: 8418570940656207057}
   - {fileID: 2947704958036040402}
+  - {fileID: 680982311876978453}
   m_Father: {fileID: 2456151525592967584}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8831555719903261792

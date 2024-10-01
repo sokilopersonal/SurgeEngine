@@ -146,6 +146,7 @@ namespace SurgeEngine.Code.Custom
         public static Transform FindHomingTarget()
         {
             var context = ActorContext.Context;
+            var camera = context.camera.GetCamera();
             float distance = float.MaxValue;
             Transform result = null;
             Collider[] colliders = new Collider[20];
@@ -161,14 +162,18 @@ namespace SurgeEngine.Code.Custom
                         float newDistance = Vector3.Distance(context.transform.position, collider.transform.position);
                         if (newDistance < distance)
                         {
-                            Vector3 dir = (collider.transform.position - context.transform.position);
+                            Vector3 dir = (collider.transform.position - context.transform.position).normalized;
 
-                            if (Vector3.Dot(dir.normalized, context.transform.forward) > 0.1f)
+                            var pointOnScreen = camera.WorldToViewportPoint(collider.transform.position);
+                            if (pointOnScreen.x > 0 && pointOnScreen is { x: < 1, y: > 0 } && pointOnScreen.y < 1)
                             {
-                                if (!Physics.Linecast(context.transform.position, collider.transform.position + collider.transform.up * 0.2f, out _, 
-                                        context.stats.moveParameters.castParameters.collisionMask))
+                                if (Vector3.Dot(dir, context.transform.forward) > 0.1f)
                                 {
-                                    result = collider.transform;
+                                    if (!Physics.Linecast(context.transform.position, collider.transform.position + collider.transform.up * 0.2f, out _, 
+                                            context.stats.moveParameters.castParameters.collisionMask))
+                                    {
+                                        result = collider.transform;
+                                    }
                                 }
                             }
                         }
