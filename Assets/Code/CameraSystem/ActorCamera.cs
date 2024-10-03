@@ -149,6 +149,9 @@ namespace SurgeEngine.Code.CameraSystem
                             lookOffset.y = Mathf.Lerp(lookOffset.y, 0f, 4f * Time.deltaTime);
                         }
                     }
+
+                    //float x = actor.input.moveVector.x * 0.25f;
+                    //lookOffset.x = Mathf.Lerp(lookOffset.x, x, 4 * Time.deltaTime);
                 }
                 else
                 {
@@ -183,7 +186,7 @@ namespace SurgeEngine.Code.CameraSystem
 
         private void LookAt()
         {
-            Quaternion targetRotation = Quaternion.LookRotation(_tempFollowPoint + lookOffset - _cameraTransform.position);
+            Quaternion targetRotation = Quaternion.LookRotation(_tempFollowPoint - _cameraTransform.position);
             _cameraTransform.rotation = targetRotation;
             
             _camera.fieldOfView = _fov;

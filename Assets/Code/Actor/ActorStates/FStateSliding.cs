@@ -123,19 +123,19 @@ namespace SurgeEngine.Code.Parameters
 
         private void CalculateVelocity(float dt)
         {
-            float dot = Vector3.Dot(stats.inputDir, actor.transform.forward);
-
-            if (dot > 0.25f || dot < -0.25f) return;
-            
-            stats.turnRate = Mathf.Lerp(stats.turnRate, stats.moveParameters.turnSpeed, dt * stats.moveParameters.turnSmoothing);
-            var accelRateMod = stats.moveParameters.accelCurve.Evaluate(stats.planarVelocity.magnitude / stats.moveParameters.topSpeed);
-            if (stats.planarVelocity.magnitude < stats.moveParameters.topSpeed)
+            bool canMove = stats.moveDot > -0.1f && stats.moveDot < 0.975f;
+            if (canMove)
             {
-                stats.planarVelocity += stats.inputDir * (stats.moveParameters.accelRate * accelRateMod * dt);
+                stats.turnRate = Mathf.Lerp(stats.turnRate, stats.moveParameters.turnSpeed, dt * stats.moveParameters.turnSmoothing);
+                var accelRateMod = stats.moveParameters.accelCurve.Evaluate(stats.planarVelocity.magnitude / stats.moveParameters.topSpeed);
+                if (stats.planarVelocity.magnitude < stats.moveParameters.topSpeed)
+                {
+                    stats.planarVelocity += stats.inputDir * (stats.moveParameters.accelRate * accelRateMod * dt);
+                }
+                float handling = stats.turnRate * 0.02f;
+                stats.movementVector = Vector3.Lerp(stats.planarVelocity, stats.inputDir * stats.planarVelocity.magnitude, 
+                    dt * handling);
             }
-            float handling = stats.turnRate * 0.02f;
-            stats.movementVector = Vector3.Lerp(stats.planarVelocity, stats.inputDir * stats.planarVelocity.magnitude, 
-                dt * handling);
         }
 
         private void Deacceleration()
