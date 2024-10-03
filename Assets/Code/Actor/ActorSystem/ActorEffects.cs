@@ -8,6 +8,9 @@ namespace SurgeEngine.Code.ActorSystem
 {
     public class ActorEffects : ActorComponent
     {
+        [Header("Trail")]
+        [SerializeField] private VolumeTrailRenderer trailRenderer;
+        
         [Header("Boost")]
         [SerializeField] private BoostAura boostAura;
         [SerializeField] private BoostDistortion boostDistortion;
@@ -49,9 +52,21 @@ namespace SurgeEngine.Code.ActorSystem
             {
                 stomping.Land();
             }
+            
             stomping.enabled = obj is FStateStomp;
-
             sliding.enabled = obj is FStateSliding;
+
+            if (obj is FStateStomp)
+            {
+                trailRenderer.emitTime = 2f;
+                trailRenderer.emit = true;
+            }
+
+            if (obj is FStateHoming)
+            {
+                trailRenderer.emitTime = 2f;
+                trailRenderer.emit = true;
+            }
         }
     }
 }
