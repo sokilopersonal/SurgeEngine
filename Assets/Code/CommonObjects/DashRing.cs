@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.CommonObjects
 {
-    public class Spring : ContactBase
+    public class DashRing : ContactBase
     {
         [SerializeField] private float speed = 30f;
         [SerializeField] private float keepVelocity;
@@ -22,18 +22,18 @@ namespace SurgeEngine.Code.CommonObjects
             context.transform.position = transform.position + transform.up * yOffset;
 
             float dot = Vector3.Dot(transform.up, Vector3.up);
-            context.stateMachine.SetState<FStateAir>();
             context.stateMachine.GetSubState<FBoost>().Active = false;
             
-            context.transform.rotation = Quaternion.LookRotation(transform.forward, transform.up);
-            context.model.transform.localRotation = Quaternion.LookRotation(transform.forward, transform.up);
+            Quaternion rot = Quaternion.LookRotation(transform.up, transform.forward);
+            context.transform.rotation = rot;
+            context.model.transform.localRotation = rot;
             
             var specialJump = context.stateMachine.SetState<FStateSpecialJump>(0.2f, true, true);
-            specialJump.SetSpecialData(new SpecialJumpData(SpecialJumpType.Spring, transform.forward, transform.up, dot));
-            specialJump.PlaySpecialAnimation(0.2f);
+            specialJump.SetSpecialData(new SpecialJumpData(SpecialJumpType.DashRing, transform.forward, transform.up, dot));
+            specialJump.PlaySpecialAnimation(0f);
             specialJump.SetKeepVelocity(keepVelocity);
 
-            Common.ApplyImpulse(transform.up * speed);
+            Common.ApplyImpulse(transform.forward * speed);
             context.rigidbody.linearVelocity = Vector3.ClampMagnitude(context.rigidbody.linearVelocity, speed);
             context.flags.AddFlag(new Flag(FlagType.OutOfControl, 
                 null, true, Mathf.Abs(outOfControl)));
@@ -43,8 +43,8 @@ namespace SurgeEngine.Code.CommonObjects
         {
             base.Draw();
             
-            TrajectoryDrawer.DrawTrajectory(transform.position + transform.up * yOffset, 
-                transform.up, Color.green, speed, keepVelocity);
+            TrajectoryDrawer.DrawTrajectory(transform.position + transform.forward * yOffset, 
+                transform.forward, Color.green, speed, keepVelocity);
         }
     }
 }

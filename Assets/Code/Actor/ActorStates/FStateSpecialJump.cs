@@ -53,7 +53,7 @@ namespace SurgeEngine.Code.Parameters
         {
             base.OnExit();
 
-            if (_data.type == SpecialJumpType.Spring)
+            if (_data.type is SpecialJumpType.Spring or SpecialJumpType.DashRing)
             {
                 animation.TransitionToState(AnimatorParams.AirCycle, 0.2f);
             }
@@ -79,7 +79,17 @@ namespace SurgeEngine.Code.Parameters
                             stateMachine.SetState<FStateAir>();
                         }
                     }
-                    
+                    break;
+                case SpecialJumpType.DashRing:
+                    if (_keepVelocityTimer > 0)
+                    {
+                        _keepVelocityTimer -= dt;
+                        
+                        if (_keepVelocityTimer <= 0)
+                        {
+                            stateMachine.SetState<FStateAir>();
+                        }
+                    }
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -104,6 +114,9 @@ namespace SurgeEngine.Code.Parameters
                 case SpecialJumpType.Spring:
                     animation.TransitionToState("Jump Spring", time, true);
                     break;
+                case SpecialJumpType.DashRing:
+                    animation.TransitionToState("Dash Ring", time, true);
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(_data), _data, null);
             }
@@ -119,6 +132,7 @@ namespace SurgeEngine.Code.Parameters
     {
         JumpBoard,
         TrickJumper,
-        Spring
+        Spring,
+        DashRing,
     }
 }

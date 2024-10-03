@@ -29,13 +29,13 @@ namespace SurgeEngine.Code.StateMachine
             _subStatesList.Add(subState);
         }
         
-        public T SetState<T>(float inactiveDelay = 0, bool ignoreInactiveDelay = false) where T : FState
+        public T SetState<T>(float inactiveDelay = 0, bool ignoreInactiveDelay = false, bool allowSameState = false) where T : FState
         {
             if (_inactiveDelay > 0f && !ignoreInactiveDelay) return null;
 
             var type = typeof(T);
 
-            if (CurrentState != null && CurrentState.GetType() == type)
+            if (CurrentState != null && CurrentState.GetType() == type && !allowSameState)
             {
                 return null;
             }

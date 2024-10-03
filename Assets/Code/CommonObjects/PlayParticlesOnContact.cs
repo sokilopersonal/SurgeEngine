@@ -25,6 +25,7 @@ namespace SurgeEngine.Code.CommonObjects
 
         private void OnContact(ContactBase obj)
         {
+            particle.Stop(true);
             particle.Play(true);
         }
     }
