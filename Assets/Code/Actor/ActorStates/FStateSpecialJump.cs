@@ -55,7 +55,7 @@ namespace SurgeEngine.Code.Parameters
 
             if (_data.type is SpecialJumpType.Spring or SpecialJumpType.DashRing)
             {
-                animation.TransitionToState(AnimatorParams.AirCycle, 0.2f);
+                animation.TransitionToState(AnimatorParams.AirCycle, 0.5f);
             }
         }
 

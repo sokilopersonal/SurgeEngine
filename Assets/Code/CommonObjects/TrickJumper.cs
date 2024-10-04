@@ -79,7 +79,7 @@ namespace SurgeEngine.Code.CommonObjects
             }
         }
         
-        public override void OnTriggerContact(Collider msg)
+        public override async void OnTriggerContact(Collider msg)
         {
             base.OnTriggerContact(msg);
 
@@ -105,12 +105,47 @@ namespace SurgeEngine.Code.CommonObjects
                 context.flags.AddFlag(new Flag(FlagType.OutOfControl, null));
                 context.flags.AddFlag(new Flag(FlagType.DontClampVerticalSpeed, null));
 
-                _ = ChangeTimeScaleOverTime(_targetTimeScale, _timeScaleDuration);
+                await Common.ChangeTimeScaleOverTime(_targetTimeScale, _timeScaleDuration);
+                
+                CreateQTEUI();
             }
+        }
+
+        private void CreateQTEUI()
+        {
+            _currentQTEUI = Instantiate(ActorStageHUD.Context.GetQTEUI());
+            _currentQTEUI.SetTrickJumper(this);
+
+            int[] trickCount = {
+                trickCount1,
+                trickCount2,
+                trickCount3
+            };
+            float[] trickTime = {
+                trickTime1,
+                trickTime2,
+                trickTime3,
+            };
+                
+            for (int i = 0; i < 3; i++)
+            {
+                if (trickCount[i] <= 0 || trickTime[i] == 0.0f)
+                {
+                    break;
+                }
+
+                CreateSequence(trickCount[i], trickTime[i]);
+            }
+                
+            _currentQTEUI.CreateButtonIcon(_qteSequences[0]);
+                
+            ActorContext.Context.input.OnButtonPressed += OnButtonPressed;
         }
 
         private void CreateSequence(int count, float time)
         {
+            
+            
             QTESequence sequence = new QTESequence
             {
                 time = time
@@ -174,69 +209,6 @@ namespace SurgeEngine.Code.CommonObjects
             }
         }
 
-        private async UniTask ChangeTimeScaleOverTime(float targetScale, float duration)
-        {
-            float startScale = Time.timeScale;
-            float elapsed = 0f;
-
-            while (elapsed < duration)
-            {
-                Time.timeScale = Mathf.Lerp(startScale, targetScale, elapsed / duration);
-                elapsed += Time.unscaledDeltaTime;
-                await UniTask.Yield();
-            }
-
-            if (Mathf.Approximately(targetScale, _targetTimeScale))
-            {
-                _currentQTEUI = Instantiate(ActorStageHUD.Context.GetQTEUI());
-                _currentQTEUI.SetTrickJumper(this);
-
-                int[] trickCount = {
-                    trickCount1,
-                    trickCount2,
-                    trickCount3
-                };
-                float[] trickTime = {
-                    trickTime1,
-                    trickTime2,
-                    trickTime3,
-                };
-                
-                for (int i = 0; i < 3; i++)
-                {
-                    if (trickCount[i] <= 0 || trickTime[i] == 0.0f)
-                    {
-                        break;
-                    }
-
-                    CreateSequence(trickCount[i], trickTime[i]);
-                }
-                
-                _currentQTEUI.CreateButtonIcon(_qteSequences[0]);
-                
-                ActorContext.Context.input.OnButtonPressed += OnButtonPressed;
-            }
-            
-            Time.timeScale = targetScale;
-        }
-
-        private async UniTask ChangeRigidbodyPositionOverTime(Rigidbody rigidbody, Vector3 targetPosition, float duration)
-        {
-            Vector3 startPosition = rigidbody.position;
-            float elapsed = 0f;
-            rigidbody.isKinematic = true;
-            
-            while (elapsed < duration)
-            {
-                rigidbody.position = Vector3.Lerp(startPosition, targetPosition, elapsed / duration);
-                elapsed += Time.unscaledDeltaTime;
-                await UniTask.Yield(PlayerLoopTiming.Update);
-            }
-            
-            rigidbody.isKinematic = false;
-            Common.ResetVelocity(ResetVelocityType.Both);
-        }
-
         private async void OnResultReceived(QTEResult result)
         {
             _qteSequences.Clear();
@@ -253,7 +225,7 @@ namespace SurgeEngine.Code.CommonObjects
                 Common.ResetVelocity(ResetVelocityType.Both);
                 Vector3 arcPeak = Common.GetArcPosition(startPoint.position,
                     Common.GetCross(transform, firstPitch, true), firstSpeed);
-                await ChangeRigidbodyPositionOverTime(context.rigidbody, arcPeak, 0.075f); // should snap Sonic to the arc point
+                await Common.ChangeRigidbodyPositionOverTime(context.rigidbody, arcPeak, 0.075f); // should snap Sonic to the arc point
                 context.animation.TransitionToState($"Trick {Random.Range(1, 8)}", 0f);
                 
                 Vector3 impulse = Common.GetImpulseWithPitch(Vector3.Cross(-startPoint.right, Vector3.up), startPoint.right, secondPitch, secondSpeed);
@@ -274,7 +246,7 @@ namespace SurgeEngine.Code.CommonObjects
             context.stats.planarVelocity = context.rigidbody.linearVelocity;
             
             context.stateMachine.SetState<FStateAir>();
-            _ = ChangeTimeScaleOverTime(1, 0.1f);
+            _ = Common.ChangeTimeScaleOverTime(1, 0.1f);
 
             context.input.OnButtonPressed -= OnButtonPressed;
         }

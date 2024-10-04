@@ -19,10 +19,12 @@ namespace SurgeEngine.Code.CommonObjects
             base.OnTriggerContact(msg);
             
             var context = ActorContext.Context;
-            context.transform.position = transform.position + transform.up * yOffset;
+            
+            Vector3 target = transform.position + transform.forward * yOffset;
+            context.transform.position = target;
+            context.stateMachine.GetSubState<FBoost>().Active = false;
 
             float dot = Vector3.Dot(transform.up, Vector3.up);
-            context.stateMachine.GetSubState<FBoost>().Active = false;
             
             Quaternion rot = Quaternion.LookRotation(transform.up, transform.forward);
             context.transform.rotation = rot;

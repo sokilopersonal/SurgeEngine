@@ -101,6 +101,36 @@ namespace SurgeEngine.Code.Custom
             await UniTask.Delay(TimeSpan.FromSeconds(time), true);
             collider.enabled = true;
         }
+        public static async UniTask ChangeTimeScaleOverTime(float targetScale, float duration)
+        {
+            float startScale = Time.timeScale;
+            float elapsed = 0f;
+
+            while (elapsed < duration)
+            {
+                Time.timeScale = Mathf.Lerp(startScale, targetScale, elapsed / duration);
+                elapsed += Time.unscaledDeltaTime;
+                await UniTask.Yield();
+            }
+            
+            Time.timeScale = targetScale;
+        }
+        public static async UniTask ChangeRigidbodyPositionOverTime(Rigidbody rigidbody, Vector3 targetPosition, float duration)
+        {
+            Vector3 startPosition = rigidbody.position;
+            float elapsed = 0f;
+            rigidbody.isKinematic = true;
+            
+            while (elapsed < duration)
+            {
+                rigidbody.position = Vector3.Lerp(startPosition, targetPosition, elapsed / duration);
+                elapsed += Time.unscaledDeltaTime;
+                await UniTask.Yield(PlayerLoopTiming.Update);
+            }
+            
+            rigidbody.isKinematic = false;
+            ResetVelocity(ResetVelocityType.Both);
+        }
 
         public static Vector3 GetArcPosition(Vector3 startPosition, Vector3 direction, float impulse)
         {
