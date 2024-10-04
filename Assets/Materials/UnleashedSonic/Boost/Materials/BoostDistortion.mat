@@ -11,10 +11,10 @@ Material:
   m_Shader: {fileID: -6465566751694194690, guid: 1f808e75a2a6d7f4d8d2f6b03672017c, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords:
-  - _SURFACE_TYPE_TRANSPARENT
+  m_ValidKeywords: []
   m_InvalidKeywords:
   - _DOUBLESIDED_ON
+  - _SURFACE_TYPE_TRANSPARENT
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 1
@@ -208,7 +208,7 @@ Material:
     - _ReceivesSSRTransparent: 0
     - _RefractionModel: 0
     - _RenderQueueType: 4
-    - _Size: 0.1
+    - _Size: 0.25
     - _Smoothness: 0.5
     - _SmoothnessRemapMax: 1
     - _SmoothnessRemapMin: 0
@@ -247,11 +247,11 @@ Material:
     - _UVEmissive: 0
     - _UseEmissiveIntensity: 0
     - _UseShadowThreshold: 0
-    - _WaveStrength: 1
-    - _WaveTime: -0.2
-    - _ZTestDepthEqualForOpaque: 4
+    - _WaveStrength: -1.51
+    - _WaveTime: -0.4
+    - _ZTestDepthEqualForOpaque: 8
     - _ZTestGBuffer: 4
-    - _ZTestTransparent: 4
+    - _ZTestTransparent: 8
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}

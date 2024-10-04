@@ -3,8 +3,8 @@ using SurgeEngine.Code.CommonObjects;
 
 namespace SurgeEngine.Code.ActorSystem
 {
-    public static class ActorEvents
+    public static class ObjectEvents
     {
-        public static Action<Ring> OnRingCollected;
+        public static Action<ContactBase> OnObjectCollected;
     }
 }

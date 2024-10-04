@@ -14,6 +14,7 @@ namespace SurgeEngine.Code.ActorSystem
         [Header("Boost")]
         [SerializeField] private BoostAura boostAura;
         [SerializeField] private BoostDistortion boostDistortion;
+        private BoostDistortion _spawnedBoostDistortion;
 
         [Header("Spinball")] 
         public Spinball spinball;

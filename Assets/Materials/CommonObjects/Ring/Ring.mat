@@ -15,7 +15,6 @@ Material:
   - _DISABLE_DECALS
   - _DISABLE_SSR
   - _DISABLE_SSR_TRANSPARENT
-  - _MATERIAL_FEATURE_SPECULAR_COLOR
   m_InvalidKeywords:
   - _NORMALMAP_TANGENT_SPACE
   - _NORMALMAP_TANGENT_SPACE0
@@ -478,11 +477,11 @@ Material:
     - _EmissiveIntensityUnit: 0
     - _EnableBlendModePreserveSpecularLighting: 1
     - _EnableFogOnTransparent: 1
-    - _EnableGeometricSpecularAA: 1
+    - _EnableGeometricSpecularAA: 0
     - _EnergyConservingSpecularColor: 1
     - _ExcludeFromTUAndAA: 0
-    - _FresnelPower: 16
-    - _FresnelShine: 6
+    - _FresnelPower: 12
+    - _FresnelShine: 1
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
@@ -557,7 +556,7 @@ Material:
     - _LinkDetailsWithBase2: 1
     - _LinkDetailsWithBase3: 1
     - _METALNESS: 0.8
-    - _MaterialID: 4
+    - _MaterialID: 1
     - _MaterialTypeMask: 2
     - _Metallic: 1
     - _Metallic0: 0
@@ -611,7 +610,10 @@ Material:
     - _RefractionModel: 0
     - _RenderQueueType: 1
     - _RequireSplitLighting: 0
-    - _Smoothness: 0.804
+    - _RimLightEnable: 1
+    - _RimLightPower: 2
+    - _RimLightShine: 10
+    - _Smoothness: 0.9
     - _Smoothness0: 0.5
     - _Smoothness1: 0.5
     - _Smoothness2: 0.5
@@ -627,7 +629,7 @@ Material:
     - _SmoothnessRemapMin2: 0
     - _SmoothnessRemapMin3: 0
     - _SmoothnessTextureChannel: 0
-    - _SpecularAAScreenSpaceVariance: 0.478
+    - _SpecularAAScreenSpaceVariance: 0.009
     - _SpecularAAThreshold: 0.1
     - _SpecularHighlights: 1
     - _SpecularOcclusionMode: 1
@@ -710,13 +712,14 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BASE_COLOR: {r: 1, g: 0.7535237, b: 0, a: 1}
-    - _BaseColor: {r: 1, g: 0.77993584, b: 0, a: 1}
+    - _BaseColor: {r: 1, g: 0.9258024, b: 0.43867922, a: 1}
     - _BaseColor0: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColor1: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColor2: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColor3: {r: 1, g: 1, b: 1, a: 1}
     - _COAT_COLOR: {r: 0, g: 0, b: 0, a: 0}
-    - _Color: {r: 1, g: 0.5287268, b: 0, a: 1}
+    - _Color: {r: 1, g: 0.79322517, b: 0, a: 1}
+    - _ColorB: {r: 2, g: 2, b: 2, a: 0}
     - _DiffusionProfileAsset: {r: 0, g: 0, b: 0, a: 0}
     - _DiffusionProfileAsset0: {r: 0, g: 0, b: 0, a: 0}
     - _DiffusionProfileAsset1: {r: 0, g: 0, b: 0, a: 0}
@@ -730,6 +733,7 @@ Material:
     - _InvPrimScale: {r: 1, g: 1, b: 0, a: 0}
     - _IridescenceThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
     - _REFLECTIONS_COLOR: {r: 1, g: 1, b: 1, a: 1}
+    - _RimLightColor: {r: 766.9961, g: 766.9961, b: 766.9961, a: 0}
     - _Specular: {r: 0.0625, g: 0.0625, b: 0.0625, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
     - _TRANSPARENCY: {r: 1, g: 1, b: 1, a: 1}

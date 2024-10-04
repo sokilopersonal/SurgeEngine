@@ -1,8 +1,12 @@
-﻿using SurgeEngine.Code.ActorSystem;
+﻿using System;
+using System.Collections.Generic;
+using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.CommonObjects;
+using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.Parameters.SonicSubStates;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace SurgeEngine.Code.ActorHUD
 {
@@ -14,10 +18,23 @@ namespace SurgeEngine.Code.ActorHUD
 
         [SerializeField] private RingHUD ringHUDPrefab;
         
-        [SerializeField] private TMP_Text ringCounter;
-        [SerializeField] private TMP_Text boostCounter;
+        [Header("Ring Counter")]
+        public Image ringCounter;
+        public Animator ringCounterAnimator;
+        public Animator ringBumpEffect;
+        public TMP_Text ringCountText;
+        
         [SerializeField] private RectTransform homingImage;
         [SerializeField] private QuickTimeEventUI qteUI;
+        
+        [Header("Speedometer")]
+        [SerializeField] private Image speedometerFill;
+
+        [Header("Boost Bar")] 
+        [SerializeField] private Image boostBar;
+        [SerializeField] private Image boostFill;
+        [SerializeField] private BoostBarSize minBoostBarSize;
+        [SerializeField] private BoostBarSize maxBoostBarSize;
         
         private Actor _actor => ActorContext.Context;
 
@@ -28,19 +45,45 @@ namespace SurgeEngine.Code.ActorHUD
 
         private void OnEnable()
         {
-            ActorEvents.OnRingCollected += OnRingCollected;
+            ObjectEvents.OnObjectCollected += OnRingCollected;
         }
 
         private void OnDisable()
         {
-            ActorEvents.OnRingCollected -= OnRingCollected;
+            ObjectEvents.OnObjectCollected -= OnRingCollected;
         }
 
         private void Update()
         {
-            //ringCounter.text = ringCounter.text.Replace("{v}", )
-            if (boostCounter != null) boostCounter.text = $"Boost Energy: {Mathf.RoundToInt(_actor.stateMachine.GetSubState<FBoost>().boostEnergy)}";
+            RingCount();
+            BoostBar();
+            Speedometer();
+            HomingTarget();
+        }
 
+        private void RingCount()
+        {
+            ringCountText.text = $"{Stage.Instance.data.ringCount:000}";
+        }
+
+        private void BoostBar()
+        {
+            FBoost boost = _actor.stateMachine.GetSubState<FBoost>();
+            boostFill.fillAmount = boost.BoostEnergy / boost.maxBoostEnergy;            
+            
+            float boostBarWidth = Mathf.Lerp(minBoostBarSize.width, maxBoostBarSize.width, boost.maxBoostEnergy / 100);
+            boostBar.rectTransform.sizeDelta = new Vector2(boostBarWidth, 50);
+        }
+
+        private void Speedometer()
+        {
+            float speed = _actor.rigidbody.GetHorizontalMagnitude();
+            float topSpeed = _actor.stats.moveParameters.topSpeed;
+            speedometerFill.fillAmount = speed / (topSpeed + topSpeed * 0.2f);
+        }
+
+        private void HomingTarget()
+        {
             if (_actor.stats.homingTarget != null)
             {
                 homingImage.gameObject.SetActive(true);
@@ -54,15 +97,24 @@ namespace SurgeEngine.Code.ActorHUD
             }
         }
 
-        private void OnRingCollected(Ring obj)
+        private void OnRingCollected(ContactBase obj)
         {
-            RingHUD ringHUDInstance = Instantiate(ringHUDPrefab, obj.transform.position + _actor.transform.forward * 0.05f, Quaternion.identity);
-            ringHUDInstance.Initialize(0.85f);
+            if (obj is Ring)
+            {
+                RingHUD ringHUDInstance = Instantiate(ringHUDPrefab, obj.transform.position, obj.transform.rotation);
+                ringHUDInstance.Initialize(0.5f);
+            }
         }
         
         public QuickTimeEventUI GetQTEUI()
         {
             return qteUI;
         }
+    }
+
+    [Serializable]
+    public struct BoostBarSize
+    {
+        public float width;
     }
 }

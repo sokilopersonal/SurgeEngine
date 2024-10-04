@@ -66,7 +66,7 @@ namespace SurgeEngine.Code.CommonObjects
             
             RuntimeManager.PlayOneShot(ringSound);
 
-            ActorEvents.OnRingCollected?.Invoke(this);
+            ObjectEvents.OnObjectCollected?.Invoke(this);
             gameObject.SetActive(false);
         }
     }

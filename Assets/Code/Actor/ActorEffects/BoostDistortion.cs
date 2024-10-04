@@ -12,9 +12,16 @@ namespace SurgeEngine.Code.ActorEffects
         private static readonly int WaveTime = Shader.PropertyToID("_WaveTime");
         private static readonly int SpawnPosition = Shader.PropertyToID("_SpawnPosition");
 
+        private float _startValue;
+
+        private void Awake()
+        {
+            _startValue = -0.4f;
+        }
+
         public void Play(Vector3 viewportPosition)
         {
-            customPass.SetFloat(WaveTime, -0.2f);
+            customPass.SetFloat(WaveTime, _startValue);
             customPass.SetVector(SpawnPosition, viewportPosition);
 
             if (coroutine != null)
@@ -32,7 +39,7 @@ namespace SurgeEngine.Code.ActorEffects
             
             while (t < dur)
             {
-                float value = Mathf.Lerp(-0.2f, 1.2f, EaseOutQuad(t / dur));
+                float value = Mathf.Lerp(_startValue, 1.75f, EaseOutQuad(t / dur));
                 customPass.SetFloat(WaveTime, value);
                 t += Time.deltaTime;
                 
@@ -42,7 +49,7 @@ namespace SurgeEngine.Code.ActorEffects
 
         private void OnDestroy()
         {
-            customPass.SetFloat(WaveTime, -0.2f);
+            customPass.SetFloat(WaveTime, _startValue);
             customPass.SetVector(SpawnPosition, new Vector2(0.5f, 0.5f));
         }
 

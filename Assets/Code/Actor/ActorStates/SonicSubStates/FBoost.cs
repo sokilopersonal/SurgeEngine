@@ -9,7 +9,12 @@ namespace SurgeEngine.Code.Parameters.SonicSubStates
 {
     public class FBoost : FActorSubState
     {
-        [Range(0, 100)] public float boostEnergy;
+        public float BoostEnergy
+        {
+            get => boostEnergy;
+            private set => boostEnergy = Mathf.Clamp(value, 0, maxBoostEnergy);
+        }
+        [Range(45, 100)] public float maxBoostEnergy;
         [SerializeField] private float boostDrain = 3;
         [SerializeField] private float startBoostDrain = 10;
         
@@ -26,11 +31,13 @@ namespace SurgeEngine.Code.Parameters.SonicSubStates
         public bool restoringTopSpeed;
         [Range(10f, 30f)] public float restoreSpeed;
 
+        private float boostEnergy;
         private Coroutine cancelBoostCoroutine;
 
         private void Awake()
         {
             canAirBoost = true;
+            BoostEnergy = 0;
             
             actor.input.BoostAction += BoostAction;
         }
@@ -39,7 +46,7 @@ namespace SurgeEngine.Code.Parameters.SonicSubStates
         {
             actor.stateMachine.OnStateAssign += OnStateAssign;
 
-            ActorEvents.OnRingCollected += _ => boostEnergy += 2;
+            ObjectEvents.OnObjectCollected += _ => BoostEnergy += 2;
         }
 
         private void OnDisable()
@@ -99,9 +106,9 @@ namespace SurgeEngine.Code.Parameters.SonicSubStates
 
             if (Active)
             {
-                if (boostEnergy > 0)
+                if (BoostEnergy > 0)
                 {
-                    boostEnergy -= boostDrain * Time.deltaTime;
+                    BoostEnergy -= boostDrain * Time.deltaTime;
                 }
                 else
                 {
@@ -114,10 +121,10 @@ namespace SurgeEngine.Code.Parameters.SonicSubStates
                 Active = false;
             }
             
-            boostEnergy = Mathf.Clamp(boostEnergy, 0, 100);
+            BoostEnergy = Mathf.Clamp(BoostEnergy, 0, 100);
         }
 
-        public bool CanBoost() => boostEnergy > 0;
+        public bool CanBoost() => BoostEnergy > 0;
 
         public bool ApplyAirForce(Rigidbody rb, Vector3 force)
         {
@@ -137,17 +144,17 @@ namespace SurgeEngine.Code.Parameters.SonicSubStates
             
             if (Active)
             {
-                boostEnergy -= startBoostDrain;
+                BoostEnergy -= startBoostDrain;
             }
         }
 
         private IEnumerator BoostDrain()
         {
-            if (boostEnergy > 10) boostEnergy -= startBoostDrain;
+            if (BoostEnergy > 10) BoostEnergy -= startBoostDrain;
             
-            while (boostEnergy > 0)
+            while (BoostEnergy > 0)
             {
-                boostEnergy -= boostDrain * Time.deltaTime;
+                BoostEnergy -= boostDrain * Time.deltaTime;
                 yield return null;
             }
 

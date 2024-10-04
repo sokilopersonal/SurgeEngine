@@ -1,4 +1,5 @@
-﻿using SurgeEngine.Code.ActorSystem;
+﻿using SurgeEngine.Code.ActorHUD;
+using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Custom;
 using UnityEngine;
 
@@ -18,63 +19,52 @@ namespace SurgeEngine.Code.CommonObjects
         private Quaternion _targetRotation;
 
         private float time;
-        
-        private float rotationDuration = 1.0f;
-        private bool shouldRotate;
 
         public void Initialize(float time)
         {
-            transform.localScale = Vector3.one * 1.5f;
-            transform.parent = _camera.transform;
-
             this.time = time;
-
-            _initialPosition = transform.position;
-            _initialRotation = transform.rotation;
-            _initialScale = transform.localScale;
+            transform.SetParent(_camera.transform);
             
-            shouldRotate = Random.value < 0.5f;
-            rotationDuration = 15f * Mathf.RoundToInt(Random.Range(1, 4));
-            rotationDuration *= Random.value < 0.5f ? 1 : -1;
-
-            if (shouldRotate)
-            {
-                Matrix4x4 viewMatrix = _camera.worldToCameraMatrix;
-                Vector3 cameraForward = viewMatrix.inverse.MultiplyVector(_camera.transform.right);
-                Quaternion targetRotation = Quaternion.LookRotation(cameraForward, Vector3.up);
-                transform.rotation = targetRotation;
-            }
+            _initialPosition = transform.localPosition;
+            _initialRotation = transform.localRotation;
+            _initialScale = transform.localScale;
         }
 
         private void Update()
         {
-            _targetPosition = SurgeMath.GetCameraMatrixPosition(_camera, -0.875f, -0.75f);
-            transform.position = Vector3.Lerp(transform.position, _targetPosition, 
-                Easings.Get(Easing.InCubic, _factor));
-            
+            Vector3 rect = ActorStageHUD.Context.ringCounter.rectTransform.position;
+            rect.z = 0.1f;
+            Vector3 point = _camera.ScreenToWorldPoint(rect);
+            point = _camera.transform.InverseTransformPoint(point);
+            _targetPosition = point;
+
+            float easedFactor = Easings.Get(Easing.InCubic, _factor);
+            transform.localPosition = Vector3.Slerp(_initialPosition, _targetPosition, easedFactor);
+
+            Vector3 targetScale = Vector3.one * (0.02f * _camera.fieldOfView) / 60f;
+            transform.localScale = Vector3.Lerp(_initialScale, targetScale, easedFactor);
+
             Matrix4x4 viewMatrix = _camera.worldToCameraMatrix;
             Vector3 cameraForward = viewMatrix.inverse.MultiplyVector(_camera.transform.right);
             _targetRotation = Quaternion.LookRotation(cameraForward, Vector3.up);
             
-            if (shouldRotate)
-            {
-                Quaternion euler = Quaternion.AngleAxis(_factor * rotationDuration, Vector3.up);
-                transform.localRotation *= euler * _initialRotation;
-            }
-            else
-            {
-                transform.localRotation = Quaternion.Lerp(_initialRotation, _targetRotation, 
-                    Easings.Get(Easing.OutCubic, _factor));
-            }
-
-            transform.localScale = Vector3.Lerp(_initialScale, Vector3.one * 0.065f, _factor * 1.5f); // Need to multiply factor to fix scale
+            transform.localRotation = Quaternion.Lerp(_initialRotation, _targetRotation, Easings.Get(Easing.OutCubic, _factor));
             
-            _factor += Time.unscaledDeltaTime / time;
-
-            if (_factor >= 0.75f)
+            _factor += Time.deltaTime / time;
+            
+            if (_factor >= 1f)
             {
+                var context = ActorStageHUD.Context;
+                context.ringCounterAnimator.Play("RingBump", 0);
+                context.ringBumpEffect.Play("RingBump", 0);
+                
                 Destroy(gameObject);
             }
+        }
+
+        private void OnDestroy()
+        {
+            
         }
     }
 }
