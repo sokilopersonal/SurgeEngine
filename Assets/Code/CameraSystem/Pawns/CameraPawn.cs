@@ -1,12 +1,17 @@
-﻿using SurgeEngine.Code.ActorSystem;
+﻿using SurgeEngine.Code.Parameters;
+using UnityEngine;
 
 namespace SurgeEngine.Code.CameraSystem.Pawns
 {
-    public class CameraPawn
+    public abstract class CameraPawn : FActorState
     {
-        public void Initialize(Actor owner)
+        protected Camera _camera;
+        protected Transform _cameraTransform;
+
+        private void Awake()
         {
-            
+            _camera = Camera.main;
+            _cameraTransform = _camera.transform;
         }
     }
 }

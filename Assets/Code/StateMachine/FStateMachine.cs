@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using SurgeEngine.Code.CameraSystem.Pawns;
+using UnityEngine;
 
 namespace SurgeEngine.Code.StateMachine
 {
@@ -47,6 +49,11 @@ namespace SurgeEngine.Code.StateMachine
                 CurrentState = newState;
                 OnStateAssign?.Invoke(CurrentState);
                 CurrentState.OnEnter();
+
+                if (type == typeof(RestoreCameraPawn))
+                {
+                    Debug.Log(CurrentState);
+                }
                 
                 currentStateName = CurrentState.GetType().Name;
                 

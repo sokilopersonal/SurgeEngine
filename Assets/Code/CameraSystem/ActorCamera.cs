@@ -1,292 +1,67 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using SurgeEngine.Code.ActorSystem;
-using SurgeEngine.Code.Custom;
+using SurgeEngine.Code.CameraSystem.Pawns;
 using SurgeEngine.Code.Parameters;
-using SurgeEngine.Code.Parameters.SonicSubStates;
 using SurgeEngine.Code.StateMachine;
 using UnityEngine;
-using Quaternion = UnityEngine.Quaternion;
-using Vector2 = UnityEngine.Vector2;
-using Vector3 = UnityEngine.Vector3;
 
 namespace SurgeEngine.Code.CameraSystem
 {
     public class ActorCamera : ActorComponent
     {
+        public FStateMachine stateMachine;
+        
         [Header("Target")] 
         public Transform target;
-        [SerializeField, Range(0, 1)] private float yFollowTime;
-        [SerializeField] private float zLagMax = 0.5f;
-        [SerializeField] private float zLagSmoothness = 2.5f;
-        [SerializeField] private Vector3 lookOffset;
+        public float yFollowTime;
+        public float zLagMax = 0.5f;
+        public float zLagSmoothness = 2.5f;
+        public Vector3 lookOffset;
         
         [Header("Collision")]
         public LayerMask collisionMask;
         public float collisionRadius = 0.2f;
         
-        [SerializeField] private List<CameraParameters> _parameters;
-
+        [SerializeField] private CameraPawn[] pawns;
+        public List<CameraParameters> parameters;
+        
         private Camera _camera;
         private Transform _cameraTransform;
-        private float _x;
-        private float _y;
-        private float _collisionDistance;
-        private bool _autoActive;
-
-        private Vector3 _tempFollowPoint;
-        private Vector3 _tempLookPoint;
-        private float _tempY;
-        private float _tempZ;
-        private float _tempTime;
-        
-        private Vector2 _autoLookDirection;
-
-        private CameraParameters _currentParameters;
-
-        private float _followPower;
-        private float _fov;
-        private float _distance;
-        private float _timeToStartFollow;
-
-        private Coroutine _parameterChangeCoroutine;
-
-        private void Awake()
-        {
-            _camera = Camera.main;
-            _cameraTransform = _camera.transform;
-
-            _currentParameters = _parameters[0];
-
-            _tempY = target.position.y;
-            _tempTime = yFollowTime;
-            
-            _followPower = _currentParameters.followPower;
-            _timeToStartFollow = _currentParameters.timeToStartFollow;
-            _distance = _currentParameters.distance;
-            _fov = _currentParameters.fov;
-
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
-        }
 
         protected override void OnInitialized()
         {
             base.OnInitialized();
-
-            SetRotationAxis(actor.transform.forward);
+            
+            _camera = Camera.main;
+            _cameraTransform = _camera.transform;
         }
 
-        private void OnEnable()
+        private void Awake()
         {
-            if (actor.stats != null) actor.stateMachine.GetSubState<FBoost>().OnActiveChanged += OnBoostActivate;
-        }
+            stateMachine = new FStateMachine();
 
-        private void OnDisable()
-        {
-            actor.stateMachine.GetSubState<FBoost>().OnActiveChanged -= OnBoostActivate;
+            foreach (var pawn in pawns)
+            {
+                pawn.SetOwner(actor);
+                stateMachine.AddState(pawn);
+            }
+
+            stateMachine.SetState<DefaultModernPawn>();
         }
 
         private void Update()
         {
-            AutoFollow();
-            Following();
-            Collision();
-            LookAt();
+            stateMachine.Tick(Time.unscaledDeltaTime);
         }
-
-        private void Following()
+        
+        private void FixedUpdate()
         {
-            var lookVector = actor.input.lookVector;
-            _x += lookVector.x + _autoLookDirection.x;
-            _y -= lookVector.y;
-            _y = Mathf.Clamp(_y, -65, 65);
-            
-            if (actor.stats.isGrounded)
-            {
-                _tempTime = Mathf.Lerp(_tempTime, 0, SurgeMath.Smooth(1 - 0.965f));
-            }
-            else if (actor.stats.isInAir)
-            {
-                _tempTime = Mathf.Lerp(_tempTime, yFollowTime, SurgeMath.Smooth(1f));
-            }
-
-            float yPos = target.position.y;
-            _tempY = Mathf.Lerp(_tempY, yPos, SurgeMath.Smooth(1 - _tempTime));
-            _tempY = Mathf.Clamp(_tempY, yPos - 0.75f, yPos + 0.5f);
-            _tempFollowPoint = target.position;
-            _tempFollowPoint.y = _tempY;
-
-            float speed = actor.stats.currentSpeed;
-            float zLagMod = Mathf.Lerp(0.2f, 0.1f, speed / actor.stats.moveParameters.topSpeed);
-            float zLag = speed * zLagMod;
-            zLag = Mathf.Clamp(zLag, 0, zLagMax);
-            _tempZ = Mathf.Lerp(_tempZ, zLag, zLagSmoothness * Time.deltaTime);
+            stateMachine.FixedTick(Time.fixedUnscaledDeltaTime);
         }
-
-        private void AutoFollow()
+        
+        private void LateUpdate()
         {
-            if (Common.InDelayTime(actor.input.GetLastLookInputTime(), _timeToStartFollow))
-            {
-                _autoActive = true;
-                _followPower = _currentParameters.followPower;
-                
-                if (actor.stats.currentSpeed > 1f)
-                {
-                    if (!(1 - Mathf.Abs(Vector3.Dot(actor.transform.forward, Vector3.up)) < 0.01f))
-                    {
-                        float fwd = actor.stats.GetForwardSignedAngle() * Time.deltaTime;
-                        _autoLookDirection.x = fwd * _followPower; 
-                        if (actor.stats.isInAir)
-                        {
-                            Vector3 vel = Vector3.ClampMagnitude(actor.rigidbody.linearVelocity, 2f);
-                            vel.y = Mathf.Lerp(vel.y, Mathf.Clamp(vel.y, -0.5f, 0.15f), SurgeMath.Smooth(1f));
-                            lookOffset.y = Mathf.Lerp(lookOffset.y, vel.y, SurgeMath.Smooth(0.05f));
-                        }
-                        else
-                        {
-                            lookOffset.y = Mathf.Lerp(lookOffset.y, 0f, 4f * Time.deltaTime);
-                        }
-                    }
-
-                    //float x = actor.input.moveVector.x * 0.25f;
-                    //lookOffset.x = Mathf.Lerp(lookOffset.x, x, 4 * Time.deltaTime);
-                }
-                else
-                {
-                    _autoLookDirection.x = 0;
-                }
-
-                if (actor.stateMachine.CurrentState is FStateGround or FStateIdle)
-                {
-                    _autoLookDirection.y = 5f * (actor.stateMachine.GetSubState<FBoost>().Active ? 1.75f : 1f);
-                    _autoLookDirection.y -= actor.stats.currentVerticalSpeed * 1.25f;
-                    
-                    if (Mathf.Approximately(actor.stats.groundAngle, 90))
-                    {
-                        _autoLookDirection.y = 0f;
-                    }
-                }
-                else
-                {
-                    _autoLookDirection.y = 0f;
-                }
-                
-                _y = Mathf.Lerp(_y, _autoLookDirection.y, 2.25f * Time.deltaTime);
-            }
-            else
-            {
-                _autoLookDirection.x = 0;
-                lookOffset.y = Mathf.Lerp(lookOffset.y, 0f, SurgeMath.Smooth(0.1f));
-                
-                _autoActive = false;
-            }
-        }
-
-        private void LookAt()
-        {
-            Quaternion targetRotation = Quaternion.LookRotation(_tempFollowPoint - _cameraTransform.position);
-            _cameraTransform.rotation = targetRotation;
-            
-            _camera.fieldOfView = _fov;
-        }
-
-        private void Collision()
-        {
-            var ray = new Ray(target.position + Vector3.forward * _tempZ, -_cameraTransform.forward);
-            float radius = collisionRadius;
-            var maxDistance = _distance + _tempZ;
-
-            float result = Physics.SphereCast(ray, radius, out RaycastHit hit,
-                maxDistance, collisionMask, QueryTriggerInteraction.Ignore)
-                ? hit.distance
-                : _distance + _tempZ;
-            
-            _cameraTransform.position = GetTarget(result - _tempZ);
-        }
-
-        public void SetRotationAxis(Vector3 dir)
-        {
-            Quaternion rotation = Quaternion.LookRotation(dir);
-            _x = rotation.eulerAngles.y;
-            _y = rotation.eulerAngles.x;
-        }
-
-        private Vector3 GetTarget(float distance)
-        {
-            Vector3 targetPosition = _tempFollowPoint;
-            Vector3 v = targetPosition - Quaternion.Euler(_y, _x, 0) *
-                (Vector3.forward * distance + Vector3.forward * _tempZ);
-            return v;
-        }
-
-        private void OnBoostActivate(FSubState obj, bool value)
-        {
-            if (_parameterChangeCoroutine != null)
-            {
-                StopCoroutine(_parameterChangeCoroutine);
-            }
-            
-            if (obj is FBoost && value)
-            {
-                TransitionTo("BoostOut", _ =>
-                {
-                    TransitionTo("BoostIn");
-                });
-            }
-            else
-            {
-                TransitionTo("Default");
-            }
-        }
-
-        private void TransitionTo(string parameter, Action<CameraParameters> callback = null)
-        {
-            if (_parameterChangeCoroutine != null)
-            {
-                StopCoroutine(_parameterChangeCoroutine);
-            }
-
-            var param = _parameters.Find(x => x.name == parameter);
-            _parameterChangeCoroutine = StartCoroutine(ChangeParametersCoroutine(param, callback));
-            
-            _followPower = param.followPower;
-        }
-
-        private IEnumerator ChangeParametersCoroutine(CameraParameters target, Action<CameraParameters> callback = null)
-        {
-            float tDistance = 0f;
-            float tFov = 0f;
-
-            float startDistance = _distance;
-            float startFov = _fov;
-            
-            float targetDistance = target.distance;
-            float targetFov = target.fov;
-
-            while (tDistance < target.distanceDuration || tFov < target.fovDuration)
-            {
-                if (tDistance < target.distanceDuration)
-                {
-                    tDistance += Time.deltaTime;
-                    _distance = Mathf.Lerp(startDistance, targetDistance, Easings.Get(target.distanceEasing, tDistance / target.distanceDuration));
-                }
-
-                if (tFov < target.fovDuration)
-                {
-                    tFov += Time.deltaTime;
-                    _fov = Mathf.Lerp(startFov, targetFov, Easings.Get(target.fovEasing, tFov / target.fovDuration));
-                }
-
-                yield return null;
-            }
-
-            _distance = targetDistance;
-            _fov = targetFov;
-
-            _currentParameters = target;
-            callback?.Invoke(target);
+            stateMachine.LateTick(Time.unscaledDeltaTime);
         }
 
         public Camera GetCamera()

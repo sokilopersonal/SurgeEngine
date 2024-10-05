@@ -28,7 +28,7 @@ namespace SurgeEngine.Code.SurgeDebug
         
                 Color drawColor = totalTime < keepVelocity ? Color.red : color;
 
-                if (Physics.Linecast(position, endPosition, out RaycastHit hit, layerMask))
+                if (Physics.Linecast(position, endPosition, out RaycastHit hit, layerMask, QueryTriggerInteraction.Ignore))
                 {
                     Debug.DrawLine(position, hit.point, drawColor);
                     endPosition = hit.point;
@@ -64,7 +64,7 @@ namespace SurgeEngine.Code.SurgeDebug
         
                 Color drawColor = color;
 
-                if (Physics.Linecast(position, newPosition, out RaycastHit hit, layerMask))
+                if (Physics.Linecast(position, newPosition, out RaycastHit hit, layerMask, QueryTriggerInteraction.Ignore))
                 {
                     Debug.DrawLine(position, hit.point, drawColor);
                     break;

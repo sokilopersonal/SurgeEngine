@@ -154,7 +154,7 @@ namespace SurgeEngine.Code.Custom
 
                 Vector3 newPosition = position + velocity * timeStep + gravity * (0.5f * Mathf.Pow(timeStep, 2));
 
-                if (Physics.Linecast(position, newPosition, out _, layerMask))
+                if (Physics.Linecast(position, newPosition, out _, layerMask, QueryTriggerInteraction.Ignore))
                 {
                     break;
                 }
@@ -171,8 +171,7 @@ namespace SurgeEngine.Code.Custom
 
             return peakPosition;
         }
-
-
+        
         public static Transform FindHomingTarget()
         {
             var context = ActorContext.Context;
@@ -214,6 +213,22 @@ namespace SurgeEngine.Code.Custom
             }
 
             return null;
+        }
+        
+        public static async UniTask ChangeFOVOverTime(float targetFov, float duration)
+        {
+            var camera = ActorContext.Context.camera;
+            float startFov = camera.GetCamera().fieldOfView;
+            float elapsed = 0f;
+            
+            while (elapsed < duration)
+            {
+                camera.GetCamera().fieldOfView = Mathf.Lerp(startFov, targetFov, elapsed / duration);
+                elapsed += Time.deltaTime;
+                await UniTask.Yield();
+            }
+            
+            camera.GetCamera().fieldOfView = targetFov;
         }
     }
 
