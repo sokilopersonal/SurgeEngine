@@ -79,7 +79,9 @@ namespace SurgeEngine.Code.ActorHUD
         {
             float speed = _actor.rigidbody.GetHorizontalMagnitude();
             float topSpeed = _actor.stats.moveParameters.topSpeed;
-            speedometerFill.fillAmount = speed / (topSpeed + topSpeed * 0.2f);
+            float threshold = 2.25f;
+            float roundedSpeed = Mathf.Round(speed / threshold) * threshold;
+            speedometerFill.fillAmount = roundedSpeed / (topSpeed + topSpeed * 0.2f);
         }
 
         private void HomingTarget()
@@ -102,7 +104,7 @@ namespace SurgeEngine.Code.ActorHUD
             if (obj is Ring)
             {
                 RingHUD ringHUDInstance = Instantiate(ringHUDPrefab, obj.transform.position, obj.transform.rotation);
-                ringHUDInstance.Initialize(0.5f);
+                ringHUDInstance.Initialize(0.55f);
             }
         }
         

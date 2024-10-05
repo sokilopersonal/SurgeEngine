@@ -30,7 +30,7 @@ namespace SurgeEngine.Code.CommonObjects
             
             var specialJump = context.stateMachine.SetState<FStateSpecialJump>(0.2f, true, true);
             specialJump.SetSpecialData(new SpecialJumpData(SpecialJumpType.Spring, transform.forward, transform.up, dot));
-            specialJump.PlaySpecialAnimation(0.2f);
+            specialJump.PlaySpecialAnimation(0);
             specialJump.SetKeepVelocity(keepVelocity);
 
             Common.ApplyImpulse(transform.up * speed);

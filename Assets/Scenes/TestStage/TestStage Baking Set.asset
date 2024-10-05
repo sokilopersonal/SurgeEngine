@@ -23,7 +23,7 @@ MonoBehaviour:
       dilationIterations: 1
       squaredDistWeighting: 1
     virtualOffsetSettings:
-      useVirtualOffset: 1
+      useVirtualOffset: 0
       validityThreshold: 0.25
       outOfGeoOffset: 0.01
       searchMultiplier: 0.2
@@ -5850,73 +5850,73 @@ MonoBehaviour:
   cellSupportDataAsset:
     m_AssetGUID: 41dbc9c8ed0fb5c48a69ad3573071f1f
     m_StreamableAssetPath: APVStreamingAssets\c6dbec253bded8645be913eebee7c898\41dbc9c8ed0fb5c48a69ad3573071f1f.bytes
-    m_ElementSize: 262144
+    m_ElementSize: 163840
     m_StreamableCellDescs:
       m_Keys: 000000000f0000001e0000002d0000000500000014000000230000003200000001000000100000001f0000002e000000060000001500000024000000330000000200000011000000200000002f000000070000001600000025000000340000000300000012000000210000003000000008000000170000002600000035000000
       m_Values:
       - offset: 0
         elementCount: 1
-      - offset: 262144
+      - offset: 163840
         elementCount: 1
-      - offset: 524288
+      - offset: 327680
         elementCount: 1
-      - offset: 786432
+      - offset: 491520
         elementCount: 1
-      - offset: 1048576
+      - offset: 655360
+        elementCount: 1
+      - offset: 819200
+        elementCount: 1
+      - offset: 983040
+        elementCount: 1
+      - offset: 1146880
         elementCount: 1
       - offset: 1310720
         elementCount: 1
-      - offset: 1572864
-        elementCount: 1
-      - offset: 1835008
-        elementCount: 1
-      - offset: 2097152
-        elementCount: 1
-      - offset: 2359296
+      - offset: 1474560
         elementCount: 7
-      - offset: 4194304
+      - offset: 2621440
         elementCount: 7
-      - offset: 6029312
+      - offset: 3768320
         elementCount: 1
-      - offset: 6291456
+      - offset: 3932160
         elementCount: 1
-      - offset: 6553600
+      - offset: 4096000
         elementCount: 8
-      - offset: 8650752
+      - offset: 5406720
         elementCount: 9
-      - offset: 11010048
+      - offset: 6881280
         elementCount: 1
-      - offset: 11272192
+      - offset: 7045120
         elementCount: 1
-      - offset: 11534336
+      - offset: 7208960
         elementCount: 7
-      - offset: 13369344
+      - offset: 8355840
         elementCount: 7
-      - offset: 15204352
+      - offset: 9502720
         elementCount: 1
-      - offset: 15466496
+      - offset: 9666560
         elementCount: 1
-      - offset: 15728640
+      - offset: 9830400
         elementCount: 8
-      - offset: 17825792
+      - offset: 11141120
         elementCount: 9
-      - offset: 20185088
+      - offset: 12615680
         elementCount: 1
-      - offset: 20447232
+      - offset: 12779520
         elementCount: 1
-      - offset: 20709376
+      - offset: 12943360
         elementCount: 1
-      - offset: 20971520
+      - offset: 13107200
         elementCount: 1
-      - offset: 21233664
+      - offset: 13271040
         elementCount: 1
-      - offset: 21495808
+      - offset: 13434880
         elementCount: 1
-      - offset: 21757952
+      - offset: 13598720
         elementCount: 1
-      - offset: 22020096
+      - offset: 13762560
         elementCount: 1
-      - offset: 22282240
+      - offset: 13926400
         elementCount: 1
     m_Asset: {fileID: 0}
   chunkSizeInBricks: 128
@@ -5950,8 +5950,8 @@ MonoBehaviour:
   supportValidityChunkSize: 32768
   supportTouchupChunkSize: 32768
   supportLayerMaskChunkSize: 0
-  supportOffsetsChunkSize: 98304
-  supportDataChunkSize: 262144
+  supportOffsetsChunkSize: 0
+  supportDataChunkSize: 163840
   lightingScenario: Default
   version: 1
   freezePlacement: 0
@@ -5963,7 +5963,7 @@ MonoBehaviour:
     m_Bits: 4294967295
   minRendererVolumeSize: 0.1
   skyOcclusion: 0
-  skyOcclusionBakingSamples: 2048
+  skyOcclusionBakingSamples: 512
   skyOcclusionBakingBounces: 2
   skyOcclusionAverageAlbedo: 0.6
   skyOcclusionBackFaceCulling: 0
