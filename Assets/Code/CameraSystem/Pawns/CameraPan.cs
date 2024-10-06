@@ -5,21 +5,6 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
 {
     public class CameraPan : CameraPawn
     {
-        private PanData _panData;
-
-        private float _factor;
-        private Vector3 _lastPosition;
-        private float _lastFov;
-
-        public override void OnEnter()
-        {
-            base.OnEnter();
-
-            _factor = 0;
-            _lastPosition = _cameraTransform.position;
-            _lastFov = _camera.fieldOfView;
-        }
-        
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
@@ -30,13 +15,8 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             
             _camera.fieldOfView = Mathf.Lerp(_lastFov, _panData.fov, Easings.Get(Easing.OutCubic, _factor));
 
-            _factor += dt / _panData.easeInTime;
+            _factor += dt / _panData.easeTimeEnter;
             _factor = Mathf.Clamp01(_factor);
-        }
-        
-        public void SetData(PanData data)
-        {
-            _panData = data;
         }
     }
 }

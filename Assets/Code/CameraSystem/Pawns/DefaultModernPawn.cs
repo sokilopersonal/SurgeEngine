@@ -110,7 +110,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             _y = Mathf.Clamp(_y, -65, 65);
         }
 
-        protected void AutoFollow()
+        protected virtual void AutoFollow()
         {
             if (Common.InDelayTime(actor.input.GetLastLookInputTime(), _timeToStartFollow))
             {
@@ -165,8 +165,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
 
         protected void LookAt()
         {
-            Quaternion targetRotation = Quaternion.LookRotation(_tempFollowPoint - _cameraTransform.position);
-            _cameraTransform.rotation = targetRotation;
+            SetRotation(_tempFollowPoint);
         }
 
         protected void Collision()
@@ -183,13 +182,23 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             SetPosition(GetTarget(result - _tempZ));
         }
 
+        public virtual void SetPosition(Vector3 pos)
+        {
+            _cameraTransform.position = pos;
+        }
+
+        public virtual void SetRotation(Vector3 pos)
+        {
+            _cameraTransform.rotation = Quaternion.LookRotation(pos - _cameraTransform.position);
+        }
+
         public void SetRotationAxis(Vector3 dir)
         {
             Quaternion rotation = Quaternion.LookRotation(dir);
-            SetRotation(rotation.eulerAngles.y, rotation.eulerAngles.x);
+            SetRotationValues(rotation.eulerAngles.y, rotation.eulerAngles.x);
         }
 
-        public void SetRotation(float x, float y)
+        public void SetRotationValues(float x, float y)
         {
             _x = x;
             _y = y;
@@ -201,12 +210,8 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
         }
 
         public void SetTempZ(float z) => _tempZ = z;
-        public void SetTempY(float y) => _tempY = y;
 
-        public virtual void SetPosition(Vector3 pos)
-        {
-            _cameraTransform.position = pos;
-        }
+        public void SetTempY(float y) => _tempY = y;
 
         private Vector3 GetTarget(float distance)
         {

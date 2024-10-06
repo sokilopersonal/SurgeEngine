@@ -7,8 +7,14 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
     public class PanData
     {
         public Vector3 position;
-        public float easeInTime = 0.5f;
-        public float easeOutTime = 0.5f;
+        public float easeTimeEnter = 0.5f;
+        public float easeTimeExit = 0.5f;
         public float fov = 60f;
+    }
+
+    [Serializable]
+    public class VerticalPanData : PanData
+    {
+        public float groundOffset;
     }
 }

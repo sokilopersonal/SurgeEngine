@@ -49,11 +49,6 @@ namespace SurgeEngine.Code.StateMachine
                 CurrentState = newState;
                 OnStateAssign?.Invoke(CurrentState);
                 CurrentState.OnEnter();
-
-                if (type == typeof(RestoreCameraPawn))
-                {
-                    Debug.Log(CurrentState);
-                }
                 
                 currentStateName = CurrentState.GetType().Name;
                 
