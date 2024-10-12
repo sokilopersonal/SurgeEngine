@@ -8,9 +8,18 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
         public override void OnEnter()
         {
             base.OnEnter();
+            
+            input.CameraLock(true);
 
             _tempY = 0;
             SetRotationAxis(actor.transform.forward);
+        }
+
+        public override void OnExit()
+        {
+            base.OnExit();
+            
+            input.CameraLock(false);
         }
 
         public override void OnTick(float dt)
@@ -30,10 +39,6 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             }
         }
 
-        protected override void GetLook()
-        {
-        }
-
         public override void SetPosition(Vector3 pos)
         {
             _cameraTransform.position = Vector3.Lerp(_panData.position != Vector3.zero ? _panData.position : _lastPosition, pos, Easings.Get(Easing.OutCubic, _factor));
@@ -44,7 +49,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             _camera.fieldOfView = Mathf.Lerp(_panData.fov, fov, Easings.Get(Easing.OutCubic, _factor));
         }
 
-        public void SetData(PanData data)
+        public override void SetData(PanData data)
         {
             _panData = data;
         }

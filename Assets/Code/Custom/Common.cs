@@ -1,12 +1,24 @@
 ﻿using System;
 using Cysharp.Threading.Tasks;
 using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.CommonObjects;
 using UnityEngine;
 
 namespace SurgeEngine.Code.Custom
 {
     public static class Common
     {
+        public static bool AddScore(int score)
+        {
+            int abs = Math.Abs(score);
+            if (abs > 0)
+            {
+                Stage.Instance.data.AddScore(abs);
+            }
+            
+            return false;
+        }
+        
         public static string GetGroundTag(this GameObject gameObject)
         {
             string input = gameObject.name;

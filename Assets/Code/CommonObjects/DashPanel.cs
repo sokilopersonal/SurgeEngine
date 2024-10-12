@@ -30,7 +30,7 @@ namespace SurgeEngine.Code.CommonObjects
             }
 
             context.flags.AddFlag(new Flag(FlagType.OutOfControl, 
-                new [] { Tags.AllowBoost }, true, Mathf.Abs(outOfControl)));
+                new [] { Tags.AllowBoost }, true, Mathf.Abs(outOfControl)), true);
         }
 
         protected override void Draw()

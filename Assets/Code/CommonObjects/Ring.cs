@@ -1,5 +1,6 @@
 ﻿using FMODUnity;
 using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.Parameters.SonicSubStates;
 using UnityEngine;
 
@@ -67,6 +68,7 @@ namespace SurgeEngine.Code.CommonObjects
             RuntimeManager.PlayOneShot(ringSound);
 
             ObjectEvents.OnObjectCollected?.Invoke(this);
+            Common.AddScore(10);
             gameObject.SetActive(false);
         }
     }

@@ -13,6 +13,7 @@ namespace SurgeEngine.Code.CommonObjects
         [SerializeField, Min(0)] private float impulse = 15f;
         [SerializeField, Range(15, 90)] private float pitch = 10f;
         [SerializeField] private float outOfControl = 0.5f;
+        [SerializeField] private bool isDelux;
         [SerializeField] private Transform startPoint;
 
         public override void OnTriggerContact(Collider msg)
@@ -32,7 +33,7 @@ namespace SurgeEngine.Code.CommonObjects
                 
                 var specialJump = context.stateMachine.SetState<FStateSpecialJump>(0.2f, true, true);
                 specialJump.SetSpecialData(new SpecialJumpData(SpecialJumpType.JumpBoard));
-                specialJump.PlaySpecialAnimation(0.2f);
+                specialJump.PlaySpecialAnimation(0.2f, isDelux);
                     
                 context.flags.AddFlag(new Flag(FlagType.OutOfControl, null, true, Mathf.Abs(outOfControl)));
             }

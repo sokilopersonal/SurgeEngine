@@ -101,12 +101,12 @@ namespace SurgeEngine.Code.Parameters
             _data = data;
         }
         
-        public void PlaySpecialAnimation(float time)
+        public void PlaySpecialAnimation(float time, object arg = null)
         {
             switch (_data.type)
             {
                 case SpecialJumpType.JumpBoard:
-                    animation.TransitionToState("Jump Delux", time, true);
+                    animation.TransitionToState((bool)arg ? "Jump Delux" : "Jump Standard", time, true);
                     break;
                 case SpecialJumpType.TrickJumper:
                     animation.TransitionToState("Jump Spring", time, true);

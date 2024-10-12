@@ -15,13 +15,16 @@ namespace SurgeEngine.Code.CommonObjects
         public override void SetPan()
         {
             var context = ActorContext.Context;
-            context.camera.stateMachine.SetState<CameraPan>().SetData(data);
+            context.camera.stateMachine.SetState<CameraPan>(allowSameState: true).SetData(data);
         }
         
         public override void RemovePan()
         {
             var context = ActorContext.Context;
-            context.camera.stateMachine.SetState<RestoreCameraPawn>().SetData(data);
+            if (context.camera.stateMachine.CurrentState is not DefaultModernPawn)
+            {
+                context.camera.stateMachine.SetState<RestoreCameraPawn>().SetData(data);
+            }
         }
     }
 }

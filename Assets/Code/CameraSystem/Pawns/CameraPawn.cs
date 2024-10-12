@@ -13,12 +13,6 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
         protected Vector3 _lastPosition;
         protected float _lastFov;
 
-        private void Awake()
-        {
-            _camera = Camera.main;
-            _cameraTransform = _camera.transform;
-        }
-
         public override void OnEnter()
         {
             base.OnEnter();
@@ -27,6 +21,12 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             _lastFov = _camera.fieldOfView;
 
             _factor = 0f;
+        }
+
+        public void Initialize(Camera camera, Transform transform)
+        {
+            _camera = camera;
+            _cameraTransform = transform;
         }
         
         public virtual void SetData(PanData data)

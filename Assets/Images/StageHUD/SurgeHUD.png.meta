@@ -97,7 +97,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: SurgeHUD_0
+      name: BoostGaugeBorder
       rect:
         serializedVersion: 2
         x: 4
@@ -119,7 +119,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SurgeHUD_1
+      name: BoostFillGradient
       rect:
         serializedVersion: 2
         x: 5
@@ -141,7 +141,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SurgeHUD_2
+      name: BoostGaugeFill
       rect:
         serializedVersion: 2
         x: 361
@@ -163,7 +163,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SurgeHUD_3
+      name: Ring
       rect:
         serializedVersion: 2
         x: 111
@@ -185,7 +185,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SurgeHUD_4
+      name: SpeedGauge
       rect:
         serializedVersion: 2
         x: 5
@@ -207,7 +207,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SurgeHUD_5
+      name: SpeedFillGradient
       rect:
         serializedVersion: 2
         x: 5
@@ -229,7 +229,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SurgeHUD_6
+      name: SpeedGaugeFill
       rect:
         serializedVersion: 2
         x: 311
@@ -251,7 +251,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SurgeHUD_7
+      name: RingBump
       rect:
         serializedVersion: 2
         x: 194
@@ -273,7 +273,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SurgeHUD_8
+      name: RingCounterGradient
       rect:
         serializedVersion: 2
         x: 142
@@ -316,6 +316,28 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: StatsGauge
+      rect:
+        serializedVersion: 2
+        x: 298
+        y: 326
+        width: 241
+        height: 46
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 50, y: 0, z: 50, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 266f26b83dc20314c811ae562424f566
+      internalID: 1839568263
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
@@ -330,15 +352,16 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      SurgeHUD_0: -1565890879
-      SurgeHUD_1: 646020924
-      SurgeHUD_2: -172821648
-      SurgeHUD_3: 1106040819
-      SurgeHUD_4: -242475431
-      SurgeHUD_5: -542720211
-      SurgeHUD_6: 1137221917
-      SurgeHUD_7: -946407847
-      SurgeHUD_8: 1228616271
+      BoostFillGradient: 646020924
+      BoostGaugeBorder: -1565890879
+      BoostGaugeFill: -172821648
+      Ring: 1106040819
+      RingBump: -946407847
+      RingCounterGradient: 1228616271
+      SpeedFillGradient: -542720211
+      SpeedGauge: -242475431
+      SpeedGaugeFill: 1137221917
+      StatsGauge: 1839568263
       SurgeHUD_9: 673828104
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0

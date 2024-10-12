@@ -1,66 +1,83 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using NaughtyAttributes;
 using UnityEngine;
 
 namespace SurgeEngine.Code.ActorSystem
 {
     public class ActorFlags : ActorComponent
     {
-        public HashSet<Flag> hash;
+        public List<Flag> list;
 
         protected override void OnInitialized()
         {
             base.OnInitialized();
             
-            hash = new HashSet<Flag>();
+            list = new List<Flag>();
         }
 
-        public void AddFlag(Flag flag)
+        public void AddFlag(Flag flag, bool overwrite = false)
         {
-            hash.Add(flag);
+            var f = list.FirstOrDefault(f => f.type == flag.type);
+            if (f != null)
+            {
+                if (!overwrite)
+                {
+                    return;
+                }
+
+                list.Remove(f);
+                list.Add(flag);
+            }
+            else
+            {
+                list.Add(flag);
+            }
         }
         
         public void RemoveFlag(FlagType type)
         {
-            hash.Remove(hash.FirstOrDefault(f => f.type == type));
+            list.Remove(list.FirstOrDefault(f => f.type == type));
         }
         
         public bool HasFlag(FlagType type)
         {
-            return hash.Any(f => f.type == type);
+            return list.Any(f => f.type == type);
         }
 
         public Flag GetFlag(FlagType type)
         {
-            return hash.FirstOrDefault(f => f.type == type);
+            return list.FirstOrDefault(f => f.type == type);
         }
 
         public bool CheckForTag(string tag)
         {
-            return hash.Any(f => f.tags != null && f.tags.Contains(tag));
+            return list.Any(f => f.tags != null && f.tags.Contains(tag));
         }
 
         private void Update()
         {
-            foreach (var flag in hash.ToList())
+            foreach (var flag in list.ToList())
             {
                 flag.Count(Time.deltaTime);
             }
         }
     }
     
+    [Serializable]
     public class Flag
     {
-        private HashSet<Flag> hs;
+        private List<Flag> hs;
         public FlagType type;
         public string[] tags;
-        private readonly bool isTemporary;
-        private readonly float time;
-        private float timer;
+        [SerializeField] private bool isTemporary;
+        [SerializeField] private float time;
+        [SerializeField] private float timer;
         
-        public Flag(FlagType type, string[] tags, bool isTemporary = true, float time = 1) // We need HashSet link to remove this flag
+        public Flag(FlagType type, string[] tags, bool isTemporary = true, float time = 1) // We need List link to remove this flag
         {
-            hs = ActorContext.Context.flags.hash;
+            hs = ActorContext.Context.flags.list;
             
             this.type = type;
             this.tags = tags;

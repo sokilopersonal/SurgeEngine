@@ -43,6 +43,7 @@ namespace SurgeEngine.Code.CameraSystem
             foreach (var pawn in pawns)
             {
                 pawn.SetOwner(actor);
+                pawn.Initialize(_camera, _cameraTransform);
                 stateMachine.AddState(pawn);
             }
 

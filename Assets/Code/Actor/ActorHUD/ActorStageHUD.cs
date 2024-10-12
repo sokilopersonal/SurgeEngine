@@ -17,6 +17,9 @@ namespace SurgeEngine.Code.ActorHUD
         public static ActorStageHUD Context => _instance;
 
         [SerializeField] private RingHUD ringHUDPrefab;
+
+        [SerializeField] private TMP_Text timeBar;
+        [SerializeField] private TMP_Text scoreBar;
         
         [Header("Ring Counter")]
         public Image ringCounter;
@@ -33,9 +36,10 @@ namespace SurgeEngine.Code.ActorHUD
         [Header("Boost Bar")] 
         [SerializeField] private Image boostBar;
         [SerializeField] private Image boostFill;
+        [SerializeField] private float boostBarYAspect;
         [SerializeField] private BoostBarSize minBoostBarSize;
         [SerializeField] private BoostBarSize maxBoostBarSize;
-        
+
         private Actor _actor => ActorContext.Context;
 
         private void Awake()
@@ -59,11 +63,18 @@ namespace SurgeEngine.Code.ActorHUD
             BoostBar();
             Speedometer();
             HomingTarget();
+
+            var stageData = Stage.Instance.data;
+            float time = stageData.Time;
+            timeBar.text = $"Time: {GetTimeInString(time)}";
+
+            int score = stageData.Score;
+            scoreBar.text = score > 0 ? $"{score}" : "";
         }
 
         private void RingCount()
         {
-            ringCountText.text = $"{Stage.Instance.data.ringCount:000}";
+            ringCountText.text = $"{Stage.Instance.data.RingCount:000}";
         }
 
         private void BoostBar()
@@ -72,7 +83,7 @@ namespace SurgeEngine.Code.ActorHUD
             boostFill.fillAmount = boost.BoostEnergy / boost.maxBoostEnergy;            
             
             float boostBarWidth = Mathf.Lerp(minBoostBarSize.width, maxBoostBarSize.width, boost.maxBoostEnergy / 100);
-            boostBar.rectTransform.sizeDelta = new Vector2(boostBarWidth, 50);
+            boostBar.rectTransform.sizeDelta = new Vector2(boostBarWidth, boostBarYAspect);
         }
 
         private void Speedometer()
@@ -104,13 +115,21 @@ namespace SurgeEngine.Code.ActorHUD
             if (obj is Ring)
             {
                 RingHUD ringHUDInstance = Instantiate(ringHUDPrefab, obj.transform.position, obj.transform.rotation);
-                ringHUDInstance.Initialize(0.55f);
+                ringHUDInstance.Initialize(0.475f);
             }
         }
         
         public QuickTimeEventUI GetQTEUI()
         {
             return qteUI;
+        }
+        
+        private static string GetTimeInString(float time)
+        {
+            int milliseconds = Mathf.FloorToInt(time * 100f) % 100;
+            int seconds = Mathf.FloorToInt(time % 60);
+            int minutes = Mathf.FloorToInt(time / 60);
+            return $"{minutes:00}:{seconds:00}:{milliseconds:00}";
         }
     }
 

@@ -47,10 +47,8 @@ namespace SurgeEngine.Code.ActorSystem
         public bool RBHeld => _input.Gameplay.RBButton.IsPressed();
 
         private float _lastLookInputTime;
-
-#if UNITY_EDITOR
-        private bool lockCamera; // lock camera in editor if we press ESC
-#endif
+        
+        private bool lockCamera;
 
         public event Action<ButtonType> OnButtonPressed;
 
@@ -141,17 +139,12 @@ namespace SurgeEngine.Code.ActorSystem
 #if UNITY_EDITOR
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-                lockCamera = true;
+                CameraLock(true);
             }
 
             if (Input.GetMouseButtonDown(0))
             {
-                lockCamera = false;
-            }
-
-            if (lockCamera)
-            {
-                lookVector = Vector2.zero;
+                CameraLock(false);
             }
 #endif
 
@@ -222,6 +215,16 @@ namespace SurgeEngine.Code.ActorSystem
             if (actor.flags.HasFlag(FlagType.OutOfControl))
             {
                 return;
+            }
+        }
+
+        public void CameraLock(bool value)
+        {
+            lockCamera = value;
+            
+            if (lockCamera)
+            {
+                lookVector = Vector2.zero;
             }
         }
 

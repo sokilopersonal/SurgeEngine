@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using Cysharp.Threading.Tasks;
 using FMODUnity;
 using SurgeEngine.Code.ActorHUD;
 using SurgeEngine.Code.ActorSystem;
@@ -102,9 +100,8 @@ namespace SurgeEngine.Code.CommonObjects
                 specialJump.SetSpecialData(new SpecialJumpData(SpecialJumpType.TrickJumper));
                 specialJump.PlaySpecialAnimation(0);
                 
-                context.flags.AddFlag(new Flag(FlagType.OutOfControl, null));
-                context.flags.AddFlag(new Flag(FlagType.DontClampVerticalSpeed, null));
-
+                context.flags.AddFlag(new Flag(FlagType.OutOfControl, null, false));
+                
                 await Common.ChangeTimeScaleOverTime(_targetTimeScale, _timeScaleDuration);
                 
                 CreateQTEUI();
@@ -144,8 +141,6 @@ namespace SurgeEngine.Code.CommonObjects
 
         private void CreateSequence(int count, float time)
         {
-            
-            
             QTESequence sequence = new QTESequence
             {
                 time = time
@@ -178,6 +173,10 @@ namespace SurgeEngine.Code.CommonObjects
 
                     if (_buttonId >= sequence.buttons.Count) // all buttons pressed
                     {
+                        float additionalScore = 1000f * _qteSequences[_sequenceId].time * (1.0f - timer * 0.01f);
+                        int score = 1000;
+                        Common.AddScore(score + (int)additionalScore);
+                        
                         _sequenceId++;
                         RuntimeManager.PlayOneShot(qteSuccessSound);
                         
@@ -209,7 +208,7 @@ namespace SurgeEngine.Code.CommonObjects
             }
         }
 
-        private async void OnResultReceived(QTEResult result)
+        private void OnResultReceived(QTEResult result)
         {
             _qteSequences.Clear();
             _buttonId = 0;
@@ -225,8 +224,8 @@ namespace SurgeEngine.Code.CommonObjects
                 Common.ResetVelocity(ResetVelocityType.Both);
                 Vector3 arcPeak = Common.GetArcPosition(startPoint.position,
                     Common.GetCross(transform, firstPitch, true), firstSpeed);
-                await Common.ChangeRigidbodyPositionOverTime(context.rigidbody, arcPeak, 0.075f); // should snap Sonic to the arc point
-                context.animation.TransitionToState($"Trick {Random.Range(1, 8)}", 0f);
+                context.rigidbody.position = arcPeak; // should snap Sonic to the arc point
+                context.animation.TransitionToState($"Trick {Random.Range(1, 8)}", 0.2f);
                 
                 Vector3 impulse = Common.GetImpulseWithPitch(Vector3.Cross(-startPoint.right, Vector3.up), startPoint.right, secondPitch, secondSpeed);
                 Common.ApplyImpulse(impulse);

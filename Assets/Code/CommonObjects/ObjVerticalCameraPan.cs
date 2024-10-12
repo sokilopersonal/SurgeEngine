@@ -1,6 +1,5 @@
 ﻿using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.CameraSystem.Pawns;
-using UnityEngine;
 
 namespace SurgeEngine.Code.CommonObjects
 {
@@ -16,7 +15,7 @@ namespace SurgeEngine.Code.CommonObjects
         public override void SetPan()
         {
             var context = ActorContext.Context;
-            context.camera.stateMachine.SetState<VerticalCameraPan>().SetData(data);
+            context.camera.stateMachine.SetState<VerticalCameraPan>(allowSameState: true).SetData(data);
         }
         
         public override void RemovePan()

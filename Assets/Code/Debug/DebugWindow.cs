@@ -14,6 +14,7 @@ namespace SurgeEngine.Code.SurgeDebug
         [SerializeField] private TMP_Text currentVerticalSpeed;
         [SerializeField] private TMP_Text planarVelocity;
         [SerializeField] private TMP_Text state;
+        [SerializeField] private TMP_Text cameraState;
         [SerializeField] private TMP_Text isBoosting;
         [SerializeField] private TMP_Text outOfControl;
 
@@ -27,7 +28,8 @@ namespace SurgeEngine.Code.SurgeDebug
             currentSpeed.text = $"Current Speed: {actor.stats.currentSpeed}";
             currentVerticalSpeed.text = $"Current Vertical Speed: {actor.stats.currentVerticalSpeed}";
             planarVelocity.text = $"Planar Velocity: {actor.stats.planarVelocity}";
-            state.text = $"State: {actor.stateMachine.CurrentState.ToString().Replace(".Code.Parameters", "")}";
+            state.text = $"State: {actor.stateMachine.currentStateName}";
+            cameraState.text = $"Camera Pawn: {actor.camera.stateMachine.currentStateName}";
             isBoosting.text = $"FBoost State: {actor.stateMachine.GetSubState<FBoost>().Active}";
             outOfControl.text = $"Out Of Control: {actor.flags.HasFlag(FlagType.OutOfControl)} (Time: {actor.flags.GetFlag(FlagType.OutOfControl)?.GetTime():0.0} )";
         }

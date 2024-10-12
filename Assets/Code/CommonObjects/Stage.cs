@@ -1,4 +1,6 @@
-﻿using SurgeEngine.Code.ActorSystem;
+﻿using System;
+using System.Collections.Generic;
+using SurgeEngine.Code.ActorSystem;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -18,9 +20,13 @@ namespace SurgeEngine.Code.CommonObjects
             
             data = new StageData()
             {
-                stageName = SceneManager.GetActiveScene().name,
-                ringCount = 0
+                RingCount = 0
             };
+        }
+
+        private void Update()
+        {
+            data.Time += Time.deltaTime;
         }
 
         private void OnEnable()
@@ -37,14 +43,27 @@ namespace SurgeEngine.Code.CommonObjects
         {
             if (obj is Ring)
             {
-                data.ringCount += 1;
+                data.RingCount += 1;
             }
         }
     }
     
     public class StageData
     {
-        public string stageName;
-        public int ringCount;
+        public string StageName { get; private set; }
+        public int RingCount { get; set; }
+        public float Time { get; set; }
+
+        public int Score { get; set; }
+
+        public StageData()
+        {
+            StageName = SceneManager.GetActiveScene().name;
+        }
+        
+        public void AddScore(int value)
+        {
+            Score += value;
+        }
     }
 }

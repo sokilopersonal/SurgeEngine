@@ -1,4 +1,5 @@
 ﻿using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.CameraSystem.Pawns;
 using UnityEngine;
 
 namespace SurgeEngine.Code.CommonObjects
@@ -26,9 +27,13 @@ namespace SurgeEngine.Code.CommonObjects
         
         private void OnTriggerExit(Collider other)
         {
-            if (ActorContext.Context.gameObject == other.transform.parent.gameObject)
+            var context = ActorContext.Context;
+            if (context.gameObject == other.transform.parent.gameObject)
             {
-                target.RemovePan();
+                if (context.camera.stateMachine.CurrentState is not DefaultModernPawn)
+                {
+                    target.RemovePan();
+                }
             }
         }
 
