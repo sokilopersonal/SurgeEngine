@@ -12,7 +12,7 @@ namespace SurgeEngine.Code.Parameters
             base.OnEnter();
             
             _rigidbody.AddForce(actor.transform.up * stats.jumpParameters.jumpForce, ForceMode.Impulse);
-            _jumpTime = stats.jumpParameters.jumpStartTime;
+            _jumpTime = 0;
             
             actor.transform.rotation = Quaternion.Euler(0, actor.transform.rotation.eulerAngles.y, 0);
         }
@@ -32,11 +32,11 @@ namespace SurgeEngine.Code.Parameters
             {
                 if (input.JumpHeld)
                 {
-                    if (_jumpTime > 0)
+                    if (_jumpTime < stats.jumpParameters.jumpStartTime)
                     {
                         if (_rigidbody.linearVelocity.y > 0) 
                             _rigidbody.linearVelocity += actor.transform.up * (stats.jumpParameters.jumpHoldForce * dt);
-                        _jumpTime -= dt;
+                        _jumpTime += dt;
                     }
                 }
             }

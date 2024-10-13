@@ -92,6 +92,7 @@ MonoBehaviour:
   - {fileID: 4177744926151052449}
   - {fileID: 3100381796102152677}
   - {fileID: 8833603604032329403}
+  - {fileID: 1513749660063025106}
   subStates:
   - {fileID: 1674226627464673938}
   rigidbody: {fileID: 0}
@@ -131,7 +132,7 @@ MonoBehaviour:
   stateMachine:
     currentStateName: 
   target: {fileID: 2456151525592967584}
-  yFollowTime: 1
+  yFollowTime: 0.9
   zLagMax: 0.5
   zLagSmoothness: 2.5
   lookOffset: {x: 0, y: 0, z: 0}
@@ -383,6 +384,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10537bbdaf744484a584312d63000c13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  list: []
 --- !u!114 &2248048767635427180
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15726,6 +15728,53 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05134bc513c94da3a8a504c0f926c76a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &2530230456252653777
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5125966230828561208}
+  - component: {fileID: 1513749660063025106}
+  m_Layer: 3
+  m_Name: Drift
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5125966230828561208
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2530230456252653777}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6881262772616937385}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1513749660063025106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2530230456252653777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c98680e58afc43afa5de9685297885d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minTurnSpeed: 0.4
+  maxTurnSpeed: 3
+  centrifugalForce: 1.4
 --- !u!1 &2907928191315833355
 GameObject:
   m_ObjectHideFlags: 0
@@ -15821,7 +15870,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9798a18430ae4e009330171c556e093e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxBoostEnergy: 45
+  maxBoostEnergy: 100
   boostDrain: 8.45
   startBoostDrain: 5
   turnSpeedReduction: 0.415
@@ -15984,6 +16033,7 @@ GameObject:
   - component: {fileID: 2517253991312522078}
   - component: {fileID: 5117932096449080272}
   - component: {fileID: 4444228904308439761}
+  - component: {fileID: 8154153295917155542}
   m_Layer: 3
   m_Name: Audio
   m_TagString: Untagged
@@ -16174,6 +16224,32 @@ MonoBehaviour:
       Data3: 490460085
       Data4: -356576741
     Path: event:/Sonic/Slide
+--- !u!114 &8154153295917155542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3999411662334716339}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8082a43f06cf46aa99e8860c9edf9df6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  driftLoop:
+    Guid:
+      Data1: 1883864253
+      Data2: 1304131056
+      Data3: -20062794
+      Data4: 1685134361
+    Path: event:/Sonic/DriftLoop
+  driftVoice:
+    Guid:
+      Data1: -1955462286
+      Data2: 1314250213
+      Data3: -1547731804
+      Data4: 605440707
+    Path: event:/Sonic/DriftVoice
 --- !u!1 &4232932930214798659
 GameObject:
   m_ObjectHideFlags: 0
@@ -21598,6 +21674,7 @@ Transform:
   - {fileID: 8418570940656207057}
   - {fileID: 2947704958036040402}
   - {fileID: 680982311876978453}
+  - {fileID: 5125966230828561208}
   m_Father: {fileID: 2456151525592967584}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8831555719903261792

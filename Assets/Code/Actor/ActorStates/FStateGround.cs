@@ -45,19 +45,18 @@ namespace SurgeEngine.Code.Parameters
 
             float activateSpeed = stateMachine.GetState<FStateSliding>().slideDeactivationSpeed;
             activateSpeed += activateSpeed * 1.5f;
-
-            if (!_canSlide)
-            {
-                if (input.BReleased)
-                    _canSlide = true;
-            }
             
             if (input.BHeld)
             {
-                if (stats.currentSpeed > activateSpeed)
-                {
+                float dot = stats.moveDot;
+                float abs = Mathf.Abs(dot);
+                bool allowDrift = stats.currentSpeed > 10 && abs < 0.4f && !Mathf.Approximately(dot, 0f);
+                bool allowSlide = stats.currentSpeed > activateSpeed;
+                    
+                if (allowDrift)
+                    stateMachine.SetState<FStateDrift>();
+                else if (allowSlide)
                     stateMachine.SetState<FStateSliding>();
-                }
             }
             
             CalculateDetachState();
@@ -219,7 +218,8 @@ namespace SurgeEngine.Code.Parameters
         private void CalculateVelocity(float dt)
         {
             stats.turnRate = Mathf.Lerp(stats.turnRate, stats.moveParameters.turnSpeed
-                                                        * (stateMachine.GetSubState<FBoost>().Active ? stateMachine.GetSubState<FBoost>().turnSpeedReduction : 1), dt * stats.moveParameters.turnSmoothing);
+                                                        * (stateMachine.GetSubState<FBoost>().Active ? stateMachine.GetSubState<FBoost>().turnSpeedReduction : 1), 
+                dt * stats.moveParameters.turnSmoothing);
             var accelRateMod = stats.moveParameters.accelCurve.Evaluate(stats.planarVelocity.magnitude / stats.moveParameters.topSpeed);
             if (stats.planarVelocity.magnitude < stats.moveParameters.topSpeed)
                 stats.planarVelocity += stats.inputDir * (stats.moveParameters.accelRate * accelRateMod * dt);

@@ -16,6 +16,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
         protected float _y;
         private float _collisionDistance;
 
+        private bool _autoActive;
         private Vector3 _tempFollowPoint;
         private Vector3 _tempLookPoint;
         protected float _tempY;
@@ -114,6 +115,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
         {
             if (Common.InDelayTime(actor.input.GetLastLookInputTime(), _timeToStartFollow))
             {
+                _autoActive = true;
                 _followPower = _currentParameters.followPower;
                 
                 if (actor.stats.currentSpeed > 1f)
@@ -139,7 +141,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
                     _autoLookDirection.x = 0;
                 }
 
-                if (actor.stateMachine.CurrentState is FStateGround or FStateIdle)
+                if (actor.stateMachine.CurrentState is FStateGround or FStateIdle or FStateDrift or FStateSliding)
                 {
                     _autoLookDirection.y = 5f * (actor.stateMachine.GetSubState<FBoost>().Active ? 1.75f : 1f);
                     _autoLookDirection.y -= actor.stats.currentVerticalSpeed * 1.25f;
@@ -158,6 +160,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             }
             else
             {
+                _autoActive = false;
                 _autoLookDirection.x = 0;
                 _actorCamera.lookOffset.y = Mathf.Lerp(_actorCamera.lookOffset.y, 0f, SurgeMath.Smooth(0.1f));
             }
@@ -165,6 +168,25 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
 
         protected void LookAt()
         {
+            if (_autoActive)
+            {
+                if (actor.stateMachine.CurrentState is FStateDrift)
+                {
+                    Vector3 vel = Vector3.ClampMagnitude(actor.rigidbody.linearVelocity, 2f);
+                    _tempLookPoint = Vector3.Lerp(_tempLookPoint, vel, 16f * Time.deltaTime);
+                    _tempLookPoint.y = 0;
+                }
+                else
+                {
+                    _tempLookPoint = Vector3.Lerp(_tempLookPoint, Vector3.zero, 4f * Time.deltaTime);
+                }
+            }
+            else
+            {
+                _tempLookPoint = Vector3.Lerp(_tempLookPoint, Vector3.zero, 4f * Time.deltaTime);
+            }
+            
+            _tempFollowPoint += _tempLookPoint;
             SetRotation(_tempFollowPoint);
         }
 

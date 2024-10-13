@@ -37,7 +37,7 @@ namespace SurgeEngine.Code.Parameters.SonicSubStates
         private void Awake()
         {
             canAirBoost = true;
-            BoostEnergy = 0;
+            BoostEnergy = 100;
             
             actor.input.BoostAction += BoostAction;
         }
@@ -102,6 +102,11 @@ namespace SurgeEngine.Code.Parameters.SonicSubStates
                         }
                     }
                 }
+            }
+
+            if (actor.stateMachine.CurrentState is FStateDrift)
+            {
+                BoostEnergy += 4.5f * dt;
             }
 
             if (Active)

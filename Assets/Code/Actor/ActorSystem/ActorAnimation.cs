@@ -28,15 +28,15 @@ namespace SurgeEngine.Code.ActorSystem
                                           actor.stateMachine.currentStateName == "FStateJump" ||
                                           actor.stateMachine.currentStateName == "FStateSpecialJump" ||
                                           actor.stateMachine.currentStateName == "FStateAirBoost");
-            SetFloat(AnimatorParams.GroundSpeed, Mathf.Clamp(actor.stats.currentSpeed, 0, 25f));
+            SetFloat(AnimatorParams.GroundSpeed, Mathf.Clamp(actor.stats.currentSpeed, 0, 30f));
             SetFloat(AnimatorParams.VerticalSpeed, actor.stats.currentVerticalSpeed);
             SetFloat(AnimatorParams.TurnAngle, Mathf.Lerp(animator.GetFloat("TurnAngle"), 
-                -actor.transform.InverseTransformDirection(actor.stats.planarVelocity).x * 2f, 3.75f * Time.deltaTime));
+                Vector3.SignedAngle(actor.model.root.forward, actor.rigidbody.linearVelocity.normalized, actor.transform.up) * 0.2f, 4f * Time.deltaTime));
             
             float dot = Vector3.Dot(Vector3.up, actor.transform.right);
             SetFloat("WallDot", -dot);
             SetFloat("AbsWallDot", Mathf.Lerp(animator.GetFloat("AbsWallDot"), 
-                Mathf.Abs(actor.stats.groundAngle == 90 ? dot : 0), 1 * Time.deltaTime));
+                Mathf.Abs(Mathf.Approximately(actor.stats.groundAngle, 90) ? dot : 0), 1 * Time.deltaTime));
             
             SetBool("Skidding", actor.stats.skidding && !actor.stateMachine.GetSubState<FBoost>().Active);
         }
@@ -98,19 +98,34 @@ namespace SurgeEngine.Code.ActorSystem
                     TransitionToState("StompSquat", 0.1f);
                 }
             }
-            
             if (obj is FStateGround)
             {
-                if (prev is FStateIdle or FStateSliding)
+                if (prev is not FStateDrift)
                 {
-                    TransitionToState(AnimatorParams.RunCycle, 0.2f);
+                    if (prev is FStateIdle or FStateSliding)
+                    {
+                        TransitionToState(AnimatorParams.RunCycle, 0.2f);
+                    }
+                    else if (prev is FStateAir or FStateSpecialJump)
+                    {
+                        TransitionToState(AnimatorParams.RunCycle, 0f);
+                    }
                 }
-                else if (prev is FStateAir or FStateSpecialJump)
+                else
                 {
-                    TransitionToState(AnimatorParams.RunCycle, 0f);
+                    float angle = animator.GetFloat("TurnAngle");
+                    if (angle < -0.1f)
+                    {
+                        TransitionToState("Drift_EL", 0.2f);
+                    }
+                    else if (angle > 0.1f)
+                    {
+                        TransitionToState("Drift_ER", 0.2f);
+                    }
+
+                    _currentAnimation = AnimatorParams.RunCycle;
                 }
             }
-            
             if (obj is FStateAir && prev is not FStateSpecialJump and not FStateAirBoost)
             {
                 TransitionToState(AnimatorParams.AirCycle, prev switch
@@ -120,30 +135,44 @@ namespace SurgeEngine.Code.ActorSystem
                     _ => 0.2f
                 });
             }
-
             if (obj is FStateSliding)
             {
                 TransitionToState("Sliding", 0.2f, true);
             }
-            
             if (obj is FStateSit)
             {
                 TransitionToState("Sit", 0.2f, true);
             }
-            
-            if (obj is FStateJump or FStateHoming)
+            if (obj is FStateJump)
             {
                 TransitionToState("Ball", 0f, true);
             }
-
+            if (obj is FStateHoming)
+            {
+                TransitionToState("Ball", 0f, true);
+            }
             if (obj is FStateStomp)
             {
                 TransitionToState("Stomp", 0.1f, true);
             }
-
             if (obj is FStateAirBoost)
             {
                 TransitionToState("Air Boost", 0f, true);
+            }
+
+            if (obj is FStateDrift)
+            {
+                float angle = animator.GetFloat("TurnAngle");
+                if (angle < 0)
+                {
+                    TransitionToState("Drift_SL", 0.2f, true);
+                }
+                else if (angle > 0)
+                {
+                    TransitionToState("Drift_SR", 0.2f, true);
+                }
+                
+                _currentAnimation = "Drift";
             }
         }
     }
