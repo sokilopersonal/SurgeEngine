@@ -30,8 +30,12 @@ namespace SurgeEngine.Code.ActorSystem
                                           actor.stateMachine.currentStateName == "FStateAirBoost");
             SetFloat(AnimatorParams.GroundSpeed, Mathf.Clamp(actor.stats.currentSpeed, 0, 30f));
             SetFloat(AnimatorParams.VerticalSpeed, actor.stats.currentVerticalSpeed);
-            SetFloat(AnimatorParams.TurnAngle, Mathf.Lerp(animator.GetFloat("TurnAngle"), 
-                Vector3.SignedAngle(actor.model.root.forward, actor.rigidbody.linearVelocity.normalized, actor.transform.up) * 0.2f, 4f * Time.deltaTime));
+
+            float angle = Vector3.SignedAngle(actor.model.root.forward, actor.rigidbody.linearVelocity.normalized,
+                actor.transform.up) * 0.2f;
+            
+            SetFloat(AnimatorParams.SmoothTurnAngle, Mathf.Lerp(animator.GetFloat(AnimatorParams.SmoothTurnAngle), angle, 4f * Time.deltaTime));
+            SetFloat(AnimatorParams.TurnAngle, angle);
             
             float dot = Vector3.Dot(Vector3.up, actor.transform.right);
             SetFloat("WallDot", -dot);
@@ -113,17 +117,17 @@ namespace SurgeEngine.Code.ActorSystem
                 }
                 else
                 {
-                    float angle = animator.GetFloat("TurnAngle");
-                    if (angle < -0.1f)
+                    // Drift exit 
+                    
+                    float angle = animator.GetFloat(AnimatorParams.TurnAngle);
+                    if (angle < 0f)
                     {
                         TransitionToState("Drift_EL", 0.2f);
                     }
-                    else if (angle > 0.1f)
+                    else if (angle > 0f)
                     {
                         TransitionToState("Drift_ER", 0.2f);
                     }
-
-                    _currentAnimation = AnimatorParams.RunCycle;
                 }
             }
             if (obj is FStateAir && prev is not FStateSpecialJump and not FStateAirBoost)
@@ -162,7 +166,9 @@ namespace SurgeEngine.Code.ActorSystem
 
             if (obj is FStateDrift)
             {
-                float angle = animator.GetFloat("TurnAngle");
+                // Drift start
+                
+                float angle = animator.GetFloat(AnimatorParams.TurnAngle);
                 if (angle < 0)
                 {
                     TransitionToState("Drift_SL", 0.2f, true);
@@ -172,7 +178,7 @@ namespace SurgeEngine.Code.ActorSystem
                     TransitionToState("Drift_SR", 0.2f, true);
                 }
                 
-                _currentAnimation = "Drift";
+                _currentAnimation = AnimatorParams.Drift;
             }
         }
     }
@@ -184,7 +190,9 @@ namespace SurgeEngine.Code.ActorSystem
         public static readonly int VerticalSpeed = Animator.StringToHash("VerticalSpeed");
         public static readonly int GroundSpeed = Animator.StringToHash("GroundSpeed");
         public static readonly int TurnAngle = Animator.StringToHash("TurnAngle");
+        public static readonly int SmoothTurnAngle = Animator.StringToHash("SmoothTurnAngle");
         public static readonly string RunCycle = "Run Cycle";
         public static readonly string AirCycle = "Air Cycle";
+        public static readonly string Drift = "Drift";
     }
 }

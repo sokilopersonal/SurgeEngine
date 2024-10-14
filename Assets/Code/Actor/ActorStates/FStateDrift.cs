@@ -1,14 +1,17 @@
 ﻿using SurgeEngine.Code.Custom;
+using SurgeEngine.Code.Parameters.SonicSubStates;
+using SurgeEngine.Code.SonicSubStates.Boost;
 using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
 using Vector3 = UnityEngine.Vector3;
 
 namespace SurgeEngine.Code.Parameters
 {
-    public class FStateDrift : FStateMove
+    public class FStateDrift : FStateMove, IBoostHandler
     {
-        [SerializeField] private float minTurnSpeed;
-        [SerializeField] private float maxTurnSpeed;
+        [SerializeField] private float smoothness = 3;
+        [SerializeField] private float deactivateSpeed = 10;
+        [SerializeField] private float maxSpeed = 2;
         [SerializeField] private float centrifugalForce;
 
         private float _driftXDirection;
@@ -39,7 +42,7 @@ namespace SurgeEngine.Code.Parameters
                 _ignoreTimer = 0;
             }
             
-            if (!input.BHeld || _rigidbody.linearVelocity.magnitude < 10f || _ignoreTimer > 0.15f)
+            if (!input.BHeld || _rigidbody.linearVelocity.magnitude < deactivateSpeed || _ignoreTimer > 0.15f)
                 stateMachine.SetState<FStateGround>(0.1f);
         }
 
@@ -56,7 +59,7 @@ namespace SurgeEngine.Code.Parameters
                 _rigidbody.position = point + normal;
                 stats.transformNormal = Vector3.Slerp(stats.transformNormal, normal, dt * 14f);
                 
-                _driftXDirection = Mathf.Lerp(_driftXDirection, input.moveVector.x, minTurnSpeed);
+                _driftXDirection = Mathf.Lerp(_driftXDirection, input.moveVector.x, smoothness);
             
                 actor.model.RotateBody(stats.groundNormal);
                 
@@ -78,7 +81,7 @@ namespace SurgeEngine.Code.Parameters
                 Vector3 driftVelocity = angle * _rigidbody.linearVelocity;
                 Vector3 additive = driftVelocity.normalized *
                                    ((1 - _rigidbody.linearVelocity.magnitude) * dt);
-                if (additive.magnitude < maxTurnSpeed * 0.2f)
+                if (additive.magnitude < maxSpeed * 0.2f)
                     driftVelocity -= additive * 0.2f;
                 _rigidbody.linearVelocity = driftVelocity;
                 
@@ -87,6 +90,40 @@ namespace SurgeEngine.Code.Parameters
             else
             {
                 stateMachine.SetState<FStateAir>(0.1f);
+            }
+        }
+
+        public void BoostHandle()
+        {
+            float dt = Time.deltaTime;
+            FBoost boost = stateMachine.GetSubState<FBoost>();
+            if (boost.Active && stats.currentSpeed < boost.startForce)
+            {
+                _rigidbody.linearVelocity = _rigidbody.transform.forward * boost.startForce;
+                boost.restoringTopSpeed = true;
+            }
+    
+            if (boost.Active)
+            {
+                float maxSpeed = stats.moveParameters.maxSpeed * boost.maxSpeedMultiplier;
+                if (stats.currentSpeed < maxSpeed) _rigidbody.linearVelocity += _rigidbody.linearVelocity.normalized * (boost.boostForce * dt);
+                    
+            }
+            else if (boost.restoringTopSpeed)
+            {
+                float normalMaxSpeed = stats.moveParameters.topSpeed;
+                if (stats.currentSpeed > normalMaxSpeed)
+                {
+                    _rigidbody.linearVelocity = Vector3.MoveTowards(
+                        _rigidbody.linearVelocity, 
+                        _rigidbody.transform.forward * normalMaxSpeed, 
+                        dt * boost.restoreSpeed
+                    );
+                }
+                else if (stats.currentSpeed * 0.99f < normalMaxSpeed)
+                {
+                    boost.restoringTopSpeed = false;
+                }
             }
         }
     }

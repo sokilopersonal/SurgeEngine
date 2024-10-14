@@ -172,7 +172,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             {
                 if (actor.stateMachine.CurrentState is FStateDrift)
                 {
-                    Vector3 vel = Vector3.ClampMagnitude(actor.rigidbody.linearVelocity, 2f);
+                    Vector3 vel = Vector3.ClampMagnitude(actor.rigidbody.linearVelocity, 2.5f);
                     _tempLookPoint = Vector3.Lerp(_tempLookPoint, vel, 16f * Time.deltaTime);
                     _tempLookPoint.y = 0;
                 }

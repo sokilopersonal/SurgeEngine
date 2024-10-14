@@ -1,6 +1,7 @@
 ﻿using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.Parameters.SonicSubStates;
+using SurgeEngine.Code.SonicSubStates.Boost;
 using UnityEngine;
 using UnityEngine.Splines;
 using Quaternion = UnityEngine.Quaternion;
@@ -8,7 +9,7 @@ using Vector3 = UnityEngine.Vector3;
 
 namespace SurgeEngine.Code.Parameters
 {
-    public class FStateGround : FStateMove
+    public class FStateGround : FStateMove, IBoostHandler
     {
         [SerializeField] private Vector3 _groundCheckOffset;
 
@@ -19,7 +20,6 @@ namespace SurgeEngine.Code.Parameters
         private float _detachTimer;
         private bool _canAttach;
         private string _surfaceTag;
-        private bool _canSlide = true;
 
         public override void OnEnter()
         {
@@ -36,8 +36,6 @@ namespace SurgeEngine.Code.Parameters
         {
             base.OnTick(dt);
             
-            BoostHandle(dt);
-
             if (actor.input.JumpPressed)
             {
                 actor.stateMachine.SetState<FStateJump>(0.1f);
@@ -182,39 +180,6 @@ namespace SurgeEngine.Code.Parameters
             }
         }
 
-        private void BoostHandle(float dt)
-        {
-            FBoost boost = stateMachine.GetSubState<FBoost>();
-            if (boost.Active && stats.currentSpeed < boost.startForce)
-            {
-                _rigidbody.linearVelocity = _rigidbody.transform.forward * boost.startForce;
-                boost.restoringTopSpeed = true;
-            }
-    
-            if (boost.Active)
-            {
-                float maxSpeed = stats.moveParameters.maxSpeed * boost.maxSpeedMultiplier;
-                if (stats.currentSpeed < maxSpeed) _rigidbody.linearVelocity += _rigidbody.linearVelocity.normalized * (boost.boostForce * dt);
-                    
-            }
-            else if (boost.restoringTopSpeed)
-            {
-                float normalMaxSpeed = stats.moveParameters.topSpeed;
-                if (stats.currentSpeed > normalMaxSpeed)
-                {
-                    _rigidbody.linearVelocity = Vector3.MoveTowards(
-                        _rigidbody.linearVelocity, 
-                        _rigidbody.transform.forward * normalMaxSpeed, 
-                        dt * boost.restoreSpeed
-                    );
-                }
-                else if (stats.currentSpeed * 0.99f < normalMaxSpeed)
-                {
-                    boost.restoringTopSpeed = false;
-                }
-            }
-        }
-
         private void CalculateVelocity(float dt)
         {
             stats.turnRate = Mathf.Lerp(stats.turnRate, stats.moveParameters.turnSpeed
@@ -261,6 +226,40 @@ namespace SurgeEngine.Code.Parameters
             //_rigidbody.position = Vector3.Slerp(_rigidbody.position, point + normal, 20 * Time.fixedDeltaTime);
         }
 
+        public void BoostHandle()
+        {
+            float dt = Time.deltaTime;
+            FBoost boost = stateMachine.GetSubState<FBoost>();
+            if (boost.Active && stats.currentSpeed < boost.startForce)
+            {
+                _rigidbody.linearVelocity = _rigidbody.transform.forward * boost.startForce;
+                boost.restoringTopSpeed = true;
+            }
+    
+            if (boost.Active)
+            {
+                float maxSpeed = stats.moveParameters.maxSpeed * boost.maxSpeedMultiplier;
+                if (stats.currentSpeed < maxSpeed) _rigidbody.linearVelocity += _rigidbody.linearVelocity.normalized * (boost.boostForce * dt);
+                    
+            }
+            else if (boost.restoringTopSpeed)
+            {
+                float normalMaxSpeed = stats.moveParameters.topSpeed;
+                if (stats.currentSpeed > normalMaxSpeed)
+                {
+                    _rigidbody.linearVelocity = Vector3.MoveTowards(
+                        _rigidbody.linearVelocity, 
+                        _rigidbody.transform.forward * normalMaxSpeed, 
+                        dt * boost.restoreSpeed
+                    );
+                }
+                else if (stats.currentSpeed * 0.99f < normalMaxSpeed)
+                {
+                    boost.restoringTopSpeed = false;
+                }
+            }
+        }
+
         private void SlopePrediction(float dt)
         {
             var lowerValue = 0.43f;
@@ -292,7 +291,7 @@ namespace SurgeEngine.Code.Parameters
                 }
             }
         }
-         
+
         private void HighSpeedFix(float dt)
         {
             var predictedPosition = _rigidbody.position;
@@ -341,7 +340,7 @@ namespace SurgeEngine.Code.Parameters
                 _rigidbody.position = point + normal;
             }
         }
-        
+
         private void ConvertAirToGroundVelocity()
         {
             if (Physics.Raycast(actor.transform.position, _rigidbody.linearVelocity.normalized, out RaycastHit velocityFix, _rigidbody.linearVelocity.magnitude, stats.moveParameters.castParameters.collisionMask))
@@ -380,8 +379,10 @@ namespace SurgeEngine.Code.Parameters
             }
         }
 
-        public void SetAttachState(bool value) => _canAttach = value; 
+        public void SetAttachState(bool value) => _canAttach = value;
+
         public bool GetAttachState() => _canAttach;
+
         public string GetSurfaceTag() => _surfaceTag;
 
         private void OnDrawGizmosSelected()

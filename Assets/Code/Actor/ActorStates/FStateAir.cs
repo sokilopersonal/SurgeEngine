@@ -2,11 +2,12 @@
 using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.Parameters.SonicSubStates;
+using SurgeEngine.Code.SonicSubStates.Boost;
 using UnityEngine;
 
 namespace SurgeEngine.Code.Parameters
 {
-    public class FStateAir : FStateMove
+    public class FStateAir : FStateMove, IBoostHandler
     {
         [SerializeField] private AirParameters airParameters;
         
@@ -40,14 +41,6 @@ namespace SurgeEngine.Code.Parameters
             
             CalculateAirTime(dt);
             stateMachine.GetState<FStateGround>().CalculateDetachState();
-
-            if (!actor.flags.HasFlag(FlagType.OutOfControl))
-            {
-                if (input.BoostPressed && stateMachine.GetSubState<FBoost>().CanBoost())
-                {
-                    stateMachine.SetState<FStateAirBoost>();
-                }
-            }
             
             if (GetAirTime() > 0.1f)
             {
@@ -146,13 +139,19 @@ namespace SurgeEngine.Code.Parameters
             }
         }
 
-        private void OnDrawGizmos()
+        public void BoostHandle()
         {
-            
+            if (!actor.flags.HasFlag(FlagType.OutOfControl))
+            {
+                if (input.BoostPressed && stateMachine.GetSubState<FBoost>().CanBoost())
+                {
+                    stateMachine.SetState<FStateAirBoost>();
+                }
+            }
         }
 
         protected float GetAirTime() => _airTime;
-        
+
         private void CalculateAirTime(float dt)
         {
             _airTime += dt;
