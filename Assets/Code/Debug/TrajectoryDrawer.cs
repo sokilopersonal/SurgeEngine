@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using SurgeEngine.Code.CommonObjects;
+using UnityEngine;
 
 namespace SurgeEngine.Code.SurgeDebug
 {
@@ -6,103 +7,45 @@ namespace SurgeEngine.Code.SurgeDebug
     {
         public static void DrawTrajectory(Vector3 startPosition, Vector3 direction, Color color, float impulse, float keepVelocity = 0f)
         {
-            Vector3 impulseDirection = direction;
-
             int trajectoryPoints = 240;
             float timeStep = 0.1f;
+            Vector3 gravity = Physics.gravity.y * Vector3.up;
             int layerMask = 1 << LayerMask.NameToLayer("Default");
-
-            Vector3 position = startPosition;
-            Vector3 velocity = impulseDirection.normalized * impulse;
-            Vector3 gravity = -35 * Vector3.up;
-            Vector3 endPosition = startPosition;
-
-            float totalTime = 0f;
-
-            for (int j = 0; j < trajectoryPoints; j++)
-            {
-                totalTime += timeStep;
-        
-                Vector3 effectiveGravity = totalTime < keepVelocity ? Vector3.zero : gravity;
-                endPosition = position + velocity * timeStep + 0.5f * effectiveGravity * Mathf.Pow(timeStep, 2);
-        
-                Color drawColor = totalTime < keepVelocity ? Color.red : color;
-
-                if (Physics.Linecast(position, endPosition, out RaycastHit hit, layerMask, QueryTriggerInteraction.Ignore))
-                {
-                    Debug.DrawLine(position, hit.point, drawColor);
-                    endPosition = hit.point;
-                    break;
-                }
-
-                Debug.DrawLine(position, endPosition, drawColor);
-                position = endPosition;
-        
-                velocity += effectiveGravity * timeStep;
-            }
-        }
-        
-        public static void DrawTrickTrajectory(Vector3 startPosition, Vector3 direction, Color color, float impulse)
-        {
-            Vector3 impulseDirection = direction;
-
-            int trajectoryPoints = 240;
-            float timeStep = 0.1f;
-            int layerMask = 1 << LayerMask.NameToLayer("Default");
-
-            Vector3 position = startPosition;
-            Vector3 velocity = impulseDirection.normalized * impulse;
-            Vector3 gravity = -35f * Vector3.up;
-
-            float totalTime = 0f;
             
-            for (int j = 0; j < trajectoryPoints; j++)
+            Trajectory.Calculate(startPosition, direction, impulse, timeStep, trajectoryPoints, gravity, out Vector3[] positions, out Vector3[] velocities);
+
+            for (int i = 0; i < positions.Length - 1; i++)
             {
-                totalTime += timeStep;
-                
-                Vector3 newPosition = position + velocity * timeStep + 0.5f * gravity * Mathf.Pow(timeStep, 2);
-        
                 Color drawColor = color;
 
-                if (Physics.Linecast(position, newPosition, out RaycastHit hit, layerMask, QueryTriggerInteraction.Ignore))
+                if (Physics.Linecast(positions[i], positions[i + 1], out RaycastHit hit, layerMask, QueryTriggerInteraction.Ignore))
                 {
-                    Debug.DrawLine(position, hit.point, drawColor);
+                    Debug.DrawLine(positions[i], hit.point, drawColor);
                     break;
                 }
 
-                Debug.DrawLine(position, newPosition, drawColor);
-                position = newPosition;
-        
-                velocity += gravity * timeStep;
+                Debug.DrawLine(positions[i], positions[i + 1], drawColor);
             }
         }
-        
-        // public static void DrawTrajectory(Vector3 startPosition, Vector3 direction, float impulse, Color color)
-        // {
-        //     Vector3 impulseDirection = direction;
-        //
-        //     int trajectoryPoints = 80;
-        //     float timeStep = 0.1f;
-        //     int layerMask = 1 << LayerMask.NameToLayer("Default");
-        //
-        //     Vector3 position = startPosition;
-        //     Vector3 velocity = impulseDirection.normalized * impulse;
-        //     Vector3 gravity = -27 * Vector3.up;
-        //
-        //     for (int j = 0; j < trajectoryPoints; j++)
-        //     {
-        //         Vector3 newPosition = position + velocity * timeStep + 0.5f * gravity * Mathf.Pow(timeStep, 2);
-        //     
-        //         if (Physics.Linecast(position, newPosition, out RaycastHit hit, layerMask))
-        //         {
-        //             Debug.DrawLine(position, hit.point, color);
-        //             break;
-        //         }
-        //
-        //         Debug.DrawLine(position, newPosition, color);
-        //         position = newPosition;
-        //         velocity += gravity * timeStep;
-        //     }
-        // }
+
+        public static void DrawTrickTrajectory(Vector3 startPosition, Vector3 direction, Color color, float impulse)
+        {
+            int trajectoryPoints = 240;
+            float timeStep = 0.1f;
+            int layerMask = 1 << LayerMask.NameToLayer("Default");
+            
+            Trajectory.CalculateTrick(startPosition, direction, impulse, timeStep, trajectoryPoints, out Vector3[] positions, out Vector3[] velocities);
+
+            for (int i = 0; i < positions.Length - 1; i++)
+            {
+                if (Physics.Linecast(positions[i], positions[i + 1], out RaycastHit hit, layerMask, QueryTriggerInteraction.Ignore))
+                {
+                    Debug.DrawLine(positions[i], hit.point, color);
+                    break;
+                }
+
+                Debug.DrawLine(positions[i], positions[i + 1], color);
+            }
+        }
     }
 }

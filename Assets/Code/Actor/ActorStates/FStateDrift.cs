@@ -77,12 +77,13 @@ namespace SurgeEngine.Code.Parameters
                     _rigidbody.linearVelocity += slopeForce * Time.fixedDeltaTime;
                 }
                 
-                Quaternion angle = Quaternion.AngleAxis(_driftXDirection * centrifugalForce, stats.groundNormal);
+                float boostForce = stateMachine.GetSubState<FBoost>().Active ? 0.5f : 1f;
+                Quaternion angle = Quaternion.AngleAxis(_driftXDirection * centrifugalForce * boostForce, stats.groundNormal);
                 Vector3 driftVelocity = angle * _rigidbody.linearVelocity;
                 Vector3 additive = driftVelocity.normalized *
                                    ((1 - _rigidbody.linearVelocity.magnitude) * dt);
                 if (additive.magnitude < maxSpeed * 0.2f)
-                    driftVelocity -= additive * 0.2f;
+                    driftVelocity -= additive * 0.75f;
                 _rigidbody.linearVelocity = driftVelocity;
                 
                 _rigidbody.linearVelocity = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, normal);

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.Custom;
@@ -47,12 +48,13 @@ namespace SurgeEngine.Code.ActorSystem
         public bool RBHeld => _input.Gameplay.RBButton.IsPressed();
 
         private float _lastLookInputTime;
+        private bool _lockCamera;
         
-        private bool lockCamera;
+        private InputDevice _device;
+        private Dictionary<string, string> _translatedDeviceNames;
 
         public event Action<ButtonType> OnButtonPressed;
 
-        public bool isKeyboard;
 
         private void Awake()
         {
@@ -60,6 +62,12 @@ namespace SurgeEngine.Code.ActorSystem
             _input.Enable();
 
             _lastLookInputTime = Time.time - 1f;
+
+            _translatedDeviceNames = new Dictionary<string, string>()
+            {
+                ["Keyboard"] = "Keyboard",
+                ["XInputControllerWindows"] = "Xbox",
+            };
         }
 
         private void OnEnable()
@@ -83,6 +91,9 @@ namespace SurgeEngine.Code.ActorSystem
             
             _input.Gameplay.RBButton.started += RBInput;
             _input.Gameplay.RBButton.canceled += RBInput;
+
+            _input.Gameplay.Start.started += StartInput;
+            _input.Gameplay.Start.canceled += StartInput;
         }
 
         private void OnDisable()
@@ -109,6 +120,9 @@ namespace SurgeEngine.Code.ActorSystem
             
             _input.Gameplay.RBButton.started -= RBInput;
             _input.Gameplay.RBButton.canceled -= RBInput;
+            
+            _input.Gameplay.Start.started -= StartInput;
+            _input.Gameplay.Start.canceled -= StartInput;
         }
 
         private void Update()
@@ -116,24 +130,27 @@ namespace SurgeEngine.Code.ActorSystem
             var temp = _input.Gameplay.Movement.ReadValue<Vector2>();
             moveVector = new Vector3(temp.x, 0, temp.y);
             lookVector = _input.Gameplay.Camera.ReadValue<Vector2>();
+
+            if (lookVector.sqrMagnitude > 0.1f)
+            {
+                _lastLookInputTime = Time.time;
+            }
             
             var devices = InputSystem.devices;
 
             foreach (var device in devices)
             {
-                if (device is Keyboard && device.wasUpdatedThisFrame)
+                if (device.wasUpdatedThisFrame)
                 {
-                    isKeyboard = true;
+                    if (device is Keyboard)
+                    {
+                        _device = device;
+                    }
+                    else if (device is Gamepad)
+                    {
+                        _device = device;
+                    }
                 }
-                else if (device is Gamepad && device.wasUpdatedThisFrame)
-                {
-                    isKeyboard = false;
-                }
-            }
-
-            if (lookVector.sqrMagnitude > 0.1f)
-            {
-                _lastLookInputTime = Time.time;
             }
 
 #if UNITY_EDITOR
@@ -145,6 +162,11 @@ namespace SurgeEngine.Code.ActorSystem
             if (Input.GetMouseButtonDown(0))
             {
                 CameraLock(false);
+            }
+            
+            if (_lockCamera)
+            {
+                lookVector = Vector2.zero;
             }
 #endif
 
@@ -218,11 +240,22 @@ namespace SurgeEngine.Code.ActorSystem
             }
         }
 
+        private void StartInput(InputAction.CallbackContext obj)
+        {
+            if (obj.started)
+            {
+                var dv = obj.control.device;
+                Debug.Log(dv.name);
+                
+                _device = dv;
+            }
+        }
+
         public void CameraLock(bool value)
         {
-            lockCamera = value;
+            _lockCamera = value;
             
-            if (lockCamera)
+            if (_lockCamera)
             {
                 lookVector = Vector2.zero;
             }
@@ -232,5 +265,8 @@ namespace SurgeEngine.Code.ActorSystem
         {
             return _lastLookInputTime;
         }
+        
+        public InputDevice GetDevice() { return _device; }
+        public string GetTranslatedDeviceName(InputDevice device) { return _translatedDeviceNames[device.name]; }
     }
 }

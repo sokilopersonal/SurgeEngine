@@ -28,11 +28,6 @@ namespace SurgeEngine.Code.Parameters
         public override void OnExit()
         {
             base.OnExit();
-
-            if (actor.flags.HasFlag(FlagType.DontClampVerticalSpeed))
-            {
-                actor.flags.RemoveFlag(FlagType.DontClampVerticalSpeed);
-            }
         }
 
         public override void OnTick(float dt)
@@ -87,7 +82,7 @@ namespace SurgeEngine.Code.Parameters
                 Movement(dt);
                 Rotate(dt);
 
-                Common.ApplyGravity(airParameters.gravity, dt);
+                Common.ApplyGravity(stats.gravity, dt);
             }
             else
             {

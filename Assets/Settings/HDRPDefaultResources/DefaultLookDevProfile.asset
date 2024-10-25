@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: DefaultLookDevProfile
   m_EditorClassIdentifier: 
   components:
-  - {fileID: 8761387877531654226}
-  - {fileID: 1902828633788537306}
-  - {fileID: 1880163708194025631}
-  - {fileID: 2340290907100754200}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 9170010726076846061}
 --- !u!114 &1880163708194025631
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -111,6 +112,7 @@ MonoBehaviour:
   m_Name: HDShadowSettings
   m_EditorClassIdentifier: 
   active: 1
+  interCascadeBorders: 1
   maxShadowDistance:
     m_OverrideState: 1
     m_Value: 25
@@ -257,3 +259,25 @@ MonoBehaviour:
   maxNits:
     m_OverrideState: 0
     m_Value: 1000
+--- !u!114 &9170010726076846061
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a76fd08475e21554b8f284f723dd7cf8, type: 3}
+  m_Name: WaterRendering
+  m_EditorClassIdentifier: 
+  active: 1
+  enable:
+    m_OverrideState: 1
+    m_Value: 1
+  triangleSize:
+    m_OverrideState: 1
+    m_Value: 30
+  ambientProbeDimmer:
+    m_OverrideState: 1
+    m_Value: 0.5

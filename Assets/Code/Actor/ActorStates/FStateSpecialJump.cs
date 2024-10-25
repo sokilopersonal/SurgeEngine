@@ -64,10 +64,10 @@ namespace SurgeEngine.Code.Parameters
             switch (_data.type)
             {
                 case SpecialJumpType.JumpBoard:
-                    Common.ApplyGravity(35, dt);
+                    Common.ApplyGravity(stats.gravity, dt);
                     break;
                 case SpecialJumpType.TrickJumper:
-                    Common.ApplyGravity(35, dt);
+                    Common.ApplyGravity(stats.gravity, dt);
                     break;
                 case SpecialJumpType.Spring:
                     if (_keepVelocityTimer > 0)

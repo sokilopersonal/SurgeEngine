@@ -222,7 +222,7 @@ namespace SurgeEngine.Code.CommonObjects
                 context.flags.AddFlag(new Flag(FlagType.OutOfControl, null, true, secondOutOfControl));
 
                 Common.ResetVelocity(ResetVelocityType.Both);
-                Vector3 arcPeak = Common.GetArcPosition(startPoint.position,
+                Vector3 arcPeak = Trajectory.GetArcPosition(startPoint.position,
                     Common.GetCross(transform, firstPitch, true), firstSpeed);
                 context.rigidbody.position = arcPeak; // should snap Sonic to the arc point
                 context.animation.TransitionToState($"Trick {Random.Range(1, 8)}", 0.2f);
@@ -267,7 +267,7 @@ namespace SurgeEngine.Code.CommonObjects
             if (startPoint == null) return;
             
             TrajectoryDrawer.DrawTrickTrajectory(startPoint.position, Common.GetCross(startPoint, firstPitch, true), Color.red, firstSpeed);
-            Vector3 peakPosition = Common.GetArcPosition(startPoint.position, Common.GetCross(startPoint, firstPitch, true), firstSpeed);
+            Vector3 peakPosition = Trajectory.GetArcPosition(startPoint.position, Common.GetCross(startPoint, firstPitch, true), firstSpeed);
             TrajectoryDrawer.DrawTrickTrajectory(peakPosition, Common.GetCross(startPoint, secondPitch, true), Color.green, secondSpeed);
         }
     }

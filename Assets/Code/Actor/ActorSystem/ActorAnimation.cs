@@ -31,7 +31,9 @@ namespace SurgeEngine.Code.ActorSystem
             SetFloat(AnimatorParams.GroundSpeed, Mathf.Clamp(actor.stats.currentSpeed, 0, 30f));
             SetFloat(AnimatorParams.VerticalSpeed, actor.stats.currentVerticalSpeed);
 
-            float angle = Vector3.SignedAngle(actor.model.root.forward, actor.rigidbody.linearVelocity.normalized,
+            Vector3 vel = actor.rigidbody.linearVelocity.normalized;
+            vel.y = 0;
+            float angle = Vector3.SignedAngle(actor.model.root.forward, vel,
                 actor.transform.up) * 0.2f;
             
             SetFloat(AnimatorParams.SmoothTurnAngle, Mathf.Lerp(animator.GetFloat(AnimatorParams.SmoothTurnAngle), angle, 4f * Time.deltaTime));

@@ -33,7 +33,7 @@ Material:
   - TransparentDepthPrepass
   - TransparentDepthPostpass
   - RayTracingPrepass
-  m_LockedProperties: _RimLightPower
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -612,8 +612,8 @@ Material:
     - _RequireSplitLighting: 0
     - _RimLightEnable: 1
     - _RimLightPower: 15
-    - _RimLightShine: 500
-    - _Smoothness: 0.85
+    - _RimLightShine: 100
+    - _Smoothness: 0.5
     - _Smoothness0: 0.5
     - _Smoothness1: 0.5
     - _Smoothness2: 0.5
@@ -718,8 +718,8 @@ Material:
     - _BaseColor2: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColor3: {r: 1, g: 1, b: 1, a: 1}
     - _COAT_COLOR: {r: 0, g: 0, b: 0, a: 0}
-    - _Color: {r: 1, g: 0.79322517, b: 0, a: 1}
-    - _ColorB: {r: 2.9960787, g: 2.9960787, b: 2.9960787, a: 0}
+    - _Color: {r: 1, g: 0.709893, b: 0.09019607, a: 1}
+    - _ColorB: {r: 2.301887, g: 2.301887, b: 2.301887, a: 0}
     - _DiffusionProfileAsset: {r: 0, g: 0, b: 0, a: 0}
     - _DiffusionProfileAsset0: {r: 0, g: 0, b: 0, a: 0}
     - _DiffusionProfileAsset1: {r: 0, g: 0, b: 0, a: 0}
@@ -733,7 +733,7 @@ Material:
     - _InvPrimScale: {r: 1, g: 1, b: 0, a: 0}
     - _IridescenceThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
     - _REFLECTIONS_COLOR: {r: 1, g: 1, b: 1, a: 1}
-    - _RimLightColor: {r: 1024, g: 603.7677, b: 0, a: 0}
+    - _RimLightColor: {r: 1367.1202, g: 1084.2129, b: 148.31967, a: 0}
     - _Specular: {r: 0.0625, g: 0.0625, b: 0.0625, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
     - _TRANSPARENCY: {r: 1, g: 1, b: 1, a: 1}

@@ -26,6 +26,8 @@ namespace SurgeEngine.Code.ActorSystem
         public ContactBase lastContactObject;
         public bool isGrounded;
         public bool isInAir;
+        [HideInInspector] public float gravity;
+        [field: SerializeField] public float startGravity { get; private set; }
         public Transform homingTarget;
 
         private Rigidbody _rigidbody;
@@ -33,6 +35,9 @@ namespace SurgeEngine.Code.ActorSystem
         protected override void OnInitialized()
         {
             base.OnInitialized();
+
+            startGravity = Mathf.Abs(Physics.gravity.y);
+            gravity = startGravity;
 
             _rigidbody = GetComponent<Rigidbody>();
         }

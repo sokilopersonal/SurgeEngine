@@ -29,19 +29,27 @@ namespace SurgeEngine.Code.ActorSystem
 
         private void Update()
         {
-            float speed;
+            float speed = 0f;
             var state = actor.stateMachine.CurrentState;
-            if (state is FStateJump)
+            var prev = actor.stateMachine.PreviousState;
+            if (prev is not FStateSpecialJump)
             {
-                speed = jumpSmoothness;
-            }
-            else if (actor.stats.isInAir)
-            {
-                speed = airSmoothness;
+                if (state is FStateJump)
+                {
+                    speed = jumpSmoothness;
+                }
+                else if (actor.stats.isInAir)
+                {
+                    speed = airSmoothness;
+                }
+                else
+                {
+                    speed = groundSmoothness;
+                }
             }
             else
             {
-                speed = groundSmoothness;
+                speed = 2f;
             }
             
             root.localPosition = actor.transform.localPosition;
@@ -57,7 +65,7 @@ namespace SurgeEngine.Code.ActorSystem
             actor.stats.transformNormal = normal;
 
             Vector3 vel = actor.rigidbody.linearVelocity;
-            vel = Vector3.ProjectOnPlane(vel, normal);
+            vel.y = 0f;
 
             if (vel.magnitude > 0.1f)
             {

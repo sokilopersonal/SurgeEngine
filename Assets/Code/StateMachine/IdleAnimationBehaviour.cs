@@ -32,10 +32,19 @@ namespace SurgeEngine.Code.StateMachine
                 if (_idleTimer >= timeToIdle)
                 {
                     _isIdle = true;
-                    _idleIndex = Random.Range(0, idleNumber + 1);
 
-                    animator.SetInteger("IdleIndex", _idleIndex);
-                    animator.SetTrigger("IdleAction");
+                    string[] idleAnims = new[]
+                    {
+                        "sonic_idle_A",
+                        "sonic_idle_B",
+                        "sonic_idle_C",
+                        "sonic_idle_D",
+                        "sonic_idle_E_start",
+                    };
+                    
+                    _idleIndex = Random.Range(0, idleAnims.Length);
+                    
+                    animator.CrossFadeInFixedTime(idleAnims[_idleIndex], 0.2f);
                 }
             }
         }

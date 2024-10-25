@@ -49,6 +49,7 @@ PlayerSettings:
   m_StereoRenderingPath: 0
   m_ActiveColorSpace: 1
   unsupportedMSAAFallback: 0
+  m_SpriteBatchMaxVertexCount: 65535
   m_SpriteBatchVertexThreshold: 300
   m_MTRendering: 1
   mipStripping: 0
@@ -518,7 +519,7 @@ PlayerSettings:
     m_APIs: 10000000
     m_Automatic: 0
   - m_BuildTarget: WindowsStandaloneSupport
-    m_APIs: 12000000
+    m_APIs: 1200000002000000
     m_Automatic: 0
   - m_BuildTarget: iOSSupport
     m_APIs: 10000000
@@ -563,6 +564,7 @@ PlayerSettings:
   playModeTestRunnerEnabled: 0
   runPlayModeTestAsEditModeTest: 0
   actionOnDotNetUnhandledException: 1
+  editorGfxJobOverride: 1
   enableInternalProfiler: 0
   logObjCUncaughtExceptions: 1
   enableCrashReportAPI: 0
@@ -824,7 +826,19 @@ PlayerSettings:
   webGLWebAssemblyBigInt: 0
   webGLCloseOnQuit: 0
   webWasm2023: 0
-  scriptingDefineSymbols: {}
+  scriptingDefineSymbols:
+    Android: RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_6;RealtimeCSG_1_6_01
+    EmbeddedLinux: RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_6;RealtimeCSG_1_6_01
+    GameCoreXboxOne: RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_6;RealtimeCSG_1_6_01
+    PS4: RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_6;RealtimeCSG_1_6_01
+    PS5: RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_6;RealtimeCSG_1_6_01
+    QNX: RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_6;RealtimeCSG_1_6_01
+    ReservedCFE: RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_6;RealtimeCSG_1_6_01
+    Standalone: RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_6;RealtimeCSG_1_6_01
+    VisionOS: RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_6;RealtimeCSG_1_6_01
+    WebGL: RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_6;RealtimeCSG_1_6_01
+    XboxOne: RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_6;RealtimeCSG_1_6_01
+    tvOS: RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_6;RealtimeCSG_1_6_01
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend:

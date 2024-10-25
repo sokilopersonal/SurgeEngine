@@ -222,8 +222,8 @@ namespace SurgeEngine.Code.Parameters
         {
             if (!_canAttach) return;
             
-            _rigidbody.position = point + normal;
-            //_rigidbody.position = Vector3.Slerp(_rigidbody.position, point + normal, 20 * Time.fixedDeltaTime);
+            //_rigidbody.position = point + normal;
+            _rigidbody.position = Vector3.Slerp(_rigidbody.position, point + normal, 16 * Time.fixedDeltaTime);
         }
 
         public void BoostHandle()

@@ -7,6 +7,7 @@ using SurgeEngine.Code.Parameters.SonicSubStates;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 namespace SurgeEngine.Code.ActorHUD
 {
@@ -115,7 +116,8 @@ namespace SurgeEngine.Code.ActorHUD
             if (obj is Ring)
             {
                 RingHUD ringHUDInstance = Instantiate(ringHUDPrefab, obj.transform.position, obj.transform.rotation);
-                ringHUDInstance.Initialize(0.475f);
+                float time = Random.Range(0.325f, 0.425f);
+                ringHUDInstance.Initialize(time);
             }
         }
         

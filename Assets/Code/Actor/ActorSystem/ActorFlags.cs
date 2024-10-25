@@ -105,6 +105,7 @@ namespace SurgeEngine.Code.ActorSystem
     public enum FlagType
     {
         OutOfControl,
-        DontClampVerticalSpeed
+        OnWater,
+        Underwater,
     }
 }

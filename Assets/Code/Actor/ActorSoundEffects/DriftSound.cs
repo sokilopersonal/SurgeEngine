@@ -21,6 +21,11 @@ namespace SurgeEngine.Code.ActorSoundEffects
             _driftLoopInstance = RuntimeManager.CreateInstance(driftLoop);
         }
 
+        private void Update()
+        {
+            _driftLoopInstance.setParameterByName("OnWater", actor.stateMachine.GetState<FStateGround>().GetSurfaceTag() == "Water" ? 1 : 0);
+        }
+
         private void OnEnable()
         {
             actor.stateMachine.OnStateAssign += OnStateAssign;

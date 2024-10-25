@@ -76,6 +76,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Start",
+                    "type": "Button",
+                    "id": "74c92e97-eba7-45d6-ba2d-24436f5345de",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -161,7 +170,7 @@
                     "id": "3c3ed3bb-bbdc-44f2-b58c-28ddb3c05572",
                     "path": "<Gamepad>/rightStick",
                     "interactions": "",
-                    "processors": "",
+                    "processors": "ScaleVector2(x=2,y=2)",
                     "groups": "",
                     "action": "Camera",
                     "isComposite": false,
@@ -296,6 +305,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "RBButton",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7dddb046-f0d2-4122-8934-5d45267e84ae",
+                    "path": "<Keyboard>/enter",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Start",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "43280ea3-f206-453a-824e-ef4f2ae87d30",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Start",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -14,6 +14,7 @@ namespace SurgeEngine.Code.Custom
             if (abs > 0)
             {
                 Stage.Instance.data.AddScore(abs);
+                return true;
             }
             
             return false;
@@ -23,7 +24,15 @@ namespace SurgeEngine.Code.Custom
         {
             string input = gameObject.name;
             int index = input.IndexOf('@');
-            string result = input.Substring(index + 1);
+            string result;
+            if (index == -1)
+            {
+                result = "Concrete";
+            }
+            else
+            {
+                result = input.Substring(index + 1);
+            }
             
             return result;
         }
@@ -142,46 +151,6 @@ namespace SurgeEngine.Code.Custom
             
             rigidbody.isKinematic = false;
             ResetVelocity(ResetVelocityType.Both);
-        }
-
-        public static Vector3 GetArcPosition(Vector3 startPosition, Vector3 direction, float impulse)
-        {
-            Vector3 impulseDirection = direction;
-
-            int trajectoryPoints = 240;
-            float timeStep = 0.1f;
-            int layerMask = 1 << LayerMask.NameToLayer("Default");
-
-            Vector3 position = startPosition;
-            Vector3 velocity = impulseDirection.normalized * impulse;
-            Vector3 gravity = -35 * Vector3.up;
-
-            float totalTime = 0f;
-            Vector3 peakPosition = startPosition;
-            float highestY = startPosition.y;
-            
-            for (int j = 0; j < trajectoryPoints; j++)
-            {
-                totalTime += timeStep;
-
-                Vector3 newPosition = position + velocity * timeStep + gravity * (0.5f * Mathf.Pow(timeStep, 2));
-
-                if (Physics.Linecast(position, newPosition, out _, layerMask, QueryTriggerInteraction.Ignore))
-                {
-                    break;
-                }
-                
-                if (newPosition.y - 1f > highestY)
-                {
-                    highestY = newPosition.y;
-                    peakPosition = newPosition;
-                }
-
-                position = newPosition;
-                velocity += gravity * timeStep;
-            }
-
-            return peakPosition;
         }
         
         public static Transform FindHomingTarget()
