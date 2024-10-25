@@ -2,6 +2,7 @@
 using Cysharp.Threading.Tasks;
 using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.CommonObjects;
+using SurgeEngine.Code.GameDocuments;
 using UnityEngine;
 
 namespace SurgeEngine.Code.Custom
@@ -112,8 +113,13 @@ namespace SurgeEngine.Code.Custom
             Ray ray = new Ray(origin, direction);
             Debug.DrawRay(ray.origin, ray.direction);
             
+            Document doc = SonicGameDocument.Instance.GetDocument("Sonic");
+            ParameterGroup group = doc.GetGroup(SonicGameDocument.CastGroup);
+            float castDistance = group.GetParameter<float>("CastDistance");
+            LayerMask castMask = group.GetParameter<LayerMask>("CastMask");
+
             return Physics.Raycast(ray, out result,
-                context.stats.moveParameters.castParameters.castDistance, context.stats.moveParameters.castParameters.collisionMask, QueryTriggerInteraction.Ignore);
+                castDistance, castMask, QueryTriggerInteraction.Ignore);
         }
 
         public static async UniTask TemporarilyDisableCollider(Collider collider, float time = 0.25f)
@@ -122,6 +128,7 @@ namespace SurgeEngine.Code.Custom
             await UniTask.Delay(TimeSpan.FromSeconds(time), true);
             collider.enabled = true;
         }
+        
         public static async UniTask ChangeTimeScaleOverTime(float targetScale, float duration)
         {
             float startScale = Time.timeScale;

@@ -3,7 +3,7 @@ using System.Linq;
 using NaughtyAttributes;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Document
+namespace SurgeEngine.Code.GameDocuments
 {
     [Serializable]
     public class Document
@@ -13,7 +13,13 @@ namespace SurgeEngine.Code.Document
         public ParameterGroup[] groups;
         public ParameterGroup GetGroup(string name)
         {
-            return groups.FirstOrDefault(x => x.name == name);
+            var group = groups.FirstOrDefault(x => x.name == name);
+            if (group == null)
+            {
+                throw new NullReferenceException($"Can't find the group {name}. Please make sure the group name is correct.");
+            }
+            
+            return group;
         }
     }
 
@@ -23,9 +29,9 @@ namespace SurgeEngine.Code.Document
         public string name;
         
         public Parameter[] parameters;
-        public Parameter GetParameter(string name)
+        public T GetParameter<T>(string name)
         {
-            return parameters.FirstOrDefault(x => x.name == name);
+            return (T)parameters.FirstOrDefault(x => x.name == name).GetValue();
         }
     }
     
@@ -39,6 +45,7 @@ namespace SurgeEngine.Code.Document
         [ShowIf("type", ParameterType.Int), SerializeField, AllowNesting] private int intValue;
         [ShowIf("type", ParameterType.Bool), SerializeField, AllowNesting] private bool boolValue;
         [ShowIf("type", ParameterType.AnimationCurve), SerializeField, AllowNesting] private AnimationCurve curveValue;
+        [ShowIf("type", ParameterType.LayerMask), SerializeField, AllowNesting] private LayerMask maskValue;
         
         public object GetValue()
         {
@@ -52,6 +59,8 @@ namespace SurgeEngine.Code.Document
                     return boolValue;
                 case ParameterType.AnimationCurve:
                     return curveValue;
+                case ParameterType.LayerMask:
+                    return maskValue;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -63,6 +72,7 @@ namespace SurgeEngine.Code.Document
         Float,
         Int,
         Bool,
-        AnimationCurve
+        AnimationCurve,
+        LayerMask
     }
 }
