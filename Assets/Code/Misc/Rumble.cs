@@ -22,7 +22,7 @@ namespace SurgeEngine.Code.Misc
             pad.SetMotorSpeeds(low, high);
             while (t < duration)
             {
-                t += Time.deltaTime;
+                t += Time.unscaledDeltaTime;
                 await UniTask.Yield();
             }
             
