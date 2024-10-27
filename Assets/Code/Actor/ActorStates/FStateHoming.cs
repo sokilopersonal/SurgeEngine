@@ -18,6 +18,10 @@ namespace SurgeEngine.Code.Parameters
             stats.transformNormal = Vector3.up;
 
             _timer = 0f;
+            
+            var doc = SonicGameDocument.GetDocument("Sonic");
+            var param = doc.GetGroup(SonicGameDocument.PhysicsGroup);
+            actor.model.SetCollisionParam(param.GetParameter<float>("JumpCollisionHeight"), param.GetParameter<float>("JumpCollisionCenter"), param.GetParameter<float>("JumpCollisionRadius"));
 
             Common.ResetVelocity(ResetVelocityType.Both);
         }
@@ -27,6 +31,7 @@ namespace SurgeEngine.Code.Parameters
             base.OnExit();
             
             animation.ResetAction();
+            actor.model.SetCollisionParam(0, 0);
             _target = null;
         }
 
@@ -34,13 +39,20 @@ namespace SurgeEngine.Code.Parameters
         {
             base.OnFixedTick(dt);
 
-            var param = SonicGameDocument.Instance.GetDocument("Sonic").GetGroup(SonicGameDocument.HomingGroup);
+            var param = SonicGameDocument.GetDocument("Sonic").GetGroup(SonicGameDocument.HomingGroup);
             
             if (_target != null)
             {
                 Vector3 direction = (_target.position - actor.transform.position).normalized;
                 _rigidbody.linearVelocity = direction * param.GetParameter<float>("HomingSpeed");
                 _rigidbody.rotation = Quaternion.LookRotation(direction, Vector3.up);
+                
+                // If for some reason Sonic get stuck
+                _timer += dt / param.GetParameter<float>("MaxTargetHomingTime");
+                if (_timer >= 1f)
+                {
+                    stateMachine.SetState<FStateAir>();
+                }
             }
             else
             {

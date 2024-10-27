@@ -1,4 +1,5 @@
 ﻿using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.GameDocuments;
 using UnityEngine;
 
 namespace SurgeEngine.Code.Parameters
@@ -15,6 +16,10 @@ namespace SurgeEngine.Code.Parameters
             _jumpTime = 0;
             
             actor.transform.rotation = Quaternion.Euler(0, actor.transform.rotation.eulerAngles.y, 0);
+            
+            var doc = SonicGameDocument.GetDocument("Sonic");
+            var param = doc.GetGroup(SonicGameDocument.PhysicsGroup);
+            actor.model.SetCollisionParam(param.GetParameter<float>("JumpCollisionHeight"), param.GetParameter<float>("JumpCollisionCenter"), param.GetParameter<float>("JumpCollisionRadius"));
         }
 
         public override void OnExit()
@@ -22,6 +27,7 @@ namespace SurgeEngine.Code.Parameters
             base.OnExit();
             
             animation.ResetAction();
+            actor.model.SetCollisionParam(0,0);
         }
 
         public override void OnTick(float dt)

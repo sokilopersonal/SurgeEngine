@@ -2891,8 +2891,6 @@ MonoBehaviour:
   - {fileID: 1287485822477926609}
   - {fileID: 7054568583307864062}
   - {fileID: 8366440330025302430}
-  - {fileID: 3168056516369262466}
-  - {fileID: 4904306899319831509}
 --- !u!114 &370524497763573843
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -3531,6 +3529,9 @@ MonoBehaviour:
   cullingDistance:
     m_OverrideState: 1
     m_Value: 1000
+  minSolidAngle:
+    m_OverrideState: 1
+    m_Value: 4
 --- !u!114 &3057823790153371781
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -4120,6 +4121,9 @@ MonoBehaviour:
   cullingDistance:
     m_OverrideState: 1
     m_Value: 1000
+  minSolidAngle:
+    m_OverrideState: 0
+    m_Value: 4
 --- !u!114 &4331160469443647095
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -4830,6 +4834,9 @@ MonoBehaviour:
   tileOpacityThreshold:
     m_OverrideState: 1
     m_Value: 0.95
+  writeDepthAlphaThreshold:
+    m_OverrideState: 0
+    m_Value: 0
 --- !u!114 &5315503232242033309
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -5067,6 +5074,9 @@ MonoBehaviour:
   tileOpacityThreshold:
     m_OverrideState: 1
     m_Value: 1
+  writeDepthAlphaThreshold:
+    m_OverrideState: 1
+    m_Value: 0
 --- !u!114 &7448555731857377959
 MonoBehaviour:
   m_ObjectHideFlags: 3

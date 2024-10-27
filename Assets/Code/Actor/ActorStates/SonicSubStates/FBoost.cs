@@ -37,7 +37,7 @@ namespace SurgeEngine.Code.Parameters.SonicSubStates
             canAirBoost = true;
             BoostEnergy = 100;
             
-            _boostEnergyGroup = SonicGameDocument.Instance.GetDocument("Sonic").GetGroup("BoostEnergy");
+            _boostEnergyGroup = SonicGameDocument.GetDocument("Sonic").GetGroup("BoostEnergy");
             
             actor.input.BoostAction += BoostAction;
         }

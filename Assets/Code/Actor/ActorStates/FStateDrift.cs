@@ -38,7 +38,7 @@ namespace SurgeEngine.Code.Parameters
                 _ignoreTimer = 0;
             }
             
-            if (!input.BHeld || _rigidbody.linearVelocity.magnitude < SonicGameDocument.Instance.GetDocument("Sonic").GetGroup("Drift").GetParameter<float>("DeactivateSpeed") || _ignoreTimer > 0.15f)
+            if (!input.BHeld || _rigidbody.linearVelocity.magnitude < SonicGameDocument.GetDocument("Sonic").GetGroup("Drift").GetParameter<float>("DeactivateSpeed") || _ignoreTimer > 0.15f)
                 stateMachine.SetState<FStateGround>(0.1f);
         }
 
@@ -55,7 +55,7 @@ namespace SurgeEngine.Code.Parameters
                 _rigidbody.position = point + normal;
                 stats.transformNormal = Vector3.Slerp(stats.transformNormal, normal, dt * 14f);
 
-                var param = SonicGameDocument.Instance.GetDocument("Sonic").GetGroup("Drift");
+                var param = SonicGameDocument.GetDocument("Sonic").GetGroup("Drift");
                 
                 _driftXDirection = Mathf.Lerp(_driftXDirection, input.moveVector.x, param.GetParameter<float>("Smoothness"));
             

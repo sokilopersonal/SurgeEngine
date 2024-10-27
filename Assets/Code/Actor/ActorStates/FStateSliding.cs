@@ -22,16 +22,14 @@ namespace SurgeEngine.Code.Parameters
 
             _cameraTransform = actor.camera.GetCameraTransform();
             
-            actor.model.collision.height = collisionHeight;
-            actor.model.collision.center = new Vector3(0, collisionCenterY, 0);
+            actor.model.SetCollisionParam(collisionHeight, collisionCenterY);
         }
 
         public override void OnExit()
         {
             base.OnExit();
 
-            actor.model.collision.height = actor.model.collisionStartHeight;
-            actor.model.collision.center = Vector3.zero;
+            actor.model.SetCollisionParam(0,0);
             
             animation.ResetAction();
         }

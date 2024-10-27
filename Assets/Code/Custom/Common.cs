@@ -113,7 +113,7 @@ namespace SurgeEngine.Code.Custom
             Ray ray = new Ray(origin, direction);
             Debug.DrawRay(ray.origin, ray.direction);
             
-            Document doc = SonicGameDocument.Instance.GetDocument("Sonic");
+            Document doc = SonicGameDocument.GetDocument("Sonic");
             ParameterGroup group = doc.GetGroup(SonicGameDocument.CastGroup);
             float castDistance = group.GetParameter<float>("CastDistance");
             LayerMask castMask = group.GetParameter<LayerMask>("CastMask");
@@ -163,45 +163,35 @@ namespace SurgeEngine.Code.Custom
         public static Transform FindHomingTarget()
         {
             var context = ActorContext.Context;
-            var doc = SonicGameDocument.Instance.GetDocument("Sonic");
-            var camera = context.camera.GetCamera();
-            float distance = float.MaxValue;
-            Transform result = null;
-            Collider[] colliders = new Collider[20];
-            var size = Physics.OverlapSphereNonAlloc(context.transform.position, doc.GetGroup(SonicGameDocument.HomingGroup).GetParameter<float>("HomingFindRadius"), colliders,
-                doc.GetGroup(SonicGameDocument.HomingGroup).GetParameter<LayerMask>("HomingMask"));
-
-            if (size > 0)
+            var transform = context.transform;
+            var doc = SonicGameDocument.GetDocument("Sonic");
+            var param = doc.GetGroup(SonicGameDocument.HomingGroup);
+            Vector3 origin = transform.position + Vector3.down * 0.5f;
+            Vector3 dir = context.stats.inputDir == Vector3.zero ? transform.forward : context.stats.inputDir;
+            var radius = param.GetParameter<float>("HomingFindRadius");
+            var maxDistance = param.GetParameter<float>("HomingFindDistance");
+            RaycastHit[] targetsInRange = Physics.SphereCastAll(origin, radius, dir, maxDistance, param.GetParameter<LayerMask>("HomingMask"));
+            Transform closestTarget = null;
+            float distance = Mathf.Infinity;
+            foreach (RaycastHit t in targetsInRange)
             {
-                foreach (var collider in colliders)
+                Transform target = t.transform;
+                Vector3 end = target.position + Vector3.up * 0.1f;
+                Vector3 direction = target.position - origin;
+                Debug.DrawLine(origin, end);
+                bool facing = Vector3.Dot(direction.normalized, transform.forward) > 0.4f;
+                float targetDistance = direction.sqrMagnitude / radius / radius;
+                if (targetDistance < distance && facing)
                 {
-                    if (collider != null)
+                    if (!Physics.Linecast(origin, end, doc.GetGroup(SonicGameDocument.CastGroup).GetParameter<LayerMask>("CastMask")))
                     {
-                        float newDistance = Vector3.Distance(context.transform.position, collider.transform.position);
-                        if (newDistance < distance)
-                        {
-                            Vector3 dir = (collider.transform.position - context.transform.position).normalized;
-
-                            var pointOnScreen = camera.WorldToViewportPoint(collider.transform.position);
-                            if (pointOnScreen.x > 0 && pointOnScreen is { x: < 1, y: > 0 } && pointOnScreen.y < 1)
-                            {
-                                if (Vector3.Dot(dir, context.transform.forward) > 0.1f)
-                                {
-                                    if (!Physics.Linecast(context.transform.position, collider.transform.position + collider.transform.up * 0.2f, out _, 
-                                            doc.GetGroup("Cast").GetParameter<LayerMask>("CastMask")))
-                                    {
-                                        result = collider.transform;
-                                    }
-                                }
-                            }
-                        }
-                        
-                        return result;
+                        closestTarget = target;
+                        distance = targetDistance;
                     }
                 }
             }
-
-            return null;
+    
+            return closestTarget;
         }
         
         public static async UniTask ChangeFOVOverTime(float targetFov, float duration)

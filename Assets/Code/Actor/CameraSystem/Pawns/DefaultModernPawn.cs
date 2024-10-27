@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using SurgeEngine.Code.Custom;
+using SurgeEngine.Code.GameDocuments;
 using SurgeEngine.Code.Parameters;
 using SurgeEngine.Code.Parameters.SonicSubStates;
 using SurgeEngine.Code.StateMachine;
@@ -118,8 +119,9 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             {
                 _autoActive = true;
                 _followPower = _currentParameters.followPower;
-                
-                if (actor.stats.currentSpeed > 1f)
+
+                float speed = actor.rigidbody.GetHorizontalMagnitude();
+                if (speed > 1f)
                 {
                     if (!(1 - Mathf.Abs(Vector3.Dot(actor.transform.forward, Vector3.up)) < 0.01f))
                     {
@@ -175,7 +177,12 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             {
                 if (actor.stateMachine.CurrentState is FStateDrift)
                 {
-                    Vector3 vel = Vector3.ClampMagnitude(actor.rigidbody.linearVelocity, 4.5f);
+                    float max = 4.5f;
+                    float value = Mathf.Lerp(0.35f, max,
+                        stats.currentSpeed / SonicGameDocument.GetDocument("Sonic")
+                            .GetGroup(SonicGameDocument.PhysicsGroup).GetParameter<float>("MaxSpeed"));
+                    Debug.Log(value);
+                    Vector3 vel = Vector3.ClampMagnitude(actor.rigidbody.linearVelocity, value);
                     _tempLookPoint = Vector3.Lerp(_tempLookPoint, vel, 16f * Time.deltaTime);
                     _tempLookPoint.y = 0;
                 }

@@ -28,7 +28,7 @@ namespace SurgeEngine.Code.ActorHUD
         public Animator ringBumpEffect;
         public TMP_Text ringCountText;
         
-        [SerializeField] private RectTransform homingImage;
+        [SerializeField] private HomingIcon homingIcon;
         [SerializeField] private QuickTimeEventUI qteUI;
         
         [Header("Speedometer")]
@@ -100,14 +100,15 @@ namespace SurgeEngine.Code.ActorHUD
         {
             if (_actor.stats.homingTarget != null)
             {
-                homingImage.gameObject.SetActive(true);
+                homingIcon.gameObject.SetActive(true);
+                homingIcon.Activate();
                 var cam = _actor.camera.GetCamera();
                 Vector3 position = cam.WorldToScreenPoint(_actor.stats.homingTarget.position);
-                homingImage.position = position;
+                homingIcon.transform.position = position;
             }
             else
             {
-                homingImage.gameObject.SetActive(false);
+                homingIcon.gameObject.SetActive(false);
             }
         }
 

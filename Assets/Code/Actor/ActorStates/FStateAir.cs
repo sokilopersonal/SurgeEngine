@@ -23,6 +23,13 @@ namespace SurgeEngine.Code.Parameters
             _cameraTransform = actor.camera.GetCameraTransform();
         }
 
+        public override void OnExit()
+        {
+            base.OnExit();
+            
+            stats.homingTarget = null;
+        }
+
         public override void OnTick(float dt)
         {
             base.OnTick(dt);

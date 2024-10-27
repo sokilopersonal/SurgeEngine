@@ -51,8 +51,8 @@ namespace SurgeEngine.Code.CommonObjects
         {
             _qteSequences = new List<QTESequence>();
             
-            _targetTimeScale = 0.0375f;
-            _timeScaleDuration = 1.25f;
+            _targetTimeScale = 0.0285f;
+            _timeScaleDuration = 0.75f;
         }
 
         private void OnEnable()

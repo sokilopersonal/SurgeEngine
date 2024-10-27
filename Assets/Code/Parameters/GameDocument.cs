@@ -23,7 +23,7 @@ namespace SurgeEngine.Code.GameDocuments
             _instance = null;
         }
 
-        public Document GetDocument(string name)
+        public static Document GetDocument(string name)
         {
             var doc = _instance.documents.FirstOrDefault(x => x.name == name);
             if (doc == null)
