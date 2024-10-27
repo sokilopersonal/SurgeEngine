@@ -9,8 +9,6 @@ namespace SurgeEngine.Code.Parameters
 {
     public class FStateAir : FStateMove, IBoostHandler
     {
-        [SerializeField] private AirParameters airParameters;
-        
         private Transform _cameraTransform;
 
         private float _airTime;
@@ -23,11 +21,6 @@ namespace SurgeEngine.Code.Parameters
             
             actor.stats.groundNormal = Vector3.up;
             _cameraTransform = actor.camera.GetCameraTransform();
-        }
-
-        public override void OnExit()
-        {
-            base.OnExit();
         }
 
         public override void OnTick(float dt)
@@ -82,6 +75,18 @@ namespace SurgeEngine.Code.Parameters
                 Movement(dt);
                 Rotate(dt);
 
+                if (stateMachine.PreviousState is not FStateSpecialJump)
+                {
+                    var drag = 0.74f;
+                    var airResistance = 0.95f;
+                    var airDrag = new Vector3(
+                        -drag * airResistance * dt * _rigidbody.linearVelocity.x,
+                        0,
+                        -drag * airResistance * dt * _rigidbody.linearVelocity.z
+                    );
+                    _rigidbody.AddForce(airDrag, ForceMode.VelocityChange);
+                }
+                
                 Common.ApplyGravity(stats.gravity, dt);
             }
             else

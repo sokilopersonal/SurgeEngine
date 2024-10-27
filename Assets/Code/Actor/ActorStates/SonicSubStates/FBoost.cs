@@ -1,12 +1,12 @@
 ﻿using System.Collections;
-using System.Diagnostics;
 using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Custom;
+using SurgeEngine.Code.GameDocuments;
+using SurgeEngine.Code.Misc;
 using SurgeEngine.Code.SonicSubStates.Boost;
 using SurgeEngine.Code.StateMachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Debug = UnityEngine.Debug;
 
 namespace SurgeEngine.Code.Parameters.SonicSubStates
 {
@@ -21,15 +21,7 @@ namespace SurgeEngine.Code.Parameters.SonicSubStates
         [SerializeField] private float boostDrain = 3;
         [SerializeField] private float startBoostDrain = 10;
         
-        public float turnSpeedReduction;
-        public float maxSpeedMultiplier;
-        public float startForce;
-        public float airStartForce;
-        public float boostInAirTime;
-        public float airBoostTime;
         public bool canAirBoost;
-        public float boostForce;
-        public float magnetRadius;
         
         public bool restoringTopSpeed;
         [Range(10f, 30f)] public float restoreSpeed;
@@ -37,11 +29,15 @@ namespace SurgeEngine.Code.Parameters.SonicSubStates
         private float _boostEnergy;
         private IBoostHandler _boostHandler;
         private Coroutine _cancelBoostCoroutine;
+        
+        private ParameterGroup _boostEnergyGroup;
 
         private void Awake()
         {
             canAirBoost = true;
             BoostEnergy = 100;
+            
+            _boostEnergyGroup = SonicGameDocument.Instance.GetDocument("Sonic").GetGroup("BoostEnergy");
             
             actor.input.BoostAction += BoostAction;
         }
@@ -50,7 +46,8 @@ namespace SurgeEngine.Code.Parameters.SonicSubStates
         {
             actor.stateMachine.OnStateAssign += OnStateAssign;
 
-            ObjectEvents.OnObjectCollected += _ => BoostEnergy += 2;
+            ObjectEvents.OnObjectCollected += _ => BoostEnergy += 
+                _boostEnergyGroup.GetParameter<float>("BoostEnergyRingAdd");
         }
 
         private void OnDisable()
@@ -77,7 +74,7 @@ namespace SurgeEngine.Code.Parameters.SonicSubStates
                     if (_cancelBoostCoroutine != null) 
                         StopCoroutine(_cancelBoostCoroutine);
 
-                    _cancelBoostCoroutine = StartCoroutine(CancelBoost(boostInAirTime));
+                    _cancelBoostCoroutine = StartCoroutine(CancelBoost(_boostEnergyGroup.GetParameter<float>("BoostInAirTime")));
                 }
             }
             
@@ -86,7 +83,7 @@ namespace SurgeEngine.Code.Parameters.SonicSubStates
                 if (_cancelBoostCoroutine != null)
                     StopCoroutine(_cancelBoostCoroutine);
                 
-                _cancelBoostCoroutine = StartCoroutine(CancelBoost(airBoostTime));
+                _cancelBoostCoroutine = StartCoroutine(CancelBoost(_boostEnergyGroup.GetParameter<float>("AirBoostTime")));
             }
         }
 
@@ -117,14 +114,14 @@ namespace SurgeEngine.Code.Parameters.SonicSubStates
 
             if (actor.stateMachine.CurrentState is FStateDrift)
             {
-                BoostEnergy += 4.5f * dt;
+                BoostEnergy += _boostEnergyGroup.GetParameter<float>("BoostEnergyDriftAdd") * dt;
             }
 
             if (Active)
             {
                 if (BoostEnergy > 0)
                 {
-                    BoostEnergy -= boostDrain * Time.deltaTime;
+                    BoostEnergy -= _boostEnergyGroup.GetParameter<float>("BoostEnergyDrain") * Time.deltaTime;
                 }
                 else
                 {
@@ -149,6 +146,8 @@ namespace SurgeEngine.Code.Parameters.SonicSubStates
             rb.linearVelocity = force;
             return true;
         }
+        
+        public ParameterGroup GetBoostEnergyGroup() => _boostEnergyGroup;
 
         private void BoostAction(InputAction.CallbackContext obj)
         {
@@ -156,25 +155,22 @@ namespace SurgeEngine.Code.Parameters.SonicSubStates
             if (actor.stateMachine.CurrentState is FStateStomp) return;
             if (actor.stateMachine.CurrentState is FStateSliding) return;
             
-            if (CanBoost()) Active = obj.ReadValueAsButton();
+            if (CanBoost())
+            {
+                if (obj.started)
+                    Active = true;
+                else
+                {
+                    Active = false;
+                }
+            }
             
             if (Active)
             {
                 BoostEnergy -= startBoostDrain;
-            }
-        }
 
-        private IEnumerator BoostDrain()
-        {
-            if (BoostEnergy > 10) BoostEnergy -= startBoostDrain;
-            
-            while (BoostEnergy > 0)
-            {
-                BoostEnergy -= boostDrain * Time.deltaTime;
-                yield return null;
+                new Rumble().Vibrate(0.7f, 0.8f, 0.5f);
             }
-
-            Active = false;
         }
         
         private IEnumerator CancelBoost(float time)

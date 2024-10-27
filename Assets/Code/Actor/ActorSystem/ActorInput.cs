@@ -123,6 +123,9 @@ namespace SurgeEngine.Code.ActorSystem
             
             _input.Gameplay.Start.started -= StartInput;
             _input.Gameplay.Start.canceled -= StartInput;
+            
+            var pad = Gamepad.current;
+            pad.SetMotorSpeeds(0, 0);
         }
 
         private void Update()

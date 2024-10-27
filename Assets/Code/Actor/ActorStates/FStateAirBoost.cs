@@ -11,7 +11,7 @@ namespace SurgeEngine.Code.Parameters
             FBoost boost = stateMachine.GetSubState<FBoost>();
             if (boost.canAirBoost)
             {
-                if (boost.ApplyAirForce(_rigidbody, _rigidbody.transform.forward * boost.airStartForce))
+                if (boost.ApplyAirForce(_rigidbody, _rigidbody.transform.forward * boost.GetBoostEnergyGroup().GetParameter<float>("AirBoostSpeed")))
                 {
                     boost.canAirBoost = false;
                 }

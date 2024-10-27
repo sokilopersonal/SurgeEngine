@@ -163,12 +163,13 @@ namespace SurgeEngine.Code.Custom
         public static Transform FindHomingTarget()
         {
             var context = ActorContext.Context;
+            var doc = SonicGameDocument.Instance.GetDocument("Sonic");
             var camera = context.camera.GetCamera();
             float distance = float.MaxValue;
             Transform result = null;
             Collider[] colliders = new Collider[20];
-            var size = Physics.OverlapSphereNonAlloc(context.transform.position, context.stats.homingParameters.homingFindRadius, colliders,
-                context.stats.homingParameters.homingMask);
+            var size = Physics.OverlapSphereNonAlloc(context.transform.position, doc.GetGroup(SonicGameDocument.HomingGroup).GetParameter<float>("HomingFindRadius"), colliders,
+                doc.GetGroup(SonicGameDocument.HomingGroup).GetParameter<LayerMask>("HomingMask"));
 
             if (size > 0)
             {
@@ -187,7 +188,7 @@ namespace SurgeEngine.Code.Custom
                                 if (Vector3.Dot(dir, context.transform.forward) > 0.1f)
                                 {
                                     if (!Physics.Linecast(context.transform.position, collider.transform.position + collider.transform.up * 0.2f, out _, 
-                                            context.stats.moveParameters.castParameters.collisionMask))
+                                            doc.GetGroup("Cast").GetParameter<LayerMask>("CastMask")))
                                     {
                                         result = collider.transform;
                                     }

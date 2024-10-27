@@ -14,11 +14,10 @@ namespace SurgeEngine.Code.Shaders
             
             Vector3 objectPosition = transform.position;
 
-            SphericalHarmonicsL2 probe;
             Vector3[] probeAngle = { Vector3.up, Vector3.right };
             Color[] LightValue = new Color[probeAngle.Length];
 
-            LightProbes.GetInterpolatedProbe(objectPosition, null, out probe);
+            LightProbes.GetInterpolatedProbe(objectPosition, null, out var probe);
 
             probe.Evaluate(probeAngle, LightValue);
             Color color = LightValue[0] * 0.0001f;

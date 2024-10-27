@@ -33,7 +33,7 @@ namespace SurgeEngine.Code.CommonObjects
         {
             transform.rotation *= Quaternion.AngleAxis(rotationSpeed * Time.deltaTime, Vector3.up);
             
-            if ((transform.position - _actor.transform.position).magnitude < _actor.stateMachine.GetSubState<FBoost>().magnetRadius
+            if ((transform.position - _actor.transform.position).magnitude < _actor.stateMachine.GetSubState<FBoost>().GetBoostEnergyGroup().GetParameter<float>("RingMagnetRadius")
                 && _actor.stateMachine.GetSubState<FBoost>().Active && !_magneted)
             {
                 _initialPosition = transform.position;

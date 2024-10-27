@@ -50,7 +50,7 @@ namespace SurgeEngine.Code.Parameters
 
             if (stateMachine.GetSubState<FBoost>().Active)
             {
-                _rigidbody.linearVelocity += _rigidbody.transform.forward * stateMachine.GetSubState<FBoost>().startForce;
+                _rigidbody.linearVelocity += _rigidbody.transform.forward * stateMachine.GetSubState<FBoost>().GetBoostEnergyGroup().GetParameter<float>("StartSpeed");
                 _rigidbody.WakeUp();
                 stateMachine.SetState<FStateGround>();
             }

@@ -1,6 +1,5 @@
-﻿using System;
-using Cysharp.Threading.Tasks;
-using SurgeEngine.Code.Custom;
+﻿using SurgeEngine.Code.Custom;
+using SurgeEngine.Code.GameDocuments;
 using SurgeEngine.Code.Parameters.SonicSubStates;
 using UnityEngine;
 
@@ -35,10 +34,12 @@ namespace SurgeEngine.Code.Parameters
         {
             base.OnFixedTick(dt);
 
+            var param = SonicGameDocument.Instance.GetDocument("Sonic").GetGroup(SonicGameDocument.HomingGroup);
+            
             if (_target != null)
             {
                 Vector3 direction = (_target.position - actor.transform.position).normalized;
-                _rigidbody.linearVelocity = direction * stats.homingParameters.homingSpeed;
+                _rigidbody.linearVelocity = direction * param.GetParameter<float>("HomingSpeed");
                 _rigidbody.rotation = Quaternion.LookRotation(direction, Vector3.up);
             }
             else
@@ -49,11 +50,11 @@ namespace SurgeEngine.Code.Parameters
                 }
                 
                 Vector3 direction = actor.transform.forward;
-                _rigidbody.linearVelocity = direction * (stats.homingParameters.homingDistance *
-                                                         stats.homingParameters.homingCurve.Evaluate(_timer));
+                _rigidbody.linearVelocity = direction * (param.GetParameter<float>("HomingDistance") *
+                                                         param.GetParameter<AnimationCurve>("HomingCurve").Evaluate(_timer));
                 _rigidbody.rotation = Quaternion.LookRotation(direction, Vector3.up);
                 
-                _timer += dt / actor.stats.homingParameters.homingTime;
+                _timer += dt / param.GetParameter<float>("HomingTime");
                 if (_timer >= 1f)
                 {
                     stateMachine.SetState<FStateAir>();

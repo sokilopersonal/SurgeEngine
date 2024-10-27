@@ -65,7 +65,6 @@ namespace SurgeEngine.Code.ActorSystem
             actor.stats.transformNormal = normal;
 
             Vector3 vel = actor.rigidbody.linearVelocity;
-            vel.y = 0f;
 
             if (vel.magnitude > 0.1f)
             {

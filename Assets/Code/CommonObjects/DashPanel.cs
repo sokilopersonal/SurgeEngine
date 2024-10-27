@@ -1,6 +1,7 @@
 ﻿
 using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Custom;
+using SurgeEngine.Code.Misc;
 using SurgeEngine.Code.Parameters;
 using SurgeEngine.Code.Parameters.SonicSubStates;
 using UnityEngine;
@@ -31,6 +32,8 @@ namespace SurgeEngine.Code.CommonObjects
 
             context.flags.AddFlag(new Flag(FlagType.OutOfControl, 
                 new [] { Tags.AllowBoost }, true, Mathf.Abs(outOfControl)), true);
+            
+            new Rumble().Vibrate(0.7f, 0.9f, 0.5f);
         }
 
         protected override void Draw()

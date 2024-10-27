@@ -183,7 +183,7 @@ namespace SurgeEngine.Code.Parameters
         private void CalculateVelocity(float dt)
         {
             stats.turnRate = Mathf.Lerp(stats.turnRate, stats.moveParameters.turnSpeed
-                                                        * (stateMachine.GetSubState<FBoost>().Active ? stateMachine.GetSubState<FBoost>().turnSpeedReduction : 1), 
+                                                        * (stateMachine.GetSubState<FBoost>().Active ? stateMachine.GetSubState<FBoost>().GetBoostEnergyGroup().GetParameter<float>("TurnSpeedMultiplier") : 1), 
                 dt * stats.moveParameters.turnSmoothing);
             var accelRateMod = stats.moveParameters.accelCurve.Evaluate(stats.planarVelocity.magnitude / stats.moveParameters.topSpeed);
             if (stats.planarVelocity.magnitude < stats.moveParameters.topSpeed)
@@ -230,16 +230,17 @@ namespace SurgeEngine.Code.Parameters
         {
             float dt = Time.deltaTime;
             FBoost boost = stateMachine.GetSubState<FBoost>();
-            if (boost.Active && stats.currentSpeed < boost.startForce)
+            float startForce = boost.GetBoostEnergyGroup().GetParameter<float>("StartSpeed");
+            if (boost.Active && stats.currentSpeed < startForce)
             {
-                _rigidbody.linearVelocity = _rigidbody.transform.forward * boost.startForce;
+                _rigidbody.linearVelocity = _rigidbody.transform.forward * startForce;
                 boost.restoringTopSpeed = true;
             }
     
             if (boost.Active)
             {
-                float maxSpeed = stats.moveParameters.maxSpeed * boost.maxSpeedMultiplier;
-                if (stats.currentSpeed < maxSpeed) _rigidbody.linearVelocity += _rigidbody.linearVelocity.normalized * (boost.boostForce * dt);
+                float maxSpeed = stats.moveParameters.maxSpeed * boost.GetBoostEnergyGroup().GetParameter<float>("MaxSpeedMultiplier");
+                if (stats.currentSpeed < maxSpeed) _rigidbody.linearVelocity += _rigidbody.linearVelocity.normalized * (boost.GetBoostEnergyGroup().GetParameter<float>("Force") * dt);
                     
             }
             else if (boost.restoringTopSpeed)
