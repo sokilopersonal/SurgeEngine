@@ -5,21 +5,23 @@ namespace SurgeEngine.Code.Parameters
 {
     public class FActorState : FState
     {
-        protected Actor actor { get; private set; }
-        protected ActorInput input { get; private set; }
-        protected ActorStats stats { get; private set; }
-        protected ActorAnimation animation { get; private set; }
-        protected FStateMachine stateMachine { get; private set; }
+        protected Actor Actor { get; private set; }
+        protected ActorInput Input { get; private set; }
+        protected ActorStats Stats { get; private set; }
+        protected ActorAnimation Animation { get; private set; }
+        protected ActorKinematics Kinematics { get; private set; }
+        protected FStateMachine StateMachine { get; private set; }
 
         public void SetOwner(Actor owner)
         {
-            actor = owner;
+            Actor = owner;
             
-            stateMachine = owner.stateMachine;
+            StateMachine = owner.stateMachine;
             
-            input = owner.input;
-            stats = owner.stats;
-            animation = owner.animation;
+            Input = owner.input;
+            Stats = owner.stats;
+            Animation = owner.animation;
+            Kinematics = owner.kinematics;
         }
     }
 }

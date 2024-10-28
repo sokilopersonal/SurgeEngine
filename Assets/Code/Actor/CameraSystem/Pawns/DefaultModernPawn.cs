@@ -37,7 +37,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
 
         private void Start()
         {
-            _actorCamera = actor.camera;
+            _actorCamera = Actor.camera;
             _currentParameters = _actorCamera.parameters[0];
 
             _tempY = _actorCamera.target.position.y;
@@ -51,21 +51,21 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
             
-            SetRotationAxis(actor.transform.forward);
+            SetRotationAxis(Actor.transform.forward);
         }
 
         public override void OnEnter()
         {
             base.OnEnter();
             
-            actor.stateMachine.GetSubState<FBoost>().OnActiveChanged += OnBoostActivate;
+            Actor.stateMachine.GetSubState<FBoost>().OnActiveChanged += OnBoostActivate;
         }
 
         public override void OnExit()
         {
             base.OnExit();
             
-            actor.stateMachine.GetSubState<FBoost>().OnActiveChanged -= OnBoostActivate;
+            Actor.stateMachine.GetSubState<FBoost>().OnActiveChanged -= OnBoostActivate;
         }
         
         public override void OnTick(float dt)
@@ -82,11 +82,11 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
 
         protected void Following()
         {
-            if (actor.stats.isGrounded)
+            if (Actor.stats.isGrounded)
             {
                 _tempTime = Mathf.Lerp(_tempTime, 0, SurgeMath.Smooth(1 - 0.965f));
             }
-            else if (actor.stats.isInAir)
+            else if (Actor.stats.isInAir)
             {
                 _tempTime = Mathf.Lerp(_tempTime, _actorCamera.yFollowTime, SurgeMath.Smooth(1f));
             }
@@ -97,8 +97,8 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             _tempFollowPoint = _actorCamera.target.position;
             _tempFollowPoint.y = _tempY;
 
-            float speed = actor.stats.currentSpeed;
-            float zLagMod = Mathf.Lerp(0.2f, 0.1f, speed / actor.stats.moveParameters.topSpeed);
+            float speed = Actor.stats.currentSpeed;
+            float zLagMod = Mathf.Lerp(0.2f, 0.1f, speed / Actor.stats.moveParameters.topSpeed);
             float zLag = speed * zLagMod;
             zLag = Mathf.Clamp(zLag, 0, _actorCamera.zLagMax);
             _tempZ = Mathf.Lerp(_tempZ, zLag, _actorCamera.zLagSmoothness * Time.deltaTime);
@@ -106,8 +106,8 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
 
         protected virtual void GetLook()
         {
-            var lookVector = actor.input.lookVector;
-            float lookMod = actor.stats.currentSpeed / actor.stats.moveParameters.topSpeed;
+            var lookVector = Actor.input.lookVector;
+            float lookMod = Actor.stats.currentSpeed / Actor.stats.moveParameters.topSpeed;
             _x += lookVector.x + (_autoLookDirection.x * Mathf.Max(0.1f, lookMod));
             _y -= lookVector.y;
             _y = Mathf.Clamp(_y, -65, 65);
@@ -115,23 +115,23 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
 
         protected virtual void AutoFollow()
         {
-            if (Common.InDelayTime(actor.input.GetLastLookInputTime(), _timeToStartFollow))
+            if (Common.InDelayTime(Actor.input.GetLastLookInputTime(), _timeToStartFollow))
             {
                 _autoActive = true;
                 _followPower = _currentParameters.followPower;
 
-                float speed = actor.rigidbody.GetHorizontalMagnitude();
+                float speed = Actor.rigidbody.GetHorizontalMagnitude();
                 if (speed > 1f)
                 {
-                    if (!(1 - Mathf.Abs(Vector3.Dot(actor.transform.forward, Vector3.up)) < 0.01f))
+                    if (!(1 - Mathf.Abs(Vector3.Dot(Actor.transform.forward, Vector3.up)) < 0.01f))
                     {
-                        float fwd = actor.stats.GetForwardSignedAngle() * Time.deltaTime;
-                        float dot = Vector3.Dot(Vector3.Cross(_cameraTransform.right, Vector3.up), actor.transform.forward);
+                        float fwd = Actor.stats.GetForwardSignedAngle() * Time.deltaTime;
+                        float dot = Vector3.Dot(Vector3.Cross(_cameraTransform.right, Vector3.up), Actor.transform.forward);
                         
                         if (!Mathf.Approximately(dot, -1)) _autoLookDirection.x = fwd * _followPower;
-                        if (actor.stats.isInAir)
+                        if (Actor.stats.isInAir)
                         {
-                            Vector3 vel = Vector3.ClampMagnitude(actor.rigidbody.linearVelocity, 2f);
+                            Vector3 vel = Vector3.ClampMagnitude(Actor.rigidbody.linearVelocity, 2f);
                             vel.y = Mathf.Lerp(vel.y, Mathf.Clamp(vel.y, -0.5f, 0.15f), SurgeMath.Smooth(1f));
                             _actorCamera.lookOffset.y = Mathf.Lerp(_actorCamera.lookOffset.y, vel.y, SurgeMath.Smooth(0.05f));
                         }
@@ -146,12 +146,12 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
                     _autoLookDirection.x = 0;
                 }
 
-                if (actor.stateMachine.CurrentState is FStateGround or FStateIdle or FStateDrift or FStateSliding)
+                if (Actor.stateMachine.CurrentState is FStateGround or FStateIdle or FStateDrift or FStateSliding)
                 {
-                    _autoLookDirection.y = 5f * (actor.stateMachine.GetSubState<FBoost>().Active ? 1.75f : 1f);
-                    _autoLookDirection.y -= actor.stats.currentVerticalSpeed * 1.25f;
+                    _autoLookDirection.y = 5f * (Actor.stateMachine.GetSubState<FBoost>().Active ? 1.75f : 1f);
+                    _autoLookDirection.y -= Actor.stats.currentVerticalSpeed * 1.25f;
                     
-                    if (Mathf.Approximately(actor.stats.groundAngle, 90))
+                    if (Mathf.Approximately(Actor.stats.groundAngle, 90))
                     {
                         _autoLookDirection.y = 0f;
                     }
@@ -175,14 +175,13 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
         {
             if (_autoActive)
             {
-                if (actor.stateMachine.CurrentState is FStateDrift)
+                if (Actor.stateMachine.CurrentState is FStateDrift)
                 {
                     float max = 4.5f;
                     float value = Mathf.Lerp(0.35f, max,
-                        stats.currentSpeed / SonicGameDocument.GetDocument("Sonic")
+                        Stats.currentSpeed / SonicGameDocument.GetDocument("Sonic")
                             .GetGroup(SonicGameDocument.PhysicsGroup).GetParameter<float>("MaxSpeed"));
-                    Debug.Log(value);
-                    Vector3 vel = Vector3.ClampMagnitude(actor.rigidbody.linearVelocity, value);
+                    Vector3 vel = Vector3.ClampMagnitude(Actor.rigidbody.linearVelocity, value);
                     _tempLookPoint = Vector3.Lerp(_tempLookPoint, vel, 16f * Time.deltaTime);
                     _tempLookPoint.y = 0;
                 }
@@ -275,7 +274,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
                 _actorCamera.StopCoroutine(_paramCoroutine);
             }
 
-            var param = actor.camera.parameters.Find(x => x.name == parameter);
+            var param = Actor.camera.parameters.Find(x => x.name == parameter);
             _paramCoroutine = _actorCamera.StartCoroutine(ChangeParametersCoroutine(param, callback));
         }
 

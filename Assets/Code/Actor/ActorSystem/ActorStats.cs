@@ -47,7 +47,7 @@ namespace SurgeEngine.Code.ActorSystem
             currentSpeed = _rigidbody.linearVelocity.magnitude;
             currentVerticalSpeed = _rigidbody.linearVelocity.y;
             
-            moveDot = Vector3.Dot(inputDir.normalized, _rigidbody.linearVelocity.normalized);
+            moveDot = Vector3.Dot(actor.kinematics.GetInputDir().normalized, _rigidbody.linearVelocity.normalized);
             skidding = moveDot < moveParameters.skidThreshold;
 
             var state = actor.stateMachine.CurrentState;

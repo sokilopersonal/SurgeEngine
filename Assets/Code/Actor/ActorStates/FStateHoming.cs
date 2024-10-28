@@ -15,14 +15,14 @@ namespace SurgeEngine.Code.Parameters
         {
             base.OnEnter();
 
-            stateMachine.GetSubState<FBoost>().Active = false;
-            stats.transformNormal = Vector3.up;
+            StateMachine.GetSubState<FBoost>().Active = false;
+            Stats.transformNormal = Vector3.up;
 
             _timer = 0f;
             
             var doc = SonicGameDocument.GetDocument("Sonic");
             var param = doc.GetGroup(SonicGameDocument.PhysicsGroup);
-            actor.model.SetCollisionParam(param.GetParameter<float>("JumpCollisionHeight"), param.GetParameter<float>("JumpCollisionCenter"), param.GetParameter<float>("JumpCollisionRadius"));
+            Actor.model.SetCollisionParam(param.GetParameter<float>("JumpCollisionHeight"), param.GetParameter<float>("JumpCollisionCenter"), param.GetParameter<float>("JumpCollisionRadius"));
 
             Common.ResetVelocity(ResetVelocityType.Both);
         }
@@ -31,8 +31,8 @@ namespace SurgeEngine.Code.Parameters
         {
             base.OnExit();
             
-            animation.ResetAction();
-            actor.model.SetCollisionParam(0, 0);
+            Animation.ResetAction();
+            Actor.model.SetCollisionParam(0, 0);
             _target = null;
         }
 
@@ -44,7 +44,7 @@ namespace SurgeEngine.Code.Parameters
             
             if (_target != null)
             {
-                Vector3 direction = (_target.position - actor.transform.position).normalized;
+                Vector3 direction = (_target.position - Actor.transform.position).normalized;
                 _rigidbody.linearVelocity = direction * param.GetParameter<float>(Homing_Speed);
                 _rigidbody.rotation = Quaternion.LookRotation(direction, Vector3.up);
                 
@@ -52,17 +52,17 @@ namespace SurgeEngine.Code.Parameters
                 _timer += dt / param.GetParameter<float>(Homing_MaxTargetTime);
                 if (_timer >= 1f)
                 {
-                    stateMachine.SetState<FStateAir>();
+                    StateMachine.SetState<FStateAir>();
                 }
             }
             else
             {
                 if (Common.CheckForGround(out _, CheckGroundType.PredictJump))
                 {
-                    stateMachine.SetState<FStateAir>();
+                    StateMachine.SetState<FStateAir>();
                 }
                 
-                Vector3 direction = actor.transform.forward;
+                Vector3 direction = Actor.transform.forward;
                 _rigidbody.linearVelocity = direction * (param.GetParameter<float>(Homing_Distance) *
                                                          param.GetParameter<AnimationCurve>(Homing_Curve).Evaluate(_timer));
                 _rigidbody.rotation = Quaternion.LookRotation(direction, Vector3.up);
@@ -70,7 +70,7 @@ namespace SurgeEngine.Code.Parameters
                 _timer += dt / param.GetParameter<float>(Homing_Time);
                 if (_timer >= 1f)
                 {
-                    stateMachine.SetState<FStateAir>();
+                    StateMachine.SetState<FStateAir>();
                 }
             }
         }

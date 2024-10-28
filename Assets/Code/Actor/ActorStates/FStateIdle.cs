@@ -21,7 +21,7 @@ namespace SurgeEngine.Code.Parameters
                 var normal = hit.normal;
 
                 _rigidbody.position = point + normal;
-                stats.transformNormal = stats.groundNormal;
+                Stats.transformNormal = Stats.groundNormal;
             }
             
             _rigidbody.Sleep();
@@ -40,33 +40,33 @@ namespace SurgeEngine.Code.Parameters
 
             if (!Common.CheckForGround(out _))
             {
-                stateMachine.SetState<FStateAir>();
+                StateMachine.SetState<FStateAir>();
             }
 
-            if (input.moveVector.magnitude > deadZone)
+            if (Input.moveVector.magnitude > deadZone)
             {
-                stateMachine.SetState<FStateGround>();
+                StateMachine.SetState<FStateGround>();
                 _rigidbody.WakeUp();
             }
 
-            if (stateMachine.GetSubState<FBoost>().Active)
+            if (StateMachine.GetSubState<FBoost>().Active)
             {
-                _rigidbody.linearVelocity += _rigidbody.transform.forward * stateMachine.GetSubState<FBoost>().GetBoostEnergyGroup().GetParameter<float>(SonicGameDocumentParams.BoostEnergy_StartSpeed);
+                _rigidbody.linearVelocity += _rigidbody.transform.forward * StateMachine.GetSubState<FBoost>().GetBoostEnergyGroup().GetParameter<float>(SonicGameDocumentParams.BoostEnergy_StartSpeed);
                 _rigidbody.WakeUp();
-                stateMachine.SetState<FStateGround>();
+                StateMachine.SetState<FStateGround>();
             }
 
-            if (!actor.flags.HasFlag(FlagType.OutOfControl))
+            if (!Actor.flags.HasFlag(FlagType.OutOfControl))
             {
-                if (input.JumpPressed)
+                if (Input.JumpPressed)
                 {
-                    stateMachine.GetState<FStateGround>().SetDetachTime(0.2f);
-                    stateMachine.SetState<FStateJump>();
+                    Kinematics.SetDetachTime(0.2f);
+                    StateMachine.SetState<FStateJump>();
                 }
 
-                if (input.BPressed)
+                if (Input.BPressed)
                 {
-                    stateMachine.SetState<FStateSit>(0.1f);
+                    StateMachine.SetState<FStateSit>(0.1f);
                 }
             }
         }
@@ -75,11 +75,11 @@ namespace SurgeEngine.Code.Parameters
         {
             base.OnFixedTick(dt);
             
-            stats.groundAngle = Vector3.Angle(stats.groundNormal, Vector3.up);
-            if (stats.currentSpeed < 10 && stats.groundAngle >= 70)
+            Stats.groundAngle = Vector3.Angle(Stats.groundNormal, Vector3.up);
+            if (Stats.currentSpeed < 10 && Stats.groundAngle >= 70)
             {
                 _rigidbody.WakeUp();
-                _rigidbody.AddForce(stats.groundNormal * 4f, ForceMode.Impulse);
+                _rigidbody.AddForce(Stats.groundNormal * 4f, ForceMode.Impulse);
             }
         }
     }

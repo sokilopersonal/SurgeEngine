@@ -15,16 +15,16 @@ namespace SurgeEngine.Code.Parameters
         {
             base.OnExit();
             
-            animation.ResetAction();
+            Animation.ResetAction();
         }
 
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
 
-            if (!input.BHeld)
+            if (!Input.BHeld)
             {
-                stateMachine.SetState<FStateIdle>(0.1f);
+                StateMachine.SetState<FStateIdle>(0.1f);
             }
         }
     }

@@ -11,7 +11,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             
             _cameraTransform.position = Vector3.Lerp(_lastPosition, _panData.position, Easings.Get(Easing.OutCubic, _factor));
             _cameraTransform.rotation = 
-                Quaternion.LookRotation(actor.transform.position -_cameraTransform.position, Vector3.up);
+                Quaternion.LookRotation(Actor.transform.position -_cameraTransform.position, Vector3.up);
             
             _camera.fieldOfView = Mathf.Lerp(_lastFov, _panData.fov, Easings.Get(Easing.OutCubic, _factor));
 

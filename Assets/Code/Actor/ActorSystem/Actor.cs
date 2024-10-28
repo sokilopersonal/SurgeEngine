@@ -18,6 +18,7 @@ namespace SurgeEngine.Code.ActorSystem
         public ActorEffects effects;
         public ActorModel model;
         public ActorFlags flags;
+        public ActorKinematics kinematics;
         
         public FStateMachine stateMachine;
         public FActorState[] states;
@@ -64,6 +65,7 @@ namespace SurgeEngine.Code.ActorSystem
             effects?.SetOwner(this);
             model?.SetOwner(this);
             flags?.SetOwner(this);
+            kinematics?.SetOwner(this);
         }
         
         private void Update()

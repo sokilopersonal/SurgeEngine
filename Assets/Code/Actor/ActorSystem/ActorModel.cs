@@ -69,12 +69,11 @@ namespace SurgeEngine.Code.ActorSystem
 
         public void RotateBody(Vector3 normal)
         {
-            actor.stats.transformNormal = normal;
             Vector3 vel = actor.rigidbody.linearVelocity;
 
             if (vel.magnitude > 0.1f)
             {
-                Quaternion rot = Quaternion.LookRotation(vel, actor.stats.transformNormal);
+                Quaternion rot = Quaternion.LookRotation(vel, normal);
                 actor.transform.rotation = rot;
             }
         }

@@ -1,37 +1,29 @@
-﻿using SurgeEngine.Code.ActorSystem;
-using SurgeEngine.Code.Custom;
+﻿using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.GameDocuments;
 using SurgeEngine.Code.Parameters.SonicSubStates;
 using SurgeEngine.Code.SonicSubStates.Boost;
 using UnityEngine;
 using UnityEngine.Splines;
-using static SurgeEngine.Code.GameDocuments.SonicGameDocument;
 using Quaternion = UnityEngine.Quaternion;
 using Vector3 = UnityEngine.Vector3;
 using static SurgeEngine.Code.GameDocuments.SonicGameDocumentParams;
 
 namespace SurgeEngine.Code.Parameters
 {
-    public class FStateGround : FStateMove, IBoostHandler
+    public sealed class FStateGround : FStateMove, IBoostHandler
     {
         [SerializeField] private Vector3 _groundCheckOffset;
-
-        private Transform _cameraTransform;
-        private const float INPUT_DEADZONE = 0.3f;
-        private const float SLOPE_PREDICTION_ACTIVATE_SPEED = 10f;
         
-        private float _detachTimer;
-        private bool _canAttach;
+        
         private string _surfaceTag;
 
         public override void OnEnter()
         {
             base.OnEnter();
-
-            _cameraTransform = actor.camera.GetCameraTransform();
-            stats.groundNormal = Vector3.up;
             
-            SetDetachTime(0f);
+            Kinematics.Normal = Vector3.up;
+            
+            Kinematics.SetDetachTime(0f);
             ConvertAirToGroundVelocity();
         }
 
@@ -39,63 +31,54 @@ namespace SurgeEngine.Code.Parameters
         {
             base.OnTick(dt);
             
-            if (actor.input.JumpPressed)
+            if (Actor.input.JumpPressed)
             {
-                actor.stateMachine.SetState<FStateJump>(0.1f);
+                Actor.stateMachine.SetState<FStateJump>(0.1f);
             }
 
-            float activateSpeed = stateMachine.GetState<FStateSliding>().slideDeactivationSpeed;
+            float activateSpeed = StateMachine.GetState<FStateSliding>().slideDeactivationSpeed;
             activateSpeed += activateSpeed * 1.5f;
             
-            if (input.BHeld)
+            if (Input.BHeld)
             {
-                float dot = stats.moveDot;
+                float dot = Stats.moveDot;
                 float abs = Mathf.Abs(dot);
-                bool allowDrift = stats.currentSpeed > 10 && abs < 0.4f && !Mathf.Approximately(dot, 0f);
-                bool allowSlide = stats.currentSpeed > activateSpeed;
+                bool allowDrift = Stats.currentSpeed > 10 && abs < 0.4f && !Mathf.Approximately(dot, 0f);
+                bool allowSlide = Stats.currentSpeed > activateSpeed;
                     
                 if (allowDrift)
-                    stateMachine.SetState<FStateDrift>();
+                    StateMachine.SetState<FStateDrift>();
                 else if (allowSlide)
-                    stateMachine.SetState<FStateSliding>();
+                    StateMachine.SetState<FStateSliding>();
             }
-            
-            CalculateDetachState();
         }
 
         public override void OnFixedTick(float dt)
         {
             base.OnFixedTick(dt);
             
-            Vector3 prevNormal = stats.groundNormal; 
+            Vector3 prevNormal = Kinematics.Normal; 
             if (Common.CheckForGround(out var hit))
             {
                 var point = hit.point;
-                var normal = hit.normal;
-                stats.groundNormal = normal;
+                Kinematics.Normal = hit.normal;
                 
                 Vector3 stored = _rigidbody.linearVelocity;
                 _rigidbody.linearVelocity = Quaternion.FromToRotation(_rigidbody.transform.up, prevNormal) * stored;
-                stats.transformNormal = Vector3.Slerp(stats.transformNormal, normal, dt * 14f);
+                Stats.transformNormal = Vector3.Slerp(Stats.transformNormal, Kinematics.Normal, dt * 14f);
 
-                if (_rigidbody.linearVelocity.magnitude > SLOPE_PREDICTION_ACTIVATE_SPEED)
-                {
-                    SlopePrediction(dt);
-                }
-
-                Movement(dt);
-                actor.model.RotateBody(normal);
-                Snap(point, normal);
+                Actor.kinematics.BasePhysics(point, Kinematics.Normal);
+                Actor.model.RotateBody(Kinematics.Normal);
                 
                 _surfaceTag = hit.transform.gameObject.GetGroundTag();
-                _rigidbody.linearVelocity = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, normal);
             }
             else
             {
-                stateMachine.SetState<FStateAir>();
+                StateMachine.SetState<FStateAir>();
             }
             
-            var path = actor.pathData;
+            // TODO: Move to ActorKinematics
+            var path = Actor.pathData;
             if (path != null)
             {
                 if (path.splineContainer != null)
@@ -105,13 +88,13 @@ namespace SurgeEngine.Code.Parameters
                     container.Evaluate(t, out var point, out var tangent, out var up);
                     var planeNormal = Vector3.Cross(tangent, up);
                 
-                    if (stats.currentSpeed < path.maxAutoRunSpeed)
+                    if (Stats.currentSpeed < path.maxAutoRunSpeed)
                     {
                         _rigidbody.AddForce(_rigidbody.transform.forward * (dt * path.autoRunSpeed), ForceMode.Impulse);
                     }
                 
                     _rigidbody.linearVelocity = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, planeNormal);
-                    stats.inputDir = Vector3.ProjectOnPlane(stats.inputDir, planeNormal);
+                    Stats.inputDir = Vector3.ProjectOnPlane(Stats.inputDir, planeNormal);
                 
                     Vector3 nearPoint = container.transform.TransformPoint(near);
                     _rigidbody.position = Vector3.Lerp(_rigidbody.position, nearPoint, 16f * dt);
@@ -120,124 +103,13 @@ namespace SurgeEngine.Code.Parameters
             }
         }
 
-        private void Movement(float dt)
-        {
-            Vector3 velocity = _rigidbody.linearVelocity;
-            var normal = stats.groundNormal;
-            SurgeMath.SplitPlanarVector(velocity, normal, out Vector3 planar, out _);
-
-            stats.movementVector = planar;
-            stats.planarVelocity = planar;
-            
-            Vector3 transformedInput = Quaternion.FromToRotation(_cameraTransform.up, normal) *
-                                       (_cameraTransform.rotation * actor.input.moveVector);
-            transformedInput = Vector3.ProjectOnPlane(transformedInput, normal);
-            stats.inputDir = transformedInput.normalized * actor.input.moveVector.magnitude;
-            if (input.moveVector == Vector3.zero && stateMachine.GetSubState<FBoost>().Active) stats.inputDir = _rigidbody.transform.forward;
-
-            if (stats.inputDir.magnitude > INPUT_DEADZONE)
-            {
-                if (!stats.skidding)
-                {
-                    CalculateVelocity(dt);
-                }
-                else
-                {
-                    if (stateMachine.GetSubState<FBoost>().Active) return;
-                    
-                    Deacceleration(stats.moveParameters.skidMaxRate, stats.moveParameters.skidMinRate);
-                }
-            }
-            else
-            {
-                if (stateMachine.GetSubState<FBoost>().Active) return;
-
-                Deacceleration(stats.moveParameters.maxDeacceleration, stats.moveParameters.minDeacceleration);
-            }
-            
-            SlopePhysics(dt);
-            
-            Vector3 movementVelocity = stats.movementVector;
-            if (!stateMachine.GetSubState<FBoost>().Active)
-            {
-                movementVelocity = Vector3.Lerp(movementVelocity,
-                    Vector3.ClampMagnitude(movementVelocity, stats.moveParameters.maxSpeed),
-                    SurgeMath.Smooth(1 - 0.95f));
-            } 
-            _rigidbody.linearVelocity = movementVelocity;
-        }
-
-        private void Deacceleration(float min, float max)
-        {
-            if (actor.flags.HasFlag(FlagType.OutOfControl)) return;
-            
-            float f = Mathf.Lerp(max, min, 
-                stats.movementVector.magnitude / stats.moveParameters.topSpeed);
-            if (stats.movementVector.magnitude > 1f)
-                stats.movementVector = Vector3.MoveTowards(stats.movementVector, Vector3.zero, Time.fixedDeltaTime * f);
-            else
-            {
-                stats.movementVector = Vector3.zero;
-                    
-                stateMachine.SetState<FStateIdle>();
-            }
-        }
-
-        private void CalculateVelocity(float dt)
-        {
-            stats.turnRate = Mathf.Lerp(stats.turnRate, stats.moveParameters.turnSpeed
-                                                        * (stateMachine.GetSubState<FBoost>().Active ? stateMachine.GetSubState<FBoost>().GetBoostEnergyGroup().GetParameter<float>("TurnSpeedMultiplier") : 1), 
-                dt * stats.moveParameters.turnSmoothing);
-            var accelRateMod = stats.moveParameters.accelCurve.Evaluate(stats.planarVelocity.magnitude / stats.moveParameters.topSpeed);
-            if (stats.planarVelocity.magnitude < stats.moveParameters.topSpeed)
-                stats.planarVelocity += stats.inputDir * (stats.moveParameters.accelRate * accelRateMod * dt);
-            
-            Vector3 newVelocity = Quaternion.FromToRotation(stats.planarVelocity.normalized, stats.inputDir.normalized) * stats.planarVelocity;
-            float handling = stats.turnRate;
-            handling *= stats.moveParameters.turnCurve.Evaluate(stats.planarVelocity.magnitude / stats.moveParameters.topSpeed);
-            stats.movementVector = Vector3.Slerp(stats.planarVelocity, newVelocity, Time.fixedDeltaTime * handling);
-        }
-
-        protected virtual void SlopePhysics(float dt)
-        {
-            var doc = GameDocument<SonicGameDocument>.GetDocument("Sonic");
-            var param = doc.GetGroup("Slope");
-            stats.groundAngle = Vector3.Angle(stats.groundNormal, Vector3.up);
-            if (stats.currentSpeed < param.GetParameter<float>(Slope_MinSpeed) && stats.groundAngle >= param.GetParameter<float>(Slope_DeslopeAngle))
-            {
-                _rigidbody.AddForce(stats.groundNormal * param.GetParameter<float>(Slope_DeslopeForce), ForceMode.Impulse);
-                stateMachine.SetState<FStateAir>(param.GetParameter<float>(Slope_InactiveDuration));
-            }
-            
-            if (stats.groundAngle > param.GetParameter<float>(Slope_MinAngle) && stats.movementVector.magnitude > param.GetParameter<float>(Slope_MinForceSpeed))
-            {
-                bool uphill = Vector3.Dot(_rigidbody.linearVelocity.normalized, Vector3.down) < 0;
-                Vector3 slopeForce = Vector3.ProjectOnPlane(Vector3.down, stats.groundNormal) * (1 * (uphill ? param.GetParameter<float>(Slope_UphillForce) : param.GetParameter<float>(Slope_DownhillForce)));
-                _rigidbody.AddForce(slopeForce * dt, ForceMode.Impulse);
-            }
-            
-            float rDot = Vector3.Dot(Vector3.up, actor.transform.right);
-            if (Mathf.Abs(rDot) > 0.1f && Mathf.Approximately(stats.groundAngle, 90))
-            {
-                _rigidbody.linearVelocity += Vector3.down * (param.GetParameter<float>(Slope_WallGravity) * dt);
-            }
-        }
-
-        private void Snap(Vector3 point, Vector3 normal) // TODO: Fix snapping
-        {
-            if (!_canAttach) return;
-            
-            //_rigidbody.position = point + normal;
-            _rigidbody.position = Vector3.Slerp(_rigidbody.position, point + normal, 16 * Time.fixedDeltaTime);
-        }
-
         public void BoostHandle()
         {
             float dt = Time.deltaTime;
-            FBoost boost = stateMachine.GetSubState<FBoost>();
+            FBoost boost = StateMachine.GetSubState<FBoost>();
             var param = boost.GetBoostEnergyGroup();
             float startForce = param.GetParameter<float>(BoostEnergy_StartSpeed);
-            if (boost.Active && stats.currentSpeed < startForce)
+            if (boost.Active && Stats.currentSpeed < startForce)
             {
                 _rigidbody.linearVelocity = _rigidbody.transform.forward * startForce;
                 boost.restoringTopSpeed = true;
@@ -245,14 +117,14 @@ namespace SurgeEngine.Code.Parameters
     
             if (boost.Active)
             {
-                float maxSpeed = stats.moveParameters.maxSpeed * param.GetParameter<float>(BoostEnergy_MaxSpeedMultiplier);
-                if (stats.currentSpeed < maxSpeed) _rigidbody.linearVelocity += _rigidbody.linearVelocity.normalized * (param.GetParameter<float>(BoostEnergy_Force) * dt);
+                float maxSpeed = Stats.moveParameters.maxSpeed * param.GetParameter<float>(BoostEnergy_MaxSpeedMultiplier);
+                if (Stats.currentSpeed < maxSpeed) _rigidbody.linearVelocity += _rigidbody.linearVelocity.normalized * (param.GetParameter<float>(BoostEnergy_Force) * dt);
                     
             }
             else if (boost.restoringTopSpeed)
             {
-                float normalMaxSpeed = stats.moveParameters.topSpeed;
-                if (stats.currentSpeed > normalMaxSpeed)
+                float normalMaxSpeed = Stats.moveParameters.topSpeed;
+                if (Stats.currentSpeed > normalMaxSpeed)
                 {
                     _rigidbody.linearVelocity = Vector3.MoveTowards(
                         _rigidbody.linearVelocity, 
@@ -260,135 +132,26 @@ namespace SurgeEngine.Code.Parameters
                         dt * param.GetParameter<float>(BoostEnergy_RestoreSpeed)
                     );
                 }
-                else if (stats.currentSpeed * 0.99f < normalMaxSpeed)
+                else if (Stats.currentSpeed * 0.99f < normalMaxSpeed)
                 {
                     boost.restoringTopSpeed = false;
                 }
             }
         }
 
-        private void SlopePrediction(float dt)
-        {
-            var lowerValue = 0.43f;
-            var stats = actor.stats;
-            var predictedPosition = _rigidbody.position + -stats.groundNormal * lowerValue;
-            var predictedNormal = stats.groundNormal;
-            var predictedVelocity = _rigidbody.linearVelocity;
-            var speedFrame = _rigidbody.linearVelocity.magnitude * dt;
-            var lerpJump = 0.015f;
-            var mask = stats.moveParameters.castParameters.collisionMask;
-            
-            if (!Physics.Raycast(predictedPosition, predictedVelocity.normalized, 
-                    out var pGround, speedFrame * 1.3f, mask)) { HighSpeedFix(dt); return; }
-
-            for (var lerp = lerpJump; lerp < 45 / 90; lerp += lerpJump)
-            {
-                if (!Physics.Raycast(predictedPosition, Vector3.Lerp(predictedVelocity.normalized, stats.groundNormal, lerp), out pGround, speedFrame * 1.3f, mask))
-                {
-                    lerp += lerpJump;
-                    Physics.Raycast(predictedPosition + Vector3.Lerp(predictedVelocity.normalized, stats.groundNormal, lerp) * (speedFrame * 1.3f), -predictedNormal, 
-                        out pGround, stats.moveParameters.castParameters.castDistance + 0.2f, mask);
-
-                    predictedPosition = predictedPosition + Vector3.Lerp(predictedVelocity.normalized, stats.groundNormal, lerp) * speedFrame + pGround.normal * lowerValue;
-                    predictedVelocity = Quaternion.FromToRotation(stats.groundNormal, pGround.normal) * predictedVelocity;
-                    stats.groundNormal = pGround.normal;
-                    _rigidbody.position = Vector3.MoveTowards(_rigidbody.position, predictedPosition, dt);
-                    _rigidbody.linearVelocity = predictedVelocity;
-                    break;
-                }
-            }
-        }
-
-        private void HighSpeedFix(float dt)
-        {
-            var predictedPosition = _rigidbody.position;
-            var predictedNormal = actor.stats.groundNormal;
-            var predictedVelocity = _rigidbody.linearVelocity;
-            var steps = 8;
-            var mask = stats.moveParameters.castParameters.collisionMask;
-            int i;
-            for (i = 0; i < steps; i++)
-            {
-                predictedPosition += predictedVelocity * dt / steps;
-                if (Physics.Raycast(predictedPosition, -predictedNormal, out var pGround, stats.moveParameters.castParameters.castDistance + 0.2f, mask))
-                {
-                    if (Vector3.Angle (predictedNormal, pGround.normal) < 45)
-                    {
-                        predictedPosition = pGround.point + pGround.normal * 0.5f;
-                        predictedVelocity = Quaternion.FromToRotation(actor.stats.groundNormal, pGround.normal) * predictedVelocity;
-                        predictedNormal = pGround.normal;
-                    } else
-                    {
-                        i = -1;
-                        break;
-                    }
-                } else
-                {
-                    i = -1;
-                    break;
-                }
-            }
-            if (i >= steps)
-            {
-                actor.stats.groundNormal = predictedNormal;
-                _rigidbody.position = Vector3.MoveTowards(_rigidbody.position, predictedPosition, dt);
-            }
-        }
-
-        private void UpdateNormal()
-        {
-            if (Physics.Raycast(actor.transform.position, -actor.transform.up, out var hit,
-                    stats.moveParameters.castParameters.castDistance, stats.moveParameters.castParameters.collisionMask))
-            {
-                var point = hit.point;
-                var normal = hit.normal;
-                stats.groundNormal = normal;
-
-                _rigidbody.position = point + normal;
-            }
-        }
-
         private void ConvertAirToGroundVelocity()
         {
-            if (Physics.Raycast(actor.transform.position, _rigidbody.linearVelocity.normalized, out RaycastHit velocityFix, _rigidbody.linearVelocity.magnitude, stats.moveParameters.castParameters.collisionMask))
+            if (Physics.Raycast(Actor.transform.position, _rigidbody.linearVelocity.normalized, out RaycastHit velocityFix, _rigidbody.linearVelocity.magnitude, Stats.moveParameters.castParameters.collisionMask))
             {
                 float nextGroundAngle = Vector3.Angle(velocityFix.normal, Vector3.up);
                 if (nextGroundAngle <= 20)
                 {
-                    Vector3 fixedVelocity = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, actor.transform.up);
-                    fixedVelocity = Quaternion.FromToRotation(actor.transform.up, velocityFix.normal) * fixedVelocity;
+                    Vector3 fixedVelocity = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, Actor.transform.up);
+                    fixedVelocity = Quaternion.FromToRotation(Actor.transform.up, velocityFix.normal) * fixedVelocity;
                     _rigidbody.linearVelocity = fixedVelocity;
                 }
             }
         }
-
-        public void SetDetachTime(float t)
-        {
-            _detachTimer = 0;
-            _canAttach = false;
-            
-            _detachTimer = t;
-        }
-
-        public void CalculateDetachState()
-        {
-            if (_detachTimer > 0f)
-            {
-                _canAttach = false;
-                
-                _detachTimer -= Time.deltaTime;
-            }
-            else
-            {
-                _canAttach = true;
-
-                _detachTimer = 0f;
-            }
-        }
-
-        public void SetAttachState(bool value) => _canAttach = value;
-
-        public bool GetAttachState() => _canAttach;
 
         public string GetSurfaceTag() => _surfaceTag;
 

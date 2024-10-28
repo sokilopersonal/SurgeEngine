@@ -8,7 +8,7 @@ namespace SurgeEngine.Code.Parameters
         
         public override void OnEnter()
         {
-            _rigidbody = actor.rigidbody;
+            _rigidbody = Actor.rigidbody;
             
             _rigidbody.solverIterations = 16;
             _rigidbody.solverVelocityIterations = 8;

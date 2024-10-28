@@ -25,22 +25,22 @@ namespace SurgeEngine.Code.Parameters
         {
             base.OnExit();
             
-            animation.ResetAction();
+            Animation.ResetAction();
         }
 
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
             
-            if (input.moveVector.x == 0)
+            if (Input.moveVector.x == 0)
                 _ignoreTimer += dt;
             else
             {
                 _ignoreTimer = 0;
             }
             
-            if (!input.BHeld || _rigidbody.linearVelocity.magnitude < SonicGameDocument.GetDocument("Sonic").GetGroup("Drift").GetParameter<float>(Drift_DeactivateSpeed) || _ignoreTimer > 0.15f)
-                stateMachine.SetState<FStateGround>(0.1f);
+            if (!Input.BHeld || _rigidbody.linearVelocity.magnitude < SonicGameDocument.GetDocument("Sonic").GetGroup("Drift").GetParameter<float>(Drift_DeactivateSpeed) || _ignoreTimer > 0.15f)
+                StateMachine.SetState<FStateGround>(0.1f);
         }
 
         public override void OnFixedTick(float dt)
@@ -51,55 +51,44 @@ namespace SurgeEngine.Code.Parameters
             {
                 var point = hit.point;
                 var normal = hit.normal;
-                stats.groundNormal = normal;
+                Kinematics.Normal = normal;
                 
                 _rigidbody.position = point + normal;
-                stats.transformNormal = Vector3.Slerp(stats.transformNormal, normal, dt * 14f);
+                Stats.transformNormal = Vector3.Slerp(Stats.transformNormal, normal, dt * 14f);
 
                 var param = SonicGameDocument.GetDocument("Sonic").GetGroup("Drift");
-                
-                _driftXDirection = Mathf.Lerp(_driftXDirection, input.moveVector.x, param.GetParameter<float>(Drift_Smoothness));
+                _driftXDirection = Mathf.Lerp(_driftXDirection, Input.moveVector.x, param.GetParameter<float>(Drift_Smoothness));
             
-                actor.model.RotateBody(stats.groundNormal);
+                Actor.model.RotateBody(Kinematics.Normal);
                 
-                stats.groundAngle = Vector3.Angle(stats.groundNormal, Vector3.up);
-                if (stats.currentSpeed < 10 && stats.groundAngle >= 70)
-                {
-                    _rigidbody.AddForce(stats.groundNormal * 8f, ForceMode.Impulse);
-                    stateMachine.SetState<FStateAir>(0.2f);
-                }
-            
-                if (stats.groundAngle > 5 && stats.movementVector.magnitude > 10f)
-                {
-                    bool uphill = Vector3.Dot(_rigidbody.linearVelocity.normalized, Vector3.down) < 0;
-                    Vector3 slopeForce = Vector3.ProjectOnPlane(Vector3.down, stats.groundNormal) * (1 * (uphill ? 1f : 50f));
-                    _rigidbody.linearVelocity += slopeForce * Time.fixedDeltaTime;
-                }
+                Kinematics.SlopePhysics();
                 
-                float boostForce = stateMachine.GetSubState<FBoost>().Active ? 0.5f : 1f;
-                Quaternion angle = Quaternion.AngleAxis(_driftXDirection * param.GetParameter<float>(Drift_CentrifugalForce) * boostForce, stats.groundNormal);
+                float boostForce = StateMachine.GetSubState<FBoost>().Active ? 0.5f : 1f;
+                Quaternion angle = Quaternion.AngleAxis(_driftXDirection * param.GetParameter<float>(Drift_CentrifugalForce) * boostForce, Kinematics.Normal);
                 Vector3 driftVelocity = angle * _rigidbody.linearVelocity;
                 Vector3 additive = driftVelocity.normalized *
                                    ((1 - _rigidbody.linearVelocity.magnitude) * dt);
                 if (additive.magnitude < param.GetParameter<float>(Drift_MaxSpeed) * 0.2f)
                     driftVelocity -= additive * 0.75f;
                 _rigidbody.linearVelocity = driftVelocity;
-                
-                _rigidbody.linearVelocity = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, normal);
+
+                Kinematics.Snap(point, normal);
+                Kinematics.Project();
             }
             else
             {
-                stateMachine.SetState<FStateAir>(0.1f);
+                StateMachine.SetState<FStateAir>(0.1f);
             }
         }
 
         public void BoostHandle()
         {
             float dt = Time.deltaTime;
-            FBoost boost = stateMachine.GetSubState<FBoost>();
+            FBoost boost = StateMachine.GetSubState<FBoost>();
+            var physParam = SonicGameDocument.GetDocument("Sonic").GetGroup(SonicGameDocument.PhysicsGroup);
             var param = boost.GetBoostEnergyGroup();
             float startForce = param.GetParameter<float>(BoostEnergy_StartSpeed);
-            if (boost.Active && stats.currentSpeed < startForce)
+            if (boost.Active && Stats.currentSpeed < startForce)
             {
                 _rigidbody.linearVelocity = _rigidbody.transform.forward * startForce;
                 boost.restoringTopSpeed = true;
@@ -107,14 +96,14 @@ namespace SurgeEngine.Code.Parameters
     
             if (boost.Active)
             {
-                float maxSpeed = stats.moveParameters.maxSpeed * param.GetParameter<float>(BoostEnergy_MaxSpeedMultiplier);
-                if (stats.currentSpeed < maxSpeed) _rigidbody.linearVelocity += _rigidbody.linearVelocity.normalized * (param.GetParameter<float>(BoostEnergy_Force) * dt);
+                float maxSpeed = physParam.GetParameter<float>(BasePhysics_MaxSpeed) * param.GetParameter<float>(BoostEnergy_MaxSpeedMultiplier);
+                if (Stats.currentSpeed < maxSpeed) _rigidbody.linearVelocity += _rigidbody.linearVelocity.normalized * (param.GetParameter<float>(BoostEnergy_Force) * dt);
                     
             }
             else if (boost.restoringTopSpeed)
             {
-                float normalMaxSpeed = stats.moveParameters.topSpeed;
-                if (stats.currentSpeed > normalMaxSpeed)
+                float normalMaxSpeed = physParam.GetParameter<float>(BasePhysics_TopSpeed);
+                if (Stats.currentSpeed > normalMaxSpeed)
                 {
                     _rigidbody.linearVelocity = Vector3.MoveTowards(
                         _rigidbody.linearVelocity, 
@@ -122,7 +111,7 @@ namespace SurgeEngine.Code.Parameters
                         dt * param.GetParameter<float>(BoostEnergy_RestoreSpeed)
                     );
                 }
-                else if (stats.currentSpeed * 0.99f < normalMaxSpeed)
+                else if (Stats.currentSpeed * 0.99f < normalMaxSpeed)
                 {
                     boost.restoringTopSpeed = false;
                 }

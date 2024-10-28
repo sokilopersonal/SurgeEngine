@@ -8,7 +8,7 @@ namespace SurgeEngine.Code.Parameters
         {
             base.OnEnter();
 
-            FBoost boost = stateMachine.GetSubState<FBoost>();
+            FBoost boost = StateMachine.GetSubState<FBoost>();
             if (boost.canAirBoost)
             {
                 if (boost.ApplyAirForce(_rigidbody, _rigidbody.transform.forward * boost.GetBoostEnergyGroup().GetParameter<float>("AirBoostSpeed")))
@@ -17,14 +17,14 @@ namespace SurgeEngine.Code.Parameters
                 }
             }
             
-            stateMachine.SetState<FStateAir>();
+            StateMachine.SetState<FStateAir>();
         }
 
         public override void OnExit()
         {
             base.OnExit();
             
-            animation.ResetAction();
+            Animation.ResetAction();
         }
     }
 }

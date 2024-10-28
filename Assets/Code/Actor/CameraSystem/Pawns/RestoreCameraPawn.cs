@@ -9,17 +9,17 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
         {
             base.OnEnter();
             
-            input.CameraLock(true);
+            Input.CameraLock(true);
 
             _tempY = 0;
-            SetRotationAxis(actor.transform.forward);
+            SetRotationAxis(Actor.transform.forward);
         }
 
         public override void OnExit()
         {
             base.OnExit();
             
-            input.CameraLock(false);
+            Input.CameraLock(false);
         }
 
         public override void OnTick(float dt)
@@ -31,11 +31,11 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             
             if (_factor >= 1)
             {
-                var defaultModern = actor.camera.stateMachine.GetState<DefaultModernPawn>();
+                var defaultModern = Actor.camera.stateMachine.GetState<DefaultModernPawn>();
                 defaultModern.SetRotationValues(_x, _y);
                 defaultModern.SetTempZ(_tempZ);
                 defaultModern.SetTempY(_tempY);
-                actor.camera.stateMachine.SetState<DefaultModernPawn>();
+                Actor.camera.stateMachine.SetState<DefaultModernPawn>();
             }
         }
 

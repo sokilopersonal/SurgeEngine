@@ -44,7 +44,7 @@ namespace SurgeEngine.Code.Parameters
             {
                 if (Common.CheckForGround(out var hit))
                 {
-                    stateMachine.SetState<FStateGround>();
+                    StateMachine.SetState<FStateGround>();
                 }
             }
         }
@@ -55,7 +55,7 @@ namespace SurgeEngine.Code.Parameters
 
             if (_data.type is SpecialJumpType.Spring or SpecialJumpType.DashRing)
             {
-                animation.TransitionToState(AnimatorParams.AirCycle, 0.5f);
+                Animation.TransitionToState(AnimatorParams.AirCycle, 0.5f);
             }
         }
 
@@ -64,10 +64,10 @@ namespace SurgeEngine.Code.Parameters
             switch (_data.type)
             {
                 case SpecialJumpType.JumpBoard:
-                    Common.ApplyGravity(stats.gravity, dt);
+                    Common.ApplyGravity(Stats.gravity, dt);
                     break;
                 case SpecialJumpType.TrickJumper:
-                    Common.ApplyGravity(stats.gravity, dt);
+                    Common.ApplyGravity(Stats.gravity, dt);
                     break;
                 case SpecialJumpType.Spring:
                     if (_keepVelocityTimer > 0)
@@ -76,7 +76,7 @@ namespace SurgeEngine.Code.Parameters
                         
                         if (_keepVelocityTimer <= 0)
                         {
-                            stateMachine.SetState<FStateAir>();
+                            StateMachine.SetState<FStateAir>();
                         }
                     }
                     break;
@@ -87,7 +87,7 @@ namespace SurgeEngine.Code.Parameters
                         
                         if (_keepVelocityTimer <= 0)
                         {
-                            stateMachine.SetState<FStateAir>();
+                            StateMachine.SetState<FStateAir>();
                         }
                     }
                     break;
@@ -106,16 +106,16 @@ namespace SurgeEngine.Code.Parameters
             switch (_data.type)
             {
                 case SpecialJumpType.JumpBoard:
-                    animation.TransitionToState((bool)arg ? "Jump Delux" : "Jump Standard", time, true);
+                    Animation.TransitionToState((bool)arg ? "Jump Delux" : "Jump Standard", time, true);
                     break;
                 case SpecialJumpType.TrickJumper:
-                    animation.TransitionToState("Jump Spring", time, true);
+                    Animation.TransitionToState("Jump Spring", time, true);
                     break;
                 case SpecialJumpType.Spring:
-                    animation.TransitionToState("Jump Spring", time, true);
+                    Animation.TransitionToState("Jump Spring", time, true);
                     break;
                 case SpecialJumpType.DashRing:
-                    animation.TransitionToState("Dash Ring", time, true);
+                    Animation.TransitionToState("Dash Ring", time, true);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(_data), _data, null);

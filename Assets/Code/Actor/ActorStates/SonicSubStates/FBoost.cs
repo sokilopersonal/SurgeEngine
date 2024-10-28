@@ -7,6 +7,7 @@ using SurgeEngine.Code.SonicSubStates.Boost;
 using SurgeEngine.Code.StateMachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static SurgeEngine.Code.GameDocuments.SonicGameDocumentParams;
 
 namespace SurgeEngine.Code.Parameters.SonicSubStates
 {
@@ -44,7 +45,7 @@ namespace SurgeEngine.Code.Parameters.SonicSubStates
             actor.stateMachine.OnStateAssign += OnStateAssign;
 
             ObjectEvents.OnObjectCollected += _ => BoostEnergy += 
-                _boostEnergyGroup.GetParameter<float>(SonicGameDocumentParams.BoostEnergy_RingAdd);
+                _boostEnergyGroup.GetParameter<float>(BoostEnergy_RingAdd);
         }
 
         private void OnDisable()
@@ -71,7 +72,7 @@ namespace SurgeEngine.Code.Parameters.SonicSubStates
                     if (_cancelBoostCoroutine != null) 
                         StopCoroutine(_cancelBoostCoroutine);
 
-                    _cancelBoostCoroutine = StartCoroutine(CancelBoost(_boostEnergyGroup.GetParameter<float>(SonicGameDocumentParams.BoostEnergy_InAirTime)));
+                    _cancelBoostCoroutine = StartCoroutine(CancelBoost(_boostEnergyGroup.GetParameter<float>(BoostEnergy_InAirTime)));
                 }
             }
             
@@ -80,7 +81,7 @@ namespace SurgeEngine.Code.Parameters.SonicSubStates
                 if (_cancelBoostCoroutine != null)
                     StopCoroutine(_cancelBoostCoroutine);
                 
-                _cancelBoostCoroutine = StartCoroutine(CancelBoost(_boostEnergyGroup.GetParameter<float>(SonicGameDocumentParams.BoostEnergy_AirBoostTime)));
+                _cancelBoostCoroutine = StartCoroutine(CancelBoost(_boostEnergyGroup.GetParameter<float>(BoostEnergy_AirBoostTime)));
             }
         }
 
@@ -111,19 +112,21 @@ namespace SurgeEngine.Code.Parameters.SonicSubStates
 
             if (actor.stateMachine.CurrentState is FStateDrift)
             {
-                BoostEnergy += _boostEnergyGroup.GetParameter<float>(SonicGameDocumentParams.BoostEnergy_DriftAdd) * dt;
+                BoostEnergy += _boostEnergyGroup.GetParameter<float>(BoostEnergy_DriftAdd) * dt;
             }
 
             if (Active)
             {
                 if (BoostEnergy > 0)
                 {
-                    BoostEnergy -= _boostEnergyGroup.GetParameter<float>(SonicGameDocumentParams.BoostEnergy_Drain) * Time.deltaTime;
+                    BoostEnergy -= _boostEnergyGroup.GetParameter<float>(BoostEnergy_Drain) * Time.deltaTime;
                 }
                 else
                 {
                     Active = false;
                 }
+                
+                actor.kinematics.TurnRate *= _boostEnergyGroup.GetParameter<float>(BoostEnergy_TurnSpeedMultiplier);
             }
 
             if (Common.CheckForGround(out _, CheckGroundType.Predict))
@@ -154,17 +157,12 @@ namespace SurgeEngine.Code.Parameters.SonicSubStates
             
             if (CanBoost())
             {
-                if (obj.started)
-                    Active = true;
-                else
-                {
-                    Active = false;
-                }
+                Active = obj.started;
             }
             
             if (Active)
             {
-                BoostEnergy -= _boostEnergyGroup.GetParameter<float>(SonicGameDocumentParams.BoostEnergy_StartDrain);
+                BoostEnergy -= _boostEnergyGroup.GetParameter<float>(BoostEnergy_StartDrain);
 
                 new Rumble().Vibrate(0.7f, 0.8f, 0.5f);
             }

@@ -32,7 +32,7 @@ namespace SurgeEngine.Code.ActorSystem
             SetFloat(AnimatorParams.VerticalSpeed, actor.stats.currentVerticalSpeed);
 
             Vector3 vel = actor.rigidbody.linearVelocity.normalized;
-            vel.y = Mathf.Approximately(actor.stats.groundAngle, 0) ? 0 : vel.y;
+            vel.y = Mathf.Approximately(actor.kinematics.Angle, 0) ? 0 : vel.y;
             float angle = Vector3.SignedAngle(actor.model.root.forward, vel,
                 actor.transform.up) * 0.2f;
             
