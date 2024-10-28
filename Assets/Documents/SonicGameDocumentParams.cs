@@ -1,0 +1,68 @@
+namespace SurgeEngine.Code.GameDocuments
+{
+    public static class SonicGameDocumentParams
+    {
+        public static string BasePhysics_TopSpeed = "TopSpeed";
+        public static string BasePhysics_MaxSpeed = "MaxSpeed";
+        public static string BasePhysics_MaxVerticalSpeed = "MaxVerticalSpeed";
+        public static string BasePhysics_AccelerationRate = "AccelerationRate";
+        public static string BasePhysics_AccelerationCurve = "AccelerationCurve";
+        public static string BasePhysics_MinDeaccelerationRate = "MinDeaccelerationRate";
+        public static string BasePhysics_MaxDeaccelerationRate = "MaxDeaccelerationRate";
+        public static string BasePhysics_MinSkiddingRate = "MinSkiddingRate";
+        public static string BasePhysics_MaxSkiddingRate = "MaxSkiddingRate";
+        public static string BasePhysics_SkiddingThreshold = "SkiddingThreshold";
+        public static string BasePhysics_TurnSpeed = "TurnSpeed";
+        public static string BasePhysics_TurnCurve = "TurnCurve";
+        public static string BasePhysics_TurnSmoothing = "TurnSmoothing";
+        public static string BasePhysics_JumpForce = "JumpForce";
+        public static string BasePhysics_JumpHoldForce = "JumpHoldForce";
+        public static string BasePhysics_JumpStartTime = "JumpStartTime";
+        public static string BasePhysics_JumpCollisionHeight = "JumpCollisionHeight";
+        public static string BasePhysics_JumpCollisionCenter = "JumpCollisionCenter";
+        public static string BasePhysics_JumpCollisionRadius = "JumpCollisionRadius";
+        public static string BasePhysics_StompSpeed = "StompSpeed";
+        public static string BasePhysics_StompCurve = "StompCurve";
+        public static string Cast_Distance = "Distance";
+        public static string Cast_Radius = "Radius";
+        public static string Cast_Mask = "Mask";
+        public static string Slide_Height = "Height";
+        public static string Slide_YCenter = "YCenter";
+        public static string Slide_Deacceleration = "Deacceleration";
+        public static string Slide_DeactivationSpeed = "DeactivationSpeed";
+        public static string Drift_Smoothness = "Smoothness";
+        public static string Drift_DeactivateSpeed = "DeactivateSpeed";
+        public static string Drift_MaxSpeed = "MaxSpeed";
+        public static string Drift_CentrifugalForce = "CentrifugalForce";
+        public static string BoostEnergy_RingAdd = "RingAdd";
+        public static string BoostEnergy_DriftAdd = "DriftAdd";
+        public static string BoostEnergy_StartDrain = "StartDrain";
+        public static string BoostEnergy_Drain = "Drain";
+        public static string BoostEnergy_TurnSpeedMultiplier = "TurnSpeedMultiplier";
+        public static string BoostEnergy_MaxSpeedMultiplier = "MaxSpeedMultiplier";
+        public static string BoostEnergy_StartSpeed = "StartSpeed";
+        public static string BoostEnergy_AirBoostSpeed = "AirBoostSpeed";
+        public static string BoostEnergy_InAirTime = "InAirTime";
+        public static string BoostEnergy_AirBoostTime = "AirBoostTime";
+        public static string BoostEnergy_RingMagnetRadius = "RingMagnetRadius";
+        public static string BoostEnergy_Force = "Force";
+        public static string BoostEnergy_RestoreSpeed = "RestoreSpeed";
+        public static string Homing_Speed = "Speed";
+        public static string Homing_FindRadius = "FindRadius";
+        public static string Homing_FindDistance = "FindDistance";
+        public static string Homing_Time = "Time";
+        public static string Homing_Distance = "Distance";
+        public static string Homing_Curve = "Curve";
+        public static string Homing_Mask = "Mask";
+        public static string Homing_MaxTargetTime = "MaxTargetTime";
+        public static string Slope_DeslopeForce = "DeslopeForce";
+        public static string Slope_DeslopeAngle = "DeslopeAngle";
+        public static string Slope_MinForceSpeed = "MinForceSpeed";
+        public static string Slope_InactiveDuration = "InactiveDuration";
+        public static string Slope_UphillForce = "UphillForce";
+        public static string Slope_DownhillForce = "DownhillForce";
+        public static string Slope_MinAngle = "MinAngle";
+        public static string Slope_MinSpeed = "MinSpeed";
+        public static string Slope_WallGravity = "WallGravity";
+    }
+}

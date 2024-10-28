@@ -1,11 +1,14 @@
 ﻿using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Custom;
+using SurgeEngine.Code.GameDocuments;
 using SurgeEngine.Code.Parameters.SonicSubStates;
 using SurgeEngine.Code.SonicSubStates.Boost;
 using UnityEngine;
 using UnityEngine.Splines;
+using static SurgeEngine.Code.GameDocuments.SonicGameDocument;
 using Quaternion = UnityEngine.Quaternion;
 using Vector3 = UnityEngine.Vector3;
+using static SurgeEngine.Code.GameDocuments.SonicGameDocumentParams;
 
 namespace SurgeEngine.Code.Parameters
 {
@@ -197,24 +200,26 @@ namespace SurgeEngine.Code.Parameters
 
         protected virtual void SlopePhysics(float dt)
         {
+            var doc = GameDocument<SonicGameDocument>.GetDocument("Sonic");
+            var param = doc.GetGroup("Slope");
             stats.groundAngle = Vector3.Angle(stats.groundNormal, Vector3.up);
-            if (stats.currentSpeed < 10 && stats.groundAngle >= 70)
+            if (stats.currentSpeed < param.GetParameter<float>(Slope_MinSpeed) && stats.groundAngle >= param.GetParameter<float>(Slope_DeslopeAngle))
             {
-                SetDetachTime(0.5f);
-                _rigidbody.AddForce(stats.groundNormal * 8f, ForceMode.Impulse);
+                _rigidbody.AddForce(stats.groundNormal * param.GetParameter<float>(Slope_DeslopeForce), ForceMode.Impulse);
+                stateMachine.SetState<FStateAir>(param.GetParameter<float>(Slope_InactiveDuration));
             }
             
-            if (stats.groundAngle > 5 && stats.movementVector.magnitude > 10f)
+            if (stats.groundAngle > param.GetParameter<float>(Slope_MinAngle) && stats.movementVector.magnitude > param.GetParameter<float>(Slope_MinForceSpeed))
             {
                 bool uphill = Vector3.Dot(_rigidbody.linearVelocity.normalized, Vector3.down) < 0;
-                Vector3 slopeForce = Vector3.ProjectOnPlane(Vector3.down, stats.groundNormal) * (1 * (uphill ? 1f : 6.5f));
-                _rigidbody.linearVelocity += slopeForce * Time.fixedDeltaTime;
+                Vector3 slopeForce = Vector3.ProjectOnPlane(Vector3.down, stats.groundNormal) * (1 * (uphill ? param.GetParameter<float>(Slope_UphillForce) : param.GetParameter<float>(Slope_DownhillForce)));
+                _rigidbody.AddForce(slopeForce * dt, ForceMode.Impulse);
             }
             
             float rDot = Vector3.Dot(Vector3.up, actor.transform.right);
-            if (Mathf.Abs(rDot) > 0.1f && stats.groundAngle == 90)
+            if (Mathf.Abs(rDot) > 0.1f && Mathf.Approximately(stats.groundAngle, 90))
             {
-                _rigidbody.linearVelocity += Vector3.down * (9f * dt);
+                _rigidbody.linearVelocity += Vector3.down * (param.GetParameter<float>(Slope_WallGravity) * dt);
             }
         }
 
@@ -230,7 +235,8 @@ namespace SurgeEngine.Code.Parameters
         {
             float dt = Time.deltaTime;
             FBoost boost = stateMachine.GetSubState<FBoost>();
-            float startForce = boost.GetBoostEnergyGroup().GetParameter<float>("StartSpeed");
+            var param = boost.GetBoostEnergyGroup();
+            float startForce = param.GetParameter<float>(BoostEnergy_StartSpeed);
             if (boost.Active && stats.currentSpeed < startForce)
             {
                 _rigidbody.linearVelocity = _rigidbody.transform.forward * startForce;
@@ -239,8 +245,8 @@ namespace SurgeEngine.Code.Parameters
     
             if (boost.Active)
             {
-                float maxSpeed = stats.moveParameters.maxSpeed * boost.GetBoostEnergyGroup().GetParameter<float>("MaxSpeedMultiplier");
-                if (stats.currentSpeed < maxSpeed) _rigidbody.linearVelocity += _rigidbody.linearVelocity.normalized * (boost.GetBoostEnergyGroup().GetParameter<float>("Force") * dt);
+                float maxSpeed = stats.moveParameters.maxSpeed * param.GetParameter<float>(BoostEnergy_MaxSpeedMultiplier);
+                if (stats.currentSpeed < maxSpeed) _rigidbody.linearVelocity += _rigidbody.linearVelocity.normalized * (param.GetParameter<float>(BoostEnergy_Force) * dt);
                     
             }
             else if (boost.restoringTopSpeed)
@@ -251,7 +257,7 @@ namespace SurgeEngine.Code.Parameters
                     _rigidbody.linearVelocity = Vector3.MoveTowards(
                         _rigidbody.linearVelocity, 
                         _rigidbody.transform.forward * normalMaxSpeed, 
-                        dt * boost.restoreSpeed
+                        dt * param.GetParameter<float>(BoostEnergy_RestoreSpeed)
                     );
                 }
                 else if (stats.currentSpeed * 0.99f < normalMaxSpeed)

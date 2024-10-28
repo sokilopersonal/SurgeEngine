@@ -4,6 +4,7 @@ using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.GameDocuments;
 using UnityEngine;
+using static SurgeEngine.Code.GameDocuments.SonicGameDocumentParams;
 
 namespace SurgeEngine.Code.Custom
 {
@@ -115,8 +116,8 @@ namespace SurgeEngine.Code.Custom
             
             Document doc = SonicGameDocument.GetDocument("Sonic");
             ParameterGroup group = doc.GetGroup(SonicGameDocument.CastGroup);
-            float castDistance = group.GetParameter<float>("CastDistance");
-            LayerMask castMask = group.GetParameter<LayerMask>("CastMask");
+            float castDistance = group.GetParameter<float>(Cast_Distance);
+            LayerMask castMask = group.GetParameter<LayerMask>(Cast_Mask);
 
             return Physics.Raycast(ray, out result,
                 castDistance, castMask, QueryTriggerInteraction.Ignore);
@@ -168,9 +169,9 @@ namespace SurgeEngine.Code.Custom
             var param = doc.GetGroup(SonicGameDocument.HomingGroup);
             Vector3 origin = transform.position + Vector3.down * 0.5f;
             Vector3 dir = context.stats.inputDir == Vector3.zero ? transform.forward : context.stats.inputDir;
-            var radius = param.GetParameter<float>("HomingFindRadius");
-            var maxDistance = param.GetParameter<float>("HomingFindDistance");
-            RaycastHit[] targetsInRange = Physics.SphereCastAll(origin, radius, dir, maxDistance, param.GetParameter<LayerMask>("HomingMask"));
+            var radius = param.GetParameter<float>(Homing_FindRadius);
+            var maxDistance = param.GetParameter<float>(Homing_FindDistance);
+            RaycastHit[] targetsInRange = Physics.SphereCastAll(origin, radius, dir, maxDistance, param.GetParameter<LayerMask>(Homing_Mask));
             Transform closestTarget = null;
             float distance = Mathf.Infinity;
             foreach (RaycastHit t in targetsInRange)
@@ -183,7 +184,7 @@ namespace SurgeEngine.Code.Custom
                 float targetDistance = direction.sqrMagnitude / radius / radius;
                 if (targetDistance < distance && facing)
                 {
-                    if (!Physics.Linecast(origin, end, doc.GetGroup(SonicGameDocument.CastGroup).GetParameter<LayerMask>("CastMask")))
+                    if (!Physics.Linecast(origin, end, doc.GetGroup(SonicGameDocument.CastGroup).GetParameter<LayerMask>(Cast_Mask)))
                     {
                         closestTarget = target;
                         distance = targetDistance;

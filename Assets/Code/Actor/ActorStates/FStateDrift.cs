@@ -5,6 +5,7 @@ using SurgeEngine.Code.SonicSubStates.Boost;
 using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
 using Vector3 = UnityEngine.Vector3;
+using static SurgeEngine.Code.GameDocuments.SonicGameDocumentParams;
 
 namespace SurgeEngine.Code.Parameters
 {
@@ -38,7 +39,7 @@ namespace SurgeEngine.Code.Parameters
                 _ignoreTimer = 0;
             }
             
-            if (!input.BHeld || _rigidbody.linearVelocity.magnitude < SonicGameDocument.GetDocument("Sonic").GetGroup("Drift").GetParameter<float>("DeactivateSpeed") || _ignoreTimer > 0.15f)
+            if (!input.BHeld || _rigidbody.linearVelocity.magnitude < SonicGameDocument.GetDocument("Sonic").GetGroup("Drift").GetParameter<float>(Drift_DeactivateSpeed) || _ignoreTimer > 0.15f)
                 stateMachine.SetState<FStateGround>(0.1f);
         }
 
@@ -57,7 +58,7 @@ namespace SurgeEngine.Code.Parameters
 
                 var param = SonicGameDocument.GetDocument("Sonic").GetGroup("Drift");
                 
-                _driftXDirection = Mathf.Lerp(_driftXDirection, input.moveVector.x, param.GetParameter<float>("Smoothness"));
+                _driftXDirection = Mathf.Lerp(_driftXDirection, input.moveVector.x, param.GetParameter<float>(Drift_Smoothness));
             
                 actor.model.RotateBody(stats.groundNormal);
                 
@@ -76,11 +77,11 @@ namespace SurgeEngine.Code.Parameters
                 }
                 
                 float boostForce = stateMachine.GetSubState<FBoost>().Active ? 0.5f : 1f;
-                Quaternion angle = Quaternion.AngleAxis(_driftXDirection * param.GetParameter<float>("CentrifugalForce") * boostForce, stats.groundNormal);
+                Quaternion angle = Quaternion.AngleAxis(_driftXDirection * param.GetParameter<float>(Drift_CentrifugalForce) * boostForce, stats.groundNormal);
                 Vector3 driftVelocity = angle * _rigidbody.linearVelocity;
                 Vector3 additive = driftVelocity.normalized *
                                    ((1 - _rigidbody.linearVelocity.magnitude) * dt);
-                if (additive.magnitude < param.GetParameter<float>("MaxSpeed") * 0.2f)
+                if (additive.magnitude < param.GetParameter<float>(Drift_MaxSpeed) * 0.2f)
                     driftVelocity -= additive * 0.75f;
                 _rigidbody.linearVelocity = driftVelocity;
                 
@@ -96,7 +97,8 @@ namespace SurgeEngine.Code.Parameters
         {
             float dt = Time.deltaTime;
             FBoost boost = stateMachine.GetSubState<FBoost>();
-            float startForce = boost.GetBoostEnergyGroup().GetParameter<float>("StartSpeed");
+            var param = boost.GetBoostEnergyGroup();
+            float startForce = param.GetParameter<float>(BoostEnergy_StartSpeed);
             if (boost.Active && stats.currentSpeed < startForce)
             {
                 _rigidbody.linearVelocity = _rigidbody.transform.forward * startForce;
@@ -105,8 +107,8 @@ namespace SurgeEngine.Code.Parameters
     
             if (boost.Active)
             {
-                float maxSpeed = stats.moveParameters.maxSpeed * boost.GetBoostEnergyGroup().GetParameter<float>("MaxSpeedMultiplier");
-                if (stats.currentSpeed < maxSpeed) _rigidbody.linearVelocity += _rigidbody.linearVelocity.normalized * (boost.GetBoostEnergyGroup().GetParameter<float>("Force") * dt);
+                float maxSpeed = stats.moveParameters.maxSpeed * param.GetParameter<float>(BoostEnergy_MaxSpeedMultiplier);
+                if (stats.currentSpeed < maxSpeed) _rigidbody.linearVelocity += _rigidbody.linearVelocity.normalized * (param.GetParameter<float>(BoostEnergy_Force) * dt);
                     
             }
             else if (boost.restoringTopSpeed)
@@ -117,7 +119,7 @@ namespace SurgeEngine.Code.Parameters
                     _rigidbody.linearVelocity = Vector3.MoveTowards(
                         _rigidbody.linearVelocity, 
                         _rigidbody.transform.forward * normalMaxSpeed, 
-                        dt * boost.restoreSpeed
+                        dt * param.GetParameter<float>(BoostEnergy_RestoreSpeed)
                     );
                 }
                 else if (stats.currentSpeed * 0.99f < normalMaxSpeed)

@@ -1,9 +1,12 @@
 ﻿using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.Custom;
+using SurgeEngine.Code.GameDocuments;
 using SurgeEngine.Code.Parameters.SonicSubStates;
 using SurgeEngine.Code.SonicSubStates.Boost;
 using UnityEngine;
+using static SurgeEngine.Code.GameDocuments.SonicGameDocument;
+using static SurgeEngine.Code.GameDocuments.SonicGameDocumentParams;
 
 namespace SurgeEngine.Code.Parameters
 {
@@ -84,7 +87,7 @@ namespace SurgeEngine.Code.Parameters
 
                 if (stateMachine.PreviousState is not FStateSpecialJump)
                 {
-                    var drag = 0.74f;
+                    var drag = 0.65f;
                     var airResistance = 0.95f;
                     var airDrag = new Vector3(
                         -drag * airResistance * dt * _rigidbody.linearVelocity.x,
@@ -107,6 +110,9 @@ namespace SurgeEngine.Code.Parameters
             Vector3 velocity = _rigidbody.linearVelocity;
             var normal = stats.groundNormal;
             SurgeMath.SplitPlanarVector(velocity, normal, out Vector3 planar, out Vector3 airVelocity);
+            
+            var doc = GameDocument<SonicGameDocument>.GetDocument("Sonic");
+            var param = doc.GetGroup(PhysicsGroup);
 
             stats.movementVector = planar;
             stats.planarVelocity = planar;
@@ -118,16 +124,16 @@ namespace SurgeEngine.Code.Parameters
 
             if (stats.inputDir.magnitude > 0.2f)
             {
-                stats.turnRate = Mathf.Lerp(stats.turnRate, stats.moveParameters.turnSpeed, dt * stats.moveParameters.turnSmoothing);
-                var accelRateMod = stats.moveParameters.accelCurve.Evaluate(stats.planarVelocity.magnitude / stats.moveParameters.topSpeed);
-                if (stats.planarVelocity.magnitude < stats.moveParameters.topSpeed)
-                    stats.planarVelocity += stats.inputDir * (stats.moveParameters.accelRate * accelRateMod * dt);
+                stats.turnRate = Mathf.Lerp(stats.turnRate, param.GetParameter<float>(BasePhysics_TurnSpeed), dt * param.GetParameter<float>(BasePhysics_TurnSmoothing));
+                var accelRateMod = param.GetParameter<AnimationCurve>(BasePhysics_AccelerationCurve).Evaluate(stats.planarVelocity.magnitude / param.GetParameter<float>(BasePhysics_TopSpeed));
+                if (stats.planarVelocity.magnitude < param.GetParameter<float>(BasePhysics_TopSpeed))
+                    stats.planarVelocity += stats.inputDir * (param.GetParameter<float>(BasePhysics_AccelerationRate) * accelRateMod * dt);
                 float handling = stats.turnRate * 0.075f;
                 stats.movementVector = Vector3.Lerp(stats.planarVelocity, stats.inputDir.normalized * stats.planarVelocity.magnitude, 
                     dt * handling);
             }
 
-            if (stats.lastContactObject is not TrickJumper) airVelocity = Vector3.ClampMagnitude(airVelocity, 125f); // Trick Jumper fix
+            if (stats.lastContactObject is not TrickJumper) airVelocity = Vector3.ClampMagnitude(airVelocity, param.GetParameter<float>(BasePhysics_MaxVerticalSpeed)); // Trick Jumper fix
             Vector3 movementVelocity = stats.movementVector + airVelocity;
             _rigidbody.linearVelocity = movementVelocity;
         }
@@ -137,10 +143,10 @@ namespace SurgeEngine.Code.Parameters
             stats.transformNormal = Vector3.Slerp(stats.transformNormal, Vector3.up, dt * 8f);
 
             Vector3 vel = _rigidbody.linearVelocity;
-            vel.y = 0f;
-
-            if (vel.magnitude > 1f)
+            
+            if (vel.magnitude > 0.2f)
             {
+                vel.y = 0;
                 Quaternion rot = Quaternion.LookRotation(vel, stats.transformNormal);
                 actor.transform.rotation = rot;
             }

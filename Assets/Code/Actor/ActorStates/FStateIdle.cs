@@ -1,5 +1,6 @@
 ﻿using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Custom;
+using SurgeEngine.Code.GameDocuments;
 using SurgeEngine.Code.Parameters.SonicSubStates;
 using UnityEngine;
 
@@ -50,7 +51,7 @@ namespace SurgeEngine.Code.Parameters
 
             if (stateMachine.GetSubState<FBoost>().Active)
             {
-                _rigidbody.linearVelocity += _rigidbody.transform.forward * stateMachine.GetSubState<FBoost>().GetBoostEnergyGroup().GetParameter<float>("StartSpeed");
+                _rigidbody.linearVelocity += _rigidbody.transform.forward * stateMachine.GetSubState<FBoost>().GetBoostEnergyGroup().GetParameter<float>(SonicGameDocumentParams.BoostEnergy_StartSpeed);
                 _rigidbody.WakeUp();
                 stateMachine.SetState<FStateGround>();
             }

@@ -1,6 +1,7 @@
 ﻿using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.GameDocuments;
 using UnityEngine;
+using static SurgeEngine.Code.GameDocuments.SonicGameDocumentParams;
 
 namespace SurgeEngine.Code.Parameters
 {
@@ -12,14 +13,14 @@ namespace SurgeEngine.Code.Parameters
         {
             base.OnEnter();
             
-            _rigidbody.AddForce(actor.transform.up * stats.jumpParameters.jumpForce, ForceMode.Impulse);
+            var doc = SonicGameDocument.GetDocument("Sonic");
+            var param = doc.GetGroup(SonicGameDocument.PhysicsGroup);
+            _rigidbody.AddForce(actor.transform.up * param.GetParameter<float>(BasePhysics_JumpForce), ForceMode.Impulse);
             _jumpTime = 0;
             
             actor.transform.rotation = Quaternion.Euler(0, actor.transform.rotation.eulerAngles.y, 0);
             
-            var doc = SonicGameDocument.GetDocument("Sonic");
-            var param = doc.GetGroup(SonicGameDocument.PhysicsGroup);
-            actor.model.SetCollisionParam(param.GetParameter<float>("JumpCollisionHeight"), param.GetParameter<float>("JumpCollisionCenter"), param.GetParameter<float>("JumpCollisionRadius"));
+            actor.model.SetCollisionParam(param.GetParameter<float>(BasePhysics_JumpCollisionHeight), param.GetParameter<float>(BasePhysics_JumpCollisionCenter), param.GetParameter<float>(BasePhysics_JumpCollisionRadius));
         }
 
         public override void OnExit()
@@ -38,10 +39,12 @@ namespace SurgeEngine.Code.Parameters
             {
                 if (input.JumpHeld)
                 {
-                    if (_jumpTime < stats.jumpParameters.jumpStartTime)
+                    var doc = SonicGameDocument.GetDocument("Sonic");
+                    var param = doc.GetGroup(SonicGameDocument.PhysicsGroup);
+                    if (_jumpTime < param.GetParameter<float>(BasePhysics_JumpStartTime))
                     {
                         if (_rigidbody.linearVelocity.y > 0) 
-                            _rigidbody.linearVelocity += actor.transform.up * (stats.jumpParameters.jumpHoldForce * dt);
+                            _rigidbody.linearVelocity += actor.transform.up * (param.GetParameter<float>(BasePhysics_JumpHoldForce) * dt);
                         _jumpTime += dt;
                     }
                 }
@@ -52,7 +55,7 @@ namespace SurgeEngine.Code.Parameters
             Vector3 vel = _rigidbody.linearVelocity;
             vel = Vector3.ProjectOnPlane(vel, Vector3.up);
 
-            if (vel.magnitude > 0.5f)
+            if (vel.magnitude > 0.2f)
             {
                 Quaternion rot = Quaternion.LookRotation(vel, stats.transformNormal);
                 actor.transform.rotation = rot;

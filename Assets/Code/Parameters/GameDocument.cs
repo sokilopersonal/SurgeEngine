@@ -11,7 +11,7 @@ namespace SurgeEngine.Code.GameDocuments
         
         public static T Instance => _instance;
         
-        [SerializeField] private Document[] documents;
+        [SerializeField] protected Document[] documents;
 
         private void Awake()
         {

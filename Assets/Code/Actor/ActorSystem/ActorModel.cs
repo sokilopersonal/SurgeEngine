@@ -14,6 +14,10 @@ namespace SurgeEngine.Code.ActorSystem
         [SerializeField] private float airSmoothness = 3f;
         [SerializeField] private float jumpSmoothness = 10f;
 
+        // Added separate rotation speeds
+        [SerializeField] private float horizontalRotationSpeed = 5f;
+        [SerializeField] private float verticalRotationSpeed = 3f;
+
         private Vector3 forward;
         private Vector3 normal;
 
@@ -21,11 +25,10 @@ namespace SurgeEngine.Code.ActorSystem
         {
             collisionStartHeight = collision.height;
             collisionStartRadius = collision.radius;
-            
-            // FINALLY I FIXED IT!!
+
             Quaternion parentRotation = actor.transform.parent.rotation;
             actor.transform.parent.rotation = Quaternion.identity;
-            
+
             root.localPosition = actor.transform.localPosition;
             actor.transform.rotation = parentRotation;
             root.localRotation = parentRotation;
@@ -55,19 +58,18 @@ namespace SurgeEngine.Code.ActorSystem
             {
                 speed = 2f;
             }
-            
+
             root.localPosition = actor.transform.localPosition;
             root.localRotation = Quaternion.Slerp(root.localRotation,
                 actor.transform.rotation,
                 speed * Time.deltaTime);
-            
+
             actor.effects.spinball.transform.SetParent(root, false);
         }
 
         public void RotateBody(Vector3 normal)
         {
             actor.stats.transformNormal = normal;
-
             Vector3 vel = actor.rigidbody.linearVelocity;
 
             if (vel.magnitude > 0.1f)
@@ -77,11 +79,19 @@ namespace SurgeEngine.Code.ActorSystem
             }
         }
 
-        public void RotateModel(Vector3 forwardV, Vector3 normalV, float dt, float speed)
+        public void RotateModel(Vector3 forwardV, Vector3 normalV, float dt)
         {
-            root.localRotation = Quaternion.Slerp(root.localRotation,
-                Quaternion.LookRotation(forwardV, normalV),
-                dt * speed);
+            Quaternion targetRotation = actor.transform.rotation;
+            Quaternion horizontalRotation = Quaternion.Euler(0, targetRotation.eulerAngles.y, 0);
+            Quaternion verticalRotation = Quaternion.Euler(targetRotation.eulerAngles.x, 0, 0);
+            
+            root.rotation = Quaternion.Slerp(root.rotation,
+                horizontalRotation,
+                dt * horizontalRotationSpeed);
+            
+            root.rotation = Quaternion.Slerp(root.localRotation,
+                verticalRotation,
+                dt * verticalRotationSpeed);
         }
 
         /// <summary>
@@ -96,12 +106,12 @@ namespace SurgeEngine.Code.ActorSystem
             {
                 collision.height = collisionStartHeight;
             }
-            
+
             if (radius == 0)
             {
                 collision.radius = collisionStartRadius;
             }
-            
+
             if (vertical == 0)
             {
                 collision.center = new Vector3(0, -0.25f, 0);

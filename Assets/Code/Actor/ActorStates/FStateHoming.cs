@@ -2,6 +2,7 @@
 using SurgeEngine.Code.GameDocuments;
 using SurgeEngine.Code.Parameters.SonicSubStates;
 using UnityEngine;
+using static SurgeEngine.Code.GameDocuments.SonicGameDocumentParams;
 
 namespace SurgeEngine.Code.Parameters
 {
@@ -44,11 +45,11 @@ namespace SurgeEngine.Code.Parameters
             if (_target != null)
             {
                 Vector3 direction = (_target.position - actor.transform.position).normalized;
-                _rigidbody.linearVelocity = direction * param.GetParameter<float>("HomingSpeed");
+                _rigidbody.linearVelocity = direction * param.GetParameter<float>(Homing_Speed);
                 _rigidbody.rotation = Quaternion.LookRotation(direction, Vector3.up);
                 
                 // If for some reason Sonic get stuck
-                _timer += dt / param.GetParameter<float>("MaxTargetHomingTime");
+                _timer += dt / param.GetParameter<float>(Homing_MaxTargetTime);
                 if (_timer >= 1f)
                 {
                     stateMachine.SetState<FStateAir>();
@@ -62,11 +63,11 @@ namespace SurgeEngine.Code.Parameters
                 }
                 
                 Vector3 direction = actor.transform.forward;
-                _rigidbody.linearVelocity = direction * (param.GetParameter<float>("HomingDistance") *
-                                                         param.GetParameter<AnimationCurve>("HomingCurve").Evaluate(_timer));
+                _rigidbody.linearVelocity = direction * (param.GetParameter<float>(Homing_Distance) *
+                                                         param.GetParameter<AnimationCurve>(Homing_Curve).Evaluate(_timer));
                 _rigidbody.rotation = Quaternion.LookRotation(direction, Vector3.up);
                 
-                _timer += dt / param.GetParameter<float>("HomingTime");
+                _timer += dt / param.GetParameter<float>(Homing_Time);
                 if (_timer >= 1f)
                 {
                     stateMachine.SetState<FStateAir>();
