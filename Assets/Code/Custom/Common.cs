@@ -167,7 +167,7 @@ namespace SurgeEngine.Code.Custom
             var transform = context.transform;
             var doc = SonicGameDocument.GetDocument("Sonic");
             var param = doc.GetGroup(SonicGameDocument.HomingGroup);
-            Vector3 origin = transform.position + Vector3.down * 0.5f;
+            Vector3 origin = transform.position + Vector3.down;
             Vector3 dir = context.stats.inputDir == Vector3.zero ? transform.forward : context.stats.inputDir;
             var radius = param.GetParameter<float>(Homing_FindRadius);
             var maxDistance = param.GetParameter<float>(Homing_FindDistance);

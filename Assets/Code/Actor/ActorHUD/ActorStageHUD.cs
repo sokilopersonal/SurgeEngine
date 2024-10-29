@@ -37,15 +37,24 @@ namespace SurgeEngine.Code.ActorHUD
         [Header("Boost Bar")] 
         [SerializeField] private Image boostBar;
         [SerializeField] private Image boostFill;
+        [SerializeField] private Image boostFill2;
+        [SerializeField] private float energy; 
+        [SerializeField] private float energyDivider; 
         [SerializeField] private float boostBarYAspect;
         [SerializeField] private BoostBarSize minBoostBarSize;
         [SerializeField] private BoostBarSize maxBoostBarSize;
+        private float _extEnergy;
 
         private Actor _actor => ActorContext.Context;
 
         private void Awake()
         {
             _instance = this;
+        }
+
+        private void OnValidate()
+        {
+            
         }
 
         private void OnEnable()
@@ -81,7 +90,17 @@ namespace SurgeEngine.Code.ActorHUD
         private void BoostBar()
         {
             FBoost boost = _actor.stateMachine.GetSubState<FBoost>();
-            boostFill.fillAmount = boost.BoostEnergy / boost.maxBoostEnergy;            
+            
+            float energy = boost.BoostEnergy / boost.maxBoostEnergy;
+            _extEnergy = Mathf.Lerp(_extEnergy, energy, 8f * Time.deltaTime);
+            boostFill.materialForRendering.SetFloat("_BoostAmount", energy);
+            boostFill.materialForRendering.SetFloat("_SplitAmount", energyDivider);
+            boostFill2.fillAmount = energy + 0.02f;
+
+            if (Mathf.Approximately(energy, 0f))
+            {
+                boostFill2.fillAmount = 0f;
+            }
             
             float boostBarWidth = Mathf.Lerp(minBoostBarSize.width, maxBoostBarSize.width, boost.maxBoostEnergy / 100);
             boostBar.rectTransform.sizeDelta = new Vector2(boostBarWidth, boostBarYAspect);

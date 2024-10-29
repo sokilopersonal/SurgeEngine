@@ -150,6 +150,8 @@ namespace SurgeEngine.Code.ActorSystem
 
         public void SlopePhysics()
         {
+            SlopePrediction();
+            
             var doc = GameDocument<SonicGameDocument>.GetDocument("Sonic");
             var param = doc.GetGroup("Slope");
             _angle = Vector3.Angle(_normal, Vector3.up);
@@ -173,6 +175,77 @@ namespace SurgeEngine.Code.ActorSystem
             }
         }
 
+        public void SlopePrediction()
+        {
+            var lowerValue = 0.45f;
+            var param = _document.GetGroup("Cast");
+            var predictedPosition = _rigidbody.position + -_normal * lowerValue;
+            var predictedNormal = _normal;
+            var predictedVelocity = _rigidbody.linearVelocity;
+            var speedFrame = _rigidbody.linearVelocity.magnitude * Time.fixedDeltaTime;
+            var lerpJump = 0.015f;
+            var mask = param.GetParameter<LayerMask>(Cast_Mask);
+            
+            if (!Physics.Raycast(predictedPosition, predictedVelocity.normalized, 
+                    out var pGround, speedFrame * 1.3f, mask)) { HighSpeedFix(); return; }
+
+            for (var lerp = lerpJump; lerp < 45 / 90; lerp += lerpJump)
+            {
+                if (!Physics.Raycast(predictedPosition, Vector3.Lerp(predictedVelocity.normalized, _normal, lerp), out pGround, speedFrame * 1.3f, mask))
+                {
+                    lerp += lerpJump;
+                    Physics.Raycast(predictedPosition + Vector3.Lerp(predictedVelocity.normalized, _normal, lerp) * (speedFrame * 1.3f), -predictedNormal, 
+                        out pGround, param.GetParameter<float>(Cast_Distance) + 0.2f, mask);
+
+                    predictedPosition = predictedPosition + Vector3.Lerp(predictedVelocity.normalized, _normal, lerp) * speedFrame + pGround.normal * lowerValue;
+                    predictedVelocity = Quaternion.FromToRotation(_normal, pGround.normal) * predictedVelocity;
+                    _normal = pGround.normal;
+                    _rigidbody.position = Vector3.MoveTowards(_rigidbody.position, predictedPosition, Time.fixedDeltaTime);
+                    _rigidbody.linearVelocity = predictedVelocity;
+                    break;
+                }
+            }
+        }
+        
+        private void HighSpeedFix()
+        {
+            var predictedPosition = _rigidbody.position;
+            var predictedNormal = actor.stats.groundNormal;
+            var predictedVelocity = _rigidbody.linearVelocity;
+            var param = _document.GetGroup("Cast");
+            var steps = 16;
+            var mask = param.GetParameter<LayerMask>(Cast_Mask);
+            int i;
+            for (i = 0; i < steps; i++)
+            {
+                predictedPosition += predictedVelocity * Time.fixedDeltaTime / steps;
+                if (Physics.Raycast(predictedPosition, -predictedNormal, out var pGround, param.GetParameter<float>(Cast_Distance) + 0.2f, mask))
+                {
+                    if (Vector3.Angle (predictedNormal, pGround.normal) < 45)
+                    {
+                        predictedPosition = pGround.point + pGround.normal * 0.5f;
+                        predictedVelocity = Quaternion.FromToRotation(actor.stats.groundNormal, pGround.normal) * predictedVelocity;
+                        predictedNormal = pGround.normal;
+                    } 
+                    else
+                    {
+                        i = -1;
+                        break;
+                    }
+                } 
+                else
+                {
+                    i = -1;
+                    break;
+                }
+            }
+            if (i >= steps)
+            {
+                actor.stats.groundNormal = predictedNormal;
+                _rigidbody.position = Vector3.MoveTowards(_rigidbody.position, predictedPosition, Time.fixedDeltaTime);
+            }
+        }
+
         public void Project()
         {
             _rigidbody.linearVelocity = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, _normal);
@@ -190,7 +263,7 @@ namespace SurgeEngine.Code.ActorSystem
         {
             if (!_canAttach) return;
             
-            if (point != Vector3.zero && normal != Vector3.zero) _rigidbody.position = point + normal;
+            if (point != Vector3.zero && normal != Vector3.zero) _rigidbody.position = Vector3.Slerp(_rigidbody.position, point + normal, Time.fixedDeltaTime * 10f);
         }
 
         private void Deceleration(float min, float max)
