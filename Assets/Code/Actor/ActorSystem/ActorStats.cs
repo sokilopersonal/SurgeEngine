@@ -53,6 +53,15 @@ namespace SurgeEngine.Code.ActorSystem
             var state = actor.stateMachine.CurrentState;
             isGrounded = state is FStateGround;
             isInAir = state is FStateAir or FStateAirBoost or FStateJump or FStateSpecialJump;
+            
+            if (isInAir)
+            {
+                homingTarget = Common.FindHomingTarget();
+            }
+            else
+            {
+                homingTarget = null;
+            }
         }
 
         public float GetForwardSignedAngle()

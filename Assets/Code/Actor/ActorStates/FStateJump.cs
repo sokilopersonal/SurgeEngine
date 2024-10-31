@@ -1,4 +1,5 @@
 ﻿using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.GameDocuments;
 using UnityEngine;
 using static SurgeEngine.Code.GameDocuments.SonicGameDocumentParams;
@@ -25,8 +26,6 @@ namespace SurgeEngine.Code.Parameters
 
         public override void OnExit()
         {
-            base.OnExit();
-            
             Animation.ResetAction();
             Actor.model.SetCollisionParam(0,0);
         }
@@ -52,7 +51,7 @@ namespace SurgeEngine.Code.Parameters
             
             Kinematics.Normal = Vector3.up;
 
-            if (GetAirTime() > 0.85f)
+            if (GetAirTime() > 0.8f)
             {
                 StateMachine.SetState<FStateAir>();
             }

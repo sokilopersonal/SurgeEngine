@@ -38,7 +38,7 @@ namespace SurgeEngine.Code.ActorHUD
         [SerializeField] private Image boostBar;
         [SerializeField] private Image boostFill;
         [SerializeField] private Image boostFill2;
-        [SerializeField] private float energy; 
+        [SerializeField, Range(0, 100)] private float energy; 
         [SerializeField] private float energyDivider; 
         [SerializeField] private float boostBarYAspect;
         [SerializeField] private BoostBarSize minBoostBarSize;
@@ -54,7 +54,15 @@ namespace SurgeEngine.Code.ActorHUD
 
         private void OnValidate()
         {
-            
+            float energy = this.energy / 100;
+            boostFill.materialForRendering.SetFloat("_BoostAmount", energy);
+            boostFill.materialForRendering.SetFloat("_SplitAmount", energyDivider);
+            boostFill2.fillAmount = energy + 0.01f;
+
+            if (Mathf.Approximately(energy, 0f))
+            {
+                boostFill2.fillAmount = 0;
+            }
         }
 
         private void OnEnable()
@@ -92,14 +100,16 @@ namespace SurgeEngine.Code.ActorHUD
             FBoost boost = _actor.stateMachine.GetSubState<FBoost>();
             
             float energy = boost.BoostEnergy / boost.maxBoostEnergy;
-            _extEnergy = Mathf.Lerp(_extEnergy, energy, 8f * Time.deltaTime);
             boostFill.materialForRendering.SetFloat("_BoostAmount", energy);
             boostFill.materialForRendering.SetFloat("_SplitAmount", energyDivider);
-            boostFill2.fillAmount = energy + 0.02f;
+            boostFill2.fillAmount = energy + 0.01f;
+            //boostFill2.materialForRendering.SetFloat("_BoostAmount", energy + 0.02f);
+            //boostFill2.materialForRendering.SetFloat("_SplitAmount", energyDivider * 32);
 
             if (Mathf.Approximately(energy, 0f))
             {
-                boostFill2.fillAmount = 0f;
+                //boostFill2.materialForRendering.SetFloat("_BoostAmount", 0);
+                boostFill2.fillAmount = 0;
             }
             
             float boostBarWidth = Mathf.Lerp(minBoostBarSize.width, maxBoostBarSize.width, boost.maxBoostEnergy / 100);
@@ -117,12 +127,13 @@ namespace SurgeEngine.Code.ActorHUD
 
         private void HomingTarget()
         {
-            if (_actor.stats.homingTarget != null)
+            var target = _actor.stats.homingTarget;
+            if (target)
             {
                 homingIcon.gameObject.SetActive(true);
                 homingIcon.Activate();
                 var cam = _actor.camera.GetCamera();
-                Vector3 position = cam.WorldToScreenPoint(_actor.stats.homingTarget.position);
+                Vector3 position = cam.WorldToScreenPoint(target.position);
                 homingIcon.transform.position = position;
             }
             else

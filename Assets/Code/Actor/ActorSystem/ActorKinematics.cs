@@ -263,7 +263,7 @@ namespace SurgeEngine.Code.ActorSystem
         {
             if (!_canAttach) return;
             
-            if (point != Vector3.zero && normal != Vector3.zero) _rigidbody.position = Vector3.Slerp(_rigidbody.position, point + normal, Time.fixedDeltaTime * 10f);
+            if (point != Vector3.zero && normal != Vector3.zero) _rigidbody.position = point + normal;
         }
 
         private void Deceleration(float min, float max)

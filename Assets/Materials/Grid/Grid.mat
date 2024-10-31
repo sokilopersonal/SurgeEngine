@@ -30,6 +30,8 @@ Material:
   m_ValidKeywords:
   - _DISABLE_SSR_TRANSPARENT
   m_InvalidKeywords:
+  - _HEIGHTMAP
+  - _NORMALMAP
   - _NORMALMAP_TANGENT_SPACE
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -76,7 +78,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _HeightMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: ea921d15e9e3f344198604b132e3df59, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _IridescenceMaskMap:
@@ -104,7 +106,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 58b7d3b4ab6e32449b61542350f3cbdc, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMapOS:
@@ -183,7 +185,7 @@ Material:
     - _DiffusionProfileHash: 0
     - _DisplacementLockObjectScale: 1
     - _DisplacementLockTilingScale: 1
-    - _DisplacementMode: 0
+    - _DisplacementMode: 2
     - _DoubleSidedEnable: 0
     - _DoubleSidedGIMode: 0
     - _DoubleSidedNormalMode: 1
@@ -198,13 +200,13 @@ Material:
     - _EnableGeometricSpecularAA: 0
     - _EnergyConservingSpecularColor: 1
     - _ExcludeFromTUAndAA: 0
-    - _HeightAmplitude: 0.02
-    - _HeightCenter: 0.5
+    - _HeightAmplitude: 0.04
+    - _HeightCenter: 1
     - _HeightMapParametrization: 0
     - _HeightMax: 1
     - _HeightMin: -1
     - _HeightOffset: 0
-    - _HeightPoMAmplitude: 2
+    - _HeightPoMAmplitude: 4
     - _HeightTessAmplitude: 2
     - _HeightTessCenter: 0.5
     - _InvTilingScale: 3.3333333
@@ -217,15 +219,15 @@ Material:
     - _Metallic: 0
     - _MetallicRemapMax: 1
     - _MetallicRemapMin: 0
-    - _NormalIntensity: 1.5
+    - _NormalIntensity: 1
     - _NormalMapSpace: 0
     - _NormalScale: 1
     - _ObjectSpaceUVMapping: 0
     - _ObjectSpaceUVMappingEmissive: 0
     - _OpaqueCullMode: 2
     - _PPDLodThreshold: 5
-    - _PPDMaxSamples: 15
-    - _PPDMinSamples: 5
+    - _PPDMaxSamples: 64
+    - _PPDMinSamples: 25
     - _PPDPrimitiveLength: 1
     - _PPDPrimitiveWidth: 1
     - _PerPixelSorting: 0
@@ -235,7 +237,7 @@ Material:
     - _RefractionModel: 0
     - _RenderQueueType: 1
     - _RequireSplitLighting: 0
-    - _Smoothness: 0.1
+    - _Smoothness: 0.25
     - _SmoothnessRemapMax: 1
     - _SmoothnessRemapMin: 0
     - _SpecularAAScreenSpaceVariance: 0.1

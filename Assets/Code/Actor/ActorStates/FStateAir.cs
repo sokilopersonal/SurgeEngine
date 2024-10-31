@@ -20,14 +20,7 @@ namespace SurgeEngine.Code.Parameters
 
             _airTime = 0f;
             
-            Actor.stats.groundNormal = Vector3.up;
-        }
-
-        public override void OnExit()
-        {
-            base.OnExit();
-            
-            Stats.homingTarget = null;
+            Kinematics.Normal = Vector3.up;
         }
 
         public override void OnTick(float dt)
@@ -40,7 +33,6 @@ namespace SurgeEngine.Code.Parameters
             {
                 if (!Actor.flags.HasFlag(FlagType.OutOfControl))
                 {
-                    Stats.homingTarget = Common.FindHomingTarget();
                     var homingTarget = Stats.homingTarget;
 
                     if (Input.JumpPressed)
@@ -50,7 +42,6 @@ namespace SurgeEngine.Code.Parameters
                             if (homingTarget != null)
                             {
                                 StateMachine.SetState<FStateHoming>().SetTarget(homingTarget);
-                                Stats.homingTarget = null;
                             }
                             else
                             {
@@ -79,8 +70,11 @@ namespace SurgeEngine.Code.Parameters
                 Kinematics.Normal = Vector3.up;
                 
                 Actor.kinematics.BasePhysics(Vector3.zero, Vector3.up);
+                
+                // TODO: Use Actor.model.RotateBody
                 Rotate(dt);
 
+                // TODO: Move to ActorKinematics
                 if (StateMachine.PreviousState is not FStateSpecialJump or FStateAirBoost)
                 {
                     var drag = 0.65f;
@@ -93,7 +87,7 @@ namespace SurgeEngine.Code.Parameters
                     _rigidbody.AddForce(airDrag, ForceMode.VelocityChange);
                 }
                 
-                Common.ApplyGravity(Stats.gravity, dt);
+                Common.ApplyGravity(Stats.gravity, Time.fixedDeltaTime);
             }
             else
             {

@@ -249,6 +249,123 @@ MonoBehaviour:
   ambientProbeDimmer:
     m_OverrideState: 1
     m_Value: 0.5
+--- !u!114 &-5668490439774846708
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 384c4d03a551c44448145f4093304119, type: 3}
+  m_Name: ScreenSpaceReflection
+  m_EditorClassIdentifier: 
+  active: 1
+  quality:
+    m_OverrideState: 1
+    m_Value: 3
+  enabled:
+    m_OverrideState: 1
+    m_Value: 0
+  enabledTransparent:
+    m_OverrideState: 1
+    m_Value: 1
+  tracing:
+    m_OverrideState: 1
+    m_Value: 1
+  m_MinSmoothness:
+    m_OverrideState: 1
+    m_Value: 0.8
+  m_SmoothnessFadeStart:
+    m_OverrideState: 1
+    m_Value: 1
+  reflectSky:
+    m_OverrideState: 1
+    m_Value: 1
+  usedAlgorithm:
+    m_OverrideState: 1
+    m_Value: 0
+  depthBufferThickness:
+    m_OverrideState: 1
+    m_Value: 0.1
+  screenFadeDistance:
+    m_OverrideState: 1
+    m_Value: 0.3
+  accumulationFactor:
+    m_OverrideState: 1
+    m_Value: 0.75
+  biasFactor:
+    m_OverrideState: 1
+    m_Value: 0.5
+  speedRejectionParam:
+    m_OverrideState: 1
+    m_Value: 0.5
+  speedRejectionScalerFactor:
+    m_OverrideState: 1
+    m_Value: 0.2
+  speedSmoothReject:
+    m_OverrideState: 1
+    m_Value: 0
+  speedSurfaceOnly:
+    m_OverrideState: 1
+    m_Value: 1
+  speedTargetOnly:
+    m_OverrideState: 1
+    m_Value: 1
+  enableWorldSpeedRejection:
+    m_OverrideState: 1
+    m_Value: 0
+  m_RayMaxIterations:
+    m_OverrideState: 1
+    m_Value: 128
+  rayMiss:
+    m_OverrideState: 1
+    m_Value: 3
+  lastBounceFallbackHierarchy:
+    m_OverrideState: 1
+    m_Value: 3
+  ambientProbeDimmer:
+    m_OverrideState: 1
+    m_Value: 1
+  layerMask:
+    m_OverrideState: 1
+    m_Value:
+      serializedVersion: 2
+      m_Bits: 4294967295
+  textureLodBias:
+    m_OverrideState: 1
+    m_Value: 1
+  m_RayLength:
+    m_OverrideState: 1
+    m_Value: 50
+  m_ClampValue:
+    m_OverrideState: 1
+    m_Value: 100
+  m_Denoise:
+    m_OverrideState: 1
+    m_Value: 1
+  m_DenoiserRadius:
+    m_OverrideState: 1
+    m_Value: 0.75
+  m_DenoiserAntiFlickeringStrength:
+    m_OverrideState: 1
+    m_Value: 1
+  mode:
+    m_OverrideState: 1
+    m_Value: 2
+  m_FullResolution:
+    m_OverrideState: 1
+    m_Value: 0
+  sampleCount:
+    m_OverrideState: 1
+    m_Value: 1
+  bounceCount:
+    m_OverrideState: 1
+    m_Value: 1
+  m_RayMaxIterationsRT:
+    m_OverrideState: 1
+    m_Value: 48
 --- !u!114 &-5384607952925725233
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -614,13 +731,13 @@ MonoBehaviour:
     m_Value: 0
   intensity:
     m_OverrideState: 1
-    m_Value: 1.25
+    m_Value: 1
   directLightingStrength:
     m_OverrideState: 1
-    m_Value: 0.2
+    m_Value: 0.25
   radius:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0.5
   spatialBilateralAggressiveness:
     m_OverrideState: 1
     m_Value: 0.3
@@ -640,7 +757,7 @@ MonoBehaviour:
       m_Bits: 4294967295
   specularOcclusion:
     m_OverrideState: 1
-    m_Value: 0.329
+    m_Value: 0.5
   occluderMotionRejection:
     m_OverrideState: 1
     m_Value: 1
@@ -667,13 +784,13 @@ MonoBehaviour:
     m_Value: 5
   m_SampleCount:
     m_OverrideState: 1
-    m_Value: 2
+    m_Value: 1
   m_Denoise:
     m_OverrideState: 1
     m_Value: 1
   m_DenoiserRadius:
     m_OverrideState: 1
-    m_Value: 0.5
+    m_Value: 1
 --- !u!114 &-3585264786528125702
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -1012,16 +1129,16 @@ MonoBehaviour:
   active: 1
   quality:
     m_OverrideState: 1
-    m_Value: 3
+    m_Value: 1
   intensity:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 2
   maximumVelocity:
     m_OverrideState: 1
-    m_Value: 200
+    m_Value: 500
   minimumVelocity:
     m_OverrideState: 1
-    m_Value: 2
+    m_Value: 0
   cameraMotionBlur:
     m_OverrideState: 1
     m_Value: 1
@@ -1042,7 +1159,7 @@ MonoBehaviour:
     m_Value: 5
   m_SampleCount:
     m_OverrideState: 1
-    m_Value: 24
+    m_Value: 8
 --- !u!114 &-2324974086887797846
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -1524,6 +1641,7 @@ MonoBehaviour:
   - {fileID: -8434885110877390055}
   - {fileID: -3254060927049923602}
   - {fileID: -3712230343484456432}
+  - {fileID: -5668490439774846708}
 --- !u!114 &118197067101931271
 MonoBehaviour:
   m_ObjectHideFlags: 3

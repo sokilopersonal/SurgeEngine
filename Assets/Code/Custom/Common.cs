@@ -180,7 +180,7 @@ namespace SurgeEngine.Code.Custom
                 Vector3 end = target.position + Vector3.up * 0.1f;
                 Vector3 direction = target.position - origin;
                 Debug.DrawLine(origin, end);
-                bool facing = Vector3.Dot(direction.normalized, transform.forward) > 0.4f;
+                bool facing = Vector3.Dot(direction.normalized, transform.forward) > 0.5f;
                 float targetDistance = direction.sqrMagnitude / radius / radius;
                 if (targetDistance < distance && facing)
                 {

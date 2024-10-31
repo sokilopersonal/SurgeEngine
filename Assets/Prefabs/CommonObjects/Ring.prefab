@@ -117,40 +117,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationSpeed: 190
-  flyDuration: 1
-  heightCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 1
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 0.75
-      value: 1.8
-      inSlope: 0.031625595
-      outSlope: 0.031625595
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.1573646
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: -1.4658749
-      outSlope: -0.010508312
-      tangentMode: 1
-      weightedMode: 0
-      inWeight: 0.096153736
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
+  smoothTime: 0.02
+  maxSpeed: 25
   ringSound:
     Guid:
       Data1: -871164404

@@ -14,22 +14,14 @@ namespace SurgeEngine.Code.Parameters
         public override void OnEnter()
         {
             base.OnEnter();
-            
+
             if (Common.CheckForGround(out var hit))
             {
-                var point = hit.point;
-                var normal = hit.normal;
-
-                _rigidbody.position = point + normal;
-                Stats.transformNormal = Stats.groundNormal;
+                Kinematics.Snap(hit.point, hit.normal);
+                Kinematics.Normal = hit.normal;
             }
             
             _rigidbody.Sleep();
-        }
-        
-        public override void OnExit()
-        {
-            base.OnExit();
         }
 
         public override void OnTick(float dt)
