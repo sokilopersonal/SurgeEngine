@@ -6,8 +6,10 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.ActorSystem
 {
-    public class ActorEffects : ActorComponent
+    public class ActorEffects : MonoBehaviour, IActorComponent
     {
+        public Actor actor { get; set; }
+        
         [Header("Trail")]
         [SerializeField] private VolumeTrailRenderer trailRenderer;
         
@@ -25,9 +27,8 @@ namespace SurgeEngine.Code.ActorSystem
         [Header("Sliding")]
         public Sliding sliding;
 
-        protected override void OnInitialized()
+        private void Start()
         {
-            base.OnInitialized();
             boostAura.enabled = false;
             spinball.enabled = false;
             stomping.enabled = false;

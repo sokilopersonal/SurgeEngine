@@ -3,8 +3,10 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.ActorSystem
 {
-    public class ActorModel : ActorComponent
+    public class ActorModel : MonoBehaviour, IActorComponent
     {
+        public Actor actor { get; set; }
+
         public Transform root;
         public CapsuleCollider collision;
         private float collisionStartHeight;

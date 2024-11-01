@@ -6,8 +6,10 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.ActorSystem
 {
-    public class ActorStats : ActorComponent
+    public class ActorStats : MonoBehaviour, IActorComponent
     {
+        public Actor actor { get; set; }
+        
         public MoveParameters moveParameters;
         public JumpParameters jumpParameters;
         public HomingParameters homingParameters;
@@ -32,10 +34,8 @@ namespace SurgeEngine.Code.ActorSystem
 
         private Rigidbody _rigidbody;
 
-        protected override void OnInitialized()
+        private void Awake()
         {
-            base.OnInitialized();
-
             startGravity = Mathf.Abs(Physics.gravity.y);
             gravity = startGravity;
 
@@ -77,6 +77,7 @@ namespace SurgeEngine.Code.ActorSystem
             Vector3 c = Vector3.ProjectOnPlane(actor.camera.GetCameraTransform().up, Vector3.up).normalized;
             return Vector3.SignedAngle(f, c, -Vector3.up);
         }
+
     }
 
     [Serializable]

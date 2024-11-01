@@ -8,8 +8,10 @@ using static SurgeEngine.Code.GameDocuments.SonicGameDocumentParams;
 
 namespace SurgeEngine.Code.ActorSystem
 {
-    public class ActorKinematics : ActorComponent
+    public class ActorKinematics : MonoBehaviour, IActorComponent
     {
+        public Actor actor { get; set; }
+
         public Rigidbody Rigidbody => _rigidbody;
 
         public float TurnRate
@@ -46,10 +48,8 @@ namespace SurgeEngine.Code.ActorSystem
         private Document _document;
         private ParameterGroup _physGroup;
 
-        protected override void OnInitialized()
+        private void Awake()
         {
-            base.OnInitialized();
-
             _rigidbody = GetComponent<Rigidbody>();
             _cameraTransform = actor.camera.GetCameraTransform();
 
@@ -318,5 +318,6 @@ namespace SurgeEngine.Code.ActorSystem
         {
             return _inputDir;
         }
+
     }
 }

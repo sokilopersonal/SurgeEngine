@@ -1,32 +1,28 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using SurgeEngine.Code.ActorSoundEffects;
+using UnityEngine;
 
 namespace SurgeEngine.Code.ActorSystem
 {
-    public class ActorSounds : ActorComponent
+    public class ActorSounds : MonoBehaviour, IActorComponent
     {
+        public Actor actor { get; set; }
+
         private List<ActorSound> _sounds = new List<ActorSound>(); 
         
         private const float BOOST_VOICE_DELAY = 1.5f;
 
-        protected override void OnInitialized()
+        private void Awake()
         {
-            base.OnInitialized();
-
             _sounds = GetComponents<ActorSound>().ToList();
 
             foreach (var sound in _sounds)
             {
                 sound.Initialize();
             }
-
-            // actor.stateMachine.GetSubState<FBoost>().OnActiveChanged += OnBoostActivate;
-            // actor.stateMachine.OnStateAssign += OnStateAssign;
-            // ActorEvents.OnRingCollected += OnRingCollected;
-            // _lastBoostVoiceTime = Time.time - BOOST_VOICE_DELAY;
         }
-
+        
         // private void OnBoostActivate(FSubState arg1, bool arg2)
         // {
         //     if (arg1 is FBoost && arg2)

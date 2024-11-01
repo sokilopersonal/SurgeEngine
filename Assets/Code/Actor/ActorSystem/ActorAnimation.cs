@@ -1,27 +1,26 @@
 ﻿using SurgeEngine.Code.Parameters;
 using SurgeEngine.Code.Parameters.SonicSubStates;
 using SurgeEngine.Code.StateMachine;
+using SurgeEngine.Code.StateMachine.Components;
 using UnityEngine;
 
 namespace SurgeEngine.Code.ActorSystem
 {
-    public class ActorAnimation : ActorComponent
+    public class ActorAnimation : StateAnimator, IActorComponent
     {
-        public Animator animator;
-        
-        private string _currentAnimation;
+        public Actor actor { get; set; }
 
         private void OnEnable()
         {
             actor.stateMachine.OnStateAssign += ChangeStateAnimation;
         }
-        
+
         private void OnDisable()
         {
             actor.stateMachine.OnStateAssign -= ChangeStateAnimation;
         }
 
-        private void Update()
+        protected override void AnimationTick()
         {
             SetBool(AnimatorParams.Idle, actor.stateMachine.currentStateName == "FStateIdle");
             SetBool(AnimatorParams.InAir, actor.stateMachine.currentStateName == "FStateAir" ||
@@ -45,48 +44,6 @@ namespace SurgeEngine.Code.ActorSystem
                 Mathf.Abs(Mathf.Approximately(actor.stats.groundAngle, 90) ? dot : 0), 1 * Time.deltaTime));
             
             SetBool("Skidding", actor.stats.skidding && !actor.stateMachine.GetSubState<FBoost>().Active);
-        }
-
-        public void SetFloat(string state, float value)
-        {
-            animator.SetFloat(state, value);
-        }
-
-        public void SetBool(string state, bool value)
-        {
-            animator.SetBool(state, value);
-        }
-
-        public void SetFloat(int id, float value)
-        {
-            animator.SetFloat(id, value);
-        }
-
-        public void SetBool(int id, bool value)
-        {
-            animator.SetBool(id, value);
-        }
-
-        public void SetAction(bool value)
-        {
-            SetBool("InAction", value);
-        }
-
-        public void ResetAction()
-        {
-            SetAction(false);
-        }
-
-        public void TransitionToState(string stateName, float transitionTime = 0.25f, bool isAction = false)
-        {
-            if (_currentAnimation != stateName)
-            {
-                animator.CrossFadeInFixedTime(stateName, transitionTime);
-            }
-            
-            _currentAnimation = stateName;
-
-            if (isAction) SetAction(true);
         }
 
         private void ChangeStateAnimation(FState obj)

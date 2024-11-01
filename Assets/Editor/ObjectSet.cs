@@ -258,7 +258,7 @@ namespace SurgeEngine.Editor
                 Event e = Event.current;
                 Ray ray = HandleUtility.GUIPointToWorldRay(e.mousePosition);
 
-                if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, 1 << LayerMask.NameToLayer("Default"), QueryTriggerInteraction.Ignore))
+                if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, 1 << LayerMask.NameToLayer("Default")))
                 {
                     currentPrefabInstance.transform.position = hit.point;
                 }

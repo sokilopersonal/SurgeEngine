@@ -8,14 +8,14 @@ using Debug = UnityEngine.Debug;
 
 namespace SurgeEngine.Code.ActorSystem
 {
-    public class ActorFlags : ActorComponent
+    public class ActorFlags : MonoBehaviour, IActorComponent
     {
+        public Actor actor { get; set; }
+        
         public List<Flag> list;
 
-        protected override void OnInitialized()
+        private void Awake()
         {
-            base.OnInitialized();
-            
             list = new List<Flag>();
         }
 
@@ -37,12 +37,12 @@ namespace SurgeEngine.Code.ActorSystem
                 list.Add(flag);
             }
         }
-        
+
         public void RemoveFlag(FlagType type)
         {
             list.Remove(list.FirstOrDefault(f => f.type == type));
         }
-        
+
         public bool HasFlag(FlagType type)
         {
             return list.Any(f => f.type == type);

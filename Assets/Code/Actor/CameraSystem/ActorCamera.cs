@@ -7,8 +7,10 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.CameraSystem
 {
-    public class ActorCamera : ActorComponent
+    public class ActorCamera : MonoBehaviour, IActorComponent
     {
+        public Actor actor { get; set; }
+        
         public FStateMachine stateMachine;
         
         [Header("Target")] 
@@ -21,31 +23,18 @@ namespace SurgeEngine.Code.CameraSystem
         [Header("Collision")]
         public LayerMask collisionMask;
         public float collisionRadius = 0.2f;
-        
-        [SerializeField] private CameraPawn[] pawns;
+
         public List<CameraParameters> parameters;
         
         private Camera _camera;
         private Transform _cameraTransform;
 
-        protected override void OnInitialized()
-        {
-            base.OnInitialized();
-            
-            _camera = Camera.main;
-            _cameraTransform = _camera.transform;
-        }
-
         private void Awake()
         {
             stateMachine = new FStateMachine();
-
-            // foreach (var pawn in pawns)
-            // {
-            //     pawn.SetOwner(actor);
-            //     pawn.Initialize(_camera, _cameraTransform);
-            //     stateMachine.AddState(pawn);
-            // }
+            
+            _camera = Camera.main;
+            _cameraTransform = _camera.transform;
             
             stateMachine.AddState(new DefaultModernPawn(actor));
             stateMachine.AddState(new CameraPan(actor));

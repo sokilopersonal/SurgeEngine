@@ -9,7 +9,7 @@ using UnityEngine.Splines;
 namespace SurgeEngine.Code.ActorSystem
 {
     [DefaultExecutionOrder(-1000)]
-    public class Actor : MonoBehaviour
+    public class Actor : MonoBehaviour, IActor
     {
         public ActorInput input;
         public ActorStats stats;
@@ -58,17 +58,12 @@ namespace SurgeEngine.Code.ActorSystem
             InitializeComponents();
         }
 
-        private void InitializeComponents()
+        public void InitializeComponents()
         {
-            input?.SetOwner(this);
-            stats?.SetOwner(this);
-            sounds?.SetOwner(this);
-            camera?.SetOwner(this);
-            animation?.SetOwner(this);
-            effects?.SetOwner(this);
-            model?.SetOwner(this);
-            flags?.SetOwner(this);
-            kinematics?.SetOwner(this);
+            foreach (var component in new IActorComponent[] { input, stats, sounds, effects, camera, animation, model, flags, kinematics })
+            {
+                component?.SetOwner(this);
+            }
         }
         
         private void Update()

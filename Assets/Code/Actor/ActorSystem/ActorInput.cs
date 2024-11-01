@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.Custom;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Controls;
 
 namespace SurgeEngine.Code.ActorSystem
 {
-    public class ActorInput : ActorComponent
+    public class ActorInput : MonoBehaviour, IActorComponent
     {
+        public Actor actor { get; set; }
+        
         public Vector3 moveVector;
         public Vector2 lookVector;
 
