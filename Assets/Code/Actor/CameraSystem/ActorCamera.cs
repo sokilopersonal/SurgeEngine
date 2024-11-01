@@ -40,12 +40,17 @@ namespace SurgeEngine.Code.CameraSystem
         {
             stateMachine = new FStateMachine();
 
-            foreach (var pawn in pawns)
-            {
-                pawn.SetOwner(actor);
-                pawn.Initialize(_camera, _cameraTransform);
-                stateMachine.AddState(pawn);
-            }
+            // foreach (var pawn in pawns)
+            // {
+            //     pawn.SetOwner(actor);
+            //     pawn.Initialize(_camera, _cameraTransform);
+            //     stateMachine.AddState(pawn);
+            // }
+            
+            stateMachine.AddState(new DefaultModernPawn(actor));
+            stateMachine.AddState(new CameraPan(actor));
+            stateMachine.AddState(new VerticalCameraPan(actor));
+            stateMachine.AddState(new RestoreCameraPawn(actor));
 
             stateMachine.SetState<DefaultModernPawn>();
         }

@@ -13,6 +13,11 @@ namespace SurgeEngine.Code.Parameters
         
         private float _keepVelocityTimer;
 
+        public FStateSpecialJump(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        {
+            
+        }
+
         public override void OnEnter()
         {
             base.OnEnter();

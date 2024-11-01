@@ -1,4 +1,5 @@
-﻿using SurgeEngine.Code.Custom;
+﻿using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.GameDocuments;
 using SurgeEngine.Code.Parameters.SonicSubStates;
 using SurgeEngine.Code.SonicSubStates.Boost;
@@ -13,6 +14,10 @@ namespace SurgeEngine.Code.Parameters
     {
         private float _driftXDirection;
         private float _ignoreTimer;
+
+        public FStateDrift(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        {
+        }
 
         public override void OnEnter()
         {

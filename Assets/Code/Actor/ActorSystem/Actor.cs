@@ -1,6 +1,7 @@
 ﻿using SurgeEngine.Code.Parameters;
 using SurgeEngine.Code.CameraSystem;
 using SurgeEngine.Code.CommonObjects;
+using SurgeEngine.Code.Parameters.SonicSubStates;
 using SurgeEngine.Code.StateMachine;
 using UnityEngine;
 using UnityEngine.Splines;
@@ -21,8 +22,6 @@ namespace SurgeEngine.Code.ActorSystem
         public ActorKinematics kinematics;
         
         public FStateMachine stateMachine;
-        public FActorState[] states;
-        public FActorSubState[] subStates;
 
         public int ID { get; private set; }
 
@@ -39,17 +38,21 @@ namespace SurgeEngine.Code.ActorSystem
             container = null;
             
             stateMachine = new FStateMachine();
-            foreach (var state in states)
-            {
-                state.SetOwner(this);
-                stateMachine.AddState(state);
-            }
-
-            foreach (var subState in subStates)
-            {
-                subState.SetOwner(this);
-                stateMachine.AddSubState(subState);
-            }
+            
+            stateMachine.AddState(new FStateIdle(this, rigidbody));
+            stateMachine.AddState(new FStateGround(this, rigidbody));
+            stateMachine.AddState(new FStateAir(this, rigidbody));
+            stateMachine.AddState(new FStateAirBoost(this, rigidbody));
+            stateMachine.AddState(new FStateStomp(this, rigidbody));
+            stateMachine.AddState(new FStateHoming(this, rigidbody));
+            stateMachine.AddState(new FStateDrift(this, rigidbody));
+            stateMachine.AddState(new FStateSpecialJump(this, rigidbody));
+            stateMachine.AddState(new FStateSit(this, rigidbody));
+            stateMachine.AddState(new FStateSliding(this, rigidbody));
+            stateMachine.AddState(new FStateJump(this, rigidbody));
+            
+            var boost = new FBoost(this);
+            stateMachine.AddSubState(boost);
             
             stateMachine.SetState<FStateIdle>();
             InitializeComponents();

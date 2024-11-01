@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.GameDocuments;
 using SurgeEngine.Code.Parameters.SonicSubStates;
@@ -10,6 +11,11 @@ namespace SurgeEngine.Code.Parameters
     public class FStateStomp : FStateMove
     {
         private float _timer;
+
+        public FStateStomp(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        {
+            
+        }
 
         public override void OnEnter()
         {

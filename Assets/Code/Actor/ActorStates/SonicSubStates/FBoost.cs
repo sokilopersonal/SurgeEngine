@@ -16,9 +16,8 @@ namespace SurgeEngine.Code.Parameters.SonicSubStates
         public float BoostEnergy
         {
             get => _boostEnergy;
-            private set => _boostEnergy = Mathf.Clamp(value, 0, maxBoostEnergy);
+            private set => _boostEnergy = Mathf.Clamp(value, 0, 100);
         }
-        [Range(45, 100)] public float maxBoostEnergy;
         
         public bool canAirBoost;
         
@@ -28,9 +27,9 @@ namespace SurgeEngine.Code.Parameters.SonicSubStates
         private IBoostHandler _boostHandler;
         private Coroutine _cancelBoostCoroutine;
         
-        private ParameterGroup _boostEnergyGroup;
+        private readonly ParameterGroup _boostEnergyGroup;
 
-        private void Awake()
+        public FBoost(Actor owner) : base(owner)
         {
             canAirBoost = true;
             BoostEnergy = 100;
@@ -38,19 +37,10 @@ namespace SurgeEngine.Code.Parameters.SonicSubStates
             _boostEnergyGroup = SonicGameDocument.GetDocument("Sonic").GetGroup("BoostEnergy");
             
             actor.input.BoostAction += BoostAction;
-        }
-
-        private void OnEnable()
-        {
             actor.stateMachine.OnStateAssign += OnStateAssign;
 
             ObjectEvents.OnObjectCollected += _ => BoostEnergy += 
                 _boostEnergyGroup.GetParameter<float>(BoostEnergy_RingAdd);
-        }
-
-        private void OnDisable()
-        {
-            actor.stateMachine.OnStateAssign -= OnStateAssign;
         }
 
         private void OnStateAssign(FState obj)
@@ -70,18 +60,18 @@ namespace SurgeEngine.Code.Parameters.SonicSubStates
                 if (canAirBoost)
                 {
                     if (_cancelBoostCoroutine != null) 
-                        StopCoroutine(_cancelBoostCoroutine);
+                        actor.StopCoroutine(_cancelBoostCoroutine);
 
-                    _cancelBoostCoroutine = StartCoroutine(CancelBoost(_boostEnergyGroup.GetParameter<float>(BoostEnergy_InAirTime)));
+                    _cancelBoostCoroutine = actor.StartCoroutine(CancelBoost(_boostEnergyGroup.GetParameter<float>(BoostEnergy_InAirTime)));
                 }
             }
             
             if (obj is FStateAirBoost)
             {
                 if (_cancelBoostCoroutine != null)
-                    StopCoroutine(_cancelBoostCoroutine);
+                    actor.StopCoroutine(_cancelBoostCoroutine);
                 
-                _cancelBoostCoroutine = StartCoroutine(CancelBoost(_boostEnergyGroup.GetParameter<float>(BoostEnergy_AirBoostTime)));
+                _cancelBoostCoroutine = actor.StartCoroutine(CancelBoost(_boostEnergyGroup.GetParameter<float>(BoostEnergy_AirBoostTime)));
             }
         }
 
@@ -99,12 +89,12 @@ namespace SurgeEngine.Code.Parameters.SonicSubStates
                     {
                         if (_cancelBoostCoroutine != null)
                         {
-                            StopCoroutine(_cancelBoostCoroutine);
+                            actor.StopCoroutine(_cancelBoostCoroutine);
                         }
 
                         if (_cancelBoostCoroutine != null)
                         {
-                            StopCoroutine(_cancelBoostCoroutine);
+                            actor.StopCoroutine(_cancelBoostCoroutine);
                         }
                     }
                 }

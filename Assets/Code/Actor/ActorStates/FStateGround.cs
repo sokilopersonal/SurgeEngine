@@ -1,5 +1,5 @@
-﻿using SurgeEngine.Code.Custom;
-using SurgeEngine.Code.GameDocuments;
+﻿using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.Parameters.SonicSubStates;
 using SurgeEngine.Code.SonicSubStates.Boost;
 using UnityEngine;
@@ -12,10 +12,12 @@ namespace SurgeEngine.Code.Parameters
 {
     public sealed class FStateGround : FStateMove, IBoostHandler
     {
-        [SerializeField] private Vector3 _groundCheckOffset;
-        
-        
         private string _surfaceTag;
+
+        public FStateGround(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        {
+            
+        }
 
         public override void OnEnter()
         {
@@ -154,13 +156,5 @@ namespace SurgeEngine.Code.Parameters
         }
 
         public string GetSurfaceTag() => _surfaceTag;
-
-        private void OnDrawGizmosSelected()
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position + _groundCheckOffset, 0.1f);
-            
-            Gizmos.DrawRay(transform.position + _groundCheckOffset, -transform.up * 1.5f);
-        }
     }
 }

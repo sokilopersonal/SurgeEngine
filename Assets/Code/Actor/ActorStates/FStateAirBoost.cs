@@ -1,9 +1,16 @@
-﻿using SurgeEngine.Code.Parameters.SonicSubStates;
+﻿using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.Parameters.SonicSubStates;
+using UnityEngine;
 
 namespace SurgeEngine.Code.Parameters
 {
     public class FStateAirBoost : FStateMove
     {
+        public FStateAirBoost(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        {
+            
+        }
+
         public override void OnEnter()
         {
             base.OnEnter();

@@ -14,6 +14,11 @@ namespace SurgeEngine.Code.Parameters
 
         private Transform _cameraTransform;
 
+        public FStateSliding(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        {
+            
+        }
+
         public override void OnEnter()
         {
             base.OnEnter();

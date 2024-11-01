@@ -1,10 +1,16 @@
-﻿using SurgeEngine.Code.Custom;
+﻿using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.Custom;
 using UnityEngine;
 
 namespace SurgeEngine.Code.CameraSystem.Pawns
 {
     public class CameraPan : CameraPawn
     {
+        public CameraPan(Actor owner) : base(owner)
+        {
+            
+        }
+
         public override void OnTick(float dt)
         {
             base.OnTick(dt);

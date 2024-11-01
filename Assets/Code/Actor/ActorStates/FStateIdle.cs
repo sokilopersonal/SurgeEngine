@@ -11,6 +11,10 @@ namespace SurgeEngine.Code.Parameters
         [SerializeField, Range(0, 1)] private float deadZone;
         [SerializeField] private MoveParameters moveParameters;
 
+        public FStateIdle(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        {
+        }
+
         public override void OnEnter()
         {
             base.OnEnter();

@@ -1,4 +1,5 @@
-﻿using SurgeEngine.Code.Parameters;
+﻿using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.Parameters;
 using UnityEngine;
 
 namespace SurgeEngine.Code.CameraSystem.Pawns
@@ -13,6 +14,12 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
         protected Vector3 _lastPosition;
         protected float _lastFov;
 
+        protected CameraPawn(Actor owner) : base(owner)
+        {
+            _camera = owner.camera.GetCamera();
+            _cameraTransform = _camera.transform;
+        }
+
         public override void OnEnter()
         {
             base.OnEnter();
@@ -21,12 +28,6 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             _lastFov = _camera.fieldOfView;
 
             _factor = 0f;
-        }
-
-        public void Initialize(Camera camera, Transform transform)
-        {
-            _camera = camera;
-            _cameraTransform = transform;
         }
         
         public virtual void SetData(PanData data)

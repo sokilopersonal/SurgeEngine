@@ -7,7 +7,7 @@ namespace SurgeEngine.Code.Parameters
     {
         protected Actor actor { get; private set; }
 
-        public void SetOwner(Actor owner)
+        public FActorSubState(Actor owner)
         {
             actor = owner;
         }

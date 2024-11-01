@@ -9,7 +9,11 @@ namespace SurgeEngine.Code.Parameters
     public class FStateJump : FStateAir
     {
         private float _jumpTime;
-        
+
+        public FStateJump(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        {
+        }
+
         public override void OnEnter()
         {
             base.OnEnter();

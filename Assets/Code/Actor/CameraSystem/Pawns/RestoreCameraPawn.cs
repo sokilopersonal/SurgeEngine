@@ -1,10 +1,15 @@
-﻿using SurgeEngine.Code.Custom;
+﻿using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.Custom;
 using UnityEngine;
 
 namespace SurgeEngine.Code.CameraSystem.Pawns
 {
     public class RestoreCameraPawn : DefaultModernPawn
     {
+        public RestoreCameraPawn(Actor owner) : base(owner)
+        {
+        }
+
         public override void OnEnter()
         {
             base.OnEnter();

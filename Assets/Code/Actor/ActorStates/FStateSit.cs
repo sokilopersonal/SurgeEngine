@@ -1,9 +1,15 @@
-﻿using SurgeEngine.Code.Custom;
+﻿using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.Custom;
+using UnityEngine;
 
 namespace SurgeEngine.Code.Parameters
 {
     public class FStateSit : FStateMove
     {
+        public FStateSit(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        {
+        }
+
         public override void OnEnter()
         {
             base.OnEnter();

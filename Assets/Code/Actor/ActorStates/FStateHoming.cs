@@ -1,4 +1,5 @@
-﻿using SurgeEngine.Code.Custom;
+﻿using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.GameDocuments;
 using SurgeEngine.Code.Parameters.SonicSubStates;
 using UnityEngine;
@@ -10,7 +11,12 @@ namespace SurgeEngine.Code.Parameters
     {
         private Transform _target;
         private float _timer;
-        
+
+        public FStateHoming(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        {
+            
+        }
+
         public override void OnEnter()
         {
             base.OnEnter();

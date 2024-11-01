@@ -2,7 +2,7 @@
 
 namespace SurgeEngine.Code.StateMachine
 {
-    public abstract class FState : MonoBehaviour
+    public abstract class FState
     {
         public virtual void OnEnter() { }
         public virtual void OnExit() { }

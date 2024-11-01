@@ -1,4 +1,5 @@
-﻿using SurgeEngine.Code.Custom;
+﻿using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.Custom;
 using UnityEngine;
 
 namespace SurgeEngine.Code.CameraSystem.Pawns
@@ -7,8 +8,12 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
     {
         private new VerticalPanData _panData;
         
-        private Vector3 _lastPosition;
         private Quaternion _lastRotation;
+
+        public VerticalCameraPan(Actor owner) : base(owner)
+        {
+            
+        }
 
         public override void OnEnter()
         {

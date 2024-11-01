@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.GameDocuments;
 using SurgeEngine.Code.Parameters;
@@ -35,7 +36,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
 
         private Coroutine _paramCoroutine;
 
-        private void Start()
+        public DefaultModernPawn(Actor owner) : base(owner)
         {
             _actorCamera = Actor.camera;
             _currentParameters = _actorCamera.parameters[0];

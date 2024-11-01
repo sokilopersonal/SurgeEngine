@@ -13,7 +13,12 @@ namespace SurgeEngine.Code.Parameters
     public class FStateAir : FStateMove, IBoostHandler
     {
         private float _airTime;
-        
+
+        public FStateAir(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        {
+            
+        }
+
         public override void OnEnter()
         {
             base.OnEnter();

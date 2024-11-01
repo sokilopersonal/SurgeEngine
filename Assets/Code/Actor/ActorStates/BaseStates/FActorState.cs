@@ -3,7 +3,7 @@ using SurgeEngine.Code.StateMachine;
 
 namespace SurgeEngine.Code.Parameters
 {
-    public class FActorState : FState
+    public abstract class FActorState : FState
     {
         protected Actor Actor { get; private set; }
         protected ActorInput Input { get; private set; }
@@ -12,7 +12,7 @@ namespace SurgeEngine.Code.Parameters
         protected ActorKinematics Kinematics { get; private set; }
         protected FStateMachine StateMachine { get; private set; }
 
-        public void SetOwner(Actor owner)
+        protected FActorState(Actor owner)
         {
             Actor = owner;
             

@@ -99,20 +99,17 @@ namespace SurgeEngine.Code.ActorHUD
         {
             FBoost boost = _actor.stateMachine.GetSubState<FBoost>();
             
-            float energy = boost.BoostEnergy / boost.maxBoostEnergy;
+            float energy = boost.BoostEnergy / 100;
             boostFill.materialForRendering.SetFloat("_BoostAmount", energy);
             boostFill.materialForRendering.SetFloat("_SplitAmount", energyDivider);
             boostFill2.fillAmount = energy + 0.01f;
-            //boostFill2.materialForRendering.SetFloat("_BoostAmount", energy + 0.02f);
-            //boostFill2.materialForRendering.SetFloat("_SplitAmount", energyDivider * 32);
 
             if (Mathf.Approximately(energy, 0f))
             {
-                //boostFill2.materialForRendering.SetFloat("_BoostAmount", 0);
                 boostFill2.fillAmount = 0;
             }
             
-            float boostBarWidth = Mathf.Lerp(minBoostBarSize.width, maxBoostBarSize.width, boost.maxBoostEnergy / 100);
+            float boostBarWidth = Mathf.Lerp(minBoostBarSize.width, maxBoostBarSize.width, 100 / 100);
             boostBar.rectTransform.sizeDelta = new Vector2(boostBarWidth, boostBarYAspect);
         }
 
