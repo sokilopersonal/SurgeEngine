@@ -10,6 +10,7 @@ namespace SurgeEngine.Code.Enemy
     public class EggFighter : EnemyBase, IActor
     {
         public new EnemyAnimation animation;
+        public EGAnimationReference animationReference;
 
         public float chaseSpeed;
         public float findDistance;
@@ -17,21 +18,25 @@ namespace SurgeEngine.Code.Enemy
         public float punchRadius;
         
         public AnimationCurve patrolSpeedCurve;
-        public float patrolSpeed;
         public float patrolTime;
         public float patrolDistance;
+
+        public AnimationCurve turnHeightCurve;
+        public float turnTime;
+        
+        private Rigidbody _rigidbody;
 
         protected override void Awake()
         {
             base.Awake();
             
-            var agent = GetComponent<NavMeshAgent>();
+            _rigidbody = GetComponent<Rigidbody>();
             
-            stateMachine.AddState(new EGStateIdle(this, transform, agent));
-            stateMachine.AddState(new EGStateChase(this, transform, agent));
-            stateMachine.AddState(new EGStatePatrol(this, transform, agent));
-            stateMachine.AddState(new EGStateTurn(this, transform, agent));
-            stateMachine.AddState(new EGStatePunch(this, transform, agent));
+            stateMachine.AddState(new EGStateIdle(this, transform, _rigidbody));
+            stateMachine.AddState(new EGStateChase(this, transform, _rigidbody));
+            stateMachine.AddState(new EGStatePatrol(this, transform, _rigidbody));
+            stateMachine.AddState(new EGStateTurn(this, transform, _rigidbody));
+            stateMachine.AddState(new EGStatePunch(this, transform, _rigidbody));
             
             stateMachine.SetState<EGStateIdle>();
             InitializeComponents();

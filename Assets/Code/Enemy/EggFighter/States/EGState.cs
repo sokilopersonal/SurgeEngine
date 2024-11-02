@@ -8,7 +8,7 @@ namespace SurgeEngine.Code.Enemy.States
     {
         protected EggFighter eggFighter;
         
-        public EGState(EggFighter eggFighter, Transform transform, NavMeshAgent agent) : base(transform, agent)
+        public EGState(EggFighter eggFighter, Transform transform, Rigidbody rb) : base(transform, rb)
         {
             this.eggFighter = eggFighter;
         }

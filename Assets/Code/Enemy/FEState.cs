@@ -6,12 +6,12 @@ namespace SurgeEngine.Code.StateMachine
     public class FEState : FState
     {
         protected Transform transform;
-        protected NavMeshAgent agent;
+        protected Rigidbody Rb;
 
-        public FEState(Transform transform, NavMeshAgent agent)
+        public FEState(Transform transform, Rigidbody rb)
         {
             this.transform = transform;
-            this.agent = agent;
+            this.Rb = rb;
         }
     }
 }

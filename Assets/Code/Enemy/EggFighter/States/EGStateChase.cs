@@ -6,7 +6,7 @@ namespace SurgeEngine.Code.Enemy.States
 {
     public class EGStateChase : EGState
     {
-        public EGStateChase(EggFighter eggFighter, Transform transform, NavMeshAgent agent) : base(eggFighter, transform, agent)
+        public EGStateChase(EggFighter eggFighter, Transform transform, Rigidbody rb) : base(eggFighter, transform, rb)
         {
             
         }
@@ -16,14 +16,17 @@ namespace SurgeEngine.Code.Enemy.States
             base.OnTick(dt);
 
             var context = ActorContext.Context;
-            agent.SetDestination(context.transform.position);
+            
+            Vector3 direction = context.transform.position - transform.position;
+            direction.Normalize();
+            direction.y = 0;
+            Rb.linearVelocity = direction * eggFighter.chaseSpeed;
             
             Quaternion rotation = Quaternion.LookRotation(context.transform.position - transform.position, Vector3.up);
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, rotation.eulerAngles.y, 0), 12f * Time.deltaTime);
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, rotation.eulerAngles.y, 0), 24f * Time.deltaTime);
 
             if (Vector3.Distance(context.transform.position, transform.position) < 2.2f)
             {
-                agent.isStopped = true;
                 eggFighter.stateMachine.SetState<EGStatePunch>();
             }
         }

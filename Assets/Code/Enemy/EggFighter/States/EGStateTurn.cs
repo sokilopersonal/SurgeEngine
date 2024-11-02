@@ -1,15 +1,14 @@
-﻿using Unity.Mathematics;
-using UnityEngine;
-using UnityEngine.AI;
+﻿using UnityEngine;
 
 namespace SurgeEngine.Code.Enemy.States
 {
     public class EGStateTurn : EGState
     {
         private float _timer;
-        private Quaternion _start;
+        private Vector3 _startPos;
+        private Quaternion _startRot;
         
-        public EGStateTurn(EggFighter eggFighter, Transform transform, NavMeshAgent agent) : base(eggFighter, transform, agent)
+        public EGStateTurn(EggFighter eggFighter, Transform transform, Rigidbody rb) : base(eggFighter, transform, rb)
         {
             
         }
@@ -19,27 +18,29 @@ namespace SurgeEngine.Code.Enemy.States
             base.OnEnter();
 
             _timer = 0f;
-            _start = transform.rotation;
+            _startPos = transform.position;
+            _startRot = transform.rotation;
         }
 
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
 
-            _timer += dt / 1.25f;
+            _timer += dt;
+            float height = eggFighter.turnHeightCurve.Evaluate(_timer / eggFighter.turnTime);
+            transform.position = _startPos + Vector3.up * height;
             
-            Quaternion euler = Quaternion.Euler(0, _start.eulerAngles.y + 180f, 0);
-            transform.rotation = Quaternion.Slerp(_start, euler, _timer);
-
-            if (_timer >= 1)
+            Quaternion euler = Quaternion.Euler(0, _startRot.eulerAngles.y + 180f, 0);
+            transform.rotation = Quaternion.Slerp(_startRot, euler, EaseInCubic(_timer / eggFighter.turnTime));
+            
+            if (_timer >= 1.85f)
             {
-                Vector3 point = eggFighter.stateMachine.GetState<EGStatePatrol>().GetRandomPoint();
                 eggFighter.animation.ResetAction();
-
-                Debug.Log("123");
                 
-                eggFighter.stateMachine.SetState<EGStatePatrol>().SetNewPatrolPoint(point);
+                eggFighter.stateMachine.SetState<EGStatePatrol>(0.5f);
             }
         }
+        
+        private float EaseInCubic(float x) => x * x * x;
     }
 }

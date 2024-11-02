@@ -7,7 +7,7 @@ namespace SurgeEngine.Code.Enemy.States
     {
         private float _stayTimer;
         
-        public EGStatePunch(EggFighter eggFighter, Transform transform, NavMeshAgent agent) : base(eggFighter, transform, agent)
+        public EGStatePunch(EggFighter eggFighter, Transform transform, Rigidbody rb) : base(eggFighter, transform, rb)
         {
             
         }
@@ -18,8 +18,7 @@ namespace SurgeEngine.Code.Enemy.States
             
             _stayTimer = 0f;
             
-            agent.velocity = Vector3.zero;
-            agent.SetDestination(transform.position);
+            Rb.linearVelocity = Vector3.zero;
         }
 
         public override void OnExit()
