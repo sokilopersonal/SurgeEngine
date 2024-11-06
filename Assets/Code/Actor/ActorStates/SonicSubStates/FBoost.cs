@@ -83,10 +83,7 @@ namespace SurgeEngine.Code.Parameters.SonicSubStates
         {
             base.OnTick(dt);
 
-            if (Active)
-            {
-                _boostHandler?.BoostHandle();
-            }
+            _boostHandler?.BoostHandle();
 
             if (actor.stateMachine.CurrentState is FStateGround)
             {

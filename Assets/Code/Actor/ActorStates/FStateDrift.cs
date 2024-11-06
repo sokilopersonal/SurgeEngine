@@ -93,7 +93,7 @@ namespace SurgeEngine.Code.Parameters
             var physParam = SonicGameDocument.GetDocument("Sonic").GetGroup(SonicGameDocument.PhysicsGroup);
             var param = boost.GetBoostEnergyGroup();
             float startForce = param.GetParameter<float>(BoostEnergy_StartSpeed);
-            if (Stats.currentSpeed < startForce)
+            if (boost.Active && Stats.currentSpeed < startForce)
             {
                 _rigidbody.linearVelocity = _rigidbody.transform.forward * startForce;
                 boost.restoringTopSpeed = true;

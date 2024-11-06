@@ -1,6 +1,7 @@
 ﻿using System;
 using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Custom;
+using SurgeEngine.Code.Parameters.SonicSubStates;
 using SurgeEngine.Code.SonicSubStates.Boost;
 using UnityEngine;
 using UnityEngine.Splines;
@@ -18,51 +19,56 @@ namespace SurgeEngine.Code.Parameters
         public override void OnEnter()
         {
             base.OnEnter();
+            
+            
         }
 
         public override void OnFixedTick(float dt)
         {
             base.OnFixedTick(dt);
-
-            if (Common.CheckForRail(out var hit, out _))
-            {
-                Kinematics.Normal = hit.normal;
-                Debug.Log(Kinematics.Normal);
-            }
             
             if (_rail != null)
             {
                 var container = _rail;
-                SplineUtility.GetNearestPoint(container.Spline, SurgeMath.Vector3ToFloat3(container.transform.InverseTransformPoint(_rigidbody.position)), out var near, out var t);
+                SplineUtility.GetNearestPoint(container.Spline, 
+                    SurgeMath.Vector3ToFloat3(container.transform.InverseTransformPoint(_rigidbody.position - Actor.transform.up * 1.25f)), 
+                    out var near, out var t);
                 container.Evaluate(t, out var point, out var tangent, out var up);
-                var planeNormal = Vector3.Cross(tangent, up);
+                var tangentNormal = Vector3.Cross(tangent, up);
+                var normal = SurgeMath.Float3ToVector3(up);
 
-                float minSpeed = 3;
-                if (Kinematics.HorizontalSpeed < minSpeed)
-                {
-                    _rigidbody.AddForce(_rigidbody.transform.forward * (Time.fixedDeltaTime * minSpeed), ForceMode.Impulse);
-                }
+                float sign = Mathf.Sign(Vector3.Dot(Actor.transform.forward, tangent));
+                bool forward = Mathf.Approximately(sign, 1);
+                Vector3 direction = forward ? tangent : -tangent;
                 
-                _rigidbody.linearVelocity = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, planeNormal);
+                Quaternion rot = Quaternion.LookRotation(direction, Actor.transform.up);
+                _rigidbody.rotation = rot;
                 
                 Vector3 nearPoint = container.transform.TransformPoint(near);
-                _rigidbody.position = nearPoint + Kinematics.Normal * 1;
+                nearPoint += Actor.transform.up * 1.25f;
+                _rigidbody.position = nearPoint;
                 
-                Quaternion rot = Quaternion.LookRotation(tangent, Kinematics.Normal);
-                _rigidbody.rotation = rot;
+                Kinematics.Normal = normal;
+                
+                _rigidbody.linearVelocity = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, normal);
+                _rigidbody.linearVelocity = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, tangentNormal);
+
+                if (!Actor.stateMachine.GetSubState<FBoost>().Active)
+                {
+                    Vector3 slopeForce = Vector3.ProjectOnPlane(Vector3.down, Actor.transform.up) * 9;
+                    _rigidbody.AddForce(slopeForce * Time.fixedDeltaTime, ForceMode.Impulse);
+                }
 
                 if (!_rail.Spline.Closed)
                 {
-                    if (Math.Abs(t - 1) < 0.01f)
+                    float v = forward ? Mathf.Abs(t - 1) : t;
+                    Debug.Log(v);
+                    if (v < 0.0002f || v > 1f)
                     {
-                        Actor.transform.position += Actor.transform.forward * 0.25f;
+                        //_rigidbody.linearVelocity += SurgeMath.Float3ToVector3(direction) * 2f;
                         StateMachine.SetState<FStateAir>();
                     }
                 }
-                
-                Vector3 vel = _rigidbody.linearVelocity;
-                vel.y = 0;
-                _rigidbody.linearVelocity = vel;
             }
         }
 
@@ -73,9 +79,9 @@ namespace SurgeEngine.Code.Parameters
 
         public void BoostHandle()
         {
-            if (Kinematics.HorizontalSpeed < 40)
+            if (Actor.stateMachine.GetSubState<FBoost>().Active)
             {
-                _rigidbody.AddForce(_rigidbody.transform.forward * (Time.fixedDeltaTime * 15), ForceMode.Impulse);
+                _rigidbody.linearVelocity = _rigidbody.transform.forward * 25;
             }
         }
     }

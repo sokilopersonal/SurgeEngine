@@ -147,7 +147,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
                     _autoLookDirection.x = 0;
                 }
 
-                if (Actor.stateMachine.CurrentState is FStateGround or FStateIdle or FStateDrift or FStateSliding)
+                if (Actor.stateMachine.CurrentState is FStateGround or FStateIdle or FStateDrift or FStateSliding or FStateGrind)
                 {
                     _autoLookDirection.y = 5f * (Actor.stateMachine.GetSubState<FBoost>().Active ? 1.75f : 1f);
                     _autoLookDirection.y -= Actor.stats.currentVerticalSpeed * 1.25f;

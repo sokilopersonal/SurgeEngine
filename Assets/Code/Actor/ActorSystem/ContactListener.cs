@@ -7,10 +7,16 @@ namespace SurgeEngine.Code.ActorSystem
     {
         private void OnTriggerEnter(Collider other)
         {
-            if (other.transform.TryGetComponent(out IPlayerContactable contactable) || other.transform.parent.TryGetComponent(out contactable))
+            if (other.TryGetComponent(out IPlayerContactable contactable)) {}
+            else
             {
-                contactable.OnContact();
+                if (other.transform.parent != null)
+                {
+                    other.transform.parent.TryGetComponent(out contactable);
+                }
             }
+            
+            contactable?.OnContact();
         }
     }
 }

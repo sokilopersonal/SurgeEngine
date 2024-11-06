@@ -36,9 +36,15 @@ namespace SurgeEngine.Code.ActorSystem
             SetFloat(AnimatorParams.VerticalSpeed, actor.stats.currentVerticalSpeed);
 
             Vector3 vel = actor.rigidbody.linearVelocity.normalized;
-            vel.y = Mathf.Approximately(actor.kinematics.Angle, 0) ? 0 : vel.y;
-            float angle = Vector3.SignedAngle(actor.model.root.forward, vel,
-                actor.transform.up) * 0.2f;
+            
+            Vector3 right = Vector3.Cross(vel, actor.transform.up);
+            vel = Vector3.Cross(actor.transform.up, right);
+            float signed = Mathf.Atan2(Vector3.Dot(actor.model.root.forward, right), 
+                Vector3.Dot(vel, vel)) * Mathf.Rad2Deg;
+            
+            //float signed = Vector3.SignedAngleByAxis(actor.model.root.forward, vel, actor.transform.up);
+
+            float angle = signed * 0.1f;
             
             SetFloat(AnimatorParams.SmoothTurnAngle, Mathf.Lerp(animator.GetFloat(AnimatorParams.SmoothTurnAngle), angle, 4f * Time.deltaTime));
             SetFloat(AnimatorParams.TurnAngle, angle);
