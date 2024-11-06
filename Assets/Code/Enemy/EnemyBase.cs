@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.Parameters;
+using SurgeEngine.Code.Parameters.SonicSubStates;
+using UnityEngine;
 
 namespace SurgeEngine.Code.StateMachine
 {
@@ -10,6 +13,19 @@ namespace SurgeEngine.Code.StateMachine
         protected virtual void Awake()
         {
             stateMachine = new FStateMachine();
+        }
+        
+        public bool CanBeDamaged()
+        {
+            var context = ActorContext.Context;
+            var state = context.stateMachine.CurrentState;
+
+            if (context.stateMachine.GetSubState<FBoost>().Active)
+            {
+                return true;
+            }
+
+            return state is FStateHoming or FStateDrift or FStateSliding or FStateJump;
         }
     }
 }

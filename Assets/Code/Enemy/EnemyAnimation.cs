@@ -48,7 +48,12 @@ namespace SurgeEngine.Code.StateMachine
 
             if (obj is EGStateTurn)
             {
-                TransitionToState("Turn", 0.1f, true);
+                TransitionToState("Turn", 0f, true);
+            }
+
+            if (obj is EGStateDead)
+            {
+                TransitionToState("Dead", 0.1f, true);
             }
         }
     }

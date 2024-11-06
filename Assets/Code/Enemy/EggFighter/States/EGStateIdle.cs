@@ -26,6 +26,8 @@ namespace SurgeEngine.Code.Enemy.States
             
             Rb.linearVelocity = Vector3.zero;
 
+            if (eggFighter.patrolTime == 0) return;
+
             var context = ActorContext.Context;
             if (Vector3.Distance(context.transform.position, transform.position) < eggFighter.findDistance)
             {
@@ -52,7 +54,7 @@ namespace SurgeEngine.Code.Enemy.States
                 //     eggFighter.stateMachine.SetState<EGStatePatrol>(0.2f).SetNewPatrolPoint(point);
                 // }
 
-                eggFighter.stateMachine.SetState<EGStatePatrol>(0.2f);
+                eggFighter.stateMachine.SetState<EGStatePatrol>();
             }
         }
     }

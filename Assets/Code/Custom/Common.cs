@@ -171,28 +171,19 @@ namespace SurgeEngine.Code.Custom
             Vector3 dir = context.stats.inputDir == Vector3.zero ? transform.forward : context.stats.inputDir;
             var radius = param.GetParameter<float>(Homing_FindRadius);
             var maxDistance = param.GetParameter<float>(Homing_FindDistance);
-            RaycastHit[] targetsInRange = Physics.SphereCastAll(origin, radius, dir, maxDistance, param.GetParameter<LayerMask>(Homing_Mask));
-            Transform closestTarget = null;
-            float distance = Mathf.Infinity;
-            foreach (RaycastHit t in targetsInRange)
+            if (Physics.SphereCast(origin, radius, dir, out var hit, maxDistance, param.GetParameter<LayerMask>(Homing_Mask), QueryTriggerInteraction.Collide))
             {
-                Transform target = t.transform;
-                Vector3 end = target.position + Vector3.up * 0.1f;
+                Transform target = hit.transform;
+                Vector3 end = target.position + Vector3.up * 0.5f;
                 Vector3 direction = target.position - origin;
-                Debug.DrawLine(origin, end);
                 bool facing = Vector3.Dot(direction.normalized, transform.forward) > 0.5f;
-                float targetDistance = direction.sqrMagnitude / radius / radius;
-                if (targetDistance < distance && facing)
+                if (facing && !Physics.Linecast(origin, end, doc.GetGroup(SonicGameDocument.CastGroup).GetParameter<LayerMask>(Cast_Mask)))
                 {
-                    if (!Physics.Linecast(origin, end, doc.GetGroup(SonicGameDocument.CastGroup).GetParameter<LayerMask>(Cast_Mask)))
-                    {
-                        closestTarget = target;
-                        distance = targetDistance;
-                    }
+                    return target;
                 }
             }
     
-            return closestTarget;
+            return null;
         }
         
         public static async UniTask ChangeFOVOverTime(float targetFov, float duration)

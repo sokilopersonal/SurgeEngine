@@ -4,6 +4,7 @@ using SurgeEngine.Code.GameDocuments;
 using SurgeEngine.Code.Parameters;
 using SurgeEngine.Code.Parameters.SonicSubStates;
 using UnityEngine;
+using UnityEngine.Splines;
 using static SurgeEngine.Code.GameDocuments.SonicGameDocumentParams;
 
 namespace SurgeEngine.Code.ActorSystem
@@ -19,6 +20,7 @@ namespace SurgeEngine.Code.ActorSystem
             get => _turnRate;
             set => _turnRate = value;
         }
+
         public float HorizontalSpeed => _horizontalSpeed;
 
         public float Angle => _angle;
@@ -32,10 +34,11 @@ namespace SurgeEngine.Code.ActorSystem
         private Vector3 _inputDir;
         private Rigidbody _rigidbody;
         private Transform _cameraTransform;
-
         private Vector3 _movementVector;
         private Vector3 _planarVelocity;
         private Vector3 _normal;
+        
+        private PathData _pathData;
 
         private float _horizontalSpeed;
         private float _speed;
@@ -44,21 +47,22 @@ namespace SurgeEngine.Code.ActorSystem
         private float _detachTimer;
         private bool _canAttach;
         private bool _skidding;
-
+        
         private Document _document;
         private ParameterGroup _physGroup;
 
-        private void Awake()
+        public void OnInit()
         {
             _rigidbody = GetComponent<Rigidbody>();
-            _cameraTransform = actor.camera.GetCameraTransform();
-
+            
             _document = SonicGameDocument.GetDocument("Sonic");
             _physGroup = _document.GetGroup(SonicGameDocument.PhysicsGroup);
         }
 
         private void Update()
         {
+            _cameraTransform = actor.camera.GetCameraTransform();
+            
             Vector3 transformedInput = Quaternion.FromToRotation(_cameraTransform.up, _normal) *
                                        (_cameraTransform.rotation * actor.input.moveVector);
             transformedInput = Vector3.ProjectOnPlane(transformedInput, _normal);
@@ -70,6 +74,38 @@ namespace SurgeEngine.Code.ActorSystem
             _speed = _rigidbody.linearVelocity.magnitude;
             
             CalculateDetachState();
+        }
+
+        private void FixedUpdate()
+        {
+            var path = _pathData;
+            if (path != null)
+            {
+                if (path.splineContainer != null)
+                {
+                    var container = path.splineContainer;
+                    SplineUtility.GetNearestPoint(container.Spline, SurgeMath.Vector3ToFloat3(container.transform.InverseTransformPoint(_rigidbody.position)), out var near, out var t);
+                    container.Evaluate(t, out var point, out var tangent, out var up);
+                    var planeNormal = Vector3.Cross(tangent, up);
+                
+                    if (_horizontalSpeed < path.maxAutoRunSpeed)
+                    {
+                        _rigidbody.AddForce(_rigidbody.transform.forward * (Time.fixedDeltaTime * path.autoRunSpeed), ForceMode.Impulse);
+                    }
+                
+                    _rigidbody.linearVelocity = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, planeNormal);
+                    _inputDir = Vector3.ProjectOnPlane(_inputDir, planeNormal);
+                    
+                    //_rigidbody.rotation = Quaternion.LookRotation(tangent, up);
+                
+                    Vector3 nearPoint = container.transform.TransformPoint(near);
+                    nearPoint.y = _rigidbody.position.y;
+                    if (actor.stateMachine.CurrentState is not FStateAir)
+                    {
+                        //_rigidbody.position = nearPoint;
+                    }
+                }
+            }
         }
 
         public void BasePhysics(Vector3 point, Vector3 normal)
@@ -175,6 +211,8 @@ namespace SurgeEngine.Code.ActorSystem
             }
         }
 
+        #region BIG CODE
+
         public void SlopePrediction()
         {
             var lowerValue = 0.45f;
@@ -246,6 +284,8 @@ namespace SurgeEngine.Code.ActorSystem
             }
         }
 
+        #endregion
+
         public void Project()
         {
             _rigidbody.linearVelocity = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, _normal);
@@ -262,8 +302,13 @@ namespace SurgeEngine.Code.ActorSystem
         public void Snap(Vector3 point, Vector3 normal)
         {
             if (!_canAttach) return;
-            
-            if (point != Vector3.zero && normal != Vector3.zero) _rigidbody.position = point + normal;
+
+            if (point != Vector3.zero && normal != Vector3.zero)
+            {
+                Vector3 endPoint = point + normal;
+                Vector3 endLerpPoint = Vector3.Slerp(_rigidbody.position, endPoint, 16 * Time.fixedDeltaTime);
+                _rigidbody.position = endLerpPoint;
+            }
         }
 
         private void Deceleration(float min, float max)
@@ -319,5 +364,14 @@ namespace SurgeEngine.Code.ActorSystem
             return _inputDir;
         }
 
+        public void SetPath(PathData data)
+        {
+            _pathData = data;
+        }
+
+        public bool IsPathValid()
+        {
+            return _pathData != null;
+        }
     }
 }

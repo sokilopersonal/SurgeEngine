@@ -10,16 +10,6 @@ namespace SurgeEngine.Code.Custom
             Planar = Vector3.ProjectOnPlane(Vector, Normal);
             Vertical = Vector - Planar;
         }
-
-        public static Vector3 GetPositionInCameraProjection(Camera camera, Vector2 pos)
-        {
-            var m = camera.projectionMatrix * camera.worldToCameraMatrix;
-            var p = Vector3.zero;
-            p.x = (pos.x * 2 - 1) / m.m00;
-            p.y = (pos.y * 2 - 1) / m.m11;
-            p.z = 1 / m.m33;
-            return m.MultiplyPoint3x4(p);
-        }
         
         public static float Smooth(float t, float f = 0.5f, float a1 = 0.1f)
         {

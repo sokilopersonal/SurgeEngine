@@ -55,6 +55,8 @@ namespace SurgeEngine.Code.GameDocuments
         public static string Homing_Curve = "Curve";
         public static string Homing_Mask = "Mask";
         public static string Homing_MaxTargetTime = "MaxTargetTime";
+        public static string Homing_AfterForce = "AfterForce";
+        public static string Homing_Delay = "Delay";
         public static string Slope_DeslopeForce = "DeslopeForce";
         public static string Slope_DeslopeAngle = "DeslopeAngle";
         public static string Slope_MinForceSpeed = "MinForceSpeed";

@@ -1,10 +1,8 @@
 ﻿using SurgeEngine.Code.Parameters;
 using SurgeEngine.Code.CameraSystem;
-using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.Parameters.SonicSubStates;
 using SurgeEngine.Code.StateMachine;
 using UnityEngine;
-using UnityEngine.Splines;
 
 namespace SurgeEngine.Code.ActorSystem
 {
@@ -23,20 +21,14 @@ namespace SurgeEngine.Code.ActorSystem
         
         public FStateMachine stateMachine;
 
-        public int ID { get; private set; }
-
         [HideInInspector] public new Rigidbody rigidbody;
-        [HideInInspector] public PathData pathData;
-        [HideInInspector] public SplineContainer container;
 
         private void Awake()
         {
-            ID = gameObject.GetInstanceID();
+            gameObject.GetInstanceID();
             
             rigidbody = GetComponent<Rigidbody>();
-            pathData = null;
-            container = null;
-            
+
             stateMachine = new FStateMachine();
             
             stateMachine.AddState(new FStateIdle(this, rigidbody));
@@ -45,11 +37,13 @@ namespace SurgeEngine.Code.ActorSystem
             stateMachine.AddState(new FStateAirBoost(this, rigidbody));
             stateMachine.AddState(new FStateStomp(this, rigidbody));
             stateMachine.AddState(new FStateHoming(this, rigidbody));
+            stateMachine.AddState(new FStateAfterHoming(this));
             stateMachine.AddState(new FStateDrift(this, rigidbody));
             stateMachine.AddState(new FStateSpecialJump(this, rigidbody));
             stateMachine.AddState(new FStateSit(this, rigidbody));
             stateMachine.AddState(new FStateSliding(this, rigidbody));
             stateMachine.AddState(new FStateJump(this, rigidbody));
+            stateMachine.AddState(new FStateQuickstep(this, rigidbody));
             
             var boost = new FBoost(this);
             stateMachine.AddSubState(boost);

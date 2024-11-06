@@ -44,6 +44,8 @@ namespace SurgeEngine.Code.CameraSystem
             stateMachine.SetState<DefaultModernPawn>();
         }
 
+        public void OnInit() {}
+
         private void Update()
         {
             stateMachine.Tick(Time.unscaledDeltaTime);

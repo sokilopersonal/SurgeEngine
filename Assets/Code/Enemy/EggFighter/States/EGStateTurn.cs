@@ -31,13 +31,14 @@ namespace SurgeEngine.Code.Enemy.States
             transform.position = _startPos + Vector3.up * height;
             
             Quaternion euler = Quaternion.Euler(0, _startRot.eulerAngles.y + 180f, 0);
-            transform.rotation = Quaternion.Slerp(_startRot, euler, EaseInCubic(_timer / eggFighter.turnTime));
+            float time = eggFighter.turnCurve.Evaluate(_timer / eggFighter.turnTime);
+            transform.rotation = Quaternion.Slerp(_startRot, euler, time);
             
             if (_timer >= 1.85f)
             {
                 eggFighter.animation.ResetAction();
                 
-                eggFighter.stateMachine.SetState<EGStatePatrol>(0.5f);
+                eggFighter.stateMachine.SetState<EGStatePatrol>(1f);
             }
         }
         

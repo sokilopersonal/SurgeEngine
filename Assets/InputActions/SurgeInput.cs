@@ -107,6 +107,15 @@ public partial class @SurgeInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Quickstep"",
+                    ""type"": ""Value"",
+                    ""id"": ""2ce81536-c480-4c88-90b3-00e6a2bfdb0b"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -351,6 +360,116 @@ public partial class @SurgeInput: IInputActionCollection2, IDisposable
                     ""action"": ""Start"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Keyboard"",
+                    ""id"": ""49df235c-6197-4346-9f9a-4989cb5a7f6e"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Quickstep"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""3968d07e-b82e-48cc-9d1c-128aaf25157c"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Quickstep"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""b3d1a490-646a-4a1a-931c-f59bbf80274e"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Quickstep"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""ba34e795-fd74-4a76-95e4-a473e17b7f86"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Quickstep"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""843b2fb3-9a09-42ff-8df9-7ca75407032b"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Quickstep"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Gamepad"",
+                    ""id"": ""d875eaf7-95aa-4535-90bd-49b74392b778"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Quickstep"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""eb4cd34f-9de1-4523-9318-cc9fd0508d6e"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Quickstep"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""1ada81b9-05b2-4d00-945d-7939fad94253"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Quickstep"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""995ab248-d7d6-41df-85b5-3820bc53472a"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Quickstep"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""4cd8d18c-aa63-4009-807f-f865f519f8e8"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Quickstep"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -368,6 +487,7 @@ public partial class @SurgeInput: IInputActionCollection2, IDisposable
         m_Gameplay_LBButton = m_Gameplay.FindAction("LBButton", throwIfNotFound: true);
         m_Gameplay_RBButton = m_Gameplay.FindAction("RBButton", throwIfNotFound: true);
         m_Gameplay_Start = m_Gameplay.FindAction("Start", throwIfNotFound: true);
+        m_Gameplay_Quickstep = m_Gameplay.FindAction("Quickstep", throwIfNotFound: true);
     }
 
     ~@SurgeInput()
@@ -443,6 +563,7 @@ public partial class @SurgeInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_LBButton;
     private readonly InputAction m_Gameplay_RBButton;
     private readonly InputAction m_Gameplay_Start;
+    private readonly InputAction m_Gameplay_Quickstep;
     public struct GameplayActions
     {
         private @SurgeInput m_Wrapper;
@@ -456,6 +577,7 @@ public partial class @SurgeInput: IInputActionCollection2, IDisposable
         public InputAction @LBButton => m_Wrapper.m_Gameplay_LBButton;
         public InputAction @RBButton => m_Wrapper.m_Gameplay_RBButton;
         public InputAction @Start => m_Wrapper.m_Gameplay_Start;
+        public InputAction @Quickstep => m_Wrapper.m_Gameplay_Quickstep;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -492,6 +614,9 @@ public partial class @SurgeInput: IInputActionCollection2, IDisposable
             @Start.started += instance.OnStart;
             @Start.performed += instance.OnStart;
             @Start.canceled += instance.OnStart;
+            @Quickstep.started += instance.OnQuickstep;
+            @Quickstep.performed += instance.OnQuickstep;
+            @Quickstep.canceled += instance.OnQuickstep;
         }
 
         private void UnregisterCallbacks(IGameplayActions instance)
@@ -523,6 +648,9 @@ public partial class @SurgeInput: IInputActionCollection2, IDisposable
             @Start.started -= instance.OnStart;
             @Start.performed -= instance.OnStart;
             @Start.canceled -= instance.OnStart;
+            @Quickstep.started -= instance.OnQuickstep;
+            @Quickstep.performed -= instance.OnQuickstep;
+            @Quickstep.canceled -= instance.OnQuickstep;
         }
 
         public void RemoveCallbacks(IGameplayActions instance)
@@ -551,5 +679,6 @@ public partial class @SurgeInput: IInputActionCollection2, IDisposable
         void OnLBButton(InputAction.CallbackContext context);
         void OnRBButton(InputAction.CallbackContext context);
         void OnStart(InputAction.CallbackContext context);
+        void OnQuickstep(InputAction.CallbackContext context);
     }
 }

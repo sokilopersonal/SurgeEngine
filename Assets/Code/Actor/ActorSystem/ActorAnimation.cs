@@ -9,10 +9,15 @@ namespace SurgeEngine.Code.ActorSystem
     public class ActorAnimation : StateAnimator, IActorComponent
     {
         public Actor actor { get; set; }
+        
+        public void OnInit()
+        {
+            actor.stateMachine.OnStateAssign += ChangeStateAnimation;
+        }
 
         private void OnEnable()
         {
-            actor.stateMachine.OnStateAssign += ChangeStateAnimation;
+            if (actor) actor.stateMachine.OnStateAssign += ChangeStateAnimation;
         }
 
         private void OnDisable()
@@ -89,7 +94,7 @@ namespace SurgeEngine.Code.ActorSystem
                     }
                 }
             }
-            if (obj is FStateAir && prev is not FStateSpecialJump and not FStateAirBoost)
+            if (obj is FStateAir && prev is not FStateSpecialJump and not FStateAirBoost and not FStateAfterHoming)
             {
                 TransitionToState(AnimatorParams.AirCycle, prev switch
                 {
@@ -121,6 +126,12 @@ namespace SurgeEngine.Code.ActorSystem
             if (obj is FStateAirBoost)
             {
                 TransitionToState("Air Boost", 0f, true);
+            }
+
+            if (obj is FStateAfterHoming && prev is not FStateJump)
+            {
+                int index = Random.Range(0, 4);
+                TransitionToState($"AfterHoming{index}", 0f);
             }
 
             if (obj is FStateDrift)

@@ -55,7 +55,7 @@ namespace SurgeEngine.Code.Parameters
             
             Kinematics.Normal = Vector3.up;
 
-            if (GetAirTime() > 0.8f)
+            if (GetAirTime() > 0.8f && _rigidbody.linearVelocity.y < 0)
             {
                 StateMachine.SetState<FStateAir>();
             }

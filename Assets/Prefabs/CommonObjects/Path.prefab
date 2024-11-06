@@ -159,7 +159,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52c8b0830752495b819a74de663f3361, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  splineContainer: {fileID: 1498994717936868621}
+  data:
+    splineContainer: {fileID: 1498994717936868621}
+    outOfControl: 0
+    autoRunSpeed: 0
+    maxAutoRunSpeed: 0
 --- !u!1 &2834841651591345435
 GameObject:
   m_ObjectHideFlags: 0

@@ -7,6 +7,9 @@
         void SetOwner(Actor actor)
         {
             this.actor = actor;
+            OnInit();
         }
+
+        void OnInit();
     }
 }

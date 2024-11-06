@@ -8,6 +8,7 @@ namespace SurgeEngine.Code.ActorSystem
         public Actor actor { get; set; }
 
         public Transform root;
+
         public CapsuleCollider collision;
         private float collisionStartHeight;
         private float collisionStartRadius;
@@ -34,6 +35,10 @@ namespace SurgeEngine.Code.ActorSystem
             root.localPosition = actor.transform.localPosition;
             actor.transform.rotation = parentRotation;
             root.localRotation = parentRotation;
+        }
+        
+        public void OnInit()
+        {
         }
 
         private void Update()
@@ -62,9 +67,10 @@ namespace SurgeEngine.Code.ActorSystem
             }
 
             root.localPosition = actor.transform.localPosition;
-            root.localRotation = Quaternion.Slerp(root.localRotation,
-                actor.transform.rotation,
-                speed * Time.deltaTime);
+            
+            Vector3 forward = Vector3.Slerp(root.forward, actor.transform.forward, 12 * Time.deltaTime);
+            Vector3 up = Vector3.Slerp(root.up, actor.transform.up, 3 * Time.deltaTime);
+            root.localRotation = Quaternion.LookRotation(forward, up);
 
             actor.effects.spinball.transform.SetParent(root, false);
         }
@@ -72,27 +78,11 @@ namespace SurgeEngine.Code.ActorSystem
         public void RotateBody(Vector3 normal)
         {
             Vector3 vel = actor.rigidbody.linearVelocity;
-
-            if (vel.magnitude > 0.1f)
+            if (vel.sqrMagnitude > 0.01f)
             {
-                Quaternion rot = Quaternion.LookRotation(vel, normal);
-                actor.transform.rotation = rot;
+                Quaternion targetRotation = Quaternion.LookRotation(vel, normal);
+                actor.transform.rotation = targetRotation;
             }
-        }
-
-        public void RotateModel(Vector3 forwardV, Vector3 normalV, float dt)
-        {
-            Quaternion targetRotation = actor.transform.rotation;
-            Quaternion horizontalRotation = Quaternion.Euler(0, targetRotation.eulerAngles.y, 0);
-            Quaternion verticalRotation = Quaternion.Euler(targetRotation.eulerAngles.x, 0, 0);
-            
-            root.rotation = Quaternion.Slerp(root.rotation,
-                horizontalRotation,
-                dt * horizontalRotationSpeed);
-            
-            root.rotation = Quaternion.Slerp(root.localRotation,
-                verticalRotation,
-                dt * verticalRotationSpeed);
         }
 
         /// <summary>

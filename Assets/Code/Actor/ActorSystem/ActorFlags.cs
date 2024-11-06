@@ -11,12 +11,16 @@ namespace SurgeEngine.Code.ActorSystem
     public class ActorFlags : MonoBehaviour, IActorComponent
     {
         public Actor actor { get; set; }
-        
+
         public List<Flag> list;
 
         private void Awake()
         {
             list = new List<Flag>();
+        }
+
+        public void OnInit()
+        {
         }
 
         public void AddFlag(Flag flag, bool overwrite = false)

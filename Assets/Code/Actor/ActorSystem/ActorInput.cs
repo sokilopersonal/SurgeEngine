@@ -10,51 +10,57 @@ namespace SurgeEngine.Code.ActorSystem
     public class ActorInput : MonoBehaviour, IActorComponent
     {
         public Actor actor { get; set; }
-        
+
         public Vector3 moveVector;
+
         public Vector2 lookVector;
 
         private SurgeInput _input;
 
         // Boost
+
         public bool BoostPressed => _input.Gameplay.Boost.WasPressedThisFrame();
+
         public bool BoostHeld => _input.Gameplay.Boost.IsPressed();
 
         public Action<InputAction.CallbackContext> BoostAction;
 
         // Jump
+
         public bool JumpPressed => _input.Gameplay.Jump.WasPressedThisFrame();
+
         public bool JumpHeld => _input.Gameplay.Jump.IsPressed();
+
         public Action<InputAction.CallbackContext> JumpAction;
-        
+
         // B Button
+
         public bool BPressed => _input.Gameplay.BButton.WasPressedThisFrame();
+
         public bool BReleased => _input.Gameplay.BButton.WasReleasedThisFrame();
+
         public bool BHeld => _input.Gameplay.BButton.IsPressed();
+
         public Action<InputAction.CallbackContext> BAction;
-        
+
         // Y Button
+
         public bool YPressed => _input.Gameplay.YButton.WasPressedThisFrame();
+
         public bool YHeld => _input.Gameplay.YButton.IsPressed();
+
         public Action<InputAction.CallbackContext> YAction;
-        
-        // LB Button
-        public bool LBPressed => _input.Gameplay.LBButton.WasPressedThisFrame();
-        public bool LBHeld => _input.Gameplay.LBButton.IsPressed();
-        public Action<InputAction.CallbackContext> LBAction;
-        
-        // RB Button
-        public bool RBPressed => _input.Gameplay.RBButton.WasPressedThisFrame();
-        public bool RBHeld => _input.Gameplay.RBButton.IsPressed();
+
+        // Bumpers
+        public Action<InputAction.CallbackContext> BumperAction;
 
         private float _lastLookInputTime;
         private bool _lockCamera;
-        
         private InputDevice _device;
+
         private Dictionary<string, string> _translatedDeviceNames;
 
         public event Action<ButtonType> OnButtonPressed;
-
 
         private void Awake()
         {
@@ -68,6 +74,10 @@ namespace SurgeEngine.Code.ActorSystem
                 ["Keyboard"] = "Keyboard",
                 ["XInputControllerWindows"] = "Xbox",
             };
+        }
+
+        public void OnInit()
+        {
         }
 
         private void OnEnable()
@@ -86,11 +96,8 @@ namespace SurgeEngine.Code.ActorSystem
             _input.Gameplay.YButton.started += YInput;
             _input.Gameplay.YButton.canceled += YInput;
             
-            _input.Gameplay.LBButton.started += LBInput;
-            _input.Gameplay.LBButton.canceled += LBInput;
-            
-            _input.Gameplay.RBButton.started += RBInput;
-            _input.Gameplay.RBButton.canceled += RBInput;
+            _input.Gameplay.Quickstep.started += QuickstepInput;
+            _input.Gameplay.Quickstep.canceled += QuickstepInput;
 
             _input.Gameplay.Start.started += StartInput;
             _input.Gameplay.Start.canceled += StartInput;
@@ -115,11 +122,8 @@ namespace SurgeEngine.Code.ActorSystem
             _input.Gameplay.YButton.started -= YInput;
             _input.Gameplay.YButton.canceled -= YInput;
             
-            _input.Gameplay.LBButton.started -= LBInput;
-            _input.Gameplay.LBButton.canceled -= LBInput;
-            
-            _input.Gameplay.RBButton.started -= RBInput;
-            _input.Gameplay.RBButton.canceled -= RBInput;
+            _input.Gameplay.Quickstep.started -= QuickstepInput;
+            _input.Gameplay.Quickstep.canceled -= QuickstepInput;
             
             _input.Gameplay.Start.started -= StartInput;
             _input.Gameplay.Start.canceled -= StartInput;
@@ -220,6 +224,16 @@ namespace SurgeEngine.Code.ActorSystem
             if (actor.flags.HasFlag(FlagType.OutOfControl))
             {
                 return;
+            }
+        }
+
+        private void QuickstepInput(InputAction.CallbackContext obj)
+        {
+            if (obj.started)
+            {
+                int direction = (int)obj.ReadValue<Vector2>().x;
+                
+                Debug.Log(direction);
             }
         }
 

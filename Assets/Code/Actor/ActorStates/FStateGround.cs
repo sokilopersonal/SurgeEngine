@@ -78,31 +78,6 @@ namespace SurgeEngine.Code.Parameters
             {
                 StateMachine.SetState<FStateAir>();
             }
-            
-            // TODO: Move to ActorKinematics
-            var path = Actor.pathData;
-            if (path != null)
-            {
-                if (path.splineContainer != null)
-                {
-                    var container = path.splineContainer;
-                    SplineUtility.GetNearestPoint(container.Spline, SurgeMath.Vector3ToFloat3(container.transform.InverseTransformPoint(_rigidbody.position)), out var near, out var t);
-                    container.Evaluate(t, out var point, out var tangent, out var up);
-                    var planeNormal = Vector3.Cross(tangent, up);
-                
-                    if (Stats.currentSpeed < path.maxAutoRunSpeed)
-                    {
-                        _rigidbody.AddForce(_rigidbody.transform.forward * (dt * path.autoRunSpeed), ForceMode.Impulse);
-                    }
-                
-                    _rigidbody.linearVelocity = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, planeNormal);
-                    Stats.inputDir = Vector3.ProjectOnPlane(Stats.inputDir, planeNormal);
-                
-                    Vector3 nearPoint = container.transform.TransformPoint(near);
-                    //_rigidbody.position = nearPoint;
-                    //_rigidbody.rotation = Quaternion.LookRotation(tangent, up);
-                }
-            }
         }
 
         public void BoostHandle()

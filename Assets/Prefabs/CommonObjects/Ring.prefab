@@ -74,7 +74,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 9b8d20838e6f8c5459942bd996c63033, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 3120456656634554679, guid: 9b8d20838e6f8c5459942bd996c63033, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -117,8 +117,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationSpeed: 190
-  smoothTime: 0.02
-  maxSpeed: 25
+  flyDuration: 1
+  heightCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   ringSound:
     Guid:
       Data1: -871164404

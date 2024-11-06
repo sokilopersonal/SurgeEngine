@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 7099733658116403469}
   - component: {fileID: 1696099844310411520}
   - component: {fileID: 2248048767635427180}
+  - component: {fileID: 3514203903129675520}
   - component: {fileID: 6497409939340660902}
   - component: {fileID: 5828909329531261166}
   m_Layer: 3
@@ -77,7 +78,7 @@ MonoBehaviour:
   effects: {fileID: 289070888726962416}
   model: {fileID: 6916054324571523613}
   flags: {fileID: 1696099844310411520}
-  kinematics: {fileID: 0}
+  kinematics: {fileID: 3514203903129675520}
   stateMachine:
     currentStateName: 
   rigidbody: {fileID: 0}
@@ -126,11 +127,11 @@ MonoBehaviour:
   collisionRadius: 0.2
   parameters:
   - name: Default
-    distance: 2.1
+    distance: 2.5
     distanceDuration: 0.5
     distanceEasing: 0
     followPower: 4
-    timeToStartFollow: 3
+    timeToStartFollow: 2
     fov: 60
     fovDuration: 0.5
     fovEasing: 0
@@ -144,12 +145,12 @@ MonoBehaviour:
     fovDuration: 0.6
     fovEasing: 5
   - name: BoostIn
-    distance: 2
+    distance: 2.3
     distanceDuration: 2
     distanceEasing: 3
     followPower: 6
     timeToStartFollow: 1
-    fov: 55
+    fov: 75
     fovDuration: 2
     fovEasing: 3
 --- !u!114 &7099733658116403469
@@ -351,7 +352,7 @@ MonoBehaviour:
   isGrounded: 0
   isInAir: 0
   gravity: 0
-  <startGravity>k__BackingField: 0
+  <startGravity>k__BackingField: 28
   homingTarget: {fileID: 0}
 --- !u!114 &1696099844310411520
 MonoBehaviour:
@@ -379,6 +380,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 3652306209888613777}
+--- !u!114 &3514203903129675520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100729958831981340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da03e2aea0004e6a85744b21dbd938ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!136 &6497409939340660902
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -10254,7 +10267,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5411425757632001927}
   - component: {fileID: 8946680503377371742}
-  m_Layer: 3
+  - component: {fileID: 7544180283731288948}
+  m_Layer: 8
   m_Name: ContactCollision
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10299,6 +10313,18 @@ CapsuleCollider:
   m_Height: 1.25
   m_Direction: 1
   m_Center: {x: 0, y: -0.4, z: 0}
+--- !u!114 &7544180283731288948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1259358529721517514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49436c1c246242778059c8897fa1e668, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1373249034369631524
 GameObject:
   m_ObjectHideFlags: 0
@@ -20747,7 +20773,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3111513347673921166, guid: 71b112c5f2262004a8a1836ad970b46f, type: 3}
       propertyPath: stopDelay
-      value: 0.185
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 3556223889182945827, guid: 71b112c5f2262004a8a1836ad970b46f, type: 3}
       propertyPath: m_LocalScale.x
@@ -22788,12 +22814,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4396307008796334261}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 76e3c0fad7c045afa481c513299dc880, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  material: []
+  material:
+  - {fileID: 2100000, guid: 0c43514e7e99b864b8072a317c173433, type: 2}
+  - {fileID: 2100000, guid: b0d22ea1718c37b48b9cdeb96856d758, type: 2}
 --- !u!114 &9139913550342073734
 MonoBehaviour:
   m_ObjectHideFlags: 0

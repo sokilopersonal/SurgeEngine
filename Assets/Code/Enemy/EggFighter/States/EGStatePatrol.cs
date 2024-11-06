@@ -48,6 +48,12 @@ namespace SurgeEngine.Code.Enemy.States
 
             _timer += dt / _moveInterval;
             _moveInterval = eggFighter.punchRadius;
+
+            float mod = eggFighter.patrolSpeedCurve.Evaluate(_timer);
+            rb.linearVelocity = (_targetPoint - transform.position).normalized * mod;
+            
+            Quaternion rotation = Quaternion.LookRotation(_targetPoint - transform.position, Vector3.up);
+            transform.rotation = Quaternion.Euler(0, rotation.eulerAngles.y, 0);
             
             _patrolTimer += dt;
             if (_patrolTimer > eggFighter.patrolTime + 3.5f)
@@ -62,16 +68,10 @@ namespace SurgeEngine.Code.Enemy.States
             }
 
             // If it see the wall then turn
-            if (Physics.Raycast(transform.position + Vector3.up, transform.forward, 3f, 1 << LayerMask.NameToLayer("Default")))
+            if (Physics.SphereCast(transform.position + Vector3.up, 1.5f, transform.forward, out _, 1f, 1 << LayerMask.NameToLayer("Default")))
             {
-                eggFighter.stateMachine.SetState<EGStateTurn>(0.5f);
+                eggFighter.stateMachine.SetState<EGStateTurn>();
             }
-
-            float mod = eggFighter.patrolSpeedCurve.Evaluate(_timer);
-            rb.linearVelocity = transform.forward * mod;
-            
-            Quaternion rotation = Quaternion.LookRotation(_targetPoint - transform.position, Vector3.up);
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, rotation.eulerAngles.y, 0), 24f * Time.deltaTime);
         }
         
         private Vector3 GetRandomPoint()

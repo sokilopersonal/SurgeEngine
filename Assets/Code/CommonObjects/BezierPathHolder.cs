@@ -13,16 +13,17 @@ namespace SurgeEngine.Code.CommonObjects
             base.OnTriggerContact(msg);
             
             var context = ActorContext.Context;
-            if (context.pathData == null)
+            var kinematics = context.kinematics;
+            if (!kinematics.IsPathValid())
             {
-                context.pathData = data;
+                kinematics.SetPath(data);
                 
                 if (data.outOfControl > 0)
                     context.flags.AddFlag(new Flag(FlagType.OutOfControl, new []{ Tags.AllowBoost }, true, data.outOfControl));
             }
             else
             {
-                context.pathData = null;
+                kinematics.SetPath(null);
             }
         }
     }

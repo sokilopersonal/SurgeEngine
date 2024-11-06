@@ -71,11 +71,9 @@ namespace SurgeEngine.Code.Parameters
         {
             base.OnFixedTick(dt);
             
-            Stats.groundAngle = Vector3.Angle(Stats.groundNormal, Vector3.up);
-            if (Stats.currentSpeed < 10 && Stats.groundAngle >= 70)
+            if (Common.CheckForGround(out var hit))
             {
-                _rigidbody.WakeUp();
-                _rigidbody.AddForce(Stats.groundNormal * 4f, ForceMode.Impulse);
+                Kinematics.Snap(hit.point, hit.normal);
             }
         }
     }

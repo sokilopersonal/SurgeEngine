@@ -17,8 +17,6 @@ namespace SurgeEngine.Code.Enemy.States
             base.OnEnter();
             
             _stayTimer = 0f;
-            
-            Rb.linearVelocity = Vector3.zero;
         }
 
         public override void OnExit()
@@ -32,13 +30,15 @@ namespace SurgeEngine.Code.Enemy.States
         {
             base.OnTick(dt);
 
+            Rb.linearVelocity = Vector3.zero;
+            
             if (_stayTimer < 1f)
             {
                 _stayTimer += Time.deltaTime;
             }
             else
             {
-                eggFighter.stateMachine.SetState<EGStateIdle>(1.5f);
+                eggFighter.stateMachine.SetState<EGStateIdle>(0);
             }
         }
     }

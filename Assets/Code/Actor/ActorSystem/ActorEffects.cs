@@ -9,21 +9,22 @@ namespace SurgeEngine.Code.ActorSystem
     public class ActorEffects : MonoBehaviour, IActorComponent
     {
         public Actor actor { get; set; }
-        
+
         [Header("Trail")]
         [SerializeField] private VolumeTrailRenderer trailRenderer;
-        
+
         [Header("Boost")]
         [SerializeField] private BoostAura boostAura;
         [SerializeField] private BoostDistortion boostDistortion;
+
         private BoostDistortion _spawnedBoostDistortion;
 
         [Header("Spinball")] 
         public Spinball spinball;
-        
+
         [Header("Stomping")]
         public Stomping stomping;
-        
+
         [Header("Sliding")]
         public Sliding sliding;
 
@@ -33,9 +34,6 @@ namespace SurgeEngine.Code.ActorSystem
             spinball.enabled = false;
             stomping.enabled = false;
             sliding.enabled = false;
-            
-            actor.stateMachine.GetSubState<FBoost>().OnActiveChanged += OnBoostActivate;
-            actor.stateMachine.OnStateAssign += OnStateAssign;
         }
 
         private void OnBoostActivate(FSubState obj, bool value)
@@ -69,6 +67,27 @@ namespace SurgeEngine.Code.ActorSystem
                 trailRenderer.emitTime = 2f;
                 trailRenderer.emit = true;
             }
+        }
+
+        public void OnInit()
+        {
+            actor.stateMachine.GetSubState<FBoost>().OnActiveChanged += OnBoostActivate;
+            actor.stateMachine.OnStateAssign += OnStateAssign;
+        }
+
+        private void OnEnable()
+        {
+            if (actor)
+            {
+                actor.stateMachine.GetSubState<FBoost>().OnActiveChanged += OnBoostActivate;
+                actor.stateMachine.OnStateAssign += OnStateAssign;
+            }
+        }
+
+        private void OnDisable()
+        {
+            actor.stateMachine.GetSubState<FBoost>().OnActiveChanged -= OnBoostActivate;
+            actor.stateMachine.OnStateAssign -= OnStateAssign;
         }
     }
 }

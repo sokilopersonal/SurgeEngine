@@ -24,7 +24,7 @@ namespace SurgeEngine.Code.CommonObjects
         public override void OnTriggerContact(Collider msg)
         {
             base.OnTriggerContact(msg);
-
+            
             ApplyImpulse(direction);
         }
 
