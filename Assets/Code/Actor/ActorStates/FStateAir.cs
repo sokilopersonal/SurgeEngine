@@ -98,6 +98,11 @@ namespace SurgeEngine.Code.Parameters
             {
                 if (Kinematics.GetAttachState()) StateMachine.SetState<FStateGround>();
             }
+
+            if (Common.CheckForRail(out _, out var rail))
+            {
+                StateMachine.SetState<FStateGrind>().SetRail(rail);
+            }
         }
 
         private void Rotate(float dt)
@@ -118,7 +123,7 @@ namespace SurgeEngine.Code.Parameters
         {
             if (!Actor.flags.HasFlag(FlagType.OutOfControl))
             {
-                if (Input.BoostPressed && StateMachine.GetSubState<FBoost>().CanBoost())
+                if (StateMachine.GetSubState<FBoost>().CanBoost())
                 {
                     StateMachine.SetState<FStateAirBoost>();
                 }

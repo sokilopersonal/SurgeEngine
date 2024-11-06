@@ -49,6 +49,10 @@ namespace SurgeEngine.Code.Parameters.SonicSubStates
             {
                 _boostHandler = casted;
             }
+            else
+            {
+                _boostHandler = null;
+            }
             
             if (obj is FStateGround)
             {
@@ -78,8 +82,11 @@ namespace SurgeEngine.Code.Parameters.SonicSubStates
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
-            
-            _boostHandler?.BoostHandle();
+
+            if (Active)
+            {
+                _boostHandler?.BoostHandle();
+            }
 
             if (actor.stateMachine.CurrentState is FStateGround)
             {

@@ -150,6 +150,11 @@ namespace SurgeEngine.Code.ActorSystem
                 
                 _currentAnimation = AnimatorParams.Drift;
             }
+
+            if (obj is FStateGrind)
+            {
+                TransitionToState("Grind_S", 0f, true);
+            }
         }
     }
 

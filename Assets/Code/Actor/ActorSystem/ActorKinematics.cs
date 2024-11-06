@@ -95,8 +95,6 @@ namespace SurgeEngine.Code.ActorSystem
                 
                     _rigidbody.linearVelocity = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, planeNormal);
                     _inputDir = Vector3.ProjectOnPlane(_inputDir, planeNormal);
-                    
-                    //_rigidbody.rotation = Quaternion.LookRotation(tangent, up);
                 
                     Vector3 nearPoint = container.transform.TransformPoint(near);
                     nearPoint.y = _rigidbody.position.y;

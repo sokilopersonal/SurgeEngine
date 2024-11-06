@@ -66,5 +66,6 @@ namespace SurgeEngine.Code.GameDocuments
         public static string Slope_MinAngle = "MinAngle";
         public static string Slope_MinSpeed = "MinSpeed";
         public static string Slope_WallGravity = "WallGravity";
+        public static string Cast_RailMask = "RailMask";
     }
 }

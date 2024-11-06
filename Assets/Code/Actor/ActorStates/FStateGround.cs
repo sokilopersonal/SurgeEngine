@@ -86,7 +86,7 @@ namespace SurgeEngine.Code.Parameters
             FBoost boost = StateMachine.GetSubState<FBoost>();
             var param = boost.GetBoostEnergyGroup();
             float startForce = param.GetParameter<float>(BoostEnergy_StartSpeed);
-            if (boost.Active && Stats.currentSpeed < startForce)
+            if (Stats.currentSpeed < startForce)
             {
                 _rigidbody.linearVelocity = _rigidbody.transform.forward * startForce;
                 boost.restoringTopSpeed = true;

@@ -51,6 +51,7 @@ namespace SurgeEngine.Code.StateMachine
                 CurrentState.OnEnter();
                 
                 currentStateName = CurrentState.GetType().Name;
+                Debug.Log(currentStateName);
                 
                 _inactiveDelay = inactiveDelay;
                 

@@ -4,6 +4,7 @@ using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.GameDocuments;
 using UnityEngine;
+using UnityEngine.Splines;
 using static SurgeEngine.Code.GameDocuments.SonicGameDocumentParams;
 
 namespace SurgeEngine.Code.Custom
@@ -108,19 +109,47 @@ namespace SurgeEngine.Code.Custom
                     origin = context.transform.position - context.transform.up * 0.5f;
                     direction = context.rigidbody.linearVelocity.normalized;
                     break;
+                case CheckGroundType.PredictOnRail:
+                    origin = context.transform.position + context.transform.forward * 0.5f;
+                    direction = -context.transform.up * 2f;
+                    Debug.DrawLine(origin, origin + direction, Color.red);
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
             Ray ray = new Ray(origin, direction);
-            Debug.DrawRay(ray.origin, ray.direction);
             
             Document doc = SonicGameDocument.GetDocument("Sonic");
             ParameterGroup group = doc.GetGroup(SonicGameDocument.CastGroup);
             float castDistance = group.GetParameter<float>(Cast_Distance);
             LayerMask castMask = group.GetParameter<LayerMask>(Cast_Mask);
 
-            return Physics.Raycast(ray, out result,
+            bool hit = Physics.Raycast(ray, out result,
                 castDistance, castMask, QueryTriggerInteraction.Ignore);
+            
+            return hit;
+        }
+
+        public static bool CheckForRail(out RaycastHit result, out SplineContainer rail)
+        {
+            var context = ActorContext.Context;
+            Vector3 origin = context.transform.position;
+            Vector3 direction = -context.transform.up;
+
+            Ray ray = new Ray(origin, direction);
+            Document doc = SonicGameDocument.GetDocument("Sonic");
+            ParameterGroup group = doc.GetGroup(SonicGameDocument.CastGroup);
+            float castDistance = group.GetParameter<float>(Cast_Distance);
+            LayerMask mask = group.GetParameter<LayerMask>(Cast_RailMask);
+
+            if (Physics.Raycast(ray, out result, castDistance, mask, QueryTriggerInteraction.Ignore))
+            {
+                rail = result.collider.GetComponentInParent<SplineContainer>();
+                return true;
+            }
+            
+            rail = null;
+            return false;
         }
 
         public static async UniTask TemporarilyDisableCollider(Collider collider, float time = 0.25f)
@@ -143,22 +172,6 @@ namespace SurgeEngine.Code.Custom
             }
             
             Time.timeScale = targetScale;
-        }
-        public static async UniTask ChangeRigidbodyPositionOverTime(Rigidbody rigidbody, Vector3 targetPosition, float duration)
-        {
-            Vector3 startPosition = rigidbody.position;
-            float elapsed = 0f;
-            rigidbody.isKinematic = true;
-            
-            while (elapsed < duration)
-            {
-                rigidbody.position = Vector3.Lerp(startPosition, targetPosition, elapsed / duration);
-                elapsed += Time.unscaledDeltaTime;
-                await UniTask.Yield(PlayerLoopTiming.Update);
-            }
-            
-            rigidbody.isKinematic = false;
-            ResetVelocity(ResetVelocityType.Both);
         }
         
         public static Transform FindHomingTarget()
@@ -215,6 +228,7 @@ namespace SurgeEngine.Code.Custom
     {
         Default,
         Predict,
-        PredictJump
+        PredictJump,
+        PredictOnRail
     }
 }
