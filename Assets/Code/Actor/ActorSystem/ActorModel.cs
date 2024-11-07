@@ -16,13 +16,11 @@ namespace SurgeEngine.Code.ActorSystem
         [SerializeField] private float groundSmoothness = 16f;
         [SerializeField] private float airSmoothness = 3f;
         [SerializeField] private float jumpSmoothness = 10f;
-
-        // Added separate rotation speeds
+        
         [SerializeField] private float horizontalRotationSpeed = 5f;
         [SerializeField] private float verticalRotationSpeed = 3f;
-
-        private Vector3 forward;
-        private Vector3 normal;
+        
+        private Vector3 _modelRotationVelocity;
 
         private void Start()
         {
@@ -67,10 +65,11 @@ namespace SurgeEngine.Code.ActorSystem
             }
 
             root.localPosition = actor.transform.localPosition;
+            root.localRotation = Quaternion.Slerp(root.localRotation, actor.transform.localRotation, speed * Time.deltaTime);
             
             Vector3 forward = Vector3.Slerp(root.forward, actor.transform.forward, 12 * Time.deltaTime);
             Vector3 up = Vector3.Slerp(root.up, actor.transform.up, 3 * Time.deltaTime);
-            root.localRotation = Quaternion.LookRotation(forward, up);
+            //root.localRotation = Quaternion.LookRotation(forward, up);
 
             actor.effects.spinball.transform.SetParent(root, false);
         }

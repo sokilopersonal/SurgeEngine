@@ -39,12 +39,14 @@ namespace SurgeEngine.Code.ActorSystem
         private Vector3 _normal;
         
         private PathData _pathData;
+        private SplineContainer _rail;
 
         private float _horizontalSpeed;
         private float _speed;
         private float _turnRate;
         private float _angle;
         private float _detachTimer;
+        private float _grindIgnore;
         private bool _canAttach;
         private bool _skidding;
         
@@ -57,6 +59,14 @@ namespace SurgeEngine.Code.ActorSystem
             
             _document = SonicGameDocument.GetDocument("Sonic");
             _physGroup = _document.GetGroup(SonicGameDocument.PhysicsGroup);
+
+            actor.stateMachine.OnStateAssign += (state =>
+            {
+                if (actor.stateMachine.Is<FStateGrind>())
+                {
+                    _grindIgnore = 0.5f;
+                }
+            });
         }
 
         private void Update()
@@ -74,6 +84,18 @@ namespace SurgeEngine.Code.ActorSystem
             _speed = _rigidbody.linearVelocity.magnitude;
             
             CalculateDetachState();
+            
+            var stateMachine = actor.stateMachine;
+            if (stateMachine.Is<FStateAir>() || stateMachine.Is<FStateGround>() || stateMachine.Is<FStateHoming>())
+            {
+                if (Common.CheckForRail(out _, out var rail))
+                {
+                    _rail = rail;
+                    //actor.stateMachine.SetState<FStateGrind>().SetRail(rail);
+                }
+            }
+            
+            _angle = Vector3.Angle(_normal, Vector3.up);
         }
 
         private void FixedUpdate()
@@ -114,13 +136,14 @@ namespace SurgeEngine.Code.ActorSystem
             
             _movementVector = planar;
             _planarVelocity = planar;
-            
-            var state = actor.stateMachine.CurrentState;
+
+            var stateMachine = actor.stateMachine;
+            var state = stateMachine.CurrentState;
             var param = _physGroup;
 
             if (_inputDir.magnitude > 0.2f)
             {
-                if (state is FStateSliding)
+                if (stateMachine.Is<FStateSliding>())
                 {
                     bool canMove = actor.stats.moveDot > -0.1f && actor.stats.moveDot < 0.975f;
                     if (canMove)
@@ -188,7 +211,6 @@ namespace SurgeEngine.Code.ActorSystem
             
             var doc = GameDocument<SonicGameDocument>.GetDocument("Sonic");
             var param = doc.GetGroup("Slope");
-            _angle = Vector3.Angle(_normal, Vector3.up);
             if (_speed < param.GetParameter<float>(Slope_MinSpeed) && _angle >= param.GetParameter<float>(Slope_DeslopeAngle))
             {
                 _rigidbody.AddForce(_normal * param.GetParameter<float>(Slope_DeslopeForce), ForceMode.Impulse);
@@ -284,9 +306,15 @@ namespace SurgeEngine.Code.ActorSystem
 
         #endregion
 
-        public void Project()
+        public void Project(Vector3 normal = default)
         {
-            _rigidbody.linearVelocity = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, _normal);
+            if (normal == default)
+            {
+                _rigidbody.linearVelocity = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, _normal);
+                return;
+            }
+            
+            _rigidbody.linearVelocity = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, normal);
         }
 
         private void BaseAirPhysics()
@@ -366,6 +394,8 @@ namespace SurgeEngine.Code.ActorSystem
         {
             _pathData = data;
         }
+
+        public void SetAngle() => _angle = Vector3.Angle(_normal, Vector3.up);
 
         public bool IsPathValid()
         {

@@ -28,11 +28,11 @@ namespace SurgeEngine.Code.Custom
             return new Vector3(float3.x, float3.y, float3.z);
         }
         
-        public static Vector3 DivideVector3(Vector3 a, Vector3 b)
+        public static float SignedAngleByAxis(this Vector3 v1, Vector3 v2, Vector3 axis) 
         {
-            return new Vector3(a.x / b.x,
-                a.y / b.y,
-                a.z / b.z);
+            Vector3 right = Vector3.Cross(v2, axis);
+            Vector3.Cross(axis, right);
+            return Mathf.Atan2(Vector3.Dot(v1, right), 1) * Mathf.Rad2Deg;
         }
     }
 }

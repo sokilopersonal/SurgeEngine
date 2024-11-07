@@ -9,9 +9,11 @@ namespace SurgeEngine.Code.Parameters
     public class FStateJump : FStateAir
     {
         private float _jumpTime;
+        protected float _maxAirTime;
 
         public FStateJump(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
+            _maxAirTime = 0.8f;
         }
 
         public override void OnEnter()
@@ -20,7 +22,7 @@ namespace SurgeEngine.Code.Parameters
             
             var doc = SonicGameDocument.GetDocument("Sonic");
             var param = doc.GetGroup(SonicGameDocument.PhysicsGroup);
-            _rigidbody.AddForce(Actor.transform.up * param.GetParameter<float>(BasePhysics_JumpForce), ForceMode.Impulse);
+            _rigidbody.AddForce(Kinematics.Normal * param.GetParameter<float>(BasePhysics_JumpForce), ForceMode.Impulse);
             _jumpTime = 0;
             
             Actor.transform.rotation = Quaternion.Euler(0, Actor.transform.rotation.eulerAngles.y, 0);
@@ -55,7 +57,7 @@ namespace SurgeEngine.Code.Parameters
             
             Kinematics.Normal = Vector3.up;
 
-            if (GetAirTime() > 0.8f && _rigidbody.linearVelocity.y < 0)
+            if (GetAirTime() > _maxAirTime && _rigidbody.linearVelocity.y < 0)
             {
                 StateMachine.SetState<FStateAir>();
             }

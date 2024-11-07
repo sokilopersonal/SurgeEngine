@@ -142,7 +142,7 @@ namespace SurgeEngine.Code.Custom
             float castDistance = group.GetParameter<float>(Cast_Distance);
             LayerMask mask = group.GetParameter<LayerMask>(Cast_RailMask);
 
-            if (Physics.SphereCast(ray, 0.5f, out result, castDistance, mask, QueryTriggerInteraction.Collide))
+            if (Physics.SphereCast(ray, 0.275f, out result, castDistance, mask, QueryTriggerInteraction.Collide))
             {
                 rail = result.collider.GetComponentInParent<SplineContainer>();
                 return true;

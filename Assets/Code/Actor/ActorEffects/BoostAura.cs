@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.Rendering.HighDefinition;
 
 namespace SurgeEngine.Code.ActorEffects
 {
@@ -9,6 +10,13 @@ namespace SurgeEngine.Code.ActorEffects
         [SerializeField] private float stopDelay = 0.2f;
 
         private Coroutine _coroutine;
+        private CustomPassVolume _volume;
+
+        private void Awake()
+        {
+            _volume = GetComponent<CustomPassVolume>();
+            _volume.targetCamera = Camera.main;
+        }
 
         private void OnEnable()
         {

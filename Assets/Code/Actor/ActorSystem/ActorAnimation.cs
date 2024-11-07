@@ -1,4 +1,5 @@
-﻿using SurgeEngine.Code.Parameters;
+﻿using SurgeEngine.Code.Custom;
+using SurgeEngine.Code.Parameters;
 using SurgeEngine.Code.Parameters.SonicSubStates;
 using SurgeEngine.Code.StateMachine;
 using SurgeEngine.Code.StateMachine.Components;
@@ -36,15 +37,11 @@ namespace SurgeEngine.Code.ActorSystem
             SetFloat(AnimatorParams.VerticalSpeed, actor.stats.currentVerticalSpeed);
 
             Vector3 vel = actor.rigidbody.linearVelocity.normalized;
+            float signed = actor.model.root.forward.SignedAngleByAxis(vel, actor.transform.up);
             
-            Vector3 right = Vector3.Cross(vel, actor.transform.up);
-            vel = Vector3.Cross(actor.transform.up, right);
-            float signed = Mathf.Atan2(Vector3.Dot(actor.model.root.forward, right), 
-                Vector3.Dot(vel, vel)) * Mathf.Rad2Deg;
-            
-            //float signed = Vector3.SignedAngleByAxis(actor.model.root.forward, vel, actor.transform.up);
-
             float angle = signed * 0.1f;
+            
+            SetFloat("GrindLean", actor.kinematics.GetInputDir().x);
             
             SetFloat(AnimatorParams.SmoothTurnAngle, Mathf.Lerp(animator.GetFloat(AnimatorParams.SmoothTurnAngle), angle, 4f * Time.deltaTime));
             SetFloat(AnimatorParams.TurnAngle, angle);
@@ -105,6 +102,7 @@ namespace SurgeEngine.Code.ActorSystem
                 TransitionToState(AnimatorParams.AirCycle, prev switch
                 {
                     FStateGround => 0.2f,
+                    FStateGrindJump => 0.5f,
                     FStateJump or FStateHoming => 0f,
                     _ => 0.2f
                 });
@@ -121,6 +119,10 @@ namespace SurgeEngine.Code.ActorSystem
             {
                 TransitionToState("Ball", 0f, true);
             }
+            if (obj is FStateGrindJump)
+            {
+                TransitionToState("GrindJump", 0.2f, true);
+            }
             if (obj is FStateHoming)
             {
                 TransitionToState("Ball", 0f, true);
@@ -133,7 +135,6 @@ namespace SurgeEngine.Code.ActorSystem
             {
                 TransitionToState("Air Boost", 0f, true);
             }
-
             if (obj is FStateAfterHoming && prev is not FStateJump)
             {
                 int index = Random.Range(0, 4);
@@ -157,9 +158,19 @@ namespace SurgeEngine.Code.ActorSystem
                 _currentAnimation = AnimatorParams.Drift;
             }
 
-            if (obj is FStateGrind)
+            if (obj is FStateGrind && prev is not FStateGrindSquat)
             {
                 TransitionToState("Grind_S", 0f, true);
+            }
+
+            if (obj is FStateGrindSquat)
+            {
+                TransitionToState("GrindSquat", 0.25f, true);
+            }
+
+            if (obj is FStateGrind && prev is FStateGrindSquat)
+            {
+                TransitionToState("GrindLoop", 0.25f, true);
             }
         }
     }

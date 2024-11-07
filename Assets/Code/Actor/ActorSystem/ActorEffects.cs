@@ -46,7 +46,16 @@ namespace SurgeEngine.Code.ActorSystem
 
         private void OnStateAssign(FState obj)
         {
-            spinball.enabled = obj is FStateJump or FStateHoming;
+            var prev = actor.stateMachine.PreviousState;
+
+            if (obj is (FStateJump or FStateHoming) and not FStateGrindJump)
+            {
+                spinball.enabled = true;
+            }
+            else
+            {
+                spinball.enabled = false;
+            }
 
             if (obj is FStateGround or FStateIdle && actor.stateMachine.PreviousState is FStateStomp)
             {
@@ -55,18 +64,6 @@ namespace SurgeEngine.Code.ActorSystem
             
             stomping.enabled = obj is FStateStomp;
             sliding.enabled = obj is FStateSliding;
-
-            if (obj is FStateStomp)
-            {
-                trailRenderer.emitTime = 2f;
-                trailRenderer.emit = true;
-            }
-
-            if (obj is FStateHoming)
-            {
-                trailRenderer.emitTime = 2f;
-                trailRenderer.emit = true;
-            }
         }
 
         public void OnInit()

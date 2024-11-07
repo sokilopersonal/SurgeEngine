@@ -15307,6 +15307,7 @@ GameObject:
   - component: {fileID: 5117932096449080272}
   - component: {fileID: 4444228904308439761}
   - component: {fileID: 8154153295917155542}
+  - component: {fileID: 5613109573097416191}
   m_Layer: 3
   m_Name: Audio
   m_TagString: Untagged
@@ -15406,7 +15407,7 @@ MonoBehaviour:
       Data2: 1197783374
       Data3: 1589371043
       Data4: -443975898
-    Path: event:/Sonic/Step
+    Path: event:/Common/Step
 --- !u!114 &4193459189463378298
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15523,6 +15524,32 @@ MonoBehaviour:
       Data3: -1547731804
       Data4: 605440707
     Path: event:/Sonic/DriftVoice
+--- !u!114 &5613109573097416191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3999411662334716339}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 614d20788459445e9e2a7873c14a8a82, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  grindStart:
+    Guid:
+      Data1: 1878398
+      Data2: 1286013581
+      Data3: -475872105
+      Data4: -1314426495
+    Path: event:/Common/GrindStart
+  grindLoop:
+    Guid:
+      Data1: -189692447
+      Data2: 1204828762
+      Data3: 1323237770
+      Data4: -2140426155
+    Path: event:/Common/Grind
 --- !u!1 &4232932930214798659
 GameObject:
   m_ObjectHideFlags: 0

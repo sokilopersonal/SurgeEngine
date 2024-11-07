@@ -64,10 +64,15 @@ namespace SurgeEngine.Code.StateMachine
         {
             return _states[typeof(TState)] as TState;
         }
+        
+        public bool Is<State>() where State : FState
+        {
+            return CurrentState is State;
+        }
 
         public bool IsPreviousState<TState>() where TState : FState
         {
-            return PreviousState != null && PreviousState is TState;
+            return PreviousState is TState;
         }
         
         public T GetSubState<T>() where T : FSubState

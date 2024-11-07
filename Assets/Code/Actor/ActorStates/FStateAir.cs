@@ -13,7 +13,6 @@ namespace SurgeEngine.Code.Parameters
     public class FStateAir : FStateMove, IBoostHandler
     {
         private float _airTime;
-        private float _grindIgnore;
 
         public FStateAir(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
@@ -25,11 +24,6 @@ namespace SurgeEngine.Code.Parameters
             base.OnEnter();
 
             _airTime = 0f;
-
-            if (StateMachine.PreviousState is FStateGrind)
-            {
-                _grindIgnore = 0.25f;
-            }
             
             Kinematics.Normal = Vector3.up;
         }
@@ -39,11 +33,6 @@ namespace SurgeEngine.Code.Parameters
             base.OnTick(dt);
             
             CalculateAirTime(dt);
-
-            if (_grindIgnore > 0)
-            {
-                _grindIgnore -= dt;
-            }
             
             if (GetAirTime() > 0.1f)
             {
@@ -108,14 +97,6 @@ namespace SurgeEngine.Code.Parameters
             else
             {
                 if (Kinematics.GetAttachState()) StateMachine.SetState<FStateGround>();
-            }
-
-            if (_grindIgnore <= 0)
-            {
-                if (Common.CheckForRail(out _, out var rail))
-                {
-                    StateMachine.SetState<FStateGrind>().SetRail(rail);
-                }
             }
         }
 
