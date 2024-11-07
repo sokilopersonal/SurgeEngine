@@ -27,6 +27,9 @@ namespace SurgeEngine.Code.ActorSystem
 
         [Header("Sliding")]
         public Sliding sliding;
+        
+        [Header("Grind")]
+        public GrindEffect grindEffect;
 
         private void Start()
         {
@@ -34,6 +37,7 @@ namespace SurgeEngine.Code.ActorSystem
             spinball.enabled = false;
             stomping.enabled = false;
             sliding.enabled = false;
+            grindEffect.enabled = false;
         }
 
         private void OnBoostActivate(FSubState obj, bool value)
@@ -56,6 +60,8 @@ namespace SurgeEngine.Code.ActorSystem
             {
                 spinball.enabled = false;
             }
+            
+            grindEffect.enabled = obj is FStateGrind or FStateGrindSquat;
 
             if (obj is FStateGround or FStateIdle && actor.stateMachine.PreviousState is FStateStomp)
             {
