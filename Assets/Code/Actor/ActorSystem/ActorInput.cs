@@ -54,11 +54,13 @@ namespace SurgeEngine.Code.ActorSystem
         // Bumpers
         public Action<InputAction.CallbackContext> BumperAction;
 
-        private float _lastLookInputTime;
         private bool _lockCamera;
         private InputDevice _device;
 
         private Dictionary<string, string> _translatedDeviceNames;
+
+        private float _noInputTimer;
+        private bool _autoCamera;
 
         public event Action<ButtonType> OnButtonPressed;
 
@@ -66,8 +68,6 @@ namespace SurgeEngine.Code.ActorSystem
         {
             _input = new SurgeInput();
             _input.Enable();
-
-            _lastLookInputTime = Time.time - 1f;
 
             _translatedDeviceNames = new Dictionary<string, string>()
             {
@@ -138,9 +138,19 @@ namespace SurgeEngine.Code.ActorSystem
             moveVector = new Vector3(temp.x, 0, temp.y);
             lookVector = _input.Gameplay.Camera.ReadValue<Vector2>();
 
-            if (lookVector.sqrMagnitude > 0.1f)
+            if (lookVector == Vector2.zero)
             {
-                _lastLookInputTime = Time.time;
+                _noInputTimer += Time.deltaTime;
+
+                if (_noInputTimer > 1f)
+                {
+                    _autoCamera = true;
+                }
+            }
+            else
+            {
+                _noInputTimer = 0f;
+                _autoCamera = false;
             }
             
             var devices = InputSystem.devices;
@@ -277,11 +287,8 @@ namespace SurgeEngine.Code.ActorSystem
                 lookVector = Vector2.zero;
             }
         }
-
-        public float GetLastLookInputTime()
-        {
-            return _lastLookInputTime;
-        }
+        
+        public bool IsAutoCamera() { return _autoCamera; }
         
         public InputDevice GetDevice() { return _device; }
         public string GetTranslatedDeviceName(InputDevice device) { return _translatedDeviceNames[device.name]; }

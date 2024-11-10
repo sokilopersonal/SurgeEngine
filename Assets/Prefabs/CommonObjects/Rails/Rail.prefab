@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 3470409848343941267}
   - component: {fileID: 8801629178764066557}
   - component: {fileID: 8715703643676652550}
-  - component: {fileID: 3618350162854955434}
   m_Layer: 15
   m_Name: Rail
   m_TagString: Untagged
@@ -207,27 +206,3 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: acf4f9fd53a015346ae1d5a3149851aa, type: 2}
---- !u!114 &3618350162854955434
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1702804961767849459}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c39c4efc216db34bac3312d5de20beb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  generationMode: 0
-  simpleWidth: 1
-  simpleHeight: 1
-  spline: {fileID: 0}
-  generationValues: []
-  resolutionPerUnit: 1
-  interpolePerUnit: 0.05
-  basedDown: 0
-  invertFaces: 0
-  generateEndCaps: 1
-  gizmoSphereRadius: 0.5
-  positionOffset: {x: 0, y: 0, z: 0}

@@ -10,7 +10,7 @@ namespace SurgeEngine.Code.CameraSystem
     {
         public Actor actor { get; set; }
         
-        public CameraStateMachine stateMachine;
+        public MasterCamera stateMachine;
         
         [Header("Target")] 
         public Transform target;
@@ -30,20 +30,19 @@ namespace SurgeEngine.Code.CameraSystem
 
         private void Awake()
         {
-            stateMachine = new CameraStateMachine();
-            
             _camera = Camera.main;
             _cameraTransform = _camera.transform;
+            stateMachine = new MasterCamera(_camera, _cameraTransform);
             
-            // stateMachine.AddState(new NewModernState(_camera, _cameraTransform, actor));
-            // stateMachine.SetState<NewModernState>();
+            stateMachine.AddState(new NewModernState(_camera, _cameraTransform, actor));
+            stateMachine.SetState<NewModernState>();
 
-            stateMachine.AddState(new DefaultModernPawn(actor));
-            stateMachine.AddState(new CameraPan(actor));
-            stateMachine.AddState(new VerticalCameraPan(actor));
-            stateMachine.AddState(new RestoreCameraPawn(actor));
-            
-            stateMachine.SetState<DefaultModernPawn>();
+            // stateMachine.AddState(new DefaultModernPawn(actor));
+            // stateMachine.AddState(new CameraPan(actor));
+            // stateMachine.AddState(new VerticalCameraPan(actor));
+            // stateMachine.AddState(new RestoreCameraPawn(actor));
+            //
+            // stateMachine.SetState<DefaultModernPawn>();
         }
 
         public void OnInit() {}

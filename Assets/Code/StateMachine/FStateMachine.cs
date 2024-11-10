@@ -80,7 +80,7 @@ namespace SurgeEngine.Code.StateMachine
             return _subStates[typeof(T)] as T;
         }
 
-        public void Tick(float dt)
+        public virtual void Tick(float dt)
         {
             if (_inactiveDelay > 0f)
             {

@@ -116,60 +116,60 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
 
         protected virtual void AutoFollow()
         {
-            if (Common.InDelayTime(Actor.input.GetLastLookInputTime(), _timeToStartFollow))
-            {
-                _autoActive = true;
-                _followPower = _currentParameters.followPower;
-
-                float speed = Actor.rigidbody.GetHorizontalMagnitude();
-                if (speed > 1f)
-                {
-                    if (!(1 - Mathf.Abs(Vector3.Dot(Actor.transform.forward, Vector3.up)) < 0.01f))
-                    {
-                        float fwd = Actor.stats.GetForwardSignedAngle() * Time.deltaTime;
-                        float dot = Vector3.Dot(Vector3.Cross(_cameraTransform.right, Vector3.up), Actor.transform.forward);
-                        
-                        if (!Mathf.Approximately(dot, -1)) _autoLookDirection.x = fwd * _followPower;
-                        if (Actor.stats.isInAir)
-                        {
-                            Vector3 vel = Vector3.ClampMagnitude(Actor.rigidbody.linearVelocity, 2f);
-                            vel.y = Mathf.Lerp(vel.y, Mathf.Clamp(vel.y, -0.5f, 0.15f), SurgeMath.Smooth(1f));
-                            _actorCamera.lookOffset.y = Mathf.Lerp(_actorCamera.lookOffset.y, vel.y, SurgeMath.Smooth(0.05f));
-                        }
-                        else
-                        {
-                            _actorCamera.lookOffset.y = Mathf.Lerp(_actorCamera.lookOffset.y, 0f, 4f * Time.deltaTime);
-                        }
-                    }
-                }
-                else
-                {
-                    _autoLookDirection.x = 0;
-                }
-
-                if (Actor.stateMachine.CurrentState is FStateGround or FStateIdle or FStateDrift or FStateSliding or FStateGrind)
-                {
-                    _autoLookDirection.y = 5f * (Actor.stateMachine.GetSubState<FBoost>().Active ? 1.75f : 1f);
-                    _autoLookDirection.y -= Actor.stats.currentVerticalSpeed * 1.25f;
-                    
-                    if (Mathf.Approximately(Actor.stats.groundAngle, 90))
-                    {
-                        _autoLookDirection.y = 0f;
-                    }
-                }
-                else
-                {
-                    _autoLookDirection.y = 0f;
-                }
-                
-                _y = Mathf.Lerp(_y, _autoLookDirection.y, 2.25f * Time.deltaTime);
-            }
-            else
-            {
-                _autoActive = false;
-                _autoLookDirection.x = 0;
-                _actorCamera.lookOffset.y = Mathf.Lerp(_actorCamera.lookOffset.y, 0f, SurgeMath.Smooth(0.1f));
-            }
+            // if (Common.InDelayTime(Actor.input.GetLastLookInputTime(), _timeToStartFollow))
+            // {
+            //     _autoActive = true;
+            //     _followPower = _currentParameters.followPower;
+            //
+            //     float speed = Actor.rigidbody.GetHorizontalMagnitude();
+            //     if (speed > 1f)
+            //     {
+            //         if (!(1 - Mathf.Abs(Vector3.Dot(Actor.transform.forward, Vector3.up)) < 0.01f))
+            //         {
+            //             float fwd = Actor.stats.GetForwardSignedAngle() * Time.deltaTime;
+            //             float dot = Vector3.Dot(Vector3.Cross(_cameraTransform.right, Vector3.up), Actor.transform.forward);
+            //             
+            //             if (!Mathf.Approximately(dot, -1)) _autoLookDirection.x = fwd * _followPower;
+            //             if (Actor.stats.isInAir)
+            //             {
+            //                 Vector3 vel = Vector3.ClampMagnitude(Actor.rigidbody.linearVelocity, 2f);
+            //                 vel.y = Mathf.Lerp(vel.y, Mathf.Clamp(vel.y, -0.5f, 0.15f), SurgeMath.Smooth(1f));
+            //                 _actorCamera.lookOffset.y = Mathf.Lerp(_actorCamera.lookOffset.y, vel.y, SurgeMath.Smooth(0.05f));
+            //             }
+            //             else
+            //             {
+            //                 _actorCamera.lookOffset.y = Mathf.Lerp(_actorCamera.lookOffset.y, 0f, 4f * Time.deltaTime);
+            //             }
+            //         }
+            //     }
+            //     else
+            //     {
+            //         _autoLookDirection.x = 0;
+            //     }
+            //
+            //     if (Actor.stateMachine.CurrentState is FStateGround or FStateIdle or FStateDrift or FStateSliding or FStateGrind)
+            //     {
+            //         _autoLookDirection.y = 5f * (Actor.stateMachine.GetSubState<FBoost>().Active ? 1.75f : 1f);
+            //         _autoLookDirection.y -= Actor.stats.currentVerticalSpeed * 1.25f;
+            //         
+            //         if (Mathf.Approximately(Actor.stats.groundAngle, 90))
+            //         {
+            //             _autoLookDirection.y = 0f;
+            //         }
+            //     }
+            //     else
+            //     {
+            //         _autoLookDirection.y = 0f;
+            //     }
+            //     
+            //     _y = Mathf.Lerp(_y, _autoLookDirection.y, 2.25f * Time.deltaTime);
+            // }
+            // else
+            // {
+            //     _autoActive = false;
+            //     _autoLookDirection.x = 0;
+            //     _actorCamera.lookOffset.y = Mathf.Lerp(_actorCamera.lookOffset.y, 0f, SurgeMath.Smooth(0.1f));
+            // }
         }
 
         protected void LookAt()
