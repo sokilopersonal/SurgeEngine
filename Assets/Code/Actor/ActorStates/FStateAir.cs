@@ -1,12 +1,8 @@
 ﻿using SurgeEngine.Code.ActorSystem;
-using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.Custom;
-using SurgeEngine.Code.GameDocuments;
 using SurgeEngine.Code.Parameters.SonicSubStates;
 using SurgeEngine.Code.SonicSubStates.Boost;
 using UnityEngine;
-using static SurgeEngine.Code.GameDocuments.SonicGameDocument;
-using static SurgeEngine.Code.GameDocuments.SonicGameDocumentParams;
 
 namespace SurgeEngine.Code.Parameters
 {

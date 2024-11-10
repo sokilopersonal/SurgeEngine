@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.CameraSystem.Pawns;
 using SurgeEngine.Code.Parameters;
-using SurgeEngine.Code.StateMachine;
 using UnityEngine;
 
 namespace SurgeEngine.Code.CameraSystem
@@ -11,7 +10,7 @@ namespace SurgeEngine.Code.CameraSystem
     {
         public Actor actor { get; set; }
         
-        public FStateMachine stateMachine;
+        public CameraStateMachine stateMachine;
         
         [Header("Target")] 
         public Transform target;
@@ -31,16 +30,19 @@ namespace SurgeEngine.Code.CameraSystem
 
         private void Awake()
         {
-            stateMachine = new FStateMachine();
+            stateMachine = new CameraStateMachine();
             
             _camera = Camera.main;
             _cameraTransform = _camera.transform;
             
+            // stateMachine.AddState(new NewModernState(_camera, _cameraTransform, actor));
+            // stateMachine.SetState<NewModernState>();
+
             stateMachine.AddState(new DefaultModernPawn(actor));
             stateMachine.AddState(new CameraPan(actor));
             stateMachine.AddState(new VerticalCameraPan(actor));
             stateMachine.AddState(new RestoreCameraPawn(actor));
-
+            
             stateMachine.SetState<DefaultModernPawn>();
         }
 

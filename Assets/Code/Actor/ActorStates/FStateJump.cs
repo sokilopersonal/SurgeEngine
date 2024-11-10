@@ -22,7 +22,7 @@ namespace SurgeEngine.Code.Parameters
             
             var doc = SonicGameDocument.GetDocument("Sonic");
             var param = doc.GetGroup(SonicGameDocument.PhysicsGroup);
-            _rigidbody.AddForce(Kinematics.Normal * param.GetParameter<float>(BasePhysics_JumpForce), ForceMode.Impulse);
+            _rigidbody.AddForce(Actor.transform.up * param.GetParameter<float>(BasePhysics_JumpForce), ForceMode.Impulse);
             _jumpTime = 0;
             
             Actor.transform.rotation = Quaternion.Euler(0, Actor.transform.rotation.eulerAngles.y, 0);
@@ -57,7 +57,7 @@ namespace SurgeEngine.Code.Parameters
             
             Kinematics.Normal = Vector3.up;
 
-            if (GetAirTime() > _maxAirTime && _rigidbody.linearVelocity.y < 0)
+            if (GetAirTime() > _maxAirTime)
             {
                 StateMachine.SetState<FStateAir>();
             }

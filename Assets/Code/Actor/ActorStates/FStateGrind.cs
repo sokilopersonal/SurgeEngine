@@ -1,6 +1,7 @@
 ﻿using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.Custom;
+using SurgeEngine.Code.GameDocuments;
 using SurgeEngine.Code.Parameters.SonicSubStates;
 using SurgeEngine.Code.SonicSubStates.Boost;
 using UnityEngine;
@@ -13,6 +14,8 @@ namespace SurgeEngine.Code.Parameters
         private Rail _rail;
 
         protected float _grindGravityPower;
+
+        private float _timer;
         
         public FStateGrind(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
@@ -23,10 +26,17 @@ namespace SurgeEngine.Code.Parameters
         {
             base.OnEnter();
 
+            _timer = 0.1f;
+
             float minSpeed = 3f;
             if (Kinematics.HorizontalSpeed < minSpeed)
             {
                 _rigidbody.linearVelocity = _rigidbody.transform.forward * minSpeed;
+            }
+
+            if (StateMachine.PreviousState is FStateHoming)
+            {
+                _rigidbody.linearVelocity = _rigidbody.transform.forward * 37f;
             }
         }
 
@@ -46,6 +56,9 @@ namespace SurgeEngine.Code.Parameters
                     StateMachine.SetState<FStateGrindSquat>().SetRail(_rail);
                 }
             }
+
+            if (_timer > 0) _timer -= dt;
+            else _timer = 0;
         }
 
         public override void OnFixedTick(float dt)
@@ -55,7 +68,7 @@ namespace SurgeEngine.Code.Parameters
             if (_rail != null)
             {
                 var container = _rail.container;
-                Vector3 offset = _rigidbody.position - Actor.transform.up * (1f + _rail.radius);
+                Vector3 offset = _rigidbody.position - Actor.transform.up * (_rail.radius);
                 SplineUtility.GetNearestPoint(container.Spline, 
                     SurgeMath.Vector3ToFloat3(container.transform.InverseTransformPoint(offset)), 
                     out var near, out var t);
@@ -71,14 +84,13 @@ namespace SurgeEngine.Code.Parameters
                 _rigidbody.rotation = rot;
                 
                 Vector3 nearPoint = container.transform.TransformPoint(near);
-                nearPoint += Actor.transform.up * 1.25f;
+                nearPoint += Actor.transform.up * _rail.radius;
                 _rigidbody.position = nearPoint;
                 
                 Kinematics.Normal = normal;
                 Kinematics.Project();
                 Kinematics.Project(tangentNormal);
-
-                Debug.Log(Kinematics.Angle);
+                
                 if (!Actor.stateMachine.GetSubState<FBoost>().Active)
                 {
                     if (Kinematics.Angle > 3f)
@@ -87,15 +99,25 @@ namespace SurgeEngine.Code.Parameters
                         _rigidbody.AddForce(slopeForce * Time.fixedDeltaTime, ForceMode.Impulse);
                     }
                 }
+                
+                container.Evaluate(0f, out var startPoint, out _, out _);
+                container.Evaluate(1f, out var endPoint, out _, out _);
+                Debug.DrawRay(startPoint, Vector3.up * 2);
+                Debug.DrawRay(endPoint, Vector3.up * 2);
 
                 if (!container.Spline.Closed)
                 {
-                    float v = forward ? Mathf.Abs(t - 1) : t;
-                    bool end = v is < 0.002f or > 0.99875f;
-                    if (end)
+                    if (_timer == 0)
                     {
-                        _rail.End();
-                        StateMachine.SetState<FStateAir>();
+                        float startDistance = Vector3.Distance(startPoint, offset);
+                        float endDistance = Vector3.Distance(endPoint, offset);
+                        float threshold = Mathf.Max(0.05f, 0.05f * Actor.kinematics.Rigidbody.linearVelocity.magnitude * 0.5f);
+
+                        if (startDistance < threshold || endDistance < threshold)
+                        {
+                            _rail.End();
+                            StateMachine.SetState<FStateAir>();
+                        }
                     }
                 }
             }
@@ -108,9 +130,25 @@ namespace SurgeEngine.Code.Parameters
 
         public void BoostHandle()
         {
-            if (Actor.stateMachine.GetSubState<FBoost>().Active)
+            FBoost boost = Actor.stateMachine.GetSubState<FBoost>();
+            var phys = SonicGameDocument.GetDocument("Sonic").GetGroup(SonicGameDocument.PhysicsGroup);
+            var param = boost.GetBoostEnergyGroup();
+            float startForce = param.GetParameter<float>(SonicGameDocumentParams.BoostEnergy_StartSpeed);
+            if (boost.Active)
             {
-                _rigidbody.AddForce(_rigidbody.transform.forward * 35, ForceMode.Acceleration);
+                if (Input.BoostPressed)
+                {
+                    _rigidbody.linearVelocity = _rigidbody.transform.forward * startForce / 2;
+                }
+
+                if (boost.Active)
+                {
+                    float maxSpeed = phys.GetParameter<float>(SonicGameDocumentParams.BasePhysics_MaxSpeed) * param.GetParameter<float>(SonicGameDocumentParams.BoostEnergy_MaxSpeedMultiplier);
+                    if (Kinematics.HorizontalSpeed < maxSpeed)
+                    {
+                        _rigidbody.AddForce(_rigidbody.transform.forward * (param.GetParameter<float>(SonicGameDocumentParams.BoostEnergy_Force) * Time.deltaTime), ForceMode.VelocityChange);
+                    }
+                }
             }
         }
     }

@@ -7,6 +7,8 @@ namespace SurgeEngine.Code.Parameters
 {
     public class FStateAirBoost : FStateMove
     {
+        private float _timer;
+        
         public FStateAirBoost(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
             
@@ -15,6 +17,8 @@ namespace SurgeEngine.Code.Parameters
         public override void OnEnter()
         {
             base.OnEnter();
+
+            _timer = 0.1f;
             
             FBoost boost = StateMachine.GetSubState<FBoost>();
             if (boost.canAirBoost)
@@ -22,11 +26,9 @@ namespace SurgeEngine.Code.Parameters
                 Vector3 force = _rigidbody.transform.forward * boost.GetBoostEnergyGroup()
                     .GetParameter<float>(SonicGameDocumentParams.BoostEnergy_AirBoostSpeed);
 
-                _rigidbody.linearVelocity = force;
+                _rigidbody.AddForce(force, ForceMode.VelocityChange);
                 boost.canAirBoost = false;
             }
-            
-            StateMachine.SetState<FStateAir>();
         }
 
         public override void OnExit()
@@ -34,6 +36,20 @@ namespace SurgeEngine.Code.Parameters
             base.OnExit();
             
             Animation.ResetAction();
+        }
+
+        public override void OnTick(float dt)
+        {
+            base.OnTick(dt);
+
+            if (_timer > 0)
+            {
+                _timer -= dt;
+            }
+            else
+            {
+                StateMachine.SetState<FStateAir>();
+            }
         }
     }
 }

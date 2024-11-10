@@ -109,7 +109,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
         {
             var lookVector = Actor.input.lookVector;
             float lookMod = Actor.stats.currentSpeed / Actor.stats.moveParameters.topSpeed;
-            _x += lookVector.x + (_autoLookDirection.x * Mathf.Max(0.1f, lookMod));
+            _x += lookVector.x + _autoLookDirection.x * Mathf.Max(0.1f, Mathf.Clamp(lookMod, 0.1f, 1f));
             _y -= lookVector.y;
             _y = Mathf.Clamp(_y, -65, 65);
         }
@@ -247,10 +247,13 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
 
         private Vector3 GetTarget(float distance)
         {
-            Vector3 targetPosition = _tempFollowPoint;
-            Vector3 v = targetPosition - Quaternion.Euler(_y, _x, 0) *
-                (Vector3.forward * distance + Vector3.forward * _tempZ);
-            return v;
+            Quaternion horizontal = Quaternion.AngleAxis(_x, Vector3.up);
+            Quaternion vertical = Quaternion.AngleAxis(_y, Vector3.right);
+
+            Vector3 direction = horizontal * vertical * Vector3.back;
+            Vector3 targetPosition = _tempFollowPoint + direction * distance;
+            
+            return targetPosition;
         }
 
         private void OnBoostActivate(FSubState obj, bool value)

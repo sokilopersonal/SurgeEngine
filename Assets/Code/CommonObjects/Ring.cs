@@ -31,6 +31,11 @@ namespace SurgeEngine.Code.CommonObjects
 
         private void Update()
         {
+            if (_actor == null)
+            {
+                return;
+            }
+            
             transform.rotation *= Quaternion.AngleAxis(rotationSpeed * Time.deltaTime, Vector3.up);
             
             if ((transform.position - _actor.transform.position).magnitude < _actor.stateMachine.GetSubState<FBoost>().GetBoostEnergyGroup().GetParameter<float>("RingMagnetRadius")

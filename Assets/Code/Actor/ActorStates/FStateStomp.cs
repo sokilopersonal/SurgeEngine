@@ -43,7 +43,7 @@ namespace SurgeEngine.Code.Parameters
                 var point = hit.point;
                 var normal = hit.normal;
 
-                Kinematics.Snap(point, normal);
+                Kinematics.Snap(point, normal, true);
                 Common.ResetVelocity(ResetVelocityType.Both);
 
                 StateMachine.SetState<FStateIdle>();

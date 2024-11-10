@@ -25,6 +25,11 @@ namespace SurgeEngine.Code.ActorSystem
 
         private void Awake()
         {
+            if (!gameObject.activeSelf)
+            {
+                return;
+            }
+            
             gameObject.GetInstanceID();
             
             rigidbody = GetComponent<Rigidbody>();
@@ -65,17 +70,17 @@ namespace SurgeEngine.Code.ActorSystem
         
         private void Update()
         {
-            stateMachine.Tick(Time.deltaTime);
+            stateMachine?.Tick(Time.deltaTime);
         }
 
         private void FixedUpdate()
         {
-            stateMachine.FixedTick(Time.fixedDeltaTime);
+            stateMachine?.FixedTick(Time.fixedDeltaTime);
         }
 
         private void LateUpdate()
         {
-            stateMachine.LateTick(Time.deltaTime);
+            stateMachine?.LateTick(Time.deltaTime);
         }
 
         public void AddImpulse(Vector3 impulse)

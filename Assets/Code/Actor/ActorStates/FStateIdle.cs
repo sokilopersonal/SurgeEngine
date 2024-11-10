@@ -21,7 +21,7 @@ namespace SurgeEngine.Code.Parameters
 
             if (Common.CheckForGround(out var hit))
             {
-                Kinematics.Snap(hit.point, hit.normal);
+                Kinematics.Snap(hit.point, hit.normal, true);
                 Kinematics.Normal = hit.normal;
             }
             
@@ -70,11 +70,6 @@ namespace SurgeEngine.Code.Parameters
         public override void OnFixedTick(float dt)
         {
             base.OnFixedTick(dt);
-            
-            if (Common.CheckForGround(out var hit))
-            {
-                Kinematics.Snap(hit.point, hit.normal);
-            }
         }
     }
 }

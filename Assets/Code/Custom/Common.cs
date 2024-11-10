@@ -3,6 +3,7 @@ using Cysharp.Threading.Tasks;
 using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.GameDocuments;
+using SurgeEngine.Code.Parameters;
 using UnityEngine;
 using UnityEngine.Splines;
 using static SurgeEngine.Code.GameDocuments.SonicGameDocumentParams;
@@ -110,8 +111,8 @@ namespace SurgeEngine.Code.Custom
                     direction = context.rigidbody.linearVelocity.normalized;
                     break;
                 case CheckGroundType.PredictOnRail:
-                    origin = context.transform.position + context.transform.forward * 0.5f;
-                    direction = -context.transform.up * 2f;
+                    origin = context.transform.position + context.transform.forward;
+                    direction = -context.transform.up;
                     Debug.DrawLine(origin, origin + direction, Color.red);
                     break;
                 default:
@@ -130,7 +131,7 @@ namespace SurgeEngine.Code.Custom
             return hit;
         }
 
-        public static bool CheckForRail(out RaycastHit result, out SplineContainer rail)
+        public static bool CheckForRail(out RaycastHit result, out Rail rail)
         {
             var context = ActorContext.Context;
             Vector3 origin = context.transform.position;
@@ -139,12 +140,13 @@ namespace SurgeEngine.Code.Custom
             Ray ray = new Ray(origin, direction);
             Document doc = SonicGameDocument.GetDocument("Sonic");
             ParameterGroup group = doc.GetGroup(SonicGameDocument.CastGroup);
-            float castDistance = group.GetParameter<float>(Cast_Distance);
+            float castDistance = group.GetParameter<float>(Cast_Distance) *
+                                 (context.stateMachine.Is<FStateHoming>() ? 1.5f : 1f);
             LayerMask mask = group.GetParameter<LayerMask>(Cast_RailMask);
 
-            if (Physics.SphereCast(ray, 0.275f, out result, castDistance, mask, QueryTriggerInteraction.Collide))
+            if (Physics.SphereCast(ray, 0.4f, out result, castDistance, mask, QueryTriggerInteraction.Collide))
             {
-                rail = result.collider.GetComponentInParent<SplineContainer>();
+                rail = result.collider.GetComponentInParent<Rail>();
                 return true;
             }
             

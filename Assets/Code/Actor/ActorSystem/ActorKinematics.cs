@@ -86,12 +86,11 @@ namespace SurgeEngine.Code.ActorSystem
             CalculateDetachState();
             
             var stateMachine = actor.stateMachine;
-            if (stateMachine.Is<FStateAir>() || stateMachine.Is<FStateGround>() || stateMachine.Is<FStateHoming>())
+            if (!stateMachine.Is<FStateGrind>() && !stateMachine.Is<FStateGrindJump>())
             {
                 if (Common.CheckForRail(out _, out var rail))
                 {
-                    _rail = rail;
-                    //actor.stateMachine.SetState<FStateGrind>().SetRail(rail);
+                    actor.stateMachine.SetState<FStateGrind>(allowSameState: true).SetRail(rail);
                 }
             }
             
@@ -325,15 +324,15 @@ namespace SurgeEngine.Code.ActorSystem
                 handling * Time.fixedDeltaTime);
         }
 
-        public void Snap(Vector3 point, Vector3 normal)
+        public void Snap(Vector3 point, Vector3 normal, bool instant = false)
         {
             if (!_canAttach) return;
 
             if (point != Vector3.zero && normal != Vector3.zero)
             {
                 Vector3 endPoint = point + normal;
-                Vector3 endLerpPoint = Vector3.Slerp(_rigidbody.position, endPoint, 16 * Time.fixedDeltaTime);
-                _rigidbody.position = endLerpPoint;
+                Vector3 endLerpPoint = Vector3.Slerp(_rigidbody.position, endPoint, 12 * Time.fixedDeltaTime);
+                _rigidbody.position = instant ? endPoint : endLerpPoint;
             }
         }
 

@@ -39,7 +39,7 @@ namespace SurgeEngine.Code.ActorSystem
             Vector3 vel = actor.rigidbody.linearVelocity.normalized;
             float signed = actor.model.root.forward.SignedAngleByAxis(vel, actor.transform.up);
             
-            float angle = signed * 0.1f;
+            float angle = signed * 0.4f;
             
             SetFloat("GrindLean", actor.kinematics.GetInputDir().x);
             
@@ -79,6 +79,9 @@ namespace SurgeEngine.Code.ActorSystem
                     }
                     else if (prev is FStateAir or FStateSpecialJump)
                     {
+                        // TransitionToState("RestoreJog", 0f);
+                        // _currentAnimation = AnimatorParams.RunCycle;
+                        
                         TransitionToState(AnimatorParams.RunCycle, 0f);
                     }
                 }

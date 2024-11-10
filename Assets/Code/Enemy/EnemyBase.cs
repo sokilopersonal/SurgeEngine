@@ -1,4 +1,5 @@
 ﻿using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.Enemy.States;
 using SurgeEngine.Code.Parameters;
 using SurgeEngine.Code.Parameters.SonicSubStates;
 using UnityEngine;
@@ -25,7 +26,7 @@ namespace SurgeEngine.Code.StateMachine
                 return true;
             }
 
-            return state is FStateHoming or FStateDrift or FStateSliding or FStateJump;
+            return state is FStateHoming or FStateDrift or FStateSliding or FStateJump || stateMachine.Is<EGStateDead>();
         }
     }
 }

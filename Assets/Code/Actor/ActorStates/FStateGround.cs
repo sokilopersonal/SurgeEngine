@@ -1,5 +1,6 @@
 ﻿using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Custom;
+using SurgeEngine.Code.GameDocuments;
 using SurgeEngine.Code.Parameters.SonicSubStates;
 using SurgeEngine.Code.SonicSubStates.Boost;
 using UnityEngine;
@@ -84,9 +85,10 @@ namespace SurgeEngine.Code.Parameters
         {
             float dt = Time.deltaTime;
             FBoost boost = StateMachine.GetSubState<FBoost>();
+            var phys = SonicGameDocument.GetDocument("Sonic").GetGroup(SonicGameDocument.PhysicsGroup);
             var param = boost.GetBoostEnergyGroup();
             float startForce = param.GetParameter<float>(BoostEnergy_StartSpeed);
-            if (boost.Active && Stats.currentSpeed < startForce)
+            if (Input.BoostPressed && Stats.currentSpeed < startForce)
             {
                 _rigidbody.linearVelocity = _rigidbody.transform.forward * startForce;
                 boost.restoringTopSpeed = true;
@@ -94,8 +96,8 @@ namespace SurgeEngine.Code.Parameters
     
             if (boost.Active)
             {
-                float maxSpeed = Stats.moveParameters.maxSpeed * param.GetParameter<float>(BoostEnergy_MaxSpeedMultiplier);
-                if (Stats.currentSpeed < maxSpeed) _rigidbody.linearVelocity += _rigidbody.linearVelocity.normalized * (param.GetParameter<float>(BoostEnergy_Force) * dt);
+                float maxSpeed = phys.GetParameter<float>(BasePhysics_MaxSpeed) * param.GetParameter<float>(BoostEnergy_MaxSpeedMultiplier);
+                if (Stats.currentSpeed < maxSpeed) _rigidbody.AddForce(_rigidbody.transform.forward * (param.GetParameter<float>(BoostEnergy_Force) * dt), ForceMode.VelocityChange);
                     
             }
             else if (boost.restoringTopSpeed)

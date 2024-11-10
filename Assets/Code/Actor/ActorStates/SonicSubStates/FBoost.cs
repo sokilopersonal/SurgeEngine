@@ -77,6 +77,12 @@ namespace SurgeEngine.Code.Parameters.SonicSubStates
                 
                 _cancelBoostCoroutine = actor.StartCoroutine(CancelBoost(_boostEnergyGroup.GetParameter<float>(BoostEnergy_AirBoostTime)));
             }
+            
+            if (obj is FStateGrind)
+            {
+                if (_cancelBoostCoroutine != null)
+                    actor.StopCoroutine(_cancelBoostCoroutine);
+            }
         }
 
         public override void OnTick(float dt)
@@ -131,16 +137,8 @@ namespace SurgeEngine.Code.Parameters.SonicSubStates
             BoostEnergy = Mathf.Clamp(BoostEnergy, 0, 100);
         }
 
-        public bool CanBoost() => BoostEnergy > 0;
+        public bool CanBoost() => BoostEnergy > 2;
 
-        public bool ApplyAirForce(Rigidbody rb, Vector3 force)
-        {
-            if (!CanBoost()) return false;
-            
-            rb.linearVelocity = force;
-            return true;
-        }
-        
         public ParameterGroup GetBoostEnergyGroup() => _boostEnergyGroup;
 
         private void BoostAction(InputAction.CallbackContext obj)

@@ -47,7 +47,7 @@ namespace SurgeEngine.Code.ActorEffects
         
         private ParticleSystem GetStep(string surface)
         {
-            return _steps[surface];
+            return _steps.GetValueOrDefault(surface);
         }
     }
 }

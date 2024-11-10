@@ -14,37 +14,35 @@ namespace SurgeEngine.Code.ActorSystem
         [SerializeField] private VolumeTrailRenderer trailRenderer;
 
         [Header("Boost")]
-        [SerializeField] private BoostAura boostAura;
+        [SerializeField] private Effect boostAura;
         [SerializeField] private BoostDistortion boostDistortion;
 
-        private BoostDistortion _spawnedBoostDistortion;
-
         [Header("Spinball")] 
-        public Spinball spinball;
+        public Effect spinball;
 
         [Header("Stomping")]
-        public Stomping stomping;
+        public StompEffect stompEffect;
 
         [Header("Sliding")]
-        public Sliding sliding;
+        public Effect slideEffect;
         
         [Header("Grind")]
-        public GrindEffect grindEffect;
+        public Effect grindEffect;
 
         private void Start()
         {
-            boostAura.enabled = false;
-            spinball.enabled = false;
-            stomping.enabled = false;
-            sliding.enabled = false;
-            grindEffect.enabled = false;
+            boostAura.Toggle(false);
+            spinball.Toggle(false);
+            stompEffect.Toggle(false);
+            slideEffect.Toggle(false);
+            grindEffect.Toggle(false);
         }
 
         private void OnBoostActivate(FSubState obj, bool value)
         {
             if (obj is not FBoost) return;
             
-            boostAura.enabled = value;
+            boostAura.Toggle(value);
             if (value) boostDistortion.Play(actor.camera.GetCamera().WorldToViewportPoint(actor.transform.position));
         }
 
@@ -52,24 +50,17 @@ namespace SurgeEngine.Code.ActorSystem
         {
             var prev = actor.stateMachine.PreviousState;
 
-            if (obj is (FStateJump or FStateHoming) and not FStateGrindJump)
-            {
-                spinball.enabled = true;
-            }
-            else
-            {
-                spinball.enabled = false;
-            }
+            spinball.gameObject.SetActive(obj is (FStateJump or FStateHoming) and not FStateGrindJump);
             
-            grindEffect.enabled = obj is FStateGrind or FStateGrindSquat;
+            grindEffect.Toggle(obj is FStateGrind or FStateGrindSquat);
 
             if (obj is FStateGround or FStateIdle && actor.stateMachine.PreviousState is FStateStomp)
             {
-                stomping.Land();
+                stompEffect.Land();
             }
             
-            stomping.enabled = obj is FStateStomp;
-            sliding.enabled = obj is FStateSliding;
+            stompEffect.Toggle(obj is FStateStomp);
+            slideEffect.Toggle(obj is FStateSliding);
         }
 
         public void OnInit()

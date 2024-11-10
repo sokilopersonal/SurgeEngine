@@ -26,12 +26,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 580382289116575807}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.45}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0.5499998}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 4894437833673752107}
+  m_Father: {fileID: 951346005909627344}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!198 &488970149781897828
 ParticleSystem:
@@ -4862,6 +4862,7 @@ GameObject:
   - component: {fileID: 4894437833673752107}
   - component: {fileID: 3111513347673921166}
   - component: {fileID: 6844501969905408469}
+  - component: {fileID: 7741686655999222853}
   m_Layer: 0
   m_Name: BoostEffect
   m_TagString: Untagged
@@ -4883,10 +4884,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 951346005909627344}
-  - {fileID: 3556223889182945827}
-  - {fileID: 7244477909299232348}
-  - {fileID: 4214782055668992099}
-  - {fileID: 4772849633154971082}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3111513347673921166
@@ -4901,12 +4898,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2ceafab1a234284b1c527fc47db2b75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  particleSystems:
-  - {fileID: 1599754077388347770}
-  - {fileID: 4459523222142909082}
-  - {fileID: 4871645877214171833}
-  - {fileID: 488970149781897828}
-  - {fileID: 1356029489380038681}
+  particle: {fileID: 1599754077388347770}
   stopDelay: 0.2
 --- !u!114 &6844501969905408469
 MonoBehaviour:
@@ -4922,6 +4914,43 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   customPass: {fileID: 2100000, guid: 98c33dd0dc64c734dad3e15148f2b798, type: 2}
   duration: 0.85
+--- !u!114 &7741686655999222853
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 918901109560652366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26d6499a6bd256e47b859377446493a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IsGlobal: 0
+  fadeRadius: 0
+  priority: 0
+  customPasses:
+  - rid: 6283096624082190434
+  injectionPoint: 2
+  m_TargetCamera: {fileID: 0}
+  useTargetCamera: 1
+  references:
+    version: 2
+    RefIds:
+    - rid: 6283096624082190434
+      type: {class: FullScreenCustomPass, ns: UnityEngine.Rendering.HighDefinition, asm: Unity.RenderPipelines.HighDefinition.Runtime}
+      data:
+        m_Name: Custom Pass
+        enabled: 1
+        targetColorBuffer: 0
+        targetDepthBuffer: 0
+        clearFlags: 0
+        passFoldout: 0
+        m_Version: 0
+        fullscreenPassMaterial: {fileID: 2100000, guid: 98c33dd0dc64c734dad3e15148f2b798, type: 2}
+        materialPassIndex: 0
+        materialPassName: DrawProcedural
+        fetchColorBuffer: 0
 --- !u!1 &1375005219779449885
 GameObject:
   m_ObjectHideFlags: 0
@@ -4948,12 +4977,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1375005219779449885}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -1.1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -1.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 4894437833673752107}
+  m_Father: {fileID: 951346005909627344}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!198 &1356029489380038681
 ParticleSystem:
@@ -9781,12 +9810,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3166530622922651166}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.15}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0.25000036}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 4894437833673752107}
+  m_Father: {fileID: 951346005909627344}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!198 &4459523222142909082
 ParticleSystem:
@@ -14618,7 +14647,11 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 3556223889182945827}
+  - {fileID: 7244477909299232348}
+  - {fileID: 4214782055668992099}
+  - {fileID: 4772849633154971082}
   m_Father: {fileID: 4894437833673752107}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!198 &1599754077388347770
@@ -19447,12 +19480,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7108334185212505251}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.45}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0.5499998}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 4894437833673752107}
+  m_Father: {fileID: 951346005909627344}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!198 &4871645877214171833
 ParticleSystem:

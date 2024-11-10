@@ -12,6 +12,8 @@ namespace SurgeEngine.Code.Parameters
         private Transform _target;
         private float _timer;
 
+        private Vector3 _startPos;
+
         public FStateHoming(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
             
@@ -20,6 +22,8 @@ namespace SurgeEngine.Code.Parameters
         public override void OnEnter()
         {
             base.OnEnter();
+            
+            _startPos = Actor.transform.position;
 
             StateMachine.GetSubState<FBoost>().Active = false;
             Stats.transformNormal = Vector3.up;
@@ -28,7 +32,7 @@ namespace SurgeEngine.Code.Parameters
             
             var doc = SonicGameDocument.GetDocument("Sonic");
             var param = doc.GetGroup(SonicGameDocument.PhysicsGroup);
-            Actor.model.SetCollisionParam(param.GetParameter<float>("JumpCollisionHeight"), param.GetParameter<float>("JumpCollisionCenter"), param.GetParameter<float>("JumpCollisionRadius"));
+            Actor.model.SetCollisionParam(param.GetParameter<float>("JumpCollisionHeight") / 4, param.GetParameter<float>("JumpCollisionCenter"), param.GetParameter<float>("JumpCollisionRadius") / 2);
 
             Common.ResetVelocity(ResetVelocityType.Both);
         }
@@ -50,7 +54,7 @@ namespace SurgeEngine.Code.Parameters
             
             if (_target != null)
             {
-                Vector3 direction = (_target.position - Actor.transform.position).normalized;
+                Vector3 direction = (_target.position - Actor.transform.position + Actor.transform.up * 0.5f).normalized;
                 _rigidbody.linearVelocity = direction * param.GetParameter<float>(Homing_Speed);
                 _rigidbody.rotation = Quaternion.LookRotation(direction, Vector3.up);
                 
@@ -59,6 +63,12 @@ namespace SurgeEngine.Code.Parameters
                 if (_timer >= 1f)
                 {
                     StateMachine.SetState<FStateAir>();
+                }
+                
+                var distance = Vector3.Distance(_startPos, _target.position);
+                if (distance < 0.2f)
+                {
+                    //StateMachine.SetState<FStateGrind>();
                 }
             }
             else
