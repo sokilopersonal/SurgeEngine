@@ -34,15 +34,12 @@ namespace SurgeEngine.Code.CameraSystem
             _cameraTransform = _camera.transform;
             stateMachine = new MasterCamera(_camera, _cameraTransform);
             
-            stateMachine.AddState(new NewModernState(_camera, _cameraTransform, actor));
+            stateMachine.AddState(new NewModernState(actor));
+            stateMachine.AddState(new CameraPan(actor));
+            //stateMachine.AddState(new VerticalCameraPan(actor));
+            stateMachine.AddState(new RestoreCameraPawn(actor));
+            
             stateMachine.SetState<NewModernState>();
-
-            // stateMachine.AddState(new DefaultModernPawn(actor));
-            // stateMachine.AddState(new CameraPan(actor));
-            // stateMachine.AddState(new VerticalCameraPan(actor));
-            // stateMachine.AddState(new RestoreCameraPawn(actor));
-            //
-            // stateMachine.SetState<DefaultModernPawn>();
         }
 
         public void OnInit() {}

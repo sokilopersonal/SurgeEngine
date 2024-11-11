@@ -4,59 +4,50 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.CameraSystem.Pawns
 {
-    public class RestoreCameraPawn : DefaultModernPawn
+    public class RestoreCameraPawn : NewModernState
     {
+        private float _factor;
+        private Vector3 _lastPosition;
+        private Quaternion _lastRotation;
+        private float _lastFOV;
+        
         public RestoreCameraPawn(Actor owner) : base(owner)
         {
+            
         }
 
         public override void OnEnter()
         {
             base.OnEnter();
             
-            Input.CameraLock(true);
-
-            _tempY = 0;
-            SetRotationAxis(Actor.transform.forward);
-        }
-
-        public override void OnExit()
-        {
-            base.OnExit();
+            _lastPosition = _stateMachine.position;
+            _lastRotation = _stateMachine.rotation;
+            _lastFOV = _stateMachine.camera.fieldOfView;
             
-            Input.CameraLock(false);
+            _factor = 0f;
         }
 
         public override void OnTick(float dt)
         {
-            _factor += dt / _panData.easeTimeExit;
-            _factor = Mathf.Clamp01(_factor);
-            
             base.OnTick(dt);
             
-            if (_factor >= 1)
+            _stateMachine.camera.fieldOfView = Mathf.Lerp(_lastFOV, 60f, Easings.Get(Easing.OutCubic, _factor));
+            
+            _factor += dt / _stateMachine.currentData.easeTimeExit;
+            if (_factor > 1f)
             {
-                var defaultModern = Actor.camera.stateMachine.GetState<DefaultModernPawn>();
-                defaultModern.SetRotationValues(_x, _y);
-                defaultModern.SetTempZ(_tempZ);
-                defaultModern.SetTempY(_tempY);
-                Actor.camera.stateMachine.SetState<DefaultModernPawn>();
+                _stateMachine.SetState<NewModernState>();
             }
         }
 
-        public override void SetPosition(Vector3 pos)
+        protected override void SetPosition(Vector3 targetPosition)
         {
-            _cameraTransform.position = Vector3.Lerp(_panData.position != Vector3.zero ? _panData.position : _lastPosition, pos, Easings.Get(Easing.OutCubic, _factor));
+            _stateMachine.position = Vector3.Slerp(_lastPosition, targetPosition, Easings.Get(Easing.OutCubic, _factor));
         }
 
-        protected override void SetFieldOfView(float fov)
+        protected override void SetRotation(Vector3 actorPosition)
         {
-            _camera.fieldOfView = Mathf.Lerp(_panData.fov, fov, Easings.Get(Easing.OutCubic, _factor));
-        }
-
-        public override void SetData(PanData data)
-        {
-            _panData = data;
+            _stateMachine.rotation = Quaternion.Slerp(_lastRotation, Quaternion.LookRotation(actorPosition - _stateMachine.position), Easings.Get(Easing.OutCubic, _factor));
         }
     }
 }

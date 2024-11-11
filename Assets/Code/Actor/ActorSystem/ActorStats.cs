@@ -68,9 +68,10 @@ namespace SurgeEngine.Code.ActorSystem
 
         public float GetForwardSignedAngle()
         {
-            Vector3 f = Vector3.ProjectOnPlane(actor.transform.forward, Vector3.up).normalized;
+            Vector3 forward = actor.transform.forward;
+            Vector3 f = Vector3.ProjectOnPlane(forward, Vector3.up).normalized;
             Vector3 c = Vector3.ProjectOnPlane(actor.camera.GetCameraTransform().forward, Vector3.up).normalized;
-            return Vector3.SignedAngle(f, c, -Vector3.up);
+            return f.SignedAngleByAxis(c, Vector3.down);
         }
 
         public float GetUpwardSignedAngle()

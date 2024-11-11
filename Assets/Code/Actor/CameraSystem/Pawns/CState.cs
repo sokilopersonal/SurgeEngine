@@ -8,14 +8,20 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
     public class CState : FState
     {
         protected Actor _actor;
-        
         protected MasterCamera _stateMachine;
 
-        public CState(Camera camera, Transform transform, Actor owner)
+        protected object _data;
+
+        public CState(Actor owner)
         {
             _actor = owner;
 
             _stateMachine = owner.camera.stateMachine;
+        }
+        
+        public void SetData(object data)
+        {
+            _data = data;
         }
     }
 }

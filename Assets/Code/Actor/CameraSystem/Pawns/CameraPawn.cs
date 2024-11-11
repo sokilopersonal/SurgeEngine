@@ -4,35 +4,35 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.CameraSystem.Pawns
 {
-    public abstract class CameraPawn : FActorState
+    public abstract class CameraPawn : CState
     {
-        protected Camera _camera;
-        protected Transform _cameraTransform;
-
-        protected PanData _panData;
         protected float _factor;
+        
         protected Vector3 _lastPosition;
-        protected float _lastFov;
+        protected Quaternion _lastRotation;
+        protected float _lastFOV;
 
         protected CameraPawn(Actor owner) : base(owner)
         {
-            _camera = owner.camera.GetCamera();
-            _cameraTransform = _camera.transform;
+            
         }
 
         public override void OnEnter()
         {
             base.OnEnter();
-            
-            _lastPosition = _cameraTransform.position;
-            _lastFov = _camera.fieldOfView;
+
+            _lastPosition = _stateMachine.position;
+            _lastRotation = _stateMachine.rotation;
+            _lastFOV = _stateMachine.camera.fieldOfView;
 
             _factor = 0f;
         }
-        
-        public virtual void SetData(PanData data)
+
+        public override void OnTick(float dt)
         {
-            _panData = data;
+            base.OnTick(dt);
+            
+            _stateMachine.currentData = _data as PanData;
         }
     }
 }
