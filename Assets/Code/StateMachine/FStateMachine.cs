@@ -105,7 +105,7 @@ namespace SurgeEngine.Code.StateMachine
             }
         }
         
-        public void LateTick(float dt)
+        public virtual void LateTick(float dt)
         {
             CurrentState?.OnLateTick(dt);
             

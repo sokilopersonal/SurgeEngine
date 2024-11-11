@@ -42,12 +42,12 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
 
         protected override void SetPosition(Vector3 targetPosition)
         {
-            _stateMachine.position = Vector3.Slerp(_lastPosition, targetPosition, Easings.Get(Easing.OutCubic, _factor));
+            _stateMachine.position = Vector3.Lerp(_lastPosition, targetPosition, Easings.Get(Easing.OutCubic, _factor));
         }
 
         protected override void SetRotation(Vector3 actorPosition)
         {
-            _stateMachine.rotation = Quaternion.Slerp(_lastRotation, Quaternion.LookRotation(actorPosition - _stateMachine.position), Easings.Get(Easing.OutCubic, _factor));
+            _stateMachine.rotation = Quaternion.LookRotation(actorPosition - _stateMachine.position);
         }
     }
 }

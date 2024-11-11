@@ -31,9 +31,9 @@ namespace SurgeEngine.Code.CameraSystem
             this.transform = transform;
         }
 
-        public override void Tick(float dt)
+        public override void LateTick(float dt)
         {
-            base.Tick(dt);
+            base.LateTick(dt);
             
             transform.position = position;
             transform.rotation = rotation;
