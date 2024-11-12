@@ -1,4 +1,5 @@
 ﻿using SurgeEngine.Code.CameraSystem.Pawns;
+using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.StateMachine;
 using UnityEngine;
 
@@ -23,12 +24,29 @@ namespace SurgeEngine.Code.CameraSystem
         public Camera camera;
         public Transform transform;
 
-        public PanData currentData;
+        public object currentData;
+
+        public float blendFactor { get; private set; }
+        public float interpolatedBlendFactor { get; private set; }
 
         public MasterCamera(Camera camera, Transform transform)
         {
             this.camera = camera;
             this.transform = transform;
+        }
+
+        public override void Tick(float dt)
+        {
+            if (currentData != null)
+            {
+                PanData baseData = (PanData)currentData;
+                float easeTime = !Is<RestoreCameraPawn>() ? baseData.easeTimeEnter : baseData.easeTimeExit;
+                blendFactor += dt / easeTime;
+                blendFactor = Mathf.Clamp01(blendFactor);
+                interpolatedBlendFactor = Easings.Get(Easing.Gens, blendFactor);
+            }
+            
+            base.Tick(dt);
         }
 
         public override void LateTick(float dt)
@@ -37,6 +55,12 @@ namespace SurgeEngine.Code.CameraSystem
             
             transform.position = position;
             transform.rotation = rotation;
+        }
+        
+        public void ResetBlendFactor()
+        {
+            blendFactor = 0f;
+            interpolatedBlendFactor = 0f;
         }
     }
 }

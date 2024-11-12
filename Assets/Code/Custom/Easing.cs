@@ -10,6 +10,7 @@ namespace SurgeEngine.Code.Custom
         InOutSine,
         InCubic,
         OutCubic,
+        Gens
     }
     
     public static class Easings
@@ -30,6 +31,8 @@ namespace SurgeEngine.Code.Custom
                     return t * t * t;
                 case Easing.OutCubic:
                     return 1f - Mathf.Pow(1f - t, 3f);
+                case Easing.Gens:
+                    return (float)(0.5 - Mathf.Cos(Mathf.PI * t) * 0.5);
             }
             
             return 0f;

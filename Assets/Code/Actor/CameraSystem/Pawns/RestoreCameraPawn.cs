@@ -6,7 +6,6 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
 {
     public class RestoreCameraPawn : NewModernState
     {
-        private float _factor;
         private Vector3 _lastPosition;
         private Quaternion _lastRotation;
         private float _lastFOV;
@@ -20,21 +19,19 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
         {
             base.OnEnter();
             
+            _stateMachine.ResetBlendFactor();
+            
             _lastPosition = _stateMachine.position;
             _lastRotation = _stateMachine.rotation;
             _lastFOV = _stateMachine.camera.fieldOfView;
-            
-            _factor = 0f;
         }
 
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
             
-            _stateMachine.camera.fieldOfView = Mathf.Lerp(_lastFOV, 60f, Easings.Get(Easing.OutCubic, _factor));
-            
-            _factor += dt / _stateMachine.currentData.easeTimeExit;
-            if (_factor > 1f)
+            _stateMachine.camera.fieldOfView = Mathf.Lerp(_lastFOV, 60f, _stateMachine.interpolatedBlendFactor);
+            if (_stateMachine.blendFactor >= 1f)
             {
                 _stateMachine.SetState<NewModernState>();
             }
@@ -42,12 +39,12 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
 
         protected override void SetPosition(Vector3 targetPosition)
         {
-            _stateMachine.position = Vector3.Lerp(_lastPosition, targetPosition, Easings.Get(Easing.OutCubic, _factor));
+            _stateMachine.position = Vector3.Lerp(_lastPosition, targetPosition, _stateMachine.interpolatedBlendFactor);
         }
 
         protected override void SetRotation(Vector3 actorPosition)
         {
-            _stateMachine.rotation = Quaternion.Slerp(_lastRotation, Quaternion.LookRotation(actorPosition - _stateMachine.position), Easings.Get(Easing.OutCubic, _factor));
+            _stateMachine.rotation = Quaternion.Lerp(_lastRotation, Quaternion.LookRotation(actorPosition - _stateMachine.position), _stateMachine.interpolatedBlendFactor);
         }
     }
 }

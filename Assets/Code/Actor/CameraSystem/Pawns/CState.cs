@@ -7,8 +7,8 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
 {
     public class CState : FState
     {
-        protected Actor _actor;
-        protected MasterCamera _stateMachine;
+        protected readonly Actor _actor;
+        protected readonly MasterCamera _stateMachine;
 
         protected object _data;
 

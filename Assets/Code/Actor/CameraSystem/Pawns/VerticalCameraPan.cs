@@ -4,58 +4,55 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.CameraSystem.Pawns
 {
-    public class VerticalCameraPan : DefaultModernPawn
+    public class VerticalCameraPan : NewModernState
     {
-        // private new VerticalPanData _panData;
-        //
-        // private Quaternion _lastRotation;
-        //
-        // public VerticalCameraPan(Actor owner) : base(owner)
-        // {
-        //     
-        // }
-        //
-        // public override void OnEnter()
-        // {
-        //     base.OnEnter();
-        //     
-        //     _lastPosition = _cameraTransform.position;
-        //     _lastRotation = _cameraTransform.rotation;
-        // }
-        //
-        // public override void OnTick(float dt)
-        // {
-        //     base.OnTick(dt);
-        //     
-        //     //_cameraTransform.position = Vector3.Lerp(_lastPosition, pos, Easings.Get(Easing.OutCubic, _factor));
-        //     
-        //     Vector3 endPos = _panData.position;
-        //     endPos.y += _panData.groundOffset;
-        //     Vector3 dir = endPos - _cameraTransform.position;
-        //     Quaternion rot = Quaternion.LookRotation(dir);
-        //     _cameraTransform.rotation = Quaternion.Slerp(_lastRotation, rot, Easings.Get(Easing.OutCubic, _factor));
-        //     
-        //     _factor += dt / _panData.easeTimeEnter;
-        //     _factor = Mathf.Clamp01(_factor);
-        // }
-        //
-        // public override void SetPosition(Vector3 pos)
-        // {
-        // }
-        //
-        // public override void SetRotation(Vector3 pos)
-        // {
-        //     
-        // }
-        //
-        // public override void SetData(PanData data)
-        // {
-        //     base.SetData(data);
-        //     
-        //     _panData = (VerticalPanData)data;
-        // }
+        private VerticalPanData _vData;
+        
+        private Vector3 _lastPosition;
+        private Quaternion _lastRotation;
+        
         public VerticalCameraPan(Actor owner) : base(owner)
         {
+            
+        }
+
+        public override void OnEnter()
+        {
+            base.OnEnter();
+            
+            _stateMachine.ResetBlendFactor();
+            _lastPosition = _stateMachine.position;
+            _lastRotation = _stateMachine.rotation;
+        }
+
+        public override void OnTick(float dt)
+        {
+            _vData = (VerticalPanData)_data;
+            _stateMachine.currentData = _vData;
+            _distance = _vData.groundOffset;
+            _yOffset = _vData.yOffset;
+            
+            SetDirection(_vData.forward);
+            
+            base.OnTick(dt);
+        }
+
+        protected override void SetPosition(Vector3 targetPosition)
+        {
+            _stateMachine.position = Vector3.Lerp(_lastPosition, targetPosition, _stateMachine.interpolatedBlendFactor);
+        }
+        
+        protected override void SetRotation(Vector3 actorPosition)
+        {
+            _stateMachine.rotation = Quaternion.Slerp(_lastRotation, 
+                Quaternion.LookRotation(actorPosition - _stateMachine.position, Vector3.up),
+                _stateMachine.interpolatedBlendFactor);
+        }
+
+        protected override void AutoLookDirection()
+        {
+            _stateMachine.xAutoLook = 0;
+            _stateMachine.yAutoLook = 0;
         }
     }
 }

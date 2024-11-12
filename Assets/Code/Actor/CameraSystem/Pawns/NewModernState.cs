@@ -6,8 +6,8 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
 {
     public class NewModernState : CState
     {
-        private readonly float _distance;
-        private readonly float _yOffset;
+        protected float _distance;
+        protected float _yOffset;
 
         public NewModernState(Actor owner) : base(owner)
         {
@@ -20,8 +20,12 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             base.OnTick(dt);
             
             LookAxis();
-            
-            var actorPosition = CalculateTarget(out var targetPosition);
+            ModernSetup();
+        }
+
+        protected virtual void ModernSetup()
+        {
+            var actorPosition = CalculateTarget(out var targetPosition, _distance, _yOffset);
 
             YLag();
             ZLag();
@@ -29,13 +33,13 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             Setup(targetPosition, actorPosition);
         }
 
-        protected Vector3 CalculateTarget(out Vector3 targetPosition)
+        protected Vector3 CalculateTarget(out Vector3 targetPosition, float distance, float yOffset)
         {
             Quaternion horizontal = Quaternion.AngleAxis(_stateMachine.x, Vector3.up);
             Quaternion vertical = Quaternion.AngleAxis(_stateMachine.y, Vector3.right);
             Vector3 direction = horizontal * vertical * Vector3.back;
-            Vector3 actorPosition = _actor.transform.position + Vector3.up * _yOffset + Vector3.up * _stateMachine.yLag;
-            targetPosition = actorPosition + direction * (_distance + _stateMachine.zLag);
+            Vector3 actorPosition = _actor.transform.position + Vector3.up * yOffset + Vector3.up * _stateMachine.yLag;
+            targetPosition = actorPosition + direction * (distance + _stateMachine.zLag);
             return actorPosition;
         }
 
@@ -64,7 +68,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             _stateMachine.zLag = Mathf.SmoothDamp(_stateMachine.zLag, zLag, ref _stateMachine.zLagVelocity, 0.5f);
         }
 
-        private void AutoLookDirection()
+        protected virtual void AutoLookDirection()
         {
             if (_actor.input.IsAutoCamera())
             {
@@ -104,7 +108,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             }
         }
 
-        protected virtual void Setup(Vector3 targetPosition, Vector3 actorPosition)
+        private void Setup(Vector3 targetPosition, Vector3 actorPosition)
         {
             SetPosition(targetPosition);
             SetRotation(actorPosition);
@@ -124,7 +128,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
         {
             Quaternion direction = Quaternion.LookRotation(transformForward, Vector3.up);
             _stateMachine.x = direction.eulerAngles.y;
-            _stateMachine.y = 0;
+            _stateMachine.y = direction.eulerAngles.x;
         }
 
         private bool OnTheWall()

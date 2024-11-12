@@ -13,6 +13,13 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             
         }
 
+        public override void OnEnter()
+        {
+            base.OnEnter();
+            
+            _stateMachine.ResetBlendFactor();
+        }
+
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
@@ -20,12 +27,10 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             _panData = (PanData)_data;
             
             Transform cam = _stateMachine.transform;
-            _stateMachine.position = Vector3.Lerp(_lastPosition, _panData.position, Easings.Get(Easing.OutCubic, _factor));
+            _stateMachine.position = Vector3.Lerp(_lastPosition, _panData.position, _stateMachine.interpolatedBlendFactor);
             var rotation = Quaternion.LookRotation(_actor.transform.position - cam.position, Vector3.up);
-            _stateMachine.rotation = Quaternion.Slerp(_lastRotation, rotation, Easings.Get(Easing.OutCubic, _factor));
-            _stateMachine.camera.fieldOfView = Mathf.Lerp(_lastFOV, _panData.fov, Easings.Get(Easing.OutCubic, _factor));
-            
-            _factor += dt / _panData.easeTimeEnter;
+            _stateMachine.rotation = Quaternion.Slerp(_lastRotation, rotation, _stateMachine.interpolatedBlendFactor);
+            _stateMachine.camera.fieldOfView = Mathf.Lerp(_lastFOV, _panData.fov, _stateMachine.interpolatedBlendFactor);
         }
     }
 }

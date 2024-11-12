@@ -15,6 +15,8 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
     [Serializable]
     public class VerticalPanData : PanData
     {
-        public float groundOffset;
+        public float groundOffset = 4f;
+        public float yOffset = 1f;
+        public Vector3 forward;
     }
 }
