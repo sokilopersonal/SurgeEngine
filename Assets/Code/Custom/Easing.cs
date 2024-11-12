@@ -32,7 +32,7 @@ namespace SurgeEngine.Code.Custom
                 case Easing.OutCubic:
                     return 1f - Mathf.Pow(1f - t, 3f);
                 case Easing.Gens:
-                    return (float)(0.5 - Mathf.Cos(Mathf.PI * t) * 0.5);
+                    return 0.5f - Mathf.Cos(Mathf.PI * t) / 2;
             }
             
             return 0f;

@@ -7,7 +7,11 @@ namespace SurgeEngine.Code.Parameters
     {
         public FStateGrindSquat(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
-            _grindGravityPower = 11;
+            _grindGravityPower = 13;
+        }
+
+        public override void OnEnter()
+        {
         }
 
         public override void OnTick(float dt)

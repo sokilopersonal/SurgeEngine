@@ -7,13 +7,19 @@ namespace SurgeEngine.Code.SurgeDebug
     {
         public static void DrawTrajectory(Vector3 startPosition, Vector3 direction, Color color, float impulse, float keepVelocity = 0f)
         {
-            int trajectoryPoints = 240;
+            int trajectoryPoints = 32;
             float timeStep = 0.1f;
             Vector3 gravity = Physics.gravity.y * Vector3.up;
             int layerMask = 1 << LayerMask.NameToLayer("Default");
+
+            if (keepVelocity > 0f)
+            {
+                Vector3 newStartPosition = startPosition + direction * keepVelocity * impulse;
+                Debug.DrawLine(startPosition, newStartPosition, Color.red);
+                startPosition = newStartPosition;
+            }
             
             Trajectory.Calculate(startPosition, direction, impulse, timeStep, trajectoryPoints, gravity, out Vector3[] positions, out Vector3[] velocities);
-
             for (int i = 0; i < positions.Length - 1; i++)
             {
                 Color drawColor = color;

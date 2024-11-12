@@ -23,7 +23,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             ModernSetup();
         }
 
-        protected virtual void ModernSetup()
+        private void ModernSetup()
         {
             var actorPosition = CalculateTarget(out var targetPosition, _distance, _yOffset);
 
@@ -33,7 +33,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             Setup(targetPosition, actorPosition);
         }
 
-        protected Vector3 CalculateTarget(out Vector3 targetPosition, float distance, float yOffset)
+        private Vector3 CalculateTarget(out Vector3 targetPosition, float distance, float yOffset)
         {
             Quaternion horizontal = Quaternion.AngleAxis(_stateMachine.x, Vector3.up);
             Quaternion vertical = Quaternion.AngleAxis(_stateMachine.y, Vector3.right);
@@ -75,7 +75,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
                 float speed = _actor.kinematics.HorizontalSpeed;
                 if (speed > 1f)
                 {
-                    if (OnTheWall())
+                    if (NotOnTheWall())
                     {
                         float fwd = _actor.stats.GetForwardSignedAngle() * Time.deltaTime;
                         float dot = Vector3.Dot(Vector3.Cross(_stateMachine.transform.right, Vector3.up), _actor.transform.forward);
@@ -86,7 +86,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
                             float lookMod = _actor.kinematics.HorizontalSpeed / SonicGameDocument.GetDocument("Sonic")
                                 .GetGroup(SonicGameDocument.PhysicsGroup)
                                 .GetParameter<float>(SonicGameDocumentParams.BasePhysics_TopSpeed);
-                            _stateMachine.xAutoLook = fwd * 7 * Mathf.Max(0.25f, Mathf.Clamp(lookMod, 0, 1f));
+                            _stateMachine.xAutoLook = fwd * 6 * Mathf.Max(0.2f, Mathf.Clamp01(lookMod));
                         }
 
                         _stateMachine.yAutoLook = Mathf.Clamp(-vel.y * 1.25f, -15f, 15f);
@@ -131,7 +131,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             _stateMachine.y = direction.eulerAngles.x;
         }
 
-        private bool OnTheWall()
+        private bool NotOnTheWall()
         {
             return !(1 - Mathf.Abs(Vector3.Dot(_actor.transform.forward, Vector3.up)) < 0.01f);
         }

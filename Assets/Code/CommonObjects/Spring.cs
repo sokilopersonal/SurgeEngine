@@ -31,7 +31,7 @@ namespace SurgeEngine.Code.CommonObjects
         private void ApplyImpulse(Vector3 direction)
         {
             var context = ActorContext.Context;
-            context.transform.position = transform.position + direction * yOffset;
+            context.transform.position = transform.position + direction * yOffset * 2;
 
             float dot = Vector3.Dot(transform.up, Vector3.up);
             context.stateMachine.SetState<FStateAir>();

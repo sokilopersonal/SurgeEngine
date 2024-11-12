@@ -9,6 +9,8 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
         private Vector3 _lastPosition;
         private Quaternion _lastRotation;
         private float _lastFOV;
+
+        private Vector3 _direction;
         
         public RestoreCameraPawn(Actor owner) : base(owner)
         {
@@ -26,9 +28,20 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             _lastFOV = _stateMachine.camera.fieldOfView;
         }
 
+        public override void OnExit()
+        {
+            base.OnExit();
+            
+            _stateMachine.currentData = null;
+        }
+
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
+            
+            var cross = Vector3.Cross(_actor.transform.right, Vector3.up);
+            _direction = Vector3.Lerp(_direction, cross, 0.02f);
+            SetDirection(_direction);
             
             _stateMachine.camera.fieldOfView = Mathf.Lerp(_lastFOV, 60f, _stateMachine.interpolatedBlendFactor);
             if (_stateMachine.blendFactor >= 1f)
@@ -45,6 +58,11 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
         protected override void SetRotation(Vector3 actorPosition)
         {
             _stateMachine.rotation = Quaternion.Lerp(_lastRotation, Quaternion.LookRotation(actorPosition - _stateMachine.position), _stateMachine.interpolatedBlendFactor);
+        }
+
+        protected override void AutoLookDirection()
+        {
+            
         }
     }
 }

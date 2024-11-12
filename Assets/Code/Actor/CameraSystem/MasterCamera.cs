@@ -1,10 +1,13 @@
-﻿using SurgeEngine.Code.CameraSystem.Pawns;
+﻿using System;
+using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.CameraSystem.Pawns;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.StateMachine;
 using UnityEngine;
 
 namespace SurgeEngine.Code.CameraSystem
 {
+    [Serializable]
     public class MasterCamera : FStateMachine
     {
         public float x;
@@ -26,8 +29,8 @@ namespace SurgeEngine.Code.CameraSystem
 
         public object currentData;
 
-        public float blendFactor { get; private set; }
-        public float interpolatedBlendFactor { get; private set; }
+        [field: SerializeField] public float blendFactor { get; private set; }
+        [field: SerializeField] public float interpolatedBlendFactor { get; private set; }
 
         public MasterCamera(Camera camera, Transform transform)
         {

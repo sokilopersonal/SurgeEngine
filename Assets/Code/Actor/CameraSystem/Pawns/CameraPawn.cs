@@ -6,8 +6,6 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
 {
     public abstract class CameraPawn : CState
     {
-        protected float _factor;
-        
         protected Vector3 _lastPosition;
         protected Quaternion _lastRotation;
         protected float _lastFOV;
@@ -24,8 +22,11 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             _lastPosition = _stateMachine.position;
             _lastRotation = _stateMachine.rotation;
             _lastFOV = _stateMachine.camera.fieldOfView;
+        }
 
-            _factor = 0f;
+        public override void OnExit()
+        {
+            base.OnExit();
         }
 
         public override void OnTick(float dt)
