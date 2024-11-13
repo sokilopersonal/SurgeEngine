@@ -6,17 +6,11 @@ using UnityEditor;
 
 namespace SurgeEngine.Code.CommonObjects
 {
-    public class ObjCameraBase : MonoBehaviour
+    public abstract class ObjCameraBase : MonoBehaviour
     {
-        public virtual void SetPan()
-        {
-            
-        }
+        public abstract void SetPan();
 
-        public virtual void RemovePan()
-        {
-            
-        }
+        public abstract void RemovePan();
 
         private void OnDrawGizmos()
         {

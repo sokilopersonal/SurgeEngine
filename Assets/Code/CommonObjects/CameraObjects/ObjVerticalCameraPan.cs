@@ -11,11 +11,6 @@ namespace SurgeEngine.Code.CommonObjects
         {
             data.position = transform.position;
             data.forward = transform.forward;
-
-            if (data.groundOffset == 0)
-            {
-                data.groundOffset = 3.5f;
-            }
         }
 
         private void Update()

@@ -184,7 +184,7 @@ namespace SurgeEngine.Code.Custom
             var param = doc.GetGroup(SonicGameDocument.HomingGroup);
             Vector3 origin = transform.position + Vector3.down;
             Vector3 dir = context.stats.inputDir == Vector3.zero ? transform.forward : context.stats.inputDir;
-            var halfExtents = new Vector3(param.GetParameter<float>(Homing_FindRadius), 4f, param.GetParameter<float>(Homing_FindRadius));
+            var halfExtents = new Vector3(param.GetParameter<float>(Homing_FindRadius), 2.75f, param.GetParameter<float>(Homing_FindRadius));
             var maxDistance = param.GetParameter<float>(Homing_FindDistance);
             var hits = Physics.BoxCastAll(origin, halfExtents, dir, Quaternion.identity, maxDistance, param.GetParameter<LayerMask>(Homing_Mask), QueryTriggerInteraction.Collide);
             foreach (var hit in hits)

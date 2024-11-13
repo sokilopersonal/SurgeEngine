@@ -56,7 +56,7 @@ namespace SurgeEngine.Code.ActorSystem
             var boost = new FBoost(this);
             stateMachine.AddSubState(boost);
             
-            stateMachine.SetState<FStateIdle>();
+            stateMachine.SetState<FStateGround>();
             InitializeComponents();
         }
 

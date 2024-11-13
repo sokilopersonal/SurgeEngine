@@ -19,4 +19,10 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
         public float yOffset = 1f;
         public Vector3 forward;
     }
+
+    [Serializable]
+    public class FixPanData : PanData
+    {
+        public Quaternion target;
+    }
 }

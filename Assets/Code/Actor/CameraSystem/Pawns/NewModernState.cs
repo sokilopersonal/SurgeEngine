@@ -13,6 +13,13 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
         {
             _distance = 2.8f;
             _yOffset = 0.08f;
+            
+            SetDirection(_actor.transform.forward);
+        }
+        
+        public override void OnEnter()
+        {
+            base.OnEnter();
         }
 
         public override void OnTick(float dt)
@@ -56,7 +63,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
         private void YLag()
         {
             Vector3 vel = _actor.kinematics.Rigidbody.linearVelocity;
-            float yLag = Mathf.Clamp(vel.y * -0.1f, -0.5f, 0.5f); // min is down lag, max value is up lag
+            float yLag = Mathf.Clamp(vel.y * -0.125f, -1f, 0.5f); // min is down lag, max value is up lag
             _stateMachine.yLag = Mathf.SmoothDamp(_stateMachine.yLag, yLag, ref _stateMachine.yLagVelocity, 0.1f);
         }
 
@@ -77,20 +84,10 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
                 {
                     if (NotOnTheWall())
                     {
-                        float fwd = _actor.stats.GetForwardSignedAngle() * Time.deltaTime;
-                        float dot = Vector3.Dot(Vector3.Cross(_stateMachine.transform.right, Vector3.up), _actor.transform.forward);
-                        Vector3 vel = _actor.kinematics.Rigidbody.linearVelocity;
-
-                        if (!Mathf.Approximately(dot, -1))
-                        {
-                            float lookMod = _actor.kinematics.HorizontalSpeed / SonicGameDocument.GetDocument("Sonic")
-                                .GetGroup(SonicGameDocument.PhysicsGroup)
-                                .GetParameter<float>(SonicGameDocumentParams.BasePhysics_TopSpeed);
-                            _stateMachine.xAutoLook = fwd * 6 * Mathf.Max(0.2f, Mathf.Clamp01(lookMod));
-                        }
-
-                        _stateMachine.yAutoLook = Mathf.Clamp(-vel.y * 1.25f, -15f, 15f);
-                        _stateMachine.y = Mathf.Lerp(_stateMachine.y, _stateMachine.yAutoLook, 0.02f);
+                        float lookMod = _actor.kinematics.HorizontalSpeed / SonicGameDocument.GetDocument("Sonic")
+                            .GetGroup(SonicGameDocument.PhysicsGroup)
+                            .GetParameter<float>(SonicGameDocumentParams.BasePhysics_TopSpeed);
+                        AutoLook(6 * Mathf.Max(0.2f, Mathf.Clamp01(lookMod)));
                     }
                 }
                 else
@@ -104,8 +101,24 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             {
                 _stateMachine.xAutoLook = 0;
                 _stateMachine.yAutoLook = 0;
-                _stateMachine.y = Mathf.Lerp(_stateMachine.y, _stateMachine.yAutoLook, 0.005f);
             }
+            
+            
+        }
+
+        protected void AutoLook(float multiplier)
+        {
+            float fwd = _actor.stats.GetForwardSignedAngle() * Time.deltaTime;
+            float dot = Vector3.Dot(Vector3.Cross(_stateMachine.transform.right, Vector3.up), _actor.transform.forward);
+            Vector3 vel = _actor.kinematics.Rigidbody.linearVelocity;
+
+            if (!Mathf.Approximately(dot, -1))
+            {
+                _stateMachine.xAutoLook = fwd * multiplier;
+            }                        
+
+            _stateMachine.yAutoLook = Mathf.Clamp(-vel.y * 1.25f, -15f, 15f);
+            _stateMachine.y = Mathf.Lerp(_stateMachine.y, _stateMachine.yAutoLook, 0.02f);
         }
 
         private void Setup(Vector3 targetPosition, Vector3 actorPosition)

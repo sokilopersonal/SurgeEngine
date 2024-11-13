@@ -40,7 +40,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             base.OnTick(dt);
             
             var cross = Vector3.Cross(_actor.transform.right, Vector3.up);
-            _direction = Vector3.Lerp(_direction, cross, 0.02f);
+            _direction = Vector3.Lerp(_direction, cross, 4f * Time.deltaTime);
             SetDirection(_direction);
             
             _stateMachine.camera.fieldOfView = Mathf.Lerp(_lastFOV, 60f, _stateMachine.interpolatedBlendFactor);
@@ -57,12 +57,12 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
 
         protected override void SetRotation(Vector3 actorPosition)
         {
-            _stateMachine.rotation = Quaternion.Lerp(_lastRotation, Quaternion.LookRotation(actorPosition - _stateMachine.position), _stateMachine.interpolatedBlendFactor);
+            _stateMachine.rotation = Quaternion.Slerp(_lastRotation, Quaternion.LookRotation(actorPosition - _stateMachine.position), _stateMachine.interpolatedBlendFactor);
         }
 
         protected override void AutoLookDirection()
         {
-            
+            AutoLook(1);
         }
     }
 }

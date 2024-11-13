@@ -30,10 +30,7 @@ namespace SurgeEngine.Code.CommonObjects
             var context = ActorContext.Context;
             if (context.gameObject == other.transform.parent.gameObject)
             {
-                if (context.camera.stateMachine.CurrentState is not DefaultModernPawn)
-                {
-                    target.RemovePan();
-                }
+                target.RemovePan();
             }
         }
 

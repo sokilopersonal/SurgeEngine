@@ -9,11 +9,11 @@ namespace SurgeEngine.Code.CommonObjects
 {
     public class Spring : ContactBase
     {
-        [SerializeField] private float speed = 30f;
-        [SerializeField] private float keepVelocity;
-        [SerializeField] private float outOfControl = 0.5f;
-        [SerializeField] private float yOffset = 0.5f;
-        
+        [SerializeField] protected float speed = 30f;
+        [SerializeField] protected float keepVelocity;
+        [SerializeField] protected float outOfControl = 0.5f;
+        [SerializeField] protected float yOffset = 0.5f;
+
         protected Vector3 direction = Vector3.up;
 
         protected virtual void Awake()

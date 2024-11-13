@@ -61,7 +61,7 @@ namespace SurgeEngine.Editor
             GUILayout.Space(10);
             scrollPosition = GUILayout.BeginScrollView(scrollPosition);
             
-            int itemsPerRow = Mathf.Max(1, (int)(position.width / 115));
+            int itemsPerRow = Mathf.Max(1, (int)(position.width / 110));
             int drawnCount = 0;
             EditorGUILayout.BeginHorizontal();
             foreach (var prefabData in prefabDataList)
@@ -97,7 +97,7 @@ namespace SurgeEngine.Editor
             {
                 Texture2D previewTexture = AssetPreview.GetAssetPreview(prefabData.prefab);
 
-                int size = 110;
+                int size = 100;
                 if (GUILayout.Button(previewTexture, GUILayout.Width(size), GUILayout.Height(size)))
                 {
                     if (Event.current.button == 0)
@@ -115,7 +115,7 @@ namespace SurgeEngine.Editor
                     font = EditorStyles.boldFont,
                     normal = { textColor = Color.white },
                     alignment = TextAnchor.MiddleCenter,
-                    fontSize = 13
+                    fontSize = 11
                 };
                 GUILayout.Label(prefabData.prefab.name, style, GUILayout.Width(100));
             }
@@ -234,6 +234,12 @@ namespace SurgeEngine.Editor
             }
 
             currentPrefabInstance = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
+            GameObject parent = GameObject.FindGameObjectWithTag("SetData");
+            if (parent != null)
+            {
+                currentPrefabInstance.transform.SetParent(parent.transform, true);
+            }
+            
             isPlacingPrefab = true;
             SceneView.duringSceneGui += DuringSceneGUI;
             FocusWindowIfItsOpen<SceneView>();

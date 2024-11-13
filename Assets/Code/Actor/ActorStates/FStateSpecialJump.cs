@@ -129,7 +129,8 @@ namespace SurgeEngine.Code.Parameters
         
         public void SetKeepVelocity(float time)
         {
-            _keepVelocityTimer = Mathf.Max(0.2f, time - (time * 0.075f));
+            //_keepVelocityTimer = Mathf.Max(0.2f, time - time * 0.075f);
+            _keepVelocityTimer = time;
         }
     }
 

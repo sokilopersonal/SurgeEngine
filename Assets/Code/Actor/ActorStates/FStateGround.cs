@@ -77,7 +77,7 @@ namespace SurgeEngine.Code.Parameters
             }
             else
             {
-                StateMachine.SetState<FStateAir>();
+                StateMachine.SetState<FStateAir>(ignoreInactiveDelay: true);
             }
         }
 
