@@ -1,4 +1,6 @@
-﻿using SurgeEngine.Code.ActorSystem;
+﻿using System;
+using System.Linq;
+using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Parameters.SonicSubStates;
 using TMPro;
 using UnityEngine;
@@ -24,8 +26,15 @@ namespace SurgeEngine.Code.SurgeDebug
                 $"State: {actor.stateMachine.currentStateName}",
                 $"Camera Pawn: {actor.camera.stateMachine.currentStateName}",
                 $"FBoost State: {actor.stateMachine.GetSubState<FBoost>().Active}",
-                $"Out Of Control: {actor.flags.HasFlag(FlagType.OutOfControl)} (Time: {actor.flags.GetFlag(FlagType.OutOfControl)?.GetTime():0.0} )",
             };
+
+            string[] activeFlags = Enum.GetValues(actor.flags.flagType.GetType())
+                .Cast<Enum>()
+                .Where(flag => actor.flags.flagType.HasFlag(flag))
+                .Select(flag => flag.ToString())
+                .ToArray();
+
+            text = text.Concat(activeFlags).ToArray();
             
             holder.text = string.Join("\n", text);
         }
