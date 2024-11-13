@@ -11,28 +11,37 @@ namespace SurgeEngine.Code.CameraSystem
         public Actor actor { get; set; }
         
         public MasterCamera stateMachine;
-        
+
         [Header("Target")] 
-        public Transform target;
-        public float yFollowTime;
+        public float distance = 2.9f;
+        public float yOffset = 0.1f;
+        
+        [Header("Z Lag")]
         public float zLagMax = 0.5f;
-        public float zLagSmoothness = 2.5f;
+        [Range(0, 1)] public float zLagTime = 0.5f;
+        
+        [Header("Y Lag")]
+        public float yLagMin = -1f;
+        public float yLagMax = 0.5f;
+        [Range(0, 1)] public float yLagTime = 0.1f;
+        
         public Vector3 lookOffset;
         
         [Header("Collision")]
         public LayerMask collisionMask;
         public float collisionRadius = 0.2f;
-
-        public List<CameraParameters> parameters;
         
         private Camera _camera;
         private Transform _cameraTransform;
 
         private void Awake()
         {
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+            
             _camera = Camera.main;
             _cameraTransform = _camera.transform;
-            stateMachine = new MasterCamera(_camera, _cameraTransform);
+            stateMachine = new MasterCamera(_camera, _cameraTransform, this);
             
             stateMachine.AddState(new NewModernState(actor));
             stateMachine.AddState(new CameraPan(actor));
@@ -47,12 +56,12 @@ namespace SurgeEngine.Code.CameraSystem
 
         private void Update()
         {
-            stateMachine.Tick(Time.unscaledDeltaTime);
+            stateMachine.Tick(Time.deltaTime);
         }
         
         private void FixedUpdate()
         {
-            stateMachine.FixedTick(Time.fixedUnscaledDeltaTime);
+            stateMachine.FixedTick(Time.fixedDeltaTime);
         }
         
         private void LateUpdate()

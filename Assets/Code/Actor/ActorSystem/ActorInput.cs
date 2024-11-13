@@ -96,8 +96,8 @@ namespace SurgeEngine.Code.ActorSystem
             _input.Gameplay.YButton.started += YInput;
             _input.Gameplay.YButton.canceled += YInput;
             
-            _input.Gameplay.Quickstep.started += QuickstepInput;
-            _input.Gameplay.Quickstep.canceled += QuickstepInput;
+            _input.Gameplay.Quickstep.started += BumperInput;
+            _input.Gameplay.Quickstep.canceled += BumperInput;
 
             _input.Gameplay.Start.started += StartInput;
             _input.Gameplay.Start.canceled += StartInput;
@@ -122,8 +122,8 @@ namespace SurgeEngine.Code.ActorSystem
             _input.Gameplay.YButton.started -= YInput;
             _input.Gameplay.YButton.canceled -= YInput;
             
-            _input.Gameplay.Quickstep.started -= QuickstepInput;
-            _input.Gameplay.Quickstep.canceled -= QuickstepInput;
+            _input.Gameplay.Quickstep.started -= BumperInput;
+            _input.Gameplay.Quickstep.canceled -= BumperInput;
             
             _input.Gameplay.Start.started -= StartInput;
             _input.Gameplay.Start.canceled -= StartInput;
@@ -237,7 +237,7 @@ namespace SurgeEngine.Code.ActorSystem
             }
         }
 
-        private void QuickstepInput(InputAction.CallbackContext obj)
+        private void BumperInput(InputAction.CallbackContext obj)
         {
             if (obj.started)
             {

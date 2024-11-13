@@ -7,9 +7,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
     public class VerticalCameraPan : NewModernState
     {
         private VerticalPanData _vData;
-        
-        private Vector3 _lastPosition;
-        private Quaternion _lastRotation;
+        private LastCameraData _lastData;
         
         public VerticalCameraPan(Actor owner) : base(owner)
         {
@@ -18,11 +16,10 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
 
         public override void OnEnter()
         {
-            base.OnEnter();
-            
             _stateMachine.ResetBlendFactor();
-            _lastPosition = _stateMachine.position;
-            _lastRotation = _stateMachine.rotation;
+            _stateMachine.RememberLastData();
+            
+            _lastData = _stateMachine.GetLastData();
         }
 
         public override void OnTick(float dt)
@@ -34,17 +31,19 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             
             SetDirection(_vData.forward);
             
+            _stateMachine.camera.fieldOfView = Mathf.Lerp(_lastData.fov, _vData.fov, _stateMachine.interpolatedBlendFactor);
+            
             base.OnTick(dt);
         }
 
         protected override void SetPosition(Vector3 targetPosition)
         {
-            _stateMachine.position = Vector3.Lerp(_lastPosition, targetPosition, _stateMachine.interpolatedBlendFactor);
+            _stateMachine.position = Vector3.Slerp(_lastData.position, targetPosition, _stateMachine.interpolatedBlendFactor);
         }
         
         protected override void SetRotation(Vector3 actorPosition)
         {
-            _stateMachine.rotation = Quaternion.Lerp(_lastRotation, 
+            _stateMachine.rotation = Quaternion.Lerp(_lastData.rotation, 
                 Quaternion.LookRotation(actorPosition - _stateMachine.position, Vector3.up),
                 _stateMachine.interpolatedBlendFactor);
         }

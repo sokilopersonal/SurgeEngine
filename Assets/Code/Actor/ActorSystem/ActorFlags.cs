@@ -106,6 +106,7 @@ namespace SurgeEngine.Code.ActorSystem
         public float GetTime() => timer;
     }
 
+    [Flags]
     public enum FlagType
     {
         OutOfControl,

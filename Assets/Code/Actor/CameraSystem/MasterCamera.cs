@@ -10,6 +10,8 @@ namespace SurgeEngine.Code.CameraSystem
     [Serializable]
     public class MasterCamera : FStateMachine
     {
+        public ActorCamera master;
+        
         public float x;
         public float y;
         
@@ -24,18 +26,24 @@ namespace SurgeEngine.Code.CameraSystem
         public Vector3 position;
         public Quaternion rotation;
         
+        // Last Data
+        public Vector3 lastPosition;
+        public Quaternion lastRotation;
+        public float lastFOV;
+        
         public Camera camera;
         public Transform transform;
 
         public object currentData;
 
-        [field: SerializeField] public float blendFactor { get; private set; }
-        [field: SerializeField] public float interpolatedBlendFactor { get; private set; }
+        public float blendFactor { get; private set; }
+        public float interpolatedBlendFactor { get; private set; }
 
-        public MasterCamera(Camera camera, Transform transform)
+        public MasterCamera(Camera camera, Transform transform, ActorCamera master)
         {
             this.camera = camera;
             this.transform = transform;
+            this.master = master;
         }
 
         public override void Tick(float dt)
@@ -65,5 +73,29 @@ namespace SurgeEngine.Code.CameraSystem
             blendFactor = 0f;
             interpolatedBlendFactor = 0f;
         }
+
+        public void RememberLastData()
+        {
+            lastPosition = position;
+            lastRotation = rotation;
+            lastFOV = camera.fieldOfView;
+        }
+        
+        public LastCameraData GetLastData()
+        {
+            return new LastCameraData
+            {
+                position = lastPosition,
+                rotation = lastRotation,
+                fov = lastFOV
+            };
+        }
+    }
+
+    public class LastCameraData
+    {
+        public Vector3 position;
+        public Quaternion rotation;
+        public float fov;
     }
 }

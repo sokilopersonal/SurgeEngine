@@ -8,18 +8,13 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
     {
         protected float _distance;
         protected float _yOffset;
-
+        
         public NewModernState(Actor owner) : base(owner)
         {
-            _distance = 2.8f;
-            _yOffset = 0.08f;
-            
             SetDirection(_actor.transform.forward);
-        }
-        
-        public override void OnEnter()
-        {
-            base.OnEnter();
+            
+            _distance = _master.distance;
+            _yOffset = _master.yOffset;
         }
 
         public override void OnTick(float dt)
@@ -34,8 +29,8 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
         {
             var actorPosition = CalculateTarget(out var targetPosition, _distance, _yOffset);
 
-            YLag();
             ZLag();
+            YLag();
             
             Setup(targetPosition, actorPosition);
         }
@@ -60,19 +55,19 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             _stateMachine.y = Mathf.Clamp(_stateMachine.y, -75, 85);
         }
 
-        private void YLag()
-        {
-            Vector3 vel = _actor.kinematics.Rigidbody.linearVelocity;
-            float yLag = Mathf.Clamp(vel.y * -0.125f, -1f, 0.5f); // min is down lag, max value is up lag
-            _stateMachine.yLag = Mathf.SmoothDamp(_stateMachine.yLag, yLag, ref _stateMachine.yLagVelocity, 0.1f);
-        }
-
         private void ZLag()
         {
             Vector3 vel = _actor.kinematics.Rigidbody.linearVelocity;
             Vector3 localVel = _actor.transform.InverseTransformDirection(vel);
-            float zLag = Mathf.Clamp(localVel.z * 0.075f, 0, 0.475f);
-            _stateMachine.zLag = Mathf.SmoothDamp(_stateMachine.zLag, zLag, ref _stateMachine.zLagVelocity, 0.5f);
+            float zLag = Mathf.Clamp(localVel.z * 0.075f, 0, _master.zLagMax);
+            _stateMachine.zLag = Mathf.SmoothDamp(_stateMachine.zLag, zLag, ref _stateMachine.zLagVelocity, _master.zLagTime);
+        }
+
+        private void YLag()
+        {
+            Vector3 vel = _actor.kinematics.Rigidbody.linearVelocity;
+            float yLag = Mathf.Clamp(vel.y * -0.125f, _master.yLagMin, _master.yLagMax); // min is down lag, max value is up lag
+            _stateMachine.yLag = Mathf.SmoothDamp(_stateMachine.yLag, yLag, ref _stateMachine.yLagVelocity, _master.yLagTime);
         }
 
         protected virtual void AutoLookDirection()

@@ -7,10 +7,6 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
     {
         private FixPanData _fData;
         
-        private Vector3 _lastPosition;
-        private Quaternion _lastRotation;
-        private float _lastFOV;
-        
         public FixedCameraPan(Actor owner) : base(owner)
         {
             
@@ -21,10 +17,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             base.OnEnter();
             
             _stateMachine.ResetBlendFactor();
-            
-            _lastPosition = _stateMachine.position;
-            _lastRotation = _stateMachine.rotation;
-            _lastFOV = _stateMachine.camera.fieldOfView;
+            _stateMachine.RememberLastData();
         }
 
         public override void OnTick(float dt)
@@ -34,9 +27,11 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             _fData = (FixPanData)_data;
             _stateMachine.currentData = _fData;
             
-            _stateMachine.position = Vector3.Lerp(_lastPosition, _fData.position, _stateMachine.interpolatedBlendFactor);
-            _stateMachine.rotation = Quaternion.Slerp(_lastRotation, _fData.target, _stateMachine.interpolatedBlendFactor);
-            _stateMachine.camera.fieldOfView = Mathf.Lerp(_lastFOV, _fData.fov, _stateMachine.interpolatedBlendFactor);
+            var last = _stateMachine.GetLastData();
+            
+            _stateMachine.position = Vector3.Lerp(last.position, _fData.position, _stateMachine.interpolatedBlendFactor);
+            _stateMachine.rotation = Quaternion.Slerp(last.rotation, _fData.target, _stateMachine.interpolatedBlendFactor);
+            _stateMachine.camera.fieldOfView = Mathf.Lerp(last.fov, _fData.fov, _stateMachine.interpolatedBlendFactor);
         }
     }
 }
