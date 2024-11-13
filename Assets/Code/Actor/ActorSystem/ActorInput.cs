@@ -242,8 +242,12 @@ namespace SurgeEngine.Code.ActorSystem
             if (obj.started)
             {
                 int direction = (int)obj.ReadValue<Vector2>().x;
+                OnButtonPressed?.Invoke(direction == -1 ? ButtonType.LB : ButtonType.RB);
                 
-                Debug.Log(direction);
+                if (actor.flags.HasFlag(FlagType.OutOfControl))
+                {
+                    return;
+                }
             }
         }
 

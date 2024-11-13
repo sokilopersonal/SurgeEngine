@@ -296,7 +296,7 @@ namespace SurgeEngine.Code.CommonObjects
         Y,
         LB,
         RB,
-        COUNT
+        COUNT,
     }
 
     public struct QTEResult
