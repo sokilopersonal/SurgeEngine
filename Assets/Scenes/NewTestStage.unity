@@ -709,32 +709,32 @@ MonoBehaviour:
   m_BlockerSampleCount: 24
   m_FilterSampleCount: 16
   m_MinFilterSize: 0.1
-  m_DirLightPCSSBlockerSampleCount: 24
-  m_DirLightPCSSFilterSampleCount: 18
+  m_DirLightPCSSBlockerSampleCount: 32
+  m_DirLightPCSSFilterSampleCount: 16
   m_DirLightPCSSMaxPenumbraSize: 5
-  m_DirLightPCSSMaxSamplingDistance: 3
-  m_DirLightPCSSMinFilterSizeTexels: 0.25
+  m_DirLightPCSSMaxSamplingDistance: 2
+  m_DirLightPCSSMinFilterSizeTexels: 1
   m_DirLightPCSSMinFilterMaxAngularDiameter: 2
-  m_DirLightPCSSBlockerSearchAngularDiameter: 30
-  m_DirLightPCSSBlockerSamplingClumpExponent: 1.25
+  m_DirLightPCSSBlockerSearchAngularDiameter: 60
+  m_DirLightPCSSBlockerSamplingClumpExponent: 1.5
   m_KernelSize: 5
   m_LightAngle: 1
   m_MaxDepthBias: 0.001
   m_ShadowResolution:
-    m_Override: 1024
+    m_Override: 8192
     m_UseOverride: 0
-    m_Level: 1
+    m_Level: 2
   m_ShadowDimmer: 1
   m_VolumetricShadowDimmer: 1
   m_ShadowFadeDistance: 10000
   m_UseContactShadow:
-    m_Override: 0
+    m_Override: 1
     m_UseOverride: 1
     m_Level: 0
   m_RayTracedContactShadow: 0
   m_ShadowTint: {r: 0, g: 0, b: 0, a: 1}
   m_PenumbraTint: 0
-  m_NormalBias: 3
+  m_NormalBias: 1
   m_SlopeBias: 1
   m_ShadowUpdateMode: 0
   m_AlwaysDrawDynamicShadows: 0

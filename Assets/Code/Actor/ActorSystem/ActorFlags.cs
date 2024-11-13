@@ -13,6 +13,7 @@ namespace SurgeEngine.Code.ActorSystem
         public Actor actor { get; set; }
 
         public List<Flag> list;
+        public FlagType flagType;
 
         private void Awake()
         {
@@ -32,7 +33,7 @@ namespace SurgeEngine.Code.ActorSystem
                 {
                     return;
                 }
-
+            
                 list.Remove(f);
                 list.Add(flag);
             }
@@ -109,6 +110,7 @@ namespace SurgeEngine.Code.ActorSystem
     [Flags]
     public enum FlagType
     {
+        None,
         OutOfControl,
         OnWater,
         Underwater,

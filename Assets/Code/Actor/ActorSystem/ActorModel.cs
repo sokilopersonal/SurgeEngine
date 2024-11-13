@@ -1,4 +1,5 @@
-﻿using SurgeEngine.Code.Parameters;
+﻿using SurgeEngine.Code.Custom;
+using SurgeEngine.Code.Parameters;
 using UnityEngine;
 
 namespace SurgeEngine.Code.ActorSystem
@@ -12,13 +13,9 @@ namespace SurgeEngine.Code.ActorSystem
         public CapsuleCollider collision;
         private float collisionStartHeight;
         private float collisionStartRadius;
-
-        [SerializeField] private float groundSmoothness = 16f;
-        [SerializeField] private float airSmoothness = 3f;
-        [SerializeField] private float jumpSmoothness = 10f;
         
-        [SerializeField] private float horizontalRotationSpeed = 5f;
-        [SerializeField] private float verticalRotationSpeed = 3f;
+        [SerializeField, Range(0, 1)] private float horizontalRotationSpeed = 0.85f;
+        [SerializeField, Range(0, 1)] private float verticalRotationSpeed = 0.9f;
         
         private Vector3 _modelRotationVelocity;
 
@@ -41,35 +38,12 @@ namespace SurgeEngine.Code.ActorSystem
 
         private void Update()
         {
-            float speed = 0f;
-            var state = actor.stateMachine.CurrentState;
-            var prev = actor.stateMachine.PreviousState;
-            if (prev is not FStateSpecialJump)
-            {
-                if (state is FStateJump)
-                {
-                    speed = jumpSmoothness;
-                }
-                else if (actor.stats.isInAir)
-                {
-                    speed = airSmoothness;
-                }
-                else
-                {
-                    speed = groundSmoothness;
-                }
-            }
-            else
-            {
-                speed = 2f;
-            }
-
             root.localPosition = actor.transform.localPosition;
-            root.localRotation = Quaternion.Slerp(root.localRotation, actor.transform.localRotation, speed * Time.deltaTime);
             
-            Vector3 forward = Vector3.Slerp(root.forward, actor.transform.forward, 12 * Time.deltaTime);
-            Vector3 up = Vector3.Slerp(root.up, actor.transform.up, 3 * Time.deltaTime);
-            //root.localRotation = Quaternion.LookRotation(forward, up);
+            Vector3 forward = Vector3.Slerp(root.forward, actor.transform.forward, SurgeMath.Smooth(1 - horizontalRotationSpeed));
+            Vector3 up = Vector3.Slerp(root.up, actor.transform.up, SurgeMath.Smooth(1 - verticalRotationSpeed));
+            Vector3.OrthoNormalize(ref up, ref forward);
+            root.localRotation = Quaternion.LookRotation(forward, up);
 
             actor.effects.spinball.transform.SetParent(root, false);
         }

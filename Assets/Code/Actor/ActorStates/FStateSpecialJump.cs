@@ -78,26 +78,21 @@ namespace SurgeEngine.Code.Parameters
                     if (_keepVelocityTimer > 0)
                     {
                         _keepVelocityTimer -= dt;
-                        
-                        if (_keepVelocityTimer <= 0)
-                        {
-                            StateMachine.SetState<FStateAir>();
-                        }
                     }
                     break;
                 case SpecialJumpType.DashRing:
                     if (_keepVelocityTimer > 0)
                     {
                         _keepVelocityTimer -= dt;
-                        
-                        if (_keepVelocityTimer <= 0)
-                        {
-                            StateMachine.SetState<FStateAir>();
-                        }
                     }
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
+            }
+            
+            if (_keepVelocityTimer <= 0)
+            {
+                StateMachine.SetState<FStateAir>();
             }
         }
 

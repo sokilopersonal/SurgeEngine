@@ -106,59 +106,48 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 740a61d889173f2439f57c5376d36240, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stateMachine:
-    currentStateName: 
-    x: 0
-    y: 0
-    xAutoLook: 0
-    yAutoLook: 0
-    yLag: 0
-    yLagVelocity: 0
-    zLag: 0
-    zLagVelocity: 0
-    position: {x: 0, y: 0, z: 0}
-    rotation: {x: 0, y: 0, z: 0, w: 0}
-    camera: {fileID: 0}
-    transform: {fileID: 0}
-    <blendFactor>k__BackingField: 0
-    <interpolatedBlendFactor>k__BackingField: 0
-  target: {fileID: 2456151525592967584}
-  yFollowTime: 0.9
+  distance: 2.9
+  yOffset: 0.1
   zLagMax: 0.5
-  zLagSmoothness: 2.5
-  lookOffset: {x: 0, y: 0, z: 0}
+  zLagTime: 0.5
+  yLagMin: -1
+  yLagMax: 0.5
+  yLagTime: 0.1
+  boostBlendCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 7.121952
+      outSlope: 7.121952
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.013852157
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 3.2625647
+      outSlope: 3.2625647
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.028457224
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  boostDeblendCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  boostBlendTime: 1.25
   collisionMask:
     serializedVersion: 2
     m_Bits: 1
   collisionRadius: 0.2
-  parameters:
-  - name: Default
-    distance: 2.5
-    distanceDuration: 0.5
-    distanceEasing: 0
-    followPower: 4
-    timeToStartFollow: 2
-    fov: 60
-    fovDuration: 0.5
-    fovEasing: 0
-  - name: BoostOut
-    distance: 3
-    distanceDuration: 0.75
-    distanceEasing: 5
-    followPower: 4
-    timeToStartFollow: 1
-    fov: 90
-    fovDuration: 0.6
-    fovEasing: 5
-  - name: BoostIn
-    distance: 2.3
-    distanceDuration: 2
-    distanceEasing: 3
-    followPower: 6
-    timeToStartFollow: 1
-    fov: 75
-    fovDuration: 2
-    fovEasing: 3
 --- !u!114 &7099733658116403469
 MonoBehaviour:
   m_ObjectHideFlags: 0
