@@ -26,7 +26,7 @@ namespace SurgeEngine.Code.Parameters
                 Vector3 force = _rigidbody.transform.forward * boost.GetBoostEnergyGroup()
                     .GetParameter<float>(SonicGameDocumentParams.BoostEnergy_AirBoostSpeed);
 
-                _rigidbody.AddForce(force, ForceMode.VelocityChange);
+                _rigidbody.linearVelocity = force;
                 boost.canAirBoost = false;
             }
         }

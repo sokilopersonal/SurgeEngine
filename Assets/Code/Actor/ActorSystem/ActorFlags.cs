@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using NaughtyAttributes;
 using UnityEngine;
-using Debug = UnityEngine.Debug;
 
 namespace SurgeEngine.Code.ActorSystem
 {
@@ -12,55 +10,16 @@ namespace SurgeEngine.Code.ActorSystem
     {
         public Actor actor { get; set; }
 
-        public List<Flag> list;
+        private HashSet<Flag> list;
         public FlagType flagType;
 
         private void Awake()
         {
-            list = new List<Flag>();
+            list = new HashSet<Flag>();
         }
 
         public void OnInit()
         {
-        }
-
-        public void AddFlag(Flag flag, bool overwrite = false)
-        {
-            var f = list.FirstOrDefault(f => f.type == flag.type);
-            if (f != null)
-            {
-                if (!overwrite)
-                {
-                    return;
-                }
-            
-                list.Remove(f);
-                list.Add(flag);
-            }
-            else
-            {
-                list.Add(flag);
-            }
-        }
-
-        public void RemoveFlag(FlagType type)
-        {
-            list.Remove(list.FirstOrDefault(f => f.type == type));
-        }
-
-        public bool HasFlag(FlagType type)
-        {
-            return list.Any(f => f.type == type);
-        }
-
-        public Flag GetFlag(FlagType type)
-        {
-            return list.FirstOrDefault(f => f.type == type);
-        }
-
-        public bool CheckForTag(string tag)
-        {
-            return list.Any(f => f.tags != null && f.tags.Contains(tag));
         }
 
         private void Update()
@@ -70,24 +29,54 @@ namespace SurgeEngine.Code.ActorSystem
                 flag.Count(Time.deltaTime);
             }
         }
+
+        public void AddFlag(Flag flag)
+        {
+            var existingFlag = list.FirstOrDefault(f => f.type == flag.type);
+            if (existingFlag != null)
+            {
+                list.Remove(existingFlag);
+            }
+            flagType |= flag.type;
+            flag.actorFlags = this;
+            list.Add(flag);
+        }
+
+        public void RemoveFlag(FlagType type)
+        {
+            flagType &= ~type;
+            var flagToRemove = list.FirstOrDefault(f => f.type == type);
+            if (flagToRemove != null)
+            {
+                list.Remove(flagToRemove);
+            }
+        }
+
+        public bool HasFlag(FlagType type)
+        {
+            return flagType.HasFlag(type);
+        }
+        
+        public Flag GetFlag(FlagType type) => list.FirstOrDefault(f => f.type == type);
+
+        public bool CheckForTag(string tag)
+        {
+            return list.Any(f => f.tags != null && f.tags.Contains(tag));
+        }
     }
     
-    [Serializable]
     public class Flag
     {
-        private List<Flag> hs;
         public FlagType type;
-        public string[] tags;
+        public ActorFlags actorFlags;
         [SerializeField] private bool isTemporary;
         [SerializeField] private float time;
         [SerializeField] private float timer;
-        
-        public Flag(FlagType type, string[] tags, bool isTemporary = true, float time = 1) // We need List link to remove this flag
+        public string[] tags;
+
+        public Flag(FlagType type, string[] tags, bool isTemporary = true, float time = 1)
         {
-            hs = ActorContext.Context.flags.list;
-            
             this.type = type;
-            this.tags = tags;
             this.isTemporary = isTemporary;
             this.time = time;
         }
@@ -99,7 +88,7 @@ namespace SurgeEngine.Code.ActorSystem
                 timer += dt;
                 if (timer >= time)
                 {
-                    hs.Remove(this);
+                    actorFlags.RemoveFlag(type);
                 }
             }
         }
@@ -110,9 +99,9 @@ namespace SurgeEngine.Code.ActorSystem
     [Flags]
     public enum FlagType
     {
-        None,
-        OutOfControl,
-        OnWater,
-        Underwater,
+        None = 0,
+        OutOfControl = 1,
+        OnWater = 2,
+        Underwater = 4
     }
 }

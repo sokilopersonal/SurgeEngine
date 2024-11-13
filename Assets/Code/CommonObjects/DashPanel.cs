@@ -31,7 +31,7 @@ namespace SurgeEngine.Code.CommonObjects
             }
 
             context.flags.AddFlag(new Flag(FlagType.OutOfControl, 
-                new [] { Tags.AllowBoost }, true, Mathf.Abs(outOfControl)), true);
+                new [] { Tags.AllowBoost }, true, Mathf.Abs(outOfControl)));
             
             new Rumble().Vibrate(0.7f, 0.9f, 0.5f);
         }

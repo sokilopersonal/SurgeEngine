@@ -119,9 +119,6 @@ namespace SurgeEngine.Code.CommonObjects
             
             Destroy(wave.gameObject, wave.main.duration);
             
-            var context = ActorContext.Context;
-            context.flags.AddFlag(new Flag(FlagType.OnWater, null, false));
-            
             _isActorOnSurface = true;
         }
         

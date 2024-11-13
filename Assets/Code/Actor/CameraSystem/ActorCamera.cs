@@ -1,7 +1,6 @@
-using System.Collections.Generic;
 using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.CameraSystem.Pawns;
-using SurgeEngine.Code.Parameters;
+using SurgeEngine.Code.Parameters.SonicSubStates;
 using UnityEngine;
 
 namespace SurgeEngine.Code.CameraSystem
@@ -24,8 +23,13 @@ namespace SurgeEngine.Code.CameraSystem
         public float yLagMin = -1f;
         public float yLagMax = 0.5f;
         [Range(0, 1)] public float yLagTime = 0.1f;
-        
-        public Vector3 lookOffset;
+
+        [Header("Boost Blend")] 
+        [SerializeField] private AnimationCurve boostBlendCurve;
+        [SerializeField] private AnimationCurve boostDeblendCurve;
+        [SerializeField] private float boostBlendTime = 1.25f;
+        public float boostBlendFactor { get; private set; }
+        public float boostInterpolatedBlendFactor { get; private set; }
         
         [Header("Collision")]
         public LayerMask collisionMask;
@@ -57,6 +61,20 @@ namespace SurgeEngine.Code.CameraSystem
         private void Update()
         {
             stateMachine.Tick(Time.deltaTime);
+
+            FBoost boost = actor.stateMachine.GetSubState<FBoost>();
+            if (boost.Active)
+            {
+                boostBlendFactor += Time.deltaTime / boostBlendTime;
+                boostInterpolatedBlendFactor = boostBlendCurve.Evaluate(boostBlendFactor);
+            }
+            else
+            {
+                boostBlendFactor -= Time.deltaTime / boostBlendTime;
+                boostInterpolatedBlendFactor = boostDeblendCurve.Evaluate(boostBlendFactor);
+            }
+            
+            boostBlendFactor = Mathf.Clamp01(boostBlendFactor);
         }
         
         private void FixedUpdate()

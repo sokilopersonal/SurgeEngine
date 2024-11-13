@@ -7,7 +7,6 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.CameraSystem
 {
-    [Serializable]
     public class MasterCamera : FStateMachine
     {
         public ActorCamera master;
