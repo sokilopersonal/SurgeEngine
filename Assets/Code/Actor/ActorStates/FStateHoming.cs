@@ -1,4 +1,5 @@
 ﻿using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.GameDocuments;
 using SurgeEngine.Code.Parameters.SonicSubStates;
@@ -9,7 +10,7 @@ namespace SurgeEngine.Code.Parameters
 {
     public class FStateHoming : FStateMove
     {
-        private Transform _target;
+        private HomingTarget _target;
         private float _timer;
 
         private Vector3 _startPos;
@@ -54,7 +55,7 @@ namespace SurgeEngine.Code.Parameters
             
             if (_target != null)
             {
-                Vector3 direction = (_target.position - Actor.transform.position + Actor.transform.up * 0.5f).normalized;
+                Vector3 direction = (_target.transform.position - Actor.transform.position + Actor.transform.up * 0.5f).normalized;
                 _rigidbody.linearVelocity = direction * param.GetParameter<float>(Homing_Speed);
                 _rigidbody.rotation = Quaternion.LookRotation(direction, Vector3.up);
                 
@@ -65,10 +66,10 @@ namespace SurgeEngine.Code.Parameters
                     StateMachine.SetState<FStateAir>();
                 }
                 
-                var distance = Vector3.Distance(_startPos, _target.position);
-                if (distance < 0.2f)
+                var distance = Vector3.Distance(Actor.transform.position, _target.transform.position);
+                if (distance <= 0.7f)
                 {
-                    //StateMachine.SetState<FStateGrind>();
+                    _target.OnTargetReached.Invoke();
                 }
             }
             else
@@ -91,7 +92,7 @@ namespace SurgeEngine.Code.Parameters
             }
         }
 
-        public void SetTarget(Transform target)
+        public void SetTarget(HomingTarget target)
         {
             _target = target;
         }

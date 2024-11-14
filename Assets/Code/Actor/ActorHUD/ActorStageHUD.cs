@@ -130,7 +130,7 @@ namespace SurgeEngine.Code.ActorHUD
                 homingIcon.gameObject.SetActive(true);
                 homingIcon.Activate();
                 var cam = _actor.camera.GetCamera();
-                Vector3 position = cam.WorldToScreenPoint(target.position);
+                Vector3 position = cam.WorldToScreenPoint(target.transform.position);
                 homingIcon.transform.position = position;
             }
             else
@@ -144,7 +144,7 @@ namespace SurgeEngine.Code.ActorHUD
             if (obj is Ring)
             {
                 RingHUD ringHUDInstance = Instantiate(ringHUDPrefab, obj.transform.position, obj.transform.rotation);
-                float time = Random.Range(0.325f, 0.425f);
+                float time = 0.6f;
                 ringHUDInstance.Initialize(time);
             }
         }

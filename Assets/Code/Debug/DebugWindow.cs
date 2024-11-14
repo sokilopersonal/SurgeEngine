@@ -15,6 +15,12 @@ namespace SurgeEngine.Code.SurgeDebug
         {
             var actor = ActorContext.Context;
 
+            string[] activeFlags = Enum.GetValues(actor.flags.flagType.GetType())
+                .Cast<Enum>()
+                .Where(flag => actor.flags.flagType.HasFlag(flag))
+                .Select(flag => flag.ToString())
+                .ToArray();
+            
             string[] text = new string[]
             {
                 $"Position: {actor.transform.position}",
@@ -26,15 +32,8 @@ namespace SurgeEngine.Code.SurgeDebug
                 $"State: {actor.stateMachine.currentStateName}",
                 $"Camera Pawn: {actor.camera.stateMachine.currentStateName}",
                 $"FBoost State: {actor.stateMachine.GetSubState<FBoost>().Active}",
+                $"Flags: {string.Join(", ", activeFlags)}"
             };
-
-            string[] activeFlags = Enum.GetValues(actor.flags.flagType.GetType())
-                .Cast<Enum>()
-                .Where(flag => actor.flags.flagType.HasFlag(flag))
-                .Select(flag => flag.ToString())
-                .ToArray();
-
-            text = text.Concat(activeFlags).ToArray();
             
             holder.text = string.Join("\n", text);
         }

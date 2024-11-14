@@ -33,15 +33,15 @@ namespace SurgeEngine.Code.CommonObjects
         private void Update()
         {
             Vector3 rect = ActorStageHUD.Context.ringCounter.rectTransform.position;
-            rect.z = 0.25f;
+            rect.z = 0.1f;
             Vector3 point = _camera.ScreenToWorldPoint(rect);
             point = _camera.transform.InverseTransformPoint(point);
             _targetPosition = point;
 
-            float easedFactor = Easings.Get(Easing.InCubic, _factor);
-            transform.localPosition = Vector3.Slerp(_initialPosition, _targetPosition, easedFactor);
+            float easedFactor = Easings.Get(Easing.OutCubic, _factor);
+            transform.localPosition = Vector3.Lerp(_initialPosition, _targetPosition, easedFactor);
 
-            Vector3 targetScale = Vector3.one * (0.01f * _camera.fieldOfView) / 60f;
+            Vector3 targetScale = Vector3.one * (0.02f * _camera.fieldOfView) / 60f;
             transform.localScale = Vector3.Lerp(_initialScale, targetScale, easedFactor);
 
             Matrix4x4 viewMatrix = _camera.worldToCameraMatrix;

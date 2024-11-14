@@ -176,7 +176,7 @@ namespace SurgeEngine.Code.Custom
             Time.timeScale = targetScale;
         }
         
-        public static Transform FindHomingTarget()
+        public static HomingTarget FindHomingTarget()
         {
             var context = ActorContext.Context;
             var transform = context.transform;
@@ -195,7 +195,10 @@ namespace SurgeEngine.Code.Custom
                 bool facing = Vector3.Dot(direction.normalized, transform.forward) > 0.5f;
                 if (facing && !Physics.Linecast(origin, end, doc.GetGroup(SonicGameDocument.CastGroup).GetParameter<LayerMask>(Cast_Mask)))
                 {
-                    return target;
+                    if (target.TryGetComponent(out HomingTarget homingTarget))
+                    {
+                        return homingTarget;
+                    }
                 }
             }
     

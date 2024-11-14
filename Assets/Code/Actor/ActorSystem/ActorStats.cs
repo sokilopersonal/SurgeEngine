@@ -30,7 +30,7 @@ namespace SurgeEngine.Code.ActorSystem
         public bool isInAir;
         [HideInInspector] public float gravity;
         [field: SerializeField] public float startGravity { get; private set; }
-        public Transform homingTarget;
+        public HomingTarget homingTarget;
 
         private Rigidbody _rigidbody;
 

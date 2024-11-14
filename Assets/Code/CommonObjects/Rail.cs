@@ -11,7 +11,8 @@ namespace SurgeEngine.Code.CommonObjects
         public SplineContainer container;
         public float radius = 0.25f;
 
-        [SerializeField] private Transform homingTargetPrefab;
+        [SerializeField] private HomingTarget startTarget;
+        [SerializeField] private HomingTarget endTarget;
         
         private Collider[] _colliders;
 
@@ -21,12 +22,9 @@ namespace SurgeEngine.Code.CommonObjects
 
             container.Evaluate(0f, out var start, out _, out var up);
             container.Evaluate(1f, out var end, out _, out var eUp);
-            
-            var startTarget = Instantiate(homingTargetPrefab, SurgeMath.Float3ToVector3(start) + SurgeMath.Float3ToVector3(up) * 0.75f, Quaternion.identity);
-            startTarget.parent = transform;
-            
-            var endTarget = Instantiate(homingTargetPrefab, SurgeMath.Float3ToVector3(end) + SurgeMath.Float3ToVector3(eUp) * 0.75f, Quaternion.identity);
-            endTarget.parent = transform;
+
+            startTarget.transform.position = SurgeMath.Float3ToVector3(start) + SurgeMath.Float3ToVector3(up) * 0.75f;
+            endTarget.transform.position = SurgeMath.Float3ToVector3(end) + SurgeMath.Float3ToVector3(eUp) * 0.75f;
         }
 
         public void End()
@@ -37,7 +35,7 @@ namespace SurgeEngine.Code.CommonObjects
             }
         }
 
-        public void OnContact()
+        public void AttachToRail()
         {
             var context = ActorContext.Context;
 
