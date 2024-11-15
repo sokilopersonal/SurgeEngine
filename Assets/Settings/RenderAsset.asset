@@ -79,10 +79,10 @@ MonoBehaviour:
     supportProbeVolumeGPUStreaming: 1
     supportProbeVolumeDiskStreaming: 0
     probeVolumeSHBands: 1
-    supportProbeVolumeScenarios: 1
-    supportProbeVolumeScenarioBlending: 1
+    supportProbeVolumeScenarios: 0
+    supportProbeVolumeScenarioBlending: 0
     probeVolumeBlendingMemoryBudget: 128
-    supportRayTracing: 1
+    supportRayTracing: 0
     supportVFXRayTracing: 0
     supportedRayTracingMode: 3
     lightLoopSettings:
@@ -118,7 +118,7 @@ MonoBehaviour:
       maxShadowRequests: 128
       directionalShadowsDepthBits: 32
       punctualShadowFilteringQuality: 2
-      directionalShadowFilteringQuality: 2
+      directionalShadowFilteringQuality: 1
       areaShadowFilteringQuality: 1
       punctualLightShadowAtlas:
         shadowAtlasResolution: 4096
@@ -169,7 +169,7 @@ MonoBehaviour:
       DLSSPerfQualitySetting: 0
       DLSSInjectionPoint: 0
       TAAUInjectionPoint: 0
-      STPInjectionPoint: 2
+      STPInjectionPoint: 0
       defaultInjectionPoint: 0
       DLSSUseOptimalSettings: 0
       DLSSSharpness: 0.5

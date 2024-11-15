@@ -1,5 +1,6 @@
 using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.CameraSystem.Pawns;
+using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.Parameters.SonicSubStates;
 using UnityEngine;
 
@@ -14,6 +15,8 @@ namespace SurgeEngine.Code.CameraSystem
         [Header("Target")] 
         public float distance = 2.9f;
         public float yOffset = 0.1f;
+        public Vector3 lookOffset;
+        [SerializeField] private AnimationCurve lookCurve;
         
         [Header("Z Lag")]
         public float zLagMax = 0.5f;
@@ -61,7 +64,7 @@ namespace SurgeEngine.Code.CameraSystem
         private void Update()
         {
             stateMachine.Tick(Time.deltaTime);
-
+            
             FBoost boost = actor.stateMachine.GetSubState<FBoost>();
             if (boost.Active)
             {
@@ -84,7 +87,7 @@ namespace SurgeEngine.Code.CameraSystem
         
         private void LateUpdate()
         {
-            stateMachine.LateTick(Time.unscaledDeltaTime);
+            stateMachine.LateTick(Time.deltaTime);
         }
 
         public Camera GetCamera()

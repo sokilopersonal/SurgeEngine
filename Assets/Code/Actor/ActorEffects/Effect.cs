@@ -9,7 +9,7 @@ namespace SurgeEngine.Code.ActorEffects
         [SerializeField] private float stopDelay;
         
         private Coroutine _coroutine;
-        
+
         /// <summary>
         /// Toggle effect. If stop delay is more than 0, coroutine will be started
         /// </summary>

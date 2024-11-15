@@ -80,6 +80,13 @@ namespace SurgeEngine.Code.CameraSystem
             lastFOV = camera.fieldOfView;
         }
         
+        public void RememberRelativeLastData()
+        {
+            lastPosition = position - master.transform.position;
+            lastRotation = rotation;
+            lastFOV = camera.fieldOfView;
+        }
+        
         public LastCameraData GetLastData()
         {
             return new LastCameraData

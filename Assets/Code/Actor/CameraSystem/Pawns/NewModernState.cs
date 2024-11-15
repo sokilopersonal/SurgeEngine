@@ -67,7 +67,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
         {
             Vector3 vel = _actor.kinematics.Rigidbody.linearVelocity;
             float yLag = Mathf.Clamp(vel.y * -0.125f, _master.yLagMin, _master.yLagMax); // min is down lag, max value is up lag
-            _stateMachine.yLag = Mathf.SmoothDamp(_stateMachine.yLag, yLag, ref _stateMachine.yLagVelocity, _master.yLagTime);
+            _stateMachine.yLag = Mathf.SmoothDamp(_stateMachine.yLag, yLag, ref _stateMachine.yLagVelocity, _master.yLagTime, 5f);
         }
 
         protected virtual void AutoLookDirection()
@@ -89,16 +89,16 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
                 {
                     _stateMachine.xAutoLook = 0;
                     _stateMachine.yAutoLook = 0;
-                    _stateMachine.y = Mathf.Lerp(_stateMachine.y, _stateMachine.yAutoLook, 0.005f);
                 }
+                
+                Vector3 vel = _actor.kinematics.Rigidbody.linearVelocity;
+                _stateMachine.yAutoLook = Mathf.Clamp(-vel.y * 1.25f, -5f, 5f);
             }
             else
             {
                 _stateMachine.xAutoLook = 0;
                 _stateMachine.yAutoLook = 0;
             }
-            
-            
         }
 
         protected void AutoLook(float multiplier)
@@ -111,9 +111,6 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             {
                 _stateMachine.xAutoLook = fwd * multiplier;
             }                        
-
-            _stateMachine.yAutoLook = Mathf.Clamp(-vel.y * 1.25f, -15f, 15f);
-            _stateMachine.y = Mathf.Lerp(_stateMachine.y, _stateMachine.yAutoLook, 0.02f);
         }
 
         private void Setup(Vector3 targetPosition, Vector3 actorPosition)
@@ -129,7 +126,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
 
         protected virtual void SetRotation(Vector3 actorPosition)
         {
-            _stateMachine.rotation = Quaternion.LookRotation(actorPosition - _stateMachine.position);
+            _stateMachine.rotation = Quaternion.LookRotation(actorPosition + _master.lookOffset - _stateMachine.position);
         }
 
         public void SetDirection(Vector3 transformForward)

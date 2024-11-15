@@ -18,6 +18,8 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
         {
             _stateMachine.ResetBlendFactor();
             _stateMachine.RememberLastData();
+            
+            _lastData = _stateMachine.GetLastData();
         }
 
         public override void OnExit()
@@ -34,8 +36,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             base.OnTick(dt);
             
             var cross = Vector3.Cross(_actor.transform.right, Vector3.up);
-            _direction = Vector3.Lerp(_direction, cross, 4f * Time.deltaTime);
-            SetDirection(_direction);
+            SetDirection(cross);
             
             _stateMachine.camera.fieldOfView = Mathf.Lerp(_lastData.fov, 60f, _stateMachine.interpolatedBlendFactor);
             if (_stateMachine.blendFactor >= 1f)
@@ -46,13 +47,6 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
 
         protected override void SetPosition(Vector3 targetPosition)
         {
-            // Vector3 center = _actor.transform.position;
-            // Vector3 camCenter = _lastData.position - center;
-            // Vector3 targetCenter = targetPosition - center;
-            //
-            // _stateMachine.position = Vector3.Slerp(camCenter, targetCenter, _stateMachine.interpolatedBlendFactor);
-            // _stateMachine.position += center;
-            
             _stateMachine.position = Vector3.Lerp(_lastData.position, targetPosition, _stateMachine.interpolatedBlendFactor);
         }
 
@@ -63,7 +57,6 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
 
         protected override void AutoLookDirection()
         {
-            base.AutoLookDirection();
         }
     }
 }

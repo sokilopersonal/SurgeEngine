@@ -81,7 +81,7 @@ namespace SurgeEngine.Code.ActorSystem
                     {
                         // TransitionToState("RestoreJog", 0f);
                         // _currentAnimation = AnimatorParams.RunCycle;
-                        
+
                         TransitionToState(AnimatorParams.RunCycle, 0f);
                     }
                 }

@@ -20,9 +20,8 @@ namespace SurgeEngine.Code.CommonObjects
             base.OnTriggerContact(msg);
             
             var context = ActorContext.Context;
-            context.rigidbody.transform.rotation = Quaternion.LookRotation(transform.forward, transform.up);
-            context.animation.TransitionToState(AnimatorParams.RunCycle, 0f);
-            Common.ApplyImpulse(transform.forward * speed);
+            context.animation.TransitionToState(AnimatorParams.RunCycle);
+            context.rigidbody.linearVelocity = Quaternion.LookRotation(transform.forward, transform.up) * Vector3.forward * speed;
             context.stateMachine.SetState<FStateGround>(outOfControl);
 
             if (center)
