@@ -19,14 +19,13 @@ namespace SurgeEngine.Code.Parameters
         {
             base.OnEnter();
             
-            Common.ResetVelocity(ResetVelocityType.Both);
-
         }
 
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
             
+            Common.ResetVelocity(ResetVelocityType.Both);
 
             if (Input.moveVector.magnitude > deadZone)
             {
@@ -62,8 +61,8 @@ namespace SurgeEngine.Code.Parameters
             {
                 Actor.model.RotateBody(Kinematics.Normal);
                 
-                Kinematics.Snap(hit.point, hit.normal, true);
                 Kinematics.Normal = hit.normal;
+                Kinematics.Snap(hit.point, hit.normal, true);
             }
             else
             {

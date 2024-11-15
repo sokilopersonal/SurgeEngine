@@ -91,14 +91,18 @@ namespace SurgeEngine.Code.Custom
             if (!context.rigidbody.isKinematic) context.rigidbody.linearVelocity += Vector3.down * (yGravity * dt);
         }
         
-        public static bool CheckForGround(out RaycastHit result, CheckGroundType type = CheckGroundType.Default)
+        public static bool CheckForGround(out RaycastHit result, CheckGroundType type = CheckGroundType.Normal)
         {
             var context = ActorContext.Context;
             Vector3 origin;
             Vector3 direction;
             switch (type)
             {
-                case CheckGroundType.Default:
+                case CheckGroundType.Normal:
+                    origin = context.transform.position;
+                    direction = -context.kinematics.Normal;
+                    break;
+                case CheckGroundType.DefaultDown:
                     origin = context.transform.position;
                     direction = -context.transform.up;
                     break;
@@ -112,13 +116,14 @@ namespace SurgeEngine.Code.Custom
                     break;
                 case CheckGroundType.PredictOnRail:
                     origin = context.transform.position + context.transform.forward;
-                    direction = -context.transform.up;
-                    Debug.DrawLine(origin, origin + direction, Color.red);
+                    direction = -context.kinematics.Normal;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
             Ray ray = new Ray(origin, direction);
+            
+            Debug.DrawLine(origin, origin + direction, Color.red);
             
             Document doc = SonicGameDocument.GetDocument("Sonic");
             ParameterGroup group = doc.GetGroup(SonicGameDocument.CastGroup);
@@ -232,9 +237,10 @@ namespace SurgeEngine.Code.Custom
 
     public enum CheckGroundType
     {
-        Default,
+        Normal,
+        DefaultDown,
         Predict,
         PredictJump,
-        PredictOnRail
+        PredictOnRail,
     }
 }

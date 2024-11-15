@@ -362,13 +362,9 @@ namespace SurgeEngine.Code.ActorSystem
             if (point != Vector3.zero && normal != Vector3.zero)
             {
                 Quaternion slopeRotation = Quaternion.FromToRotation(transform.up, normal) * _rigidbody.rotation;
-
-                if (Mathf.Abs(Vector3.Dot(normal, transform.up) - 1f) * 180f <= 1f)
-                {
-                    Vector3 goal = point + normal;
-                    _rigidbody.position = Vector3.Lerp(_rigidbody.position, goal, 
-                        Time.fixedDeltaTime * (Mathf.Abs(Quaternion.Dot(_rigidbody.rotation, slopeRotation) + 1f) / 2f * _rigidbody.linearVelocity.magnitude + 15f));
-                }
+                Vector3 goal = point + normal;
+                _rigidbody.position = Vector3.Lerp(_rigidbody.position, goal, 
+                    Time.fixedDeltaTime * (Mathf.Abs(Quaternion.Dot(_rigidbody.rotation, slopeRotation) + 1f) / 2f * _rigidbody.linearVelocity.magnitude + 15f));
             }
         }
 

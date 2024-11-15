@@ -24,8 +24,6 @@ namespace SurgeEngine.Code.Parameters
         {
             base.OnEnter();
             
-            Kinematics.Normal = Vector3.up;
-            
             Kinematics.SetDetachTime(0f);
             ConvertAirToGroundVelocity();
         }
@@ -77,6 +75,9 @@ namespace SurgeEngine.Code.Parameters
             }
             else
             {
+                _rigidbody.linearVelocity += Actor.transform.forward * 2f;
+                Kinematics.SetDetachTime(0.25f);
+                
                 StateMachine.SetState<FStateAir>(ignoreInactiveDelay: true);
             }
         }
