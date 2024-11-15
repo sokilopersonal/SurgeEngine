@@ -69,8 +69,8 @@ namespace SurgeEngine.Code.Custom
             
             if (type is ResetVelocityType.Linear or ResetVelocityType.Both)
             {
-                context.stats.planarVelocity = Vector3.zero;
-                context.stats.movementVector = Vector3.zero;
+                context.kinematics.PlanarVelocity = Vector3.zero;
+                context.kinematics.MovementVector = Vector3.zero;
                 context.rigidbody.linearVelocity = Vector3.zero;
             }
             if (type is ResetVelocityType.Angular or ResetVelocityType.Both) context.rigidbody.angularVelocity = Vector3.zero;

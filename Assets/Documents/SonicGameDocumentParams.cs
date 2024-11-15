@@ -12,6 +12,7 @@ namespace SurgeEngine.Code.GameDocuments
         public static string BasePhysics_MinSkiddingRate = "MinSkiddingRate";
         public static string BasePhysics_MaxSkiddingRate = "MaxSkiddingRate";
         public static string BasePhysics_SkiddingThreshold = "SkiddingThreshold";
+        public static string BasePhysics_SkidDelay = "SkidDelay";
         public static string BasePhysics_TurnSpeed = "TurnSpeed";
         public static string BasePhysics_TurnCurve = "TurnCurve";
         public static string BasePhysics_TurnSmoothing = "TurnSmoothing";
@@ -26,6 +27,7 @@ namespace SurgeEngine.Code.GameDocuments
         public static string Cast_Distance = "Distance";
         public static string Cast_Radius = "Radius";
         public static string Cast_Mask = "Mask";
+        public static string Cast_RailMask = "RailMask";
         public static string Slide_Height = "Height";
         public static string Slide_YCenter = "YCenter";
         public static string Slide_Deacceleration = "Deacceleration";
@@ -66,6 +68,5 @@ namespace SurgeEngine.Code.GameDocuments
         public static string Slope_MinAngle = "MinAngle";
         public static string Slope_MinSpeed = "MinSpeed";
         public static string Slope_WallGravity = "WallGravity";
-        public static string Cast_RailMask = "RailMask";
     }
 }

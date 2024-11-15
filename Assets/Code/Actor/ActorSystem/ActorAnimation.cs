@@ -38,7 +38,6 @@ namespace SurgeEngine.Code.ActorSystem
 
             Vector3 vel = actor.rigidbody.linearVelocity.normalized;
             float signed = actor.model.root.forward.SignedAngleByAxis(vel, actor.transform.up);
-            
             float angle = signed * 0.4f;
             
             SetFloat("GrindLean", actor.kinematics.GetInputDir().x);
@@ -51,7 +50,7 @@ namespace SurgeEngine.Code.ActorSystem
             SetFloat("AbsWallDot", Mathf.Lerp(animator.GetFloat("AbsWallDot"), 
                 Mathf.Abs(Mathf.Approximately(actor.stats.groundAngle, 90) ? dot : 0), 1 * Time.deltaTime));
             
-            SetBool("Skidding", actor.stats.skidding && !actor.stateMachine.GetSubState<FBoost>().Active);
+            SetBool("Skidding", actor.kinematics.Skidding && !actor.stateMachine.GetSubState<FBoost>().Active);
         }
 
         private void ChangeStateAnimation(FState obj)

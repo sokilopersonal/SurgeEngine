@@ -21,7 +21,7 @@ namespace SurgeEngine.Code.ActorSystem
             set => _turnRate = value;
         }
 
-        public float HorizontalSpeed => _horizontalSpeed;
+        public float HorizontalSpeed => _rigidbody.GetHorizontalMagnitude();
 
         public float Angle => _angle;
 
@@ -30,6 +30,20 @@ namespace SurgeEngine.Code.ActorSystem
             get => _normal;
             set => _normal = value;
         }
+
+        public Vector3 MovementVector
+        {
+            get => _movementVector;
+            set => _movementVector = value;
+        }
+        
+        public Vector3 PlanarVelocity
+        {
+            get => _planarVelocity;
+            set => _planarVelocity = value;
+        }
+        
+        public bool Skidding => _skidding;
 
         private Vector3 _inputDir;
         private Rigidbody _rigidbody;
@@ -41,11 +55,12 @@ namespace SurgeEngine.Code.ActorSystem
         private PathData _pathData;
         private SplineContainer _rail;
 
-        private float _horizontalSpeed;
         private float _speed;
+        private float _moveDot;
         private float _turnRate;
         private float _angle;
         private float _detachTimer;
+        private float _skidTimer;
         private float _grindIgnore;
         private bool _canAttach;
         private bool _skidding;
@@ -79,8 +94,23 @@ namespace SurgeEngine.Code.ActorSystem
             _inputDir = transformedInput.normalized * actor.input.moveVector.magnitude;
             if (actor.input.moveVector == Vector3.zero && actor.stateMachine.GetSubState<FBoost>().Active) _inputDir = _rigidbody.transform.forward;
             
-            _skidding = actor.stats.moveDot < _physGroup.GetParameter<float>(BasePhysics_SkiddingThreshold);
-            _horizontalSpeed = _rigidbody.GetHorizontalMagnitude();
+            _moveDot = Vector3.Dot(actor.kinematics.GetInputDir().normalized, _rigidbody.linearVelocity.normalized);
+            
+            bool isSkidding = _moveDot < _physGroup.GetParameter<float>(BasePhysics_SkiddingThreshold);
+            if (isSkidding)
+            {
+                _skidTimer += Time.deltaTime;
+
+                if (_skidTimer > _physGroup.GetParameter<float>(BasePhysics_SkidDelay))
+                {
+                    _skidding = true; // To exclude the random brake
+                }
+            }
+            else
+            {
+                _skidding = false;
+                _skidTimer = 0f;
+            }
             _speed = _rigidbody.linearVelocity.magnitude;
             
             CalculateDetachState();
@@ -109,7 +139,7 @@ namespace SurgeEngine.Code.ActorSystem
                     container.Evaluate(t, out var point, out var tangent, out var up);
                     var planeNormal = Vector3.Cross(tangent, up);
                 
-                    if (_horizontalSpeed < path.maxAutoRunSpeed)
+                    if (HorizontalSpeed < path.maxAutoRunSpeed)
                     {
                         _rigidbody.AddForce(_rigidbody.transform.forward * (Time.fixedDeltaTime * path.autoRunSpeed), ForceMode.Impulse);
                     }
@@ -139,7 +169,8 @@ namespace SurgeEngine.Code.ActorSystem
             var stateMachine = actor.stateMachine;
             var state = stateMachine.CurrentState;
             var param = _physGroup;
-
+            
+            bool isSkidding = _moveDot < _physGroup.GetParameter<float>(BasePhysics_SkiddingThreshold);
             if (_inputDir.magnitude > 0.2f)
             {
                 if (stateMachine.Is<FStateSliding>())
@@ -155,7 +186,7 @@ namespace SurgeEngine.Code.ActorSystem
                     }
                 }
                 
-                if (!_skidding)
+                if (!isSkidding)
                 {
                     _turnRate = Mathf.Lerp(_turnRate, param.GetParameter<float>(BasePhysics_TurnSpeed), 
                         param.GetParameter<float>(BasePhysics_TurnSmoothing) * Time.fixedDeltaTime);
@@ -330,9 +361,8 @@ namespace SurgeEngine.Code.ActorSystem
 
             if (point != Vector3.zero && normal != Vector3.zero)
             {
-                Vector3 endPoint = point + normal;
-                Vector3 endLerpPoint = Vector3.Slerp(_rigidbody.position, endPoint, 12 * Time.fixedDeltaTime);
-                _rigidbody.position = instant ? endPoint : endLerpPoint;
+                Vector3 goal = point;
+                _rigidbody.position = goal + normal;
             }
         }
 
