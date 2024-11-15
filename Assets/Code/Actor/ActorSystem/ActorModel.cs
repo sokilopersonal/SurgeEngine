@@ -54,7 +54,7 @@ namespace SurgeEngine.Code.ActorSystem
             if (vel.sqrMagnitude > 0.01f)
             {
                 Quaternion targetRotation = Quaternion.LookRotation(vel, normal);
-                actor.transform.rotation = targetRotation;
+                actor.rigidbody.rotation = targetRotation;
             }
         }
 

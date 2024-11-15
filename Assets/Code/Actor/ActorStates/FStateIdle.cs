@@ -18,37 +18,24 @@ namespace SurgeEngine.Code.Parameters
         public override void OnEnter()
         {
             base.OnEnter();
-
-            if (Common.CheckForGround(out var hit))
-            {
-                Kinematics.Snap(hit.point, hit.normal, true);
-                Kinematics.Normal = hit.normal;
-            }
             
-            _rigidbody.Sleep();
+            Common.ResetVelocity(ResetVelocityType.Both);
+
         }
 
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
             
-            Common.ResetVelocity(ResetVelocityType.Both);
-
-            if (!Common.CheckForGround(out _))
-            {
-                StateMachine.SetState<FStateAir>();
-            }
 
             if (Input.moveVector.magnitude > deadZone)
             {
                 StateMachine.SetState<FStateGround>();
-                _rigidbody.WakeUp();
             }
 
             if (StateMachine.GetSubState<FBoost>().Active)
             {
                 _rigidbody.linearVelocity += _rigidbody.transform.forward * StateMachine.GetSubState<FBoost>().GetBoostEnergyGroup().GetParameter<float>(SonicGameDocumentParams.BoostEnergy_StartSpeed);
-                _rigidbody.WakeUp();
                 StateMachine.SetState<FStateGround>();
             }
 
@@ -70,6 +57,18 @@ namespace SurgeEngine.Code.Parameters
         public override void OnFixedTick(float dt)
         {
             base.OnFixedTick(dt);
+            
+            if (Common.CheckForGround(out var hit))
+            {
+                Actor.model.RotateBody(Kinematics.Normal);
+                
+                Kinematics.Snap(hit.point, hit.normal, true);
+                Kinematics.Normal = hit.normal;
+            }
+            else
+            {
+                StateMachine.SetState<FStateAir>();
+            }
         }
     }
 }

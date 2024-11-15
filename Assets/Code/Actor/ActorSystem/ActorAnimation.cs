@@ -33,7 +33,7 @@ namespace SurgeEngine.Code.ActorSystem
                                           actor.stateMachine.currentStateName == "FStateJump" ||
                                           actor.stateMachine.currentStateName == "FStateSpecialJump" ||
                                           actor.stateMachine.currentStateName == "FStateAirBoost");
-            SetFloat(AnimatorParams.GroundSpeed, Mathf.Clamp(actor.stats.currentSpeed, 0, 30f));
+            SetFloat(AnimatorParams.GroundSpeed, Mathf.Clamp(actor.stats.currentSpeed, 4, 30f));
             SetFloat(AnimatorParams.VerticalSpeed, actor.stats.currentVerticalSpeed);
 
             Vector3 vel = actor.rigidbody.linearVelocity.normalized;
@@ -59,13 +59,17 @@ namespace SurgeEngine.Code.ActorSystem
             
             if (obj is FStateIdle)
             {
-                if (prev is FStateGround or FStateSit)
+                switch (prev)
                 {
-                    TransitionToState("Idle", 0.2f);
-                }
-                else if (prev is FStateStomp)
-                {
-                    TransitionToState("StompSquat", 0.1f);
+                    case FStateGround or FStateSit:
+                        TransitionToState("Idle", 0.2f);
+                        break;
+                    case FStateStomp:
+                        TransitionToState("StompSquat", 0.1f);
+                        break;
+                    case FStateAir:
+                        TransitionToState("Landing", 0f);
+                        break;
                 }
             }
             if (obj is FStateGround)
@@ -81,7 +85,7 @@ namespace SurgeEngine.Code.ActorSystem
                         // TransitionToState("RestoreJog", 0f);
                         // _currentAnimation = AnimatorParams.RunCycle;
 
-                        TransitionToState(AnimatorParams.RunCycle, 0f);
+                        TransitionToState("RunLanding", 0f);
                     }
                 }
                 else

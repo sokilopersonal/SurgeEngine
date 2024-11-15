@@ -92,7 +92,11 @@ namespace SurgeEngine.Code.Parameters
             }
             else
             {
-                if (Kinematics.GetAttachState()) StateMachine.SetState<FStateGround>();
+                if (Kinematics.GetAttachState())
+                {
+                    if (Kinematics.HorizontalSpeed > 5f) StateMachine.SetState<FStateGround>();
+                    else StateMachine.SetState<FStateIdle>();
+                }
             }
         }
 
