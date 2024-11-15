@@ -10,6 +10,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
         public float easeTimeEnter = 0.5f;
         public float easeTimeExit = 0.5f;
         public float fov = 60f;
+        public bool allowRotation = true;
     }
 
     [Serializable]

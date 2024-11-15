@@ -24,6 +24,7 @@ namespace SurgeEngine.Code.CameraSystem
 
         public Vector3 position;
         public Quaternion rotation;
+        public Vector3 lookOffset;
         
         // Last Data
         public Vector3 lastPosition;
@@ -54,6 +55,13 @@ namespace SurgeEngine.Code.CameraSystem
                 blendFactor += dt / easeTime;
                 blendFactor = Mathf.Clamp01(blendFactor);
                 interpolatedBlendFactor = Easings.Get(Easing.Gens, blendFactor);
+
+                if (baseData.allowRotation)
+                {
+                    var v = master.actor.input.lookVector;
+                    v = Vector3.ClampMagnitude(v, 2f);
+                    lookOffset = Vector3.Lerp(lookOffset, v, SurgeMath.Smooth(1 - 0.75f));
+                }
             }
             
             base.Tick(dt);

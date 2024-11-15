@@ -45,7 +45,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             return actorPosition;
         }
 
-        private void LookAxis()
+        protected virtual void LookAxis()
         {
             AutoLookDirection();
             
