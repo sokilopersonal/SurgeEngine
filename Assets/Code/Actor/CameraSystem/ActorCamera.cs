@@ -11,12 +11,25 @@ namespace SurgeEngine.Code.CameraSystem
         public Actor actor { get; set; }
         
         public MasterCamera stateMachine;
-
+        
+        [Header("Input")]
+        public float sensitivity = 0.5f;
+        public float maxSensitivitySpeed = 1f;
+        public float minSensitivitySpeed = 0.5f;
+        
         [Header("Target")] 
         public float distance = 2.9f;
         public float yOffset = 0.1f;
         public Vector3 lookOffset;
-        [SerializeField] private AnimationCurve lookCurve;
+
+        [Header("Auto Look")] 
+        public float horizontalAutoLookAmplitude = 4f;
+        public float horizontalAutoLookMinAmplitude = 0.2f;
+        public float verticalDefaultAmplitude = 7f;
+        public float verticalMinAmplitude = -5f;
+        public float verticalMaxAmplitude = 5f;
+        public float verticalMinLerpSpeed = 0.75f;
+        public float verticalLerpSpeed = 1.65f;
         
         [Header("Z Lag")]
         public float zLagMax = 0.5f;
@@ -45,8 +58,6 @@ namespace SurgeEngine.Code.CameraSystem
         {
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
-            
-            
         }
 
         public void OnInit()
@@ -91,11 +102,6 @@ namespace SurgeEngine.Code.CameraSystem
         private void LateUpdate()
         {
             stateMachine.LateTick(Time.deltaTime);
-            
-            Vector3 vel = actor.kinematics.Rigidbody.linearVelocity;
-            float signed = actor.model.root.forward.SignedAngleByAxis(vel, transform.up);
-            float angle = signed * 0.01f;
-            //lookOffset = Vector3.Lerp(lookOffset, new Vector3(angle, 0f), Time.deltaTime * 2f);
         }
 
         public Camera GetCamera()

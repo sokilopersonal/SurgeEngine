@@ -105,42 +105,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 740a61d889173f2439f57c5376d36240, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  distance: 2.9
-  yOffset: 0.1
+  stateMachine:
+    currentStateName: 
+    master: {fileID: 0}
+    x: 0
+    y: 0
+    xAutoLook: 0
+    yAutoLook: 0
+    yLag: 0
+    yLagVelocity: 0
+    zLag: 0
+    zLagVelocity: 0
+    position: {x: 0, y: 0, z: 0}
+    rotation: {x: 0, y: 0, z: 0, w: 0}
+    lookOffset: {x: 0, y: 0, z: 0}
+    lastPosition: {x: 0, y: 0, z: 0}
+    lastRotation: {x: 0, y: 0, z: 0, w: 0}
+    lastFOV: 0
+    camera: {fileID: 0}
+    transform: {fileID: 0}
+  sensitivity: 0.5
+  maxSensitivitySpeed: 1
+  minSensitivitySpeed: 0.5
+  distance: 2.425
+  yOffset: 0.125
   lookOffset: {x: 0, y: 0, z: 0}
-  lookCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0.25
-      inSlope: 0.09020571
-      outSlope: 0.09020571
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.12704402
-    - serializedVersion: 3
-      time: 0.72456306
-      value: 0.44096765
-      inSlope: 0.7979732
-      outSlope: 0.7979732
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.08429541
-      outWeight: 0.21451268
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: -0.043191854
-      outSlope: -0.043191854
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.1572327
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
+  horizontalAutoLookAmplitude: 4
+  horizontalAutoLookMinAmplitude: 0.2
+  verticalDefaultAmplitude: 7
+  verticalMinAmplitude: -5
+  verticalMaxAmplitude: 5
+  verticalMinLerpSpeed: 0.75
+  verticalLerpSpeed: 1.65
   zLagMax: 0.5
   zLagTime: 0.5
   yLagMin: -1

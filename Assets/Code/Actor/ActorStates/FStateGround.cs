@@ -14,6 +14,7 @@ namespace SurgeEngine.Code.Parameters
     public sealed class FStateGround : FStateMove, IBoostHandler
     {
         private string _surfaceTag;
+        private const float EdgePushForce = 3.5f;
 
         public FStateGround(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
@@ -75,8 +76,13 @@ namespace SurgeEngine.Code.Parameters
             }
             else
             {
-                _rigidbody.linearVelocity += Actor.transform.forward * 2f;
-                Kinematics.SetDetachTime(0.25f);
+                StateMachine.SetState<FStateAir>(ignoreInactiveDelay: true);
+            }
+
+            if (!Common.CheckForGround(out _, CheckGroundType.PredictEdge))
+            {
+                _rigidbody.AddForce(_rigidbody.linearVelocity.normalized * EdgePushForce, ForceMode.VelocityChange);
+                Kinematics.SetDetachTime(0.3f);
                 
                 StateMachine.SetState<FStateAir>(ignoreInactiveDelay: true);
             }
