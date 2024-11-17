@@ -90,8 +90,8 @@ namespace SurgeEngine.Code.Custom
             var context = ActorContext.Context;
             if (!context.rigidbody.isKinematic) context.rigidbody.linearVelocity += Vector3.down * (yGravity * dt);
         }
-        
-        public static bool CheckForGround(out RaycastHit result, CheckGroundType type = CheckGroundType.Normal)
+
+        public static bool CheckForGround(out RaycastHit result, CheckGroundType type = CheckGroundType.Normal, float castDistance = 0f)
         {
             var context = ActorContext.Context;
             Vector3 origin;
@@ -118,6 +118,10 @@ namespace SurgeEngine.Code.Custom
                     origin = context.transform.position + context.transform.forward;
                     direction = -context.kinematics.Normal;
                     break;
+                case CheckGroundType.PredictEdge:
+                    origin = context.transform.position + Vector3.ClampMagnitude(context.kinematics.PlanarVelocity * 0.075f, 1f);
+                    direction = -context.kinematics.Normal;
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
@@ -127,7 +131,7 @@ namespace SurgeEngine.Code.Custom
             
             Document doc = SonicGameDocument.GetDocument("Sonic");
             ParameterGroup group = doc.GetGroup(SonicGameDocument.CastGroup);
-            float castDistance = group.GetParameter<float>(Cast_Distance);
+            if (castDistance == 0) castDistance = group.GetParameter<float>(Cast_Distance);
             LayerMask castMask = group.GetParameter<LayerMask>(Cast_Mask);
 
             bool hit = Physics.Raycast(ray, out result,
@@ -242,5 +246,6 @@ namespace SurgeEngine.Code.Custom
         Predict,
         PredictJump,
         PredictOnRail,
+        PredictEdge
     }
 }

@@ -46,6 +46,11 @@ namespace SurgeEngine.Code.CameraSystem
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
             
+            
+        }
+
+        public void OnInit()
+        {
             _camera = Camera.main;
             _cameraTransform = _camera.transform;
             stateMachine = new MasterCamera(_camera, _cameraTransform, this);
@@ -56,10 +61,8 @@ namespace SurgeEngine.Code.CameraSystem
             stateMachine.AddState(new FixedCameraPan(actor));
             stateMachine.AddState(new RestoreCameraPawn(actor));
             
-            stateMachine.SetState<NewModernState>();
+            stateMachine.SetState<NewModernState>().SetDirection(transform.forward);
         }
-
-        public void OnInit() {}
 
         private void Update()
         {
@@ -88,6 +91,11 @@ namespace SurgeEngine.Code.CameraSystem
         private void LateUpdate()
         {
             stateMachine.LateTick(Time.deltaTime);
+            
+            Vector3 vel = actor.kinematics.Rigidbody.linearVelocity;
+            float signed = actor.model.root.forward.SignedAngleByAxis(vel, transform.up);
+            float angle = signed * 0.01f;
+            //lookOffset = Vector3.Lerp(lookOffset, new Vector3(angle, 0f), Time.deltaTime * 2f);
         }
 
         public Camera GetCamera()
@@ -96,5 +104,15 @@ namespace SurgeEngine.Code.CameraSystem
         }
 
         public Transform GetCameraTransform() => _cameraTransform;
+
+        private void OnDrawGizmos()
+        {
+            if (Application.isPlaying)
+            {
+                Gizmos.color = Color.yellow;
+                Gizmos.DrawWireSphere(transform.position + transform.TransformDirection(lookOffset), 0.2f);
+            }
+        }
+        
     }
 }

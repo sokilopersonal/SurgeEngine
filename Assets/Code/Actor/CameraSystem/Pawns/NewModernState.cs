@@ -8,11 +8,10 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
     {
         protected float _distance;
         protected float _yOffset;
+        private float _sensSpeedMod;
         
         public NewModernState(Actor owner) : base(owner)
         {
-            SetDirection(_actor.transform.forward);
-            
             _distance = _master.distance;
             _yOffset = _master.yOffset;
         }
@@ -49,7 +48,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
         {
             AutoLookDirection();
             
-            var v = _actor.input.lookVector;
+            var v = _actor.input.lookVector * (0.45f * _sensSpeedMod);
             _stateMachine.x += v.x + _stateMachine.xAutoLook;
             _stateMachine.y -= v.y;
             _stateMachine.y = Mathf.Clamp(_stateMachine.y, -75, 85);
@@ -72,27 +71,24 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
 
         protected virtual void AutoLookDirection()
         {
-            if (_actor.input.IsAutoCamera())
+            float speed = _actor.kinematics.HorizontalSpeed;
+            var doc = SonicGameDocument.GetDocument("Sonic");
+            var physParam = doc.GetGroup(SonicGameDocument.PhysicsGroup);
+            _sensSpeedMod = Mathf.Lerp(1f, 0.5f, speed / physParam.GetParameter<float>(SonicGameDocumentParams.BasePhysics_TopSpeed));
+            if (speed > 1f)
             {
-                float speed = _actor.kinematics.HorizontalSpeed;
-                if (speed > 1f)
+                if (NotOnTheWall())
                 {
-                    if (NotOnTheWall())
-                    {
-                        float lookMod = _actor.kinematics.HorizontalSpeed / SonicGameDocument.GetDocument("Sonic")
-                            .GetGroup(SonicGameDocument.PhysicsGroup)
-                            .GetParameter<float>(SonicGameDocumentParams.BasePhysics_TopSpeed);
-                        AutoLook(6 * Mathf.Max(0.2f, Mathf.Clamp01(lookMod)));
-                    }
-                }
-                else
-                {
-                    _stateMachine.xAutoLook = 0;
-                    _stateMachine.yAutoLook = 0;
-                }
+                    float lookMod = speed / physParam
+                        .GetParameter<float>(SonicGameDocumentParams.BasePhysics_TopSpeed);
+                    AutoLook(5 * Mathf.Max(0.2f, lookMod));
+                    
+                    Vector3 vel = _actor.kinematics.Rigidbody.linearVelocity;
+                    var yAutoLook = vel.y > 0 ? Mathf.Clamp(-vel.y * 1.25f, -5f, 5f) : 7f;
                 
-                Vector3 vel = _actor.kinematics.Rigidbody.linearVelocity;
-                _stateMachine.yAutoLook = Mathf.Clamp(-vel.y * 1.25f, -5f, 5f);
+                    _stateMachine.yAutoLook = yAutoLook;
+                    _stateMachine.y = Mathf.Lerp(_stateMachine.y, _stateMachine.yAutoLook, Time.deltaTime * Mathf.Max(0.75f, lookMod * 2f));
+                }
             }
             else
             {
@@ -126,7 +122,10 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
 
         protected virtual void SetRotation(Vector3 actorPosition)
         {
-            _stateMachine.rotation = Quaternion.LookRotation(actorPosition + _master.lookOffset - _stateMachine.position);
+            Vector3 lookTarget = actorPosition;
+            Vector3 lookDirection = lookTarget - _stateMachine.position;
+            
+            _stateMachine.rotation = Quaternion.LookRotation(lookDirection.normalized);
         }
 
         public void SetDirection(Vector3 transformForward)
@@ -134,6 +133,13 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             Quaternion direction = Quaternion.LookRotation(transformForward, Vector3.up);
             _stateMachine.x = direction.eulerAngles.y;
             _stateMachine.y = direction.eulerAngles.x;
+
+            Debug.Log(_stateMachine.x);
+            Debug.Log(_stateMachine.y);
+            Debug.Log(direction.eulerAngles.x);
+            Debug.Log(direction.eulerAngles.y);
+
+            Debug.Log("alo naxyi");
         }
 
         private bool NotOnTheWall()

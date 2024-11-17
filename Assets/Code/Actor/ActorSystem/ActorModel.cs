@@ -56,6 +56,11 @@ namespace SurgeEngine.Code.ActorSystem
                 Quaternion targetRotation = Quaternion.LookRotation(vel, normal);
                 actor.rigidbody.rotation = targetRotation;
             }
+            else
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(actor.transform.forward, normal);
+                actor.rigidbody.rotation = targetRotation;
+            }
 
             if (actor.stateMachine.Is<FStateIdle>())
             {

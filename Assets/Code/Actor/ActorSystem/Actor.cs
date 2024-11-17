@@ -30,8 +30,6 @@ namespace SurgeEngine.Code.ActorSystem
                 return;
             }
             
-            gameObject.GetInstanceID();
-            
             rigidbody = GetComponent<Rigidbody>();
 
             stateMachine = new FStateMachine();
@@ -56,7 +54,7 @@ namespace SurgeEngine.Code.ActorSystem
             var boost = new FBoost(this);
             stateMachine.AddSubState(boost);
             
-            stateMachine.SetState<FStateGround>();
+            stateMachine.SetState<FStateIdle>();
             InitializeComponents();
         }
 
