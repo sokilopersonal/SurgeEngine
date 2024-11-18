@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.Parameters;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -26,7 +27,10 @@ namespace SurgeEngine.Code.CommonObjects
 
         private void Update()
         {
-            data.Time += Time.deltaTime;
+            if (!ActorContext.Context.stateMachine.Is<FStateStart>())
+            {
+                data.Time += Time.deltaTime;
+            }
         }
 
         private void OnEnable()

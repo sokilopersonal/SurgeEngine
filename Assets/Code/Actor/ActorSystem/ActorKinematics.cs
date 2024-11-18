@@ -67,10 +67,13 @@ namespace SurgeEngine.Code.ActorSystem
         
         private Document _document;
         private ParameterGroup _physGroup;
+        private GroundData _groundData;
 
         public void OnInit()
         {
             _rigidbody = GetComponent<Rigidbody>();
+            _groundData = new GroundData();
+            Normal = Vector3.up;
             
             _document = SonicGameDocument.GetDocument("Sonic");
             _physGroup = _document.GetGroup(SonicGameDocument.PhysicsGroup);
@@ -87,6 +90,18 @@ namespace SurgeEngine.Code.ActorSystem
         private void Update()
         {
             _cameraTransform = actor.camera.GetCameraTransform();
+
+            if (Common.CheckForGround(out var hit))
+            {
+                _groundData.point = hit.point;
+                _groundData.normal = hit.normal;
+                _groundData.transform = hit.transform;
+                _groundData.isValid = true;
+            }
+            else
+            {
+                _groundData.isValid = false;
+            }
             
             Vector3 transformedInput = Quaternion.FromToRotation(_cameraTransform.up, _normal) *
                                        (_cameraTransform.rotation * actor.input.moveVector);
@@ -120,7 +135,7 @@ namespace SurgeEngine.Code.ActorSystem
             {
                 if (Common.CheckForRail(out _, out var rail))
                 {
-                    actor.stateMachine.SetState<FStateGrind>(allowSameState: true).SetRail(rail);
+                    actor.stateMachine.SetState<FStateGrind>().SetRail(rail);
                 }
             }
             
@@ -175,15 +190,7 @@ namespace SurgeEngine.Code.ActorSystem
             {
                 if (stateMachine.Is<FStateSliding>())
                 {
-                    bool canMove = actor.stats.moveDot > -0.1f && actor.stats.moveDot < 0.975f;
-                    if (canMove)
-                    {
-                        _turnRate *= 0.02f;
-                    }
-                    else
-                    {
-                        dir = Vector3.zero;
-                    }
+                    _turnRate *= 0.1f;
                 }
                 
                 if (!isSkidding)
@@ -195,6 +202,13 @@ namespace SurgeEngine.Code.ActorSystem
                         .Evaluate(_planarVelocity.magnitude / param.GetParameter<float>(BasePhysics_TopSpeed));
                     if (_planarVelocity.magnitude < param.GetParameter<float>(BasePhysics_TopSpeed))
                         _planarVelocity += dir * (param.GetParameter<float>(BasePhysics_AccelerationRate) * accelRateMod * Time.fixedDeltaTime);
+                    else
+                    {
+                        if (!actor.stateMachine.GetSubState<FBoost>().Active)
+                        {
+                            _planarVelocity = Vector3.MoveTowards(_planarVelocity, _planarVelocity.normalized * param.GetParameter<float>(BasePhysics_TopSpeed), 8f * Time.fixedDeltaTime);
+                        }
+                    }
 
                     switch (state)
                     {
@@ -368,7 +382,7 @@ namespace SurgeEngine.Code.ActorSystem
             }
         }
 
-        private void Deceleration(float min, float max)
+        public void Deceleration(float min, float max)
         {
             if (actor.stateMachine.CurrentState is FStateAir or FStateSliding)
             {
@@ -380,12 +394,11 @@ namespace SurgeEngine.Code.ActorSystem
             
             float f = Mathf.Lerp(max, min, 
                 _movementVector.magnitude / _physGroup.GetParameter<float>(BasePhysics_TopSpeed));
-            if (_movementVector.magnitude > 0.5f)
+            if (_movementVector.magnitude > 0.2f)
                 _movementVector = Vector3.MoveTowards(_movementVector, Vector3.zero, Time.fixedDeltaTime * f);
             else
             {
                 _movementVector = Vector3.zero;
-                    
                 actor.stateMachine.SetState<FStateIdle>();
             }
         }
@@ -420,6 +433,8 @@ namespace SurgeEngine.Code.ActorSystem
         {
             return _inputDir;
         }
+        
+        public GroundData GetGroundData() => _groundData;
 
         public void SetPath(PathData data)
         {
@@ -432,5 +447,13 @@ namespace SurgeEngine.Code.ActorSystem
         {
             return _pathData != null;
         }
+    }
+
+    public class GroundData
+    {
+        public Vector3 point;
+        public Vector3 normal;
+        public Transform transform;
+        public bool isValid;
     }
 }

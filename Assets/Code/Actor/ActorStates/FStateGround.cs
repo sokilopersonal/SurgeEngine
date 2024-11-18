@@ -59,11 +59,12 @@ namespace SurgeEngine.Code.Parameters
         {
             base.OnFixedTick(dt);
             
+            var data = Actor.kinematics.GetGroundData();
             Vector3 prevNormal = Kinematics.Normal; 
-            if (Common.CheckForGround(out var hit))
+            if (data.isValid)
             {
-                var point = hit.point;
-                Kinematics.Normal = hit.normal;
+                var point = data.point;
+                Kinematics.Normal = data.normal;
                 
                 Vector3 stored = _rigidbody.linearVelocity;
                 _rigidbody.linearVelocity = Quaternion.FromToRotation(_rigidbody.transform.up, prevNormal) * stored;
@@ -72,19 +73,11 @@ namespace SurgeEngine.Code.Parameters
                 Actor.kinematics.BasePhysics(point, Kinematics.Normal);
                 Actor.model.RotateBody(Kinematics.Normal);
                 
-                _surfaceTag = hit.transform.gameObject.GetGroundTag();
+                _surfaceTag = data.transform.gameObject.GetGroundTag();
             }
             else
             {
-                StateMachine.SetState<FStateAir>(ignoreInactiveDelay: true);
-            }
-
-            if (!Common.CheckForGround(out _, CheckGroundType.PredictEdge))
-            {
-                _rigidbody.AddForce(_rigidbody.linearVelocity.normalized * EdgePushForce, ForceMode.VelocityChange);
-                Kinematics.SetDetachTime(0.3f);
-                
-                StateMachine.SetState<FStateAir>(ignoreInactiveDelay: true);
+                StateMachine.SetState<FStateAir>();
             }
         }
 

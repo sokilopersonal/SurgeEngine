@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.Custom;
+using SurgeEngine.Code.Parameters;
 using UnityEngine;
 using UnityEngine.InputSystem;
 

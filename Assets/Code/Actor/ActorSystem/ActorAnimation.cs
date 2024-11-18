@@ -1,9 +1,11 @@
-﻿using SurgeEngine.Code.Custom;
+﻿using System;
+using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.Parameters;
 using SurgeEngine.Code.Parameters.SonicSubStates;
 using SurgeEngine.Code.StateMachine;
 using SurgeEngine.Code.StateMachine.Components;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace SurgeEngine.Code.ActorSystem
 {
@@ -56,35 +58,53 @@ namespace SurgeEngine.Code.ActorSystem
         private void ChangeStateAnimation(FState obj)
         {
             var prev = actor.stateMachine.PreviousState;
+
+            if (obj is FStateStart)
+            {
+                var type = actor.GetComponentInParent<ActorStartDefiner>().startData.startType;
+                switch (type)
+                {
+                    case StartType.None:
+                        break;
+                    case StartType.Standing:
+                        TransitionToState("StartS", 0f);
+                        break;
+                    case StartType.Prepare:
+                        TransitionToState("StartP", 0f);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
             
             if (obj is FStateIdle)
             {
-                switch (prev)
+                if (prev is not FStateStart)
                 {
-                    case FStateGround or FStateSit:
-                        TransitionToState("Idle", 0.2f);
-                        break;
-                    case FStateStomp:
-                        TransitionToState("StompSquat", 0.1f);
-                        break;
-                    case FStateAir:
-                        TransitionToState("Landing", 0f);
-                        break;
+                    switch (prev)
+                    {
+                        case FStateGround or FStateSit:
+                            TransitionToState("Idle", 0.2f);
+                            break;
+                        case FStateStomp:
+                            TransitionToState("StompSquat", 0.1f);
+                            break;
+                        case FStateAir:
+                            TransitionToState("Landing", 0f);
+                            break;
+                    }
                 }
             }
             if (obj is FStateGround)
             {
                 if (prev is not FStateDrift)
                 {
-                    if (prev is FStateIdle or FStateSliding)
+                    if (prev is FStateIdle or FStateSliding or FStateStart)
                     {
                         TransitionToState(AnimatorParams.RunCycle, 0.2f);
                     }
                     else if (prev is FStateAir or FStateSpecialJump)
                     {
-                        // TransitionToState("RestoreJog", 0f);
-                        // _currentAnimation = AnimatorParams.RunCycle;
-
                         TransitionToState("RunLanding", 0f);
                     }
                 }

@@ -34,6 +34,7 @@ namespace SurgeEngine.Code.ActorSystem
 
             stateMachine = new FStateMachine();
             
+            stateMachine.AddState(new FStateStart(this, rigidbody));
             stateMachine.AddState(new FStateIdle(this, rigidbody));
             stateMachine.AddState(new FStateGround(this, rigidbody));
             stateMachine.AddState(new FStateAir(this, rigidbody));
@@ -54,7 +55,6 @@ namespace SurgeEngine.Code.ActorSystem
             var boost = new FBoost(this);
             stateMachine.AddSubState(boost);
             
-            stateMachine.SetState<FStateIdle>();
             InitializeComponents();
         }
 
@@ -64,6 +64,8 @@ namespace SurgeEngine.Code.ActorSystem
             {
                 component?.SetOwner(this);
             }
+            
+            stateMachine.SetState<FStateStart>().SetData(GetComponentInParent<ActorStartDefiner>().startData);
         }
         
         private void Update()

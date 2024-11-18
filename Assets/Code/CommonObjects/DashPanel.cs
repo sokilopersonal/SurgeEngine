@@ -22,7 +22,7 @@ namespace SurgeEngine.Code.CommonObjects
             var context = ActorContext.Context;
             context.animation.TransitionToState(AnimatorParams.RunCycle);
             context.rigidbody.linearVelocity = Quaternion.LookRotation(transform.forward, transform.up) * Vector3.forward * speed;
-            context.stateMachine.SetState<FStateGround>(outOfControl);
+            context.stateMachine.SetState<FStateGround>();
 
             if (center)
             {

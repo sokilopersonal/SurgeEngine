@@ -55,10 +55,8 @@ namespace SurgeEngine.Code.CommonObjects
         {
             base.Draw();
             
-            Vector3 dir = GetType() == typeof(Spring) ? transform.up : Vector3.up;
-            
-            TrajectoryDrawer.DrawTrajectory(transform.position + dir * yOffset, 
-                dir, Color.green, speed, keepVelocity);
+            TrajectoryDrawer.DrawTrajectory(transform.position + transform.up * yOffset, 
+                transform.up, Color.green, speed, keepVelocity);
         }
     }
 }
