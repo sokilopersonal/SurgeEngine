@@ -15907,7 +15907,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startData:
-    startType: 2
+    startType: 1
     speed: 28
     time: 1
 --- !u!1 &1029439674
@@ -18991,6 +18991,10 @@ PrefabInstance:
       value: -4.236514
       objectReference: {fileID: 0}
     - target: {fileID: 1606762330238956956, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
+      propertyPath: antialiasing
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1606762330238956956, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
       propertyPath: taaRingingReduction
       value: 1
       objectReference: {fileID: 0}
@@ -19293,6 +19297,18 @@ PrefabInstance:
     - target: {fileID: 4946665180287380417, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -167.61627
+      objectReference: {fileID: 0}
+    - target: {fileID: 5021486084057647973, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -2.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5021486084057647973, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5021486084057647973, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 1.2
       objectReference: {fileID: 0}
     - target: {fileID: 5054456000054290901, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
