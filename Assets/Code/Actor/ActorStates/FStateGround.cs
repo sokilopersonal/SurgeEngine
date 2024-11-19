@@ -59,9 +59,8 @@ namespace SurgeEngine.Code.Parameters
         {
             base.OnFixedTick(dt);
             
-            var data = Actor.kinematics.GetGroundData();
             Vector3 prevNormal = Kinematics.Normal; 
-            if (data.isValid)
+            if (Common.CheckForGround(out var data))
             {
                 var point = data.point;
                 Kinematics.Normal = data.normal;

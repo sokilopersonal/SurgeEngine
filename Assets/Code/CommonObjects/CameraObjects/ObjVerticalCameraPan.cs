@@ -27,10 +27,7 @@ namespace SurgeEngine.Code.CommonObjects
         public override void RemovePan()
         {
             var context = ActorContext.Context;
-            if (!context.camera.stateMachine.Is<DefaultModernPawn>())
-            {
-                context.camera.stateMachine.SetState<RestoreCameraPawn>();
-            }
+            context.camera.stateMachine.SetState<RestoreCameraPawn>();
         }
     }
 }

@@ -57,9 +57,6 @@ namespace SurgeEngine.Code.Parameters
                 var point = hit.point;
                 var normal = hit.normal;
                 Kinematics.Normal = normal;
-                
-                _rigidbody.position = point + normal;
-                Stats.transformNormal = Vector3.Slerp(Stats.transformNormal, normal, dt * 14f);
 
                 var param = SonicGameDocument.GetDocument("Sonic").GetGroup("Drift");
                 _driftXDirection = Mathf.Lerp(_driftXDirection, Input.moveVector.x, param.GetParameter<float>(Drift_Smoothness));
@@ -72,7 +69,7 @@ namespace SurgeEngine.Code.Parameters
                 Quaternion angle = Quaternion.AngleAxis(_driftXDirection * param.GetParameter<float>(Drift_CentrifugalForce) * boostForce, Kinematics.Normal);
                 Vector3 driftVelocity = angle * _rigidbody.linearVelocity;
                 Vector3 additive = driftVelocity.normalized *
-                                   ((1 - _rigidbody.linearVelocity.magnitude) * dt);
+                                   (1 - _rigidbody.linearVelocity.magnitude);
                 if (additive.magnitude < param.GetParameter<float>(Drift_MaxSpeed) * 0.2f)
                     driftVelocity -= additive * 0.75f;
                 _rigidbody.linearVelocity = driftVelocity;

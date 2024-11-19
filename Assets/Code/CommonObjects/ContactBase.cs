@@ -7,7 +7,8 @@ namespace SurgeEngine.Code.CommonObjects
     [SelectionBase]
     public abstract class ContactBase : MonoBehaviour
     {
-        public Action<ContactBase> OnContact; 
+        public Action<ContactBase> OnContact;
+        public bool isChangePath;
 
         private void OnCollisionEnter(Collision msg)
         {
@@ -34,7 +35,13 @@ namespace SurgeEngine.Code.CommonObjects
 
         public virtual void OnTriggerContact(Collider msg)
         {
-            ActorContext.Context.stats.lastContactObject = this;
+            var context = ActorContext.Context;
+            context.stats.lastContactObject = this;
+
+            if (isChangePath)
+            {
+                context.kinematics.SetPath(null);
+            }
             
             OnContact?.Invoke(this);
         }

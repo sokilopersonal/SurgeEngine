@@ -196,6 +196,8 @@ namespace SurgeEngine.Code.Custom
             var halfExtents = new Vector3(param.GetParameter<float>(Homing_FindRadius), 2.75f, param.GetParameter<float>(Homing_FindRadius));
             var maxDistance = param.GetParameter<float>(Homing_FindDistance);
             var hits = Physics.BoxCastAll(origin, halfExtents, dir, Quaternion.identity, maxDistance, param.GetParameter<LayerMask>(Homing_Mask), QueryTriggerInteraction.Collide);
+            HomingTarget closestTarget = null;
+            float closestDistance = float.MaxValue;
             foreach (var hit in hits)
             {
                 Transform target = hit.transform;
@@ -206,12 +208,17 @@ namespace SurgeEngine.Code.Custom
                 {
                     if (target.TryGetComponent(out HomingTarget homingTarget))
                     {
-                        return homingTarget;
+                        float distance = Vector3.Distance(origin, target.position);
+                        if (distance < closestDistance)
+                        {
+                            closestTarget = homingTarget;
+                            closestDistance = distance;
+                        }
                     }
                 }
             }
     
-            return null;
+            return closestTarget;
         }
         
         public static async UniTask ChangeFOVOverTime(float targetFov, float duration)

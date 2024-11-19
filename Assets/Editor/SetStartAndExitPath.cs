@@ -8,39 +8,27 @@ namespace SurgeEngine.Editor
 {
     public static class SetStartAndExitPath
     {
-        [MenuItem("Surge Engine/Set Start Path", false, 1)]
-        public static void SetStart()
+        [MenuItem("Surge Engine/Set Collision Path", false, 1)]
+        public static void Set()
         {
             var selection = Selection.activeGameObject;
-            
             if (selection == null) return;
             
-            var container = selection.transform.parent.GetComponentInChildren<SplineContainer>();
+            var container = selection.transform.GetComponentInChildren<SplineContainer>();
             var spline = container.Spline;
 
-            var first = spline.Knots.ToArray()[0];
-            selection.transform.position = container.transform.TransformPoint(first.Position + SurgeMath.Vector3ToFloat3(Vector3.up * 0.5f));
-            selection.transform.rotation = first.Rotation;
+            var start = selection.transform.GetChild(0);
+            var end = selection.transform.GetChild(1);
+
+            spline.Evaluate(0f, out var startPos, out var startTangent, out _);
+            spline.Evaluate(1f, out var endPos, out var endTangent, out _);
+            
+            start.position = container.transform.TransformPoint(startPos);
+            start.forward = container.transform.TransformDirection(startTangent);
+            end.position = container.transform.TransformPoint(endPos);
+            end.forward = container.transform.TransformDirection(endTangent);
             
             Undo.RegisterCompleteObjectUndo(selection, "Set Start Path");
-            EditorUtility.SetDirty(selection);
-        }
-        
-        [MenuItem("Surge Engine/Set End Path", false, 2)]
-        public static void SetEnd()
-        {
-            var selection = Selection.activeGameObject;
-            
-            if (selection == null) return;
-            
-            var container = selection.transform.parent.GetComponentInChildren<SplineContainer>();
-            var spline = container.Spline;
-
-            var last = spline.Knots.ToArray().Last();
-            selection.transform.position = container.transform.TransformPoint(last.Position + SurgeMath.Vector3ToFloat3(Vector3.up * 0.5f));
-            selection.transform.rotation = last.Rotation;
-            
-            Undo.RegisterCompleteObjectUndo(selection, "Set End Path");
             EditorUtility.SetDirty(selection);
         }
     }

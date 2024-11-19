@@ -67,12 +67,10 @@ namespace SurgeEngine.Code.ActorSystem
         
         private Document _document;
         private ParameterGroup _physGroup;
-        private GroundData _groundData;
 
         public void OnInit()
         {
             _rigidbody = GetComponent<Rigidbody>();
-            _groundData = new GroundData();
             Normal = Vector3.up;
             
             _document = SonicGameDocument.GetDocument("Sonic");
@@ -90,18 +88,6 @@ namespace SurgeEngine.Code.ActorSystem
         private void Update()
         {
             _cameraTransform = actor.camera.GetCameraTransform();
-
-            if (Common.CheckForGround(out var hit))
-            {
-                _groundData.point = hit.point;
-                _groundData.normal = hit.normal;
-                _groundData.transform = hit.transform;
-                _groundData.isValid = true;
-            }
-            else
-            {
-                _groundData.isValid = false;
-            }
             
             Vector3 transformedInput = Quaternion.FromToRotation(_cameraTransform.up, _normal) *
                                        (_cameraTransform.rotation * actor.input.moveVector);
@@ -164,10 +150,7 @@ namespace SurgeEngine.Code.ActorSystem
                 
                     Vector3 nearPoint = container.transform.TransformPoint(near);
                     nearPoint.y = _rigidbody.position.y;
-                    if (actor.stateMachine.CurrentState is not FStateAir)
-                    {
-                        //_rigidbody.position = nearPoint;
-                    }
+                    _rigidbody.position = nearPoint;
                 }
             }
         }
@@ -434,8 +417,6 @@ namespace SurgeEngine.Code.ActorSystem
             return _inputDir;
         }
         
-        public GroundData GetGroundData() => _groundData;
-
         public void SetPath(PathData data)
         {
             _pathData = data;
