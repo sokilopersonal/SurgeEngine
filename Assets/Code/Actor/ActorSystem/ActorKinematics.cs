@@ -212,9 +212,6 @@ namespace SurgeEngine.Code.ActorSystem
             {
                 Deceleration(param.GetParameter<float>(BasePhysics_MinDeaccelerationRate), param.GetParameter<float>(BasePhysics_MaxDeaccelerationRate));
             }
-            
-            if (actor.stats.lastContactObject is not TrickJumper or Spring or WideSpring or DashRing or RainbowRing) 
-                vertical = Vector3.ClampMagnitude(vertical, param.GetParameter<float>(BasePhysics_MaxVerticalSpeed));
             _rigidbody.linearVelocity = _movementVector + vertical;
             
             Snap(point, normal);

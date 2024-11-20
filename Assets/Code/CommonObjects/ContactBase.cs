@@ -51,7 +51,7 @@ namespace SurgeEngine.Code.CommonObjects
             Gizmos.matrix = transform.localToWorldMatrix;
         }
 
-        private void OnDrawGizmos()
+        private void OnDrawGizmosSelected()
         {
             Draw();
         }

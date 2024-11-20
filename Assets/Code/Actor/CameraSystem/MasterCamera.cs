@@ -64,6 +64,10 @@ namespace SurgeEngine.Code.CameraSystem
                     lookOffset = Vector3.Lerp(lookOffset, v, SurgeMath.Smooth(1 - 0.75f));
                 }
             }
+            else
+            {
+                lookOffset = Vector3.zero;
+            }
             
             base.Tick(dt);
         }

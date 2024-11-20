@@ -137,7 +137,7 @@ namespace SurgeEngine.Code.Parameters.SonicSubStates
             BoostEnergy = Mathf.Clamp(BoostEnergy, 0, 100);
         }
 
-        public bool CanBoost() => BoostEnergy > 2;
+        public bool CanBoost() => BoostEnergy > 0 && !actor.stateMachine.Is<FStateSpecialJump>();
 
         public ParameterGroup GetBoostEnergyGroup() => _boostEnergyGroup;
 

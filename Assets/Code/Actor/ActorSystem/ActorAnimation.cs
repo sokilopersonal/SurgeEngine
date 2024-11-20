@@ -141,7 +141,7 @@ namespace SurgeEngine.Code.ActorSystem
             {
                 TransitionToState("Sit", 0.2f, true);
             }
-            if (obj is FStateJump)
+            if (obj is FStateJump or FStateJumpSelector)
             {
                 TransitionToState("Ball", 0f, true);
             }
@@ -197,6 +197,11 @@ namespace SurgeEngine.Code.ActorSystem
             if (obj is FStateGrind && prev is FStateGrindSquat)
             {
                 TransitionToState("GrindLoop", 0.25f, true);
+            }
+
+            if (obj is FStateJumpSelectorLaunch)
+            {
+                
             }
         }
     }

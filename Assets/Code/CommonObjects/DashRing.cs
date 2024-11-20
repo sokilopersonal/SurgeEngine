@@ -31,7 +31,7 @@ namespace SurgeEngine.Code.CommonObjects
             context.model.transform.localRotation = rot;
             
             var specialJump = context.stateMachine.SetState<FStateSpecialJump>(0.2f, true, true);
-            specialJump.SetSpecialData(new SpecialJumpData(SpecialJumpType.DashRing, transform.forward, transform.up, dot));
+            specialJump.SetSpecialData(new SpecialJumpData(SpecialJumpType.DashRing));
             specialJump.PlaySpecialAnimation(0f);
             specialJump.SetKeepVelocity(keepVelocity);
 

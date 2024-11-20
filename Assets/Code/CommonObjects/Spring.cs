@@ -31,7 +31,7 @@ namespace SurgeEngine.Code.CommonObjects
         private void ApplyImpulse(Vector3 direction)
         {
             var context = ActorContext.Context;
-            context.transform.position = transform.position + direction * yOffset * 2;
+            context.transform.position = transform.position + direction * (yOffset * 2);
 
             float dot = Vector3.Dot(transform.up, Vector3.up);
             context.stateMachine.SetState<FStateAir>();
@@ -41,7 +41,7 @@ namespace SurgeEngine.Code.CommonObjects
             context.model.transform.localRotation = Quaternion.LookRotation(transform.forward, direction);
             
             var specialJump = context.stateMachine.SetState<FStateSpecialJump>(0.2f, true, true);
-            specialJump.SetSpecialData(new SpecialJumpData(SpecialJumpType.Spring, transform.forward, direction, dot));
+            specialJump.SetSpecialData(new SpecialJumpData(SpecialJumpType.Spring));
             specialJump.PlaySpecialAnimation(0);
             specialJump.SetKeepVelocity(keepVelocity);
 

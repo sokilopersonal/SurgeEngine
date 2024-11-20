@@ -1,4 +1,5 @@
 ﻿using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.Parameters.SonicSubStates;
 using SurgeEngine.Code.SonicSubStates.Boost;
@@ -74,19 +75,6 @@ namespace SurgeEngine.Code.Parameters
                 
                 // TODO: Use Actor.model.RotateBody
                 Rotate(dt);
-
-                // TODO: Move to ActorKinematics
-                if (StateMachine.PreviousState is not FStateSpecialJump or FStateAirBoost)
-                {
-                    var drag = 0.65f;
-                    var airResistance = 0.95f;
-                    var airDrag = new Vector3(
-                        -drag * airResistance * dt * _rigidbody.linearVelocity.x,
-                        0,
-                        -drag * airResistance * dt * _rigidbody.linearVelocity.z
-                    );
-                    _rigidbody.AddForce(airDrag, ForceMode.VelocityChange);
-                }
                 
                 Common.ApplyGravity(Stats.gravity, Time.fixedDeltaTime);
             }

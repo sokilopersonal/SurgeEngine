@@ -75,33 +75,39 @@ namespace SurgeEngine.Code.Parameters
                     Common.ApplyGravity(Stats.gravity, dt);
                     break;
                 case SpecialJumpType.Spring:
-                    if (_keepVelocityTimer > 0)
-                    {
-                        _keepVelocityTimer -= dt;
-                    }
+                    CountTimer(dt);
                     break;
                 case SpecialJumpType.DashRing:
-                    if (_keepVelocityTimer > 0)
-                    {
-                        _keepVelocityTimer -= dt;
-                    }
+                    CountTimer(dt);
+                    break;
+                case SpecialJumpType.JumpSelector:
+                    Common.ApplyGravity(Stats.gravity, dt);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
             
-            if (_keepVelocityTimer <= 0)
+            if (_keepVelocityTimer < 0)
             {
                 StateMachine.SetState<FStateAir>();
             }
         }
+        private void CountTimer(float dt)
+        {
+            if (_keepVelocityTimer > 0)
+            {
+                _keepVelocityTimer -= dt;
+            }
+        }
 
-        public void SetSpecialData(SpecialJumpData data)
+        public FStateSpecialJump SetSpecialData(SpecialJumpData data)
         {
             _data = data;
+
+            return this;
         }
         
-        public void PlaySpecialAnimation(float time, object arg = null)
+        public FStateSpecialJump PlaySpecialAnimation(float time, object arg = null)
         {
             switch (_data.type)
             {
@@ -120,11 +126,12 @@ namespace SurgeEngine.Code.Parameters
                 default:
                     throw new ArgumentOutOfRangeException(nameof(_data), _data, null);
             }
+
+            return this;
         }
         
         public void SetKeepVelocity(float time)
         {
-            //_keepVelocityTimer = Mathf.Max(0.2f, time - time * 0.075f);
             _keepVelocityTimer = time;
         }
     }
@@ -135,5 +142,6 @@ namespace SurgeEngine.Code.Parameters
         TrickJumper,
         Spring,
         DashRing,
+        JumpSelector
     }
 }

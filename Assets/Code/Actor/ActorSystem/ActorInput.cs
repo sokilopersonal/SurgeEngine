@@ -137,7 +137,7 @@ namespace SurgeEngine.Code.ActorSystem
         {
             var temp = _input.Gameplay.Movement.ReadValue<Vector2>();
             moveVector = new Vector3(temp.x, 0, temp.y);
-            lookVector = _input.Gameplay.Camera.ReadValue<Vector2>();
+            lookVector = _input.Gameplay.Camera.ReadValue<Vector2>() * (_device is Gamepad ? (100f * Time.deltaTime) : 1f);
 
             if (lookVector == Vector2.zero)
             {
