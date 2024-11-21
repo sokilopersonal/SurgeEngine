@@ -72,19 +72,21 @@ namespace SurgeEngine.Code.Parameters
                 SplineUtility.GetNearestPoint(container.Spline, 
                     SurgeMath.Vector3ToFloat3(container.transform.InverseTransformPoint(offset)), 
                     out var near, out var t);
+                var normal = SurgeMath.Float3ToVector3(container.EvaluateUpVector(t));
                 container.Evaluate(t, out var point, out var tangent, out var up);
                 var tangentNormal = Vector3.Cross(tangent, up);
-                var normal = SurgeMath.Float3ToVector3(up);
-
+                
+                Debug.DrawRay(offset, normal, Color.yellow, 1f);
+                
                 float sign = Mathf.Sign(Vector3.Dot(Actor.transform.forward, tangent));
                 bool forward = Mathf.Approximately(sign, 1);
                 Vector3 direction = forward ? tangent : -tangent;
                 
-                Quaternion rot = Quaternion.LookRotation(direction, Actor.transform.up);
+                Quaternion rot = Quaternion.LookRotation(direction, normal);
                 _rigidbody.rotation = rot;
                 
                 Vector3 nearPoint = container.transform.TransformPoint(near);
-                nearPoint += Actor.transform.up * _rail.radius;
+                nearPoint += normal * _rail.radius;
                 _rigidbody.position = nearPoint;
                 
                 Kinematics.Normal = normal;
