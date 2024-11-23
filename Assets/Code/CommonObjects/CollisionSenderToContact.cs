@@ -1,5 +1,4 @@
-﻿using SurgeEngine.Code.ActorSystem;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace SurgeEngine.Code.CommonObjects
 {
@@ -14,7 +13,7 @@ namespace SurgeEngine.Code.CommonObjects
 
         private void OnCollisionEnter(Collision msg)
         {
-            if (ActorContext.Context.gameObject == msg.transform.parent.gameObject)
+            if (contact.IsContact(msg))
             {
                 contact.OnCollisionContact(msg);
             }
@@ -22,9 +21,17 @@ namespace SurgeEngine.Code.CommonObjects
 
         private void OnTriggerEnter(Collider msg)
         {
-            if (ActorContext.Context.gameObject == msg.transform.parent.gameObject)
+            if (contact.IsContact(msg))
             {
                 contact.OnTriggerContact(msg);
+            }
+        }
+
+        private void OnTriggerExit(Collider msg)
+        {
+            if (contact.IsContact(msg))
+            {
+                contact.OnTriggerDetach(msg);
             }
         }
     }

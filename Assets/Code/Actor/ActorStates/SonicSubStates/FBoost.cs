@@ -150,12 +150,13 @@ namespace SurgeEngine.Code.Parameters.SonicSubStates
             if (CanBoost())
             {
                 Active = obj.started;
+                if (_cancelBoostCoroutine != null) 
+                    actor.StopCoroutine(_cancelBoostCoroutine);
             }
             
             if (Active)
             {
                 BoostEnergy -= _boostEnergyGroup.GetParameter<float>(BoostEnergy_StartDrain);
-
                 new Rumble().Vibrate(0.7f, 0.8f, 0.5f);
             }
         }

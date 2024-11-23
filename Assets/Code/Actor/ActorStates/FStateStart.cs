@@ -26,31 +26,42 @@ namespace SurgeEngine.Code.Parameters
         {
             base.OnTick(dt);
 
-            float time = _startData.startType == StartType.Prepare ? 3f : 3.7f;
+            if (_startData.startType != StartType.Dash)
+            {
+                float time = _startData.startType == StartType.Prepare ? 3f : 3.7f;
             
-            if (_timer < time)
-            {
-                _timer += dt;
-            }
-            else
-            {
-                if (_startData.startType == StartType.Prepare)
+                if (_timer < time)
                 {
-                    if (_startData.speed > 0)
-                    {
-                        _rigidbody.linearVelocity = _rigidbody.transform.forward * _startData.speed;
-                        Actor.flags.AddFlag(new Flag(FlagType.OutOfControl, null, true, _startData.time));
-                    }
+                    _timer += dt;
                 }
+                else
+                {
+                    if (_startData.startType == StartType.Prepare)
+                    {
+                        if (_startData.speed > 0)
+                        {
+                            _rigidbody.linearVelocity = _rigidbody.transform.forward * _startData.speed;
+                            Actor.flags.AddFlag(new Flag(FlagType.OutOfControl, null, true, _startData.time));
+                        }
+                    }
 
-                Actor.input.enabled = true;
-                StateMachine.SetState<FStateGround>();
+                    Actor.input.enabled = true;
+                    StateMachine.SetState<FStateGround>();
+                }
             }
         }
 
         public void SetData(StartData data)
         {
             _startData = data;
+            
+            if (_startData.startType == StartType.Dash)
+            {
+                _rigidbody.linearVelocity = _rigidbody.transform.forward * _startData.speed;
+                Actor.input.enabled = true;
+                Actor.flags.AddFlag(new Flag(FlagType.OutOfControl, null, true, _startData.time));
+                StateMachine.SetState<FStateGround>();
+            }
         }
         
         public StartType GetStartType() => _startData.startType;
@@ -68,6 +79,7 @@ namespace SurgeEngine.Code.Parameters
     {
         None,
         Standing,
-        Prepare
+        Prepare,
+        Dash
     }
 }

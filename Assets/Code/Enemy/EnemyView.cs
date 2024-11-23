@@ -1,26 +1,41 @@
-﻿using SurgeEngine.Code.ActorSystem;
+﻿using FMODUnity;
+using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Parameters;
 using SurgeEngine.Code.Parameters.SonicSubStates;
 using UnityEngine;
 
 namespace SurgeEngine.Code.StateMachine
 {
-    public abstract class EnemyView : MonoBehaviour, IEnemyComponent
+    public class EnemyView : MonoBehaviour, IEnemyComponent
     {
         public EnemyBase enemyBase { get; set; }
         
         public CapsuleCollider eCollider;
+        [SerializeField] private ParticleSystem explosionEffect;
+        [SerializeField] private float explosionOffset = 0.5f;
+        [SerializeField] private EventReference explosionReference;
 
         private void Update()
         {
             ViewTick();
         }
 
-        protected abstract void ViewTick();
+        protected virtual void ViewTick()
+        {
+            
+        }
 
         protected bool IsAbleExcludePlayer()
         {
             return enemyBase.CanBeDamaged();
+        }
+        
+        private void OnDestroy()
+        {
+            var particle = Instantiate(explosionEffect, transform.position + Vector3.up * explosionOffset, Quaternion.identity);
+            Destroy(particle.gameObject, 2.5f);
+            
+            RuntimeManager.PlayOneShot(explosionReference, transform.position);
         }
     }
 }

@@ -28,6 +28,7 @@ namespace SurgeEngine.Code.GameDocuments
         public static string Cast_Radius = "Radius";
         public static string Cast_Mask = "Mask";
         public static string Cast_RailMask = "RailMask";
+        public static string Cast_DistanceCurve = "DistanceCurve";
         public static string Slide_Height = "Height";
         public static string Slide_YCenter = "YCenter";
         public static string Slide_Deacceleration = "Deacceleration";

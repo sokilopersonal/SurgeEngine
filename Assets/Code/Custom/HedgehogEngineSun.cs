@@ -22,7 +22,6 @@ namespace SurgeEngine.Code.Custom
         {
             float dot = Vector3.Dot(_camera.transform.forward, transform.forward);
             dot = Mathf.Abs(dot);
-            Debug.Log(dot);
             _light.SetShadowResolution(Mathf.RoundToInt(Mathf.Lerp(maxResolution, minResolution, dot)));
         }
     }

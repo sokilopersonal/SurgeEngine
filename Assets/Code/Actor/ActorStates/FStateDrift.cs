@@ -59,7 +59,8 @@ namespace SurgeEngine.Code.Parameters
                 Kinematics.Normal = normal;
 
                 var param = SonicGameDocument.GetDocument("Sonic").GetGroup("Drift");
-                _driftXDirection = Mathf.Lerp(_driftXDirection, Input.moveVector.x, param.GetParameter<float>(Drift_Smoothness));
+                Vector3 dir = Input.moveVector;
+                _driftXDirection = Mathf.Sign(dir.x);
             
                 Actor.model.RotateBody(Kinematics.Normal);
                 

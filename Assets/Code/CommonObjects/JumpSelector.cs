@@ -158,7 +158,9 @@ namespace SurgeEngine.Code.CommonObjects
         private void OnDrawGizmosSelected()
         {
             TrajectoryDrawer.DrawTrajectory(transform.position, transform.forward, Color.blue, forwardForce, keepVelocityTime);
-            TrajectoryDrawer.DrawTrajectory(transform.position, Vector3.up, Color.green, upForce, keepVelocityTime);
+
+            Gizmos.color = Color.green;
+            Gizmos.DrawRay(transform.position, Vector3.up * upForce);
         }
 
         private void OnDestroy()

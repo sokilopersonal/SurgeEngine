@@ -486,6 +486,38 @@ MonoBehaviour:
         maskValue:
           serializedVersion: 2
           m_Bits: 0
+      - name: SkidDelay
+        type: 0
+        floatValue: 0.065
+        intValue: 0
+        boolValue: 0
+        curveValue:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: -0.02180093
+            outSlope: -0.02180093
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0.06492665
+          - serializedVersion: 3
+            time: 2.5
+            value: 0
+            inSlope: -1.2479798
+            outSlope: -1.2479798
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.02394476
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        maskValue:
+          serializedVersion: 2
+          m_Bits: 1024
       - name: TurnSpeed
         type: 0
         floatValue: 10
@@ -1031,6 +1063,38 @@ MonoBehaviour:
         maskValue:
           serializedVersion: 2
           m_Bits: 32768
+      - name: DistanceCurve
+        type: 3
+        floatValue: 40
+        intValue: 0
+        boolValue: 0
+        curveValue:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 1
+            outSlope: 1
+            tangentMode: 34
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0.33333334
+          - serializedVersion: 3
+            time: 1
+            value: 2
+            inSlope: 1
+            outSlope: 1
+            tangentMode: 34
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 0
+        maskValue:
+          serializedVersion: 2
+          m_Bits: 32768
     - name: Slide
       parameters:
       - name: Height
@@ -1221,7 +1285,7 @@ MonoBehaviour:
           m_Bits: 0
       - name: MaxSpeedMultiplier
         type: 0
-        floatValue: 1.25
+        floatValue: 1.125
         intValue: 0
         boolValue: 0
         curveValue:

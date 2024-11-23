@@ -60,13 +60,8 @@ namespace SurgeEngine.Code.ActorSystem
             InitializeComponents();
         }
 
-        public void InitializeComponents()
+        private void Start()
         {
-            foreach (var component in new IActorComponent[] { input, stats, sounds, effects, camera, animation, model, flags, kinematics })
-            {
-                component?.SetOwner(this);
-            }
-
             var startData = GetComponentInParent<ActorStartDefiner>().startData;
             if (startData.startType != StartType.None)
             {
@@ -75,6 +70,14 @@ namespace SurgeEngine.Code.ActorSystem
             else
             {
                 stateMachine.SetState<FStateIdle>();
+            }
+        }
+
+        public void InitializeComponents()
+        {
+            foreach (var component in new IActorComponent[] { input, stats, sounds, effects, camera, animation, model, flags, kinematics })
+            {
+                component?.SetOwner(this);
             }
         }
         

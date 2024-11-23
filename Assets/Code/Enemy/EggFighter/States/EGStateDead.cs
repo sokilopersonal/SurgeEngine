@@ -17,21 +17,13 @@ namespace SurgeEngine.Code.Enemy.States
         {
             base.OnEnter();
             
-            Object.Destroy(transform.gameObject, 2f);
-
-            _timer = 0;
-
-            var collider = eggFighter.view.eCollider;
-            collider.radius = 0.75f;
-            collider.height = 1.5f;
-            
-            Rb.freezeRotation = false;
-            
             var context = ActorContext.Context;
             if (context.stateMachine.CurrentState is FStateHoming)
             {
                 context.stateMachine.SetState<FStateAfterHoming>();
             }
+            
+            Object.Destroy(transform.gameObject);
         }
 
         public void ApplyKnockback(Vector3 force)
@@ -39,8 +31,9 @@ namespace SurgeEngine.Code.Enemy.States
             transform.forward = -ActorContext.Context.transform.forward;
             
             Rb.linearVelocity = Vector3.zero;
-            Rb.AddForce(force, ForceMode.VelocityChange);
             Rb.angularVelocity = Vector3.zero;
+            Rb.AddForce(force, ForceMode.VelocityChange);
+            Rb.AddTorque(force, ForceMode.VelocityChange);
         }
 
         public override void OnTick(float dt)
@@ -53,8 +46,8 @@ namespace SurgeEngine.Code.Enemy.States
             }
             else
             {
-                if (Physics.Raycast(transform.position + Vector3.up, Vector3.down, 
-                        0.85f, 1 << LayerMask.NameToLayer("Default"), QueryTriggerInteraction.Ignore))
+                if (Physics.Raycast(transform.position + Vector3.up, Rb.linearVelocity,
+                        2f, 1 << LayerMask.NameToLayer("Default"), QueryTriggerInteraction.Ignore))
                 {
                     Object.Destroy(transform.gameObject);
                 }

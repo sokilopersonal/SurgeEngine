@@ -8,11 +8,12 @@ namespace SurgeEngine.Code.CommonObjects
     public abstract class ContactBase : MonoBehaviour
     {
         public Action<ContactBase> OnContact;
+        public Action<ContactBase> OnDetach;
         public bool isChangePath;
 
         private void OnCollisionEnter(Collision msg)
         {
-            if (ActorContext.Context.gameObject == msg.transform.parent.gameObject) // Check for ContactCollision instead
+            if (IsContact(msg))
             {
                 OnCollisionContact(msg);
             }
@@ -20,7 +21,7 @@ namespace SurgeEngine.Code.CommonObjects
 
         private void OnTriggerEnter(Collider msg)
         {
-            if (ActorContext.Context.gameObject == msg.transform.parent.gameObject) // Check for ContactCollision instead
+            if (IsContact(msg))
             {
                 OnTriggerContact(msg);
             }
@@ -45,7 +46,22 @@ namespace SurgeEngine.Code.CommonObjects
             
             OnContact?.Invoke(this);
         }
-        
+
+        public virtual void OnTriggerDetach(Collider msg)
+        {
+            OnDetach?.Invoke(this);
+        }
+
+        internal bool IsContact(Collision msg)
+        {
+            return ActorContext.Context.gameObject == msg.transform.parent.gameObject;
+        }
+
+        internal bool IsContact(Collider msg)
+        {
+            return ActorContext.Context.gameObject == msg.transform.parent.gameObject;
+        }
+
         protected virtual void Draw()
         {
             Gizmos.matrix = transform.localToWorldMatrix;

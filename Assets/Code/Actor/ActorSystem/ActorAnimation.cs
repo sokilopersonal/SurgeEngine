@@ -72,6 +72,8 @@ namespace SurgeEngine.Code.ActorSystem
                     case StartType.Prepare:
                         TransitionToState("StartP", 0f);
                         break;
+                    case StartType.Dash:
+                        break;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
@@ -79,6 +81,7 @@ namespace SurgeEngine.Code.ActorSystem
             
             if (obj is FStateIdle)
             {
+                Debug.Log(actor.kinematics.HorizontalSpeed);
                 if (prev is not FStateStart)
                 {
                     switch (prev)

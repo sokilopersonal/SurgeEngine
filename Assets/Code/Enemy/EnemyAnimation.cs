@@ -53,7 +53,7 @@ namespace SurgeEngine.Code.StateMachine
 
             if (obj is EGStateDead)
             {
-                TransitionToState("Dead", 0.1f, true);
+                TransitionToState("IdleDead", 0f, true);
             }
         }
     }

@@ -59,8 +59,12 @@ namespace SurgeEngine.Code.Parameters
         {
             base.OnFixedTick(dt);
             
-            Vector3 prevNormal = Kinematics.Normal; 
-            if (Common.CheckForGround(out var data))
+            Vector3 prevNormal = Kinematics.Normal;
+            var doc = SonicGameDocument.GetDocument("Sonic");
+            var castParam = doc.GetGroup(SonicGameDocument.CastGroup);
+            var physParam = doc.GetGroup(SonicGameDocument.PhysicsGroup);
+            //float distance = castParam.GetParameter<float>(Cast_Distance) * castParam.GetParameter<AnimationCurve>(Cast_DistanceCurve).Evaluate(Kinematics.HorizontalSpeed / physParam.GetParameter<float>(BasePhysics_TopSpeed));
+            if (Common.CheckForGround(out var data, castDistance: 1.2f))
             {
                 var point = data.point;
                 Kinematics.Normal = data.normal;
@@ -87,7 +91,7 @@ namespace SurgeEngine.Code.Parameters
             var phys = SonicGameDocument.GetDocument("Sonic").GetGroup(SonicGameDocument.PhysicsGroup);
             var param = boost.GetBoostEnergyGroup();
             float startForce = param.GetParameter<float>(BoostEnergy_StartSpeed);
-            if (Input.BoostPressed && Stats.currentSpeed < startForce)
+            if (boost.Active && Stats.currentSpeed < startForce)
             {
                 _rigidbody.linearVelocity = _rigidbody.transform.forward * startForce;
                 boost.restoringTopSpeed = true;
@@ -95,7 +99,7 @@ namespace SurgeEngine.Code.Parameters
     
             if (boost.Active)
             {
-                float maxSpeed = phys.GetParameter<float>(BasePhysics_MaxSpeed) * param.GetParameter<float>(BoostEnergy_MaxSpeedMultiplier);
+                float maxSpeed = phys.GetParameter<float>(BasePhysics_TopSpeed) * param.GetParameter<float>(BoostEnergy_MaxSpeedMultiplier);
                 if (Stats.currentSpeed < maxSpeed) _rigidbody.AddForce(_rigidbody.transform.forward * (param.GetParameter<float>(BoostEnergy_Force) * dt), ForceMode.VelocityChange);
                     
             }

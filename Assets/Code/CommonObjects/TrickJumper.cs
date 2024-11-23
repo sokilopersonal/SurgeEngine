@@ -33,8 +33,8 @@ namespace SurgeEngine.Code.CommonObjects
         [SerializeField] private EventReference qteFailSound;
         [SerializeField] private EventReference qteFailVoiceSound;
         
-        private float _targetTimeScale = 0.045f;
-        private float _timeScaleDuration = 1f;
+        private const float TargetTimeScale = 0.045f;
+        private const float TimeScaleDuration = 1.125f;
         
         [SerializeField] private Transform startPoint;
         
@@ -50,9 +50,6 @@ namespace SurgeEngine.Code.CommonObjects
         private void Awake()
         {
             _qteSequences = new List<QTESequence>();
-            
-            _targetTimeScale = 0.0285f;
-            _timeScaleDuration = 0.75f;
         }
 
         private void OnEnable()
@@ -102,7 +99,7 @@ namespace SurgeEngine.Code.CommonObjects
                 
                 context.flags.AddFlag(new Flag(FlagType.OutOfControl, null, false));
                 
-                await Common.ChangeTimeScaleOverTime(_targetTimeScale, _timeScaleDuration);
+                await Common.ChangeTimeScaleOverTime(TargetTimeScale, TimeScaleDuration);
                 
                 CreateQTEUI();
             }

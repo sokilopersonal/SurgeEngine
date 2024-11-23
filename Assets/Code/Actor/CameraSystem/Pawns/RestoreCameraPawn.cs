@@ -46,7 +46,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
         {
             Vector3 center = _actor.transform.position;
             Vector3 diff = targetPosition - center;
-            _stateMachine.position = Vector3.Slerp(_lastData.position, diff, _stateMachine.interpolatedBlendFactor);
+            _stateMachine.position = Vector3.Lerp(_lastData.position, diff, _stateMachine.interpolatedBlendFactor);
             _stateMachine.position += center;
         }
 
