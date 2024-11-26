@@ -18,7 +18,7 @@ namespace SurgeEngine.Code.Enemy
         public void OnContact()
         {
             ActorContext.Context.stateMachine.SetState<FStateAfterHoming>();
-            Destroy(gameObject);
+            view.Destroy();
         }
     }
 }

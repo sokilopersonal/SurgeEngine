@@ -32,7 +32,7 @@ namespace SurgeEngine.Code.CommonObjects
 
         private void Update()
         {
-            Vector3 rect = ActorStageHUD.Context.ringCounter.rectTransform.position;
+            Vector3 rect = ActorHUDContext.Context.ringCounter.rectTransform.position;
             rect.z = 0.1f;
             Vector3 point = _camera.ScreenToWorldPoint(rect);
             point = _camera.transform.InverseTransformPoint(point);
@@ -54,7 +54,7 @@ namespace SurgeEngine.Code.CommonObjects
             
             if (_factor >= 1f)
             {
-                var context = ActorStageHUD.Context;
+                var context = ActorHUDContext.Context;
                 context.ringCounterAnimator.Play("RingBump", 0);
                 context.ringBumpEffect.Play("RingBump", 0);
                 

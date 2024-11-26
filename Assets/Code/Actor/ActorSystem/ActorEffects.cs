@@ -6,10 +6,8 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.ActorSystem
 {
-    public class ActorEffects : MonoBehaviour, IActorComponent
+    public class ActorEffects : ActorComponent
     {
-        public Actor actor { get; set; }
-
         [Header("Trail")]
         [SerializeField] private VolumeTrailRenderer trailRenderer;
 
@@ -63,19 +61,10 @@ namespace SurgeEngine.Code.ActorSystem
             slideEffect.Toggle(obj is FStateSliding);
         }
 
-        public void OnInit()
+        private void OnEnable()
         {
             actor.stateMachine.GetSubState<FBoost>().OnActiveChanged += OnBoostActivate;
             actor.stateMachine.OnStateAssign += OnStateAssign;
-        }
-
-        private void OnEnable()
-        {
-            if (actor)
-            {
-                actor.stateMachine.GetSubState<FBoost>().OnActiveChanged += OnBoostActivate;
-                actor.stateMachine.OnStateAssign += OnStateAssign;
-            }
         }
 
         private void OnDisable()

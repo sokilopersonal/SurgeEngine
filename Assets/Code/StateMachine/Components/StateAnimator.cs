@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using SurgeEngine.Code.Custom;
+using UnityEngine;
 
 namespace SurgeEngine.Code.StateMachine.Components
 {
@@ -47,12 +48,7 @@ namespace SurgeEngine.Code.StateMachine.Components
 
         public void TransitionToState(string stateName, float transitionTime = 0.25f, bool isAction = false)
         {
-            if (_currentAnimation != stateName)
-            {
-                animator.CrossFadeInFixedTime(stateName, transitionTime);
-            }
-            
-            _currentAnimation = stateName;
+            animator.TransitionToState(stateName, ref _currentAnimation, transitionTime);
 
             if (isAction) SetAction(true);
         }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.GameDocuments
 {
-    [DefaultExecutionOrder(-9999)]
+    [DefaultExecutionOrder(-10000)]
     public abstract class GameDocument<T> : MonoBehaviour where T : GameDocument<T>
     {
         private static T _instance;

@@ -8,9 +8,8 @@ using UnityEngine.InputSystem;
 
 namespace SurgeEngine.Code.ActorSystem
 {
-    public class ActorInput : MonoBehaviour, IActorComponent
+    public class ActorInput : ActorComponent
     {
-        public Actor actor { get; set; }
 
         public Vector3 moveVector;
 
@@ -297,5 +296,10 @@ namespace SurgeEngine.Code.ActorSystem
         
         public InputDevice GetDevice() { return _device; }
         public string GetTranslatedDeviceName(InputDevice device) { return _translatedDeviceNames[device.name]; }
+    }
+
+    public class ActorComponent : MonoBehaviour
+    {
+        protected Actor actor => ActorContext.Context;
     }
 }

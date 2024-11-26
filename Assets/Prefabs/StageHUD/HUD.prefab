@@ -1995,7 +1995,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9194394260645333995}
-  - component: {fileID: 173048663512703852}
   m_Layer: 5
   m_Name: Stage
   m_TagString: Untagged
@@ -2025,38 +2024,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -1820, y: -980}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &173048663512703852
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4458900678230294408}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 464542615e0a42e58269d93d680220b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ringHUDPrefab: {fileID: 4446629658321610682, guid: d6684c9d4f9adb24e8baed021c524057, type: 3}
-  timeBar: {fileID: 7395405653715789963}
-  scoreBar: {fileID: 7305696075835300462}
-  ringCounter: {fileID: 2926386630593122316}
-  ringCounterAnimator: {fileID: 7612464393692366312}
-  ringBumpEffect: {fileID: 7811348507967541793}
-  ringCountText: {fileID: 2582245012841933321}
-  homingIcon: {fileID: 5238103595532874685}
-  qteUI: {fileID: 4839417656220771559, guid: 4da0cd9ea121ab84596be05cf29a100c, type: 3}
-  speedometerFill: {fileID: 8956187185066700906}
-  boostBar: {fileID: 4503238331743881644}
-  boostFill: {fileID: 2718385957485685608}
-  boostFill2: {fileID: 2975738457643283814}
-  energy: 100
-  energyDivider: 18
-  boostBarYAspect: 42
-  minBoostBarSize:
-    width: 125
-  maxBoostBarSize:
-    width: 680
 --- !u!1 &4516903738840066163
 GameObject:
   m_ObjectHideFlags: 0
@@ -2487,6 +2454,7 @@ GameObject:
   - component: {fileID: 7606275300259931996}
   - component: {fileID: 8121387081449550660}
   - component: {fileID: 1727050424432298576}
+  - component: {fileID: 3385306912846119046}
   m_Layer: 5
   m_Name: HUD
   m_TagString: Untagged
@@ -2579,6 +2547,38 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &3385306912846119046
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5577256657175042939}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 464542615e0a42e58269d93d680220b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ringHUDPrefab: {fileID: 4446629658321610682, guid: d6684c9d4f9adb24e8baed021c524057, type: 3}
+  timeBar: {fileID: 7395405653715789963}
+  scoreBar: {fileID: 7305696075835300462}
+  ringCounter: {fileID: 2926386630593122316}
+  ringCounterAnimator: {fileID: 7612464393692366312}
+  ringBumpEffect: {fileID: 7811348507967541793}
+  ringCountText: {fileID: 2582245012841933321}
+  homingIcon: {fileID: 5238103595532874685}
+  qteUI: {fileID: 4839417656220771559, guid: 4da0cd9ea121ab84596be05cf29a100c, type: 3}
+  speedometerFill: {fileID: 8956187185066700906}
+  boostBar: {fileID: 4503238331743881644}
+  boostFill: {fileID: 2718385957485685608}
+  boostFill2: {fileID: 2975738457643283814}
+  energy: 100
+  energyDivider: 18
+  boostBarYAspect: 42
+  minBoostBarSize:
+    width: 125
+  maxBoostBarSize:
+    width: 680
 --- !u!1 &5761269642813320270
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.ActorSystem
 {
-    public class ActorFlags : MonoBehaviour, IActorComponent
+    public class ActorFlags : MonoBehaviour
     {
         public Actor actor { get; set; }
 

@@ -6,10 +6,8 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.ActorSystem
 {
-    public class ActorStats : MonoBehaviour, IActorComponent
+    public class ActorStats : ActorComponent
     {
-        public Actor actor { get; set; }
-        
         public MoveParameters moveParameters;
         public JumpParameters jumpParameters;
         public HomingParameters homingParameters;

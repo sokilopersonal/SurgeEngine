@@ -107,7 +107,7 @@ namespace SurgeEngine.Code.CommonObjects
 
         private void CreateQTEUI()
         {
-            _currentQTEUI = Instantiate(ActorStageHUD.Context.GetQTEUI());
+            _currentQTEUI = Instantiate(ActorHUDContext.Context.GetQTEUI());
             _currentQTEUI.SetTrickJumper(this);
 
             int[] trickCount = {
@@ -187,7 +187,7 @@ namespace SurgeEngine.Code.CommonObjects
                             _buttonId = 0;
                             timer = _qteSequences[_sequenceId].time;
                             Destroy(_currentQTEUI.gameObject);
-                            _currentQTEUI = Instantiate(ActorStageHUD.Context.GetQTEUI());
+                            _currentQTEUI = Instantiate(ActorHUDContext.Context.GetQTEUI());
                             _currentQTEUI.SetTrickJumper(this);
                             _currentQTEUI.CreateButtonIcon(_qteSequences[_sequenceId]);
                         }

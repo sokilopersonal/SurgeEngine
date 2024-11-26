@@ -1,20 +1,13 @@
-﻿using UnityEngine;
-
-namespace SurgeEngine.Code.ActorSystem
+﻿namespace SurgeEngine.Code.ActorSystem
 {
-    [DefaultExecutionOrder(-2000)]
-    public class ActorContext : MonoBehaviour
+    public class ActorContext
     {
-        private static ActorContext _instance;
-        public static Actor Context => _instance._actor;
-
-        private Actor _actor;
-
-        private void Awake()
+        private static Actor _actor;
+        public static Actor Context => _actor;
+        
+        public ActorContext(Actor actor)
         {
-            _instance = this;
-            
-            _actor = GetComponent<Actor>();
+            _actor = actor;
         }
     }
 }

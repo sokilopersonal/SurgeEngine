@@ -30,7 +30,7 @@ namespace SurgeEngine.Code.CommonObjects
             _collider = GetComponent<Collider>();
             _collider.isTrigger = true;
             
-            _camera = ActorContext.Context.camera.GetCameraTransform();
+            _camera = Camera.main.transform;
         }
 
         private void Update()

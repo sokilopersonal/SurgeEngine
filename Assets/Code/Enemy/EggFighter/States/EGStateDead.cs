@@ -23,7 +23,7 @@ namespace SurgeEngine.Code.Enemy.States
                 context.stateMachine.SetState<FStateAfterHoming>();
             }
             
-            Object.Destroy(transform.gameObject);
+            eggFighter.view.Destroy();
         }
 
         public void ApplyKnockback(Vector3 force)

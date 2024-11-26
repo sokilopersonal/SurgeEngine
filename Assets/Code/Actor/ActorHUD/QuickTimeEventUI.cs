@@ -41,7 +41,7 @@ namespace SurgeEngine.Code.CommonObjects
 
         private void OnCorrectButtonPressed()
         {
-            var click = Instantiate(qteClick, ActorStageHUD.Context.transform);
+            var click = Instantiate(qteClick, ActorHUDContext.Context.transform);
             click.transform.position = _buttons[0].transform.position;
             Destroy(click, 0.65f);
             _buttons[0].Destroy();

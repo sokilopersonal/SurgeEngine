@@ -23,15 +23,16 @@ namespace SurgeEngine.Code.CommonObjects
             
             if (center)
             {
+                context.rigidbody.linearVelocity = Vector3.zero;
                 context.rigidbody.position = transform.position + transform.up * 0.5f;
             }
-            
-            context.rigidbody.rotation = Quaternion.LookRotation(transform.forward, transform.up);
-            context.model.root.rotation = context.rigidbody.rotation;
             
             context.animation.TransitionToState(AnimatorParams.RunCycle);
             context.rigidbody.linearVelocity = transform.forward * speed;
             context.stateMachine.SetState<FStateGround>();
+            
+            context.rigidbody.rotation = Quaternion.LookRotation(transform.forward, transform.up);
+            context.model.root.rotation = context.rigidbody.rotation;
 
             context.flags.AddFlag(new Flag(FlagType.OutOfControl, 
                 new [] { Tags.AllowBoost }, true, Mathf.Abs(outOfControl)));

@@ -1,5 +1,6 @@
 ﻿using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.GameDocuments;
+using SurgeEngine.Code.Parameters.SonicSubStates;
 using UnityEngine;
 
 namespace SurgeEngine.Code.CameraSystem.Pawns
@@ -10,11 +11,15 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
         protected float _yOffset;
         private float _sensSpeedMod;
         private Vector3 _velocity;
+
+        private float _boostDistance;
         
         public NewModernState(Actor owner) : base(owner)
         {
             _distance = _master.distance;
             _yOffset = _master.yOffset;
+
+            _boostDistance = 1f;
         }
 
         public override void OnTick(float dt)
@@ -27,7 +32,9 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
 
         private void ModernSetup()
         {
-            var actorPosition = CalculateTarget(out var targetPosition, _distance, _yOffset);
+            var actorPosition = CalculateTarget(out var targetPosition, _distance * _boostDistance, _yOffset);
+            
+            Debug.Log(_boostDistance); 
 
             ZLag();
             YLag();
@@ -78,20 +85,17 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             _sensSpeedMod = Mathf.Lerp(_master.maxSensitivitySpeed, _master.minSensitivitySpeed, speed / physParam.GetParameter<float>(SonicGameDocumentParams.BasePhysics_TopSpeed));
             if (speed > 1f)
             {
-                if (NotOnTheWall())
-                {
-                    float lookMod = speed / physParam
-                        .GetParameter<float>(SonicGameDocumentParams.BasePhysics_TopSpeed);
-                    AutoLook(_master.horizontalAutoLookAmplitude * Mathf.Max(_master.horizontalAutoLookMinAmplitude, lookMod));
+                float lookMod = speed / physParam
+                    .GetParameter<float>(SonicGameDocumentParams.BasePhysics_TopSpeed);
+                AutoLook(_master.horizontalAutoLookAmplitude * Mathf.Max(_master.horizontalAutoLookMinAmplitude, lookMod));
                     
-                    Vector3 vel = _actor.kinematics.Rigidbody.linearVelocity;
-                    _velocity = Vector3.Lerp(_velocity, vel, Time.deltaTime * 8f);
-                    var yAutoLook = _velocity.y > 0 ? Mathf.Clamp(-_velocity.y * 1.25f, _master.verticalMinAmplitude, _master.verticalMaxAmplitude)
-                        : _master.verticalDefaultAmplitude;
+                Vector3 vel = _actor.kinematics.Rigidbody.linearVelocity;
+                _velocity = Vector3.Lerp(_velocity, vel, Time.deltaTime * 8f);
+                var yAutoLook = Mathf.Abs(_velocity.y) > 0.2f ? Mathf.Clamp(-_velocity.y * 1.25f, _master.verticalMinAmplitude, _master.verticalMaxAmplitude)
+                    : _master.verticalDefaultAmplitude;
                 
-                    _stateMachine.yAutoLook = yAutoLook;
-                    _stateMachine.y = Mathf.Lerp(_stateMachine.y, _stateMachine.yAutoLook, Time.deltaTime * Mathf.Max(_master.verticalMinLerpSpeed, lookMod * _master.verticalLerpSpeed));
-                }
+                _stateMachine.yAutoLook = yAutoLook;
+                _stateMachine.y = Mathf.Lerp(_stateMachine.y, _stateMachine.yAutoLook, Time.deltaTime * Mathf.Max(_master.verticalMinLerpSpeed, lookMod * _master.verticalLerpSpeed));
             }
             else
             {
@@ -131,11 +135,33 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             _stateMachine.rotation = Quaternion.LookRotation(lookDirection.normalized);
         }
 
+        protected virtual void BoostHandle()
+        {
+            _boostDistance = _master.boostBlendCurve.Evaluate(_master.boostBlendFactor);
+            _stateMachine.camera.fieldOfView = 60f * _master.boostBlendFovCurve.Evaluate(_master.boostBlendFactor);
+
+            if (!_actor.stateMachine.GetSubState<FBoost>().Active)
+            {
+                _boostDistance = 1f;
+                _stateMachine.camera.fieldOfView = 60f;
+            }
+        }
+
         public void SetDirection(Vector3 transformForward)
         {
             Quaternion direction = Quaternion.LookRotation(transformForward, Vector3.up);
             _stateMachine.x = direction.eulerAngles.y;
             _stateMachine.y = direction.eulerAngles.x;
+        }
+
+        public void SetBoostDistance(float value)
+        {
+            _boostDistance = value;
+        }
+        
+        public float GetBoostDistance()
+        {
+            return _boostDistance;
         }
 
         private bool NotOnTheWall()

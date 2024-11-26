@@ -4,10 +4,8 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.ActorSystem
 {
-    public class ActorModel : MonoBehaviour, IActorComponent
+    public class ActorModel : ActorComponent
     {
-        public Actor actor { get; set; }
-
         public Transform root;
 
         public CapsuleCollider collision;
@@ -23,7 +21,7 @@ namespace SurgeEngine.Code.ActorSystem
         {
             collisionStartHeight = collision.height;
             collisionStartRadius = collision.radius;
-
+            
             Quaternion parentRotation = actor.transform.parent.rotation;
             actor.transform.parent.rotation = Quaternion.identity;
 
@@ -34,6 +32,7 @@ namespace SurgeEngine.Code.ActorSystem
         
         public void OnInit()
         {
+            
         }
 
         private void Update()

@@ -6,8 +6,7 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.ActorSystem
 {
-    [DefaultExecutionOrder(-1000)]
-    public class Actor : MonoBehaviour, IActor
+    public class Actor : MonoBehaviour
     {
         public ActorInput input;
         public ActorStats stats;
@@ -23,7 +22,7 @@ namespace SurgeEngine.Code.ActorSystem
 
         [HideInInspector] public new Rigidbody rigidbody;
 
-        private void Awake()
+        public void Initialize()
         {
             if (!gameObject.activeSelf)
             {
@@ -31,7 +30,6 @@ namespace SurgeEngine.Code.ActorSystem
             }
             
             rigidbody = GetComponent<Rigidbody>();
-
             stateMachine = new FStateMachine();
             
             stateMachine.AddState(new FStateStart(this, rigidbody));
@@ -57,11 +55,6 @@ namespace SurgeEngine.Code.ActorSystem
             var boost = new FBoost(this);
             stateMachine.AddSubState(boost);
             
-            InitializeComponents();
-        }
-
-        private void Start()
-        {
             var startData = GetComponentInParent<ActorStartDefiner>().startData;
             if (startData.startType != StartType.None)
             {
@@ -70,14 +63,6 @@ namespace SurgeEngine.Code.ActorSystem
             else
             {
                 stateMachine.SetState<FStateIdle>();
-            }
-        }
-
-        public void InitializeComponents()
-        {
-            foreach (var component in new IActorComponent[] { input, stats, sounds, effects, camera, animation, model, flags, kinematics })
-            {
-                component?.SetOwner(this);
             }
         }
         

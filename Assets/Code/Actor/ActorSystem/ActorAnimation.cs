@@ -9,18 +9,15 @@ using Random = UnityEngine.Random;
 
 namespace SurgeEngine.Code.ActorSystem
 {
-    public class ActorAnimation : StateAnimator, IActorComponent
+    public class ActorAnimation : ActorComponent
     {
-        public Actor actor { get; set; }
-        
-        public void OnInit()
-        {
-            actor.stateMachine.OnStateAssign += ChangeStateAnimation;
-        }
+        public Animator animator;
+
+        private string _currentAnimation;
 
         private void OnEnable()
         {
-            if (actor) actor.stateMachine.OnStateAssign += ChangeStateAnimation;
+            actor.stateMachine.OnStateAssign += ChangeStateAnimation;
         }
 
         private void OnDisable()
@@ -28,7 +25,7 @@ namespace SurgeEngine.Code.ActorSystem
             actor.stateMachine.OnStateAssign -= ChangeStateAnimation;
         }
 
-        protected override void AnimationTick()
+        private void Update()
         {
             SetBool(AnimatorParams.Idle, actor.stateMachine.currentStateName == "FStateIdle");
             SetBool(AnimatorParams.InAir, actor.stateMachine.currentStateName == "FStateAir" ||
@@ -81,7 +78,6 @@ namespace SurgeEngine.Code.ActorSystem
             
             if (obj is FStateIdle)
             {
-                Debug.Log(actor.kinematics.HorizontalSpeed);
                 if (prev is not FStateStart)
                 {
                     switch (prev)
@@ -206,6 +202,43 @@ namespace SurgeEngine.Code.ActorSystem
             {
                 
             }
+        }
+        
+        protected void SetFloat(string state, float value)
+        {
+            animator.SetFloat(state, value);
+        }
+
+        protected void SetBool(string state, bool value)
+        {
+            animator.SetBool(state, value);
+        }
+
+        protected void SetFloat(int id, float value)
+        {
+            animator.SetFloat(id, value);
+        }
+
+        protected void SetBool(int id, bool value)
+        {
+            animator.SetBool(id, value);
+        }
+
+        protected void SetAction(bool value)
+        {
+            SetBool("InAction", value);
+        }
+
+        public void ResetAction()
+        {
+            SetAction(false);
+        }
+
+        public void TransitionToState(string stateName, float transitionTime = 0.25f, bool isAction = false)
+        {
+            animator.TransitionToState(stateName, ref _currentAnimation, transitionTime);
+
+            if (isAction) SetAction(true);
         }
     }
 

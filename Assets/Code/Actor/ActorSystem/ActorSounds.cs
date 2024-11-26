@@ -5,10 +5,8 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.ActorSystem
 {
-    public class ActorSounds : MonoBehaviour, IActorComponent
+    public class ActorSounds : ActorComponent
     {
-        public Actor actor { get; set; }
-
         private List<ActorSound> _sounds = new List<ActorSound>(); 
         
         private const float BOOST_VOICE_DELAY = 1.5f;

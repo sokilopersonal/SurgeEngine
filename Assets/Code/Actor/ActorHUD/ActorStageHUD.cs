@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.Custom;
@@ -7,16 +6,11 @@ using SurgeEngine.Code.Parameters.SonicSubStates;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Random = UnityEngine.Random;
 
 namespace SurgeEngine.Code.ActorHUD
 {
     public class ActorStageHUD : MonoBehaviour
     {
-        private static ActorStageHUD _instance;
-
-        public static ActorStageHUD Context => _instance;
-
         [SerializeField] private RingHUD ringHUDPrefab;
 
         [SerializeField] private TMP_Text timeBar;
@@ -45,13 +39,8 @@ namespace SurgeEngine.Code.ActorHUD
         [SerializeField] private BoostBarSize maxBoostBarSize;
         private float _extEnergy;
 
-        private Actor _actor => ActorContext.Context;
-
-        private void Awake()
-        {
-            _instance = this;
-        }
-
+        private Actor _actor;
+        
         private void OnValidate()
         {
             float energy = this.energy / 100;
@@ -77,6 +66,8 @@ namespace SurgeEngine.Code.ActorHUD
 
         private void Update()
         {
+            _actor = ActorContext.Context;
+            
             RingCount();
             BoostBar();
             Speedometer();

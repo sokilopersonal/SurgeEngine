@@ -9,7 +9,7 @@ namespace SurgeEngine.Code.Parameters
 
         public FActorSubState(Actor owner)
         {
-            actor = owner;
+            actor = ActorContext.Context;
         }
     }
 }

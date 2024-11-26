@@ -9,10 +9,8 @@ using static SurgeEngine.Code.GameDocuments.SonicGameDocumentParams;
 
 namespace SurgeEngine.Code.ActorSystem
 {
-    public class ActorKinematics : MonoBehaviour, IActorComponent
+    public class ActorKinematics : ActorComponent
     {
-        public Actor actor { get; set; }
-
         public Rigidbody Rigidbody => _rigidbody;
 
         public float TurnRate
@@ -61,28 +59,19 @@ namespace SurgeEngine.Code.ActorSystem
         private float _angle;
         private float _detachTimer;
         private float _skidTimer;
-        private float _grindIgnore;
         private bool _canAttach;
         private bool _skidding;
         
         private Document _document;
         private ParameterGroup _physGroup;
 
-        public void OnInit()
+        public void Start()
         {
             _rigidbody = GetComponent<Rigidbody>();
             Normal = Vector3.up;
             
             _document = SonicGameDocument.GetDocument("Sonic");
             _physGroup = _document.GetGroup(SonicGameDocument.PhysicsGroup);
-
-            actor.stateMachine.OnStateAssign += (state =>
-            {
-                if (actor.stateMachine.Is<FStateGrind>())
-                {
-                    _grindIgnore = 0.5f;
-                }
-            });
         }
 
         private void Update()
