@@ -86,8 +86,8 @@ MonoBehaviour:
     supportVFXRayTracing: 0
     supportedRayTracingMode: 3
     lightLoopSettings:
-      cookieAtlasSize: 4096
-      cookieFormat: 74
+      cookieAtlasSize: 1024
+      cookieFormat: 48
       cookieAtlasLastValidMip: 0
       cookieTexArraySize: 1
       planarReflectionAtlasSize: 0
@@ -100,7 +100,7 @@ MonoBehaviour:
       reflectionProbeTexLastValidCubeMip: 4
       reflectionProbeTexLastValidPlanarMip: 0
       reflectionProbeDecreaseResToFit: 1
-      skyReflectionSize: 128
+      skyReflectionSize: 256
       skyLightingOverrideLayerMask:
         serializedVersion: 2
         m_Bits: 0
@@ -117,9 +117,9 @@ MonoBehaviour:
     hdShadowInitParams:
       maxShadowRequests: 128
       directionalShadowsDepthBits: 32
-      punctualShadowFilteringQuality: 2
-      directionalShadowFilteringQuality: 2
-      areaShadowFilteringQuality: 1
+      punctualShadowFilteringQuality: 1
+      directionalShadowFilteringQuality: 1
+      areaShadowFilteringQuality: 0
       punctualLightShadowAtlas:
         shadowAtlasResolution: 4096
         shadowAtlasDepthBits: 32

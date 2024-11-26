@@ -33,8 +33,6 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
         private void ModernSetup()
         {
             var actorPosition = CalculateTarget(out var targetPosition, _distance * _boostDistance, _yOffset);
-            
-            Debug.Log(_boostDistance); 
 
             ZLag();
             YLag();

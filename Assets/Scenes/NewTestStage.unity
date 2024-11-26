@@ -93,7 +93,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 112000000, guid: 60030e33c19661542b37ec5ad76c2d6d, type: 2}
+  m_LightingDataAsset: {fileID: 0}
   m_LightingSettings: {fileID: 4890085278179872738, guid: 221ac07bb8f1f5a4a8df2ca1f5552313, type: 2}
 --- !u!196 &4
 NavMeshSettings:
@@ -7639,7 +7639,7 @@ MonoBehaviour:
   m_AreaLightShadowCone: 120
   m_UseScreenSpaceShadows: 0
   m_InteractsWithSky: 1
-  m_AngularDiameter: 0.5
+  m_AngularDiameter: 1
   diameterMultiplerMode: 0
   diameterMultiplier: 1
   diameterOverride: 1
@@ -7676,21 +7676,21 @@ MonoBehaviour:
   m_BlockerSampleCount: 24
   m_FilterSampleCount: 16
   m_MinFilterSize: 0.1
-  m_DirLightPCSSBlockerSampleCount: 12
+  m_DirLightPCSSBlockerSampleCount: 16
   m_DirLightPCSSFilterSampleCount: 16
-  m_DirLightPCSSMaxPenumbraSize: 5
-  m_DirLightPCSSMaxSamplingDistance: 2
-  m_DirLightPCSSMinFilterSizeTexels: 1
+  m_DirLightPCSSMaxPenumbraSize: 10
+  m_DirLightPCSSMaxSamplingDistance: 4
+  m_DirLightPCSSMinFilterSizeTexels: 0.5
   m_DirLightPCSSMinFilterMaxAngularDiameter: 2
-  m_DirLightPCSSBlockerSearchAngularDiameter: 60
-  m_DirLightPCSSBlockerSamplingClumpExponent: 1.5
+  m_DirLightPCSSBlockerSearchAngularDiameter: 90
+  m_DirLightPCSSBlockerSamplingClumpExponent: 1
   m_KernelSize: 5
   m_LightAngle: 1
   m_MaxDepthBias: 0.001
   m_ShadowResolution:
     m_Override: 256
     m_UseOverride: 0
-    m_Level: 3
+    m_Level: 1
   m_ShadowDimmer: 1
   m_VolumetricShadowDimmer: 1
   m_ShadowFadeDistance: 10000
@@ -7702,7 +7702,7 @@ MonoBehaviour:
   m_ShadowTint: {r: 0, g: 0, b: 0, a: 1}
   m_PenumbraTint: 0
   m_NormalBias: 1
-  m_SlopeBias: 1
+  m_SlopeBias: 0.5
   m_ShadowUpdateMode: 0
   m_AlwaysDrawDynamicShadows: 0
   m_UpdateShadowOnLightMovement: 0
@@ -7796,7 +7796,7 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
   m_ShadowRadius: 0
-  m_ShadowAngle: 0.5
+  m_ShadowAngle: 1
   m_LightUnit: 2
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
@@ -17074,33 +17074,33 @@ MonoBehaviour:
     m_Aspect: 0
   m_HasValidSHForNormalization: 1
   m_SHForNormalization:
-    'sh[ 0]': 2214.412
-    'sh[ 1]': -622.13525
-    'sh[ 2]': 211.08405
-    'sh[ 3]': 1257.3326
-    'sh[ 4]': -131.94984
-    'sh[ 5]': -94.97043
-    'sh[ 6]': -131.00078
-    'sh[ 7]': 38.96912
-    'sh[ 8]': 428.2237
-    'sh[ 9]': 2234.5115
-    'sh[10]': -596.45685
-    'sh[11]': 225.4533
-    'sh[12]': 1208.3381
-    'sh[13]': -68.79636
-    'sh[14]': -100.76966
-    'sh[15]': -133.49162
-    'sh[16]': 43.390057
-    'sh[17]': 440.75723
-    'sh[18]': 2557.7314
-    'sh[19]': -632.9958
-    'sh[20]': 277.8385
-    'sh[21]': 1287.2094
-    'sh[22]': 23.429344
-    'sh[23]': -123.1851
-    'sh[24]': -154.86801
-    'sh[25]': 56.124443
-    'sh[26]': 518.24164
+    'sh[ 0]': 2177.3796
+    'sh[ 1]': -488.54636
+    'sh[ 2]': 112.31588
+    'sh[ 3]': 1070.1221
+    'sh[ 4]': -51.590733
+    'sh[ 5]': 34.317986
+    'sh[ 6]': -210.73972
+    'sh[ 7]': 191.32362
+    'sh[ 8]': 511.15344
+    'sh[ 9]': 2198.7927
+    'sh[10]': -458.779
+    'sh[11]': 115.165245
+    'sh[12]': 1003.3102
+    'sh[13]': 11.532033
+    'sh[14]': 40.742832
+    'sh[15]': -219.91515
+    'sh[16]': 201.37988
+    'sh[17]': 528.12054
+    'sh[18]': 2519.464
+    'sh[19]': -470.83566
+    'sh[20]': 134.72939
+    'sh[21]': 1026.9314
+    'sh[22]': 114.170235
+    'sh[23]': 56.34321
+    'sh[24]': -263.2575
+    'sh[25]': 243.71964
+    'sh[26]': 624.08655
   m_SHValidForCapturePosition: {x: -56.5, y: 12, z: -42}
   m_SHValidForSourcePosition: {x: -56.5, y: 12, z: -42}
   m_HDProbeVersion: 9
@@ -20103,33 +20103,33 @@ MonoBehaviour:
     m_Aspect: 0
   m_HasValidSHForNormalization: 1
   m_SHForNormalization:
-    'sh[ 0]': 4918.2324
-    'sh[ 1]': -2920.153
-    'sh[ 2]': 420.00717
-    'sh[ 3]': 420.44473
-    'sh[ 4]': -28.805628
-    'sh[ 5]': -36.630066
-    'sh[ 6]': -7.927473
-    'sh[ 7]': -19.38162
-    'sh[ 8]': -29.496975
-    'sh[ 9]': 5500.4155
-    'sh[10]': -3218.4377
-    'sh[11]': 502.06458
-    'sh[12]': 187.89688
-    'sh[13]': 20.212591
-    'sh[14]': -50.882053
-    'sh[15]': -19.36783
-    'sh[16]': -45.831535
-    'sh[17]': -3.9677646
-    'sh[18]': 6220.5464
-    'sh[19]': -3755.8596
-    'sh[20]': 408.92792
-    'sh[21]': 765.5702
-    'sh[22]': -71.64575
-    'sh[23]': -24.99751
-    'sh[24]': -8.83735
-    'sh[25]': 35.486603
-    'sh[26]': -59.123672
+    'sh[ 0]': 4786.118
+    'sh[ 1]': -2892.7454
+    'sh[ 2]': 379.4148
+    'sh[ 3]': 439.79865
+    'sh[ 4]': -56.502655
+    'sh[ 5]': -56.001125
+    'sh[ 6]': -4.114115
+    'sh[ 7]': 1.1180669
+    'sh[ 8]': -49.576633
+    'sh[ 9]': 5286.141
+    'sh[10]': -3176.7534
+    'sh[11]': 471.23068
+    'sh[12]': 297.05194
+    'sh[13]': -18.178251
+    'sh[14]': -75.51199
+    'sh[15]': -10.799723
+    'sh[16]': -29.437025
+    'sh[17]': -38.501972
+    'sh[18]': 6111.674
+    'sh[19]': -3738.0796
+    'sh[20]': 367.0188
+    'sh[21]': 708.6242
+    'sh[22]': -96.797455
+    'sh[23]': -52.417454
+    'sh[24]': -8.702532
+    'sh[25]': 49.31272
+    'sh[26]': -74.44418
   m_SHValidForCapturePosition: {x: -18.5, y: 9.5, z: 3}
   m_SHValidForSourcePosition: {x: -18.5, y: 9.5, z: 3}
   m_HDProbeVersion: 9
@@ -20675,7 +20675,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a83d2f7ae04ab6f4f99b0d85377be998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializedBakingSet: {fileID: 11400000, guid: 8ded11a1916454f4cbe4add9ead05480, type: 2}
+  serializedBakingSet: {fileID: 0}
   sceneGUID: 4887d5ee8d1a4c948ab3c45ea8242812
   obsoleteAsset: {fileID: 0}
   obsoleteCellSharedDataAsset: {fileID: 0}
@@ -25672,7 +25672,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1861612162
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25773,7 +25773,7 @@ MonoBehaviour:
   lowestSubdivLevelOverride: 1
   highestSubdivLevelOverride: 3
   overridesSubdivLevels: 1
-  mightNeedRebaking: 0
+  mightNeedRebaking: 1
   cachedTransform:
     e00: 1
     e01: 0
@@ -26761,33 +26761,33 @@ MonoBehaviour:
     m_Aspect: 0
   m_HasValidSHForNormalization: 1
   m_SHForNormalization:
-    'sh[ 0]': 4241.5576
-    'sh[ 1]': -1005.4276
-    'sh[ 2]': 1424.2402
-    'sh[ 3]': 176.84927
-    'sh[ 4]': 406.33957
-    'sh[ 5]': 74.19106
-    'sh[ 6]': 11.097978
-    'sh[ 7]': -253.86642
-    'sh[ 8]': 139.46803
-    'sh[ 9]': 4525.162
-    'sh[10]': -1072.6538
-    'sh[11]': 1519.4702
-    'sh[12]': 188.67389
-    'sh[13]': 433.509
-    'sh[14]': 79.15176
-    'sh[15]': 11.84002
-    'sh[16]': -270.84097
-    'sh[17]': 148.79337
-    'sh[18]': 5568.909
-    'sh[19]': -1320.0658
-    'sh[20]': 1869.9415
-    'sh[21]': 232.19229
-    'sh[22]': 533.4993
-    'sh[23]': 97.40839
-    'sh[24]': 14.570979
-    'sh[25]': -333.31146
-    'sh[26]': 183.11307
+    'sh[ 0]': 4251.9175
+    'sh[ 1]': -1073.6862
+    'sh[ 2]': 1388.495
+    'sh[ 3]': 19.294289
+    'sh[ 4]': 551.8846
+    'sh[ 5]': 104.63406
+    'sh[ 6]': 15.621482
+    'sh[ 7]': -154.25194
+    'sh[ 8]': 124.24609
+    'sh[ 9]': 4536.2183
+    'sh[10]': -1145.4762
+    'sh[11]': 1481.3339
+    'sh[12]': 20.584372
+    'sh[13]': 588.7857
+    'sh[14]': 111.63025
+    'sh[15]': 16.66599
+    'sh[16]': -164.56575
+    'sh[17]': 132.55363
+    'sh[18]': 5582.511
+    'sh[19]': -1409.6837
+    'sh[20]': 1823.0095
+    'sh[21]': 25.332235
+    'sh[22]': 724.5914
+    'sh[23]': 137.3782
+    'sh[24]': 20.51008
+    'sh[25]': -202.52356
+    'sh[26]': 163.12758
   m_SHValidForCapturePosition: {x: 23, y: 14, z: -23.5}
   m_SHValidForSourcePosition: {x: 23, y: 14, z: -23.5}
   m_HDProbeVersion: 9
@@ -27895,8 +27895,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 441482e8936e35048a1dffac814e3ef8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Profile: {fileID: 0}
-  m_StaticLightingSkyUniqueID: 0
+  m_Profile: {fileID: 11400000, guid: 695e2aa9008158947be70775613504d5, type: 2}
+  m_StaticLightingSkyUniqueID: 4
   m_StaticLightingCloudsUniqueID: 0
   m_StaticLightingVolumetricClouds: 0
   bounces: 1
