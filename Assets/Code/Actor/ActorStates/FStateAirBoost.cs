@@ -18,7 +18,7 @@ namespace SurgeEngine.Code.Parameters
         {
             base.OnEnter();
 
-            _timer = 0.1f;
+            _timer = 0.25f;
             
             FBoost boost = StateMachine.GetSubState<FBoost>();
             if (boost.canAirBoost)

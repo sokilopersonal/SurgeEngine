@@ -84,6 +84,7 @@ namespace SurgeEngine.Code.Parameters
                 
                 Quaternion rot = Quaternion.LookRotation(direction, normal);
                 _rigidbody.rotation = rot;
+                Actor.model.root.rotation = rot;
                 
                 Vector3 nearPoint = container.transform.TransformPoint(near);
                 nearPoint += normal * _rail.radius;

@@ -75,10 +75,14 @@ namespace SurgeEngine.Code.ActorHUD
 
             var stageData = Stage.Instance.data;
             float time = stageData.Time;
-            timeBar.text = $"Time: {GetTimeInString(time)}";
+
+            string mono = "<mspace=0.7em>";
+            string scoreMono = "<mspace=0.85em>";
+            
+            timeBar.text = $"{mono}{GetTimeInString(time)}";
 
             int score = stageData.Score;
-            scoreBar.text = score > 0 ? $"{score}" : "";
+            scoreBar.text = $"{scoreMono}{score:000000}";
         }
 
         private void RingCount()

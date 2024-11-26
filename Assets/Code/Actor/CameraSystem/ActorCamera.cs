@@ -105,7 +105,7 @@ namespace SurgeEngine.Code.CameraSystem
             if (sub is FBoost)
             {
                 float t = 0;
-                float blendTime = active ? boostBlendTime : 0.75f;
+                float blendTime = active ? boostBlendTime : boostDeblendTime;
                 float lastBlendFactor = boostBlendFactor;
                 NewModernState state = stateMachine.GetState<NewModernState>();
                 float lastDistance = state.GetBoostDistance();
