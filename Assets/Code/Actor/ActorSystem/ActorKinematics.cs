@@ -124,6 +124,7 @@ namespace SurgeEngine.Code.ActorSystem
             {
                 if (path.splineContainer != null)
                 {
+                    
                     var container = path.splineContainer;
                     SplineUtility.GetNearestPoint(container.Spline, SurgeMath.Vector3ToFloat3(container.transform.InverseTransformPoint(_rigidbody.position)), out var near, out var t);
                     container.Evaluate(t, out var point, out var tangent, out var up);
@@ -140,7 +141,8 @@ namespace SurgeEngine.Code.ActorSystem
                 
                     Vector3 nearPoint = container.transform.TransformPoint(near);
                     nearPoint.y = _rigidbody.position.y;
-                    _rigidbody.position = nearPoint;
+                    // _rigidbody.position = nearPoint;
+                    // _rigidbody.rotation = Quaternion.LookRotation(tangent, up);
                 }
             }
         }

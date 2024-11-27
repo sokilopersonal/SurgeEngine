@@ -54,7 +54,10 @@ namespace SurgeEngine.Code.ActorSystem
             
             var boost = new FBoost(this);
             stateMachine.AddSubState(boost);
-            
+        }
+
+        private void Start()
+        {
             var startData = GetComponentInParent<ActorStartDefiner>().startData;
             if (startData.startType != StartType.None)
             {
@@ -65,7 +68,7 @@ namespace SurgeEngine.Code.ActorSystem
                 stateMachine.SetState<FStateIdle>();
             }
         }
-        
+
         private void Update()
         {
             stateMachine?.Tick(Time.deltaTime);

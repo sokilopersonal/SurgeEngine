@@ -77,7 +77,7 @@ namespace SurgeEngine.Code.ActorHUD
             float time = stageData.Time;
 
             string mono = "<mspace=0.7em>";
-            string scoreMono = "<mspace=0.85em>";
+            string scoreMono = "<mspace=1.0em>";
             
             timeBar.text = $"{mono}{GetTimeInString(time)}";
 

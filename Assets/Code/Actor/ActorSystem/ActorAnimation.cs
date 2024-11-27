@@ -3,7 +3,6 @@ using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.Parameters;
 using SurgeEngine.Code.Parameters.SonicSubStates;
 using SurgeEngine.Code.StateMachine;
-using SurgeEngine.Code.StateMachine.Components;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -55,7 +54,6 @@ namespace SurgeEngine.Code.ActorSystem
         private void ChangeStateAnimation(FState obj)
         {
             var prev = actor.stateMachine.PreviousState;
-
             if (obj is FStateStart)
             {
                 var type = actor.GetComponentInParent<ActorStartDefiner>().startData.startType;

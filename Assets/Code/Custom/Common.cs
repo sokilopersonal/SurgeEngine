@@ -192,10 +192,9 @@ namespace SurgeEngine.Code.Custom
             var doc = SonicGameDocument.GetDocument("Sonic");
             var param = doc.GetGroup(SonicGameDocument.HomingGroup);
             Vector3 origin = transform.position + Vector3.down;
-            Vector3 dir = context.stats.inputDir == Vector3.zero ? transform.forward : context.stats.inputDir;
-            var halfExtents = new Vector3(param.GetParameter<float>(Homing_FindRadius), 2.75f, param.GetParameter<float>(Homing_FindRadius));
+            Vector3 dir = context.kinematics.GetInputDir() == Vector3.zero ? transform.forward : context.kinematics.GetInputDir();
             var maxDistance = param.GetParameter<float>(Homing_FindDistance);
-            var hits = Physics.BoxCastAll(origin, halfExtents, dir, Quaternion.identity, maxDistance, param.GetParameter<LayerMask>(Homing_Mask), QueryTriggerInteraction.Collide);
+            var hits = Physics.OverlapSphere(origin + dir, maxDistance, param.GetParameter<LayerMask>(Homing_Mask), QueryTriggerInteraction.Collide);
             HomingTarget closestTarget = null;
             float closestDistance = float.MaxValue;
             foreach (var hit in hits)
