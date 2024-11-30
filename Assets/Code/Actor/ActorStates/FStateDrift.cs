@@ -1,14 +1,14 @@
-﻿using SurgeEngine.Code.ActorSystem;
+﻿using SurgeEngine.Code.ActorStates.BaseStates;
+using SurgeEngine.Code.ActorStates.SonicSubStates;
+using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.GameDocuments;
-using SurgeEngine.Code.Parameters.SonicSubStates;
-using SurgeEngine.Code.SonicSubStates.Boost;
 using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
 using Vector3 = UnityEngine.Vector3;
 using static SurgeEngine.Code.GameDocuments.SonicGameDocumentParams;
 
-namespace SurgeEngine.Code.Parameters
+namespace SurgeEngine.Code.ActorStates
 {
     public class FStateDrift : FStateMove, IBoostHandler
     {

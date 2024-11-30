@@ -1,15 +1,14 @@
-﻿using SurgeEngine.Code.ActorSystem;
+﻿using SurgeEngine.Code.ActorStates.BaseStates;
+using SurgeEngine.Code.ActorStates.SonicSubStates;
+using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.GameDocuments;
-using SurgeEngine.Code.Parameters.SonicSubStates;
-using SurgeEngine.Code.SonicSubStates.Boost;
 using UnityEngine;
-using UnityEngine.Splines;
 using Quaternion = UnityEngine.Quaternion;
 using Vector3 = UnityEngine.Vector3;
 using static SurgeEngine.Code.GameDocuments.SonicGameDocumentParams;
 
-namespace SurgeEngine.Code.Parameters
+namespace SurgeEngine.Code.ActorStates
 {
     public sealed class FStateGround : FStateMove, IBoostHandler
     {
@@ -63,8 +62,9 @@ namespace SurgeEngine.Code.Parameters
             var doc = SonicGameDocument.GetDocument("Sonic");
             var castParam = doc.GetGroup(SonicGameDocument.CastGroup);
             var physParam = doc.GetGroup(SonicGameDocument.PhysicsGroup);
-            //float distance = castParam.GetParameter<float>(Cast_Distance) * castParam.GetParameter<AnimationCurve>(Cast_DistanceCurve).Evaluate(Kinematics.HorizontalSpeed / physParam.GetParameter<float>(BasePhysics_TopSpeed));
-            if (Common.CheckForGround(out var data, castDistance: 1.2f))
+            float distance = castParam.GetParameter<float>(Cast_Distance) * castParam.GetParameter<AnimationCurve>(Cast_DistanceCurve).Evaluate(Kinematics.HorizontalSpeed / physParam.GetParameter<float>(BasePhysics_TopSpeed));
+            bool willBeGrounded = Kinematics.CheckForPredictedGround(_rigidbody.linearVelocity, prevNormal, dt, distance, 32);
+            if (Common.CheckForGround(out var data, castDistance: distance) && willBeGrounded)
             {
                 var point = data.point;
                 Kinematics.Normal = data.normal;

@@ -1,6 +1,6 @@
-﻿using SurgeEngine.Code.ActorSystem;
+﻿using SurgeEngine.Code.ActorStates.SonicSubStates;
+using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.GameDocuments;
-using SurgeEngine.Code.Parameters.SonicSubStates;
 using UnityEngine;
 
 namespace SurgeEngine.Code.CameraSystem.Pawns
@@ -45,7 +45,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             Quaternion horizontal = Quaternion.AngleAxis(_stateMachine.x, Vector3.up);
             Quaternion vertical = Quaternion.AngleAxis(_stateMachine.y, Vector3.right);
             Vector3 direction = horizontal * vertical * Vector3.back;
-            Vector3 actorPosition = _actor.transform.position + Vector3.up * yOffset + Vector3.up * _stateMachine.yLag;
+            Vector3 actorPosition = _actor.transform.position + _master.transform.TransformDirection(_master.positionOffset) + Vector3.up * yOffset + Vector3.up * _stateMachine.yLag;
             targetPosition = actorPosition + direction * (distance + _stateMachine.zLag);
             return actorPosition;
         }
@@ -127,7 +127,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
 
         protected virtual void SetRotation(Vector3 actorPosition)
         {
-            Vector3 lookTarget = actorPosition;
+            Vector3 lookTarget = actorPosition + _master.transform.TransformDirection(_master.lookOffset);
             Vector3 lookDirection = lookTarget - _stateMachine.position;
             
             _stateMachine.rotation = Quaternion.LookRotation(lookDirection.normalized);

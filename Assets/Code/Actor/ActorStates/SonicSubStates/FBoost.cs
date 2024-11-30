@@ -1,15 +1,15 @@
 ﻿using System.Collections;
+using SurgeEngine.Code.ActorStates.BaseStates;
 using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.GameDocuments;
 using SurgeEngine.Code.Misc;
-using SurgeEngine.Code.SonicSubStates.Boost;
 using SurgeEngine.Code.StateMachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using static SurgeEngine.Code.GameDocuments.SonicGameDocumentParams;
 
-namespace SurgeEngine.Code.Parameters.SonicSubStates
+namespace SurgeEngine.Code.ActorStates.SonicSubStates
 {
     public class FBoost : FActorSubState
     {

@@ -1,5 +1,5 @@
-﻿using SurgeEngine.Code.Custom;
-using SurgeEngine.Code.Parameters;
+﻿using SurgeEngine.Code.ActorStates;
+using SurgeEngine.Code.Custom;
 using UnityEngine;
 
 namespace SurgeEngine.Code.ActorSystem
@@ -43,8 +43,6 @@ namespace SurgeEngine.Code.ActorSystem
             Vector3 up = Vector3.Slerp(root.up, actor.transform.up, SurgeMath.Smooth(1 - verticalRotationSpeed));
             Vector3.OrthoNormalize(ref up, ref forward);
             root.localRotation = Quaternion.LookRotation(forward, up);
-
-            actor.effects.spinball.transform.SetParent(root, false);
         }
 
         public void RotateBody(Vector3 normal)

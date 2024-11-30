@@ -1,8 +1,8 @@
 using System.Collections;
+using SurgeEngine.Code.ActorStates.SonicSubStates;
 using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.CameraSystem.Pawns;
 using SurgeEngine.Code.Custom;
-using SurgeEngine.Code.Parameters.SonicSubStates;
 using SurgeEngine.Code.StateMachine;
 using UnityEngine;
 
@@ -20,6 +20,7 @@ namespace SurgeEngine.Code.CameraSystem
         [Header("Target")] 
         public float distance = 2.9f;
         public float yOffset = 0.1f;
+        public Vector3 positionOffset;
         public Vector3 lookOffset;
 
         [Header("Auto Look")] 

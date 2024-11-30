@@ -1,6 +1,6 @@
-﻿using SurgeEngine.Code.Parameters;
+﻿using SurgeEngine.Code.ActorStates;
+using SurgeEngine.Code.ActorStates.SonicSubStates;
 using SurgeEngine.Code.CameraSystem;
-using SurgeEngine.Code.Parameters.SonicSubStates;
 using SurgeEngine.Code.StateMachine;
 using UnityEngine;
 

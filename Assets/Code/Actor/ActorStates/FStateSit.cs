@@ -1,8 +1,9 @@
-﻿using SurgeEngine.Code.ActorSystem;
+﻿using SurgeEngine.Code.ActorStates.BaseStates;
+using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Custom;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Parameters
+namespace SurgeEngine.Code.ActorStates
 {
     public class FStateSit : FStateMove
     {

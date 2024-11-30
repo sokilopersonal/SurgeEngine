@@ -1,4 +1,4 @@
-﻿using SurgeEngine.Code.Parameters;
+﻿using SurgeEngine.Code.ActorStates;
 using UnityEngine;
 namespace SurgeEngine.Code.ActorSystem
 {

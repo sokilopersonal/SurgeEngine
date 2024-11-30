@@ -1,7 +1,7 @@
 ﻿using SurgeEngine.Code.ActorSystem;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Parameters
+namespace SurgeEngine.Code.ActorStates
 {
     public class FStateGrindJump : FStateJump
     {

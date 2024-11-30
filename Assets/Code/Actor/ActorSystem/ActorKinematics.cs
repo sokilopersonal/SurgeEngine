@@ -1,8 +1,8 @@
-﻿using SurgeEngine.Code.CommonObjects;
+﻿using SurgeEngine.Code.ActorStates;
+using SurgeEngine.Code.ActorStates.SonicSubStates;
+using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.GameDocuments;
-using SurgeEngine.Code.Parameters;
-using SurgeEngine.Code.Parameters.SonicSubStates;
 using UnityEngine;
 using UnityEngine.Splines;
 using static SurgeEngine.Code.GameDocuments.SonicGameDocumentParams;
@@ -12,6 +12,8 @@ namespace SurgeEngine.Code.ActorSystem
     public class ActorKinematics : ActorComponent
     {
         public Rigidbody Rigidbody => _rigidbody;
+        
+        [SerializeField, Range(25, 90)] private float maxAngleDifference = 75;
 
         public float TurnRate
         {
@@ -124,7 +126,6 @@ namespace SurgeEngine.Code.ActorSystem
             {
                 if (path.splineContainer != null)
                 {
-                    
                     var container = path.splineContainer;
                     SplineUtility.GetNearestPoint(container.Spline, SurgeMath.Vector3ToFloat3(container.transform.InverseTransformPoint(_rigidbody.position)), out var near, out var t);
                     container.Evaluate(t, out var point, out var tangent, out var up);
@@ -204,6 +205,7 @@ namespace SurgeEngine.Code.ActorSystem
             {
                 Deceleration(param.GetParameter<float>(BasePhysics_MinDeaccelerationRate), param.GetParameter<float>(BasePhysics_MaxDeaccelerationRate));
             }
+
             _rigidbody.linearVelocity = _movementVector + vertical;
             
             Snap(point, normal);
@@ -397,6 +399,32 @@ namespace SurgeEngine.Code.ActorSystem
 
                 _detachTimer = 0f;
             }
+        }
+
+        public bool CheckForPredictedGround(Vector3 vel, Vector3 normal, float deltaTime, float distance, int steps)
+        {
+            bool willBeGrounded = false;
+            Vector3 initVel = vel;
+            Vector3 predictedNormal = normal;
+            Vector3 predictedPos = _rigidbody.position;
+            for (int i = 0; i < steps; i++)
+            {
+                predictedPos += vel * deltaTime / steps;
+                if (Physics.Raycast(predictedPos, -predictedNormal, out RaycastHit hit, 1f + distance, _document.GetGroup(SonicGameDocument.CastGroup).GetParameter<LayerMask>(Cast_Mask)))
+                {
+                    float Dot = Vector3.Dot(_rigidbody.linearVelocity, hit.normal);
+                    float MaxAngle = Dot < 0 ? maxAngleDifference : 30f;
+                    if (Vector3.Angle(predictedNormal, hit.normal) < MaxAngle)
+                    {
+                        predictedPos = hit.point + hit.normal;
+                        predictedNormal = hit.normal;
+                        initVel = Quaternion.FromToRotation(_normal, predictedNormal) * initVel;
+                        willBeGrounded = true;
+                    }
+                }
+            }
+
+            return willBeGrounded;
         }
 
         public bool GetAttachState() => _canAttach;

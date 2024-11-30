@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using SurgeEngine.Code.ActorSoundEffects;
-using UnityEngine;
 
 namespace SurgeEngine.Code.ActorSystem
 {

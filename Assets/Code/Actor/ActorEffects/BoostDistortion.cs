@@ -39,7 +39,11 @@ namespace SurgeEngine.Code.ActorEffects
             
             while (t < dur)
             {
-                float value = Mathf.Lerp(_startValue, 1.75f, EaseOutQuad(t / dur));
+                float sWidth = Screen.width;
+                float sHeight = Screen.height;
+                float aspect = sWidth / sHeight;
+                float time = 1f * aspect; // Widescreen fix
+                float value = Mathf.Lerp(_startValue, time, EaseOutQuad(t / dur));
                 customPass.SetFloat(WaveTime, value);
                 t += Time.deltaTime;
                 

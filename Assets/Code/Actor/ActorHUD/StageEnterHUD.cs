@@ -2,6 +2,7 @@
 using TMPro;
 using DG.Tweening;
 using FMODUnity;
+using SurgeEngine.Code.ActorStates;
 using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Parameters;
 

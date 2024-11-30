@@ -1,6 +1,6 @@
-﻿using SurgeEngine.Code.ActorSystem;
+﻿using SurgeEngine.Code.ActorStates.SonicSubStates;
+using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Custom;
-using SurgeEngine.Code.Parameters.SonicSubStates;
 using SurgeEngine.Code.SurgeDebug;
 using UnityEngine;
 

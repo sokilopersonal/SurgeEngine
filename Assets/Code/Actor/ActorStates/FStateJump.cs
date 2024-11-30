@@ -1,10 +1,9 @@
 ﻿using SurgeEngine.Code.ActorSystem;
-using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.GameDocuments;
 using UnityEngine;
 using static SurgeEngine.Code.GameDocuments.SonicGameDocumentParams;
 
-namespace SurgeEngine.Code.Parameters
+namespace SurgeEngine.Code.ActorStates
 {
     public class FStateJump : FStateAir
     {

@@ -2,24 +2,11 @@
 
 namespace SurgeEngine.Code.ActorEffects
 {
-    public class Spinball : MonoBehaviour
+    public class Spinball : Effect
     {
-        [SerializeField] private ParticleSystem[] particleSystems;
-
-        private void OnEnable()
+        public override void Toggle(bool value)
         {
-            foreach (var gte in particleSystems)
-            {
-                gte.gameObject.SetActive(true);
-            }
-        }
-
-        private void OnDisable()
-        {
-            foreach (var gte in particleSystems)
-            {
-                gte.gameObject.SetActive(false);
-            }
+            gameObject.SetActive(value);
         }
     }
 }

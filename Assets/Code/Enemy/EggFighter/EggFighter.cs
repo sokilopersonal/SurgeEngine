@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Enemy
 {
-    public class EggFighter : EnemyBase, IActor, IPlayerContactable
+    public class EggFighter : EnemyBase, IPlayerContactable
     {
         public new EnemyAnimation animation;
         public EGView view;

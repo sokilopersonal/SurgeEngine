@@ -1,7 +1,7 @@
 ﻿using FMOD.Studio;
 using FMODUnity;
+using SurgeEngine.Code.ActorStates.SonicSubStates;
 using SurgeEngine.Code.Custom;
-using SurgeEngine.Code.Parameters.SonicSubStates;
 using SurgeEngine.Code.StateMachine;
 using UnityEngine;
 using STOP_MODE = FMOD.Studio.STOP_MODE;

@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using FMODUnity;
 using SurgeEngine.Code.ActorHUD;
+using SurgeEngine.Code.ActorStates;
+using SurgeEngine.Code.ActorStates.SonicSubStates;
 using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.Parameters;
-using SurgeEngine.Code.Parameters.SonicSubStates;
 using SurgeEngine.Code.SurgeDebug;
 using UnityEngine;
 using Random = UnityEngine.Random;

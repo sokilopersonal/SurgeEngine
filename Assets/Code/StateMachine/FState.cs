@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace SurgeEngine.Code.StateMachine
+﻿namespace SurgeEngine.Code.StateMachine
 {
     public abstract class FState
     {

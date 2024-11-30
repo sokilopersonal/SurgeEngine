@@ -1,6 +1,6 @@
 ﻿using SurgeEngine.Code.ActorEffects;
-using SurgeEngine.Code.Parameters;
-using SurgeEngine.Code.Parameters.SonicSubStates;
+using SurgeEngine.Code.ActorStates;
+using SurgeEngine.Code.ActorStates.SonicSubStates;
 using SurgeEngine.Code.StateMachine;
 using UnityEngine;
 
@@ -41,18 +41,18 @@ namespace SurgeEngine.Code.ActorSystem
             if (obj is not FBoost) return;
             
             boostAura.Toggle(value);
-            if (value) boostDistortion.Play(actor.camera.GetCamera().WorldToViewportPoint(actor.transform.position));
+            Vector3 viewportPosition = actor.camera.GetCamera().WorldToViewportPoint(actor.transform.position);
+            viewportPosition.y *= 0.8f; // Correction because the player's pivot is in the head (wtf?)
+            if (value) boostDistortion.Play(viewportPosition);
         }
 
         private void OnStateAssign(FState obj)
         {
             var prev = actor.stateMachine.PreviousState;
-
-            spinball.gameObject.SetActive(obj is (FStateJump or FStateHoming) and not FStateGrindJump);
-            
+            spinball.Toggle(obj is (FStateJump or FStateHoming) and not FStateGrindJump);
             grindEffect.Toggle(obj is FStateGrind or FStateGrindSquat);
 
-            if (obj is FStateGround or FStateIdle && actor.stateMachine.PreviousState is FStateStomp)
+            if (obj is FStateGround or FStateIdle && prev is FStateStomp)
             {
                 stompEffect.Land();
             }

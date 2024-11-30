@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using SurgeEngine.Code.ActorStates;
+using SurgeEngine.Code.ActorStates.SonicSubStates;
 using SurgeEngine.Code.Custom;
-using SurgeEngine.Code.Parameters;
-using SurgeEngine.Code.Parameters.SonicSubStates;
 using SurgeEngine.Code.StateMachine;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -54,6 +55,7 @@ namespace SurgeEngine.Code.ActorSystem
         private void ChangeStateAnimation(FState obj)
         {
             var prev = actor.stateMachine.PreviousState;
+
             if (obj is FStateStart)
             {
                 var type = actor.GetComponentInParent<ActorStartDefiner>().startData.startType;
@@ -96,14 +98,7 @@ namespace SurgeEngine.Code.ActorSystem
             {
                 if (prev is not FStateDrift)
                 {
-                    if (prev is FStateIdle or FStateSliding or FStateStart)
-                    {
-                        TransitionToState(AnimatorParams.RunCycle, 0.2f);
-                    }
-                    else if (prev is FStateAir or FStateSpecialJump)
-                    {
-                        TransitionToState("RunLanding", 0f);
-                    }
+                    TransitionToState(AnimatorParams.RunCycle, 0f);
                 }
                 else
                 {

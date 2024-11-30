@@ -171,6 +171,12 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  boostBlendFovCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   boostDeblendCurve:
     serializedVersion: 2
     m_Curve: []
@@ -178,6 +184,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   boostBlendTime: 1.25
+  boostDeblendTime: 1
   collisionMask:
     serializedVersion: 2
     m_Bits: 1
@@ -409,6 +416,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 3652306209888613777}
+  rootBone: {fileID: 157610585845485352}
 --- !u!114 &3514203903129675520
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23194,6 +23202,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 3194816441016445746}
   m_SourcePrefab: {fileID: 100100000, guid: b5197d4abc58dd14180947022fd32ae9, type: 3}
+--- !u!4 &157610585845485352 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3741446485007002316, guid: b5197d4abc58dd14180947022fd32ae9, type: 3}
+  m_PrefabInstance: {fileID: 3585912310831556068}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3911659134670193167 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: b5197d4abc58dd14180947022fd32ae9, type: 3}

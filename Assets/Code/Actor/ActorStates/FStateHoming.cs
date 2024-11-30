@@ -1,12 +1,13 @@
-﻿using SurgeEngine.Code.ActorSystem;
+﻿using SurgeEngine.Code.ActorStates.BaseStates;
+using SurgeEngine.Code.ActorStates.SonicSubStates;
+using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.GameDocuments;
-using SurgeEngine.Code.Parameters.SonicSubStates;
 using UnityEngine;
 using static SurgeEngine.Code.GameDocuments.SonicGameDocumentParams;
 
-namespace SurgeEngine.Code.Parameters
+namespace SurgeEngine.Code.ActorStates
 {
     public class FStateHoming : FStateMove
     {

@@ -1,12 +1,12 @@
-﻿using System.Numerics;
+﻿using SurgeEngine.Code.ActorStates.BaseStates;
+using SurgeEngine.Code.ActorStates.SonicSubStates;
 using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.GameDocuments;
-using SurgeEngine.Code.Parameters.SonicSubStates;
 using UnityEngine;
 using Vector3 = UnityEngine.Vector3;
 
-namespace SurgeEngine.Code.Parameters
+namespace SurgeEngine.Code.ActorStates
 {
     public class FStateStomp : FStateMove
     {

@@ -1,7 +1,7 @@
 ﻿using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.StateMachine;
 
-namespace SurgeEngine.Code.Parameters
+namespace SurgeEngine.Code.ActorStates.BaseStates
 {
     public abstract class FActorState : FState
     {
