@@ -63,7 +63,7 @@ namespace SurgeEngine.Code.ActorStates
             var castParam = doc.GetGroup(SonicGameDocument.CastGroup);
             var physParam = doc.GetGroup(SonicGameDocument.PhysicsGroup);
             float distance = castParam.GetParameter<float>(Cast_Distance) * castParam.GetParameter<AnimationCurve>(Cast_DistanceCurve).Evaluate(Kinematics.HorizontalSpeed / physParam.GetParameter<float>(BasePhysics_TopSpeed));
-            bool willBeGrounded = Kinematics.CheckForPredictedGround(_rigidbody.linearVelocity, prevNormal, dt, distance, 32);
+            bool willBeGrounded = Kinematics.CheckForPredictedGround(_rigidbody.linearVelocity, prevNormal, dt, distance, 8);
             if (Common.CheckForGround(out var data, castDistance: distance) && willBeGrounded)
             {
                 var point = data.point;
