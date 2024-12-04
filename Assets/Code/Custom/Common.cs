@@ -151,7 +151,7 @@ namespace SurgeEngine.Code.Custom
             Document doc = SonicGameDocument.GetDocument("Sonic");
             ParameterGroup group = doc.GetGroup(SonicGameDocument.CastGroup);
             float castDistance = group.GetParameter<float>(Cast_Distance) *
-                                 (context.stateMachine.Is<FStateHoming>() ? 1.5f : 1f);
+                                 (context.stateMachine.IsExact<FStateHoming>() ? 1.5f : 1f);
             LayerMask mask = group.GetParameter<LayerMask>(Cast_RailMask);
 
             if (Physics.SphereCast(ray, 0.4f, out result, castDistance, mask, QueryTriggerInteraction.Collide))

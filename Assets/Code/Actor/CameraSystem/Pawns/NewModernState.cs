@@ -11,6 +11,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
         protected float _yOffset;
         private float _sensSpeedMod;
         private Vector3 _velocity;
+        private float _currentCollisionDistance;
 
         private float _boostDistance;
         
@@ -46,8 +47,26 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             Quaternion vertical = Quaternion.AngleAxis(_stateMachine.y, Vector3.right);
             Vector3 direction = horizontal * vertical * Vector3.back;
             Vector3 actorPosition = _actor.transform.position + _master.transform.TransformDirection(_master.positionOffset) + Vector3.up * yOffset + Vector3.up * _stateMachine.yLag;
-            targetPosition = actorPosition + direction * (distance + _stateMachine.zLag);
+
+            Vector3 initialTargetPosition = actorPosition + direction * (distance + _stateMachine.zLag);
+
+            targetPosition = HandleCameraCollision(actorPosition, initialTargetPosition, distance);
+            
             return actorPosition;
+        }
+
+        private Vector3 HandleCameraCollision(Vector3 actorPosition, Vector3 targetPosition, float originalDistance)
+        {
+            Vector3 cameraDirection = (targetPosition - actorPosition).normalized;
+            float actualDistance = originalDistance * _boostDistance;
+
+            if (Physics.SphereCast(actorPosition, _master.collisionRadius, cameraDirection, out RaycastHit hit, actualDistance, _master.collisionMask))
+            {
+                float adjustedDistance = Mathf.Max(hit.distance - _master.collisionRadius, 0.1f);
+                return actorPosition + cameraDirection * adjustedDistance;
+            }
+
+            return targetPosition;
         }
 
         protected virtual void LookAxis()

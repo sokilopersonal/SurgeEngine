@@ -9,18 +9,8 @@ namespace SurgeEngine.Code.ActorSoundEffects
     public class HomingSound : ActorSound
     {
         [SerializeField] private EventReference homingSound;
-
-        private void OnEnable()
-        {
-            actor.stateMachine.OnStateAssign += OnStateAssign;
-        }
         
-        private void OnDisable()
-        {
-            actor.stateMachine.OnStateAssign -= OnStateAssign;
-        }
-
-        private void OnStateAssign(FState obj)
+        protected override void SoundState(FState obj)
         {
             if (obj is FStateHoming)
             {

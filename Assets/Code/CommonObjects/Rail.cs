@@ -40,7 +40,7 @@ namespace SurgeEngine.Code.CommonObjects
         {
             var context = ActorContext.Context;
 
-            if (!context.stateMachine.Is<FStateGrind>())
+            if (!context.stateMachine.IsExact<FStateGrind>())
             {
                 context.stateMachine.SetState<FStateGrind>().SetRail(this);
             }

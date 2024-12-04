@@ -51,7 +51,7 @@ namespace SurgeEngine.Code.ActorSystem
             var machine = actor.stateMachine;
             var prev = actor.stateMachine.PreviousState;
             
-            spinball.Toggle(machine.Is<FStateJump>() || machine.Is<FStateHoming>());
+            spinball.Toggle(machine.IsExact<FStateJump>() || machine.IsExact<FStateHoming>());
             grindEffect.Toggle(obj is FStateGrind or FStateGrindSquat);
 
             if (obj is FStateGround or FStateIdle && prev is FStateStomp)

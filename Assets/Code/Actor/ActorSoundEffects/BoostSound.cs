@@ -14,7 +14,6 @@ namespace SurgeEngine.Code.ActorSoundEffects
         [SerializeField] private EventReference boostLoopSound;
         [SerializeField] private EventReference boostVoiceSound;
         [SerializeField] private BoostAudioDistortion boostAudioDistortion;
-        [SerializeField] private float boostVoiceDelay = 1.5f;
         
         private EventInstance _boostSoundInstance;
         private EventInstance _boostLoopInstance;
@@ -30,8 +29,6 @@ namespace SurgeEngine.Code.ActorSoundEffects
             _boostLoopInstance = RuntimeManager.CreateInstance(boostLoopSound);
             _boostVoiceInstance = RuntimeManager.CreateInstance(boostVoiceSound);
             actor.stateMachine.GetSubState<FBoost>().OnActiveChanged += OnBoostActivate;
-
-            _lastBoostVoiceTime = Time.time - boostVoiceDelay;
         }
 
         private void OnBoostActivate(FSubState arg1, bool arg2)
@@ -41,19 +38,14 @@ namespace SurgeEngine.Code.ActorSoundEffects
                 _boostSoundInstance.start();
                 _boostLoopInstance.start();
 
-                if (Common.InDelayTime(_lastBoostVoiceTime, boostVoiceDelay))
-                {
-                    _boostVoiceInstance.stop(STOP_MODE.IMMEDIATE);
-                    _boostVoiceInstance.start();
-                    _lastBoostVoiceTime = Time.time;
-                }
+                voice.Play(_boostVoiceInstance);
                 
                 boostAudioDistortion.Toggle();
             }
             else
             {
-                _boostSoundInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-                _boostLoopInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+                _boostSoundInstance.stop(STOP_MODE.ALLOWFADEOUT);
+                _boostLoopInstance.stop(STOP_MODE.ALLOWFADEOUT);
                 
                 boostAudioDistortion.Toggle();
             }

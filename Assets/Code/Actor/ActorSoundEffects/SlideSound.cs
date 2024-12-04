@@ -22,17 +22,7 @@ namespace SurgeEngine.Code.ActorSoundEffects
             slideLoop.set3DAttributes(transform.To3DAttributes());
         }
 
-        private void OnEnable()
-        {
-            actor.stateMachine.OnStateAssign += OnStateAssign;
-        }
-
-        private void OnDisable()
-        {
-            actor.stateMachine.OnStateAssign -= OnStateAssign;
-        }
-
-        private void OnStateAssign(FState obj)
+        protected override void SoundState(FState obj)
         {
             if (obj is FStateSliding)
             {

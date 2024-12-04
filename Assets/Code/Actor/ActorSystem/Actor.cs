@@ -54,10 +54,7 @@ namespace SurgeEngine.Code.ActorSystem
             
             var boost = new FBoost(this);
             stateMachine.AddSubState(boost);
-        }
-
-        private void Start()
-        {
+            
             var startData = GetComponentInParent<ActorStartDefiner>().startData;
             if (startData.startType != StartType.None)
             {

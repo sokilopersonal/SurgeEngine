@@ -108,7 +108,7 @@ namespace SurgeEngine.Code.ActorSystem
             CalculateDetachState();
             
             var stateMachine = actor.stateMachine;
-            if (!stateMachine.Is<FStateGrind>() && !stateMachine.Is<FStateGrindJump>())
+            if (!stateMachine.IsExact<FStateGrind>() && !stateMachine.IsExact<FStateGrindJump>())
             {
                 if (Common.CheckForRail(out _, out var rail))
                 {
@@ -164,7 +164,7 @@ namespace SurgeEngine.Code.ActorSystem
             bool isSkidding = _moveDot < _physGroup.GetParameter<float>(BasePhysics_SkiddingThreshold);
             if (_inputDir.magnitude > 0.2f)
             {
-                if (stateMachine.Is<FStateSliding>())
+                if (stateMachine.IsExact<FStateSliding>())
                 {
                     _turnRate *= 0.1f;
                 }

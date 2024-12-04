@@ -80,7 +80,7 @@ namespace SurgeEngine.Code.ActorStates
                     StateMachine.SetState<FStateAir>();
                 }
                 
-                Vector3 direction = Actor.transform.forward;
+                Vector3 direction = Vector3.Cross(Actor.transform.right, Vector3.up);
                 _rigidbody.linearVelocity = direction * (param.GetParameter<float>(Homing_Distance) *
                                                          param.GetParameter<AnimationCurve>(Homing_Curve).Evaluate(_timer));
                 _rigidbody.rotation = Quaternion.LookRotation(direction, Vector3.up);

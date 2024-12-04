@@ -52,7 +52,7 @@ namespace SurgeEngine.Code.CameraSystem
             if (currentData != null)
             {
                 PanData baseData = (PanData)currentData;
-                float easeTime = !Is<RestoreCameraPawn>() ? baseData.easeTimeEnter : baseData.easeTimeExit;
+                float easeTime = !IsExact<RestoreCameraPawn>() ? baseData.easeTimeEnter : baseData.easeTimeExit;
                 blendFactor += dt / easeTime;
                 blendFactor = Mathf.Clamp01(blendFactor);
                 interpolatedBlendFactor = Easings.Get(Easing.Gens, blendFactor);

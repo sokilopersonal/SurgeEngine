@@ -26,17 +26,7 @@ namespace SurgeEngine.Code.ActorSoundEffects
             _driftLoopInstance.setParameterByName("OnWater", actor.stateMachine.GetState<FStateGround>().GetSurfaceTag() == "Water" ? 1 : 0);
         }
 
-        private void OnEnable()
-        {
-            actor.stateMachine.OnStateAssign += OnStateAssign;
-        }
-
-        private void OnDisable()
-        {
-            actor.stateMachine.OnStateAssign -= OnStateAssign;
-        }
-
-        private void OnStateAssign(FState obj)
+        protected override void SoundState(FState obj)
         {
             var prev = actor.stateMachine.PreviousState;
             if (obj is FStateDrift)
@@ -50,7 +40,7 @@ namespace SurgeEngine.Code.ActorSoundEffects
             
             if (prev is FStateDrift)
             {
-                RuntimeManager.PlayOneShot(driftVoice);
+                voice.Play(driftVoice);
             }
         }
     }

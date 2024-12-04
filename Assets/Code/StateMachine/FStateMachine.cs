@@ -65,10 +65,16 @@ namespace SurgeEngine.Code.StateMachine
             return _states[typeof(TState)] as TState;
         }
         
-        public bool Is<T>() where T : FState
+        public bool IsExact<T>() where T : FState
         {
             var type = typeof(T);
             return CurrentState != null && CurrentState.GetType() == type;
+        }
+
+        public bool IsPrevExact<T>() where T : FState
+        {
+            var type = typeof(T);
+            return PreviousState != null && PreviousState.GetType() == type;
         }
 
         public bool IsPreviousState<TState>() where TState : FState

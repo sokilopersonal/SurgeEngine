@@ -22,22 +22,12 @@ namespace SurgeEngine.Code.ActorSoundEffects
             _grindLoopInstance = RuntimeManager.CreateInstance(grindLoop);
         }
 
-        private void OnEnable()
-        {
-            actor.stateMachine.OnStateAssign += OnStateAssign;
-        }
-
-        private void OnDisable()
-        {
-            actor.stateMachine.OnStateAssign -= OnStateAssign;
-        }
-
         private void Update()
         {
             _grindLoopInstance.set3DAttributes(gameObject.To3DAttributes());
         }
 
-        private void OnStateAssign(FState obj)
+        protected override void SoundState(FState obj)
         {
             var prev = actor.stateMachine.PreviousState;
             if (obj is FStateGrind and not FStateGrindSquat && prev is not FStateGrindSquat)

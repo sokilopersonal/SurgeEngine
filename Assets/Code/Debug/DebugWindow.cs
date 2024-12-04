@@ -14,25 +14,17 @@ namespace SurgeEngine.Code.SurgeDebug
         private void Update()
         {
             var actor = ActorContext.Context;
-
-            string[] activeFlags = Enum.GetValues(actor.flags.flagType.GetType())
-                .Cast<Enum>()
-                .Where(flag => actor.flags.flagType.HasFlag(flag))
-                .Select(flag => flag.ToString())
-                .ToArray();
-            
-            string[] text = new string[]
+            string[] text = 
             {
                 $"Position: {actor.transform.position}",
-                $"Move Dot: {actor.stats.moveDot}",
                 $"Euler Angles: {actor.transform.rotation.eulerAngles}",
-                $"Current Speed: {actor.stats.currentSpeed}",
+                $"Move Dot: {actor.stats.moveDot}",
+                $"Current Speed: {actor.kinematics.HorizontalSpeed}",
                 $"Current Vertical Speed: {actor.stats.currentVerticalSpeed}",
-                $"Planar Velocity: {actor.stats.planarVelocity}",
+                $"Planar Velocity: {actor.kinematics.PlanarVelocity}",
                 $"State: {actor.stateMachine.currentStateName}",
-                $"Camera Pawn: {actor.camera.stateMachine.currentStateName}",
-                $"FBoost State: {actor.stateMachine.GetSubState<FBoost>().Active}",
-                $"Flags: {string.Join(", ", activeFlags)}"
+                $"Camera State: {actor.camera.stateMachine.currentStateName}",
+                $"Animation State: {actor.animation.GetCurrentAnimationState()}"
             };
             
             holder.text = string.Join("\n", text);

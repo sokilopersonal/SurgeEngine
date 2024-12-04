@@ -10,22 +10,12 @@ namespace SurgeEngine.Code.ActorSoundEffects
     {
         [SerializeField] private EventReference _spinSound;
         [SerializeField] private EventReference _voiceSound;
-
-        private void OnEnable()
-        {
-            actor.stateMachine.OnStateAssign += OnStateAssign;
-        }
-
-        private void OnDisable()
-        {
-            actor.stateMachine.OnStateAssign -= OnStateAssign;
-        }
         
-        private void OnStateAssign(FState obj)
+        protected override void SoundState(FState obj)
         {
             if (obj is FStateJump)
             {
-                RuntimeManager.PlayOneShot(_voiceSound);
+                voice.Play(_voiceSound);
                 RuntimeManager.PlayOneShot(_spinSound);
             }
         }

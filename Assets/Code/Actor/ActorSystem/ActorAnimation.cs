@@ -27,11 +27,8 @@ namespace SurgeEngine.Code.ActorSystem
 
         private void Update()
         {
-            SetBool(AnimatorParams.Idle, actor.stateMachine.currentStateName == "FStateIdle");
-            SetBool(AnimatorParams.InAir, actor.stateMachine.currentStateName == "FStateAir" ||
-                                          actor.stateMachine.currentStateName == "FStateJump" ||
-                                          actor.stateMachine.currentStateName == "FStateSpecialJump" ||
-                                          actor.stateMachine.currentStateName == "FStateAirBoost");
+            SetBool(AnimatorParams.Idle, actor.stateMachine.CurrentState is FStateIdle);
+            SetBool(AnimatorParams.InAir, actor.stateMachine.CurrentState is FStateAir or FStateJump or FStateSpecialJump or FStateAirBoost);
             SetFloat(AnimatorParams.GroundSpeed, Mathf.Clamp(actor.stats.currentSpeed, 4, 30f));
             SetFloat(AnimatorParams.VerticalSpeed, actor.stats.currentVerticalSpeed);
 
@@ -54,7 +51,8 @@ namespace SurgeEngine.Code.ActorSystem
 
         private void ChangeStateAnimation(FState obj)
         {
-            var prev = actor.stateMachine.PreviousState;
+            var machine = actor.stateMachine;
+            var prev = machine.PreviousState;
 
             if (obj is FStateStart)
             {
@@ -98,7 +96,19 @@ namespace SurgeEngine.Code.ActorSystem
             {
                 if (prev is not FStateDrift)
                 {
-                    TransitionToState(AnimatorParams.RunCycle, 0f);
+                    if (machine.IsPrevExact<FStateAir>())
+                    {
+                        TransitionToState(AnimatorParams.RunCycle, 0.2f);
+                        return;
+                    }
+                    
+                    if (machine.IsPrevExact<FStateJump>())
+                    {
+                        TransitionToState(AnimatorParams.RunCycle, 0f);
+                        return;
+                    }
+
+                    TransitionToState(AnimatorParams.RunCycle, 0.2f);
                 }
                 else
                 {
@@ -113,6 +123,8 @@ namespace SurgeEngine.Code.ActorSystem
                     {
                         TransitionToState("Drift_ER", 0.2f);
                     }
+
+                    _currentAnimation = AnimatorParams.RunCycle;
                 }
             }
             if (obj is FStateAir && prev is not FStateSpecialJump and not FStateAirBoost and not FStateAfterHoming)
@@ -233,6 +245,8 @@ namespace SurgeEngine.Code.ActorSystem
 
             if (isAction) SetAction(true);
         }
+        
+        public string GetCurrentAnimationState() => _currentAnimation;
     }
 
     public static class AnimatorParams
