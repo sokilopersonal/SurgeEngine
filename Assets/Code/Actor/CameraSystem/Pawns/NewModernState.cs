@@ -90,7 +90,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
         private void YLag()
         {
             Vector3 vel = _actor.kinematics.Rigidbody.linearVelocity;
-            float yLag = Mathf.Clamp(vel.y * -0.125f, _master.yLagMin, _master.yLagMax); // min is down lag, max value is up lag
+            float yLag = Mathf.Clamp(vel.y * -0.15f, _master.yLagMin, _master.yLagMax); // min is down lag, max value is up lag
             _stateMachine.yLag = Mathf.SmoothDamp(_stateMachine.yLag, yLag, ref _stateMachine.yLagVelocity, _master.yLagTime, 10f);
         }
 

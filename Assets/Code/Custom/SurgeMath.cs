@@ -34,5 +34,15 @@ namespace SurgeEngine.Code.Custom
             Vector3.Cross(axis, right);
             return Mathf.Atan2(Vector3.Dot(v1, right), 1) * Mathf.Rad2Deg;
         }
+
+        public static Vector3 Lerp3(Vector3 a, Vector3 b, Vector3 c, float t)
+        {
+            return t < 0 ? Vector3.LerpUnclamped(a, b, t + 1f) : Vector3.LerpUnclamped(b, c, t);
+        }
+        
+        public static float Lerp3(float a, float b, float c, float t)
+        {
+            return t < 0 ? Mathf.LerpUnclamped(a, b, t + 1f) : Mathf.LerpUnclamped(b, c, t);
+        }
     }
 }

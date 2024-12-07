@@ -2590,6 +2590,7 @@ MonoBehaviour:
   m_Script: {fileID: 2049738626}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Entries: []
 --- !u!4 &194215299
 Transform:
   m_ObjectHideFlags: 19
@@ -6740,6 +6741,10 @@ PrefabInstance:
       propertyPath: documents.Array.data[0].groups.Array.data[4].parameters.Array.data[5].floatValue
       value: 1.25
       objectReference: {fileID: 0}
+    - target: {fileID: 6139100113721355536, guid: d417dfaab342b45499b647de7462f5af, type: 3}
+      propertyPath: documents.Array.data[0].groups.Array.data[5].parameters.Array.data[9].floatValue
+      value: 0.06
+      objectReference: {fileID: 0}
     - target: {fileID: 9198260885319565786, guid: d417dfaab342b45499b647de7462f5af, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -6887,6 +6892,7 @@ MonoBehaviour:
   m_Script: {fileID: 2049738626}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Entries: []
 --- !u!4 &266885306
 Transform:
   m_ObjectHideFlags: 19
@@ -20939,6 +20945,30 @@ PrefabInstance:
     - target: {fileID: 930709539082581898, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
       propertyPath: m_Name
       value: Sonic
+      objectReference: {fileID: 0}
+    - target: {fileID: 3514203903129675520, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
+      propertyPath: maxAngleDifference
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 4604916912254361020, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4604916912254361020, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -2.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5212509988277264324, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
+      propertyPath: yOffset
+      value: -0.08
+      objectReference: {fileID: 0}
+    - target: {fileID: 5212509988277264324, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
+      propertyPath: distance
+      value: 2.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 5212509988277264324, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
+      propertyPath: boostBlendTime
+      value: 2.25
       objectReference: {fileID: 0}
     - target: {fileID: 8308832228826993834, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
       propertyPath: m_LocalPosition.x

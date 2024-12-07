@@ -98,7 +98,7 @@ namespace SurgeEngine.Code.ActorSystem
                 {
                     if (machine.IsPrevExact<FStateAir>())
                     {
-                        TransitionToState(AnimatorParams.RunCycle, 0.2f);
+                        TransitionToState(AnimatorParams.RunCycle, 0.25f);
                         return;
                     }
                     
