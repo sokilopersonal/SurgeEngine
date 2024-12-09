@@ -55,6 +55,9 @@ namespace SurgeEngine.Code.ActorSystem
         {
             var machine = actor.stateMachine;
             var prev = machine.PreviousState;
+            
+            if (_coroutine != null)
+                StopCoroutine(_coroutine);
 
             if (obj is FStateStart)
             {
