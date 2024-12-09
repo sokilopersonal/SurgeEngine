@@ -73,10 +73,6 @@ namespace SurgeEngine.Code.ActorSystem
             };
         }
 
-        public void OnInit()
-        {
-        }
-
         private void OnEnable()
         {
             _playerInput.enabled = true;
@@ -248,33 +244,11 @@ namespace SurgeEngine.Code.ActorSystem
             }
         }
 
-        private void LBInput(InputAction.CallbackContext obj)
-        {
-            if (obj.started) OnButtonPressed?.Invoke(ButtonType.LB);
-            
-            if (actor.flags.HasFlag(FlagType.OutOfControl))
-            {
-                return;
-            }
-        }
-
-        private void RBInput(InputAction.CallbackContext obj)
-        {
-            if (obj.started) OnButtonPressed?.Invoke(ButtonType.RB);
-            
-            if (actor.flags.HasFlag(FlagType.OutOfControl))
-            {
-                return;
-            }
-        }
-
         private void StartInput(InputAction.CallbackContext obj)
         {
             if (obj.started)
             {
                 var dv = obj.control.device;
-                Debug.Log(dv.name);
-                
                 _device = dv;
             }
         }

@@ -1,6 +1,7 @@
 ﻿using SurgeEngine.Code.ActorStates.BaseStates;
 using SurgeEngine.Code.ActorStates.SonicSubStates;
 using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.ActorSystem.Actors;
 using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.Tools;
@@ -28,15 +29,9 @@ namespace SurgeEngine.Code.ActorStates
 
             _timer = 0.1f;
 
-            float minSpeed = 3f;
-            if (Kinematics.HorizontalSpeed < minSpeed)
-            {
-                _rigidbody.linearVelocity = _rigidbody.transform.forward * minSpeed;
-            }
-
             if (StateMachine.PreviousState is FStateHoming)
             {
-                _rigidbody.linearVelocity = _rigidbody.transform.forward * 37f;
+                _rigidbody.linearVelocity = _rigidbody.transform.forward * (Actor as Sonic).homingConfig.speed;
             }
         }
 
