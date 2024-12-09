@@ -14,7 +14,8 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
         private float _currentCollisionDistance;
 
         private float _boostDistance;
-        private float lookYTime;
+        private float _lookYTime;
+        private float _yAutoLookVelocity;
 
         public NewModernState(Actor owner) : base(owner)
         {
@@ -95,7 +96,6 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             _stateMachine.yLag = Mathf.SmoothDamp(_stateMachine.yLag, yLag, ref _stateMachine.yLagVelocity, _master.yLagTime, 10f);
 
             float mod = _actor.kinematics.HorizontalSpeed * 0.01f;
-            Debug.Log(mod);
             
             // Look Y Time values
             float up = 1f;
@@ -103,8 +103,8 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             float restore = 0.875f;
             
             float value = yLag < 0 ? up : Mathf.Approximately(yLag, 0) ? restore - restore * mod : down;
-            lookYTime = Mathf.Lerp(lookYTime, value, Time.deltaTime * 4f);
-            _master.lookOffset.y = Mathf.SmoothDamp(_master.lookOffset.y, -yLag * 1.25f, ref _lookVelocity, lookYTime);
+            _lookYTime = Mathf.Lerp(_lookYTime, value, Time.deltaTime * 4f);
+            _master.lookOffset.y = Mathf.SmoothDamp(_master.lookOffset.y, -yLag * 1.25f, ref _lookVelocity, _lookYTime);
         }
 
         protected virtual void AutoLookDirection()
@@ -113,17 +113,18 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             var config = _actor.config;
             _sensSpeedMod = Mathf.Lerp(_master.maxSensitivitySpeed, _master.minSensitivitySpeed, speed / config.topSpeed);
             
-            float lookMod = speed / config.topSpeed;
-            Vector3 vel = _actor.kinematics.Rigidbody.linearVelocity;
-            _velocity = Vector3.Lerp(_velocity, vel, Time.deltaTime * 8f);
-            var yAutoLook = Mathf.Abs(_velocity.y) > 0.2f ? Mathf.Clamp(-_velocity.y * 7.5f, _master.verticalMinAmplitude, _master.verticalMaxAmplitude)
-                : _master.verticalDefaultAmplitude;
-                
-            _stateMachine.yAutoLook = yAutoLook;
-            _stateMachine.y = Mathf.Lerp(_stateMachine.y, _stateMachine.yAutoLook, Time.deltaTime * Mathf.Max(_master.verticalMinLerpSpeed, lookMod * _master.verticalLerpSpeed));
-            
             if (speed > 1f)
             {
+                float lookMod = speed / config.topSpeed;
+                Vector3 vel = _actor.kinematics.Rigidbody.linearVelocity;
+                _velocity = Vector3.Lerp(_velocity, vel, Time.deltaTime * 8f);
+                var yAutoLook = Mathf.Abs(_velocity.y) > 0.2f ? Mathf.Clamp(-_velocity.y * 7.5f, _master.verticalMinAmplitude, _master.verticalMaxAmplitude)
+                    : _master.verticalDefaultAmplitude;
+                
+                _stateMachine.yAutoLook = yAutoLook;
+                //_stateMachine.y = Mathf.Lerp(_stateMachine.y, _stateMachine.yAutoLook, Time.deltaTime * Mathf.Max(_master.verticalMinLerpSpeed, lookMod * _master.verticalLerpSpeed));
+                _stateMachine.y = Mathf.SmoothDamp(_stateMachine.y, _stateMachine.yAutoLook, ref _yAutoLookVelocity, 0.65f);
+                
                 AutoLook(_master.horizontalAutoLookAmplitude * Mathf.Max(_master.horizontalAutoLookMinAmplitude, lookMod));
             }
             else

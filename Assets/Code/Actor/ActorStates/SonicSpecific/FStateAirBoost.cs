@@ -3,6 +3,7 @@ using SurgeEngine.Code.ActorStates.SonicSubStates;
 using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.ActorSystem.Actors;
 using SurgeEngine.Code.Config.SonicSpecific;
+using SurgeEngine.Code.Custom;
 using UnityEngine;
 
 namespace SurgeEngine.Code.ActorStates
@@ -44,11 +45,8 @@ namespace SurgeEngine.Code.ActorStates
         {
             base.OnTick(dt);
 
-            if (_timer > 0)
-            {
-                _timer -= dt;
-            }
-            else
+            bool result = Common.CountTimer(ref _timer);
+            if (!result)
             {
                 StateMachine.SetState<FStateAir>();
             }

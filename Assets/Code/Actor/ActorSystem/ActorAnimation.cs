@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using SurgeEngine.Code.ActorStates;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.StateMachine;
@@ -13,6 +14,8 @@ namespace SurgeEngine.Code.ActorSystem
         public Animator animator;
 
         private string _currentAnimation;
+        
+        private Coroutine _coroutine;
 
         private void OnEnable()
         {
@@ -87,6 +90,7 @@ namespace SurgeEngine.Code.ActorSystem
                             break;
                         case FStateAir:
                             TransitionToState("Landing", 0f);
+                            TransitionToStateDelayed("Idle", 1f, 0.4f);
                             break;
                     }
                 }
@@ -243,6 +247,23 @@ namespace SurgeEngine.Code.ActorSystem
             animator.TransitionToState(stateName, ref _currentAnimation, transitionTime);
 
             if (isAction) SetAction(true);
+        }
+        
+        public void TransitionToStateDelayed(string stateName, float transitionTime = 0.25f, float delay = 0.5f, bool isAction = false)
+        {
+            if (_coroutine != null)
+                StopCoroutine(_coroutine);
+            
+            _coroutine = StartCoroutine(TransitionDelayed(stateName, transitionTime, delay, isAction));
+            
+            if (isAction) SetAction(true);
+        }
+
+        private IEnumerator TransitionDelayed(string stateName, float transitionTime = 0.25f, float delay = 0.5f, bool isAction = false)
+        {
+            yield return new WaitForSeconds(delay);
+            
+            animator.TransitionToState(stateName, ref _currentAnimation, transitionTime);
         }
         
         public string GetCurrentAnimationState() => _currentAnimation;

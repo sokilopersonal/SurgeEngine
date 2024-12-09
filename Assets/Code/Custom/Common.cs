@@ -20,6 +20,23 @@ namespace SurgeEngine.Code.Custom
             
             return false;
         }
+
+        /// <summary>
+        /// Counts the timer and returns true if timer is greater than 0
+        /// </summary>
+        /// <param name="timer"></param>
+        /// <returns></returns>
+        public static bool CountTimer(ref float timer)
+        {
+            if (timer > 0)
+            {
+                timer -= Time.deltaTime;
+                return true;
+            }
+            
+            timer = 0;
+            return false;
+        }
         
         public static string GetGroundTag(this GameObject gameObject)
         {
