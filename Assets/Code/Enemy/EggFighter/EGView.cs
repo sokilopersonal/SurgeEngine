@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using SurgeEngine.Code.StateMachine;
+﻿using SurgeEngine.Code.StateMachine;
 using UnityEngine;
 
 namespace SurgeEngine.Code.Enemy

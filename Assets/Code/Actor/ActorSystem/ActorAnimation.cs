@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using SurgeEngine.Code.ActorStates;
-using SurgeEngine.Code.ActorStates.SonicSubStates;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.StateMachine;
+using SurgeEngine.Code.Tools;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -32,7 +31,7 @@ namespace SurgeEngine.Code.ActorSystem
             SetFloat(AnimatorParams.GroundSpeed, Mathf.Clamp(actor.stats.currentSpeed, 4, 30f));
             SetFloat(AnimatorParams.VerticalSpeed, actor.stats.currentVerticalSpeed);
 
-            Vector3 vel = actor.rigidbody.linearVelocity.normalized;
+            Vector3 vel = actor.kinematics.Velocity.normalized;
             float signed = actor.model.root.forward.SignedAngleByAxis(vel, actor.transform.up);
             float angle = signed * 0.4f;
             
@@ -46,7 +45,7 @@ namespace SurgeEngine.Code.ActorSystem
             SetFloat("AbsWallDot", Mathf.Lerp(animator.GetFloat("AbsWallDot"), 
                 Mathf.Abs(Mathf.Approximately(actor.stats.groundAngle, 90) ? dot : 0), 1 * Time.deltaTime));
             
-            SetBool("Skidding", actor.kinematics.Skidding && !actor.stateMachine.GetSubState<FBoost>().Active);
+            SetBool("Skidding", actor.kinematics.Skidding && !SonicTools.IsBoost());
         }
 
         private void ChangeStateAnimation(FState obj)

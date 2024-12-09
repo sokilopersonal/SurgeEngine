@@ -2,7 +2,6 @@
 using SurgeEngine.Code.ActorStates.SonicSubStates;
 using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Custom;
-using SurgeEngine.Code.Parameters;
 using SurgeEngine.Code.SurgeDebug;
 using UnityEngine;
 
@@ -47,7 +46,8 @@ namespace SurgeEngine.Code.CommonObjects
             specialJump.SetKeepVelocity(keepVelocity);
 
             Common.ApplyImpulse(transform.up * speed);
-            context.rigidbody.linearVelocity = Vector3.ClampMagnitude(context.rigidbody.linearVelocity, speed);
+            var body = context.kinematics.Rigidbody;
+            body.linearVelocity = Vector3.ClampMagnitude(body.linearVelocity, speed);
             context.flags.AddFlag(new Flag(FlagType.OutOfControl, 
                 null, true, Mathf.Abs(outOfControl)));
         }

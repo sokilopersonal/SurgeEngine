@@ -1,5 +1,4 @@
 ﻿using System;
-using UnityEngine;
 using UnityEngine.Splines;
 
 namespace SurgeEngine.Code.CommonObjects

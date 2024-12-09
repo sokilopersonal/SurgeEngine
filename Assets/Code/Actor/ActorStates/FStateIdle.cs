@@ -1,26 +1,14 @@
 ﻿using SurgeEngine.Code.ActorStates.BaseStates;
-using SurgeEngine.Code.ActorStates.SonicSubStates;
 using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Custom;
-using SurgeEngine.Code.GameDocuments;
-using SurgeEngine.Code.Parameters;
 using UnityEngine;
 
 namespace SurgeEngine.Code.ActorStates
 {
     public class FStateIdle : FStateMove
     {
-        [SerializeField, Range(0, 1)] private float deadZone;
-        [SerializeField] private MoveParameters moveParameters;
-
         public FStateIdle(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
-        }
-
-        public override void OnEnter()
-        {
-            base.OnEnter();
-            
         }
 
         public override void OnTick(float dt)
@@ -29,14 +17,8 @@ namespace SurgeEngine.Code.ActorStates
             
             Common.ResetVelocity(ResetVelocityType.Both);
 
-            if (Input.moveVector.magnitude > deadZone)
+            if (Input.moveVector.magnitude > 0.2f)
             {
-                StateMachine.SetState<FStateGround>();
-            }
-
-            if (StateMachine.GetSubState<FBoost>().Active)
-            {
-                _rigidbody.linearVelocity += _rigidbody.transform.forward * StateMachine.GetSubState<FBoost>().GetBoostEnergyGroup().GetParameter<float>(SonicGameDocumentParams.BoostEnergy_StartSpeed);
                 StateMachine.SetState<FStateGround>();
             }
 

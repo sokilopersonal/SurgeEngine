@@ -1,6 +1,8 @@
-﻿using SurgeEngine.Code.ActorStates;
+﻿using NaughtyAttributes;
+using SurgeEngine.Code.ActorStates;
 using SurgeEngine.Code.ActorStates.SonicSubStates;
 using SurgeEngine.Code.CameraSystem;
+using SurgeEngine.Code.Config;
 using SurgeEngine.Code.StateMachine;
 using UnityEngine;
 
@@ -8,49 +10,43 @@ namespace SurgeEngine.Code.ActorSystem
 {
     public class Actor : MonoBehaviour
     {
-        public ActorInput input;
-        public ActorStats stats;
-        public ActorSounds sounds;
-        public new ActorCamera camera;
-        public new ActorAnimation animation;
-        public ActorEffects effects;
-        public ActorModel model;
-        public ActorFlags flags;
-        public ActorKinematics kinematics;
+        [Foldout("Components")] public ActorInput input;
+        [Foldout("Components")] public ActorStats stats;
+        [Foldout("Components")] public ActorSounds sounds;
+        [Foldout("Components")] public new ActorCamera camera;
+        [Foldout("Components")] public new ActorAnimation animation;
+        [Foldout("Components")] public ActorEffects effects;
+        [Foldout("Components")] public ActorModel model;
+        [Foldout("Components")] public ActorFlags flags;
+        [Foldout("Components")] public ActorKinematics kinematics;
         
-        public FStateMachine stateMachine;
+        [Foldout("Base Physics")]
+        public BaseActorConfig config;
+        
+        [HideInInspector] public FStateMachine stateMachine;
 
-        [HideInInspector] public new Rigidbody rigidbody;
-
-        public void Initialize()
+        public virtual void Initialize()
         {
             if (!gameObject.activeSelf)
             {
                 return;
             }
             
-            rigidbody = GetComponent<Rigidbody>();
+            var body = GetComponent<Rigidbody>();
             stateMachine = new FStateMachine();
             
-            stateMachine.AddState(new FStateStart(this, rigidbody));
-            stateMachine.AddState(new FStateIdle(this, rigidbody));
-            stateMachine.AddState(new FStateGround(this, rigidbody));
-            stateMachine.AddState(new FStateAir(this, rigidbody));
-            stateMachine.AddState(new FStateAirBoost(this, rigidbody));
-            stateMachine.AddState(new FStateStomp(this, rigidbody));
-            stateMachine.AddState(new FStateHoming(this, rigidbody));
-            stateMachine.AddState(new FStateAfterHoming(this));
-            stateMachine.AddState(new FStateDrift(this, rigidbody));
-            stateMachine.AddState(new FStateSpecialJump(this, rigidbody));
-            stateMachine.AddState(new FStateSit(this, rigidbody));
-            stateMachine.AddState(new FStateSliding(this, rigidbody));
-            stateMachine.AddState(new FStateJump(this, rigidbody));
-            stateMachine.AddState(new FStateQuickstep(this, rigidbody));
-            stateMachine.AddState(new FStateGrind(this, rigidbody));
-            stateMachine.AddState(new FStateGrindJump(this, rigidbody));
-            stateMachine.AddState(new FStateGrindSquat(this, rigidbody));
-            stateMachine.AddState(new FStateJumpSelector(this, rigidbody));
-            stateMachine.AddState(new FStateJumpSelectorLaunch(this, rigidbody));
+            stateMachine.AddState(new FStateStart(this, body));
+            stateMachine.AddState(new FStateIdle(this, body));
+            stateMachine.AddState(new FStateGround(this, body));
+            stateMachine.AddState(new FStateAir(this, body));
+            stateMachine.AddState(new FStateSpecialJump(this, body));
+            stateMachine.AddState(new FStateSit(this, body));
+            stateMachine.AddState(new FStateJump(this, body));
+            stateMachine.AddState(new FStateGrind(this, body));
+            stateMachine.AddState(new FStateGrindJump(this, body));
+            stateMachine.AddState(new FStateGrindSquat(this, body));
+            stateMachine.AddState(new FStateJumpSelector(this, body));
+            stateMachine.AddState(new FStateJumpSelectorLaunch(this, body));
             
             var boost = new FBoost(this);
             stateMachine.AddSubState(boost);
@@ -79,11 +75,6 @@ namespace SurgeEngine.Code.ActorSystem
         private void LateUpdate()
         {
             stateMachine?.LateTick(Time.deltaTime);
-        }
-
-        public void AddImpulse(Vector3 impulse)
-        {
-            rigidbody.AddForce(impulse, ForceMode.Impulse);
         }
     }
 }

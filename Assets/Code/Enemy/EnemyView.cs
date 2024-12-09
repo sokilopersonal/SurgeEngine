@@ -1,6 +1,4 @@
 ﻿using FMODUnity;
-using SurgeEngine.Code.ActorSystem;
-using SurgeEngine.Code.Parameters;
 using UnityEngine;
 
 namespace SurgeEngine.Code.StateMachine

@@ -1,7 +1,7 @@
-﻿using SurgeEngine.Code.ActorStates.SonicSubStates;
-using SurgeEngine.Code.ActorSystem;
+﻿using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.SurgeDebug;
+using SurgeEngine.Code.Tools;
 using UnityEngine;
 
 namespace SurgeEngine.Code.CommonObjects
@@ -24,7 +24,7 @@ namespace SurgeEngine.Code.CommonObjects
             
             var context = ActorContext.Context;
             float dot = Vector3.Dot(context.transform.forward, context.transform.forward);
-            float impulse = context.stateMachine.GetSubState<FBoost>().Active ? impulseOnBoost : impulseOnNormal;
+            float impulse = SonicTools.IsBoost() ? impulseOnBoost : impulseOnNormal;
             Vector3 cross = Common.GetCross(transform, pitch);
             
             if (dot > 0) // Make sure the player is facing the same direction as the jump collision
@@ -33,7 +33,8 @@ namespace SurgeEngine.Code.CommonObjects
                 {
                     if (impulse > 0)
                     {
-                        context.rigidbody.linearVelocity = Vector3.zero;
+                        var body = context.kinematics.Rigidbody;
+                        body.linearVelocity = Vector3.zero;
                         context.stats.planarVelocity = Vector3.zero;
                         context.stats.movementVector = Vector3.zero;
 
@@ -42,8 +43,8 @@ namespace SurgeEngine.Code.CommonObjects
 
                         Vector3 impulseV = cross.normalized * impulse;
                         
-                        context.AddImpulse(impulseV);
-                        context.rigidbody.linearVelocity = Vector3.ClampMagnitude(context.rigidbody.linearVelocity, impulse);
+                        body.AddForce(impulseV, ForceMode.Impulse);
+                        body.linearVelocity = Vector3.ClampMagnitude(body.linearVelocity, impulse);
                     }
                 
                     context.flags.AddFlag(new Flag(FlagType.OutOfControl, null, true, outOfControl));

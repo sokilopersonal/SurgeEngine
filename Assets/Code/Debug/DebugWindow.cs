@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using SurgeEngine.Code.ActorStates.SonicSubStates;
-using SurgeEngine.Code.ActorSystem;
+﻿using SurgeEngine.Code.ActorSystem;
 using TMPro;
 using UnityEngine;
 

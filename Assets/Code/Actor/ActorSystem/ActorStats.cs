@@ -2,16 +2,13 @@
 using SurgeEngine.Code.ActorStates;
 using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.Custom;
-using SurgeEngine.Code.Parameters;
+using SurgeEngine.Code.Tools;
 using UnityEngine;
 
 namespace SurgeEngine.Code.ActorSystem
 {
     public class ActorStats : ActorComponent
     {
-        public MoveParameters moveParameters;
-        public JumpParameters jumpParameters;
-        public HomingParameters homingParameters;
         public StompParameters stompParameters;
         public float turnRate;
         public float currentSpeed;
@@ -56,7 +53,7 @@ namespace SurgeEngine.Code.ActorSystem
             
             if (isInAir)
             {
-                homingTarget = Common.FindHomingTarget();
+                homingTarget = SonicTools.FindHomingTarget();
             }
             else
             {

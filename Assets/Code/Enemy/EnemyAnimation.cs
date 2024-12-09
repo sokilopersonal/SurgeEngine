@@ -1,6 +1,5 @@
 ﻿using SurgeEngine.Code.Enemy.States;
 using SurgeEngine.Code.StateMachine.Components;
-using UnityEngine;
 
 namespace SurgeEngine.Code.StateMachine
 {

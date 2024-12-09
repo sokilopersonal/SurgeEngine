@@ -9,30 +9,138 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb904de649f8c864fa857faa96fa926a, type: 3}
+  m_Script: {fileID: 11500000, guid: b1f37b37c23e94746a87aa4ac3191046, type: 3}
   m_Name: BaseActorPhysics
   m_EditorClassIdentifier: 
-  castDistance: 1.15
+  castDistance: 1.175
+  castDistanceCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 2
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
   castLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1
+  railMask:
+    serializedVersion: 2
+    m_Bits: 32768
   topSpeed: 28
-  maxSpeed: 35
-  maxVerticalSpeed: 0
-  accelerationRate: 7.5
-  accelerationCurve: 0
-  minDeaccelerationRate: 12
-  maxDeaccelerationRate: 20
-  minSkiddingRate: 10
-  maxSkiddingRate: 15
-  skiddingThreshold: 0.5
-  skidDelay: 0.2
-  turnSpeed: 8
-  turnCurve: 0
-  turnSmoothing: 10
-  jumpForce: 16
-  jumpHoldForce: 12
-  jumpStartTime: 0.15
-  jumpCollisionHeight: 0.6
-  jumpCollisionCenter: 0.2
-  jumpCollisionRadius: 0.5
+  maxSpeed: 40
+  maxVerticalSpeed: 80
+  accelerationRate: 8
+  accelerationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1.65
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.113838814
+      value: 1.65
+      inSlope: -0.009980005
+      outSlope: -0.009980005
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.98198014
+      outWeight: 0.06473468
+    - serializedVersion: 3
+      time: 0.3487704
+      value: 0.84597206
+      inSlope: -1.8615745
+      outSlope: -1.8615745
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.12730122
+      outWeight: 0.0568454
+    - serializedVersion: 3
+      time: 1
+      value: 0.4000293
+      inSlope: -0.071335554
+      outSlope: -0.071335554
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.11108288
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  minDeaccelerationRate: 14
+  maxDeaccelerationRate: 26
+  minSkiddingRate: 24
+  maxSkiddingRate: 440
+  skiddingThreshold: -0.55
+  skidDelay: 0.08
+  turnSpeed: 10
+  turnCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -1.6870168
+      outSlope: -1.6870168
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.030726258
+    - serializedVersion: 3
+      time: 0.08972618
+      value: 0.7195889
+      inSlope: -1.9632621
+      outSlope: -1.9632621
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.05965597
+    - serializedVersion: 3
+      time: 1
+      value: 0.1
+      inSlope: -0.0015552307
+      outSlope: -0.0015552307
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.08353265
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  turnSmoothing: 12
+  jumpForce: 6.5
+  jumpHoldForce: 26
+  jumpStartTime: 0.2
+  jumpCollisionHeight: 1
+  jumpCollisionCenter: -0.5
+  jumpCollisionRadius: 0.3
+  slopeDeslopeForce: 4
+  slopeDeslopeAngle: 75
+  slopeMinForceSpeed: 10
+  slopeInactiveDuration: 0.15
+  slopeUphillForce: 2
+  slopeDownhillForce: 7
+  slopeMinAngle: 5
+  slopeMinSpeed: 10

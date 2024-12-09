@@ -1,9 +1,6 @@
-﻿using FMOD.Studio;
-using FMODUnity;
-using SurgeEngine.Code.ActorSystem;
+﻿using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.StateMachine;
 using UnityEngine;
-using STOP_MODE = FMOD.Studio.STOP_MODE;
 
 namespace SurgeEngine.Code.ActorSoundEffects
 {

@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcaffbb3b3964abda9da3e640a6b1330, type: 3}
+  m_Name: HomingConfig
+  m_EditorClassIdentifier: 
+  speed: 65
+  findRadius: 5.5
+  findDistance: 16
+  maxTime: 1.5
+  afterForce: 10
+  delay: 0.1
+  mask:
+    serializedVersion: 2
+    m_Bits: 1024
+  jumpDashTime: 0.45
+  jumpDashDistance: 25
+  JumpDashCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 1.5953794
+      outSlope: 1.5953794
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.2718808
+    - serializedVersion: 3
+      time: 0.25
+      value: 1.1994886
+      inSlope: 0.00000071525574
+      outSlope: 0.00000071525574
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.5
+      value: 1.0000002
+      inSlope: -2.0769427
+      outSlope: -2.0769427
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.09290053
+      outWeight: 0.17622948
+    - serializedVersion: 3
+      time: 1
+      value: 0.45
+      inSlope: -0.27820814
+      outSlope: -0.27820814
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.27868855
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4

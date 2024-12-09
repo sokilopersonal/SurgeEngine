@@ -2644,17 +2644,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &225515712 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8137858641399439505, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
-  m_PrefabInstance: {fileID: 1596745830}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d62167f8dc14d69ba306ed32ed71e1c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!21 &231283614
 Material:
   serializedVersion: 8
@@ -6724,7 +6713,7 @@ PrefabInstance:
     - target: {fileID: 3558113437229117300, guid: d417dfaab342b45499b647de7462f5af, type: 3}
       propertyPath: actor
       value: 
-      objectReference: {fileID: 225515712}
+      objectReference: {fileID: 1897535226}
     - target: {fileID: 3558113437229117300, guid: d417dfaab342b45499b647de7462f5af, type: 3}
       propertyPath: actorHud
       value: 
@@ -20946,30 +20935,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sonic
       objectReference: {fileID: 0}
-    - target: {fileID: 3514203903129675520, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
-      propertyPath: maxAngleDifference
-      value: 80
-      objectReference: {fileID: 0}
-    - target: {fileID: 4604916912254361020, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4604916912254361020, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -2.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 5212509988277264324, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
-      propertyPath: yOffset
-      value: -0.08
-      objectReference: {fileID: 0}
-    - target: {fileID: 5212509988277264324, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
-      propertyPath: distance
-      value: 2.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 5212509988277264324, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
-      propertyPath: boostBlendTime
-      value: 2.25
-      objectReference: {fileID: 0}
+    - target: {fileID: 3919129401711663017, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
+      propertyPath: stompConfig
+      value: 
+      objectReference: {fileID: 11400000, guid: 588815eaf43a5c74baefdf410bf8f0e7, type: 2}
     - target: {fileID: 8308832228826993834, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
       propertyPath: m_LocalPosition.x
       value: -13.500004
@@ -25587,6 +25556,17 @@ MonoBehaviour:
   fillEmptySpaces: 0
   version: 2
   globalVolume: 0
+--- !u!114 &1897535226 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3919129401711663017, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
+  m_PrefabInstance: {fileID: 1596745830}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bd6cbed6149450d8915473bfd11948e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1903429537 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1876161101514643494, guid: a4be8a2f4d3bf334d80635828f72b451, type: 3}

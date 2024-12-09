@@ -3,11 +3,7 @@ using Cysharp.Threading.Tasks;
 using SurgeEngine.Code.ActorStates;
 using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.CommonObjects;
-using SurgeEngine.Code.GameDocuments;
-using SurgeEngine.Code.Parameters;
 using UnityEngine;
-using UnityEngine.Splines;
-using static SurgeEngine.Code.GameDocuments.SonicGameDocumentParams;
 
 namespace SurgeEngine.Code.Custom
 {
@@ -15,7 +11,7 @@ namespace SurgeEngine.Code.Custom
     {
         public static bool AddScore(int score)
         {
-            int abs = Math.Abs(score);
+            int abs = Mathf.Abs(score);
             if (abs > 0)
             {
                 Stage.Instance.data.AddScore(abs);
@@ -29,15 +25,7 @@ namespace SurgeEngine.Code.Custom
         {
             string input = gameObject.name;
             int index = input.IndexOf('@');
-            string result;
-            if (index == -1)
-            {
-                result = "Concrete";
-            }
-            else
-            {
-                result = input.Substring(index + 1);
-            }
+            string result = index == -1 ? "Concrete" : input.Substring(index + 1);
             
             return result;
         }
@@ -66,15 +54,15 @@ namespace SurgeEngine.Code.Custom
         {
             var context = ActorContext.Context;
 
-            if (context.rigidbody.isKinematic) return;
+            if (context.kinematics.Rigidbody.isKinematic) return;
             
             if (type is ResetVelocityType.Linear or ResetVelocityType.Both)
             {
                 context.kinematics.PlanarVelocity = Vector3.zero;
                 context.kinematics.MovementVector = Vector3.zero;
-                context.rigidbody.linearVelocity = Vector3.zero;
+                context.kinematics.Rigidbody.linearVelocity = Vector3.zero;
             }
-            if (type is ResetVelocityType.Angular or ResetVelocityType.Both) context.rigidbody.angularVelocity = Vector3.zero;
+            if (type is ResetVelocityType.Angular or ResetVelocityType.Both) context.kinematics.Rigidbody.angularVelocity = Vector3.zero;
         }
         
         public static void ApplyImpulse(Vector3 impulse, ResetVelocityType type = ResetVelocityType.Both)
@@ -82,14 +70,14 @@ namespace SurgeEngine.Code.Custom
             var context = ActorContext.Context;
             ResetVelocity(type);
             
-            context.rigidbody.AddForce(impulse, ForceMode.Impulse);
-            context.rigidbody.linearVelocity = Vector3.ClampMagnitude(context.rigidbody.linearVelocity, impulse.magnitude);
+            context.kinematics.Rigidbody.AddForce(impulse, ForceMode.Impulse);
+            context.kinematics.Rigidbody.linearVelocity = Vector3.ClampMagnitude(context.kinematics.Rigidbody.linearVelocity, impulse.magnitude);
         }
 
         public static void ApplyGravity(float yGravity, float dt)
         {
             var context = ActorContext.Context;
-            if (!context.rigidbody.isKinematic) context.rigidbody.linearVelocity += Vector3.down * (yGravity * dt);
+            if (!context.kinematics.Rigidbody.isKinematic) context.kinematics.Rigidbody.linearVelocity += Vector3.down * (yGravity * dt);
         }
 
         public static bool CheckForGround(out RaycastHit result, CheckGroundType type = CheckGroundType.Normal, float castDistance = 0f)
@@ -109,11 +97,11 @@ namespace SurgeEngine.Code.Custom
                     break;
                 case CheckGroundType.Predict:
                     origin = context.transform.position;
-                    direction = context.rigidbody.linearVelocity.normalized;
+                    direction = context.kinematics.Rigidbody.linearVelocity.normalized;
                     break;
                 case CheckGroundType.PredictJump:
                     origin = context.transform.position - context.transform.up * 0.5f;
-                    direction = context.rigidbody.linearVelocity.normalized;
+                    direction = context.kinematics.Rigidbody.linearVelocity.normalized;
                     break;
                 case CheckGroundType.PredictOnRail:
                     origin = context.transform.position + context.transform.forward;
@@ -130,10 +118,8 @@ namespace SurgeEngine.Code.Custom
             
             Debug.DrawLine(origin, origin + direction, Color.red);
             
-            Document doc = SonicGameDocument.GetDocument("Sonic");
-            ParameterGroup group = doc.GetGroup(SonicGameDocument.CastGroup);
-            if (castDistance == 0) castDistance = group.GetParameter<float>(Cast_Distance);
-            LayerMask castMask = group.GetParameter<LayerMask>(Cast_Mask);
+            if (castDistance == 0) castDistance = context.config.castDistance;
+            LayerMask castMask = context.config.castLayer;
 
             bool hit = Physics.Raycast(ray, out result,
                 castDistance, castMask, QueryTriggerInteraction.Ignore);
@@ -148,11 +134,9 @@ namespace SurgeEngine.Code.Custom
             Vector3 direction = -context.transform.up;
 
             Ray ray = new Ray(origin, direction);
-            Document doc = SonicGameDocument.GetDocument("Sonic");
-            ParameterGroup group = doc.GetGroup(SonicGameDocument.CastGroup);
-            float castDistance = group.GetParameter<float>(Cast_Distance) *
+            float castDistance = context.config.castDistance *
                                  (context.stateMachine.IsExact<FStateHoming>() ? 1.5f : 1f);
-            LayerMask mask = group.GetParameter<LayerMask>(Cast_RailMask);
+            LayerMask mask = context.config.railMask;
 
             if (Physics.SphereCast(ray, 0.4f, out result, castDistance, mask, QueryTriggerInteraction.Collide))
             {
@@ -185,62 +169,10 @@ namespace SurgeEngine.Code.Custom
             
             Time.timeScale = targetScale;
         }
-        
-        public static HomingTarget FindHomingTarget()
-        {
-            var context = ActorContext.Context;
-            var transform = context.transform;
-            var doc = SonicGameDocument.GetDocument("Sonic");
-            var param = doc.GetGroup(SonicGameDocument.HomingGroup);
-            Vector3 origin = transform.position + Vector3.down;
-            Vector3 dir = context.kinematics.GetInputDir() == Vector3.zero ? transform.forward : context.kinematics.GetInputDir();
-            var maxDistance = param.GetParameter<float>(Homing_FindDistance);
-            var hits = Physics.OverlapSphere(origin + dir, maxDistance, param.GetParameter<LayerMask>(Homing_Mask), QueryTriggerInteraction.Collide);
-            HomingTarget closestTarget = null;
-            float closestDistance = float.MaxValue;
-            foreach (var hit in hits)
-            {
-                Transform target = hit.transform;
-                Vector3 end = target.position + Vector3.up * 0.5f;
-                Vector3 direction = target.position - origin;
-                bool facing = Vector3.Dot(direction.normalized, transform.forward) > 0.5f;
-                if (facing && !Physics.Linecast(origin, end, doc.GetGroup(SonicGameDocument.CastGroup).GetParameter<LayerMask>(Cast_Mask)))
-                {
-                    if (target.TryGetComponent(out HomingTarget homingTarget))
-                    {
-                        float distance = Vector3.Distance(origin, target.position);
-                        if (distance < closestDistance)
-                        {
-                            closestTarget = homingTarget;
-                            closestDistance = distance;
-                        }
-                    }
-                }
-            }
-    
-            return closestTarget;
-        }
-        
-        public static async UniTask ChangeFOVOverTime(float targetFov, float duration)
-        {
-            var camera = ActorContext.Context.camera;
-            float startFov = camera.GetCamera().fieldOfView;
-            float elapsed = 0f;
-            
-            while (elapsed < duration)
-            {
-                camera.GetCamera().fieldOfView = Mathf.Lerp(startFov, targetFov, elapsed / duration);
-                elapsed += Time.deltaTime;
-                await UniTask.Yield();
-            }
-            
-            camera.GetCamera().fieldOfView = targetFov;
-        }
     }
 
     public enum ResetVelocityType
     {
-        None,
         Angular,
         Linear,
         Both

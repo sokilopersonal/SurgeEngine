@@ -1,5 +1,4 @@
-﻿using SurgeEngine.Code.StateMachine;
-using UnityEngine;
+﻿using UnityEngine;
 
 #if UNITY_EDITOR
 using UnityEditor;

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using SurgeEngine.Code.CameraSystem.Pawns;
-using UnityEngine;
 
 namespace SurgeEngine.Code.StateMachine
 {

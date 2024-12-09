@@ -1,6 +1,5 @@
-﻿using SurgeEngine.Code.ActorStates.SonicSubStates;
-using SurgeEngine.Code.ActorSystem;
-using SurgeEngine.Code.GameDocuments;
+﻿using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.Tools;
 using UnityEngine;
 
 namespace SurgeEngine.Code.CameraSystem.Pawns
@@ -11,10 +10,12 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
         protected float _yOffset;
         private float _sensSpeedMod;
         private Vector3 _velocity;
+        private float _lookVelocity;
         private float _currentCollisionDistance;
 
         private float _boostDistance;
-        
+        private float lookYTime;
+
         public NewModernState(Actor owner) : base(owner)
         {
             _distance = _master.distance;
@@ -89,30 +90,41 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
 
         private void YLag()
         {
-            Vector3 vel = _actor.kinematics.Rigidbody.linearVelocity;
+            Vector3 vel = _actor.kinematics.Velocity;
             float yLag = Mathf.Clamp(vel.y * -0.15f, _master.yLagMin, _master.yLagMax); // min is down lag, max value is up lag
             _stateMachine.yLag = Mathf.SmoothDamp(_stateMachine.yLag, yLag, ref _stateMachine.yLagVelocity, _master.yLagTime, 10f);
+
+            float mod = _actor.kinematics.HorizontalSpeed * 0.01f;
+            Debug.Log(mod);
+            
+            // Look Y Time values
+            float up = 1f;
+            float down = 0.25f;
+            float restore = 0.875f;
+            
+            float value = yLag < 0 ? up : Mathf.Approximately(yLag, 0) ? restore - restore * mod : down;
+            lookYTime = Mathf.Lerp(lookYTime, value, Time.deltaTime * 4f);
+            _master.lookOffset.y = Mathf.SmoothDamp(_master.lookOffset.y, -yLag * 1.25f, ref _lookVelocity, lookYTime);
         }
 
         protected virtual void AutoLookDirection()
         {
             float speed = _actor.kinematics.HorizontalSpeed;
-            var doc = SonicGameDocument.GetDocument("Sonic");
-            var physParam = doc.GetGroup(SonicGameDocument.PhysicsGroup);
-            _sensSpeedMod = Mathf.Lerp(_master.maxSensitivitySpeed, _master.minSensitivitySpeed, speed / physParam.GetParameter<float>(SonicGameDocumentParams.BasePhysics_TopSpeed));
+            var config = _actor.config;
+            _sensSpeedMod = Mathf.Lerp(_master.maxSensitivitySpeed, _master.minSensitivitySpeed, speed / config.topSpeed);
+            
+            float lookMod = speed / config.topSpeed;
+            Vector3 vel = _actor.kinematics.Rigidbody.linearVelocity;
+            _velocity = Vector3.Lerp(_velocity, vel, Time.deltaTime * 8f);
+            var yAutoLook = Mathf.Abs(_velocity.y) > 0.2f ? Mathf.Clamp(-_velocity.y * 7.5f, _master.verticalMinAmplitude, _master.verticalMaxAmplitude)
+                : _master.verticalDefaultAmplitude;
+                
+            _stateMachine.yAutoLook = yAutoLook;
+            _stateMachine.y = Mathf.Lerp(_stateMachine.y, _stateMachine.yAutoLook, Time.deltaTime * Mathf.Max(_master.verticalMinLerpSpeed, lookMod * _master.verticalLerpSpeed));
+            
             if (speed > 1f)
             {
-                float lookMod = speed / physParam
-                    .GetParameter<float>(SonicGameDocumentParams.BasePhysics_TopSpeed);
                 AutoLook(_master.horizontalAutoLookAmplitude * Mathf.Max(_master.horizontalAutoLookMinAmplitude, lookMod));
-                    
-                Vector3 vel = _actor.kinematics.Rigidbody.linearVelocity;
-                _velocity = Vector3.Lerp(_velocity, vel, Time.deltaTime * 8f);
-                var yAutoLook = Mathf.Abs(_velocity.y) > 0.2f ? Mathf.Clamp(-_velocity.y * 1.25f, _master.verticalMinAmplitude, _master.verticalMaxAmplitude)
-                    : _master.verticalDefaultAmplitude;
-                
-                _stateMachine.yAutoLook = yAutoLook;
-                _stateMachine.y = Mathf.Lerp(_stateMachine.y, _stateMachine.yAutoLook, Time.deltaTime * Mathf.Max(_master.verticalMinLerpSpeed, lookMod * _master.verticalLerpSpeed));
             }
             else
             {
@@ -146,7 +158,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
 
         protected virtual void SetRotation(Vector3 actorPosition)
         {
-            Vector3 lookTarget = actorPosition + _master.transform.TransformDirection(_master.lookOffset);
+            Vector3 lookTarget = actorPosition + _master.lookOffset;
             Vector3 lookDirection = lookTarget - _stateMachine.position;
             
             _stateMachine.rotation = Quaternion.LookRotation(lookDirection.normalized);
@@ -157,7 +169,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             _boostDistance = _master.boostBlendCurve.Evaluate(_master.boostBlendFactor);
             _stateMachine.camera.fieldOfView = 60f * _master.boostBlendFovCurve.Evaluate(_master.boostBlendFactor);
 
-            if (!_actor.stateMachine.GetSubState<FBoost>().Active)
+            if (!SonicTools.IsBoost())
             {
                 _boostDistance = 1f;
                 _stateMachine.camera.fieldOfView = 60f;

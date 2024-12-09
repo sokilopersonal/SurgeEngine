@@ -9,44 +9,43 @@ namespace SurgeEngine.Code.ActorSystem
 {
     public class ActorInput : ActorComponent
     {
-
         public Vector3 moveVector;
 
         public Vector2 lookVector;
 
-        private SurgeInput _input;
+        private PlayerInput _playerInput;
 
         // Boost
 
-        public bool BoostPressed => _input.Gameplay.Boost.WasPressedThisFrame();
+        public bool BoostPressed => _playerInput.actions["XAction"].WasPressedThisFrame();
 
-        public bool BoostHeld => _input.Gameplay.Boost.IsPressed();
+        public bool BoostHeld => _playerInput.actions["XAction"].IsPressed();
 
         public Action<InputAction.CallbackContext> BoostAction;
 
         // Jump
 
-        public bool JumpPressed => _input.Gameplay.Jump.WasPressedThisFrame();
+        public bool JumpPressed => _playerInput.actions["AAction"].WasPressedThisFrame();
 
-        public bool JumpHeld => _input.Gameplay.Jump.IsPressed();
+        public bool JumpHeld => _playerInput.actions["AAction"].IsPressed();
 
         public Action<InputAction.CallbackContext> JumpAction;
 
         // B Button
 
-        public bool BPressed => _input.Gameplay.BButton.WasPressedThisFrame();
+        public bool BPressed => _playerInput.actions["BAction"].WasPressedThisFrame();
 
-        public bool BReleased => _input.Gameplay.BButton.WasReleasedThisFrame();
+        public bool BReleased => _playerInput.actions["BAction"].WasReleasedThisFrame();
 
-        public bool BHeld => _input.Gameplay.BButton.IsPressed();
+        public bool BHeld => _playerInput.actions["BAction"].IsPressed();
 
         public Action<InputAction.CallbackContext> BAction;
 
         // Y Button
 
-        public bool YPressed => _input.Gameplay.YButton.WasPressedThisFrame();
+        public bool YPressed => _playerInput.actions["YAction"].WasPressedThisFrame();
 
-        public bool YHeld => _input.Gameplay.YButton.IsPressed();
+        public bool YHeld => _playerInput.actions["YAction"].IsPressed();
 
         public Action<InputAction.CallbackContext> YAction;
 
@@ -65,9 +64,8 @@ namespace SurgeEngine.Code.ActorSystem
 
         private void Awake()
         {
-            _input = new SurgeInput();
-            _input.Enable();
-
+            _playerInput = GetComponent<PlayerInput>();
+            
             _translatedDeviceNames = new Dictionary<string, string>()
             {
                 ["Keyboard"] = "Keyboard",
@@ -81,51 +79,51 @@ namespace SurgeEngine.Code.ActorSystem
 
         private void OnEnable()
         {
-            _input.Enable();
+            _playerInput.enabled = true;
 
-            _input.Gameplay.Boost.started += BoostInput;
-            _input.Gameplay.Boost.canceled += BoostInput;
+            _playerInput.actions["XAction"].started += BoostInput;
+            _playerInput.actions["XAction"].canceled += BoostInput;
 
-            _input.Gameplay.Jump.started += JumpInput;
-            _input.Gameplay.Jump.canceled += JumpInput;
+            _playerInput.actions["AAction"].started += JumpInput;
+            _playerInput.actions["AAction"].canceled += JumpInput;
             
-            _input.Gameplay.BButton.started += BInput;
-            _input.Gameplay.BButton.canceled += BInput;
+            _playerInput.actions["BAction"].started += BInput;
+            _playerInput.actions["BAction"].canceled += BInput;
             
-            _input.Gameplay.YButton.started += YInput;
-            _input.Gameplay.YButton.canceled += YInput;
+            _playerInput.actions["YAction"].started += YInput;
+            _playerInput.actions["YAction"].canceled += YInput;
             
-            _input.Gameplay.Quickstep.started += BumperInput;
-            _input.Gameplay.Quickstep.canceled += BumperInput;
-
-            _input.Gameplay.Start.started += StartInput;
-            _input.Gameplay.Start.canceled += StartInput;
+            // _playerInput.actions[""].started += BumperInput;
+            // _playerInput.actions[""].canceled += BumperInput;
+            //
+            // _playerInput.Gameplay.Start.started += StartInput;
+            // _playerInput.Gameplay.Start.canceled += StartInput;
         }
 
         private void OnDisable()
         {
-            _input.Disable();
+            _playerInput.enabled = false;
 
             moveVector = Vector3.zero;
             lookVector = Vector2.zero;
 
-            _input.Gameplay.Boost.started -= BoostInput;
-            _input.Gameplay.Boost.canceled -= BoostInput;
+            _playerInput.actions["XAction"].started -= BoostInput;
+            _playerInput.actions["XAction"].canceled -= BoostInput;
 
-            _input.Gameplay.Jump.started -= JumpInput;
-            _input.Gameplay.Jump.canceled -= JumpInput;
+            _playerInput.actions["AAction"].started -= JumpInput;
+            _playerInput.actions["AAction"].canceled -= JumpInput;
             
-            _input.Gameplay.BButton.started -= BInput;
-            _input.Gameplay.BButton.canceled -= BInput;
+            _playerInput.actions["BAction"].started -= BInput;
+            _playerInput.actions["BAction"].canceled -= BInput;
             
-            _input.Gameplay.YButton.started -= YInput;
-            _input.Gameplay.YButton.canceled -= YInput;
+            _playerInput.actions["YAction"].started -= YInput;
+            _playerInput.actions["YAction"].canceled -= YInput;
             
-            _input.Gameplay.Quickstep.started -= BumperInput;
-            _input.Gameplay.Quickstep.canceled -= BumperInput;
-            
-            _input.Gameplay.Start.started -= StartInput;
-            _input.Gameplay.Start.canceled -= StartInput;
+            // _playerInput.Gameplay.Quickstep.started -= BumperInput;
+            // _playerInput.Gameplay.Quickstep.canceled -= BumperInput;
+            //
+            // _playerInput.Gameplay.Start.started -= StartInput;
+            // _playerInput.Gameplay.Start.canceled -= StartInput;
             
             var pad = Gamepad.current;
             pad.SetMotorSpeeds(0, 0);
@@ -133,9 +131,9 @@ namespace SurgeEngine.Code.ActorSystem
 
         private void Update()
         {
-            var temp = _input.Gameplay.Movement.ReadValue<Vector2>();
+            var temp = _playerInput.actions["Movement"].ReadValue<Vector2>();
             moveVector = new Vector3(temp.x, 0, temp.y);
-            lookVector = _input.Gameplay.Camera.ReadValue<Vector2>() * (_device is Gamepad ? (100f * Time.deltaTime) : 1f);
+            lookVector = _playerInput.actions["Camera"].ReadValue<Vector2>() * (_device is Gamepad ? 100f * Time.deltaTime : 1f);
 
             if (lookVector == Vector2.zero)
             {

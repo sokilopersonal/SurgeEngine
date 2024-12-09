@@ -1,5 +1,4 @@
 ﻿using SurgeEngine.Code.ActorSystem;
-using SurgeEngine.Code.CameraSystem.Pawns;
 using UnityEngine;
 
 namespace SurgeEngine.Code.CommonObjects

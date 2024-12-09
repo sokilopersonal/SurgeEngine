@@ -2,11 +2,9 @@
 using SurgeEngine.Code.ActorStates.SonicSubStates;
 using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Custom;
-using SurgeEngine.Code.GameDocuments;
 using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
 using Vector3 = UnityEngine.Vector3;
-using static SurgeEngine.Code.GameDocuments.SonicGameDocumentParams;
 
 namespace SurgeEngine.Code.ActorStates
 {
@@ -59,10 +57,9 @@ namespace SurgeEngine.Code.ActorStates
             base.OnFixedTick(dt);
             
             Vector3 prevNormal = Kinematics.Normal;
-            var doc = SonicGameDocument.GetDocument("Sonic");
-            var castParam = doc.GetGroup(SonicGameDocument.CastGroup);
-            var physParam = doc.GetGroup(SonicGameDocument.PhysicsGroup);
-            float distance = castParam.GetParameter<float>(Cast_Distance) * castParam.GetParameter<AnimationCurve>(Cast_DistanceCurve).Evaluate(Kinematics.HorizontalSpeed / physParam.GetParameter<float>(BasePhysics_TopSpeed));
+            var config = Actor.config;
+            float distance = config.castDistance * config.castDistanceCurve
+                .Evaluate(Kinematics.HorizontalSpeed / config.topSpeed);
             bool willBeGrounded = Kinematics.CheckForPredictedGround(_rigidbody.linearVelocity, prevNormal, dt, distance, 8);
             if (Common.CheckForGround(out var data, castDistance: distance) && willBeGrounded)
             {
@@ -86,44 +83,12 @@ namespace SurgeEngine.Code.ActorStates
 
         public void BoostHandle()
         {
-            float dt = Time.deltaTime;
-            FBoost boost = StateMachine.GetSubState<FBoost>();
-            var phys = SonicGameDocument.GetDocument("Sonic").GetGroup(SonicGameDocument.PhysicsGroup);
-            var param = boost.GetBoostEnergyGroup();
-            float startForce = param.GetParameter<float>(BoostEnergy_StartSpeed);
-            if (boost.Active && Stats.currentSpeed < startForce)
-            {
-                _rigidbody.linearVelocity = _rigidbody.transform.forward * startForce;
-                boost.restoringTopSpeed = true;
-            }
-    
-            if (boost.Active)
-            {
-                float maxSpeed = phys.GetParameter<float>(BasePhysics_TopSpeed) * param.GetParameter<float>(BoostEnergy_MaxSpeedMultiplier);
-                if (Stats.currentSpeed < maxSpeed) _rigidbody.AddForce(_rigidbody.transform.forward * (param.GetParameter<float>(BoostEnergy_Force) * dt), ForceMode.VelocityChange);
-                    
-            }
-            else if (boost.restoringTopSpeed)
-            {
-                float normalMaxSpeed = Stats.moveParameters.topSpeed;
-                if (Stats.currentSpeed > normalMaxSpeed)
-                {
-                    _rigidbody.linearVelocity = Vector3.MoveTowards(
-                        _rigidbody.linearVelocity, 
-                        _rigidbody.transform.forward * normalMaxSpeed, 
-                        dt * param.GetParameter<float>(BoostEnergy_RestoreSpeed)
-                    );
-                }
-                else if (Stats.currentSpeed * 0.99f < normalMaxSpeed)
-                {
-                    boost.restoringTopSpeed = false;
-                }
-            }
+            Actor.stateMachine.GetSubState<FBoost>().BaseGroundBoost();
         }
 
         private void ConvertAirToGroundVelocity()
         {
-            if (Physics.Raycast(Actor.transform.position, _rigidbody.linearVelocity.normalized, out RaycastHit velocityFix, _rigidbody.linearVelocity.magnitude, Stats.moveParameters.castParameters.collisionMask))
+            if (Physics.Raycast(Actor.transform.position, _rigidbody.linearVelocity.normalized, out RaycastHit velocityFix, _rigidbody.linearVelocity.magnitude, Actor.config.castLayer))
             {
                 float nextGroundAngle = Vector3.Angle(velocityFix.normal, Vector3.up);
                 if (nextGroundAngle <= 20)

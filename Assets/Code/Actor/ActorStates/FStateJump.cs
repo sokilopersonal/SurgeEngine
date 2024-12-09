@@ -1,32 +1,32 @@
 ﻿using SurgeEngine.Code.ActorSystem;
-using SurgeEngine.Code.GameDocuments;
+using SurgeEngine.Code.Config;
 using UnityEngine;
-using static SurgeEngine.Code.GameDocuments.SonicGameDocumentParams;
 
 namespace SurgeEngine.Code.ActorStates
 {
     public class FStateJump : FStateAir
     {
         private float _jumpTime;
+        private BaseActorConfig _config;
         protected float _maxAirTime;
 
         public FStateJump(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
             _maxAirTime = 0.8f;
+            _config = Actor.config;
         }
 
         public override void OnEnter()
         {
             base.OnEnter();
             
-            var doc = SonicGameDocument.GetDocument("Sonic");
-            var param = doc.GetGroup(SonicGameDocument.PhysicsGroup);
-            _rigidbody.AddForce(Actor.transform.up * param.GetParameter<float>(BasePhysics_JumpForce), ForceMode.Impulse);
+            _rigidbody.AddForce(Actor.transform.up * _config.jumpForce, ForceMode.Impulse);
             _jumpTime = 0;
             
             Actor.transform.rotation = Quaternion.Euler(0, Actor.transform.rotation.eulerAngles.y, 0);
             
-            Actor.model.SetCollisionParam(param.GetParameter<float>(BasePhysics_JumpCollisionHeight), param.GetParameter<float>(BasePhysics_JumpCollisionCenter), param.GetParameter<float>(BasePhysics_JumpCollisionRadius));
+            Actor.model.SetCollisionParam(_config.jumpCollisionHeight, _config.jumpCollisionCenter, _config.jumpCollisionRadius);
+
         }
 
         public override void OnExit()
@@ -43,12 +43,10 @@ namespace SurgeEngine.Code.ActorStates
             {
                 if (Input.JumpHeld)
                 {
-                    var doc = SonicGameDocument.GetDocument("Sonic");
-                    var param = doc.GetGroup(SonicGameDocument.PhysicsGroup);
-                    if (_jumpTime < param.GetParameter<float>(BasePhysics_JumpStartTime))
+                    if (_jumpTime < _config.jumpStartTime)
                     {
                         if (_rigidbody.linearVelocity.y > 0) 
-                            _rigidbody.linearVelocity += Actor.transform.up * (param.GetParameter<float>(BasePhysics_JumpHoldForce) * dt);
+                            _rigidbody.linearVelocity += Actor.transform.up * (_config.jumpHoldForce * dt);
                         _jumpTime += dt;
                     }
                 }

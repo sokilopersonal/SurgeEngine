@@ -6,7 +6,6 @@ using SurgeEngine.Code.ActorStates;
 using SurgeEngine.Code.ActorStates.SonicSubStates;
 using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Custom;
-using SurgeEngine.Code.Parameters;
 using SurgeEngine.Code.SurgeDebug;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -214,6 +213,7 @@ namespace SurgeEngine.Code.CommonObjects
             if (_currentQTEUI) Destroy(_currentQTEUI.gameObject);
             
             var context = ActorContext.Context;
+            var body = context.kinematics.Rigidbody;
             if (result.success)
             {
                 context.flags.RemoveFlag(FlagType.OutOfControl);
@@ -222,7 +222,7 @@ namespace SurgeEngine.Code.CommonObjects
                 Common.ResetVelocity(ResetVelocityType.Both);
                 Vector3 arcPeak = Trajectory.GetArcPosition(startPoint.position,
                     Common.GetCross(transform, firstPitch, true), firstSpeed);
-                context.rigidbody.position = arcPeak; // should snap Sonic to the arc point
+                body.position = arcPeak; // should snap Sonic to the arc point
                 context.animation.TransitionToState($"Trick {Random.Range(1, 8)}", 0.2f);
                 
                 Vector3 impulse = Common.GetImpulseWithPitch(Vector3.Cross(-startPoint.right, Vector3.up), startPoint.right, secondPitch, secondSpeed);
@@ -239,8 +239,8 @@ namespace SurgeEngine.Code.CommonObjects
                 RuntimeManager.PlayOneShot(qteFailVoiceSound);
             }
 
-            context.stats.movementVector = context.rigidbody.linearVelocity;
-            context.stats.planarVelocity = context.rigidbody.linearVelocity;
+            context.stats.movementVector = body.linearVelocity;
+            context.stats.planarVelocity = body.linearVelocity;
             
             context.stateMachine.SetState<FStateAir>();
             _ = Common.ChangeTimeScaleOverTime(1, 0.1f);

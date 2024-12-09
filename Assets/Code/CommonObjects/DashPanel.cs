@@ -3,7 +3,6 @@ using SurgeEngine.Code.ActorStates;
 using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.Misc;
-using SurgeEngine.Code.Parameters;
 using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
 
@@ -20,19 +19,20 @@ namespace SurgeEngine.Code.CommonObjects
             base.OnTriggerContact(msg);
             
             var context = ActorContext.Context;
+            var body = context.kinematics.Rigidbody;
             
             if (center)
             {
-                context.rigidbody.linearVelocity = Vector3.zero;
-                context.rigidbody.position = transform.position + transform.up * 0.5f;
+                body.linearVelocity = Vector3.zero;
+                body.position = transform.position + transform.up * 0.5f;
             }
             
             context.animation.TransitionToState(AnimatorParams.RunCycle);
-            context.rigidbody.linearVelocity = transform.forward * speed;
+            body.linearVelocity = transform.forward * speed;
             context.stateMachine.SetState<FStateGround>();
             
-            context.rigidbody.rotation = Quaternion.LookRotation(transform.forward, transform.up);
-            context.model.root.rotation = context.rigidbody.rotation;
+            body.rotation = Quaternion.LookRotation(transform.forward, transform.up);
+            context.model.root.rotation = body.rotation;
 
             context.flags.AddFlag(new Flag(FlagType.OutOfControl, 
                 new [] { Tags.AllowBoost }, true, Mathf.Abs(outOfControl)));

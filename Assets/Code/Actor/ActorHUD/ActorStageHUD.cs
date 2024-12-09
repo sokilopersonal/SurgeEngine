@@ -2,7 +2,6 @@
 using SurgeEngine.Code.ActorStates.SonicSubStates;
 using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.CommonObjects;
-using SurgeEngine.Code.Custom;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -110,11 +109,11 @@ namespace SurgeEngine.Code.ActorHUD
 
         private void Speedometer()
         {
-            float speed = _actor.rigidbody.GetHorizontalMagnitude();
-            float topSpeed = _actor.stats.moveParameters.topSpeed;
-            float threshold = 2.25f;
-            float roundedSpeed = Mathf.Round(speed / threshold) * threshold;
-            speedometerFill.fillAmount = roundedSpeed / (topSpeed + topSpeed * 0.2f);
+            // float speed = _actor.kinematics.HorizontalSpeed;
+            // float topSpeed = _actor.stats.moveParameters.topSpeed;
+            // float threshold = 2.25f;
+            // float roundedSpeed = Mathf.Round(speed / threshold) * threshold;
+            // speedometerFill.fillAmount = roundedSpeed / (topSpeed + topSpeed * 0.2f);
         }
 
         private void HomingTarget()

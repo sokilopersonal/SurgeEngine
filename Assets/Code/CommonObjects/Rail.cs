@@ -1,7 +1,6 @@
 ﻿using SurgeEngine.Code.ActorStates;
 using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Custom;
-using SurgeEngine.Code.Parameters;
 using UnityEngine;
 using UnityEngine.Splines;
 
@@ -32,7 +31,7 @@ namespace SurgeEngine.Code.CommonObjects
         {
             for (int i = 0; i < _colliders.Length; i++)
             {
-                _ = Common.TemporarilyDisableCollider(_colliders[i], 0.5f);
+                _ = Common.TemporarilyDisableCollider(_colliders[i], 0.25f);
             }
         }
 

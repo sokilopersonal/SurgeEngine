@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using SurgeEngine.Code.ActorSystem;
+﻿using SurgeEngine.Code.ActorSystem;
 using UnityEngine;
-using UnityEngine.AI;
 
 namespace SurgeEngine.Code.Enemy.States
 {

@@ -1,8 +1,7 @@
 ﻿using SurgeEngine.Code.ActorStates;
-using SurgeEngine.Code.ActorStates.SonicSubStates;
 using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Enemy.States;
-using SurgeEngine.Code.Parameters;
+using SurgeEngine.Code.Tools;
 using UnityEngine;
 
 namespace SurgeEngine.Code.StateMachine
@@ -22,7 +21,7 @@ namespace SurgeEngine.Code.StateMachine
             var context = ActorContext.Context;
             var state = context.stateMachine.CurrentState;
 
-            if (context.stateMachine.GetSubState<FBoost>().Active)
+            if (SonicTools.IsBoost())
             {
                 return true;
             }

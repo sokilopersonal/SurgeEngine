@@ -1,13 +1,12 @@
-﻿using System.Collections;
-using SurgeEngine.Code.ActorStates.BaseStates;
+﻿using SurgeEngine.Code.ActorStates.BaseStates;
 using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.ActorSystem.Actors;
+using SurgeEngine.Code.Config.SonicSpecific;
 using SurgeEngine.Code.Custom;
-using SurgeEngine.Code.GameDocuments;
 using SurgeEngine.Code.Misc;
 using SurgeEngine.Code.StateMachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static SurgeEngine.Code.GameDocuments.SonicGameDocumentParams;
 
 namespace SurgeEngine.Code.ActorStates.SonicSubStates
 {
@@ -26,21 +25,21 @@ namespace SurgeEngine.Code.ActorStates.SonicSubStates
         private float _boostEnergy;
         private IBoostHandler _boostHandler;
         private Coroutine _cancelBoostCoroutine;
-        
-        private readonly ParameterGroup _boostEnergyGroup;
+
+        private readonly BoostConfig _config;
 
         public FBoost(Actor owner) : base(owner)
         {
             canAirBoost = true;
             BoostEnergy = 100;
             
-            _boostEnergyGroup = SonicGameDocument.GetDocument("Sonic").GetGroup("BoostEnergy");
+            _config = (owner as Sonic).boostConfig;
             
             actor.input.BoostAction += BoostAction;
             actor.stateMachine.OnStateAssign += OnStateAssign;
 
             ObjectEvents.OnObjectCollected += _ => BoostEnergy += 
-                _boostEnergyGroup.GetParameter<float>(BoostEnergy_RingAdd);
+                _config.ringEnergyAddition;
         }
 
         private void OnStateAssign(FState obj)
@@ -112,21 +111,21 @@ namespace SurgeEngine.Code.ActorStates.SonicSubStates
 
             if (actor.stateMachine.CurrentState is FStateDrift)
             {
-                BoostEnergy += _boostEnergyGroup.GetParameter<float>(BoostEnergy_DriftAdd) * dt;
+                BoostEnergy += _config.driftEnergyAddition * dt;
             }
 
             if (Active)
             {
                 if (BoostEnergy > 0)
                 {
-                    BoostEnergy -= _boostEnergyGroup.GetParameter<float>(BoostEnergy_Drain) * Time.deltaTime;
+                    BoostEnergy -= _config.energyDrain * Time.deltaTime;
                 }
                 else
                 {
                     Active = false;
                 }
                 
-                actor.kinematics.TurnRate *= _boostEnergyGroup.GetParameter<float>(BoostEnergy_TurnSpeedMultiplier);
+                actor.kinematics.TurnRate *= _config.turnSpeedMultiplier;
             }
 
             if (Common.CheckForGround(out _, CheckGroundType.Predict))
@@ -138,8 +137,6 @@ namespace SurgeEngine.Code.ActorStates.SonicSubStates
         }
 
         public bool CanBoost() => BoostEnergy > 0 && !actor.stateMachine.IsExact<FStateSpecialJump>();
-
-        public ParameterGroup GetBoostEnergyGroup() => _boostEnergyGroup;
 
         private void BoostAction(InputAction.CallbackContext obj)
         {
@@ -156,17 +153,48 @@ namespace SurgeEngine.Code.ActorStates.SonicSubStates
             
             if (Active)
             {
-                BoostEnergy -= _boostEnergyGroup.GetParameter<float>(BoostEnergy_StartDrain);
+                BoostEnergy -= _config.startDrain;
                 new Rumble().Vibrate(0.7f, 0.8f, 0.5f);
             }
         }
         
-        private IEnumerator CancelBoost(float time)
+        public BoostConfig GetConfig() => _config;
+
+        public void BaseGroundBoost()
         {
-            yield return new WaitForSeconds(time);
-            Active = false;
-            
-            //if (boostDrainCoroutine != null) StopCoroutine(boostDrainCoroutine);
+            float dt = Time.deltaTime;
+            var config = actor.config;
+            var body = actor.kinematics.Rigidbody;
+            float startForce = _config.startSpeed;
+            float speed = actor.kinematics.HorizontalSpeed;
+            if (Active && speed < startForce)
+            {
+                body.linearVelocity = body.transform.forward * startForce;
+                restoringTopSpeed = true;
+            }
+    
+            if (Active)
+            {
+                float maxSpeed = config.topSpeed * _config.maxSpeedMultiplier;
+                if (speed < maxSpeed) body.AddForce(body.transform.forward * (_config.acceleration * dt), ForceMode.VelocityChange);
+                    
+            }
+            else if (restoringTopSpeed)
+            {
+                float normalMaxSpeed = actor.config.topSpeed;
+                if (speed > normalMaxSpeed)
+                {
+                    body.linearVelocity = Vector3.MoveTowards(
+                        body.linearVelocity, 
+                        body.transform.forward * normalMaxSpeed, 
+                        dt * 16
+                    );
+                }
+                else if (speed * 0.99f < normalMaxSpeed)
+                {
+                    restoringTopSpeed = false;
+                }
+            }
         }
     }
 }

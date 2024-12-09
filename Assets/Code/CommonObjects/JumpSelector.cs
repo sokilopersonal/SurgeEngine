@@ -3,7 +3,6 @@ using System;
 using DG.Tweening;
 using SurgeEngine.Code.ActorStates;
 using SurgeEngine.Code.ActorSystem;
-using SurgeEngine.Code.Parameters;
 using SurgeEngine.Code.SurgeDebug;
 using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;

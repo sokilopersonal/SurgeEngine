@@ -3,7 +3,7 @@ using SurgeEngine.Code.ActorStates.SonicSubStates;
 using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.Custom;
-using SurgeEngine.Code.GameDocuments;
+using SurgeEngine.Code.Tools;
 using UnityEngine;
 using UnityEngine.Splines;
 
@@ -94,7 +94,7 @@ namespace SurgeEngine.Code.ActorStates
                 Kinematics.Project();
                 Kinematics.Project(tangentNormal);
                 
-                if (!Actor.stateMachine.GetSubState<FBoost>().Active)
+                if (!SonicTools.IsBoost())
                 {
                     if (Kinematics.Angle > 3f)
                     {
@@ -133,26 +133,7 @@ namespace SurgeEngine.Code.ActorStates
 
         public void BoostHandle()
         {
-            FBoost boost = Actor.stateMachine.GetSubState<FBoost>();
-            var phys = SonicGameDocument.GetDocument("Sonic").GetGroup(SonicGameDocument.PhysicsGroup);
-            var param = boost.GetBoostEnergyGroup();
-            float startForce = param.GetParameter<float>(SonicGameDocumentParams.BoostEnergy_StartSpeed);
-            if (boost.Active)
-            {
-                if (Input.BoostPressed)
-                {
-                    _rigidbody.linearVelocity = _rigidbody.transform.forward * startForce / 2;
-                }
-
-                if (boost.Active)
-                {
-                    float maxSpeed = phys.GetParameter<float>(SonicGameDocumentParams.BasePhysics_MaxSpeed) * param.GetParameter<float>(SonicGameDocumentParams.BoostEnergy_MaxSpeedMultiplier);
-                    if (Kinematics.HorizontalSpeed < maxSpeed)
-                    {
-                        _rigidbody.AddForce(_rigidbody.transform.forward * (param.GetParameter<float>(SonicGameDocumentParams.BoostEnergy_Force) * Time.deltaTime), ForceMode.VelocityChange);
-                    }
-                }
-            }
+            Actor.stateMachine.GetSubState<FBoost>().BaseGroundBoost();
         }
     }
 }

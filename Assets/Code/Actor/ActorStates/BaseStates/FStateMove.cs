@@ -14,8 +14,6 @@ namespace SurgeEngine.Code.ActorStates.BaseStates
 
         public override void OnEnter()
         {
-            _rigidbody = Actor.rigidbody; 
-            
             _rigidbody.solverIterations = 16;
             _rigidbody.solverVelocityIterations = 8;
         }

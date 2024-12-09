@@ -47,22 +47,22 @@ namespace SurgeEngine.Code.ActorSystem
 
         public void RotateBody(Vector3 normal)
         {
-            Vector3 vel = actor.rigidbody.linearVelocity;
+            Vector3 vel = actor.kinematics.Velocity;
             if (vel.sqrMagnitude > 0.01f)
             {
                 Quaternion targetRotation = Quaternion.LookRotation(vel, normal);
-                actor.rigidbody.rotation = targetRotation;
+                actor.kinematics.Rigidbody.rotation = targetRotation;
             }
             else
             {
                 Quaternion targetRotation = Quaternion.LookRotation(actor.transform.forward, normal);
-                actor.rigidbody.rotation = targetRotation;
+                actor.kinematics.Rigidbody.rotation = targetRotation;
             }
 
             if (actor.stateMachine.IsExact<FStateIdle>())
             {
                 Quaternion targetRotation = Quaternion.LookRotation(actor.transform.forward, normal);
-                actor.rigidbody.rotation = targetRotation;
+                actor.kinematics.Rigidbody.rotation = targetRotation;
             }
         }
 

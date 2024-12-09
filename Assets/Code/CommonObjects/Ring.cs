@@ -2,6 +2,7 @@
 using SurgeEngine.Code.ActorStates.SonicSubStates;
 using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Custom;
+using SurgeEngine.Code.Tools;
 using UnityEngine;
 
 namespace SurgeEngine.Code.CommonObjects
@@ -38,8 +39,8 @@ namespace SurgeEngine.Code.CommonObjects
             
             transform.rotation *= Quaternion.AngleAxis(rotationSpeed * Time.deltaTime, Vector3.up);
             
-            if ((transform.position - _actor.transform.position).magnitude < _actor.stateMachine.GetSubState<FBoost>().GetBoostEnergyGroup().GetParameter<float>("RingMagnetRadius")
-                && _actor.stateMachine.GetSubState<FBoost>().Active && !_magneted)
+            if ((transform.position - _actor.transform.position).magnitude < _actor.stateMachine.GetSubState<FBoost>().GetConfig().magnetRadius
+                && SonicTools.IsBoost() && !_magneted)
             {
                 _initialPosition = transform.position;
                 _magneted = true;

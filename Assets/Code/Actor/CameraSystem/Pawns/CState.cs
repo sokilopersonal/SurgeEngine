@@ -1,7 +1,5 @@
 ﻿using SurgeEngine.Code.ActorSystem;
-using SurgeEngine.Code.Parameters;
 using SurgeEngine.Code.StateMachine;
-using UnityEngine;
 
 namespace SurgeEngine.Code.CameraSystem.Pawns
 {

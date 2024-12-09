@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using SurgeEngine.Code.ActorSystem;
-using SurgeEngine.Code.Custom;
 using UnityEngine;
 
 [RequireComponent(typeof(MeshRenderer))]

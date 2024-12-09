@@ -2,7 +2,6 @@
 using SurgeEngine.Code.ActorStates;
 using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Custom;
-using SurgeEngine.Code.Parameters;
 using UnityEngine;
 
 namespace SurgeEngine.Code.CommonObjects
@@ -58,7 +57,7 @@ namespace SurgeEngine.Code.CommonObjects
             Actor actor = ActorContext.Context;
             if (_isActorOnSurface)
             {
-                Rigidbody actorRigidbody = actor.rigidbody;
+                var actorRigidbody = actor.kinematics.Rigidbody;
                 Vector3 vel = actorRigidbody.linearVelocity;
                 float currentSpeed = vel.magnitude;
                 float horizontalSpeed = actorRigidbody.GetHorizontalMagnitude();
