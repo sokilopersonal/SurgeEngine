@@ -68,7 +68,7 @@ MonoBehaviour:
   boostConfig: {fileID: 11400000, guid: cefe272c9833c134599bdf98dc172d8f, type: 2}
   driftConfig: {fileID: 11400000, guid: 3963394ce6d7cbc4981f7467b1f4aa59, type: 2}
   homingConfig: {fileID: 11400000, guid: 26d8aa117f8802940838f20a3156f005, type: 2}
-  stompConfig: {fileID: 0}
+  stompConfig: {fileID: 11400000, guid: 588815eaf43a5c74baefdf410bf8f0e7, type: 2}
 --- !u!114 &6716957596991090240
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -84,16 +84,16 @@ MonoBehaviour:
   stateMachine:
     currentStateName: NewModernState
     master: {fileID: 6716957596991090240}
-    x: 327.4766
-    y: 34.59762
+    x: 0
+    y: 0
     xAutoLook: 0
     yAutoLook: 0
-    yLag: 0.49999997
-    yLagVelocity: 0.00000027638922
-    zLag: 0.000029617035
-    zLagVelocity: -0.00010947721
-    position: {x: -181.17535, y: -133.05069, z: -0.24322236}
-    rotation: {x: 0.32296565, y: -0.26370108, z: 0.094206914, w: 0.90403545}
+    yLag: 0
+    yLagVelocity: 0
+    zLag: 0
+    zLagVelocity: 0
+    position: {x: 0, y: 0, z: 0}
+    rotation: {x: 0, y: 0, z: 0, w: 1}
     lookOffset: {x: 0, y: 0, z: 0}
     lastPosition: {x: 0, y: 0, z: 0}
     lastRotation: {x: 0, y: 0, z: 0, w: 0}
@@ -103,22 +103,22 @@ MonoBehaviour:
   sensitivity: 0.5
   maxSensitivitySpeed: 1
   minSensitivitySpeed: 0.5
-  distance: 2.35
-  yOffset: 0.075
+  distance: 2.45
+  yOffset: 0.01
   positionOffset: {x: 0, y: 0, z: 0}
-  lookOffset: {x: 0, y: -0.24999382, z: 0}
+  lookOffset: {x: 0, y: -0.000016715132, z: 0}
   horizontalAutoLookAmplitude: 4
   horizontalAutoLookMinAmplitude: 0.75
   verticalDefaultAmplitude: 5
-  verticalMinAmplitude: -10
-  verticalMaxAmplitude: 35
+  verticalMinAmplitude: -5
+  verticalMaxAmplitude: 10
   verticalMinLerpSpeed: 0.75
   verticalLerpSpeed: 1.65
-  zLagMax: 0.5
-  zLagTime: 0.5
-  yLagMin: -1
-  yLagMax: 0.5
-  yLagTime: 0.1
+  zLagMax: 0.35
+  zLagTime: 0.3
+  yLagMin: -0.55
+  yLagMax: 0.75
+  yLagTime: 0.125
   boostBlendCurve:
     serializedVersion: 2
     m_Curve:
