@@ -60,24 +60,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "LBAction",
-                    "type": "Button",
-                    "id": "65098382-d03c-41ab-bc27-3a86cab73e80",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "RBAction",
-                    "type": "Button",
-                    "id": "f0fc04bc-2a5d-4eb2-a74f-557c186b5a25",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Start",
                     "type": "Button",
                     "id": "74c92e97-eba7-45d6-ba2d-24436f5345de",
@@ -87,7 +69,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Quickstep",
+                    "name": "Bumper",
                     "type": "Value",
                     "id": "2ce81536-c480-4c88-90b3-00e6a2bfdb0b",
                     "expectedControlType": "Vector2",
@@ -275,50 +257,6 @@
                 },
                 {
                     "name": "",
-                    "id": "566b6e4e-379f-4f0b-aa96-1605a7b57051",
-                    "path": "<Keyboard>/q",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "LBAction",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "6db8bcc2-6483-4517-be8e-d83f92decc08",
-                    "path": "<Gamepad>/leftShoulder",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "LBAction",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "0a2c1665-1467-4fd3-88b9-1e0562c2c607",
-                    "path": "<Keyboard>/e",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "RBAction",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "53d1cb28-e02e-4448-82ae-cbead50236b1",
-                    "path": "<Gamepad>/rightShoulder",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "RBAction",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "7dddb046-f0d2-4122-8934-5d45267e84ae",
                     "path": "<Keyboard>/enter",
                     "interactions": "",
@@ -346,7 +284,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Quickstep",
+                    "action": "Bumper",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -357,7 +295,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Quickstep",
+                    "action": "Bumper",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -368,7 +306,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Quickstep",
+                    "action": "Bumper",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -379,7 +317,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Quickstep",
+                    "action": "Bumper",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -390,7 +328,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Quickstep",
+                    "action": "Bumper",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -401,7 +339,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Quickstep",
+                    "action": "Bumper",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -412,7 +350,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Quickstep",
+                    "action": "Bumper",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -423,7 +361,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Quickstep",
+                    "action": "Bumper",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -434,7 +372,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Quickstep",
+                    "action": "Bumper",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -445,7 +383,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Quickstep",
+                    "action": "Bumper",
                     "isComposite": false,
                     "isPartOfComposite": true
                 }

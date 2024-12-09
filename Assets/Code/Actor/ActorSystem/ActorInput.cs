@@ -93,9 +93,9 @@ namespace SurgeEngine.Code.ActorSystem
             _playerInput.actions["YAction"].started += YInput;
             _playerInput.actions["YAction"].canceled += YInput;
             
-            // _playerInput.actions[""].started += BumperInput;
-            // _playerInput.actions[""].canceled += BumperInput;
-            //
+            _playerInput.actions["Bumper"].started += BumperInput;
+            _playerInput.actions["Bumper"].canceled += BumperInput;
+            
             // _playerInput.Gameplay.Start.started += StartInput;
             // _playerInput.Gameplay.Start.canceled += StartInput;
         }
@@ -119,9 +119,9 @@ namespace SurgeEngine.Code.ActorSystem
             _playerInput.actions["YAction"].started -= YInput;
             _playerInput.actions["YAction"].canceled -= YInput;
             
-            // _playerInput.Gameplay.Quickstep.started -= BumperInput;
-            // _playerInput.Gameplay.Quickstep.canceled -= BumperInput;
-            //
+            _playerInput.actions["Bumper"].started -= BumperInput;
+            _playerInput.actions["Bumper"].canceled -= BumperInput;
+            
             // _playerInput.Gameplay.Start.started -= StartInput;
             // _playerInput.Gameplay.Start.canceled -= StartInput;
             
