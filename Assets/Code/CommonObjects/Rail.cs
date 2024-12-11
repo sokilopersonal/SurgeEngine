@@ -1,4 +1,5 @@
-﻿using SurgeEngine.Code.ActorStates;
+﻿using System.Collections;
+using SurgeEngine.Code.ActorStates;
 using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Custom;
 using UnityEngine;
@@ -6,7 +7,7 @@ using UnityEngine.Splines;
 
 namespace SurgeEngine.Code.CommonObjects
 {
-    public class Rail : MonoBehaviour
+    public class Rail : ContactBase
     {
         public SplineContainer container;
         public float radius = 0.25f;
@@ -15,6 +16,7 @@ namespace SurgeEngine.Code.CommonObjects
         [SerializeField] private HomingTarget endTarget;
         
         private Collider[] _colliders;
+        private Coroutine _coroutine;
 
         private void Awake()
         {
@@ -29,19 +31,39 @@ namespace SurgeEngine.Code.CommonObjects
 
         public void End()
         {
-            for (int i = 0; i < _colliders.Length; i++)
+            if (_coroutine != null)
             {
-                _ = Common.TemporarilyDisableCollider(_colliders[i], 0.25f);
+                StopCoroutine(_coroutine);
             }
+            
+            //_coroutine = StartCoroutine(DisableCollision());
+        }
+
+        public override void Contact(Collider msg)
+        {
+            base.Contact(msg);
+            
+            AttachToRail();
         }
 
         public void AttachToRail()
         {
             var context = ActorContext.Context;
+            context.stateMachine.SetState<FStateGrind>().SetRail(this);
+        }
 
-            if (!context.stateMachine.IsExact<FStateGrind>())
+        private IEnumerator DisableCollision(float duration = 0.1f)
+        {
+            foreach (var collision in _colliders)
             {
-                context.stateMachine.SetState<FStateGrind>().SetRail(this);
+                collision.enabled = false;
+            }
+            
+            yield return new WaitForSeconds(duration);
+            
+            foreach (var collision in _colliders)
+            {
+                collision.enabled = true;
             }
         }
     }

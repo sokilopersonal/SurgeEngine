@@ -21,27 +21,17 @@ namespace SurgeEngine.Code.CommonObjects
             direction = transform.up;
         }
 
-        public override void OnTriggerContact(Collider msg)
+        public override void Contact(Collider msg)
         {
-            base.OnTriggerContact(msg);
+            base.Contact(msg);
             
-            ApplyImpulse(direction);
-        }
-
-        private void ApplyImpulse(Vector3 direction)
-        {
             var context = ActorContext.Context;
-            context.transform.position = transform.position + direction * (yOffset * 2);
-
-            float dot = Vector3.Dot(transform.up, Vector3.up);
+            context.kinematics.Rigidbody.position = transform.position + direction * (yOffset * 2);
             context.stateMachine.SetState<FStateAir>();
             context.stateMachine.GetSubState<FBoost>().Active = false;
             
-            context.transform.rotation = Quaternion.LookRotation(transform.forward, direction);
-            context.model.transform.localRotation = Quaternion.LookRotation(transform.forward, direction);
-            
-            var specialJump = context.stateMachine.SetState<FStateSpecialJump>(0.2f, true, true);
-            specialJump.SetSpecialData(new SpecialJumpData(SpecialJumpType.Spring));
+            var specialJump = context.stateMachine.SetState<FStateSpecialJump>(allowSameState: true);
+            specialJump.SetSpecialData(new SpecialJumpData(SpecialJumpType.Spring, transform));
             specialJump.PlaySpecialAnimation(0);
             specialJump.SetKeepVelocity(keepVelocity);
 
@@ -56,8 +46,7 @@ namespace SurgeEngine.Code.CommonObjects
         {
             base.Draw();
             
-            TrajectoryDrawer.DrawTrajectory(transform.position + transform.up * yOffset, 
-                transform.up, Color.green, speed, keepVelocity);
+            TrajectoryDrawer.DrawTrajectory(transform.position + transform.up * yOffset, transform.up, Color.green, speed, keepVelocity);
         }
     }
 }

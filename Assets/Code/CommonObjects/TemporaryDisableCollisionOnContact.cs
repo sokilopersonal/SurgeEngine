@@ -27,10 +27,7 @@ namespace SurgeEngine.Code.CommonObjects
 
         private void OnContact(ContactBase obj)
         {
-            foreach (var collision in _colliders)
-            {
-                _ = Common.TemporarilyDisableCollider(collision, Mathf.Abs(time));
-            }
+            
         }
     }
 }

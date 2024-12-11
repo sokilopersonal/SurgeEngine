@@ -14,9 +14,9 @@ namespace SurgeEngine.Code.CommonObjects
         [SerializeField] private float outOfControl = 0.5f;
         [SerializeField] private bool center;
 
-        public override void OnTriggerContact(Collider msg)
+        public override void Contact(Collider msg)
         {
-            base.OnTriggerContact(msg);
+            base.Contact(msg);
             
             var context = ActorContext.Context;
             var body = context.kinematics.Rigidbody;

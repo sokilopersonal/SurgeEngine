@@ -11,7 +11,7 @@ using Vector3 = UnityEngine.Vector3;
 namespace SurgeEngine.Code.CommonObjects
 {
     [SelectionBase]
-    public class JumpSelector : MonoBehaviour, IPlayerContactable
+    public class JumpSelector : ContactBase
     {
         [SerializeField] private float forwardForce = 25f;
         [SerializeField] private float upForce = 15f;
@@ -71,11 +71,6 @@ namespace SurgeEngine.Code.CommonObjects
                     _playerInside = false;
                 }
 
-                _actor.transform.position = Vector3.Lerp(_startPos, transform.position + Vector3.up * 0.5f, _transitionTimer / 0.1f);
-                
-                _transitionTimer += Time.deltaTime;
-                _transitionTimer = Mathf.Clamp01(_transitionTimer);
-
                 if (anyButton || _launching)
                 {
                     _holdTimer += Time.deltaTime;
@@ -134,7 +129,7 @@ namespace SurgeEngine.Code.CommonObjects
             }
         }
 
-        public void OnContact()
+        public override void Contact(Collider msg)
         {
             _actor.stateMachine.SetState<FStateJumpSelector>();
             OnJumpSelectorResult?.Invoke(JumpSelectorResultType.Start);
@@ -146,7 +141,7 @@ namespace SurgeEngine.Code.CommonObjects
             _playerInside = true;
             _launching = false;
             
-            //_actor.transform.position = transform.position + Vector3.up * 0.5f;
+            _actor.transform.position = transform.position + Vector3.up * 0.5f;
             
             Quaternion rot = Quaternion.LookRotation(transform.forward, Vector3.up);
             _actor.transform.rotation = rot;

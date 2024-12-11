@@ -18,6 +18,7 @@ namespace SurgeEngine.Code.SurgeDebug
                 $"Move Dot: {actor.stats.moveDot}",
                 $"Current Speed: {actor.kinematics.HorizontalSpeed}",
                 $"Current Vertical Speed: {actor.stats.currentVerticalSpeed}",
+                $"Body Velocity: {actor.kinematics.Velocity}",
                 $"Planar Velocity: {actor.kinematics.PlanarVelocity}",
                 $"State: {actor.stateMachine.currentStateName}",
                 $"Camera State: {actor.camera.stateMachine.currentStateName}",

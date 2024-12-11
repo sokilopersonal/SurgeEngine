@@ -16,9 +16,9 @@ namespace SurgeEngine.Code.CommonObjects
         [SerializeField] private bool isDelux;
         [SerializeField] private Transform startPoint;
 
-        public override void OnTriggerContact(Collider msg)
+        public override void Contact(Collider msg)
         {
-            base.OnTriggerContact(msg);
+            base.Contact(msg);
 
             var context = ActorContext.Context;
             Vector3 cross = Common.GetCross(transform, pitch, true);

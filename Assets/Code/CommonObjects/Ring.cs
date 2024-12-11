@@ -62,14 +62,14 @@ namespace SurgeEngine.Code.CommonObjects
                 
                 if (_factor >= 1f)
                 {
-                    OnTriggerContact(null);
+                    Contact(null);
                 }
             }
         }
 
-        public override void OnTriggerContact(Collider msg)
+        public override void Contact(Collider msg)
         {
-            base.OnTriggerContact(msg);
+            base.Contact(msg);
             
             RuntimeManager.PlayOneShot(ringSound);
 

@@ -4,6 +4,7 @@ using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.ActorSystem.Actors;
 using SurgeEngine.Code.Config.SonicSpecific;
 using SurgeEngine.Code.Custom;
+using SurgeEngine.Code.Inputs;
 using SurgeEngine.Code.Tools;
 using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
@@ -48,7 +49,7 @@ namespace SurgeEngine.Code.ActorStates
                 _ignoreTimer = 0;
             }
             
-            if (!Input.BHeld || _rigidbody.linearVelocity.magnitude < _config.minSpeed|| _ignoreTimer > 0.15f)
+            if (!SonicInputLayout.DriftHeld || _rigidbody.linearVelocity.magnitude < _config.minSpeed|| _ignoreTimer > 0.15f)
                 StateMachine.SetState<FStateGround>(0.1f);
         }
 

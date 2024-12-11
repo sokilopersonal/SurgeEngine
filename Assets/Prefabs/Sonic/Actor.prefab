@@ -5201,7 +5201,7 @@ ParticleSystemRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 127891137820082316}
   m_Enabled: 1
-  m_CastShadows: 1
+  m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
@@ -10092,7 +10092,7 @@ ParticleSystemRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 594555944062624342}
   m_Enabled: 1
-  m_CastShadows: 1
+  m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
@@ -10383,7 +10383,7 @@ GameObject:
   - component: {fileID: 377323914507647460}
   - component: {fileID: 289070888726962416}
   m_Layer: 3
-  m_Name: + Effects
+  m_Name: Effects
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -21057,7 +21057,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4937381615365551098, guid: cd1b15790df60f545814b74f0e7a6383, type: 3}
       propertyPath: InitialModule.startSize.scalar
-      value: 0.045
+      value: 0.02
+      objectReference: {fileID: 0}
+    - target: {fileID: 4937381615365551098, guid: cd1b15790df60f545814b74f0e7a6383, type: 3}
+      propertyPath: InitialModule.startSizeY.scalar
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 4937381615365551098, guid: cd1b15790df60f545814b74f0e7a6383, type: 3}
       propertyPath: InitialModule.startSpeed.scalar

@@ -12,10 +12,12 @@ namespace SurgeEngine.Code.ActorSystem
         private float collisionStartHeight;
         private float collisionStartRadius;
         
-        [SerializeField, Range(0, 1)] private float horizontalRotationSpeed = 0.85f;
-        [SerializeField, Range(0, 1)] private float verticalRotationSpeed = 0.9f;
+        [SerializeField] private float horizontalRotationSpeed = 14f;
+        [SerializeField] private float verticalRotationSpeed = 7.5f;
+        [SerializeField] private float verticalRestorationRotationSpeed = 3f;
         
-        private Vector3 _modelRotationVelocity;
+        private Vector3 _modelForwardRotationVelocity;
+        private Vector3 _modelUpRotationVelocity;
 
         private void Start()
         {
@@ -29,25 +31,26 @@ namespace SurgeEngine.Code.ActorSystem
             actor.transform.rotation = parentRotation;
             root.localRotation = parentRotation;
         }
-        
-        public void OnInit()
-        {
-            
-        }
 
         private void Update()
         {
             root.localPosition = actor.transform.localPosition;
             
-            Vector3 forward = Vector3.Slerp(root.forward, actor.transform.forward, SurgeMath.Smooth(1 - horizontalRotationSpeed));
-            Vector3 up = Vector3.Slerp(root.up, actor.transform.up, SurgeMath.Smooth(1 - verticalRotationSpeed));
+            var prev = actor.stateMachine.PreviousState;
+            Vector3 forward = Vector3.Slerp(root.forward, actor.transform.forward, Time.deltaTime * horizontalRotationSpeed);
+            Vector3 up = Vector3.Slerp(root.up, actor.transform.up, Time.deltaTime * verticalRotationSpeed);
+            
+            if (prev is FStateSpecialJump)
+                up = Vector3.Slerp(root.up, actor.transform.up, Time.deltaTime * verticalRestorationRotationSpeed);
+            
             Vector3.OrthoNormalize(ref up, ref forward);
             root.localRotation = Quaternion.LookRotation(forward, up);
         }
 
-        public void RotateBody(Vector3 normal)
+        public void RotateBody(Vector3 normal, bool project = false)
         {
             Vector3 vel = actor.kinematics.Velocity;
+            if (project) vel = Vector3.ProjectOnPlane(vel, normal);
             if (vel.sqrMagnitude > 0.01f)
             {
                 Quaternion targetRotation = Quaternion.LookRotation(vel, normal);

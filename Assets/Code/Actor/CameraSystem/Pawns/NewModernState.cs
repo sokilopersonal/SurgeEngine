@@ -16,6 +16,9 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
         private float _boostDistance;
         private float _lookYTime;
         private float _yAutoLookVelocity;
+        private float _xAutoLookVelocity;
+
+        private bool _isAuto => _actor.input.IsAutoCamera();
 
         public NewModernState(Actor owner) : base(owner)
         {
@@ -73,7 +76,15 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
 
         protected virtual void LookAxis()
         {
-            AutoLookDirection();
+            if (_isAuto)
+            {
+                AutoLookDirection();
+            }
+            else
+            {
+                _sensSpeedMod = 1f;
+                _stateMachine.xAutoLook = 0;
+            }
             
             var v = _actor.input.lookVector * (_master.sensitivity * _sensSpeedMod);
             _stateMachine.x += v.x + _stateMachine.xAutoLook;
@@ -95,12 +106,14 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             float yLag = Mathf.Clamp(vel.y * -0.15f, _master.yLagMin, _master.yLagMax); // min is down lag, max value is up lag
             _stateMachine.yLag = Mathf.SmoothDamp(_stateMachine.yLag, yLag, ref _stateMachine.yLagVelocity, _master.yLagTime, 10f);
 
-            float mod = _actor.kinematics.HorizontalSpeed * 0.01f;
+            float mod = _actor.kinematics.HorizontalSpeed * 0.0175f;
             
             // Look Y Time values
-            float up = 1f;
-            float down = 0.25f;
-            float restore = 0.875f;
+            float up = 0.6f;
+            float down = 0.5f;
+            float restore = 0.75f;
+
+            yLag *= yLag > 0 ? 1.3f : 0.3f;
             
             float value = yLag < 0 ? up : Mathf.Approximately(yLag, 0) ? restore - restore * mod : down;
             _lookYTime = Mathf.Lerp(_lookYTime, value, Time.deltaTime * 4f);
@@ -109,22 +122,20 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
 
         protected virtual void AutoLookDirection()
         {
-            float speed = _actor.kinematics.HorizontalSpeed;
+            float speed = _actor.kinematics.Velocity.magnitude;
             var config = _actor.config;
-            _sensSpeedMod = Mathf.Lerp(_master.maxSensitivitySpeed, _master.minSensitivitySpeed, speed / config.topSpeed);
-            
-            if (speed > 1f)
+            float lookMod = speed / config.topSpeed;
+            _sensSpeedMod = Mathf.Lerp(_master.maxSensitivitySpeed, _master.minSensitivitySpeed, lookMod);
+
+            if (speed > 0.1f)
             {
-                float lookMod = speed / config.topSpeed;
                 Vector3 vel = _actor.kinematics.Rigidbody.linearVelocity;
                 _velocity = Vector3.Lerp(_velocity, vel, Time.deltaTime * 8f);
                 var yAutoLook = Mathf.Abs(_velocity.y) > 0.2f ? Mathf.Clamp(-_velocity.y * 7.5f, _master.verticalMinAmplitude, _master.verticalMaxAmplitude)
                     : _master.verticalDefaultAmplitude;
                 
                 _stateMachine.yAutoLook = yAutoLook;
-                //_stateMachine.y = Mathf.Lerp(_stateMachine.y, _stateMachine.yAutoLook, Time.deltaTime * Mathf.Max(_master.verticalMinLerpSpeed, lookMod * _master.verticalLerpSpeed));
                 _stateMachine.y = Mathf.SmoothDamp(_stateMachine.y, _stateMachine.yAutoLook, ref _yAutoLookVelocity, 0.65f);
-                
                 AutoLook(_master.horizontalAutoLookAmplitude * Mathf.Max(_master.horizontalAutoLookMinAmplitude, lookMod));
             }
             else
@@ -138,7 +149,6 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
         {
             float fwd = _actor.stats.GetForwardSignedAngle() * Time.deltaTime;
             float dot = Vector3.Dot(Vector3.Cross(_stateMachine.transform.right, Vector3.up), _actor.transform.forward);
-            Vector3 vel = _actor.kinematics.Rigidbody.linearVelocity;
 
             if (!Mathf.Approximately(dot, -1))
             {

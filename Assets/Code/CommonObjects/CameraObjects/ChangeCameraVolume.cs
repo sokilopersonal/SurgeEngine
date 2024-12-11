@@ -17,9 +17,9 @@ namespace SurgeEngine.Code.CommonObjects
             }
         }
 
-        public override void OnTriggerContact(Collider msg)
+        public override void Contact(Collider msg)
         {
-            base.OnTriggerContact(msg);
+            base.Contact(msg);
             
             target.SetPan();
         }

@@ -106,15 +106,6 @@ namespace SurgeEngine.Code.ActorSystem
             
             CalculateDetachState();
             
-            var stateMachine = actor.stateMachine;
-            if (!stateMachine.IsExact<FStateGrind>() && !stateMachine.IsExact<FStateGrindJump>())
-            {
-                if (Common.CheckForRail(out _, out var rail))
-                {
-                    actor.stateMachine.SetState<FStateGrind>().SetRail(rail);
-                }
-            }
-            
             _angle = Vector3.Angle(_normal, Vector3.up);
         }
 
@@ -226,7 +217,7 @@ namespace SurgeEngine.Code.ActorSystem
         {
             SlopePrediction();
             
-            if (_speed < _config.slopeMinSpeed && _angle >= _config.slopeMinAngle)
+            if (_speed < _config.slopeMinSpeed && _angle >= _config.slopeDeslopeAngle)
             {
                 _rigidbody.AddForce(_normal * _config.slopeDeslopeForce, ForceMode.Impulse);
                 actor.stateMachine.SetState<FStateAir>(_config.slopeInactiveDuration);
@@ -333,7 +324,7 @@ namespace SurgeEngine.Code.ActorSystem
         private void BaseAirPhysics()
         {
             float handling = _turnRate;
-            handling *= 0.075f;
+            handling *= 0.2f;
             _movementVector = Vector3.Lerp(_planarVelocity, _inputDir.normalized * _planarVelocity.magnitude, 
                 handling * Time.fixedDeltaTime);
         }

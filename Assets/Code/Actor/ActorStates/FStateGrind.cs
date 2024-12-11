@@ -105,17 +105,11 @@ namespace SurgeEngine.Code.ActorStates
 
                 if (!container.Spline.Closed)
                 {
-                    if (_timer == 0)
+                    Debug.Log(t);
+                    if (1f - t < 0.01f || t < 0.01f)
                     {
-                        float startDistance = Vector3.Distance(startPoint, offset);
-                        float endDistance = Vector3.Distance(endPoint, offset);
-                        float threshold = Mathf.Max(0.05f, 0.05f * Actor.kinematics.Rigidbody.linearVelocity.magnitude * 0.5f);
-
-                        if (startDistance < threshold || endDistance < threshold)
-                        {
-                            _rail.End();
-                            StateMachine.SetState<FStateAir>();
-                        }
+                        _rail.End();
+                        StateMachine.SetState<FStateAir>();
                     }
                 }
             }

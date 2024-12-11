@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using Cysharp.Threading.Tasks;
 using SurgeEngine.Code.ActorStates;
 using SurgeEngine.Code.ActorSystem;
@@ -9,6 +10,8 @@ namespace SurgeEngine.Code.Custom
 {
     public static class Common
     {
+        public static Coroutine colliderCoroutine;
+        
         public static bool AddScore(int score)
         {
             int abs = Mathf.Abs(score);
@@ -163,13 +166,6 @@ namespace SurgeEngine.Code.Custom
             
             rail = null;
             return false;
-        }
-
-        public static async UniTask TemporarilyDisableCollider(Collider collider, float time = 0.25f)
-        {
-            collider.enabled = false;
-            await UniTask.Delay(TimeSpan.FromSeconds(time), true);
-            collider.enabled = true;
         }
         
         public static async UniTask ChangeTimeScaleOverTime(float targetScale, float duration)

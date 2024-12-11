@@ -21,9 +21,9 @@ namespace SurgeEngine.Code.CommonObjects
             }
         }
 
-        public override void OnTriggerContact(Collider msg)
+        public override void Contact(Collider msg)
         {
-            base.OnTriggerContact(msg);
+            base.Contact(msg);
 
             if (!stayInside)
             {
@@ -49,17 +49,6 @@ namespace SurgeEngine.Code.CommonObjects
             else
             {
                 kinematics.SetPath(null);
-            }
-        }
-
-        public override void OnTriggerDetach(Collider other)
-        {
-            if (IsContact(other) && stayInside)
-            {
-                var context = ActorContext.Context;
-                var kinematics = context.kinematics;
-                kinematics.SetPath(null);
-                _playerInside = false;
             }
         }
     }

@@ -13,39 +13,39 @@ namespace SurgeEngine.Code.ActorSystem
 
         public Vector2 lookVector;
 
-        private PlayerInput _playerInput;
+        public PlayerInput playerInput;
 
         // Boost
 
-        public bool BoostPressed => _playerInput.actions["XAction"].WasPressedThisFrame();
+        public bool BoostPressed => playerInput.actions["XAction"].WasPressedThisFrame();
 
-        public bool BoostHeld => _playerInput.actions["XAction"].IsPressed();
+        public bool BoostHeld => playerInput.actions["XAction"].IsPressed();
 
         public Action<InputAction.CallbackContext> BoostAction;
 
         // Jump
 
-        public bool JumpPressed => _playerInput.actions["AAction"].WasPressedThisFrame();
+        public bool JumpPressed => playerInput.actions["AAction"].WasPressedThisFrame();
 
-        public bool JumpHeld => _playerInput.actions["AAction"].IsPressed();
+        public bool JumpHeld => playerInput.actions["AAction"].IsPressed();
 
         public Action<InputAction.CallbackContext> JumpAction;
 
         // B Button
 
-        public bool BPressed => _playerInput.actions["BAction"].WasPressedThisFrame();
+        public bool BPressed => playerInput.actions["BAction"].WasPressedThisFrame();
 
-        public bool BReleased => _playerInput.actions["BAction"].WasReleasedThisFrame();
+        public bool BReleased => playerInput.actions["BAction"].WasReleasedThisFrame();
 
-        public bool BHeld => _playerInput.actions["BAction"].IsPressed();
+        public bool BHeld => playerInput.actions["BAction"].IsPressed();
 
         public Action<InputAction.CallbackContext> BAction;
 
         // Y Button
 
-        public bool YPressed => _playerInput.actions["YAction"].WasPressedThisFrame();
+        public bool YPressed => playerInput.actions["YAction"].WasPressedThisFrame();
 
-        public bool YHeld => _playerInput.actions["YAction"].IsPressed();
+        public bool YHeld => playerInput.actions["YAction"].IsPressed();
 
         public Action<InputAction.CallbackContext> YAction;
 
@@ -64,7 +64,7 @@ namespace SurgeEngine.Code.ActorSystem
 
         private void Awake()
         {
-            _playerInput = GetComponent<PlayerInput>();
+            playerInput ??= GetComponent<PlayerInput>();
             
             _translatedDeviceNames = new Dictionary<string, string>()
             {
@@ -75,22 +75,22 @@ namespace SurgeEngine.Code.ActorSystem
 
         private void OnEnable()
         {
-            _playerInput.enabled = true;
+            playerInput.enabled = true;
 
-            _playerInput.actions["XAction"].started += BoostInput;
-            _playerInput.actions["XAction"].canceled += BoostInput;
+            playerInput.actions["XAction"].started += BoostInput;
+            playerInput.actions["XAction"].canceled += BoostInput;
 
-            _playerInput.actions["AAction"].started += JumpInput;
-            _playerInput.actions["AAction"].canceled += JumpInput;
+            playerInput.actions["AAction"].started += JumpInput;
+            playerInput.actions["AAction"].canceled += JumpInput;
             
-            _playerInput.actions["BAction"].started += BInput;
-            _playerInput.actions["BAction"].canceled += BInput;
+            playerInput.actions["BAction"].started += BInput;
+            playerInput.actions["BAction"].canceled += BInput;
             
-            _playerInput.actions["YAction"].started += YInput;
-            _playerInput.actions["YAction"].canceled += YInput;
+            playerInput.actions["YAction"].started += YInput;
+            playerInput.actions["YAction"].canceled += YInput;
             
-            _playerInput.actions["Bumper"].started += BumperInput;
-            _playerInput.actions["Bumper"].canceled += BumperInput;
+            playerInput.actions["Bumper"].started += BumperInput;
+            playerInput.actions["Bumper"].canceled += BumperInput;
             
             // _playerInput.Gameplay.Start.started += StartInput;
             // _playerInput.Gameplay.Start.canceled += StartInput;
@@ -98,25 +98,25 @@ namespace SurgeEngine.Code.ActorSystem
 
         private void OnDisable()
         {
-            _playerInput.enabled = false;
+            playerInput.enabled = false;
 
             moveVector = Vector3.zero;
             lookVector = Vector2.zero;
 
-            _playerInput.actions["XAction"].started -= BoostInput;
-            _playerInput.actions["XAction"].canceled -= BoostInput;
+            playerInput.actions["XAction"].started -= BoostInput;
+            playerInput.actions["XAction"].canceled -= BoostInput;
 
-            _playerInput.actions["AAction"].started -= JumpInput;
-            _playerInput.actions["AAction"].canceled -= JumpInput;
+            playerInput.actions["AAction"].started -= JumpInput;
+            playerInput.actions["AAction"].canceled -= JumpInput;
             
-            _playerInput.actions["BAction"].started -= BInput;
-            _playerInput.actions["BAction"].canceled -= BInput;
+            playerInput.actions["BAction"].started -= BInput;
+            playerInput.actions["BAction"].canceled -= BInput;
             
-            _playerInput.actions["YAction"].started -= YInput;
-            _playerInput.actions["YAction"].canceled -= YInput;
+            playerInput.actions["YAction"].started -= YInput;
+            playerInput.actions["YAction"].canceled -= YInput;
             
-            _playerInput.actions["Bumper"].started -= BumperInput;
-            _playerInput.actions["Bumper"].canceled -= BumperInput;
+            playerInput.actions["Bumper"].started -= BumperInput;
+            playerInput.actions["Bumper"].canceled -= BumperInput;
             
             // _playerInput.Gameplay.Start.started -= StartInput;
             // _playerInput.Gameplay.Start.canceled -= StartInput;
@@ -127,9 +127,9 @@ namespace SurgeEngine.Code.ActorSystem
 
         private void Update()
         {
-            var temp = _playerInput.actions["Movement"].ReadValue<Vector2>();
+            var temp = playerInput.actions["Movement"].ReadValue<Vector2>();
             moveVector = new Vector3(temp.x, 0, temp.y);
-            lookVector = _playerInput.actions["Camera"].ReadValue<Vector2>() * (_device is Gamepad ? 100f * Time.deltaTime : 1f);
+            lookVector = playerInput.actions["Camera"].ReadValue<Vector2>() * (_device is Gamepad ? 100f * Time.deltaTime : 1f);
 
             if (lookVector == Vector2.zero)
             {

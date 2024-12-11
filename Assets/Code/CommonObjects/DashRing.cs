@@ -14,28 +14,22 @@ namespace SurgeEngine.Code.CommonObjects
         [SerializeField] private float outOfControl = 0.5f;
         [SerializeField] private float yOffset = 0.5f;
 
-        public override void OnTriggerContact(Collider msg)
+        public override void Contact(Collider msg)
         {
-            base.OnTriggerContact(msg);
+            base.Contact(msg);
             
             var context = ActorContext.Context;
             
-            Vector3 target = transform.position + transform.forward * yOffset;
+            Vector3 target = transform.position + transform.up * yOffset;
             context.transform.position = target;
             context.stateMachine.GetSubState<FBoost>().Active = false;
-
-            float dot = Vector3.Dot(transform.up, Vector3.up);
-            
-            Quaternion rot = Quaternion.LookRotation(transform.up, transform.forward);
-            context.transform.rotation = rot;
-            context.model.transform.localRotation = rot;
             
             var specialJump = context.stateMachine.SetState<FStateSpecialJump>(0.2f, true, true);
-            specialJump.SetSpecialData(new SpecialJumpData(SpecialJumpType.DashRing));
+            specialJump.SetSpecialData(new SpecialJumpData(SpecialJumpType.DashRing, transform));
             specialJump.PlaySpecialAnimation(0f);
             specialJump.SetKeepVelocity(keepVelocity);
 
-            Common.ApplyImpulse(transform.forward * speed);
+            Common.ApplyImpulse(transform.up * speed);
             var body = context.kinematics.Rigidbody;
             body.linearVelocity = Vector3.ClampMagnitude(body.linearVelocity, speed);
             context.flags.AddFlag(new Flag(FlagType.OutOfControl, 
@@ -46,8 +40,8 @@ namespace SurgeEngine.Code.CommonObjects
         {
             base.Draw();
             
-            TrajectoryDrawer.DrawTrajectory(transform.position + transform.forward * yOffset, 
-                transform.forward, Color.green, speed, keepVelocity);
+            TrajectoryDrawer.DrawTrajectory(transform.position + transform.up * yOffset, 
+                transform.up, Color.green, speed, keepVelocity);
         }
     }
 }

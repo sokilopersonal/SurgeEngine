@@ -18,9 +18,9 @@ namespace SurgeEngine.Code.CommonObjects
         [SerializeField, Min(0)] private float impulseOnBoost = 15f;
         [SerializeField] private float outOfControl = 0.5f;
 
-        public override void OnTriggerContact(Collider msg)
+        public override void Contact(Collider msg)
         {
-            base.OnTriggerContact(msg);
+            base.Contact(msg);
             
             var context = ActorContext.Context;
             float dot = Vector3.Dot(context.transform.forward, context.transform.forward);

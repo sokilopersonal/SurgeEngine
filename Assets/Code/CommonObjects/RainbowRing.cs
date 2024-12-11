@@ -11,9 +11,9 @@ namespace SurgeEngine.Code.CommonObjects
 
         private bool _triggered;
 
-        public override void OnTriggerContact(Collider msg)
+        public override void Contact(Collider msg)
         {
-            base.OnTriggerContact(msg);
+            base.Contact(msg);
 
             int score = 1000;
             if (!allowDoubleScore)

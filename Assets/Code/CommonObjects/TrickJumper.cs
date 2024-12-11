@@ -74,9 +74,9 @@ namespace SurgeEngine.Code.CommonObjects
             }
         }
         
-        public override async void OnTriggerContact(Collider msg)
+        public override async void Contact(Collider msg)
         {
-            base.OnTriggerContact(msg);
+            base.Contact(msg);
 
             var context = ActorContext.Context;
 

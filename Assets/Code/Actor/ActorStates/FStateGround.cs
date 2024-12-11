@@ -2,6 +2,7 @@
 using SurgeEngine.Code.ActorStates.SonicSubStates;
 using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Custom;
+using SurgeEngine.Code.Inputs;
 using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
 using Vector3 = UnityEngine.Vector3;
@@ -38,12 +39,12 @@ namespace SurgeEngine.Code.ActorStates
             float activateSpeed = StateMachine.GetState<FStateSliding>().slideDeactivationSpeed;
             activateSpeed += activateSpeed * 1.5f;
             
-            if (Input.BHeld)
+            if (SonicInputLayout.DriftHeld)
             {
                 float dot = Stats.moveDot;
                 float abs = Mathf.Abs(dot);
-                bool allowDrift = Stats.currentSpeed > 10 && abs < 0.4f && !Mathf.Approximately(dot, 0f);
-                bool allowSlide = Stats.currentSpeed > activateSpeed;
+                bool allowDrift = Kinematics.HorizontalSpeed > 10 && abs < 0.4f && !Mathf.Approximately(dot, 0f);
+                bool allowSlide = Kinematics.HorizontalSpeed > activateSpeed;
                     
                 if (allowDrift)
                     StateMachine.SetState<FStateDrift>();
@@ -60,8 +61,7 @@ namespace SurgeEngine.Code.ActorStates
             var config = Actor.config;
             float distance = config.castDistance * config.castDistanceCurve
                 .Evaluate(Kinematics.HorizontalSpeed / config.topSpeed);
-            bool willBeGrounded = Kinematics.CheckForPredictedGround(_rigidbody.linearVelocity, prevNormal, dt, distance, 8);
-            if (Common.CheckForGround(out var data, castDistance: distance) && willBeGrounded)
+            if (Common.CheckForGround(out var data, castDistance: distance))
             {
                 var point = data.point;
                 Kinematics.Normal = data.normal;
