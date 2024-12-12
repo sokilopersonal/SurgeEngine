@@ -15,7 +15,8 @@ namespace SurgeEngine.Code.SurgeDebug
             if (keepVelocity > 0f)
             {
                 Vector3 newStartPosition = startPosition + direction * keepVelocity * impulse;
-                Debug.DrawLine(startPosition, newStartPosition, Color.red);
+                Gizmos.color = Color.red;
+                Gizmos.DrawLine(startPosition, newStartPosition);
                 startPosition = newStartPosition;
             }
             
@@ -26,11 +27,17 @@ namespace SurgeEngine.Code.SurgeDebug
 
                 if (Physics.Linecast(positions[i], positions[i + 1], out RaycastHit hit, layerMask, QueryTriggerInteraction.Ignore))
                 {
-                    Debug.DrawLine(positions[i], hit.point, drawColor);
+                    Gizmos.color = drawColor;
+                    Gizmos.DrawLine(positions[i], hit.point);
+
+                    Gizmos.color = new Color(0.12f, 1f, 0f, 0.59f);
+                    Gizmos.DrawCube(hit.point, Vector3.one * 0.75f);
+                    
                     break;
                 }
 
-                Debug.DrawLine(positions[i], positions[i + 1], drawColor);
+                Gizmos.color = drawColor;
+                Gizmos.DrawLine(positions[i], positions[i + 1]);
             }
         }
 

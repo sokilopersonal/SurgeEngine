@@ -39,10 +39,8 @@ namespace SurgeEngine.Code.CommonObjects
             }
         }
 
-        protected override void Draw()
+        private void OnDrawGizmos()
         {
-            base.Draw();
-            
             TrajectoryDrawer.DrawTrajectory(startPoint.position, Common.GetImpulseWithPitch(Vector3.Cross(-startPoint.right, Vector3.up), startPoint.right, pitch, impulse), Color.green, impulse);
         }
     }

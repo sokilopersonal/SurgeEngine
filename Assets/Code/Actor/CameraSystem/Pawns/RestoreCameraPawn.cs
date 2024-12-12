@@ -16,7 +16,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
         public override void OnEnter()
         {
             _stateMachine.ResetBlendFactor();
-            _stateMachine.RememberRelativeLastData();
+            _stateMachine.RememberLastData();
             
             _lastData = _stateMachine.GetLastData();
         }
@@ -43,10 +43,12 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
 
         protected override void SetPosition(Vector3 targetPosition)
         {
-            Vector3 center = _actor.transform.position;
-            Vector3 diff = targetPosition - center;
-            _stateMachine.position = Vector3.Lerp(_lastData.position, diff, _stateMachine.interpolatedBlendFactor);
-            _stateMachine.position += center;
+            // Vector3 center = _actor.transform.position;
+            // Vector3 diff = targetPosition - center;
+            // _stateMachine.position = Vector3.Lerp(_lastData.position, diff, _stateMachine.interpolatedBlendFactor);
+            // _stateMachine.position += center;
+            
+            _stateMachine.position = Vector3.Lerp(_lastData.position, targetPosition, _stateMachine.interpolatedBlendFactor);
         }
 
         protected override void SetRotation(Vector3 actorPosition)

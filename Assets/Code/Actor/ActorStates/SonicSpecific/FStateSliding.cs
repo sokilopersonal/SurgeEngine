@@ -28,7 +28,7 @@ namespace SurgeEngine.Code.ActorStates
 
             _cameraTransform = Actor.camera.GetCameraTransform();
             
-            Actor.model.SetCollisionParam(collisionHeight, collisionCenterY, 0.25f);
+            Actor.model.SetCollisionParam(collisionHeight, -0.75f, 0.25f);
         }
 
         public override void OnExit()

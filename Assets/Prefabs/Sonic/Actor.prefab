@@ -10274,6 +10274,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveVector: {x: 0, y: 0, z: 0}
   lookVector: {x: 0, y: 0}
+  playerInput: {fileID: 0}
 --- !u!114 &8699919761573115592
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15546,8 +15547,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   root: {fileID: 4638284470361493281}
   collision: {fileID: 6497409939340660902}
-  horizontalRotationSpeed: 0.85
-  verticalRotationSpeed: 0.9
+  horizontalRotationSpeed: 16
+  verticalRotationSpeed: 7
+  verticalRestorationRotationSpeed: 5
 --- !u!1 &3999411662334716339
 GameObject:
   m_ObjectHideFlags: 0

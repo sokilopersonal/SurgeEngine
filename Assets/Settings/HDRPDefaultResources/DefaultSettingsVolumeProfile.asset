@@ -881,6 +881,8 @@ MonoBehaviour:
     m_Value:
     - {fileID: 11400000, guid: 404820c4cf36ad944862fa59c56064f0, type: 2}
     - {fileID: 11400000, guid: 2384dbf2c1c420f45a792fbc315fbfb1, type: 2}
+    - {fileID: 11400000, guid: 846bf0223c06e434c9d47a6e5809b575, type: 2}
+    - {fileID: 11400000, guid: 5d223a71d4cfa2d479b5225210f0c7d3, type: 2}
 --- !u!114 &-6562649286435452437
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -1965,6 +1967,21 @@ MonoBehaviour:
   maximumIntensity:
     m_OverrideState: 1
     m_Value: 10
+  denoising:
+    m_OverrideState: 0
+    m_Value: 0
+  useAOVs:
+    m_OverrideState: 0
+    m_Value: 1
+  temporal:
+    m_OverrideState: 0
+    m_Value: 0
+  separateVolumetrics:
+    m_OverrideState: 0
+    m_Value: 0
+  asyncDenoising:
+    m_OverrideState: 0
+    m_Value: 1
   skyImportanceSampling:
     m_OverrideState: 1
     m_Value: 0
@@ -5491,6 +5508,21 @@ MonoBehaviour:
   maximumIntensity:
     m_OverrideState: 1
     m_Value: 10
+  denoising:
+    m_OverrideState: 0
+    m_Value: 0
+  useAOVs:
+    m_OverrideState: 0
+    m_Value: 1
+  temporal:
+    m_OverrideState: 0
+    m_Value: 0
+  separateVolumetrics:
+    m_OverrideState: 0
+    m_Value: 0
+  asyncDenoising:
+    m_OverrideState: 0
+    m_Value: 1
   skyImportanceSampling:
     m_OverrideState: 1
     m_Value: 0

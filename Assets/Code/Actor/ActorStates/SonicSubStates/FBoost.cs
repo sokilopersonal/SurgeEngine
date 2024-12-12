@@ -127,11 +127,6 @@ namespace SurgeEngine.Code.ActorStates.SonicSubStates
                 
                 actor.kinematics.TurnRate *= _config.turnSpeedMultiplier;
             }
-
-            if (Common.CheckForGround(out _, CheckGroundType.Predict))
-            {
-                Active = false;
-            }
             
             BoostEnergy = Mathf.Clamp(BoostEnergy, 0, 100);
         }
@@ -153,6 +148,15 @@ namespace SurgeEngine.Code.ActorStates.SonicSubStates
             
             if (Active)
             {
+                var body = actor.kinematics.Rigidbody;
+                float startSpeed = _config.startSpeed;
+
+                if (actor.kinematics.HorizontalSpeed < startSpeed)
+                {
+                    body.linearVelocity = body.transform.forward * startSpeed;
+                    restoringTopSpeed = true;
+                }
+                
                 BoostEnergy -= _config.startDrain;
                 new Rumble().Vibrate(0.7f, 0.8f, 0.5f);
             }
@@ -165,17 +169,10 @@ namespace SurgeEngine.Code.ActorStates.SonicSubStates
             float dt = Time.deltaTime;
             var config = actor.config;
             var body = actor.kinematics.Rigidbody;
-            float startForce = _config.startSpeed;
             float speed = actor.kinematics.HorizontalSpeed;
-            if (Active && speed < startForce)
-            {
-                body.linearVelocity = body.transform.forward * startForce;
-                restoringTopSpeed = true;
-            }
-    
             if (Active)
             {
-                float maxSpeed = config.topSpeed * _config.maxSpeedMultiplier;
+                float maxSpeed = config.maxSpeed * _config.maxSpeedMultiplier;
                 if (speed < maxSpeed) body.AddForce(body.transform.forward * (_config.acceleration * dt), ForceMode.VelocityChange);
                     
             }

@@ -97,7 +97,6 @@ namespace SurgeEngine.Code.ActorStates
         }
         private void VelocityRotation()
         {
-            Debug.Log(Actor.kinematics);
             Vector3 vel = Actor.kinematics.Velocity.normalized;
             float dot = Vector3.Dot(_data.transform.up, Vector3.up);
             Vector3 upwards = dot > 0 ? Vector3.up : Vector3.down;
@@ -113,7 +112,7 @@ namespace SurgeEngine.Code.ActorStates
                     Actor.kinematics.Rigidbody.rotation = Quaternion.LookRotation(Quaternion.AngleAxis(90, left) * vel, upwards);
             }
             
-            //Actor.model.root.localRotation = Actor.kinematics.Rigidbody.rotation;
+            Actor.model.root.rotation = Actor.kinematics.Rigidbody.rotation;
         }
         private void CountTimer(float dt)
         {

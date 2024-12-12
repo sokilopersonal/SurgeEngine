@@ -1,4 +1,5 @@
-﻿using SurgeEngine.Code.Custom;
+﻿using System.Collections;
+using SurgeEngine.Code.Custom;
 using UnityEngine;
 
 namespace SurgeEngine.Code.CommonObjects
@@ -9,10 +10,11 @@ namespace SurgeEngine.Code.CommonObjects
         [SerializeField] private float time = 0.25f;
         
         private ContactBase contact;
+        private Coroutine _disableCollisionCoroutine;
         
         private void Awake()
         {
-            contact = GetComponent<ContactBase>();
+            contact = GetComponentInParent<ContactBase>();
         }
 
         private void OnEnable()
@@ -27,7 +29,27 @@ namespace SurgeEngine.Code.CommonObjects
 
         private void OnContact(ContactBase obj)
         {
+            if (_disableCollisionCoroutine != null)
+            {
+                StopCoroutine(_disableCollisionCoroutine);
+            }
             
+            _disableCollisionCoroutine = StartCoroutine(DisableCollision());
+        }
+        
+        private IEnumerator DisableCollision()
+        {
+            foreach (var col in _colliders)
+            {
+                col.enabled = false;
+            }
+            
+            yield return new WaitForSeconds(time);
+            
+            foreach (var col in _colliders)
+            {
+                col.enabled = true;
+            }
         }
     }
 }

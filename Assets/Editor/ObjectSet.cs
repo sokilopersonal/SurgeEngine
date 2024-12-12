@@ -25,6 +25,7 @@ namespace SurgeEngine.Editor
         }
 
         private List<PrefabData> prefabDataList = new List<PrefabData>();
+        private float normalOffset = 0.5f;
         private Vector2 scrollPosition;
         private const string SaveFilePath = "Assets/Editor/SelectedPrefabs.json";
         private string[] categories;
@@ -53,6 +54,8 @@ namespace SurgeEngine.Editor
             GUILayout.Label("Category:");
             selectedCategoryIndex = EditorGUILayout.Popup(selectedCategoryIndex, categories);
 
+            normalOffset = EditorGUILayout.FloatField("Normal Offset", normalOffset, EditorStyles.label);
+            
             if (GUILayout.Button("Add Prefab"))
             {
                 SelectPrefab();
@@ -266,7 +269,7 @@ namespace SurgeEngine.Editor
 
                 if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, 1 << LayerMask.NameToLayer("Default")))
                 {
-                    currentPrefabInstance.transform.position = hit.point;
+                    currentPrefabInstance.transform.position = hit.point + hit.normal * normalOffset;
                 }
                 
                 Handles.color = Color.green;
