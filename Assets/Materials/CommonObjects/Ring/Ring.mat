@@ -277,6 +277,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _StaticCubemap:
+        m_Texture: {fileID: 8900000, guid: 63abfe40e46fc2d49afb101002a8cbda, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SubsurfaceMaskMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -481,7 +485,7 @@ Material:
     - _EnergyConservingSpecularColor: 1
     - _ExcludeFromTUAndAA: 0
     - _FresnelPower: 12
-    - _FresnelShine: 1
+    - _FresnelShine: 0
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
@@ -611,8 +615,8 @@ Material:
     - _RenderQueueType: 1
     - _RequireSplitLighting: 0
     - _RimLightEnable: 1
-    - _RimLightPower: 15
-    - _RimLightShine: 180
+    - _RimLightPower: 16
+    - _RimLightShine: 240
     - _Smoothness: 1
     - _Smoothness0: 0.5
     - _Smoothness1: 0.5
@@ -718,8 +722,8 @@ Material:
     - _BaseColor2: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColor3: {r: 1, g: 1, b: 1, a: 1}
     - _COAT_COLOR: {r: 0, g: 0, b: 0, a: 0}
-    - _Color: {r: 1, g: 0.66404796, b: 0, a: 1}
-    - _ColorB: {r: 1.5482881, g: 1.5482881, b: 1.5482881, a: 0}
+    - _Color: {r: 1, g: 0.544991, b: 0, a: 1}
+    - _ColorB: {r: 235.80447, g: 235.80447, b: 235.80447, a: 0}
     - _DiffusionProfileAsset: {r: 0, g: 0, b: 0, a: 0}
     - _DiffusionProfileAsset0: {r: 0, g: 0, b: 0, a: 0}
     - _DiffusionProfileAsset1: {r: 0, g: 0, b: 0, a: 0}
@@ -733,7 +737,7 @@ Material:
     - _InvPrimScale: {r: 1, g: 1, b: 0, a: 0}
     - _IridescenceThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
     - _REFLECTIONS_COLOR: {r: 1, g: 1, b: 1, a: 1}
-    - _RimLightColor: {r: 1367.1202, g: 1084.2129, b: 148.31967, a: 0}
+    - _RimLightColor: {r: 1023.99994, g: 637.7245, b: 0, a: 0}
     - _Specular: {r: 0.0625, g: 0.0625, b: 0.0625, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
     - _TRANSPARENCY: {r: 1, g: 1, b: 1, a: 1}

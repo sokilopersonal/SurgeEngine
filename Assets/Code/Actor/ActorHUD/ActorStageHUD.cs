@@ -138,7 +138,7 @@ namespace SurgeEngine.Code.ActorHUD
             if (obj is Ring)
             {
                 RingHUD ringHUDInstance = Instantiate(ringHUDPrefab, obj.transform.position, obj.transform.rotation);
-                float time = 0.6f;
+                float time = 0.425f;
                 ringHUDInstance.Initialize(time);
             }
         }
