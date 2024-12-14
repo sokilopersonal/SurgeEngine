@@ -1,5 +1,20 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-7242272657943314168
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa486462e6be1764e89c788ba30e61f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_DiffusionProfileReferences:
+  - {fileID: 11400000, guid: b0bf9c6c712ce004696af9fc00a78c6f, type: 2}
+  m_MaterialReferences: []
 --- !u!21 &2100000
 Material:
   serializedVersion: 8
@@ -13,7 +28,8 @@ Material:
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - _DISABLE_SSR_TRANSPARENT
-  - _MATERIAL_FEATURE_SPECULAR_COLOR
+  - _MATERIAL_FEATURE_SUBSURFACE_SCATTERING
+  - _MATERIAL_FEATURE_TRANSMISSION
   m_InvalidKeywords:
   - _ALPHATEST_ON
   - _HEIGHTMAP
@@ -208,7 +224,7 @@ Material:
     - _IridescenceMask: 1
     - _IridescenceThickness: 1
     - _LinkDetailsWithBase: 1
-    - _MaterialID: 4
+    - _MaterialID: 0
     - _MaterialTypeMask: 2
     - _Metallic: 0
     - _MetallicRemapMax: 1
@@ -235,9 +251,9 @@ Material:
     - _RenderQueueType: 1
     - _RequireSplitLighting: 0
     - _SSSMask: 0
-    - _SSSProfile: 0
-    - _SSSTMask: 0
-    - _SSSThickness: 0.005
+    - _SSSProfile: 3.354278
+    - _SSSTMask: 1
+    - _SSSThickness: 0.5
     - _Smoothness: 0
     - _SmoothnessRemapMax: 1
     - _SmoothnessRemapMin: 0
@@ -247,10 +263,10 @@ Material:
     - _SpecularHighlights: 1
     - _SpecularOcclusionMode: 1
     - _SrcBlend: 1
-    - _StencilRef: 0
+    - _StencilRef: 4
     - _StencilRefDepth: 8
     - _StencilRefDistortionVec: 4
-    - _StencilRefGBuffer: 10
+    - _StencilRefGBuffer: 14
     - _StencilRefMV: 40
     - _StencilWriteMask: 6
     - _StencilWriteMaskDepth: 9
@@ -294,7 +310,7 @@ Material:
     - _InvPrimScale: {r: 1, g: 1, b: 0, a: 0}
     - _IridescenceThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
     - _RimLightColor: {r: 1, g: 1, b: 1, a: 1}
-    - _SSSProfile_Asset: {r: 0, g: 0, b: 0, a: 0}
+    - _SSSProfile_Asset: {r: 1.5159812e+27, g: 5.270296e-36, b: -1.03603214e+37, a: 8.705958e+28}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
     - _ThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
     - _TransmittanceColor: {r: 1, g: 1, b: 1, a: 1}

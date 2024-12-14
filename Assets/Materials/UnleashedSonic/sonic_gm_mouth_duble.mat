@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_DiffusionProfileReferences:
-  - {fileID: 11400000, guid: 846bf0223c06e434c9d47a6e5809b575, type: 2}
+  - {fileID: 11400000, guid: 5d223a71d4cfa2d479b5225210f0c7d3, type: 2}
   m_MaterialReferences: []
 --- !u!21 &2100000
 Material:
@@ -27,6 +27,7 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
+  - _DISABLE_SSR
   - _DISABLE_SSR_TRANSPARENT
   - _MATERIAL_FEATURE_SUBSURFACE_SCATTERING
   - _MATERIAL_FEATURE_TRANSMISSION
@@ -201,7 +202,7 @@ Material:
     - _EnableGeometricSpecularAA: 0
     - _EnergyConservingSpecularColor: 1
     - _ExcludeFromTUAndAA: 0
-    - _FalloffIntensity: 1
+    - _FalloffIntensity: 0
     - _FalloffPower: 9
     - _GlossMapScale: 1
     - _Glossiness: 0
@@ -241,15 +242,15 @@ Material:
     - _Parallax: 0.02
     - _PerPixelSorting: 0
     - _RayTracing: 0
-    - _ReceivesSSR: 1
+    - _ReceivesSSR: 0
     - _ReceivesSSRTransparent: 0
     - _RefractionModel: 0
     - _RenderQueueType: 1
     - _RequireSplitLighting: 0
     - _SSSMask: 1
-    - _SSSProfile: 2.2928143
+    - _SSSProfile: 3.9039385
     - _SSSTMask: 1
-    - _SSSThickness: 0.25
+    - _SSSThickness: 0.2
     - _Smoothness: 0
     - _SmoothnessRemapMax: 1
     - _SmoothnessRemapMin: 0
@@ -260,10 +261,10 @@ Material:
     - _SpecularOcclusionMode: 1
     - _SrcBlend: 1
     - _StencilRef: 4
-    - _StencilRefDepth: 8
+    - _StencilRefDepth: 0
     - _StencilRefDistortionVec: 4
-    - _StencilRefGBuffer: 14
-    - _StencilRefMV: 40
+    - _StencilRefGBuffer: 6
+    - _StencilRefMV: 32
     - _StencilWriteMask: 6
     - _StencilWriteMaskDepth: 9
     - _StencilWriteMaskDistortionVec: 4
@@ -306,7 +307,7 @@ Material:
     - _InvPrimScale: {r: 1, g: 1, b: 0, a: 0}
     - _IridescenceThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
     - _RimLightColor: {r: 26409.648, g: 641.9076, b: 1224.7019, a: 1}
-    - _SSSProfile_Asset: {r: 6.5165967e-18, g: 0.00000042472846, b: 1.9407123e+28, a: 4.5898205e+32}
+    - _SSSProfile_Asset: {r: 9.216921e+29, g: -5.594172e+12, b: 1.7470733e+11, a: -1.7174521e+12}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
     - _ThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
     - _TransmittanceColor: {r: 1, g: 1, b: 1, a: 1}

@@ -10,19 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b2686e09ec7aef44bad2843e4416f057, type: 3}
-  m_Name: SonicMouthSkinDiffuseProfile
+  m_Name: SonicClothDiffuseProfile
   m_EditorClassIdentifier: 
   profile:
-    scatteringDistance: {r: 0.87603444, g: 0.09952362, b: 0.030473132, a: 1}
+    scatteringDistance: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     scatteringDistanceMultiplier: 1
     transmissionTint: {r: 1, g: 1, b: 1, a: 1}
     texturingMode: 0
     smoothnessMultipliers: {x: 1, y: 1}
-    lobeMix: 1
-    diffuseShadingPower: 1.2
-    transmissionMode: 1
-    thicknessRemap: {x: 0, y: 3}
+    lobeMix: 0.5
+    diffuseShadingPower: 1
+    transmissionMode: 0
+    thicknessRemap: {x: 0, y: 12}
     worldScale: 1
-    ior: 1
-    hash: 1074969976
+    ior: 1.4
+    hash: 1079422078
   m_Version: 2
