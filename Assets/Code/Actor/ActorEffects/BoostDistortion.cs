@@ -1,62 +1,67 @@
-﻿using System.Collections;
+﻿using SurgeEngine.Code.Custom;
 using UnityEngine;
+using UnityEngine.Rendering.HighDefinition;
 
 namespace SurgeEngine.Code.ActorEffects
 {
     public class BoostDistortion : MonoBehaviour
     {
-        [SerializeField] private Material customPass;
+        [SerializeField] private Material distortionMaterial;
+        [SerializeField] private CustomPassVolume volume;
+        
+        [SerializeField] private Easing easing;
         [SerializeField] private float duration;
-
-        private Coroutine coroutine;
+        
         private static readonly int WaveTime = Shader.PropertyToID("_WaveTime");
         private static readonly int SpawnPosition = Shader.PropertyToID("_SpawnPosition");
-
-        private float _startValue;
+        
+        private float _timer;
+        private bool _isPlaying;
 
         private void Awake()
         {
-            _startValue = -0.4f;
+            distortionMaterial = Instantiate(distortionMaterial);
+
+            var pass = volume.customPasses[0];
+            var fPass = pass as FullScreenCustomPass;
+            fPass.fullscreenPassMaterial = distortionMaterial;
+        }
+
+        private void Update()
+        {
+            if (_isPlaying)
+            {
+                distortionMaterial.SetFloat(WaveTime, Mathf.Lerp(-0.4f, 1 * GetAspect(), Easings.Get(easing, _timer)));
+            
+                if (_timer < duration)
+                {
+                    _timer += Time.deltaTime;
+                }
+                else
+                {
+                    _timer = 0;
+                    _isPlaying = false;
+                }
+            }
+            else
+            {
+                distortionMaterial.SetFloat(WaveTime, -0.4f);
+            }
         }
 
         public void Play(Vector3 viewportPosition)
         {
-            customPass.SetFloat(WaveTime, _startValue);
-            customPass.SetVector(SpawnPosition, viewportPosition);
+            distortionMaterial.SetVector(SpawnPosition, viewportPosition);
 
-            if (coroutine != null)
-            {
-                StopCoroutine(coroutine);
-            }
-            
-            coroutine = StartCoroutine(PlayDistortion());
+            _timer = 0;
+            _isPlaying = true;
         }
 
-        IEnumerator PlayDistortion()
+        private float GetAspect()
         {
-            float t = 0;
-            float dur = duration;
-            
-            while (t < dur)
-            {
-                float sWidth = Screen.width;
-                float sHeight = Screen.height;
-                float aspect = sWidth / sHeight;
-                float time = 1f * aspect; // Widescreen fix
-                float value = Mathf.Lerp(_startValue, time, EaseOutQuad(t / dur));
-                customPass.SetFloat(WaveTime, value);
-                t += Time.deltaTime;
-                
-                yield return null;
-            }
+            float w = Screen.width;
+            float h = Screen.height;
+            return w / h;
         }
-
-        private void OnDestroy()
-        {
-            customPass.SetFloat(WaveTime, _startValue);
-            customPass.SetVector(SpawnPosition, new Vector2(0.5f, 0.5f));
-        }
-
-        float EaseOutQuad(float t) => 1 - (1 - t) * (1 - t);
     }
 }
