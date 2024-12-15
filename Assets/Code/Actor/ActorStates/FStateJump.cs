@@ -26,7 +26,6 @@ namespace SurgeEngine.Code.ActorStates
             Actor.transform.rotation = Quaternion.Euler(0, Actor.transform.rotation.eulerAngles.y, 0);
             
             Actor.model.SetCollisionParam(_config.jumpCollisionHeight, _config.jumpCollisionCenter, _config.jumpCollisionRadius);
-
         }
 
         public override void OnExit()
@@ -51,7 +50,7 @@ namespace SurgeEngine.Code.ActorStates
                     }
                 }
             }
-            
+
             Kinematics.Normal = Vector3.up;
 
             if (GetAirTime() > _maxAirTime)

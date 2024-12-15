@@ -665,7 +665,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.85
+      scalar: 1
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -718,7 +718,7 @@ ParticleSystem:
     startSizeY:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.85
+      scalar: 1
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -982,7 +982,7 @@ ParticleSystem:
         m_RotationOrder: 4
     randomizeRotationDirection: 0
     gravitySource: 0
-    maxNumParticles: 1000
+    maxNumParticles: 1
     customEmitterVelocity: {x: 0, y: 0, z: 0}
     size3D: 1
     rotation3D: 0
@@ -5556,7 +5556,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.94
+      scalar: 1
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -5609,7 +5609,7 @@ ParticleSystem:
     startSizeY:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.95
+      scalar: 1
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -5873,7 +5873,7 @@ ParticleSystem:
         m_RotationOrder: 4
     randomizeRotationDirection: 0
     gravitySource: 0
-    maxNumParticles: 1000
+    maxNumParticles: 1
     customEmitterVelocity: {x: 0, y: 0, z: 0}
     size3D: 1
     rotation3D: 0
@@ -21152,6 +21152,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6844501969905408469, guid: 71b112c5f2262004a8a1836ad970b46f, type: 3}
+      propertyPath: volume
+      value: 
+      objectReference: {fileID: 5100663281729309884}
+    - target: {fileID: 6844501969905408469, guid: 71b112c5f2262004a8a1836ad970b46f, type: 3}
+      propertyPath: duration
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 6844501969905408469, guid: 71b112c5f2262004a8a1836ad970b46f, type: 3}
+      propertyPath: distortionMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: 98c33dd0dc64c734dad3e15148f2b798, type: 2}
     - target: {fileID: 7741686655999222853, guid: 71b112c5f2262004a8a1836ad970b46f, type: 3}
       propertyPath: m_TargetCamera
       value: 
@@ -21170,6 +21182,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c2ceafab1a234284b1c527fc47db2b75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5100663281729309884 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7741686655999222853, guid: 71b112c5f2262004a8a1836ad970b46f, type: 3}
+  m_PrefabInstance: {fileID: 3289541728204073209}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26d6499a6bd256e47b859377446493a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &7947240920388638418 stripped

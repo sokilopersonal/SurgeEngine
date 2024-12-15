@@ -1,4 +1,5 @@
-﻿using SurgeEngine.Code.ActorEffects;
+﻿using System.Collections;
+using SurgeEngine.Code.ActorEffects;
 using SurgeEngine.Code.ActorStates;
 using SurgeEngine.Code.ActorStates.SonicSubStates;
 using SurgeEngine.Code.StateMachine;

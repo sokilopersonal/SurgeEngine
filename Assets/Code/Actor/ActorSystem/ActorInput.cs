@@ -75,8 +75,6 @@ namespace SurgeEngine.Code.ActorSystem
 
         private void OnEnable()
         {
-            playerInput.enabled = true;
-
             playerInput.actions["XAction"].started += BoostInput;
             playerInput.actions["XAction"].canceled += BoostInput;
 
@@ -91,15 +89,10 @@ namespace SurgeEngine.Code.ActorSystem
             
             playerInput.actions["Bumper"].started += BumperInput;
             playerInput.actions["Bumper"].canceled += BumperInput;
-            
-            // _playerInput.Gameplay.Start.started += StartInput;
-            // _playerInput.Gameplay.Start.canceled += StartInput;
         }
 
         private void OnDisable()
         {
-            playerInput.enabled = false;
-
             moveVector = Vector3.zero;
             lookVector = Vector2.zero;
 
@@ -117,9 +110,6 @@ namespace SurgeEngine.Code.ActorSystem
             
             playerInput.actions["Bumper"].started -= BumperInput;
             playerInput.actions["Bumper"].canceled -= BumperInput;
-            
-            // _playerInput.Gameplay.Start.started -= StartInput;
-            // _playerInput.Gameplay.Start.canceled -= StartInput;
             
             var pad = Gamepad.current;
             pad.SetMotorSpeeds(0, 0);

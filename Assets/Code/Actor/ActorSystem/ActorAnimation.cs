@@ -85,8 +85,9 @@ namespace SurgeEngine.Code.ActorSystem
                 {
                     switch (prev)
                     {
-                        case FStateGround or FStateSit:
-                            TransitionToState("Idle", 0.2f);
+                        case FStateGround:
+                            TransitionToState("MoveStop", 0.1f);
+                            TransitionToStateDelayed("Idle", 0.2f, 0.15f);
                             break;
                         case FStateStomp:
                             TransitionToState("StompSquat", 0.1f);
@@ -151,9 +152,17 @@ namespace SurgeEngine.Code.ActorSystem
             {
                 TransitionToState("Sit", 0.2f, true);
             }
-            if (obj is FStateJump or FStateJumpSelector)
+            if (obj is FStateJump)
             {
-                TransitionToState("Ball", 0f, true);
+                TransitionToState("Ball", 0f);
+                
+                // var speed = actor.kinematics.HorizontalSpeed;
+                //
+                // if (speed < 0.1f)
+                // {
+                //     TransitionToState("JumpLow", 0.1f);
+                //     TransitionToStateDelayed(AnimatorParams.AirCycle, 0.5f, 0.1f);
+                // }
             }
             if (obj is FStateGrindJump)
             {
