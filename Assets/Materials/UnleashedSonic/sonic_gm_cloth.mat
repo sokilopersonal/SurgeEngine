@@ -28,8 +28,6 @@ Material:
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - _DISABLE_SSR_TRANSPARENT
-  - _MATERIAL_FEATURE_SUBSURFACE_SCATTERING
-  - _MATERIAL_FEATURE_TRANSMISSION
   m_InvalidKeywords:
   - _ALPHATEST_ON
   - _HEIGHTMAP
@@ -224,7 +222,7 @@ Material:
     - _IridescenceMask: 1
     - _IridescenceThickness: 1
     - _LinkDetailsWithBase: 1
-    - _MaterialID: 0
+    - _MaterialID: 1
     - _MaterialTypeMask: 2
     - _Metallic: 0
     - _MetallicRemapMax: 1
@@ -253,7 +251,7 @@ Material:
     - _SSSMask: 0
     - _SSSProfile: 3.354278
     - _SSSTMask: 1
-    - _SSSThickness: 0.5
+    - _SSSThickness: 0.3
     - _Smoothness: 0
     - _SmoothnessRemapMax: 1
     - _SmoothnessRemapMin: 0
@@ -263,10 +261,10 @@ Material:
     - _SpecularHighlights: 1
     - _SpecularOcclusionMode: 1
     - _SrcBlend: 1
-    - _StencilRef: 4
+    - _StencilRef: 0
     - _StencilRefDepth: 8
     - _StencilRefDistortionVec: 4
-    - _StencilRefGBuffer: 14
+    - _StencilRefGBuffer: 10
     - _StencilRefMV: 40
     - _StencilWriteMask: 6
     - _StencilWriteMaskDepth: 9

@@ -25,7 +25,7 @@ namespace SurgeEngine.Code.ActorSoundEffects
             _landSoundInstance.set3DAttributes(transform.To3DAttributes());
         }
 
-        public void Play()
+        public void PlaySound()
         {
             if (_stepSoundInstance.isValid() && actor.stateMachine.CurrentState is FStateGround)
             {

@@ -88,7 +88,7 @@ BlendTree:
     m_Motion: {fileID: 7400000, guid: d44be56985004754e8979ed6ec12788b, type: 2}
     m_Threshold: 0
     m_Position: {x: 0, y: 0}
-    m_TimeScale: 0.7
+    m_TimeScale: 0.65
     m_CycleOffset: 0
     m_DirectBlendParameter: GroundSpeed
     m_Mirror: 0
@@ -305,7 +305,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 3
-    m_ConditionEvent: GroundSpeed
+    m_ConditionEvent: SpeedPercent
     m_EventTreshold: 0
   - m_ConditionMode: 1
     m_ConditionEvent: Skidding
@@ -834,23 +834,23 @@ BlendTree:
   - serializedVersion: 2
     m_Motion: {fileID: 7400000, guid: 3769218b7f4761c478bde96a63847da9, type: 2}
     m_Threshold: 3
-    m_Position: {x: 4, y: 0}
-    m_TimeScale: 1.4
+    m_Position: {x: 0.05, y: 0}
+    m_TimeScale: 2
     m_CycleOffset: 0
     m_DirectBlendParameter: GroundSpeed
     m_Mirror: 0
   - serializedVersion: 2
     m_Motion: {fileID: 7400000, guid: 10a4a08b25f78244083146b655adce3b, type: 2}
     m_Threshold: 4
-    m_Position: {x: 9, y: 0}
-    m_TimeScale: 1.4
+    m_Position: {x: 0.15, y: 0}
+    m_TimeScale: 1.8
     m_CycleOffset: 0
     m_DirectBlendParameter: GroundSpeed
     m_Mirror: 0
   - serializedVersion: 2
     m_Motion: {fileID: 2481898458948229005}
     m_Threshold: 11
-    m_Position: {x: 11, y: 0}
+    m_Position: {x: 0.3, y: 0}
     m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: GroundSpeed
@@ -858,7 +858,7 @@ BlendTree:
   - serializedVersion: 2
     m_Motion: {fileID: 4758538316736839624}
     m_Threshold: 13
-    m_Position: {x: 13, y: 0}
+    m_Position: {x: 0.5, y: 0}
     m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: GroundSpeed
@@ -866,7 +866,7 @@ BlendTree:
   - serializedVersion: 2
     m_Motion: {fileID: -5917741249646698140}
     m_Threshold: 17
-    m_Position: {x: 17, y: 0}
+    m_Position: {x: 0.65, y: 0}
     m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: GroundSpeed
@@ -874,7 +874,7 @@ BlendTree:
   - serializedVersion: 2
     m_Motion: {fileID: 3186008070819709393}
     m_Threshold: 21
-    m_Position: {x: 21, y: 0}
+    m_Position: {x: 0.8, y: 0}
     m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: GroundSpeed
@@ -882,12 +882,12 @@ BlendTree:
   - serializedVersion: 2
     m_Motion: {fileID: -7918806664860764914}
     m_Threshold: 25
-    m_Position: {x: 21, y: 0.8}
+    m_Position: {x: 1, y: 0.8}
     m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: GroundSpeed
     m_Mirror: 0
-  m_BlendParameter: GroundSpeed
+  m_BlendParameter: SpeedPercent
   m_BlendParameterY: AbsWallDot
   m_MinThreshold: 3
   m_MaxThreshold: 25
@@ -1791,6 +1791,12 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
+  - m_Name: SpeedPercent
+    m_Type: 1
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -2368,7 +2374,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 3
-    m_ConditionEvent: GroundSpeed
+    m_ConditionEvent: SpeedPercent
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 7942006658606044046}
@@ -2454,7 +2460,7 @@ BlendTree:
     m_Motion: {fileID: 7400000, guid: 593627e0c1a655a40a9df6fe24b1ecc5, type: 2}
     m_Threshold: -2.5
     m_Position: {x: 0, y: 0}
-    m_TimeScale: 0.7
+    m_TimeScale: 0.75
     m_CycleOffset: 0
     m_DirectBlendParameter: GroundSpeed
     m_Mirror: 0
@@ -2462,7 +2468,7 @@ BlendTree:
     m_Motion: {fileID: 7400000, guid: d44be56985004754e8979ed6ec12788b, type: 2}
     m_Threshold: 0
     m_Position: {x: 0, y: 0}
-    m_TimeScale: 0.7
+    m_TimeScale: 0.75
     m_CycleOffset: 0
     m_DirectBlendParameter: GroundSpeed
     m_Mirror: 0
@@ -2470,7 +2476,7 @@ BlendTree:
     m_Motion: {fileID: 7400000, guid: 199d8f1d0a29d33469c8eff542b40c65, type: 2}
     m_Threshold: 2.5
     m_Position: {x: 0, y: 0}
-    m_TimeScale: 0.7
+    m_TimeScale: 0.75
     m_CycleOffset: 0
     m_DirectBlendParameter: GroundSpeed
     m_Mirror: 0
@@ -2535,7 +2541,7 @@ AnimatorStateMachine:
     m_Position: {x: 490, y: -150, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -6490028889585789995}
-    m_Position: {x: 490, y: -200, z: 0}
+    m_Position: {x: 490, y: -220, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -6698829434091632621}
     m_Position: {x: 490, y: -60, z: 0}
@@ -2548,7 +2554,7 @@ AnimatorStateMachine:
   m_ChildStateMachines:
   - serializedVersion: 1
     m_StateMachine: {fileID: 917465187099038121}
-    m_Position: {x: 270, y: -190, z: 0}
+    m_Position: {x: 270, y: -220, z: 0}
   - serializedVersion: 1
     m_StateMachine: {fileID: 5021281939317127735}
     m_Position: {x: 270, y: -150, z: 0}
@@ -2758,7 +2764,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: MoveStop
-  m_Speed: 1.15
+  m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
   m_StateMachineBehaviours: []
@@ -3560,7 +3566,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Run Cycle
-  m_Speed: 0.4
+  m_Speed: 10
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 4762979732488801027}
@@ -3576,7 +3582,7 @@ AnimatorState:
   m_TimeParameterActive: 0
   m_Motion: {fileID: -4695703888909661453}
   m_Tag: 
-  m_SpeedParameter: GroundSpeed
+  m_SpeedParameter: SpeedPercent
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
