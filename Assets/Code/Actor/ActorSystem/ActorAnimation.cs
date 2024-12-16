@@ -134,15 +134,22 @@ namespace SurgeEngine.Code.ActorSystem
                     _currentAnimation = AnimatorParams.RunCycle;
                 }
             }
-            if (obj is FStateAir && prev is not FStateSpecialJump and not FStateAirBoost and not FStateAfterHoming)
+            if (obj is FStateAir && prev is not FStateAirBoost and not FStateAfterHoming)
             {
-                TransitionToState(AnimatorParams.AirCycle, prev switch
+                if (prev is not FStateSpecialJump)
                 {
-                    FStateGround => 0.2f,
-                    FStateGrindJump => 0.5f,
-                    FStateJump or FStateHoming => 0f,
-                    _ => 0.2f
-                });
+                    TransitionToState(AnimatorParams.AirCycle, prev switch
+                    {
+                        FStateGround => 0.2f,
+                        FStateGrindJump => 0.5f,
+                        FStateJump or FStateHoming => 0f,
+                        _ => 0.2f
+                    });
+                }
+                else
+                {
+                    TransitionToStateDelayed(AnimatorParams.AirCycle, 0.5f, 0.4f);
+                }
             }
             if (obj is FStateSliding)
             {

@@ -36,10 +36,8 @@ namespace SurgeEngine.Code.CommonObjects
                 null, true, Mathf.Abs(outOfControl)));
         }
 
-        protected override void Draw()
+        private void OnDrawGizmosSelected()
         {
-            base.Draw();
-            
             TrajectoryDrawer.DrawTrajectory(transform.position + transform.up * yOffset, 
                 transform.up, Color.green, speed, keepVelocity);
         }

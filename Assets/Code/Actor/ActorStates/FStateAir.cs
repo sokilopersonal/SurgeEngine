@@ -72,8 +72,9 @@ namespace SurgeEngine.Code.ActorStates
                 
                 Actor.kinematics.BasePhysics(Vector3.zero, Vector3.up);
                 
-                // TODO: Use Actor.model.RotateBody
-                Rotate(dt);
+                Vector3 vel = Actor.kinematics.Velocity;
+                vel.y = 0;
+                Actor.model.RotateBody(vel, Vector3.up);
                 
                 Common.ApplyGravity(Stats.gravity, Time.fixedDeltaTime);
             }
@@ -84,20 +85,6 @@ namespace SurgeEngine.Code.ActorStates
                     if (Kinematics.HorizontalSpeed > 5f) StateMachine.SetState<FStateGround>();
                     else StateMachine.SetState<FStateIdle>();
                 }
-            }
-        }
-
-        private void Rotate(float dt)
-        {
-            Stats.transformNormal = Vector3.Slerp(Stats.transformNormal, Vector3.up, dt * 8f);
-
-            Vector3 vel = _rigidbody.linearVelocity;
-            vel.y = 0;
-            
-            if (vel.magnitude > 0.5f)
-            {
-                Quaternion rot = Quaternion.LookRotation(vel, Stats.transformNormal);
-                Actor.transform.rotation = rot;
             }
         }
 

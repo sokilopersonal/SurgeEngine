@@ -61,7 +61,7 @@ namespace SurgeEngine.Code.ActorStates
 
             if (_data.type is SpecialJumpType.Spring or SpecialJumpType.DashRing)
             {
-                Animation.TransitionToState(AnimatorParams.AirCycle, 0.5f);
+                Actor.model.StartAirRestore(0.6f);
             }
         }
 
@@ -76,11 +76,13 @@ namespace SurgeEngine.Code.ActorStates
                     Common.ApplyGravity(Stats.gravity, dt);
                     break;
                 case SpecialJumpType.Spring:
-                    VelocityRotation();
+                    Actor.model.SetRestoreUp(_data.transform.up);
+                    Actor.model.VelocityRotation();
                     CountTimer(dt);
                     break;
                 case SpecialJumpType.DashRing:
-                    VelocityRotation();
+                    Actor.model.SetRestoreUp(_data.transform.up);
+                    Actor.model.VelocityRotation();
                     CountTimer(dt);
                     break;
                 case SpecialJumpType.JumpSelector:
@@ -95,25 +97,7 @@ namespace SurgeEngine.Code.ActorStates
                 StateMachine.SetState<FStateAir>();
             }
         }
-        private void VelocityRotation()
-        {
-            Vector3 vel = Actor.kinematics.Velocity.normalized;
-            float dot = Vector3.Dot(_data.transform.up, Vector3.up);
-            Vector3 upwards = dot > 0 ? Vector3.up : Vector3.down;
-            var left = Vector3.Cross(vel, Vector3.down);
-
-            if (dot >= 0.99f)
-            {
-                Actor.kinematics.Rigidbody.rotation = Quaternion.FromToRotation(Actor.transform.up, Vector3.up) * Actor.kinematics.Rigidbody.rotation;
-            }
-            else
-            {
-                if (vel.sqrMagnitude > 0.1f)
-                    Actor.kinematics.Rigidbody.rotation = Quaternion.LookRotation(Quaternion.AngleAxis(90, left) * vel, upwards);
-            }
-            
-            Actor.model.root.rotation = Actor.kinematics.Rigidbody.rotation;
-        }
+        
         private void CountTimer(float dt)
         {
             if (_keepVelocityTimer > 0)
@@ -125,6 +109,7 @@ namespace SurgeEngine.Code.ActorStates
         public FStateSpecialJump SetSpecialData(SpecialJumpData data)
         {
             _data = data;
+            
 
             return this;
         }
