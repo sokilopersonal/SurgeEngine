@@ -269,6 +269,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _PowTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _REFLECTIONS_COLOR_MAP:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -282,22 +286,14 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ReflectionMap:
-        m_Texture: {fileID: 8900000, guid: ffc9551ad34c5ea40963255723c06a51, type: 3}
+        m_Texture: {fileID: 8900000, guid: 8df24a41d4ff1d343b5f1783665e6298, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ReflectionMask:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _SampleTexture2D_d366f09d6fce4151af28bc408a996030_Texture_1_Texture2D:
-        m_Texture: {fileID: 2800000, guid: 3d74ed62d98c6f845bbe5a2e0cf8fe63, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _SecondNormalMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _SmoothnessMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -595,7 +591,7 @@ Material:
     - _METALNESS: 0.8
     - _MaterialID: 1
     - _MaterialTypeMask: 2
-    - _Metallic: 0.75
+    - _Metallic: 1
     - _Metallic0: 0
     - _Metallic1: 0
     - _Metallic2: 0
@@ -621,7 +617,6 @@ Material:
     - _NormalScale1: 1
     - _NormalScale2: 1
     - _NormalScale3: 1
-    - _NormalStrength: 0
     - _ObjectScaleAffectTile: 0
     - _ObjectSpaceUVMapping: 0
     - _ObjectSpaceUVMappingEmissive: 0
@@ -645,14 +640,14 @@ Material:
     - _ReceivesSSR: 0
     - _ReceivesSSRTransparent: 0
     - _ReflectionExposure: 0.1
-    - _ReflectionIntensity: 5
+    - _ReflectionIntensity: 1
     - _RefractionModel: 0
     - _RenderQueueType: 1
     - _RequireSplitLighting: 0
     - _RimLightEnable: 1
     - _RimLightPower: 16
     - _RimLightShine: 240
-    - _Smoothness: 0
+    - _Smoothness: 1
     - _Smoothness0: 0.5
     - _Smoothness1: 0.5
     - _Smoothness2: 0.5
@@ -743,7 +738,6 @@ Material:
     - _UseHeightBasedBlend: 0
     - _UseMainLayerInfluence: 0
     - _UseNormalMap: 0
-    - _UsePBRMap: 0
     - _UseReflectedCubeMap: 1
     - _UseReflection: 1
     - _UseSecondNormalMap: 0
@@ -755,14 +749,14 @@ Material:
     - _ZTestTransparent: 4
     - _ZWrite: 1
     m_Colors:
-    - _AlbedoColor: {r: 1, g: 0.77344954, b: 0, a: 1}
+    - _AlbedoColor: {r: 0.5294118, g: 0.29601568, b: 0, a: 1}
     - _BASE_COLOR: {r: 1, g: 0.7535237, b: 0, a: 1}
     - _BaseColor: {r: 1, g: 0.9258024, b: 0.43867922, a: 1}
     - _BaseColor0: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColor1: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColor2: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColor3: {r: 1, g: 1, b: 1, a: 1}
-    - _BlinnParam: {r: 25, g: 0.4, b: 0, a: 0}
+    - _BlinnParam: {r: 200, g: 5, b: 0, a: 0}
     - _COAT_COLOR: {r: 0, g: 0, b: 0, a: 0}
     - _Color: {r: 1, g: 0.544991, b: 0, a: 1}
     - _ColorB: {r: 235.80447, g: 235.80447, b: 235.80447, a: 0}
@@ -776,12 +770,12 @@ Material:
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissiveColor: {r: 1, g: 1, b: 1, a: 0}
     - _EmissiveColorLDR: {r: 1, g: 0.41141325, b: 0, a: 1}
-    - _FalloffColor: {r: 1, g: 1, b: 1, a: 1}
-    - _FalloffParam: {r: 0, g: 0, b: 0, a: 0}
+    - _FalloffColor: {r: 1, g: 0.60975486, b: 0.23113209, a: 1}
+    - _FalloffParam: {r: 0, g: 2, b: 1, a: 0}
     - _InvPrimScale: {r: 1, g: 1, b: 0, a: 0}
     - _IridescenceThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
     - _REFLECTIONS_COLOR: {r: 1, g: 1, b: 1, a: 1}
-    - _ReflectionColor: {r: 1, g: 1, b: 1, a: 1}
+    - _ReflectionColor: {r: 1, g: 0.80354196, b: 0.47450984, a: 1}
     - _RimLightColor: {r: 1023.99994, g: 637.7245, b: 0, a: 0}
     - _Specular: {r: 0.0625, g: 0.0625, b: 0.0625, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
