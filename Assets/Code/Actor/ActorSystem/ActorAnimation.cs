@@ -140,13 +140,20 @@ namespace SurgeEngine.Code.ActorSystem
             {
                 if (prev is not FStateSpecialJump)
                 {
-                    TransitionToState(AnimatorParams.AirCycle, prev switch
+                    if (prev is FStateJump or FStateHoming && actor.kinematics.HorizontalSpeed > 0.1f)
                     {
-                        FStateGround => 0.2f,
-                        FStateGrindJump => 0.5f,
-                        FStateJump or FStateHoming => 0f,
-                        _ => 0.2f
-                    });
+                        TransitionToState("BallOnce", 0f);
+                        TransitionToStateDelayed(AnimatorParams.AirCycle, 0.3f, 0.175f);
+                    }
+                    else
+                    {
+                        TransitionToState(AnimatorParams.AirCycle, prev switch
+                        {
+                            FStateGround => 0.2f,
+                            FStateJump or FStateHoming => 0f,
+                            _ => 0.2f
+                        });
+                    }
                 }
                 else
                 {
