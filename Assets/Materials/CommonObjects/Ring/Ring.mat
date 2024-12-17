@@ -587,7 +587,7 @@ Material:
     - _METALNESS: 0.8
     - _MaterialID: 1
     - _MaterialTypeMask: 2
-    - _Metallic: 1
+    - _Metallic: 0.75
     - _Metallic0: 0
     - _Metallic1: 0
     - _Metallic2: 0
@@ -613,6 +613,7 @@ Material:
     - _NormalScale1: 1
     - _NormalScale2: 1
     - _NormalScale3: 1
+    - _NormalStrength: 0
     - _ObjectScaleAffectTile: 0
     - _ObjectSpaceUVMapping: 0
     - _ObjectSpaceUVMappingEmissive: 0
@@ -636,14 +637,14 @@ Material:
     - _ReceivesSSR: 0
     - _ReceivesSSRTransparent: 0
     - _ReflectionExposure: 0.1
-    - _ReflectionIntensity: 1
+    - _ReflectionIntensity: 5
     - _RefractionModel: 0
     - _RenderQueueType: 1
     - _RequireSplitLighting: 0
     - _RimLightEnable: 1
     - _RimLightPower: 16
     - _RimLightShine: 240
-    - _Smoothness: 0.5
+    - _Smoothness: 0
     - _Smoothness0: 0.5
     - _Smoothness1: 0.5
     - _Smoothness2: 0.5
@@ -745,14 +746,14 @@ Material:
     - _ZTestTransparent: 4
     - _ZWrite: 1
     m_Colors:
-    - _AlbedoColor: {r: 1, g: 0.69465655, b: 0, a: 1}
+    - _AlbedoColor: {r: 1, g: 0.77344954, b: 0, a: 1}
     - _BASE_COLOR: {r: 1, g: 0.7535237, b: 0, a: 1}
     - _BaseColor: {r: 1, g: 0.9258024, b: 0.43867922, a: 1}
     - _BaseColor0: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColor1: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColor2: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColor3: {r: 1, g: 1, b: 1, a: 1}
-    - _BlinnParam: {r: 150, g: 3.98, b: 0, a: 0}
+    - _BlinnParam: {r: 25, g: 0.4, b: 0, a: 0}
     - _COAT_COLOR: {r: 0, g: 0, b: 0, a: 0}
     - _Color: {r: 1, g: 0.544991, b: 0, a: 1}
     - _ColorB: {r: 235.80447, g: 235.80447, b: 235.80447, a: 0}
