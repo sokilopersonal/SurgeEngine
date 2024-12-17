@@ -21,7 +21,6 @@ namespace SurgeEngine.Code.CommonObjects
             base.Contact(msg);
 
             var context = ActorContext.Context;
-            Vector3 cross = Common.GetCross(transform, pitch, true);
             if (impulse > 0)
             {
                 context.stateMachine.GetSubState<FBoost>().Active = false;

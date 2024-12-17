@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 1839055208667375598}
   - component: {fileID: 9086927131919800724}
   - component: {fileID: 4708178916902374420}
-  - component: {fileID: 886332809298781722}
   m_Layer: 14
   m_Name: RainbowDashRing
   m_TagString: Untagged
@@ -36,6 +35,7 @@ Transform:
   m_Children:
   - {fileID: 1164691853732755140}
   - {fileID: 2893709921269380046}
+  - {fileID: 1813336500067303792}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: -90, y: 180, z: -180}
 --- !u!114 &7174459843504873028
@@ -68,7 +68,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _colliders:
-  - {fileID: 886332809298781722}
+  - {fileID: 1865137289970425896}
   time: 0.25
 --- !u!114 &9086927131919800724
 MonoBehaviour:
@@ -102,13 +102,45 @@ MonoBehaviour:
       Data3: -689322830
       Data4: 1505021993
     Path: event:/CommonObjects/RainbowRing
---- !u!65 &886332809298781722
+--- !u!1 &6573951447141120149
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1813336500067303792}
+  - component: {fileID: 1865137289970425896}
+  m_Layer: 14
+  m_Name: Colliion
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1813336500067303792
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6573951447141120149}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.70710635, y: -0.00000008940697, z: 0.000000029802322, w: 0.70710725}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6820794015530011506}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+--- !u!65 &1865137289970425896
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5957124819982976523}
+  m_GameObject: {fileID: 6573951447141120149}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -117,11 +149,11 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.5, y: 2.5, z: 0.4}
+  m_Size: {x: 2.4763277, y: 2.4763274, z: 0.25190896}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &1703319899427131695
 PrefabInstance:
@@ -145,23 +177,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: add79ed296ed10a4fbda7123ffe81c0b, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.000000029802319
+      value: -0.00000011920929
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: add79ed296ed10a4fbda7123ffe81c0b, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: -0.000000029802322
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: add79ed296ed10a4fbda7123ffe81c0b, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -1
+      value: -0.7071065
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: add79ed296ed10a4fbda7123ffe81c0b, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: -0.70710707
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: add79ed296ed10a4fbda7123ffe81c0b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+      value: -90.02
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: add79ed296ed10a4fbda7123ffe81c0b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y

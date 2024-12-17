@@ -25,6 +25,10 @@ namespace SurgeEngine.Code.UI
 
         private void OnEnable()
         {
+#if UNITY_EDITOR
+            _pauseInputAction.ApplyBindingOverride("<Keyboard>/tab", path: "<Keyboard>/escape");
+#endif
+            
             _pauseInputAction.performed += OnPauseAction;
         }
 
