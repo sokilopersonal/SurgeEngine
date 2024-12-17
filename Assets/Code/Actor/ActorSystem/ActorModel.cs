@@ -82,6 +82,8 @@ namespace SurgeEngine.Code.ActorSystem
             }
             else
             {
+				_airRestoreTimer = 0f;
+				_airRestoring = false;
                 _upRestoreTimer = 0f;
                 _upRestoring = false;
             }
