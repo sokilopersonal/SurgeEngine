@@ -137,7 +137,7 @@ namespace SurgeEngine.Code.ActorStates.SonicSubStates
         {
             if (actor.stateMachine.CurrentState is FStateAir && !canAirBoost) return;
             if (actor.stateMachine.CurrentState is FStateStomp) return;
-            if (actor.stateMachine.CurrentState is FStateSliding) return;
+            if (actor.stateMachine.CurrentState is FStateSlide) return;
             
             if (CanBoost())
             {

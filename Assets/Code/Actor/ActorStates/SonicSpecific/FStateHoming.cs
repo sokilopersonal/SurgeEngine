@@ -30,7 +30,6 @@ namespace SurgeEngine.Code.ActorStates
             _startPos = Actor.transform.position;
 
             StateMachine.GetSubState<FBoost>().Active = false;
-            Stats.transformNormal = Vector3.up;
 
             _timer = 0f;
 

@@ -18,6 +18,9 @@ namespace SurgeEngine.Code.ActorSystem.Actors
         
         [Foldout("Stomp")]
         [Expandable] public StompConfig stompConfig;
+        
+        [Foldout("Slide")]
+        [Expandable] public SlideConfig slideConfig;
 
         public override void Initialize()
         {
@@ -30,7 +33,7 @@ namespace SurgeEngine.Code.ActorSystem.Actors
             stateMachine.AddState(new FStateHoming(this, body));
             stateMachine.AddState(new FStateAfterHoming(this));
             stateMachine.AddState(new FStateDrift(this, body));
-            stateMachine.AddState(new FStateSliding(this, body));
+            stateMachine.AddState(new FStateSlide(this, body));
             stateMachine.AddState(new FStateQuickstep(this, body));
         }
     }

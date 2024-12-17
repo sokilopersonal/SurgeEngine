@@ -153,7 +153,7 @@ namespace SurgeEngine.Code.ActorSystem
                     TransitionToStateDelayed(AnimatorParams.AirCycle, 0.5f, 0.4f);
                 }
             }
-            if (obj is FStateSliding)
+            if (obj is FStateSlide)
             {
                 TransitionToState("Sliding", 0.2f, true);
             }

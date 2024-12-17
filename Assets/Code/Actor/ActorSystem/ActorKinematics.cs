@@ -153,7 +153,7 @@ namespace SurgeEngine.Code.ActorSystem
             bool isSkidding = _moveDot < _config.skiddingThreshold;
             if (_inputDir.magnitude > 0.2f)
             {
-                if (stateMachine.IsExact<FStateSliding>())
+                if (stateMachine.IsExact<FStateSlide>())
                 {
                     _turnRate *= 0.1f;
                 }
@@ -178,7 +178,7 @@ namespace SurgeEngine.Code.ActorSystem
 
                     switch (state)
                     {
-                        case FStateGround or FStateSliding:
+                        case FStateGround or FStateSlide:
                             BaseGroundPhysics();
                             break;
                         case FStateAir or FStateJump:
@@ -344,7 +344,7 @@ namespace SurgeEngine.Code.ActorSystem
 
         public void Deceleration(float min, float max)
         {
-            if (actor.stateMachine.CurrentState is FStateAir or FStateSliding)
+            if (actor.stateMachine.CurrentState is FStateAir or FStateSlide)
             {
                 return;
             }

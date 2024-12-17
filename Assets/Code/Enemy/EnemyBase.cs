@@ -26,7 +26,7 @@ namespace SurgeEngine.Code.StateMachine
                 return true;
             }
 
-            return state is FStateHoming or FStateDrift or FStateSliding or FStateJump || stateMachine.IsExact<EGStateDead>();
+            return state is FStateHoming or FStateDrift or FStateSlide or FStateJump || stateMachine.IsExact<EGStateDead>();
         }
     }
 }

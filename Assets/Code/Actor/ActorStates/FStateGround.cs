@@ -3,6 +3,7 @@ using SurgeEngine.Code.ActorStates.SonicSubStates;
 using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.Inputs;
+using SurgeEngine.Code.Tools;
 using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
 using Vector3 = UnityEngine.Vector3;
@@ -12,7 +13,6 @@ namespace SurgeEngine.Code.ActorStates
     public sealed class FStateGround : FStateMove, IBoostHandler
     {
         private string _surfaceTag;
-        private const float EdgePushForce = 3.5f;
 
         public FStateGround(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
@@ -31,25 +31,38 @@ namespace SurgeEngine.Code.ActorStates
         {
             base.OnTick(dt);
             
-            if (Actor.input.JumpPressed)
+            if (Input.JumpPressed)
             {
-                Actor.stateMachine.SetState<FStateJump>(0.1f);
+                StateMachine.SetState<FStateJump>(0.1f);
             }
 
-            float activateSpeed = StateMachine.GetState<FStateSliding>().slideDeactivationSpeed;
-            activateSpeed += activateSpeed * 1.5f;
+            float minSpeed = StateMachine.GetState<FStateSlide>().GetConfig().minSpeed;
+            minSpeed += minSpeed * 1.5f;
+            float dot = Stats.moveDot;
+            float abs = Mathf.Abs(dot);
             
+            bool readyForDrift = Kinematics.HorizontalSpeed > 5f && abs < 0.4f && !Mathf.Approximately(dot, 0f);
+            bool readyForSlide = Kinematics.HorizontalSpeed > minSpeed;
+
+            if (Input.BHeld)
+            {
+                if (readyForSlide && !readyForDrift)
+                {
+                    StateMachine.SetState<FStateSlide>();
+                }
+
+                if (readyForDrift)
+                {
+                    StateMachine.SetState<FStateDrift>();
+                }
+            }
+
             if (SonicInputLayout.DriftHeld)
             {
-                float dot = Stats.moveDot;
-                float abs = Mathf.Abs(dot);
-                bool allowDrift = Kinematics.HorizontalSpeed > 10 && abs < 0.4f && !Mathf.Approximately(dot, 0f);
-                bool allowSlide = Kinematics.HorizontalSpeed > activateSpeed;
-                    
-                if (allowDrift)
+                if (readyForDrift)
+                {
                     StateMachine.SetState<FStateDrift>();
-                else if (allowSlide)
-                    StateMachine.SetState<FStateSliding>();
+                }
             }
         }
 
@@ -68,7 +81,6 @@ namespace SurgeEngine.Code.ActorStates
                 
                 Vector3 stored = _rigidbody.linearVelocity;
                 _rigidbody.linearVelocity = Quaternion.FromToRotation(_rigidbody.transform.up, prevNormal) * stored;
-                Stats.transformNormal = Vector3.Slerp(Stats.transformNormal, Kinematics.Normal, dt * 14f);
 
                 Actor.kinematics.BasePhysics(point, Kinematics.Normal);
                 Actor.model.RotateBody(Kinematics.Normal);

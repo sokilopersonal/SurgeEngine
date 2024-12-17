@@ -61,7 +61,7 @@ namespace SurgeEngine.Code.ActorSystem
             }
             
             stompEffect.Toggle(obj is FStateStomp);
-            slideEffect.Toggle(obj is FStateSliding);
+            slideEffect.Toggle(obj is FStateSlide);
         }
 
         private void OnEnable()
