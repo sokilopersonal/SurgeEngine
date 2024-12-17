@@ -45,6 +45,7 @@ namespace SurgeEngine.Code.ActorSystem
         }
         
         public bool Skidding => _skidding;
+        public float MoveDot => _moveDot;
 
         private Vector3 _inputDir;
         private Rigidbody _rigidbody;
@@ -153,11 +154,6 @@ namespace SurgeEngine.Code.ActorSystem
             bool isSkidding = _moveDot < _config.skiddingThreshold;
             if (_inputDir.magnitude > 0.2f)
             {
-                if (stateMachine.IsExact<FStateSlide>())
-                {
-                    _turnRate *= 0.1f;
-                }
-                
                 if (!isSkidding)
                 {
                     _turnRate = Mathf.Lerp(_turnRate, _config.turnSpeed, 
@@ -344,7 +340,7 @@ namespace SurgeEngine.Code.ActorSystem
 
         public void Deceleration(float min, float max)
         {
-            if (actor.stateMachine.CurrentState is FStateAir or FStateSlide)
+            if (actor.stateMachine.CurrentState is FStateAir)
             {
                 return;
             }
@@ -370,6 +366,8 @@ namespace SurgeEngine.Code.ActorSystem
             
             _detachTimer = t;
         }
+        
+        public void ModifyTurnRate(float modifier) => _turnRate *= modifier;
 
         private void CalculateDetachState()
         {

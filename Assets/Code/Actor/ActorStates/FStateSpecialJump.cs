@@ -9,8 +9,8 @@ namespace SurgeEngine.Code.ActorStates
 {
     public class FStateSpecialJump : FStateMove
     {
+        public SpecialJumpData data;
         private float _jumpTimer;
-        private SpecialJumpData _data;
         
         private float _keepVelocityTimer;
 
@@ -59,7 +59,7 @@ namespace SurgeEngine.Code.ActorStates
         {
             base.OnExit();
 
-            if (_data.type is SpecialJumpType.Spring or SpecialJumpType.DashRing)
+            if (data.type is SpecialJumpType.Spring or SpecialJumpType.DashRing)
             {
                 Actor.model.StartAirRestore(0.65f);
             }
@@ -67,7 +67,7 @@ namespace SurgeEngine.Code.ActorStates
 
         private void SpecialTick(float dt)
         {
-            switch (_data.type)
+            switch (data.type)
             {
                 case SpecialJumpType.JumpBoard:
                     Common.ApplyGravity(Stats.gravity, dt);
@@ -76,12 +76,12 @@ namespace SurgeEngine.Code.ActorStates
                     Common.ApplyGravity(Stats.gravity, dt);
                     break;
                 case SpecialJumpType.Spring:
-                    Actor.model.SetRestoreUp(_data.transform.up);
+                    Actor.model.SetRestoreUp(data.transform.up);
                     Actor.model.VelocityRotation();
                     CountTimer(dt);
                     break;
                 case SpecialJumpType.DashRing:
-                    Actor.model.SetRestoreUp(_data.transform.up);
+                    Actor.model.SetRestoreUp(data.transform.up);
                     Actor.model.VelocityRotation();
                     CountTimer(dt);
                     break;
@@ -108,14 +108,14 @@ namespace SurgeEngine.Code.ActorStates
 
         public void SetSpecialData(SpecialJumpData data)
         {
-            _data = data;
+            this.data = data;
         }
         
         public void PlaySpecialAnimation(float time, object arg = null)
         {
             Animation.ResetCurrentAnimationState();
             
-            switch (_data.type)
+            switch (data.type)
             {
                 case SpecialJumpType.JumpBoard:
                     Animation.TransitionToState((bool)arg ? "Jump Delux" : "Jump Standard", time, true);
@@ -130,7 +130,7 @@ namespace SurgeEngine.Code.ActorStates
                     Animation.TransitionToState("Dash Ring", time, true);
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(_data), _data, null);
+                    throw new ArgumentOutOfRangeException(nameof(data), data, null);
             }
         }
         

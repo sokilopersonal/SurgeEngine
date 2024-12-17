@@ -63,7 +63,9 @@ namespace SurgeEngine.Code.ActorStates
                 var normal = hit.normal;
                 Kinematics.Normal = normal;
                 
-                Kinematics.BasePhysics(point, normal);
+                Kinematics.ModifyTurnRate(0.2f);
+                if (Kinematics.MoveDot < 0.75f) Kinematics.BasePhysics(point, normal);
+                Kinematics.Deceleration(_config.deceleration, _config.deceleration);
                 Actor.model.RotateBody(normal);
             }
             else

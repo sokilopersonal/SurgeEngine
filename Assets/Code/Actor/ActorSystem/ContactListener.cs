@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using SurgeEngine.Code.CommonObjects;
-using SurgeEngine.Code.Custom;
+﻿using SurgeEngine.Code.CommonObjects;
 using UnityEngine;
 
 namespace SurgeEngine.Code.ActorSystem
@@ -17,23 +15,17 @@ namespace SurgeEngine.Code.ActorSystem
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.TryGetComponent(out ContactBase contactable)) {}
-            else
+            IPlayerContactable playerContactable = null;
+
+            if (other.TryGetComponent(out ContactBase contactable) || other.TryGetComponent(out playerContactable)) {}
+            else if (other.transform.parent != null)
             {
-                if (other.transform.parent != null)
-                {
-                    other.transform.parent.TryGetComponent(out contactable);
-                }
+                other.transform.parent.TryGetComponent(out contactable);
+                other.transform.parent.TryGetComponent(out playerContactable);
             }
-            
+
             contactable?.Contact(other);
-        }
-        
-        private IEnumerator TemporarilyDisableCollider(float duration)
-        {
-            _collider.enabled = false;
-            yield return new WaitForSeconds(duration);
-            _collider.enabled = true;
+            playerContactable?.OnContact();
         }
     }
 }

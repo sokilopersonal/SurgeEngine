@@ -60,26 +60,6 @@ namespace SurgeEngine.Code.ActorSystem
             
             if (_coroutine != null)
                 StopCoroutine(_coroutine);
-
-            if (obj is FStateStart)
-            {
-                var type = actor.GetComponentInParent<ActorStartDefiner>().startData.startType;
-                switch (type)
-                {
-                    case StartType.None:
-                        break;
-                    case StartType.Standing:
-                        TransitionToState("StartS", 0f);
-                        break;
-                    case StartType.Prepare:
-                        TransitionToState("StartP", 0f);
-                        break;
-                    case StartType.Dash:
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
-            }
             
             if (obj is FStateIdle)
             {
@@ -140,24 +120,22 @@ namespace SurgeEngine.Code.ActorSystem
             {
                 if (prev is not FStateSpecialJump)
                 {
-                    if (prev is FStateJump or FStateHoming && actor.kinematics.HorizontalSpeed > 0.1f)
+                    TransitionToState(AnimatorParams.AirCycle, prev switch
                     {
-                        TransitionToState("BallOnce", 0f);
-                        TransitionToStateDelayed(AnimatorParams.AirCycle, 0.3f, 0.175f);
-                    }
-                    else
-                    {
-                        TransitionToState(AnimatorParams.AirCycle, prev switch
-                        {
-                            FStateGround => 0.2f,
-                            FStateJump or FStateHoming => 0f,
-                            _ => 0.2f
-                        });
-                    }
+                        FStateGround => 0.2f,
+                        FStateGrindJump => 0.5f,
+                        FStateJump or FStateHoming => 0f,
+                        _ => 0.2f
+                    });
                 }
                 else
                 {
-                    TransitionToStateDelayed(AnimatorParams.AirCycle, 0.5f, 0.4f);
+                    var data = actor.stateMachine.GetState<FStateSpecialJump>().data;
+                    if (data.type == SpecialJumpType.Spring || data.type == SpecialJumpType.DashRing) TransitionToStateDelayed(AnimatorParams.AirCycle, 0.5f, 0.4f);
+                    else if (data.type == SpecialJumpType.TrickJumper)
+                    {
+                        TransitionToStateDelayed(AnimatorParams.AirCycle, 0.5f, 1f);
+                    }
                 }
             }
             if (obj is FStateSlide)
@@ -171,14 +149,6 @@ namespace SurgeEngine.Code.ActorSystem
             if (obj is FStateJump)
             {
                 TransitionToState("Ball", 0f);
-                
-                // var speed = actor.kinematics.HorizontalSpeed;
-                //
-                // if (speed < 0.1f)
-                // {
-                //     TransitionToState("JumpLow", 0.1f);
-                //     TransitionToStateDelayed(AnimatorParams.AirCycle, 0.5f, 0.1f);
-                // }
             }
             if (obj is FStateGrindJump)
             {

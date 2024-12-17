@@ -93,8 +93,8 @@ namespace SurgeEngine.Code.CommonObjects
                 Vector3 impulse = Common.GetImpulseWithPitch(Vector3.Cross(-startPoint.right, Vector3.up), startPoint.right, firstPitch, firstSpeed);
                 Common.ApplyImpulse(impulse);
                 
+                context.stateMachine.GetState<FStateSpecialJump>().SetSpecialData(new SpecialJumpData(SpecialJumpType.TrickJumper));
                 var specialJump = context.stateMachine.SetState<FStateSpecialJump>(0.2f, true, true);
-                specialJump.SetSpecialData(new SpecialJumpData(SpecialJumpType.TrickJumper));
                 specialJump.PlaySpecialAnimation(0);
                 
                 context.flags.AddFlag(new Flag(FlagType.OutOfControl, null, false));

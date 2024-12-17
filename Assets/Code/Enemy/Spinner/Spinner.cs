@@ -9,11 +9,6 @@ namespace SurgeEngine.Code.Enemy
     public class Spinner : EnemyBase, IPlayerContactable
     {
         [SerializeField] private EnemyView view;
-        
-        public void InitializeComponents()
-        {
-            
-        }
 
         public void OnContact()
         {
