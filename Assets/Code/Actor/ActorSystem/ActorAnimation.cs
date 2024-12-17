@@ -287,6 +287,7 @@ namespace SurgeEngine.Code.ActorSystem
             animator.TransitionToState(stateName, ref _currentAnimation, transitionTime);
         }
         
+        public void ResetCurrentAnimationState() => _currentAnimation = string.Empty;
         public string GetCurrentAnimationState() => _currentAnimation;
     }
 

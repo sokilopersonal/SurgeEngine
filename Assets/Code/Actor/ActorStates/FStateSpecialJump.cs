@@ -61,7 +61,7 @@ namespace SurgeEngine.Code.ActorStates
 
             if (_data.type is SpecialJumpType.Spring or SpecialJumpType.DashRing)
             {
-                Actor.model.StartAirRestore(0.6f);
+                Actor.model.StartAirRestore(0.65f);
             }
         }
 
@@ -106,16 +106,15 @@ namespace SurgeEngine.Code.ActorStates
             }
         }
 
-        public FStateSpecialJump SetSpecialData(SpecialJumpData data)
+        public void SetSpecialData(SpecialJumpData data)
         {
             _data = data;
-            
-
-            return this;
         }
         
-        public FStateSpecialJump PlaySpecialAnimation(float time, object arg = null)
+        public void PlaySpecialAnimation(float time, object arg = null)
         {
+            Animation.ResetCurrentAnimationState();
+            
             switch (_data.type)
             {
                 case SpecialJumpType.JumpBoard:
@@ -133,8 +132,6 @@ namespace SurgeEngine.Code.ActorStates
                 default:
                     throw new ArgumentOutOfRangeException(nameof(_data), _data, null);
             }
-
-            return this;
         }
         
         public void SetKeepVelocity(float time)
