@@ -52,9 +52,8 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             Quaternion vertical = Quaternion.AngleAxis(_stateMachine.y, Vector3.right);
             Vector3 direction = horizontal * vertical * Vector3.back;
             Vector3 actorPosition = _actor.transform.position + _master.transform.TransformDirection(_master.positionOffset) + Vector3.up * yOffset + Vector3.up * _stateMachine.yLag;
-
+            
             Vector3 initialTargetPosition = actorPosition + direction * (distance + _stateMachine.zLag);
-
             targetPosition = HandleCameraCollision(actorPosition, initialTargetPosition, distance);
             
             return actorPosition;
@@ -136,7 +135,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
                 
                 _stateMachine.yAutoLook = yAutoLook;
                 _stateMachine.y = Mathf.SmoothDamp(_stateMachine.y, _stateMachine.yAutoLook, ref _yAutoLookVelocity, 0.65f);
-                AutoLook(_master.horizontalAutoLookAmplitude * Mathf.Max(_master.horizontalAutoLookMinAmplitude, lookMod));
+                AutoLook(_master.horizontalAutoLookAmplitude * Mathf.Max(_master.horizontalAutoLookMinAmplitude, Mathf.Clamp01(lookMod)));
             }
             else
             {
@@ -169,22 +168,10 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
 
         protected virtual void SetRotation(Vector3 actorPosition)
         {
-            Vector3 lookTarget = actorPosition + _master.lookOffset;
-            Vector3 lookDirection = lookTarget - _stateMachine.position;
+            Vector3 lookTarget = actorPosition;
+            Vector3 lookDirection = lookTarget - _stateMachine.position - _actor.transform.TransformDirection(-_master.lookOffset);
             
             _stateMachine.rotation = Quaternion.LookRotation(lookDirection.normalized);
-        }
-
-        protected virtual void BoostHandle()
-        {
-            _boostDistance = _master.boostBlendCurve.Evaluate(_master.boostBlendFactor);
-            _stateMachine.camera.fieldOfView = 60f * _master.boostBlendFovCurve.Evaluate(_master.boostBlendFactor);
-
-            if (!SonicTools.IsBoost())
-            {
-                _boostDistance = 1f;
-                _stateMachine.camera.fieldOfView = 60f;
-            }
         }
 
         public void SetDirection(Vector3 transformForward)

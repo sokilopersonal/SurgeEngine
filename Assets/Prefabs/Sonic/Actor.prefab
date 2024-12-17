@@ -69,6 +69,7 @@ MonoBehaviour:
   driftConfig: {fileID: 11400000, guid: 3963394ce6d7cbc4981f7467b1f4aa59, type: 2}
   homingConfig: {fileID: 11400000, guid: 26d8aa117f8802940838f20a3156f005, type: 2}
   stompConfig: {fileID: 11400000, guid: 588815eaf43a5c74baefdf410bf8f0e7, type: 2}
+  slideConfig: {fileID: 11400000, guid: 283ca8e9aad16f646a81ce036b53029d, type: 2}
 --- !u!114 &6716957596991090240
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -109,7 +110,7 @@ MonoBehaviour:
   lookOffset: {x: 0, y: -0.000016715132, z: 0}
   horizontalAutoLookAmplitude: 4
   horizontalAutoLookMinAmplitude: 0.75
-  verticalDefaultAmplitude: 5
+  verticalDefaultAmplitude: 9
   verticalMinAmplitude: -5
   verticalMaxAmplitude: 10
   verticalMinLerpSpeed: 0.75
@@ -232,7 +233,7 @@ MonoBehaviour:
   collisionMask:
     serializedVersion: 2
     m_Bits: 1
-  collisionRadius: 0.2
+  collisionRadius: 0.02
 --- !u!114 &7099733658116403469
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -278,7 +279,6 @@ MonoBehaviour:
   planarVelocity: {x: 0, y: 0, z: 0}
   inputDir: {x: 0, y: 0, z: 0}
   groundNormal: {x: 0, y: 0, z: 0}
-  transformNormal: {x: 0, y: 0, z: 0}
   moveDot: 0
   skidding: 0
   groundAngle: 0
@@ -15393,7 +15393,7 @@ MonoBehaviour:
   xrRendering: 1
   fullscreenPassthrough: 0
   allowDynamicResolution: 0
-  customRenderingSettings: 0
+  customRenderingSettings: 1
   invertFaceCulling: 0
   probeLayerMask:
     serializedVersion: 2
@@ -15421,7 +15421,7 @@ MonoBehaviour:
   m_RenderingPathCustomFrameSettings:
     bitDatas:
       data1: 5770166122053453
-      data2: 12934340311651418136
+      data2: 17546026330078806040
     lodBias: 1
     lodBiasMode: 0
     lodBiasQualityLevel: 0
@@ -15429,15 +15429,15 @@ MonoBehaviour:
     maximumLODLevelMode: 0
     maximumLODLevelQualityLevel: 0
     sssQualityMode: 0
-    sssQualityLevel: 0
+    sssQualityLevel: 2
     sssCustomSampleBudget: 20
     sssCustomDownsampleSteps: 0
     msaaMode: 1
     materialQuality: 0
   renderingPathCustomFrameSettingsOverrideMask:
     mask:
-      data1: 0
-      data2: 0
+      data1: 492620828672000
+      data2: 13835059158698065920
   defaultFrameSettings: 0
   m_Version: 9
   m_ObsoleteRenderingPath: 0
@@ -22798,6 +22798,10 @@ PrefabInstance:
     - target: {fileID: 7383609877054278552, guid: b5197d4abc58dd14180947022fd32ae9, type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7510116113416940277, guid: b5197d4abc58dd14180947022fd32ae9, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 7510116113416940277, guid: b5197d4abc58dd14180947022fd32ae9, type: 3}
       propertyPath: m_UpdateWhenOffscreen

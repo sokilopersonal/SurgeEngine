@@ -1,5 +1,7 @@
 ﻿using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.UI.Settings;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 namespace SurgeEngine.Code.UI
@@ -44,10 +46,12 @@ namespace SurgeEngine.Code.UI
             if (_isPaused)
             {
                 playerInput.actions.FindActionMap("Gameplay").Disable();
+                EventSystem.current.SetSelectedGameObject(GetComponentInChildren<SettingsBarElement>().gameObject);
             }
             else
             {
                 playerInput.actions.FindActionMap("Gameplay").Enable();
+                EventSystem.current.SetSelectedGameObject(null);
             }
             
             _uiCanvasGroup.alpha = _isPaused ? 1 : 0;
