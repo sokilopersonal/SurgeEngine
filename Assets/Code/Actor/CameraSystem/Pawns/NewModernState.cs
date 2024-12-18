@@ -52,7 +52,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             Quaternion horizontal = Quaternion.AngleAxis(_stateMachine.x, Vector3.up);
             Quaternion vertical = Quaternion.AngleAxis(_stateMachine.y, Vector3.right);
             Vector3 direction = horizontal * vertical * Vector3.back;
-            Vector3 actorPosition = _actor.transform.position + _master.transform.TransformDirection(_master.positionOffset) + Vector3.up * yOffset + Vector3.up * _stateMachine.yLag;
+            Vector3 actorPosition = _actor.transform.position + Vector3.up * yOffset + Vector3.up * _stateMachine.yLag;
             
             Vector3 initialTargetPosition = actorPosition + direction * (distance + _stateMachine.zLag);
             targetPosition = HandleCameraCollision(actorPosition, initialTargetPosition, distance);
@@ -104,7 +104,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
         {
             Vector3 vel = _actor.kinematics.Velocity;
             float yLag = Mathf.Clamp(vel.y * -0.15f, _master.yLagMin, _master.yLagMax); // min is down lag, max value is up lag
-            _stateMachine.yLag = Mathf.SmoothDamp(_stateMachine.yLag, yLag, ref _stateMachine.yLagVelocity, _master.yLagTime, 10f);
+            _stateMachine.yLag = Mathf.SmoothDamp(_stateMachine.yLag, yLag, ref _stateMachine.yLagVelocity, _master.yLagTime);
 
             float mod = _actor.kinematics.HorizontalSpeed * 0.0175f;
             
@@ -131,12 +131,14 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             {
                 Vector3 vel = _actor.kinematics.Rigidbody.linearVelocity;
                 _velocity = Vector3.Lerp(_velocity, vel, Time.deltaTime * 8f);
-                float yAutoLook = Mathf.Abs(_velocity.y) > 0.2f ? Mathf.Clamp(-_velocity.y * 7.5f, _master.verticalMinAmplitude, _master.verticalMaxAmplitude)
+                float yAutoLook = Mathf.Abs(_velocity.y) > 0.2f ? Mathf.Clamp(-_velocity.y * 10f, _master.verticalMinAmplitude, _master.verticalMaxAmplitude)
                     : _master.verticalDefaultAmplitude;
                 
                 _stateMachine.yAutoLook = yAutoLook;
                 _stateMachine.y = Mathf.SmoothDamp(_stateMachine.y, _stateMachine.yAutoLook, ref _yAutoLookVelocity, 0.65f);
                 AutoLook(_master.horizontalAutoLookAmplitude * Mathf.Max(_master.horizontalAutoLookMinAmplitude, Mathf.Clamp01(lookMod)));
+                
+                //_master.lookOffset.x = Mathf.SmoothDampAngle(_master.lookOffset.x, _stateMachine.xAutoLook, ref _xAutoLookVelocity, 0.5f);
             }
             else
             {
@@ -169,7 +171,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
 
         protected virtual void SetRotation(Vector3 actorPosition)
         {
-            Vector3 lookTarget = actorPosition + _master.lookOffset;
+            Vector3 lookTarget = actorPosition + _actor.transform.TransformDirection(_master.lookOffset);
             Vector3 lookDirection = lookTarget - _stateMachine.position;
             
             _stateMachine.rotation = Quaternion.LookRotation(lookDirection.normalized);
