@@ -78,13 +78,6 @@ namespace SurgeEngine.Code.UI.Settings
             }
         }
 
-        protected override void OnValidate()
-        {
-            base.OnValidate();
-            
-            UpdateName();
-        }
-
         private void ToggleIndicatorView()
         {
             for (int i = 0; i < valueIndicators.Length; i++)
