@@ -88,8 +88,15 @@ namespace SurgeEngine.Code.ActorSystem
                     switch (prev)
                     {
                         case FStateGround:
-                            TransitionToState("MoveStop", 0.1f);
-                            TransitionToStateDelayed("Idle", 0.2f, 0.15f);
+                            if (actor.kinematics.HorizontalSpeed >= 0.2f)
+                            {
+                                TransitionToState("MoveStop", 0.1f);
+                                TransitionToStateDelayed("Idle", 0.2f, 0.15f);
+                            }
+                            else
+                            {
+                                TransitionToState("Idle", 0.1f);
+                            }
                             break;
                         case FStateStomp:
                             TransitionToState("StompSquat", 0.1f);
