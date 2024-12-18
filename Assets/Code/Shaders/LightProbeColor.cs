@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace SurgeEngine.Code.Shaders
 {
@@ -14,11 +15,11 @@ namespace SurgeEngine.Code.Shaders
             
             Vector3 objectPosition = transform.position;
 
-            LightProbes.GetInterpolatedProbe(objectPosition, null, out var probe);
+            LightProbes.GetInterpolatedProbe(objectPosition, null, out SphericalHarmonicsL2 probe);
             
             float r = 0f, g = 0f, b = 0f;
-            var sh = probe;
-            var direction = Vector3.up;
+            SphericalHarmonicsL2 sh = probe;
+            Vector3 direction = Vector3.up;
             
             for (int i = 0; i < 3; i++)
             {

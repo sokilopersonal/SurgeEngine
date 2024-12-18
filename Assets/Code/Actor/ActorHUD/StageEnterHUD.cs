@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using DG.Tweening;
+using DG.Tweening.Core;
+using DG.Tweening.Plugins.Options;
 using FMODUnity;
 using SurgeEngine.Code.ActorStates;
 using SurgeEngine.Code.ActorSystem;
@@ -18,8 +20,8 @@ namespace SurgeEngine.Code.ActorHUD
 
         private void Start()
         {
-            var group = GetComponent<CanvasGroup>();
-            var startType = FindFirstObjectByType<ActorStartDefiner>().startData.startType;
+            CanvasGroup group = GetComponent<CanvasGroup>();
+            StartType startType = FindFirstObjectByType<ActorStartDefiner>().startData.startType;
             group.alpha = 0;
 
             if (startType == StartType.None)
@@ -71,17 +73,17 @@ namespace SurgeEngine.Code.ActorHUD
             {
                 ready.GetComponent<CanvasGroup>().DOFade(0f, 0.2f);
 
-                var sequence = DOTween.Sequence();
+                Sequence sequence = DOTween.Sequence();
 
-                var fadeTween = go.GetComponent<CanvasGroup>().DOFade(1f, 0.25f);
+                TweenerCore<float, float, FloatOptions> fadeTween = go.GetComponent<CanvasGroup>().DOFade(1f, 0.25f);
                 sequence.Append(fadeTween);
                 fadeTween.onComplete += () => RuntimeManager.PlayOneShot(goVoice);
-                var tween = go.DOAnchorPosX(0, 0.35f).SetEase(Ease.OutCubic).From(new Vector2(-1920f, 0));
+                TweenerCore<Vector2, Vector2, VectorOptions> tween = go.DOAnchorPosX(0, 0.35f).SetEase(Ease.OutCubic).From(new Vector2(-1920f, 0));
                 sequence.Append(tween);
                 sequence.Append(go.DOAnchorPosX(3000f, 0.45f).SetEase(Ease.OutCubic));
                 sequence.Append(go.GetComponent<CanvasGroup>().DOFade(0f, 0.25f));
                 
-                var flashSequence = DOTween.Sequence();
+                Sequence flashSequence = DOTween.Sequence();
                 flashSequence.Append(flash.DOFade(1f, 0.075f)).SetDelay(0.25f);
                 flashSequence.Append(flash.DOFade(0f, 0.25f));
             };

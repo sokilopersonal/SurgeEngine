@@ -1,6 +1,7 @@
 ﻿using SurgeEngine.Code.ActorStates.BaseStates;
 using SurgeEngine.Code.ActorStates.SonicSubStates;
 using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.Config;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.Inputs;
 using SurgeEngine.Code.Tools;
@@ -71,10 +72,10 @@ namespace SurgeEngine.Code.ActorStates
             base.OnFixedTick(dt);
             
             Vector3 prevNormal = Kinematics.Normal;
-            var config = Actor.config;
+            BaseActorConfig config = Actor.config;
             float distance = config.castDistance * config.castDistanceCurve
                 .Evaluate(Kinematics.HorizontalSpeed / config.topSpeed);
-            if (Common.CheckForGround(out var data, castDistance: distance))
+            if (Common.CheckForGround(out RaycastHit data, castDistance: distance))
             {
                 var point = data.point;
                 Kinematics.Normal = data.normal;
@@ -103,7 +104,7 @@ namespace SurgeEngine.Code.ActorStates
             if (Physics.Raycast(Actor.transform.position, _rigidbody.linearVelocity.normalized, out RaycastHit velocityFix, _rigidbody.linearVelocity.magnitude, Actor.config.castLayer))
             {
                 float nextGroundAngle = Vector3.Angle(velocityFix.normal, Vector3.up);
-                if (nextGroundAngle <= 20)
+                if (nextGroundAngle <= Kinematics.maxAngleDifference)
                 {
                     Vector3 fixedVelocity = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, Actor.transform.up);
                     fixedVelocity = Quaternion.FromToRotation(Actor.transform.up, velocityFix.normal) * fixedVelocity;

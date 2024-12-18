@@ -72,7 +72,7 @@ namespace SurgeEngine.Code.Custom
 
         public static void ResetVelocity(ResetVelocityType type)
         {
-            var context = ActorContext.Context;
+            Actor context = ActorContext.Context;
 
             if (context.kinematics.Rigidbody.isKinematic) return;
             
@@ -87,7 +87,7 @@ namespace SurgeEngine.Code.Custom
         
         public static void ApplyImpulse(Vector3 impulse, ResetVelocityType type = ResetVelocityType.Both)
         {
-            var context = ActorContext.Context;
+            Actor context = ActorContext.Context;
             ResetVelocity(type);
             
             context.kinematics.Rigidbody.AddForce(impulse, ForceMode.Impulse);
@@ -96,13 +96,13 @@ namespace SurgeEngine.Code.Custom
 
         public static void ApplyGravity(float yGravity, float dt)
         {
-            var context = ActorContext.Context;
+            Actor context = ActorContext.Context;
             if (!context.kinematics.Rigidbody.isKinematic) context.kinematics.Rigidbody.linearVelocity += Vector3.down * (yGravity * dt);
         }
 
         public static bool CheckForGround(out RaycastHit result, CheckGroundType type = CheckGroundType.Normal, float castDistance = 0f)
         {
-            var context = ActorContext.Context;
+            Actor context = ActorContext.Context;
             Vector3 origin;
             Vector3 direction;
             switch (type)
@@ -149,7 +149,7 @@ namespace SurgeEngine.Code.Custom
 
         public static bool CheckForRail(out RaycastHit result, out Rail rail)
         {
-            var context = ActorContext.Context;
+            Actor context = ActorContext.Context;
             Vector3 origin = context.transform.position;
             Vector3 direction = -context.transform.up;
 

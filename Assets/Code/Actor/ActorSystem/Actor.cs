@@ -32,7 +32,7 @@ namespace SurgeEngine.Code.ActorSystem
                 return;
             }
             
-            var body = GetComponent<Rigidbody>();
+            Rigidbody body = GetComponent<Rigidbody>();
             stateMachine = new FStateMachine();
             
             stateMachine.AddState(new FStateStart(this, body));
@@ -48,10 +48,10 @@ namespace SurgeEngine.Code.ActorSystem
             stateMachine.AddState(new FStateJumpSelector(this, body));
             stateMachine.AddState(new FStateJumpSelectorLaunch(this, body));
             
-            var boost = new FBoost(this);
+            FBoost boost = new FBoost(this);
             stateMachine.AddSubState(boost);
             
-            var startData = GetComponentInParent<ActorStartDefiner>().startData;
+            StartData startData = GetComponentInParent<ActorStartDefiner>().startData;
             if (startData.startType != StartType.None)
             {
                 stateMachine.SetState<FStateStart>().SetData(startData);

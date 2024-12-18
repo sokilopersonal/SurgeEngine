@@ -14,7 +14,7 @@ namespace SurgeEngine.Code.ActorSystem
         {
             _sounds = GetComponents<ActorSound>().ToList();
 
-            foreach (var sound in _sounds)
+            foreach (ActorSound sound in _sounds)
             {
                 sound.Initialize();
             }

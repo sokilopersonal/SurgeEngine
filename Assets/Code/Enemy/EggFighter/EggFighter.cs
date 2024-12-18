@@ -69,7 +69,7 @@ namespace SurgeEngine.Code.Enemy
 
         public void InitializeComponents()
         {
-            foreach (var component in new IEnemyComponent[] { view, animation })
+            foreach (IEnemyComponent component in new IEnemyComponent[] { view, animation })
             {
                 component?.SetOwner(this);
             }
@@ -87,7 +87,7 @@ namespace SurgeEngine.Code.Enemy
                 return;
             }
             
-            var context = ActorContext.Context;
+            Actor context = ActorContext.Context;
             Vector3 force = context.kinematics.Rigidbody.linearVelocity * 1.175f;
             force += Vector3.up * 7.5f;
             stateMachine.SetState<EGStateDead>(0f, true, true).ApplyKnockback(force);

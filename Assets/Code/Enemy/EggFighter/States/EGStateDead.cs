@@ -17,7 +17,7 @@ namespace SurgeEngine.Code.Enemy.States
         {
             base.OnEnter();
             
-            var context = ActorContext.Context;
+            Actor context = ActorContext.Context;
             if (context.stateMachine.CurrentState is FStateHoming)
             {
                 context.stateMachine.SetState<FStateAfterHoming>();

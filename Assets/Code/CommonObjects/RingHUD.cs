@@ -54,7 +54,7 @@ namespace SurgeEngine.Code.CommonObjects
             
             if (_factor >= 1f)
             {
-                var context = ActorHUDContext.Context;
+                ActorStageHUD context = ActorHUDContext.Context;
                 context.ringCounterAnimator.Play("RingBump", 0);
                 context.ringBumpEffect.Play("RingBump", 0);
                 

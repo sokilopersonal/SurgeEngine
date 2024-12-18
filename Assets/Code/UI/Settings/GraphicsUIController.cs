@@ -16,7 +16,7 @@ namespace SurgeEngine.Code.UI.Settings
 
         private void Start()
         {
-            var ug = UserGraphics.Instance;
+            UserGraphics ug = UserGraphics.Instance;
             
             shadowsQualityBar.value = ug.data.shadowsQuality;
             pcssBar.value = ug.data.pcssShadows ? 1 : 0;

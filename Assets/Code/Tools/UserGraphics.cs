@@ -41,7 +41,7 @@ namespace SurgeEngine.Code.Tools
 
         public void SetDirectionalLightQuality(int resolution)
         {
-            var lightData = _directionalLight.GetComponent<HDAdditionalLightData>();
+            HDAdditionalLightData lightData = _directionalLight.GetComponent<HDAdditionalLightData>();
             lightData.SetShadowResolutionOverride(false);
             lightData.SetShadowResolutionLevel(resolution);
             
@@ -51,7 +51,7 @@ namespace SurgeEngine.Code.Tools
 
         public void SetPCSS(bool value)
         {
-            var pcssData = _pipelineAsset.currentPlatformRenderPipelineSettings;
+            RenderPipelineSettings pcssData = _pipelineAsset.currentPlatformRenderPipelineSettings;
             pcssData.hdShadowInitParams.directionalShadowFilteringQuality = value ? HDShadowFilteringQuality.High : HDShadowFilteringQuality.Medium;
             
             _pipelineAsset.currentPlatformRenderPipelineSettings = pcssData;
@@ -119,7 +119,7 @@ namespace SurgeEngine.Code.Tools
         
         public void Save()
         {
-            var json = JsonUtility.ToJson(data);
+            string json = JsonUtility.ToJson(data);
             PlayerPrefs.SetString(UserGraphicsKey, json);
         }
         
@@ -127,7 +127,7 @@ namespace SurgeEngine.Code.Tools
         {
             if (PlayerPrefs.HasKey(UserGraphicsKey))
             {
-                var json = PlayerPrefs.GetString(UserGraphicsKey);
+                string json = PlayerPrefs.GetString(UserGraphicsKey);
                 data = JsonUtility.FromJson<QualityData>(json);
                 
                 SetDirectionalLightQuality(data.shadowsQuality);

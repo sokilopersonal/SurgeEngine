@@ -40,10 +40,10 @@ namespace SurgeEngine.Code.ActorStates
         {
             base.OnTick(dt);
             
-            if (Common.CheckForGround(out var hit))
+            if (Common.CheckForGround(out RaycastHit hit))
             {
-                var point = hit.point;
-                var normal = hit.normal;
+                Vector3 point = hit.point;
+                Vector3 normal = hit.normal;
 
                 Common.ResetVelocity(ResetVelocityType.Both);
                 Kinematics.Snap(point, normal, true);

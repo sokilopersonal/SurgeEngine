@@ -44,7 +44,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
         
         protected override void SetRotation(Vector3 actorPosition)
         {
-            var rot = Quaternion.LookRotation(actorPosition + _stateMachine.transform.TransformDirection(_stateMachine.lookOffset) - _stateMachine.position, Vector3.up);
+            Quaternion rot = Quaternion.LookRotation(actorPosition + _stateMachine.transform.TransformDirection(_stateMachine.lookOffset) - _stateMachine.position, Vector3.up);
 
             if (rot == new Quaternion(0, 0, 0, 1))
             {

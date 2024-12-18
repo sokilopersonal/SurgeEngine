@@ -15,10 +15,10 @@ namespace SurgeEngine.Code.ActorEffects
 
         public void PlayEffect()
         {
-            var context = ActorContext.Context;
+            Actor context = ActorContext.Context;
 
             string surface = context.stateMachine.GetState<FStateGround>().GetSurfaceTag();
-            var stepInstance = Instantiate(step, feet.position + Vector3.up * 0.25f, Quaternion.identity);
+            VisualEffect stepInstance = Instantiate(step, feet.position + Vector3.up * 0.25f, Quaternion.identity);
             stepInstance.Play();
             
             Destroy(stepInstance.gameObject, stepInstance.GetFloat("Lifetime"));

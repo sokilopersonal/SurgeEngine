@@ -26,7 +26,7 @@ namespace SurgeEngine.Code.CommonObjects
         
         private void OnTriggerExit(Collider other)
         {
-            var context = ActorContext.Context;
+            Actor context = ActorContext.Context;
             if (context.gameObject == other.transform.parent.gameObject)
             {
                 target.RemovePan();

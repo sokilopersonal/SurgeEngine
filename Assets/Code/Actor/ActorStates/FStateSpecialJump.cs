@@ -39,16 +39,18 @@ namespace SurgeEngine.Code.ActorStates
                 _jumpTimer = 0;
             }
             
-            SpecialTick(dt);
+            CountTimer(dt);
         }
 
         public override void OnFixedTick(float dt)
         {
             base.OnFixedTick(dt);
 
+            SpecialTick(dt);
+            
             if (Mathf.Approximately(_jumpTimer, 0))
             {
-                if (Common.CheckForGround(out var hit))
+                if (Common.CheckForGround(out RaycastHit hit))
                 {
                     StateMachine.SetState<FStateGround>();
                 }
@@ -78,12 +80,10 @@ namespace SurgeEngine.Code.ActorStates
                 case SpecialJumpType.Spring:
                     Actor.model.SetRestoreUp(data.transform.up);
                     Actor.model.VelocityRotation();
-                    CountTimer(dt);
                     break;
                 case SpecialJumpType.DashRing:
                     Actor.model.SetRestoreUp(data.transform.up);
                     Actor.model.VelocityRotation();
-                    CountTimer(dt);
                     break;
                 case SpecialJumpType.JumpSelector:
                     Common.ApplyGravity(Stats.gravity, dt);
@@ -91,10 +91,13 @@ namespace SurgeEngine.Code.ActorStates
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-            
-            if (_keepVelocityTimer < 0)
+
+            if (data.type == SpecialJumpType.Spring || data.type == SpecialJumpType.DashRing)
             {
-                StateMachine.SetState<FStateAir>();
+                if (_keepVelocityTimer < 0)
+                {
+                    StateMachine.SetState<FStateAir>();
+                }
             }
         }
         

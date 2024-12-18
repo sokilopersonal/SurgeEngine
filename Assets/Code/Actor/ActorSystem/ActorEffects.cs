@@ -49,8 +49,8 @@ namespace SurgeEngine.Code.ActorSystem
 
         private void OnStateAssign(FState obj)
         {
-            var machine = actor.stateMachine;
-            var prev = actor.stateMachine.PreviousState;
+            FStateMachine machine = actor.stateMachine;
+            FState prev = actor.stateMachine.PreviousState;
             
             spinball.Toggle(machine.IsExact<FStateJump>() || machine.IsExact<FStateHoming>());
             grindEffect.Toggle(obj is FStateGrind or FStateGrindSquat);

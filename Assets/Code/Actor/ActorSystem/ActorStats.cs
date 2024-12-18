@@ -2,6 +2,7 @@
 using SurgeEngine.Code.ActorStates;
 using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.Custom;
+using SurgeEngine.Code.StateMachine;
 using SurgeEngine.Code.Tools;
 using UnityEngine;
 
@@ -46,7 +47,7 @@ namespace SurgeEngine.Code.ActorSystem
             
             moveDot = Vector3.Dot(actor.kinematics.GetInputDir().normalized, _rigidbody.linearVelocity.normalized);
 
-            var state = actor.stateMachine.CurrentState;
+            FState state = actor.stateMachine.CurrentState;
             isGrounded = state is FStateGround;
             isInAir = state is FStateAir or FStateAirBoost or FStateJump or FStateSpecialJump;
             

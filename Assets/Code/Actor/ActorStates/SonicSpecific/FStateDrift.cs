@@ -57,10 +57,10 @@ namespace SurgeEngine.Code.ActorStates
         {
             base.OnFixedTick(dt);
             
-            if (Common.CheckForGround(out var hit))
+            if (Common.CheckForGround(out RaycastHit hit))
             {
-                var point = hit.point;
-                var normal = hit.normal;
+                Vector3 point = hit.point;
+                Vector3 normal = hit.normal;
                 Kinematics.Normal = normal;
                 
                 Vector3 dir = Input.moveVector;

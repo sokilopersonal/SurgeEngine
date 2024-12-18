@@ -39,14 +39,14 @@ namespace SurgeEngine.Code.CommonObjects
         
         private IEnumerator DisableCollision()
         {
-            foreach (var col in _colliders)
+            foreach (Collider col in _colliders)
             {
                 col.enabled = false;
             }
             
             yield return new WaitForSeconds(time);
             
-            foreach (var col in _colliders)
+            foreach (Collider col in _colliders)
             {
                 col.enabled = true;
             }

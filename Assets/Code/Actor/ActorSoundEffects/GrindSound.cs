@@ -28,7 +28,7 @@ namespace SurgeEngine.Code.ActorSoundEffects
 
         protected override void SoundState(FState obj)
         {
-            var prev = actor.stateMachine.PreviousState;
+            FState prev = actor.stateMachine.PreviousState;
             if (obj is FStateGrind and not FStateGrindSquat && prev is not FStateGrindSquat)
             {
                 RuntimeManager.PlayOneShotAttached(grindStart, gameObject);

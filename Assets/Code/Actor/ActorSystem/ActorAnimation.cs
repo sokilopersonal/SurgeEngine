@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using SurgeEngine.Code.ActorStates;
+using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.StateMachine;
 using SurgeEngine.Code.Tools;
@@ -55,8 +56,8 @@ namespace SurgeEngine.Code.ActorSystem
 
         private void ChangeStateAnimation(FState obj)
         {
-            var machine = actor.stateMachine;
-            var prev = machine.PreviousState;
+            FStateMachine machine = actor.stateMachine;
+            FState prev = machine.PreviousState;
             
             if (_coroutine != null)
                 StopCoroutine(_coroutine);
@@ -130,11 +131,11 @@ namespace SurgeEngine.Code.ActorSystem
                 }
                 else
                 {
-                    var data = actor.stateMachine.GetState<FStateSpecialJump>().data;
+                    SpecialJumpData data = actor.stateMachine.GetState<FStateSpecialJump>().data;
                     if (data.type == SpecialJumpType.Spring || data.type == SpecialJumpType.DashRing) TransitionToStateDelayed(AnimatorParams.AirCycle, 0.5f, 0.4f);
                     else if (data.type == SpecialJumpType.TrickJumper)
                     {
-                        TransitionToStateDelayed(AnimatorParams.AirCycle, 0.5f, 1f);
+                        TransitionToStateDelayed(AnimatorParams.AirCycle, 0.35f, 1.2f);
                     }
                 }
             }

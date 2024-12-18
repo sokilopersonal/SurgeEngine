@@ -1,4 +1,5 @@
 ﻿using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.Config;
 using SurgeEngine.Code.Tools;
 using UnityEngine;
 
@@ -38,7 +39,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
 
         private void ModernSetup()
         {
-            var actorPosition = CalculateTarget(out var targetPosition, _distance * _boostDistance, _yOffset);
+            Vector3 actorPosition = CalculateTarget(out Vector3 targetPosition, _distance * _boostDistance, _yOffset);
 
             ZLag();
             YLag();
@@ -85,7 +86,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
                 _stateMachine.xAutoLook = 0;
             }
             
-            var v = _actor.input.lookVector * (_master.sensitivity * _sensSpeedMod);
+            Vector2 v = _actor.input.lookVector * (_master.sensitivity * _sensSpeedMod);
             _stateMachine.x += v.x + _stateMachine.xAutoLook;
             _stateMachine.y -= v.y;
             _stateMachine.y = Mathf.Clamp(_stateMachine.y, -75, 85);
@@ -122,7 +123,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
         protected virtual void AutoLookDirection()
         {
             float speed = _actor.kinematics.Velocity.magnitude;
-            var config = _actor.config;
+            BaseActorConfig config = _actor.config;
             float lookMod = speed / config.topSpeed;
             _sensSpeedMod = Mathf.Lerp(_master.maxSensitivitySpeed, _master.minSensitivitySpeed, lookMod);
 
@@ -130,7 +131,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             {
                 Vector3 vel = _actor.kinematics.Rigidbody.linearVelocity;
                 _velocity = Vector3.Lerp(_velocity, vel, Time.deltaTime * 8f);
-                var yAutoLook = Mathf.Abs(_velocity.y) > 0.2f ? Mathf.Clamp(-_velocity.y * 7.5f, _master.verticalMinAmplitude, _master.verticalMaxAmplitude)
+                float yAutoLook = Mathf.Abs(_velocity.y) > 0.2f ? Mathf.Clamp(-_velocity.y * 7.5f, _master.verticalMinAmplitude, _master.verticalMaxAmplitude)
                     : _master.verticalDefaultAmplitude;
                 
                 _stateMachine.yAutoLook = yAutoLook;

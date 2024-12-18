@@ -13,24 +13,34 @@ namespace SurgeEngine.Code.CommonObjects
         [SerializeField] private float keepVelocity;
         [SerializeField] private float outOfControl = 0.5f;
         [SerializeField] private float yOffset = 0.5f;
+        [SerializeField] private bool center = true;
+        [SerializeField] private bool cancelBoost;
 
         public override void Contact(Collider msg)
         {
             base.Contact(msg);
             
-            var context = ActorContext.Context;
+            Actor context = ActorContext.Context;
+
+            if (center)
+            {
+                Vector3 target = transform.position + transform.up * yOffset;
+                context.transform.position = target;
+            }
+            else
+            {
+                Vector3 target = transform.up * yOffset;
+                context.transform.position += target;
+            }
+            if (cancelBoost) context.stateMachine.GetSubState<FBoost>().Active = false;
             
-            Vector3 target = transform.position + transform.up * yOffset;
-            context.transform.position = target;
-            context.stateMachine.GetSubState<FBoost>().Active = false;
-            
-            var specialJump = context.stateMachine.SetState<FStateSpecialJump>(0.2f, true, true);
+            FStateSpecialJump specialJump = context.stateMachine.SetState<FStateSpecialJump>(0.2f, true, true);
             specialJump.SetSpecialData(new SpecialJumpData(SpecialJumpType.DashRing, transform));
             specialJump.PlaySpecialAnimation(0f);
             specialJump.SetKeepVelocity(keepVelocity);
 
             Common.ApplyImpulse(transform.up * speed);
-            var body = context.kinematics.Rigidbody;
+            Rigidbody body = context.kinematics.Rigidbody;
             body.linearVelocity = Vector3.ClampMagnitude(body.linearVelocity, speed);
             context.flags.AddFlag(new Flag(FlagType.OutOfControl, 
                 null, true, Mathf.Abs(outOfControl)));

@@ -13,6 +13,8 @@ namespace SurgeEngine.Code.CommonObjects
         [SerializeField] protected float keepVelocity;
         [SerializeField] protected float outOfControl = 0.5f;
         [SerializeField] protected float yOffset = 0.5f;
+        [SerializeField] private bool center = true;
+        [SerializeField] private bool cancelBoost;
 
         protected Vector3 direction = Vector3.up;
 
@@ -25,18 +27,29 @@ namespace SurgeEngine.Code.CommonObjects
         {
             base.Contact(msg);
             
-            var context = ActorContext.Context;
-            context.kinematics.Rigidbody.position = transform.position + direction * (yOffset * 2);
-            context.stateMachine.SetState<FStateAir>();
-            context.stateMachine.GetSubState<FBoost>().Active = false;
+            Actor context = ActorContext.Context;
             
-            var specialJump = context.stateMachine.SetState<FStateSpecialJump>(allowSameState: true);
+            if (center) 
+            {
+                Vector3 target = transform.position + transform.up * yOffset;
+                context.transform.position = target;
+            }
+            else
+            {
+                Vector3 target = transform.up * yOffset;
+                context.transform.position += target;
+            }
+            
+            //context.stateMachine.SetState<FStateAir>();
+            if (cancelBoost) context.stateMachine.GetSubState<FBoost>().Active = false;
+            
+            FStateSpecialJump specialJump = context.stateMachine.SetState<FStateSpecialJump>(allowSameState: true);
             specialJump.SetSpecialData(new SpecialJumpData(SpecialJumpType.Spring, transform));
             specialJump.PlaySpecialAnimation(0);
             specialJump.SetKeepVelocity(keepVelocity);
 
             Common.ApplyImpulse(transform.up * speed);
-            var body = context.kinematics.Rigidbody;
+            Rigidbody body = context.kinematics.Rigidbody;
             body.linearVelocity = Vector3.ClampMagnitude(body.linearVelocity, speed);
             context.flags.AddFlag(new Flag(FlagType.OutOfControl, 
                 null, true, Mathf.Abs(outOfControl)));

@@ -20,7 +20,7 @@ namespace SurgeEngine.Code.CommonObjects
         {
             base.Contact(msg);
 
-            var context = ActorContext.Context;
+            Actor context = ActorContext.Context;
             if (impulse > 0)
             {
                 context.stateMachine.GetSubState<FBoost>().Active = false;
@@ -30,7 +30,7 @@ namespace SurgeEngine.Code.CommonObjects
                 
                 Common.ApplyImpulse(Common.GetImpulseWithPitch(Vector3.Cross(-startPoint.right, Vector3.up), startPoint.right, pitch, impulse));
                 
-                var specialJump = context.stateMachine.SetState<FStateSpecialJump>(0.2f, true, true);
+                FStateSpecialJump specialJump = context.stateMachine.SetState<FStateSpecialJump>(0.2f, true, true);
                 specialJump.SetSpecialData(new SpecialJumpData(SpecialJumpType.JumpBoard));
                 specialJump.PlaySpecialAnimation(0.2f, isDelux);
                     

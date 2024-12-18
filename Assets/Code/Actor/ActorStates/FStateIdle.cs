@@ -41,7 +41,7 @@ namespace SurgeEngine.Code.ActorStates
         {
             base.OnFixedTick(dt);
             
-            if (Common.CheckForGround(out var hit))
+            if (Common.CheckForGround(out RaycastHit hit))
             {
                 Actor.model.RotateBody(Kinematics.Normal);
                 

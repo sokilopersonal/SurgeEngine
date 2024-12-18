@@ -8,8 +8,8 @@ namespace SurgeEngine.Code.ActorSystem
 
         private void Awake()
         {
-            var type = startData.startType;
-            var context = ActorContext.Context;
+            StartType type = startData.startType;
+            Actor context = ActorContext.Context;
             switch (type)
             {
                 case StartType.None:

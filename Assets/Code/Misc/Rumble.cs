@@ -17,7 +17,7 @@ namespace SurgeEngine.Code.Misc
         private async UniTask Rumbling(float low, float high, float duration)
         {
             float t = 0;
-            var pad = Gamepad.current;
+            Gamepad pad = Gamepad.current;
             pad.SetMotorSpeeds(low, high);
             while (t < duration)
             {

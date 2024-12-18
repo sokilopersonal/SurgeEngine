@@ -58,7 +58,7 @@ namespace SurgeEngine.Code.ActorStates
                 _rigidbody.linearVelocity = direction * _config.speed;
                 _rigidbody.rotation = Quaternion.LookRotation(direction, Vector3.up);
                 
-                var distance = Vector3.Distance(Actor.transform.position, _target.transform.position);
+                float distance = Vector3.Distance(Actor.transform.position, _target.transform.position);
                 if (distance <= 0.7f)
                 {
                     _target.OnTargetReached.Invoke();

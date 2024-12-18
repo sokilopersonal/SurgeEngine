@@ -1,6 +1,7 @@
 ﻿using SurgeEngine.Code.ActorStates.BaseStates;
 using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.ActorSystem.Actors;
+using SurgeEngine.Code.Config;
 using SurgeEngine.Code.Config.SonicSpecific;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.Misc;
@@ -81,8 +82,8 @@ namespace SurgeEngine.Code.ActorStates.SonicSubStates
             
             _boostHandler?.BoostHandle();
 
-            var state = actor.stateMachine.CurrentState;
-            var prev = actor.stateMachine.PreviousState;
+            FState state = actor.stateMachine.CurrentState;
+            FState prev = actor.stateMachine.PreviousState;
 
             if (state is FStateDrift)
             {
@@ -91,7 +92,7 @@ namespace SurgeEngine.Code.ActorStates.SonicSubStates
 
             if (Active)
             {
-                if (state is FStateAir)
+                if (state is FStateAir or FStateSpecialJump)
                 {
                     _boostCancelTimer += dt;
                 
@@ -137,7 +138,7 @@ namespace SurgeEngine.Code.ActorStates.SonicSubStates
             
             if (Active)
             {
-                var body = actor.kinematics.Rigidbody;
+                Rigidbody body = actor.kinematics.Rigidbody;
                 float startSpeed = _config.startSpeed;
 
                 if (actor.kinematics.HorizontalSpeed < startSpeed)
@@ -156,8 +157,8 @@ namespace SurgeEngine.Code.ActorStates.SonicSubStates
         public void BaseGroundBoost()
         {
             float dt = Time.deltaTime;
-            var config = actor.config;
-            var body = actor.kinematics.Rigidbody;
+            BaseActorConfig config = actor.config;
+            Rigidbody body = actor.kinematics.Rigidbody;
             float speed = actor.kinematics.HorizontalSpeed;
             if (Active)
             {

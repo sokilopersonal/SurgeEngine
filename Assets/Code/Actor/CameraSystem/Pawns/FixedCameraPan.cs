@@ -27,7 +27,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             _fData = (FixPanData)_data;
             _stateMachine.currentData = _fData;
             
-            var last = _stateMachine.GetLastData();
+            LastCameraData last = _stateMachine.GetLastData();
             
             _stateMachine.position = Vector3.Lerp(last.position, _fData.position, _stateMachine.interpolatedBlendFactor);
             _stateMachine.rotation = Quaternion.Slerp(last.rotation, _fData.target, _stateMachine.interpolatedBlendFactor);

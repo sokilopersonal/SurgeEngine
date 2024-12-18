@@ -33,14 +33,14 @@ namespace SurgeEngine.Code.StateMachine
         {
             if (_inactiveDelay > 0f && !ignoreInactiveDelay) return null;
 
-            var type = typeof(T);
+            Type type = typeof(T);
 
             if (CurrentState != null && CurrentState.GetType() == type && !allowSameState)
             {
                 return null;
             }
 
-            if (_states.TryGetValue(type, out var newState))
+            if (_states.TryGetValue(type, out FState newState))
             {
                 CurrentState?.OnExit();
                 PreviousState = CurrentState;
@@ -65,13 +65,13 @@ namespace SurgeEngine.Code.StateMachine
         
         public bool IsExact<T>() where T : FState
         {
-            var type = typeof(T);
+            Type type = typeof(T);
             return CurrentState != null && CurrentState.GetType() == type;
         }
 
         public bool IsPrevExact<T>() where T : FState
         {
-            var type = typeof(T);
+            Type type = typeof(T);
             return PreviousState != null && PreviousState.GetType() == type;
         }
 
@@ -94,7 +94,7 @@ namespace SurgeEngine.Code.StateMachine
             
             CurrentState?.OnTick(dt);
 
-            foreach (var subState in _subStatesList)
+            foreach (FSubState subState in _subStatesList)
             {
                 subState?.OnTick(dt);
             }
@@ -104,7 +104,7 @@ namespace SurgeEngine.Code.StateMachine
         {
             CurrentState?.OnFixedTick(dt);
             
-            foreach (var subState in _subStatesList)
+            foreach (FSubState subState in _subStatesList)
             {
                 subState?.OnFixedTick(dt);
             }
@@ -114,7 +114,7 @@ namespace SurgeEngine.Code.StateMachine
         {
             CurrentState?.OnLateTick(dt);
             
-            foreach (var subState in _subStatesList)
+            foreach (FSubState subState in _subStatesList)
             {
                 subState?.OnLateTick(dt);
             }

@@ -26,7 +26,7 @@ namespace SurgeEngine.Code.ActorSystem.Actors
         {
             base.Initialize();
             
-            var body = GetComponent<Rigidbody>();
+            Rigidbody body = GetComponent<Rigidbody>();
             
             stateMachine.AddState(new FStateAirBoost(this, body));
             stateMachine.AddState(new FStateStomp(this, body));

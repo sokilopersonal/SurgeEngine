@@ -42,7 +42,7 @@ namespace SurgeEngine.Code.UI
         private void OnPauseAction(InputAction.CallbackContext obj)
         {
             _isPaused = !_isPaused;
-            var playerInput = ActorContext.Context.input.playerInput;
+            PlayerInput playerInput = ActorContext.Context.input.playerInput;
             if (_isPaused)
             {
                 playerInput.actions.FindActionMap("Gameplay").Disable();

@@ -42,7 +42,7 @@ namespace SurgeEngine.Code.Enemy.States
         {
             base.OnTick(dt);
             
-            var rb = eggFighter.GetComponent<Rigidbody>();
+            Rigidbody rb = eggFighter.GetComponent<Rigidbody>();
 
             _timer += dt / _moveInterval;
             _moveInterval = eggFighter.punchRadius;
@@ -59,7 +59,7 @@ namespace SurgeEngine.Code.Enemy.States
                 eggFighter.stateMachine.SetState<EGStateIdle>(2f);
             }
             
-            var context = ActorContext.Context;
+            Actor context = ActorContext.Context;
             if (Vector3.Distance(context.transform.position, transform.position) < eggFighter.findDistance)
             {
                 eggFighter.stateMachine.SetState<EGStateChase>();
@@ -74,7 +74,7 @@ namespace SurgeEngine.Code.Enemy.States
         
         private Vector3 GetRandomPoint()
         {
-            var unit = Random.insideUnitCircle.normalized * eggFighter.patrolDistance;
+            Vector2 unit = Random.insideUnitCircle.normalized * eggFighter.patrolDistance;
             Vector3 point = new Vector3(unit.x, 0f, unit.y);
             return transform.position + point;
         }

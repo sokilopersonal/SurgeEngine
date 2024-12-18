@@ -1,5 +1,6 @@
 ﻿using SurgeEngine.Code.ActorStates;
 using SurgeEngine.Code.Custom;
+using SurgeEngine.Code.StateMachine;
 using UnityEngine;
 
 namespace SurgeEngine.Code.ActorSystem
@@ -45,7 +46,7 @@ namespace SurgeEngine.Code.ActorSystem
         {
             root.localPosition = actor.transform.localPosition;
             
-            var prev = actor.stateMachine.PreviousState;
+            FState prev = actor.stateMachine.PreviousState;
             _forwardVector = Vector3.Slerp(root.forward, actor.transform.forward, Time.deltaTime * horizontalRotationSpeed);
             _upVector = Vector3.Slerp(root.up, actor.transform.up, Time.deltaTime * verticalRotationSpeed);
 
@@ -141,7 +142,7 @@ namespace SurgeEngine.Code.ActorSystem
         {
             Vector3 vel = actor.kinematics.Velocity.normalized;
             float dot = Vector3.Dot(_tUp, Vector3.up);
-            var left = Vector3.Cross(vel, Vector3.up);
+            Vector3 left = Vector3.Cross(vel, Vector3.up);
 
             if (dot >= 0.99f)
             {
@@ -152,7 +153,7 @@ namespace SurgeEngine.Code.ActorSystem
             {
                 if (vel.sqrMagnitude > 0.1f)
                 {
-                    var forward = Vector3.Cross(vel, left); 
+                    Vector3 forward = Vector3.Cross(vel, left); 
                     if (!transformRotation) actor.kinematics.Rigidbody.rotation = Quaternion.LookRotation(forward, vel);
                     else root.rotation = Quaternion.LookRotation(forward, vel);
                 }

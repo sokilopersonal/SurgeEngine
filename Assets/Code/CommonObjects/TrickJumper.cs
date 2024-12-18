@@ -78,7 +78,7 @@ namespace SurgeEngine.Code.CommonObjects
         {
             base.Contact(msg);
 
-            var context = ActorContext.Context;
+            Actor context = ActorContext.Context;
 
             if (context.stateMachine.CurrentState is FStateSpecialJump) return;
             if (firstSpeed > 0)
@@ -94,7 +94,7 @@ namespace SurgeEngine.Code.CommonObjects
                 Common.ApplyImpulse(impulse);
                 
                 context.stateMachine.GetState<FStateSpecialJump>().SetSpecialData(new SpecialJumpData(SpecialJumpType.TrickJumper));
-                var specialJump = context.stateMachine.SetState<FStateSpecialJump>(0.2f, true, true);
+                FStateSpecialJump specialJump = context.stateMachine.SetState<FStateSpecialJump>(0.2f, true, true);
                 specialJump.PlaySpecialAnimation(0);
                 
                 context.flags.AddFlag(new Flag(FlagType.OutOfControl, null, false));
@@ -144,7 +144,7 @@ namespace SurgeEngine.Code.CommonObjects
             };
             for (int i = 0; i < count; i++)
             {
-                var buttonType = (ButtonType)Random.Range(0, (int)ButtonType.COUNT);
+                ButtonType buttonType = (ButtonType)Random.Range(0, (int)ButtonType.COUNT);
                 QTEButton button = new QTEButton(buttonType);
                 sequence.buttons.Add(button);
             }
@@ -160,7 +160,7 @@ namespace SurgeEngine.Code.CommonObjects
         {
             for (int i = 0; i < _qteSequences.Count; i++)
             {
-                var sequence = _qteSequences[_sequenceId];
+                QTESequence sequence = _qteSequences[_sequenceId];
                 ButtonType sequenceButton = sequence.buttons[_buttonId].type;
                 if (sequenceButton == button)
                 {
@@ -212,8 +212,8 @@ namespace SurgeEngine.Code.CommonObjects
             _sequenceId = 0;
             if (_currentQTEUI) Destroy(_currentQTEUI.gameObject);
             
-            var context = ActorContext.Context;
-            var body = context.kinematics.Rigidbody;
+            Actor context = ActorContext.Context;
+            Rigidbody body = context.kinematics.Rigidbody;
             if (result.success)
             {
                 context.flags.RemoveFlag(FlagType.OutOfControl);
