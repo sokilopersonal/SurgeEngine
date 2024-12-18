@@ -145,7 +145,7 @@ namespace SurgeEngine.Code.ActorSystem
             Vector3 dir = _inputDir;
             SurgeMath.SplitPlanarVector(vel, normal, out Vector3 planar, out Vector3 vertical); 
             
-            _movementVector = planar;
+            WriteMovementVector(planar);
             _planarVelocity = planar;
 
             var stateMachine = actor.stateMachine;
@@ -368,6 +368,10 @@ namespace SurgeEngine.Code.ActorSystem
         }
         
         public void ModifyTurnRate(float modifier) => _turnRate *= modifier;
+        public void WriteMovementVector(Vector3 vector)
+        {
+            _movementVector = vector;
+        }
 
         private void CalculateDetachState()
         {
@@ -385,31 +389,7 @@ namespace SurgeEngine.Code.ActorSystem
             }
         }
 
-        public bool CheckForPredictedGround(Vector3 vel, Vector3 normal, float deltaTime, float distance, int steps)
-        {
-            bool willBeGrounded = false;
-            Vector3 initVel = vel;
-            Vector3 predictedNormal = normal;
-            Vector3 predictedPos = _rigidbody.position;
-            for (int i = 0; i < steps; i++)
-            {
-                predictedPos += vel * deltaTime / steps;
-                if (Physics.Raycast(predictedPos, -predictedNormal, out RaycastHit hit, 1f + distance, _config.castLayer))
-                {
-                    float Dot = Vector3.Dot(_rigidbody.linearVelocity, hit.normal);
-                    float MaxAngle = Dot < 0 ? maxAngleDifference : 30f;
-                    if (Vector3.Angle(predictedNormal, hit.normal) < MaxAngle)
-                    {
-                        predictedPos = hit.point + hit.normal;
-                        predictedNormal = hit.normal;
-                        initVel = Quaternion.FromToRotation(_normal, predictedNormal) * initVel;
-                        willBeGrounded = true;
-                    }
-                }
-            }
-
-            return willBeGrounded;
-        }
+        
 
         public bool GetAttachState() => _canAttach;
         
