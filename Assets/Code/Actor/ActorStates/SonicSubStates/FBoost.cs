@@ -28,6 +28,8 @@ namespace SurgeEngine.Code.ActorStates.SonicSubStates
 
         private readonly BoostConfig _config;
 
+        private float _boostCancelTimer;
+
         public FBoost(Actor owner) : base(owner)
         {
             canAirBoost = true;
@@ -62,19 +64,8 @@ namespace SurgeEngine.Code.ActorStates.SonicSubStates
             {
                 if (canAirBoost)
                 {
-                    if (_cancelBoostCoroutine != null) 
-                        actor.StopCoroutine(_cancelBoostCoroutine);
-
-                    //_cancelBoostCoroutine = actor.StartCoroutine(CancelBoost(_boostEnergyGroup.GetParameter<float>(BoostEnergy_InAirTime)));
+                    _boostCancelTimer = 0;
                 }
-            }
-            
-            if (obj is FStateAirBoost)
-            {
-                if (_cancelBoostCoroutine != null)
-                    actor.StopCoroutine(_cancelBoostCoroutine);
-                
-                //_cancelBoostCoroutine = actor.StartCoroutine(CancelBoost(_boostEnergyGroup.GetParameter<float>(BoostEnergy_AirBoostTime)));
             }
             
             if (obj is FStateGrind)
@@ -87,35 +78,33 @@ namespace SurgeEngine.Code.ActorStates.SonicSubStates
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
-
+            
             _boostHandler?.BoostHandle();
 
-            if (actor.stateMachine.CurrentState is FStateGround)
-            {
-                if (!actor.flags.HasFlag(FlagType.OutOfControl))
-                {
-                    if (actor.input.BoostHeld)
-                    {
-                        if (_cancelBoostCoroutine != null)
-                        {
-                            actor.StopCoroutine(_cancelBoostCoroutine);
-                        }
+            var state = actor.stateMachine.CurrentState;
+            var prev = actor.stateMachine.PreviousState;
 
-                        if (_cancelBoostCoroutine != null)
-                        {
-                            actor.StopCoroutine(_cancelBoostCoroutine);
-                        }
-                    }
-                }
-            }
-
-            if (actor.stateMachine.CurrentState is FStateDrift)
+            if (state is FStateDrift)
             {
                 BoostEnergy += _config.driftEnergyAddition * dt;
             }
 
             if (Active)
             {
+                if (state is FStateAir)
+                {
+                    _boostCancelTimer += dt;
+                
+                    if (_boostCancelTimer >= _config.inAirTime)
+                    {
+                        Active = false;
+                    }
+                }
+                else
+                {
+                    _boostCancelTimer = 0;
+                }
+                
                 if (BoostEnergy > 0)
                 {
                     BoostEnergy -= _config.energyDrain * Time.deltaTime;

@@ -18,5 +18,7 @@ namespace SurgeEngine.Code.Config.SonicSpecific
 
         [Foldout("Energy Additions")] public float ringEnergyAddition = 1.5f;
         [Foldout("Energy Additions")] public float driftEnergyAddition = 6.75f;
+        
+        [Foldout("Time")] public float inAirTime = 0.3f;
     }
 }
