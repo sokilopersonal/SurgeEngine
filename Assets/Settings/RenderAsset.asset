@@ -143,7 +143,7 @@ MonoBehaviour:
         m_Values: 80000000000100000002000000040000
         m_SchemaId:
           m_Id: With4Levels
-      maxDirectionalShadowMapResolution: 2048
+      maxDirectionalShadowMapResolution: 4096
       maxPunctualShadowMapResolution: 2048
       maxAreaShadowMapResolution: 1024
       supportScreenSpaceShadows: 1
@@ -165,7 +165,7 @@ MonoBehaviour:
     dynamicResolutionSettings:
       enabled: 1
       useMipBias: 0
-      advancedUpscalersByPriority: 02
+      advancedUpscalersByPriority: 
       DLSSPerfQualitySetting: 0
       DLSSInjectionPoint: 0
       TAAUInjectionPoint: 0
@@ -184,8 +184,8 @@ MonoBehaviour:
       minPercentage: 100
       dynResType: 1
       upsampleFilter: 5
-      forceResolution: 1
-      forcedPercentage: 80
+      forceResolution: 0
+      forcedPercentage: 25
       lowResTransparencyMinimumThreshold: 0
       rayTracingHalfResThreshold: 50
       lowResSSGIMinimumThreshold: 0

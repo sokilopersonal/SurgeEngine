@@ -64,7 +64,6 @@ namespace SurgeEngine.Code.ActorSystem
         private float _turnRate;
         private float _angle;
         private float _detachTimer;
-        private float _skidTimer;
         private bool _canAttach;
         private bool _skidding;
 
@@ -90,21 +89,7 @@ namespace SurgeEngine.Code.ActorSystem
             
             _moveDot = Vector3.Dot(actor.kinematics.GetInputDir().normalized, _rigidbody.linearVelocity.normalized);
             
-            bool isSkidding = _moveDot < _config.skiddingThreshold;
-            if (isSkidding)
-            {
-                _skidTimer += Time.deltaTime;
-
-                if (_skidTimer > _config.skidDelay)
-                {
-                    _skidding = true; // To exclude the random brake
-                }
-            }
-            else
-            {
-                _skidding = false;
-                _skidTimer = 0f;
-            }
+            _skidding = _moveDot < _config.skiddingThreshold;
             _speed = _rigidbody.linearVelocity.magnitude;
             
             CalculateDetachState();
@@ -153,10 +138,9 @@ namespace SurgeEngine.Code.ActorSystem
             FStateMachine stateMachine = actor.stateMachine;
             FState state = stateMachine.CurrentState;
             
-            bool isSkidding = _moveDot < _config.skiddingThreshold;
             if (_inputDir.magnitude > 0.2f)
             {
-                if (!isSkidding)
+                if (!_skidding)
                 {
                     _turnRate = Mathf.Lerp(_turnRate, _config.turnSpeed, 
                         _config.turnSmoothing * Time.fixedDeltaTime);

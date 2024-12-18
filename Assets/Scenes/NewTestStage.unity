@@ -1053,6 +1053,7 @@ MonoBehaviour:
   m_Script: {fileID: 2049738626}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Entries: []
 --- !u!4 &194215299
 Transform:
   m_ObjectHideFlags: 19
@@ -2147,6 +2148,7 @@ MonoBehaviour:
   m_Script: {fileID: 2049738626}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Entries: []
 --- !u!4 &266885306
 Transform:
   m_ObjectHideFlags: 19
@@ -3093,8 +3095,8 @@ MonoBehaviour:
   m_BlockerSampleCount: 24
   m_FilterSampleCount: 16
   m_MinFilterSize: 0.1
-  m_DirLightPCSSBlockerSampleCount: 64
-  m_DirLightPCSSFilterSampleCount: 64
+  m_DirLightPCSSBlockerSampleCount: 24
+  m_DirLightPCSSFilterSampleCount: 16
   m_DirLightPCSSMaxPenumbraSize: 16
   m_DirLightPCSSMaxSamplingDistance: 12
   m_DirLightPCSSMinFilterSizeTexels: 0.25
@@ -3105,8 +3107,8 @@ MonoBehaviour:
   m_LightAngle: 1
   m_MaxDepthBias: 0.001
   m_ShadowResolution:
-    m_Override: 256
-    m_UseOverride: 0
+    m_Override: 4096
+    m_UseOverride: 1
     m_Level: 3
   m_ShadowDimmer: 1
   m_VolumetricShadowDimmer: 1
@@ -20747,6 +20749,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sonic
       objectReference: {fileID: 0}
+    - target: {fileID: 2313648715480943864, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
+      propertyPath: InitialModule.maxNumParticles
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3894338508985300432, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
+      propertyPath: InitialModule.maxNumParticles
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4273712975694131987, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
       propertyPath: m_AllowDynamicResolution
       value: 1
@@ -20770,6 +20780,10 @@ PrefabInstance:
     - target: {fileID: 6716957596991090240, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
       propertyPath: horizontalAutoLookMinAmplitude
       value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7656225337495430993, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
+      propertyPath: TAAQuality
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7656225337495430993, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
       propertyPath: allowDynamicResolution
