@@ -28,7 +28,7 @@ namespace SurgeEngine.Code.ActorSoundEffects
 
         protected override void SoundState(FState obj)
         {
-            var prev = actor.stateMachine.PreviousState;
+            FState prev = actor.stateMachine.PreviousState;
             if (obj is FStateDrift)
             {
                 _driftLoopInstance.start();

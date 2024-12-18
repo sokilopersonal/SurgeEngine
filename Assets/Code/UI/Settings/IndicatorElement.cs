@@ -10,9 +10,9 @@ namespace SurgeEngine.Code.UI.Settings
 
         private Image _image;
 
-        private void Start()
+        private void Awake()
         {
-            _image ??= GetComponent<Image>();
+            _image = GetComponent<Image>();
         }
 
         public void SetValue(bool value)

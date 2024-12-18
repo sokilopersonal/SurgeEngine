@@ -22,7 +22,22 @@ namespace SurgeEngine.Code.ActorStates
         {
             base.OnEnter();
 
-            _timer = 0.25f;
+            _timer = 0.3f;
+        }
+
+        public override void OnExit()
+        {
+            base.OnExit();
+            
+            FBoost boost = StateMachine.GetSubState<FBoost>();
+            boost.canAirBoost = false;
+            boost.Active = false;
+            Animation.ResetAction();
+        }
+
+        public override void OnTick(float dt)
+        {
+            base.OnTick(dt);
             
             FBoost boost = StateMachine.GetSubState<FBoost>();
             if (boost.canAirBoost)
@@ -30,20 +45,7 @@ namespace SurgeEngine.Code.ActorStates
                 Vector3 force = _rigidbody.transform.forward * _config.airBoostSpeed;
 
                 _rigidbody.linearVelocity = force;
-                boost.canAirBoost = false;
             }
-        }
-
-        public override void OnExit()
-        {
-            base.OnExit();
-            
-            Animation.ResetAction();
-        }
-
-        public override void OnTick(float dt)
-        {
-            base.OnTick(dt);
 
             bool result = Common.CountTimer(ref _timer);
             if (!result)

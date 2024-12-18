@@ -7,7 +7,7 @@ namespace SurgeEngine.Code.Custom
         private void Awake()
         {
             MaterialPropertyBlock mpb = new MaterialPropertyBlock();
-            foreach (var child in GetComponentsInChildren<MeshRenderer>())
+            foreach (MeshRenderer child in GetComponentsInChildren<MeshRenderer>())
             {
                 child.SetPropertyBlock(mpb);
             }

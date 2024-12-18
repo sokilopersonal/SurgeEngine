@@ -2,6 +2,7 @@
 using SurgeEngine.Code.ActorStates;
 using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Custom;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Splines;
 
@@ -22,8 +23,8 @@ namespace SurgeEngine.Code.CommonObjects
         {
             _colliders = GetComponentsInChildren<Collider>();
 
-            container.Evaluate(0f, out var start, out _, out var up);
-            container.Evaluate(1f, out var end, out _, out var eUp);
+            container.Evaluate(0f, out float3 start, out _, out float3 up);
+            container.Evaluate(1f, out float3 end, out _, out float3 eUp);
 
             startTarget.transform.position = SurgeMath.Float3ToVector3(start) + SurgeMath.Float3ToVector3(up) * 0.75f;
             endTarget.transform.position = SurgeMath.Float3ToVector3(end) + SurgeMath.Float3ToVector3(eUp) * 0.75f;
@@ -48,20 +49,20 @@ namespace SurgeEngine.Code.CommonObjects
 
         public void AttachToRail()
         {
-            var context = ActorContext.Context;
+            Actor context = ActorContext.Context;
             context.stateMachine.SetState<FStateGrind>().SetRail(this);
         }
 
         private IEnumerator DisableCollision(float duration = 0.1f)
         {
-            foreach (var collision in _colliders)
+            foreach (Collider collision in _colliders)
             {
                 collision.enabled = false;
             }
             
             yield return new WaitForSeconds(duration);
             
-            foreach (var collision in _colliders)
+            foreach (Collider collision in _colliders)
             {
                 collision.enabled = true;
             }

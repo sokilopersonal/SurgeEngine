@@ -4,6 +4,7 @@ using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.Custom;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Utilities;
 
 namespace SurgeEngine.Code.ActorSystem
 {
@@ -111,13 +112,13 @@ namespace SurgeEngine.Code.ActorSystem
             playerInput.actions["Bumper"].started -= BumperInput;
             playerInput.actions["Bumper"].canceled -= BumperInput;
             
-            var pad = Gamepad.current;
+            Gamepad pad = Gamepad.current;
             pad.SetMotorSpeeds(0, 0);
         }
 
         private void Update()
         {
-            var temp = playerInput.actions["Movement"].ReadValue<Vector2>();
+            Vector2 temp = playerInput.actions["Movement"].ReadValue<Vector2>();
             moveVector = new Vector3(temp.x, 0, temp.y);
             lookVector = playerInput.actions["Camera"].ReadValue<Vector2>() * (_device is Gamepad ? 100f * Time.deltaTime : 1f);
 
@@ -136,9 +137,9 @@ namespace SurgeEngine.Code.ActorSystem
                 _autoCamera = false;
             }
             
-            var devices = InputSystem.devices;
+            ReadOnlyArray<InputDevice> devices = InputSystem.devices;
 
-            foreach (var device in devices)
+            foreach (InputDevice device in devices)
             {
                 if (device.wasUpdatedThisFrame)
                 {
@@ -238,7 +239,7 @@ namespace SurgeEngine.Code.ActorSystem
         {
             if (obj.started)
             {
-                var dv = obj.control.device;
+                InputDevice dv = obj.control.device;
                 _device = dv;
             }
         }

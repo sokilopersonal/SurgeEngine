@@ -23,7 +23,7 @@ namespace SurgeEngine.Code.ActorSoundEffects
 
         protected override void SoundState(FState obj)
         {
-            if (obj is FStateSliding)
+            if (obj is FStateSlide)
             {
                 slideLoop.set3DAttributes(transform.To3DAttributes());
                 slideLoop.start();

@@ -16,7 +16,7 @@ namespace SurgeEngine.Code.CommonObjects
         {
             if (_renderer != null && _jumpSelector != null)
             {
-                var mat = _renderer.materials[4];
+                Material mat = _renderer.materials[4];
                 int button = (int)_jumpSelector.button;
                 switch (button)
                 {

@@ -59,7 +59,7 @@ namespace SurgeEngine.Code.CameraSystem
 
                 if (baseData.allowRotation)
                 {
-                    var v = ActorContext.Context.input.lookVector;
+                    Vector2 v = ActorContext.Context.input.lookVector;
                     v = Vector3.ClampMagnitude(v, 2f);
                     lookOffset = Vector3.Lerp(lookOffset, v, SurgeMath.Smooth(1 - 0.75f));
                 }

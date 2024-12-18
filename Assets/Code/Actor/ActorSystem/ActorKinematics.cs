@@ -2,7 +2,9 @@
 using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.Config;
 using SurgeEngine.Code.Custom;
+using SurgeEngine.Code.StateMachine;
 using SurgeEngine.Code.Tools;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Splines;
 
@@ -12,7 +14,7 @@ namespace SurgeEngine.Code.ActorSystem
     {
         public Rigidbody Rigidbody => _rigidbody;
         
-        [SerializeField, Range(25, 90)] private float maxAngleDifference = 75;
+        [SerializeField, Range(25, 90)] public float maxAngleDifference = 75;
 
         public float TurnRate
         {
@@ -45,6 +47,7 @@ namespace SurgeEngine.Code.ActorSystem
         }
         
         public bool Skidding => _skidding;
+        public float MoveDot => _moveDot;
 
         private Vector3 _inputDir;
         private Rigidbody _rigidbody;
@@ -61,7 +64,6 @@ namespace SurgeEngine.Code.ActorSystem
         private float _turnRate;
         private float _angle;
         private float _detachTimer;
-        private float _skidTimer;
         private bool _canAttach;
         private bool _skidding;
 
@@ -87,21 +89,7 @@ namespace SurgeEngine.Code.ActorSystem
             
             _moveDot = Vector3.Dot(actor.kinematics.GetInputDir().normalized, _rigidbody.linearVelocity.normalized);
             
-            bool isSkidding = _moveDot < _config.skiddingThreshold;
-            if (isSkidding)
-            {
-                _skidTimer += Time.deltaTime;
-
-                if (_skidTimer > _config.skidDelay)
-                {
-                    _skidding = true; // To exclude the random brake
-                }
-            }
-            else
-            {
-                _skidding = false;
-                _skidTimer = 0f;
-            }
+            _skidding = _moveDot < _config.skiddingThreshold;
             _speed = _rigidbody.linearVelocity.magnitude;
             
             CalculateDetachState();
@@ -111,15 +99,15 @@ namespace SurgeEngine.Code.ActorSystem
 
         private void FixedUpdate()
         {
-            var path = _pathData;
+            PathData path = _pathData;
             if (path != null)
             {
                 if (path.splineContainer != null)
                 {
-                    var container = path.splineContainer;
-                    SplineUtility.GetNearestPoint(container.Spline, SurgeMath.Vector3ToFloat3(container.transform.InverseTransformPoint(_rigidbody.position)), out var near, out var t);
-                    container.Evaluate(t, out var point, out var tangent, out var up);
-                    var planeNormal = Vector3.Cross(tangent, up);
+                    SplineContainer container = path.splineContainer;
+                    SplineUtility.GetNearestPoint(container.Spline, SurgeMath.Vector3ToFloat3(container.transform.InverseTransformPoint(_rigidbody.position)), out float3 near, out float t);
+                    container.Evaluate(t, out float3 point, out float3 tangent, out float3 up);
+                    Vector3 planeNormal = Vector3.Cross(tangent, up);
                 
                     if (HorizontalSpeed < path.maxAutoRunSpeed)
                     {
@@ -144,26 +132,20 @@ namespace SurgeEngine.Code.ActorSystem
             Vector3 dir = _inputDir;
             SurgeMath.SplitPlanarVector(vel, normal, out Vector3 planar, out Vector3 vertical); 
             
-            _movementVector = planar;
+            WriteMovementVector(planar);
             _planarVelocity = planar;
 
-            var stateMachine = actor.stateMachine;
-            var state = stateMachine.CurrentState;
+            FStateMachine stateMachine = actor.stateMachine;
+            FState state = stateMachine.CurrentState;
             
-            bool isSkidding = _moveDot < _config.skiddingThreshold;
             if (_inputDir.magnitude > 0.2f)
             {
-                if (stateMachine.IsExact<FStateSliding>())
-                {
-                    _turnRate *= 0.1f;
-                }
-                
-                if (!isSkidding)
+                if (!_skidding)
                 {
                     _turnRate = Mathf.Lerp(_turnRate, _config.turnSpeed, 
                         _config.turnSmoothing * Time.fixedDeltaTime);
                     
-                    var accelRateMod = _config.accelerationCurve
+                    float accelRateMod = _config.accelerationCurve
                         .Evaluate(_planarVelocity.magnitude / _config.topSpeed);
                     if (_planarVelocity.magnitude < _config.topSpeed)
                         _planarVelocity += dir * (_config.accelerationRate * accelRateMod * Time.fixedDeltaTime);
@@ -178,7 +160,7 @@ namespace SurgeEngine.Code.ActorSystem
 
                     switch (state)
                     {
-                        case FStateGround or FStateSliding:
+                        case FStateGround or FStateSlide:
                             BaseGroundPhysics();
                             break;
                         case FStateAir or FStateJump:
@@ -238,21 +220,21 @@ namespace SurgeEngine.Code.ActorSystem
         }
 
         #region BIG CODE
-
-        public void SlopePrediction()
+        
+        private void SlopePrediction()
         {
-            var lowerValue = 0.45f;
-            var predictedPosition = _rigidbody.position + -_normal * lowerValue;
-            var predictedNormal = _normal;
-            var predictedVelocity = _rigidbody.linearVelocity;
-            var speedFrame = _rigidbody.linearVelocity.magnitude * Time.fixedDeltaTime;
-            var lerpJump = 0.015f;
-            var mask = _config.castLayer;
+            float lowerValue = 0.43f;
+            Vector3 predictedPosition = _rigidbody.position + -_normal * lowerValue;
+            Vector3 predictedNormal = _normal;
+            Vector3 predictedVelocity = _rigidbody.linearVelocity;
+            float speedFrame = _rigidbody.linearVelocity.magnitude * Time.fixedDeltaTime;
+            float lerpJump = 0.015f;
+            LayerMask mask = _config.castLayer;
             
             if (!Physics.Raycast(predictedPosition, predictedVelocity.normalized, 
-                    out var pGround, speedFrame * 1.3f, mask)) { HighSpeedFix(); return; }
+                    out RaycastHit pGround, speedFrame * 1.3f, mask)) { HighSpeedFix(); return; }
 
-            for (var lerp = lerpJump; lerp < 45 / 90; lerp += lerpJump)
+            for (float lerp = lerpJump; lerp < maxAngleDifference / 90; lerp += lerpJump)
             {
                 if (!Physics.Raycast(predictedPosition, Vector3.Lerp(predictedVelocity.normalized, _normal, lerp), out pGround, speedFrame * 1.3f, mask))
                 {
@@ -272,18 +254,18 @@ namespace SurgeEngine.Code.ActorSystem
         
         private void HighSpeedFix()
         {
-            var predictedPosition = _rigidbody.position;
-            var predictedNormal = actor.stats.groundNormal;
-            var predictedVelocity = _rigidbody.linearVelocity;
-            var steps = 16;
-            var mask = _config.castLayer;
+            Vector3 predictedPosition = _rigidbody.position;
+            Vector3 predictedNormal = actor.stats.groundNormal;
+            Vector3 predictedVelocity = _rigidbody.linearVelocity;
+            int steps = 16;
+            LayerMask mask = _config.castLayer;
             int i;
             for (i = 0; i < steps; i++)
             {
                 predictedPosition += predictedVelocity * Time.fixedDeltaTime / steps;
-                if (Physics.Raycast(predictedPosition, -predictedNormal, out var pGround, _config.castDistance + 0.2f, mask))
+                if (Physics.Raycast(predictedPosition, -predictedNormal, out RaycastHit pGround, _config.castDistance + 0.2f, mask))
                 {
-                    if (Vector3.Angle (predictedNormal, pGround.normal) < 45)
+                    if (Vector3.Angle(predictedNormal, pGround.normal) < 45)
                     {
                         predictedPosition = pGround.point + pGround.normal * 0.5f;
                         predictedVelocity = Quaternion.FromToRotation(actor.stats.groundNormal, pGround.normal) * predictedVelocity;
@@ -344,7 +326,7 @@ namespace SurgeEngine.Code.ActorSystem
 
         public void Deceleration(float min, float max)
         {
-            if (actor.stateMachine.CurrentState is FStateAir or FStateSliding)
+            if (actor.stateMachine.CurrentState is FStateAir)
             {
                 return;
             }
@@ -370,6 +352,12 @@ namespace SurgeEngine.Code.ActorSystem
             
             _detachTimer = t;
         }
+        
+        public void ModifyTurnRate(float modifier) => _turnRate *= modifier;
+        public void WriteMovementVector(Vector3 vector)
+        {
+            _movementVector = vector;
+        }
 
         private void CalculateDetachState()
         {
@@ -387,31 +375,7 @@ namespace SurgeEngine.Code.ActorSystem
             }
         }
 
-        public bool CheckForPredictedGround(Vector3 vel, Vector3 normal, float deltaTime, float distance, int steps)
-        {
-            bool willBeGrounded = false;
-            Vector3 initVel = vel;
-            Vector3 predictedNormal = normal;
-            Vector3 predictedPos = _rigidbody.position;
-            for (int i = 0; i < steps; i++)
-            {
-                predictedPos += vel * deltaTime / steps;
-                if (Physics.Raycast(predictedPos, -predictedNormal, out RaycastHit hit, 1f + distance, _config.castLayer))
-                {
-                    float Dot = Vector3.Dot(_rigidbody.linearVelocity, hit.normal);
-                    float MaxAngle = Dot < 0 ? maxAngleDifference : 30f;
-                    if (Vector3.Angle(predictedNormal, hit.normal) < MaxAngle)
-                    {
-                        predictedPos = hit.point + hit.normal;
-                        predictedNormal = hit.normal;
-                        initVel = Quaternion.FromToRotation(_normal, predictedNormal) * initVel;
-                        willBeGrounded = true;
-                    }
-                }
-            }
-
-            return willBeGrounded;
-        }
+        
 
         public bool GetAttachState() => _canAttach;
         

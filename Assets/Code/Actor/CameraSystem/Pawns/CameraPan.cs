@@ -33,14 +33,14 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
                 _stateMachine.RememberRelativeLastData();
                 _calculatedDiff = true;
             }
-            var last = _stateMachine.GetLastData();
+            LastCameraData last = _stateMachine.GetLastData();
             
             Vector3 center = _actor.transform.position;
             Vector3 diff = _panData.position - center;
             _stateMachine.position = Vector3.Lerp(last.position, diff, _stateMachine.interpolatedBlendFactor);
             _stateMachine.position += center;
             
-            var rotation = Quaternion.LookRotation(_actor.transform.position + _stateMachine.transform.TransformDirection(_stateMachine.lookOffset) - _stateMachine.position, Vector3.up);
+            Quaternion rotation = Quaternion.LookRotation(_actor.transform.position + _stateMachine.transform.TransformDirection(_stateMachine.lookOffset) - _stateMachine.position, Vector3.up);
             _stateMachine.rotation = Quaternion.Slerp(last.rotation, rotation, _stateMachine.interpolatedBlendFactor);
             _stateMachine.camera.fieldOfView = Mathf.Lerp(last.fov, _panData.fov, _stateMachine.interpolatedBlendFactor);
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using SurgeEngine.Code.ActorHUD;
 using SurgeEngine.Code.ActorSystem;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace SurgeEngine.Code.CommonObjects
@@ -41,7 +42,7 @@ namespace SurgeEngine.Code.CommonObjects
 
         private void OnCorrectButtonPressed()
         {
-            var click = Instantiate(qteClick, ActorHUDContext.Context.transform);
+            GameObject click = Instantiate(qteClick, ActorHUDContext.Context.transform);
             click.transform.position = _buttons[0].transform.position;
             Destroy(click, 0.65f);
             _buttons[0].Destroy();
@@ -51,14 +52,14 @@ namespace SurgeEngine.Code.CommonObjects
         public void CreateButtonIcon(QTESequence sequence)
         {
             _buttons.Capacity = sequence.buttons.Count;
-            var context = ActorContext.Context;
-            var input = context.input;
+            Actor context = ActorContext.Context;
+            ActorInput input = context.input;
             for (int i = 0; i < sequence.buttons.Count; i++)
             {
-                var buttonType = sequence.buttons[i].type;
-                var dv = input.GetDevice();
-                var translatedName = input.GetTranslatedDeviceName(dv);
-                var buttons = quickTimeEventUIButtons.Find(x => x.device == translatedName);
+                ButtonType buttonType = sequence.buttons[i].type;
+                InputDevice dv = input.GetDevice();
+                string translatedName = input.GetTranslatedDeviceName(dv);
+                QTEButtonSprites buttons = quickTimeEventUIButtons.Find(x => x.device == translatedName);
                 
                 QuickTimeEventUIButton tempButton = Instantiate(button, buttonParent);
 

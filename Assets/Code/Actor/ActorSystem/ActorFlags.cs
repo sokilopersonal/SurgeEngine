@@ -23,7 +23,7 @@ namespace SurgeEngine.Code.ActorSystem
 
         private void Update()
         {
-            foreach (var flag in list.ToList())
+            foreach (Flag flag in list.ToList())
             {
                 flag.Count(Time.deltaTime);
             }
@@ -31,7 +31,7 @@ namespace SurgeEngine.Code.ActorSystem
 
         public void AddFlag(Flag flag)
         {
-            var existingFlag = list.FirstOrDefault(f => f.type == flag.type);
+            Flag existingFlag = list.FirstOrDefault(f => f.type == flag.type);
             if (existingFlag != null)
             {
                 list.Remove(existingFlag);
@@ -44,7 +44,7 @@ namespace SurgeEngine.Code.ActorSystem
         public void RemoveFlag(FlagType type)
         {
             flagType &= ~type;
-            var flagToRemove = list.FirstOrDefault(f => f.type == type);
+            Flag flagToRemove = list.FirstOrDefault(f => f.type == type);
             if (flagToRemove != null)
             {
                 list.Remove(flagToRemove);

@@ -1,6 +1,7 @@
 ﻿using SurgeEngine.Code.ActorStates.BaseStates;
 using SurgeEngine.Code.ActorStates.SonicSubStates;
 using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.Custom;
 using UnityEngine;
 
@@ -34,7 +35,7 @@ namespace SurgeEngine.Code.ActorStates
             {
                 if (!Actor.flags.HasFlag(FlagType.OutOfControl))
                 {
-                    var homingTarget = Stats.homingTarget;
+                    HomingTarget homingTarget = Stats.homingTarget;
 
                     if (Input.JumpPressed)
                     {

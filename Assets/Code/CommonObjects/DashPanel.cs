@@ -18,8 +18,8 @@ namespace SurgeEngine.Code.CommonObjects
         {
             base.Contact(msg);
             
-            var context = ActorContext.Context;
-            var body = context.kinematics.Rigidbody;
+            Actor context = ActorContext.Context;
+            Rigidbody body = context.kinematics.Rigidbody;
             
             if (center)
             {

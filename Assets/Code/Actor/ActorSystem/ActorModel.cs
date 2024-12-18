@@ -1,5 +1,6 @@
 ﻿using SurgeEngine.Code.ActorStates;
 using SurgeEngine.Code.Custom;
+using SurgeEngine.Code.StateMachine;
 using UnityEngine;
 
 namespace SurgeEngine.Code.ActorSystem
@@ -25,6 +26,8 @@ namespace SurgeEngine.Code.ActorSystem
         
         private float _upRestoreTimer;
         private bool _upRestoring;
+        private Vector3 _forwardVector;
+        private Vector3 _upVector;
 
         private void Start()
         {
@@ -43,9 +46,9 @@ namespace SurgeEngine.Code.ActorSystem
         {
             root.localPosition = actor.transform.localPosition;
             
-            var prev = actor.stateMachine.PreviousState;
-            Vector3 forward = Vector3.Slerp(root.forward, actor.transform.forward, Time.deltaTime * horizontalRotationSpeed);
-            Vector3 up = Vector3.Slerp(root.up, actor.transform.up, Time.deltaTime * verticalRotationSpeed);
+            FState prev = actor.stateMachine.PreviousState;
+            _forwardVector = Vector3.Slerp(root.forward, actor.transform.forward, Time.deltaTime * horizontalRotationSpeed);
+            _upVector = Vector3.Slerp(root.up, actor.transform.up, Time.deltaTime * verticalRotationSpeed);
 
             if (prev is FStateSpecialJump)
             {
@@ -67,8 +70,8 @@ namespace SurgeEngine.Code.ActorSystem
                 {
                     if (_upRestoring)
                     {
-                        up = Vector3.Slerp(root.up, actor.transform.up, Easings.Get(Easing.InCirc, _upRestoreTimer));
-                        _upRestoreTimer += Time.deltaTime / 0.75f;
+                        _upVector = Vector3.Slerp(root.up, actor.transform.up, Easings.Get(Easing.InCirc, _upRestoreTimer));
+                        _upRestoreTimer += Time.deltaTime / 0.8f;
                         
                         if (_upRestoreTimer >= 1)
                         {
@@ -80,12 +83,14 @@ namespace SurgeEngine.Code.ActorSystem
             }
             else
             {
+				_airRestoreTimer = 0f;
+				_airRestoring = false;
                 _upRestoreTimer = 0f;
                 _upRestoring = false;
             }
             
-            Vector3.OrthoNormalize(ref up, ref forward);
-            root.localRotation = Quaternion.LookRotation(forward, up);
+            Vector3.OrthoNormalize(ref _upVector, ref _forwardVector);
+            root.localRotation = Quaternion.LookRotation(_forwardVector, _upVector);
         }
 
         public void RotateBody(Vector3 normal, bool project = false)
@@ -137,7 +142,7 @@ namespace SurgeEngine.Code.ActorSystem
         {
             Vector3 vel = actor.kinematics.Velocity.normalized;
             float dot = Vector3.Dot(_tUp, Vector3.up);
-            var left = Vector3.Cross(vel, Vector3.up);
+            Vector3 left = Vector3.Cross(vel, Vector3.up);
 
             if (dot >= 0.99f)
             {
@@ -148,7 +153,7 @@ namespace SurgeEngine.Code.ActorSystem
             {
                 if (vel.sqrMagnitude > 0.1f)
                 {
-                    var forward = Vector3.Cross(vel, left); 
+                    Vector3 forward = Vector3.Cross(vel, left); 
                     if (!transformRotation) actor.kinematics.Rigidbody.rotation = Quaternion.LookRotation(forward, vel);
                     else root.rotation = Quaternion.LookRotation(forward, vel);
                 }

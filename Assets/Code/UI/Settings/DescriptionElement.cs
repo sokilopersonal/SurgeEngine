@@ -42,7 +42,7 @@ namespace SurgeEngine.Code.UI.Settings
 
         private void UpdatePreview(int value)
         {
-            var previews = _bar.valueImagePreviews;
+            Texture2D[] previews = _bar.valueImagePreviews;
             if (previews.Length > 0)
             {
                 previewImage.gameObject.SetActive(true);;

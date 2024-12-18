@@ -14,7 +14,7 @@ namespace SurgeEngine.Code.Enemy.States
         {
             base.OnTick(dt);
 
-            var context = ActorContext.Context;
+            Actor context = ActorContext.Context;
             
             Vector3 direction = context.transform.position - transform.position;
             direction.Normalize();

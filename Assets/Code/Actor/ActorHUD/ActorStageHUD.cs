@@ -72,7 +72,7 @@ namespace SurgeEngine.Code.ActorHUD
             Speedometer();
             HomingTarget();
 
-            var stageData = Stage.Instance.data;
+            StageData stageData = Stage.Instance.data;
             float time = stageData.Time;
 
             string mono = "<mspace=0.7em>";
@@ -118,12 +118,12 @@ namespace SurgeEngine.Code.ActorHUD
 
         private void HomingTarget()
         {
-            var target = _actor.stats.homingTarget;
+            HomingTarget target = _actor.stats.homingTarget;
             if (target)
             {
                 homingIcon.gameObject.SetActive(true);
                 homingIcon.Activate();
-                var cam = _actor.camera.GetCamera();
+                Camera cam = _actor.camera.GetCamera();
                 Vector3 position = cam.WorldToScreenPoint(target.transform.position);
                 homingIcon.transform.position = position;
             }

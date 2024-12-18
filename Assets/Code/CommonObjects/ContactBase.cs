@@ -12,7 +12,7 @@ namespace SurgeEngine.Code.CommonObjects
 
         public virtual void Contact(Collider msg)
         {
-            var context = ActorContext.Context;
+            Actor context = ActorContext.Context;
             context.stats.lastContactObject = this;
             
             OnContact?.Invoke(this);

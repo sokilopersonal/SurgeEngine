@@ -1,5 +1,7 @@
 ﻿using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.UI.Settings;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 namespace SurgeEngine.Code.UI
@@ -25,6 +27,10 @@ namespace SurgeEngine.Code.UI
 
         private void OnEnable()
         {
+#if UNITY_EDITOR
+            _pauseInputAction.ApplyBindingOverride("<Keyboard>/tab", path: "<Keyboard>/escape");
+#endif
+            
             _pauseInputAction.performed += OnPauseAction;
         }
 
@@ -36,14 +42,16 @@ namespace SurgeEngine.Code.UI
         private void OnPauseAction(InputAction.CallbackContext obj)
         {
             _isPaused = !_isPaused;
-            var playerInput = ActorContext.Context.input.playerInput;
+            PlayerInput playerInput = ActorContext.Context.input.playerInput;
             if (_isPaused)
             {
                 playerInput.actions.FindActionMap("Gameplay").Disable();
+                EventSystem.current.SetSelectedGameObject(GetComponentInChildren<SettingsBarElement>().gameObject);
             }
             else
             {
                 playerInput.actions.FindActionMap("Gameplay").Enable();
+                EventSystem.current.SetSelectedGameObject(null);
             }
             
             _uiCanvasGroup.alpha = _isPaused ? 1 : 0;

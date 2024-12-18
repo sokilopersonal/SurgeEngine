@@ -22,8 +22,8 @@ namespace SurgeEngine.Code.ActorEffects
         {
             distortionMaterial = Instantiate(distortionMaterial);
 
-            var pass = volume.customPasses[0];
-            var fPass = pass as FullScreenCustomPass;
+            CustomPass pass = volume.customPasses[0];
+            FullScreenCustomPass fPass = pass as FullScreenCustomPass;
             fPass.fullscreenPassMaterial = distortionMaterial;
         }
 

@@ -24,7 +24,7 @@ namespace SurgeEngine.Code.StateMachine
 
         private void OnStateAssign(FState obj)
         {
-            var prev = enemyBase.stateMachine.PreviousState;
+            FState prev = enemyBase.stateMachine.PreviousState;
             if (obj is EGStateIdle)
             {
                 TransitionToState("Idle");

@@ -5,6 +5,7 @@ using SurgeEngine.Code.ActorSystem.Actors;
 using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.Tools;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Splines;
 
@@ -62,14 +63,14 @@ namespace SurgeEngine.Code.ActorStates
             
             if (_rail != null)
             {
-                var container = _rail.container;
+                SplineContainer container = _rail.container;
                 Vector3 offset = _rigidbody.position - Actor.transform.up * (_rail.radius);
                 SplineUtility.GetNearestPoint(container.Spline, 
                     SurgeMath.Vector3ToFloat3(container.transform.InverseTransformPoint(offset)), 
-                    out var near, out var t);
-                var normal = SurgeMath.Float3ToVector3(container.EvaluateUpVector(t));
-                container.Evaluate(t, out var point, out var tangent, out var up);
-                var tangentNormal = Vector3.Cross(tangent, up);
+                    out float3 near, out float t);
+                Vector3 normal = SurgeMath.Float3ToVector3(container.EvaluateUpVector(t));
+                container.Evaluate(t, out float3 point, out float3 tangent, out float3 up);
+                Vector3 tangentNormal = Vector3.Cross(tangent, up);
                 
                 Debug.DrawRay(offset, normal, Color.yellow, 1f);
                 
@@ -98,8 +99,8 @@ namespace SurgeEngine.Code.ActorStates
                     }
                 }
                 
-                container.Evaluate(0f, out var startPoint, out _, out _);
-                container.Evaluate(1f, out var endPoint, out _, out _);
+                container.Evaluate(0f, out float3 startPoint, out _, out _);
+                container.Evaluate(1f, out float3 endPoint, out _, out _);
                 Debug.DrawRay(startPoint, Vector3.up * 2);
                 Debug.DrawRay(endPoint, Vector3.up * 2);
 

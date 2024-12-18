@@ -2,6 +2,7 @@
 using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.ActorSystem.Actors;
 using SurgeEngine.Code.CommonObjects;
+using SurgeEngine.Code.Config.SonicSpecific;
 using UnityEngine;
 
 namespace SurgeEngine.Code.Tools
@@ -20,17 +21,17 @@ namespace SurgeEngine.Code.Tools
 
         public static HomingTarget FindHomingTarget()
         {
-            var transform = _sonic.transform;
-            var config = _sonic.homingConfig;
+            Transform transform = _sonic.transform;
+            HomingConfig config = _sonic.homingConfig;
             Vector3 origin = transform.position + Vector3.down;
             Vector3 dir = _sonic.kinematics.GetInputDir() == Vector3.zero ? transform.forward : _sonic.kinematics.GetInputDir();
             
-            var maxDistance = config.findDistance;
-            var hits = Physics.OverlapSphere(origin + dir, maxDistance, config.mask, QueryTriggerInteraction.Collide);
+            float maxDistance = config.findDistance;
+            Collider[] hits = Physics.OverlapSphere(origin + dir, maxDistance, config.mask, QueryTriggerInteraction.Collide);
             
             HomingTarget closestTarget = null;
             float closestDistance = float.MaxValue;
-            foreach (var hit in hits)
+            foreach (Collider hit in hits)
             {
                 Transform target = hit.transform;
                 Vector3 end = target.position + Vector3.up * 0.5f;

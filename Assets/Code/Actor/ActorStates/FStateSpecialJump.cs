@@ -9,8 +9,8 @@ namespace SurgeEngine.Code.ActorStates
 {
     public class FStateSpecialJump : FStateMove
     {
+        public SpecialJumpData data;
         private float _jumpTimer;
-        private SpecialJumpData _data;
         
         private float _keepVelocityTimer;
 
@@ -39,16 +39,18 @@ namespace SurgeEngine.Code.ActorStates
                 _jumpTimer = 0;
             }
             
-            SpecialTick(dt);
+            CountTimer(dt);
         }
 
         public override void OnFixedTick(float dt)
         {
             base.OnFixedTick(dt);
 
+            SpecialTick(dt);
+            
             if (Mathf.Approximately(_jumpTimer, 0))
             {
-                if (Common.CheckForGround(out var hit))
+                if (Common.CheckForGround(out RaycastHit hit))
                 {
                     StateMachine.SetState<FStateGround>();
                 }
@@ -59,15 +61,15 @@ namespace SurgeEngine.Code.ActorStates
         {
             base.OnExit();
 
-            if (_data.type is SpecialJumpType.Spring or SpecialJumpType.DashRing)
+            if (data.type is SpecialJumpType.Spring or SpecialJumpType.DashRing)
             {
-                Actor.model.StartAirRestore(0.6f);
+                Actor.model.StartAirRestore(0.65f);
             }
         }
 
         private void SpecialTick(float dt)
         {
-            switch (_data.type)
+            switch (data.type)
             {
                 case SpecialJumpType.JumpBoard:
                     Common.ApplyGravity(Stats.gravity, dt);
@@ -76,14 +78,12 @@ namespace SurgeEngine.Code.ActorStates
                     Common.ApplyGravity(Stats.gravity, dt);
                     break;
                 case SpecialJumpType.Spring:
-                    Actor.model.SetRestoreUp(_data.transform.up);
+                    Actor.model.SetRestoreUp(data.transform.up);
                     Actor.model.VelocityRotation();
-                    CountTimer(dt);
                     break;
                 case SpecialJumpType.DashRing:
-                    Actor.model.SetRestoreUp(_data.transform.up);
+                    Actor.model.SetRestoreUp(data.transform.up);
                     Actor.model.VelocityRotation();
-                    CountTimer(dt);
                     break;
                 case SpecialJumpType.JumpSelector:
                     Common.ApplyGravity(Stats.gravity, dt);
@@ -91,10 +91,13 @@ namespace SurgeEngine.Code.ActorStates
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-            
-            if (_keepVelocityTimer < 0)
+
+            if (data.type == SpecialJumpType.Spring || data.type == SpecialJumpType.DashRing)
             {
-                StateMachine.SetState<FStateAir>();
+                if (_keepVelocityTimer < 0)
+                {
+                    StateMachine.SetState<FStateAir>();
+                }
             }
         }
         
@@ -106,17 +109,16 @@ namespace SurgeEngine.Code.ActorStates
             }
         }
 
-        public FStateSpecialJump SetSpecialData(SpecialJumpData data)
+        public void SetSpecialData(SpecialJumpData data)
         {
-            _data = data;
-            
-
-            return this;
+            this.data = data;
         }
         
-        public FStateSpecialJump PlaySpecialAnimation(float time, object arg = null)
+        public void PlaySpecialAnimation(float time, object arg = null)
         {
-            switch (_data.type)
+            Animation.ResetCurrentAnimationState();
+            
+            switch (data.type)
             {
                 case SpecialJumpType.JumpBoard:
                     Animation.TransitionToState((bool)arg ? "Jump Delux" : "Jump Standard", time, true);
@@ -131,10 +133,8 @@ namespace SurgeEngine.Code.ActorStates
                     Animation.TransitionToState("Dash Ring", time, true);
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(_data), _data, null);
+                    throw new ArgumentOutOfRangeException(nameof(data), data, null);
             }
-
-            return this;
         }
         
         public void SetKeepVelocity(float time)

@@ -37,11 +37,11 @@ namespace SurgeEngine.Code.ActorSoundEffects
 
         protected override void SoundState(FState obj)
         {
-            var machine = actor.stateMachine;
+            FStateMachine machine = actor.stateMachine;
             RuntimeManager.AttachInstanceToGameObject(_landSoundInstance, transform);
             if (machine.IsExact<FStateGround>() || machine.IsExact<FStateIdle>())
             {
-                var prev = machine.PreviousState;
+                FState prev = machine.PreviousState;
 
                 if (prev is FStateAir)
                 {

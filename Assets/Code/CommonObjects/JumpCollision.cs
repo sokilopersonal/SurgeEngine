@@ -22,7 +22,7 @@ namespace SurgeEngine.Code.CommonObjects
         {
             base.Contact(msg);
             
-            var context = ActorContext.Context;
+            Actor context = ActorContext.Context;
             float dot = Vector3.Dot(context.transform.forward, context.transform.forward);
             float impulse = SonicTools.IsBoost() ? impulseOnBoost : impulseOnNormal;
             Vector3 cross = Common.GetCross(transform, pitch);
@@ -33,7 +33,7 @@ namespace SurgeEngine.Code.CommonObjects
                 {
                     if (impulse > 0)
                     {
-                        var body = context.kinematics.Rigidbody;
+                        Rigidbody body = context.kinematics.Rigidbody;
                         body.linearVelocity = Vector3.zero;
                         context.stats.planarVelocity = Vector3.zero;
                         context.stats.movementVector = Vector3.zero;

@@ -57,7 +57,7 @@ namespace SurgeEngine.Code.CommonObjects
             Actor actor = ActorContext.Context;
             if (_isActorOnSurface)
             {
-                var actorRigidbody = actor.kinematics.Rigidbody;
+                Rigidbody actorRigidbody = actor.kinematics.Rigidbody;
                 Vector3 vel = actorRigidbody.linearVelocity;
                 float currentSpeed = vel.magnitude;
                 float horizontalSpeed = actorRigidbody.GetHorizontalMagnitude();
@@ -113,7 +113,7 @@ namespace SurgeEngine.Code.CommonObjects
             base.Contact(msg);
             
             _initialPoint = msg.ClosestPoint(transform.position);
-            var wave = Instantiate(this.wave);
+            ParticleSystem wave = Instantiate(this.wave);
             wave.transform.position = _initialPoint;
             wave.Play();
             
@@ -124,11 +124,11 @@ namespace SurgeEngine.Code.CommonObjects
         
         private void OnTriggerExit(Collider other)
         {
-            var context = ActorContext.Context;
+            Actor context = ActorContext.Context;
             
             if (context.gameObject == other.transform.parent.gameObject)
             {
-                var wave = Instantiate(this.wave);
+                ParticleSystem wave = Instantiate(this.wave);
                 wave.transform.position = other.ClosestPoint(transform.position);;
                 wave.Play();
                 

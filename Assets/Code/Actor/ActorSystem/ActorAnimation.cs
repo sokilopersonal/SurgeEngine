@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using SurgeEngine.Code.ActorStates;
+using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.StateMachine;
 using SurgeEngine.Code.Tools;
@@ -55,31 +56,11 @@ namespace SurgeEngine.Code.ActorSystem
 
         private void ChangeStateAnimation(FState obj)
         {
-            var machine = actor.stateMachine;
-            var prev = machine.PreviousState;
+            FStateMachine machine = actor.stateMachine;
+            FState prev = machine.PreviousState;
             
             if (_coroutine != null)
                 StopCoroutine(_coroutine);
-
-            if (obj is FStateStart)
-            {
-                var type = actor.GetComponentInParent<ActorStartDefiner>().startData.startType;
-                switch (type)
-                {
-                    case StartType.None:
-                        break;
-                    case StartType.Standing:
-                        TransitionToState("StartS", 0f);
-                        break;
-                    case StartType.Prepare:
-                        TransitionToState("StartP", 0f);
-                        break;
-                    case StartType.Dash:
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
-            }
             
             if (obj is FStateIdle)
             {
@@ -157,10 +138,15 @@ namespace SurgeEngine.Code.ActorSystem
                 }
                 else
                 {
-                    TransitionToStateDelayed(AnimatorParams.AirCycle, 0.5f, 0.4f);
+                    SpecialJumpData data = actor.stateMachine.GetState<FStateSpecialJump>().data;
+                    if (data.type == SpecialJumpType.Spring || data.type == SpecialJumpType.DashRing) TransitionToStateDelayed(AnimatorParams.AirCycle, 0.5f, 0.4f);
+                    else if (data.type == SpecialJumpType.TrickJumper)
+                    {
+                        TransitionToStateDelayed(AnimatorParams.AirCycle, 0.35f, 1.2f);
+                    }
                 }
             }
-            if (obj is FStateSliding)
+            if (obj is FStateSlide)
             {
                 TransitionToState("Sliding", 0.2f, true);
             }
@@ -171,14 +157,6 @@ namespace SurgeEngine.Code.ActorSystem
             if (obj is FStateJump)
             {
                 TransitionToState("Ball", 0f);
-                
-                // var speed = actor.kinematics.HorizontalSpeed;
-                //
-                // if (speed < 0.1f)
-                // {
-                //     TransitionToState("JumpLow", 0.1f);
-                //     TransitionToStateDelayed(AnimatorParams.AirCycle, 0.5f, 0.1f);
-                // }
             }
             if (obj is FStateGrindJump)
             {
@@ -294,6 +272,7 @@ namespace SurgeEngine.Code.ActorSystem
             animator.TransitionToState(stateName, ref _currentAnimation, transitionTime);
         }
         
+        public void ResetCurrentAnimationState() => _currentAnimation = string.Empty;
         public string GetCurrentAnimationState() => _currentAnimation;
     }
 

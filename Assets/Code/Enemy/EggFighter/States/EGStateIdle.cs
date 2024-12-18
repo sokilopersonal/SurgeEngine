@@ -27,7 +27,7 @@ namespace SurgeEngine.Code.Enemy.States
 
             if (eggFighter.patrolTime == 0) return;
 
-            var context = ActorContext.Context;
+            Actor context = ActorContext.Context;
             if (Vector3.Distance(context.transform.position, transform.position) < eggFighter.findDistance)
             {
                 eggFighter.stateMachine.SetState<EGStateChase>();

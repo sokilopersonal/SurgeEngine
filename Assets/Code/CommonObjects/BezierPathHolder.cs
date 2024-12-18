@@ -15,8 +15,8 @@ namespace SurgeEngine.Code.CommonObjects
         {
             if (_playerInside)
             {
-                var context = ActorContext.Context;
-                var kinematics = context.kinematics;
+                Actor context = ActorContext.Context;
+                ActorKinematics kinematics = context.kinematics;
                 kinematics.SetPath(data);
             }
         }
@@ -37,8 +37,8 @@ namespace SurgeEngine.Code.CommonObjects
         
         private void TogglePath()
         {
-            var context = ActorContext.Context;
-            var kinematics = context.kinematics;
+            Actor context = ActorContext.Context;
+            ActorKinematics kinematics = context.kinematics;
             if (!kinematics.IsPathValid())
             {
                 kinematics.SetPath(data);

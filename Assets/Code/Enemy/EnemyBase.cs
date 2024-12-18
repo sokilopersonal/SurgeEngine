@@ -18,15 +18,15 @@ namespace SurgeEngine.Code.StateMachine
         
         public bool CanBeDamaged()
         {
-            var context = ActorContext.Context;
-            var state = context.stateMachine.CurrentState;
+            Actor context = ActorContext.Context;
+            FState state = context.stateMachine.CurrentState;
 
             if (SonicTools.IsBoost())
             {
                 return true;
             }
 
-            return state is FStateHoming or FStateDrift or FStateSliding or FStateJump || stateMachine.IsExact<EGStateDead>();
+            return state is FStateHoming or FStateDrift or FStateSlide or FStateJump || stateMachine.IsExact<EGStateDead>();
         }
     }
 }

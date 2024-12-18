@@ -10,7 +10,7 @@ namespace SurgeEngine.Code.SurgeDebug
 
         private void Update()
         {
-            var actor = ActorContext.Context;
+            Actor actor = ActorContext.Context;
             string[] text = 
             {
                 $"Position: {actor.transform.position}",
