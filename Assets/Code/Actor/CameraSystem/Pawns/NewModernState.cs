@@ -19,7 +19,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
         private float _yAutoLookVelocity;
         private float _xAutoLookVelocity;
 
-        private bool _isAuto => _actor.input.IsAutoCamera();
+        public bool IsAuto => _actor.input.IsAutoCamera();
 
         public NewModernState(Actor owner) : base(owner)
         {
@@ -49,8 +49,20 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
 
         private Vector3 CalculateTarget(out Vector3 targetPosition, float distance, float yOffset)
         {
-            Quaternion horizontal = Quaternion.AngleAxis(_stateMachine.x, Vector3.up);
-            Quaternion vertical = Quaternion.AngleAxis(_stateMachine.y, Vector3.right);
+            Quaternion horizontal;
+            Quaternion vertical;
+
+            if (IsAuto)
+            {
+                horizontal = Quaternion.AngleAxis(_stateMachine.x, Vector3.up);
+                vertical = Quaternion.AngleAxis(_stateMachine.y, Vector3.right);
+            }
+            else
+            {
+                horizontal = Quaternion.AngleAxis(_stateMachine.lX, Vector3.up);
+                vertical = Quaternion.AngleAxis(_stateMachine.lY, Vector3.right);
+            }
+            
             Vector3 direction = horizontal * vertical * Vector3.back;
             Vector3 actorPosition = _actor.transform.position + Vector3.up * yOffset + Vector3.up * _stateMachine.yLag;
             
@@ -76,7 +88,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
 
         protected virtual void LookAxis()
         {
-            if (_isAuto)
+            if (IsAuto)
             {
                 AutoLookDirection();
             }
@@ -182,6 +194,8 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             Quaternion direction = Quaternion.LookRotation(transformForward, Vector3.up);
             _stateMachine.x = direction.eulerAngles.y;
             _stateMachine.y = direction.eulerAngles.x;
+            _stateMachine.lX = direction.eulerAngles.y;
+            _stateMachine.lY = direction.eulerAngles.x;
         }
 
         public void SetBoostDistance(float value)

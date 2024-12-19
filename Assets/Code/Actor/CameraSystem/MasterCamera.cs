@@ -15,6 +15,9 @@ namespace SurgeEngine.Code.CameraSystem
         public float x;
         public float y;
         
+        public float lX;
+        public float lY;
+        
         public float xAutoLook;
         public float yAutoLook;
         
@@ -36,6 +39,9 @@ namespace SurgeEngine.Code.CameraSystem
         public Transform transform;
 
         public object currentData;
+
+        private float _lXVel;
+        private float _lYVel;
 
         public float blendFactor { get; private set; }
         public float interpolatedBlendFactor { get; private set; }
@@ -70,6 +76,17 @@ namespace SurgeEngine.Code.CameraSystem
             }
             
             base.Tick(dt);
+
+            if (!GetState<NewModernState>().IsAuto)
+            {
+                lX = Mathf.SmoothDamp(lX, x, ref _lXVel, master.smoothTime);
+                lY = Mathf.SmoothDamp(lY, y, ref _lYVel, master.smoothTime);
+            }
+            else
+            {
+                lX = x;
+                lY = y;
+            }
         }
 
         public override void LateTick(float dt)

@@ -15,6 +15,7 @@ namespace SurgeEngine.Code.CameraSystem
         public float sensitivity = 0.5f;
         public float maxSensitivitySpeed = 1f;
         public float minSensitivitySpeed = 0.5f;
+        public float smoothTime = 0.085f;
         
         [Header("Target")] 
         public float distance = 2.9f;
