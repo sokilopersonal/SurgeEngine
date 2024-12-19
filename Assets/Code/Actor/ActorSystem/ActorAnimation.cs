@@ -69,7 +69,7 @@ namespace SurgeEngine.Code.ActorSystem
                     switch (prev)
                     {
                         case FStateGround:
-                            if (actor.kinematics.HorizontalSpeed >= 0.1f)
+                            if (actor.kinematics.HorizontalSpeed >= 0.25f)
                             {
                                 TransitionToState("MoveStop", 0.1f);
                                 TransitionToStateDelayed("Idle", 0.2f, 0.15f);
@@ -86,6 +86,9 @@ namespace SurgeEngine.Code.ActorSystem
                             TransitionToState("Landing", 0f);
                             TransitionToStateDelayed("Idle", 1f, 0.4f);
                             break;
+                        case FStateSit:
+                            TransitionToState("Idle", 0.15f);
+                            break;
                     }
                 }
             }
@@ -95,7 +98,7 @@ namespace SurgeEngine.Code.ActorSystem
                 {
                     if (machine.IsPrevExact<FStateAir>())
                     {
-                        TransitionToState(AnimatorParams.RunCycle, 0.25f);
+                        TransitionToState(AnimatorParams.RunCycle);
                         return;
                     }
                     
