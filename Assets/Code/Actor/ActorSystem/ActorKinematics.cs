@@ -85,7 +85,6 @@ namespace SurgeEngine.Code.ActorSystem
                                        (_cameraTransform.rotation * actor.input.moveVector);
             transformedInput = Vector3.ProjectOnPlane(transformedInput, _normal);
             _inputDir = transformedInput.normalized * actor.input.moveVector.magnitude;
-            if (actor.input.moveVector == Vector3.zero && SonicTools.IsBoost()) _inputDir = _rigidbody.transform.forward;
             
             _moveDot = Vector3.Dot(actor.kinematics.GetInputDir().normalized, _rigidbody.linearVelocity.normalized);
             
@@ -153,8 +152,7 @@ namespace SurgeEngine.Code.ActorSystem
                     {
                         if (!SonicTools.IsBoost())
                         {
-                            _planarVelocity = Vector3.MoveTowards(_planarVelocity, 
-                                _planarVelocity.normalized * _config.topSpeed, 8f * Time.fixedDeltaTime);
+                            _planarVelocity = Vector3.MoveTowards(_planarVelocity, _planarVelocity.normalized * _config.topSpeed, 8f * Time.fixedDeltaTime);
                         }
                     }
 
@@ -352,7 +350,12 @@ namespace SurgeEngine.Code.ActorSystem
             
             _detachTimer = t;
         }
-        
+
+        public void SetInputDir(Vector3 dir)
+        {
+            _inputDir = dir;
+        }
+
         public void ModifyTurnRate(float modifier) => _turnRate *= modifier;
         public void WriteMovementVector(Vector3 vector)
         {

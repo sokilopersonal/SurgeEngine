@@ -132,8 +132,6 @@ namespace SurgeEngine.Code.ActorStates.SonicSubStates
             if (CanBoost())
             {
                 Active = obj.started;
-                if (_cancelBoostCoroutine != null) 
-                    actor.StopCoroutine(_cancelBoostCoroutine);
             }
             
             if (Active)
@@ -160,11 +158,12 @@ namespace SurgeEngine.Code.ActorStates.SonicSubStates
             BaseActorConfig config = actor.config;
             Rigidbody body = actor.kinematics.Rigidbody;
             float speed = actor.kinematics.HorizontalSpeed;
+            
             if (Active)
             {
+                if (actor.input.moveVector == Vector3.zero) actor.kinematics.SetInputDir(actor.transform.forward);
                 float maxSpeed = config.maxSpeed * _config.maxSpeedMultiplier;
-                if (speed < maxSpeed) body.AddForce(body.transform.forward * (_config.acceleration * dt), ForceMode.VelocityChange);
-                    
+                if (speed < maxSpeed) body.AddForce(body.linearVelocity.normalized * (_config.acceleration * dt), ForceMode.Impulse);
             }
             else if (restoringTopSpeed)
             {
