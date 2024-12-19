@@ -509,6 +509,7 @@ Material:
     - _EmissiveIntensity: 10000
     - _EmissiveIntensityUnit: 0
     - _EnableBlendModePreserveSpecularLighting: 1
+    - _EnableFalloff: 1
     - _EnableFogOnTransparent: 1
     - _EnableGeometricSpecularAA: 0
     - _EnergyConservingSpecularColor: 1
@@ -633,6 +634,7 @@ Material:
     - _PPDPrimitiveWidth: 1
     - _Parallax: 0.02
     - _PerPixelSorting: 0
+    - _PowPower: 0
     - _REFLECTIONS_IOR: 0
     - _REFLECTIONS_ROUGHNESS: 0.135
     - _REFLECTIONS_WEIGHT: 1
@@ -749,14 +751,15 @@ Material:
     - _ZTestTransparent: 4
     - _ZWrite: 1
     m_Colors:
-    - _AlbedoColor: {r: 0.5943396, g: 0.4529591, b: 0.13737096, a: 1}
+    - _AlbedoColor: {r: 0.6037736, g: 0.45042035, b: 0.10537558, a: 1}
     - _BASE_COLOR: {r: 1, g: 0.7535237, b: 0, a: 1}
     - _BaseColor: {r: 1, g: 0.9258024, b: 0.43867922, a: 1}
     - _BaseColor0: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColor1: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColor2: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColor3: {r: 1, g: 1, b: 1, a: 1}
-    - _BlinnParam: {r: 150, g: 20, b: 0, a: 0}
+    - _BlinnParam: {r: 150, g: 25, b: 0, a: 0}
+    - _BlinnParam2: {r: 0, g: 0, b: 0, a: 0}
     - _COAT_COLOR: {r: 0, g: 0, b: 0, a: 0}
     - _Color: {r: 1, g: 0.544991, b: 0, a: 1}
     - _ColorB: {r: 235.80447, g: 235.80447, b: 235.80447, a: 0}
@@ -775,7 +778,7 @@ Material:
     - _InvPrimScale: {r: 1, g: 1, b: 0, a: 0}
     - _IridescenceThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
     - _REFLECTIONS_COLOR: {r: 1, g: 1, b: 1, a: 1}
-    - _ReflectionColor: {r: 1, g: 0.80354196, b: 0.47450984, a: 1}
+    - _ReflectionColor: {r: 1, g: 0.8456164, b: 0.3915094, a: 1}
     - _RimLightColor: {r: 1023.99994, g: 637.7245, b: 0, a: 0}
     - _Specular: {r: 0.0625, g: 0.0625, b: 0.0625, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
