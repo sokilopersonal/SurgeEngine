@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1f37b37c23e94746a87aa4ac3191046, type: 3}
   m_Name: BaseActorPhysics
   m_EditorClassIdentifier: 
-  castDistance: 1.175
+  castDistance: 1.2
   castDistanceCurve:
     serializedVersion: 2
     m_Curve:
@@ -52,16 +52,16 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 1.65
-      inSlope: 0
-      outSlope: 0
+      value: 0.75
+      inSlope: 4.400012
+      outSlope: 4.400012
       tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 0.113838814
-      value: 1.65
+      time: 0.125
+      value: 1.3000015
       inSlope: -0.009980005
       outSlope: -0.009980005
       tangentMode: 0
@@ -95,32 +95,32 @@ MonoBehaviour:
   maxSkiddingRate: 56
   skiddingThreshold: -0.55
   skidDelay: 0.08
-  turnSpeed: 9
+  turnSpeed: 6
   turnCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 1
-      inSlope: -2.144859
-      outSlope: -2.144859
+      value: 1.0000122
+      inSlope: -0.028249528
+      outSlope: -0.028249528
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.034970857
+      outWeight: 0.123935424
     - serializedVersion: 3
       time: 1
       value: 0.15
-      inSlope: -0.0015552307
-      outSlope: -0.0015552307
+      inSlope: 0.02784944
+      outSlope: 0.02784944
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.08353265
+      inWeight: 0.09112364
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  turnSmoothing: 8
+  turnSmoothing: 12
   jumpForce: 6.5
   jumpHoldForce: 26
   jumpStartTime: 0.2
