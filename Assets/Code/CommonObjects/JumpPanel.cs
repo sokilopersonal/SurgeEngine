@@ -23,6 +23,11 @@ namespace SurgeEngine.Code.CommonObjects
             Actor context = ActorContext.Context;
             if (impulse > 0)
             {
+                bool boosted = context.stateMachine.GetSubState<FBoost>().Active;
+
+                if (boosted)
+                    context.effects.jumpDeluxEffect.Toggle(true);
+
                 context.stateMachine.GetSubState<FBoost>().Active = false;
 
                 context.transform.position = startPoint.position ;
@@ -32,7 +37,7 @@ namespace SurgeEngine.Code.CommonObjects
                 
                 FStateSpecialJump specialJump = context.stateMachine.SetState<FStateSpecialJump>(0.2f, true, true);
                 specialJump.SetSpecialData(new SpecialJumpData(SpecialJumpType.JumpBoard));
-                specialJump.PlaySpecialAnimation(0.2f, isDelux);
+                specialJump.PlaySpecialAnimation(0.2f, isDelux || boosted);
                     
                 context.flags.AddFlag(new Flag(FlagType.OutOfControl, null, true, Mathf.Abs(outOfControl)));
             }

@@ -28,6 +28,9 @@ namespace SurgeEngine.Code.ActorSystem
         [Header("Grind")]
         public Effect grindEffect;
 
+        [Header("Other")]
+        public Effect jumpDeluxEffect;
+
         private void Start()
         {
             boostAura.Toggle(false);
