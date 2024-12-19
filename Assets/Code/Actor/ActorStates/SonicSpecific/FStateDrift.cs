@@ -73,11 +73,9 @@ namespace SurgeEngine.Code.ActorStates
                 float boostForce = SonicTools.IsBoost() ? 0.5f : 1f;
                 Quaternion angle = Quaternion.AngleAxis(_driftXDirection * _config.centrifugalForce * boostForce, Kinematics.Normal);
                 Vector3 driftVelocity = angle * _rigidbody.linearVelocity;
-                Vector3 additive = driftVelocity.normalized *
-                                   (1 - _rigidbody.linearVelocity.magnitude);
-                if (additive.magnitude < _config.maxSpeed * 0.2f)
-                    driftVelocity -= additive * 0.75f;
                 _rigidbody.linearVelocity = driftVelocity;
+                if (Kinematics.HorizontalSpeed < _config.maxSpeed) _rigidbody.linearVelocity += _rigidbody.linearVelocity.normalized *
+                    (0.05f * Mathf.Lerp(4f, 1f, Kinematics.HorizontalSpeed / _config.maxSpeed));
 
                 Kinematics.Snap(point, normal);
                 Kinematics.Project();
