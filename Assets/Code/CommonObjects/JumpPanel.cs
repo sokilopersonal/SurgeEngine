@@ -3,6 +3,7 @@ using SurgeEngine.Code.ActorStates.SonicSubStates;
 using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.SurgeDebug;
+using SurgeEngine.Code.Tools;
 using UnityEngine;
 
 namespace SurgeEngine.Code.CommonObjects
@@ -23,7 +24,7 @@ namespace SurgeEngine.Code.CommonObjects
             Actor context = ActorContext.Context;
             if (impulse > 0)
             {
-                bool boosted = context.stateMachine.GetSubState<FBoost>().Active;
+                bool boosted = SonicTools.IsBoost();
 
                 if (boosted)
                     context.effects.jumpDeluxEffect.Toggle(true);
