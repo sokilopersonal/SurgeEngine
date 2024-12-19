@@ -104,13 +104,13 @@ MonoBehaviour:
   sensitivity: 0.5
   maxSensitivitySpeed: 1
   minSensitivitySpeed: 0.5
-  distance: 2.45
+  distance: 2.25
   yOffset: 0.01
   positionOffset: {x: 0, y: 0, z: 0}
   lookOffset: {x: 0, y: -0.000016715132, z: 0}
-  horizontalAutoLookAmplitude: 4
-  horizontalAutoLookMinAmplitude: 0.75
-  verticalDefaultAmplitude: 9
+  horizontalAutoLookAmplitude: 5.5
+  horizontalAutoLookMinAmplitude: 0.2
+  verticalDefaultAmplitude: 11
   verticalMinAmplitude: -5
   verticalMaxAmplitude: 10
   verticalMinLerpSpeed: 0.75
@@ -152,7 +152,7 @@ MonoBehaviour:
       outWeight: 0.091933206
     - serializedVersion: 3
       time: 1
-      value: 0.6
+      value: 0.515
       inSlope: 0.00096451637
       outSlope: 0.00096451637
       tangentMode: 0
@@ -982,7 +982,7 @@ ParticleSystem:
         m_RotationOrder: 4
     randomizeRotationDirection: 0
     gravitySource: 0
-    maxNumParticles: 1
+    maxNumParticles: 4
     customEmitterVelocity: {x: 0, y: 0, z: 0}
     size3D: 1
     rotation3D: 0
@@ -1358,7 +1358,7 @@ ParticleSystem:
       countCurve:
         serializedVersion: 2
         minMaxState: 0
-        scalar: 1
+        scalar: 4
         minScalar: 30
         maxCurve:
           serializedVersion: 2
@@ -5873,7 +5873,7 @@ ParticleSystem:
         m_RotationOrder: 4
     randomizeRotationDirection: 0
     gravitySource: 0
-    maxNumParticles: 1
+    maxNumParticles: 2
     customEmitterVelocity: {x: 0, y: 0, z: 0}
     size3D: 1
     rotation3D: 0
@@ -6249,7 +6249,7 @@ ParticleSystem:
       countCurve:
         serializedVersion: 2
         minMaxState: 0
-        scalar: 1
+        scalar: 2
         minScalar: 30
         maxCurve:
           serializedVersion: 2
@@ -10427,7 +10427,7 @@ MonoBehaviour:
   boostDistortion: {fileID: 8312029191663120684}
   spinball: {fileID: 1135278485146894530}
   stompEffect: {fileID: 8636502887884504151}
-  slideEffect: {fileID: 6845285272422643522}
+  slideEffect: {fileID: 5048219709978352688}
   grindEffect: {fileID: 5295992643565744341}
 --- !u!1 &1559403866463961155
 GameObject:
@@ -15342,7 +15342,7 @@ Camera:
   m_TargetEye: 3
   m_HDR: 0
   m_AllowMSAA: 0
-  m_AllowDynamicResolution: 0
+  m_AllowDynamicResolution: 1
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
@@ -15371,7 +15371,7 @@ MonoBehaviour:
   dithering: 0
   stopNaNs: 0
   taaSharpenStrength: 0
-  TAAQuality: 1
+  TAAQuality: 2
   taaSharpenMode: 0
   taaRingingReduction: 0
   taaHistorySharpening: 0.35
@@ -15392,7 +15392,7 @@ MonoBehaviour:
   flipYMode: 0
   xrRendering: 1
   fullscreenPassthrough: 0
-  allowDynamicResolution: 0
+  allowDynamicResolution: 1
   customRenderingSettings: 1
   invertFaceCulling: 0
   probeLayerMask:
@@ -15401,7 +15401,7 @@ MonoBehaviour:
   hasPersistentHistory: 0
   screenSizeOverride: {x: 0, y: 0, z: 0, w: 0}
   screenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
-  allowDeepLearningSuperSampling: 1
+  allowDeepLearningSuperSampling: 0
   deepLearningSuperSamplingUseCustomQualitySettings: 0
   deepLearningSuperSamplingQuality: 0
   deepLearningSuperSamplingUseCustomAttributes: 0
@@ -20932,7 +20932,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5505166884919234193}
-  - component: {fileID: 6845285272422643522}
+  - component: {fileID: 5048219709978352688}
   m_Layer: 0
   m_Name: Slide
   m_TagString: Untagged
@@ -20954,9 +20954,10 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1008685043773160258}
+  - {fileID: 2496756151674259717}
   m_Father: {fileID: 377323914507647460}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6845285272422643522
+--- !u!114 &5048219709978352688
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20965,11 +20966,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 6200148291122215821}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 156d571a0b9d48a599ee79b3b0e786a8, type: 3}
+  m_Script: {fileID: 11500000, guid: 9bbb968b823c4ae19eef04a8fa5f832d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   particle: {fileID: 4029303546438136769}
   stopDelay: 0
+  slidingTrail: {fileID: 3932752552707431379}
 --- !u!1 &7546952052960584729
 GameObject:
   m_ObjectHideFlags: 0
@@ -21001,6 +21003,145 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3911659134670193167}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7917777242058463066
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2496756151674259717}
+  - component: {fileID: 3932752552707431379}
+  m_Layer: 0
+  m_Name: SlideTrail
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2496756151674259717
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7917777242058463066}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.8, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5505166884919234193}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!96 &3932752552707431379
+TrailRenderer:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7917777242058463066}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 0
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 6337c78286d1ba945951f0a722076dc7, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Time: 1
+  m_PreviewTimeScale: 1
+  m_Parameters:
+    serializedVersion: 3
+    widthMultiplier: 0.25
+    widthCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    colorGradient:
+      serializedVersion: 2
+      key0: {r: 1, g: 1, b: 1, a: 1}
+      key1: {r: 1, g: 1, b: 1, a: 1}
+      key2: {r: 0, g: 0, b: 0, a: 0}
+      key3: {r: 0, g: 0, b: 0, a: 0}
+      key4: {r: 0, g: 0, b: 0, a: 0}
+      key5: {r: 0, g: 0, b: 0, a: 0}
+      key6: {r: 0, g: 0, b: 0, a: 0}
+      key7: {r: 0, g: 0, b: 0, a: 0}
+      ctime0: 0
+      ctime1: 65535
+      ctime2: 0
+      ctime3: 0
+      ctime4: 0
+      ctime5: 0
+      ctime6: 0
+      ctime7: 0
+      atime0: 0
+      atime1: 65535
+      atime2: 0
+      atime3: 0
+      atime4: 0
+      atime5: 0
+      atime6: 0
+      atime7: 0
+      m_Mode: 0
+      m_ColorSpace: -1
+      m_NumColorKeys: 2
+      m_NumAlphaKeys: 2
+    numCornerVertices: 0
+    numCapVertices: 0
+    alignment: 0
+    textureMode: 0
+    textureScale: {x: 1, y: 1}
+    shadowBias: 0.5
+    generateLightingData: 0
+  m_MinVertexDistance: 0.1
+  m_MaskInteraction: 0
+  m_Autodestruct: 0
+  m_Emitting: 0
+  m_ApplyActiveColorSpace: 1
 --- !u!1001 &2557042209965748321
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21151,6 +21292,26 @@ PrefabInstance:
     - target: {fileID: 4894437833673752107, guid: 71b112c5f2262004a8a1836ad970b46f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5137094506619849666, guid: 71b112c5f2262004a8a1836ad970b46f, type: 3}
+      propertyPath: m_PropertySheet.m_Vector3f.m_Array.Array.data[0].m_Value.y
+      value: -0.55
+      objectReference: {fileID: 0}
+    - target: {fileID: 5137094506619849666, guid: 71b112c5f2262004a8a1836ad970b46f, type: 3}
+      propertyPath: m_PropertySheet.m_Vector3f.m_Array.Array.data[0].m_Value.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5137094506619849666, guid: 71b112c5f2262004a8a1836ad970b46f, type: 3}
+      propertyPath: m_PropertySheet.m_Gradient.m_Array.Array.data[0].m_Value.atime2
+      value: 58982
+      objectReference: {fileID: 0}
+    - target: {fileID: 5137094506619849666, guid: 71b112c5f2262004a8a1836ad970b46f, type: 3}
+      propertyPath: m_PropertySheet.m_Gradient.m_Array.Array.data[0].m_Value.key1.a
+      value: 0.09803922
+      objectReference: {fileID: 0}
+    - target: {fileID: 5137094506619849666, guid: 71b112c5f2262004a8a1836ad970b46f, type: 3}
+      propertyPath: m_PropertySheet.m_Gradient.m_Array.Array.data[0].m_Value.m_Mode
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6844501969905408469, guid: 71b112c5f2262004a8a1836ad970b46f, type: 3}
       propertyPath: easing
@@ -22205,7 +22366,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1046482504533946608, guid: b5197d4abc58dd14180947022fd32ae9, type: 3}
       propertyPath: m_Name
-      value: SonicRoot
+      value: SonicRoot 1
       objectReference: {fileID: 0}
     - target: {fileID: 1046482504533946608, guid: b5197d4abc58dd14180947022fd32ae9, type: 3}
       propertyPath: m_Layer

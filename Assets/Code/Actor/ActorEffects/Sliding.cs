@@ -2,18 +2,14 @@
 
 namespace SurgeEngine.Code.ActorEffects
 {
-    public class Sliding : MonoBehaviour
+    public class Sliding : Effect
     {
-        [SerializeField] private ParticleSystem slidingParticle;
+        [SerializeField] private TrailRenderer slidingTrail;
 
-        private void OnEnable()
+        public override void Toggle(bool value)
         {
-            slidingParticle.Play(true);
-        }
-
-        private void OnDisable()
-        {
-            slidingParticle.Stop(true);
+            base.Toggle(value);
+            slidingTrail.emitting = value;
         }
     }
 }
