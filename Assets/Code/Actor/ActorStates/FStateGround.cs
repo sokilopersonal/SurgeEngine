@@ -37,6 +37,14 @@ namespace SurgeEngine.Code.ActorStates
                 StateMachine.SetState<FStateJump>(0.1f);
             }
 
+            if (!SonicTools.IsBoost())
+            {
+                if (Kinematics.Skidding && Kinematics.HorizontalSpeed > 15f)
+                {
+                    StateMachine.SetState<FStateBrake>();
+                }
+            }
+
             float minSpeed = StateMachine.GetState<FStateSlide>().GetConfig().minSpeed;
             minSpeed += minSpeed * 1.5f;
             float dot = Stats.moveDot;

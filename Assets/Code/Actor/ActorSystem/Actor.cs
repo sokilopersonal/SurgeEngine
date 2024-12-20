@@ -38,6 +38,8 @@ namespace SurgeEngine.Code.ActorSystem
             stateMachine.AddState(new FStateStart(this, body));
             stateMachine.AddState(new FStateIdle(this, body));
             stateMachine.AddState(new FStateGround(this, body));
+            stateMachine.AddState(new FStateBrake(this, body));
+            stateMachine.AddState(new FStateBrakeTurn(this, body));
             stateMachine.AddState(new FStateAir(this, body));
             stateMachine.AddState(new FStateSpecialJump(this, body));
             stateMachine.AddState(new FStateSit(this, body));

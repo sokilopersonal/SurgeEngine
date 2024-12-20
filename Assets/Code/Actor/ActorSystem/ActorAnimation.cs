@@ -89,6 +89,9 @@ namespace SurgeEngine.Code.ActorSystem
                         case FStateSit:
                             TransitionToState("Idle", 0.15f);
                             break;
+                        case FStateBrakeTurn:
+                            TransitionToState("Idle", 0.1f);
+                            break;
                     }
                 }
             }
@@ -182,7 +185,6 @@ namespace SurgeEngine.Code.ActorSystem
                 int index = Random.Range(0, 4);
                 TransitionToState($"AfterHoming{index}", 0f);
             }
-
             if (obj is FStateDrift)
             {
                 // Drift start
@@ -218,6 +220,15 @@ namespace SurgeEngine.Code.ActorSystem
             if (obj is FStateJumpSelectorLaunch)
             {
                 
+            }
+
+            if (obj is FStateBrake)
+            {
+                TransitionToState("BrakeCycle");
+            }
+            if (obj is FStateBrakeTurn)
+            {
+                TransitionToState("BrakeTurn", 0.1f);
             }
         }
         
