@@ -87,6 +87,8 @@ MonoBehaviour:
     master: {fileID: 6716957596991090240}
     x: 0
     y: 0
+    lX: 0
+    lY: 0
     xAutoLook: 0
     yAutoLook: 0
     yLag: 0
@@ -101,9 +103,10 @@ MonoBehaviour:
     lastFOV: 0
     camera: {fileID: 4273712975694131987}
     transform: {fileID: 4604916912254361020}
-  sensitivity: 0.5
+  sensitivity: 0.675
   maxSensitivitySpeed: 1
-  minSensitivitySpeed: 0.5
+  minSensitivitySpeed: 0.75
+  smoothTime: 0.02
   distance: 2.25
   yOffset: 0.01
   positionOffset: {x: 0, y: 0, z: 0}
@@ -25395,6 +25398,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8224210624552474014}
   - component: {fileID: 8348964648566409893}
+  - component: {fileID: 7130919521657276233}
   - component: {fileID: 1749019467311376387}
   - component: {fileID: 5677909171274304080}
   - component: {fileID: 4778545105552515917}
@@ -25404,7 +25408,7 @@ GameObject:
   - component: {fileID: 4444228904308439761}
   - component: {fileID: 8154153295917155542}
   - component: {fileID: 5613109573097416191}
-  - component: {fileID: 7130919521657276233}
+  - component: {fileID: 4109363033627661366}
   m_Layer: 3
   m_Name: Audio
   m_TagString: Untagged
@@ -25437,6 +25441,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7afbe1dbf9f3441fa4ce0d2500f51d29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7130919521657276233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3999411662334716339}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f62e7baa04ec4e1780ac166c9d135435, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &1749019467311376387
@@ -25653,7 +25669,7 @@ MonoBehaviour:
       Data3: 1323237770
       Data4: -2140426155
     Path: event:/Common/Grind
---- !u!114 &7130919521657276233
+--- !u!114 &4109363033627661366
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -25662,9 +25678,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 3999411662334716339}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f62e7baa04ec4e1780ac166c9d135435, type: 3}
+  m_Script: {fileID: 11500000, guid: 8b39771333284a55847fc6415f2ec701, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  brakeSound:
+    Guid:
+      Data1: -1784255143
+      Data2: 1121385777
+      Data3: -563556443
+      Data4: -1941405797
+    Path: event:/Common/Brake
 --- !u!1 &4232932930214798659
 GameObject:
   m_ObjectHideFlags: 0
