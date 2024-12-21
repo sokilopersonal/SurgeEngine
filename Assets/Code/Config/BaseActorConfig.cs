@@ -23,7 +23,7 @@ namespace SurgeEngine.Code.Config
         public float minSkiddingRate = 10;
         public float maxSkiddingRate = 15;
         public float skiddingThreshold = 0.5f;
-        public float skidDelay = 0.2f;
+        public float skiddingSpeedThreshold = 15f;
         public float turnSpeed = 8;
         public AnimationCurve turnCurve;
         public float turnSmoothing = 10;
