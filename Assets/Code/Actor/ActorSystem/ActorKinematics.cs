@@ -57,7 +57,7 @@ namespace SurgeEngine.Code.ActorSystem
         private Vector3 _planarVelocity;
         private Vector3 _normal;
         
-        private PathData _pathData;
+        private SplineContainer _path;
         private SplineContainer _rail;
 
         private float _speed;
@@ -99,38 +99,14 @@ namespace SurgeEngine.Code.ActorSystem
 
         private void FixedUpdate()
         {
-            PathData path = _pathData;
-            if (path != null)
-            {
-                if (path.splineContainer != null)
-                {
-                    SplineContainer container = path.splineContainer;
-                    SplineUtility.GetNearestPoint(container.Spline, SurgeMath.Vector3ToFloat3(container.transform.InverseTransformPoint(_rigidbody.position)), out float3 near, out float t);
-                    container.Evaluate(t, out float3 point, out float3 tangent, out float3 up);
-                    Vector3 planeNormal = Vector3.Cross(tangent, up);
-                
-                    if (HorizontalSpeed < path.maxAutoRunSpeed)
-                    {
-                        _rigidbody.AddForce(_rigidbody.transform.forward * (Time.fixedDeltaTime * path.autoRunSpeed), ForceMode.Impulse);
-                    }
-                
-                    _rigidbody.linearVelocity = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, planeNormal);
-                    _inputDir = Vector3.ProjectOnPlane(_inputDir, planeNormal);
-                    _inputDir = Vector3.ProjectOnPlane(_inputDir, up);
-                
-                    Vector3 nearPoint = container.transform.TransformPoint(near);
-                    nearPoint.y = _rigidbody.position.y;
-                    // _rigidbody.position = nearPoint;
-                    // _rigidbody.rotation = Quaternion.LookRotation(tangent, up);
-                }
-            }
+            SplineCalculation();
         }
 
         public void BasePhysics(Vector3 point, Vector3 normal)
         {
             Vector3 vel = _rigidbody.linearVelocity;
             Vector3 dir = _inputDir;
-            SurgeMath.SplitPlanarVector(vel, normal, out Vector3 planar, out Vector3 vertical); 
+            SurgeMath.SplitPlanarVector(vel, normal, out Vector3 planar, out Vector3 vertical);
             
             WriteMovementVector(planar);
             _planarVelocity = planar;
@@ -176,10 +152,31 @@ namespace SurgeEngine.Code.ActorSystem
             {
                 Deceleration(_config.minDeaccelerationRate, _config.maxDeaccelerationRate);
             }
-
+            
             _rigidbody.linearVelocity = _movementVector + vertical;
             
             Snap(point, normal);
+        }
+
+        public void SplineCalculation()
+        {
+            if (_path != null)
+            {
+                var spline = _path.Spline;
+                SplineUtility.GetNearestPoint(spline, _path.transform.InverseTransformPoint(_rigidbody.position - Vector3.up * 0.5f), out float3 point, out float t);
+                _path.Evaluate(t, out float3 pos, out float3 tangent, out float3 up);
+                Vector3 normal = Vector3.Cross(tangent, up);
+                //Normal = up;
+                
+                Debug.DrawRay(transform.position, up);
+                
+                _rigidbody.linearVelocity = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, normal);
+                _inputDir = Vector3.ProjectOnPlane(_inputDir, normal);
+
+                Vector3 near = _path.transform.TransformPoint(point);
+                near.y = _rigidbody.position.y;
+                _rigidbody.position = near;
+            }
         }
 
         private void BaseGroundPhysics()
@@ -386,16 +383,16 @@ namespace SurgeEngine.Code.ActorSystem
             return _inputDir;
         }
         
-        public void SetPath(PathData data)
+        public void SetPath(SplineContainer path)
         {
-            _pathData = data;
+            _path = path;
         }
 
         public void SetAngle() => _angle = Vector3.Angle(_normal, Vector3.up);
 
         public bool IsPathValid()
         {
-            return _pathData != null;
+            return _path != null;
         }
     }
 
