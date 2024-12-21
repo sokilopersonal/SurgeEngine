@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.ActorSoundEffects;
@@ -8,12 +9,16 @@ namespace SurgeEngine.Code.ActorEffects
     public class ParaloopEffect : Effect
     {
         [SerializeField] private TrailRenderer trail1, trail2;
-        [HideInInspector] public Actor sonicContext = null;
+        [HideInInspector] public Actor sonicContext;
         [HideInInspector] public Vector3 startPoint;
-        bool toggled = false;
-        ParaloopSound sound;
-        Color targetColor;
-        const float colorSpeed = 10f;
+        
+        private bool toggled;
+        private ParaloopSound sound;
+        private Color targetColor;
+        private const float ColorSpeed = 10f;
+
+        public event Action<bool> OnParaloopToggle; 
+        
         public void Start()
         {
             trail1.emitting = true;
@@ -24,6 +29,7 @@ namespace SurgeEngine.Code.ActorEffects
             trail2.startColor = Color.clear;
             trail2.endColor = Color.clear;
         }
+        
         public override void Toggle(bool value)
         {
             if (toggled)
@@ -32,21 +38,20 @@ namespace SurgeEngine.Code.ActorEffects
             if (value)
             {
                 toggled = true;
-                if (!sound)
-                    sound = sonicContext.sounds.GetComponent<ParaloopSound>();
-                sound.Play();
             }
+            
+            OnParaloopToggle?.Invoke(value);
         }
 
         private void LerpTrails()
         {
             targetColor = toggled ? Color.white : Color.clear;
 
-            trail1.startColor = Color.Lerp(trail1.startColor, targetColor, Time.deltaTime * colorSpeed);
-            trail1.endColor = Color.Lerp(trail1.endColor, targetColor, Time.deltaTime * colorSpeed);
+            trail1.startColor = Color.Lerp(trail1.startColor, targetColor, Time.deltaTime * ColorSpeed);
+            trail1.endColor = Color.Lerp(trail1.endColor, targetColor, Time.deltaTime * ColorSpeed);
 
-            trail2.startColor = Color.Lerp(trail2.startColor, targetColor, Time.deltaTime * colorSpeed);
-            trail2.endColor = Color.Lerp(trail2.endColor, targetColor, Time.deltaTime * colorSpeed);
+            trail2.startColor = Color.Lerp(trail2.startColor, targetColor, Time.deltaTime * ColorSpeed);
+            trail2.endColor = Color.Lerp(trail2.endColor, targetColor, Time.deltaTime * ColorSpeed);
         }
 
         private void Update()

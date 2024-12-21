@@ -19,12 +19,12 @@ namespace SurgeEngine.Code.ActorSoundEffects
             voice = GetComponent<VoiceHandler>();
         }
 
-        private void OnEnable()
+        protected virtual void OnEnable()
         {
             actor.stateMachine.OnStateAssign += SoundState;
         }
 
-        private void OnDisable()
+        protected virtual void OnDisable()
         {
             actor.stateMachine.OnStateAssign -= SoundState;
         }
