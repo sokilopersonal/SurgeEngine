@@ -43,6 +43,8 @@ namespace SurgeEngine.Editor
 
         private void OnEnable()
         {
+            selectedCategoryIndex = EditorPrefs.GetInt("AssetManagerCategoryIndex", 0);
+            
             LoadAssetsList();
         }
 
@@ -50,12 +52,14 @@ namespace SurgeEngine.Editor
         {
             GUILayout.Label("Asset Manager", EditorStyles.boldLabel);
             categories = new[] { "All", "Common", "Enemies", "Ring Groups", "Cameras" };
-            
+    
             GUILayout.Label("Category:");
             selectedCategoryIndex = EditorGUILayout.Popup(selectedCategoryIndex, categories);
+            
+            EditorPrefs.SetInt("AssetManagerCategoryIndex", selectedCategoryIndex);
 
             normalOffset = EditorGUILayout.FloatField("Normal Offset", normalOffset, EditorStyles.label);
-            
+    
             if (GUILayout.Button("Add Prefab"))
             {
                 SelectPrefab();
@@ -63,28 +67,18 @@ namespace SurgeEngine.Editor
 
             GUILayout.Space(10);
             scrollPosition = GUILayout.BeginScrollView(scrollPosition);
-            
-            int itemsPerRow = Mathf.Max(1, (int)(position.width / 110));
-            int drawnCount = 0;
-            EditorGUILayout.BeginHorizontal();
+    
             foreach (var prefabData in prefabDataList)
             {
                 if (selectedCategoryIndex != 0 && prefabData.category != categories[selectedCategoryIndex])
                     continue;
 
-                if (DrawPrefabTile(prefabData))
+                if (DrawPrefabButton(prefabData))
                 {
                     ShowContextMenu(prefabData);
                 }
-
-                drawnCount++;
-                if (drawnCount % itemsPerRow == 0)
-                {
-                    EditorGUILayout.EndHorizontal();
-                    EditorGUILayout.BeginHorizontal();
-                }
             }
-            EditorGUILayout.EndHorizontal();
+
             GUILayout.EndScrollView();
 
             if (GUILayout.Button("Save Assets List"))
@@ -93,36 +87,24 @@ namespace SurgeEngine.Editor
             }
         }
 
-        private bool DrawPrefabTile(PrefabData prefabData)
+        private bool DrawPrefabButton(PrefabData prefabData)
         {
             bool rightClick = false;
-            EditorGUILayout.BeginVertical(GUILayout.Width(100));
-            {
-                Texture2D previewTexture = AssetPreview.GetAssetPreview(prefabData.prefab);
 
-                int size = 100;
-                if (GUILayout.Button(previewTexture, GUILayout.Width(size), GUILayout.Height(size)))
+            EditorGUILayout.BeginHorizontal();
+            if (GUILayout.Button(prefabData.prefab.name,GUILayout.ExpandWidth(true), GUILayout.Height(35)))
+            {
+                if (Event.current.button == 0)
                 {
-                    if (Event.current.button == 0)
-                    {
-                        StartPlacingPrefab(prefabData.prefab);
-                    }
-                    else if (Event.current.button == 1)
-                    {
-                        rightClick = true;
-                    }
+                    StartPlacingPrefab(prefabData.prefab);
                 }
-                
-                GUIStyle style = new GUIStyle
+                else if (Event.current.button == 1)
                 {
-                    font = EditorStyles.boldFont,
-                    normal = { textColor = Color.white },
-                    alignment = TextAnchor.MiddleCenter,
-                    fontSize = 11
-                };
-                GUILayout.Label(prefabData.prefab.name, style, GUILayout.Width(100));
+                    rightClick = true;
+                }
             }
-            EditorGUILayout.EndVertical();
+            EditorGUILayout.EndHorizontal();
+
             return rightClick;
         }
 
