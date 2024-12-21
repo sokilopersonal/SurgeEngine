@@ -14,6 +14,7 @@ namespace SurgeEngine.Code.Config
         [Header("Base Physics")]
         public float topSpeed = 28;
         public float maxSpeed = 35;
+        public float minParaloopSpeed = 28;
         public float maxVerticalSpeed;
         public float accelerationRate = 7.5f;
         public AnimationCurve accelerationCurve;
