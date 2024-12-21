@@ -11,10 +11,6 @@ namespace SurgeEngine.Code.ActorEffects
         [HideInInspector] public Vector3 startPoint;
         bool toggled = false;
         ParaloopSound sound;
-        public void Start()
-        {
-            sound = sonicContext.sounds.GetComponent<ParaloopSound>();
-        }
         public override void Toggle(bool value)
         {
             if (toggled)
@@ -23,6 +19,8 @@ namespace SurgeEngine.Code.ActorEffects
             if (value)
             {
                 toggled = true;
+                if (!sound)
+                    sound = sonicContext.sounds.GetComponent<ParaloopSound>();
                 sound.Play();
             }
             
