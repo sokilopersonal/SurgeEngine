@@ -33,12 +33,12 @@ namespace SurgeEngine.Code.CommonObjects
             }
         }
 
-        private void OnDrawGizmos()
+        protected override void OnDrawGizmos()
         {
             if (collider == null)
                 collider = GetComponent<BoxCollider>();
             
-            Gizmos.color = new Color(0.15f, 1f, 0f, 0.135f);
+            Gizmos.color = new Color(0.15f, 1f, 0f, 0.1f);
             Gizmos.matrix = transform.localToWorldMatrix;
             Gizmos.DrawCube(collider.center, collider.size);
         }

@@ -52,13 +52,12 @@ namespace SurgeEngine.Code.CommonObjects
             }
         }
 
-        protected override void Draw()
+        protected override void OnDrawGizmos()
         {
-            base.Draw();
-
+            base.OnDrawGizmos();
+            
             TrajectoryDrawer.DrawTrajectory(transform.position, Common.GetCross(transform, pitch), Color.green, impulseOnNormal);
             TrajectoryDrawer.DrawTrajectory(transform.position, Common.GetCross(transform, pitch), Color.cyan, impulseOnBoost);
         }
-
     }
 }

@@ -9,8 +9,10 @@ namespace SurgeEngine.Code.CommonObjects
             direction = Vector3.up;
         }
 
-        protected override void Draw()
+        protected override void OnDrawGizmos()
         {
+            base.OnDrawGizmos();
+            
             Vector3 startPosition = transform.position + Vector3.up * yOffset;
             Vector3 dir = Vector3.up;
 

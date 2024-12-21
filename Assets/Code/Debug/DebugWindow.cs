@@ -16,7 +16,7 @@ namespace SurgeEngine.Code.SurgeDebug
                 $"Position: {actor.transform.position}",
                 $"Euler Angles: {actor.transform.rotation.eulerAngles}",
                 $"Move Dot: {actor.stats.moveDot}",
-                $"Current Speed: {actor.kinematics.HorizontalSpeed}",
+                $"Current Speed: {actor.kinematics.Velocity.magnitude}",
                 $"Current Vertical Speed: {actor.stats.currentVerticalSpeed}",
                 $"Body Velocity: {actor.kinematics.Velocity}",
                 $"Planar Velocity: {actor.kinematics.PlanarVelocity}",

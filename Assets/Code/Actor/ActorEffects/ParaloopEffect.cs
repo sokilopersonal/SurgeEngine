@@ -61,7 +61,7 @@ namespace SurgeEngine.Code.ActorEffects
             if (!toggled || sonicContext == null)
                 return;
 
-            if (sonicContext.kinematics.HorizontalSpeed < sonicContext.config.minParaloopSpeed || Vector3.Distance(sonicContext.kinematics.Rigidbody.position, startPoint) > 50f)
+            if (sonicContext.kinematics.Speed < sonicContext.config.minParaloopSpeed || Vector3.Distance(sonicContext.kinematics.Rigidbody.position, startPoint) > 50f)
             {
                 toggled = false;
                 Toggle(false);

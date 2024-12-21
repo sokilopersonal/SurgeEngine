@@ -22,6 +22,7 @@ namespace SurgeEngine.Code.ActorSystem
             set => _turnRate = value;
         }
 
+        public float Speed => _speed;
         public float HorizontalSpeed => _rigidbody.GetHorizontalMagnitude();
 
         public float Angle => _angle;
@@ -315,10 +316,8 @@ namespace SurgeEngine.Code.ActorSystem
 
             if (point != Vector3.zero && normal != Vector3.zero)
             {
-                Quaternion slopeRotation = Quaternion.FromToRotation(transform.up, normal) * _rigidbody.rotation;
                 Vector3 goal = point + normal;
-                _rigidbody.position = Vector3.Lerp(_rigidbody.position, goal, 
-                    Time.fixedDeltaTime * (Mathf.Abs(Quaternion.Dot(_rigidbody.rotation, slopeRotation) + 1f) / 2f * _rigidbody.linearVelocity.magnitude + 15f));
+                _rigidbody.position = goal;
             }
         }
 

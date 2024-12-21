@@ -32,10 +32,10 @@ namespace SurgeEngine.Code.ActorSystem
         {
             SetBool(AnimatorParams.Idle, actor.stateMachine.CurrentState is FStateIdle);
             SetBool(AnimatorParams.InAir, actor.stateMachine.CurrentState is FStateAir or FStateJump or FStateSpecialJump or FStateAirBoost);
-            SetFloat(AnimatorParams.GroundSpeed, Mathf.Clamp(actor.stats.currentSpeed, 4, 30f));
+            SetFloat(AnimatorParams.GroundSpeed, Mathf.Clamp(actor.kinematics.Speed, 4, 30f));
             SetFloat(AnimatorParams.VerticalSpeed, actor.stats.currentVerticalSpeed);
             
-            SetFloat("SpeedPercent", Mathf.Clamp01(actor.kinematics.HorizontalSpeed / actor.config.topSpeed));
+            SetFloat("SpeedPercent", Mathf.Clamp01(actor.kinematics.Speed / actor.config.topSpeed));
 
             Vector3 vel = actor.kinematics.Velocity.normalized;
             float signed = actor.model.root.forward.SignedAngleByAxis(vel, actor.transform.up);

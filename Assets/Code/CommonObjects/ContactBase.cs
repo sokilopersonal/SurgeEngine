@@ -17,15 +17,10 @@ namespace SurgeEngine.Code.CommonObjects
             
             OnContact?.Invoke(this);
         }
-
-        protected virtual void Draw()
+        
+        protected virtual void OnDrawGizmos()
         {
-            Gizmos.matrix = transform.localToWorldMatrix;
-        }
-
-        private void OnDrawGizmos()
-        {
-            Draw();
+            
         }
     }
 }

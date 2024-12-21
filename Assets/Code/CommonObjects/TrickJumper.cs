@@ -258,10 +258,10 @@ namespace SurgeEngine.Code.CommonObjects
             return _qteSequences[_sequenceId];
         }
 
-        protected override void Draw()
+        protected override void OnDrawGizmos()
         {
-            base.Draw();
-
+            base.OnDrawGizmos();
+            
             if (startPoint == null) return;
             
             TrajectoryDrawer.DrawTrickTrajectory(startPoint.position, Common.GetCross(startPoint, firstPitch, true), Color.red, firstSpeed);
