@@ -23,7 +23,7 @@ namespace SurgeEngine.Code.CommonObjects
             Actor context = ActorContext.Context;
             if (!context.camera.stateMachine.IsExact<NewModernState>())
             {
-                context.camera.stateMachine.SetState<RestoreCameraPawn>();
+                context.camera.stateMachine.SetState<RestoreCameraPawn>().SetDirection(context.camera.GetCameraTransform().forward);
             }
         }
     }
