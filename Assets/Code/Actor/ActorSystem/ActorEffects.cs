@@ -30,6 +30,7 @@ namespace SurgeEngine.Code.ActorSystem
 
         [Header("Other")]
         public Effect jumpDeluxEffect;
+        public Effect paraloopEffect;
 
         private void Start()
         {
