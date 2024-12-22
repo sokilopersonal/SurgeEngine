@@ -12,6 +12,7 @@ namespace SurgeEngine.Code.CommonObjects
         [SerializeField] private float rotationSpeed = 360f;
         [SerializeField] private float flyDuration = 1f;
         [SerializeField] private AnimationCurve heightCurve;
+        [SerializeField] private ParticleSystem particle;
         
         [SerializeField] private EventReference ringSound;
 
@@ -75,6 +76,8 @@ namespace SurgeEngine.Code.CommonObjects
 
             ObjectEvents.OnObjectCollected?.Invoke(this);
             Common.AddScore(10);
+            var p = Instantiate(particle, transform.position, Quaternion.identity);
+            Destroy(p.gameObject, 1f);
             gameObject.SetActive(false);
         }
     }
