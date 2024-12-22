@@ -40,7 +40,6 @@ namespace SurgeEngine.Code.CommonObjects
                 context.transform.position += target;
             }
             
-            //context.stateMachine.SetState<FStateAir>();
             if (cancelBoost) context.stateMachine.GetSubState<FBoost>().Active = false;
             
             FStateSpecialJump specialJump = context.stateMachine.SetState<FStateSpecialJump>(allowSameState: true);
@@ -55,7 +54,7 @@ namespace SurgeEngine.Code.CommonObjects
                 null, true, Mathf.Abs(outOfControl)));
         }
 
-        private void OnDrawGizmos()
+        protected override void OnDrawGizmos()
         {
             TrajectoryDrawer.DrawTrajectory(transform.position + transform.up * yOffset, transform.up, Color.green, speed, keepVelocity);
         }
