@@ -25,7 +25,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
         {
             _vData = (VerticalPanData)_data;
             _stateMachine.currentData = _vData;
-            _distance = _vData.groundOffset;
+            _distance = _vData.distance;
             _yOffset = _vData.yOffset;
             
             SetDirection(_vData.forward);

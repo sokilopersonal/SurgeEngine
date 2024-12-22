@@ -25,6 +25,9 @@ namespace SurgeEngine.Code.ActorStates
             
             StateMachine.GetSubState<FBoost>().Active = false;
             _rigidbody.linearVelocity = new Vector3(_rigidbody.linearVelocity.x, 0f, _rigidbody.linearVelocity.z);
+            
+            Kinematics.Normal = Vector3.up;
+            _rigidbody.rotation = Quaternion.LookRotation(Vector3.Cross(_rigidbody.transform.right, Vector3.up), Vector3.up);
 
             _timer = 0;
         }

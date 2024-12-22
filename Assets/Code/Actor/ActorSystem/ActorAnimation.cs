@@ -170,7 +170,8 @@ namespace SurgeEngine.Code.ActorSystem
             }
             if (obj is FStateHoming)
             {
-                TransitionToState("Ball", 0f, true);
+                TransitionToState("BallOnce", 0f, true);
+                TransitionToStateDelayed("Air Cycle", 0.25f, 0.2f);
             }
             if (obj is FStateStomp)
             {
