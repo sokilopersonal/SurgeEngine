@@ -112,7 +112,8 @@ namespace SurgeEngine.Code.CameraSystem
         
         public void RememberRelativeLastData()
         {
-            lastPosition = position - master.transform.position;
+            Vector3 center = master.transform.position; // Player
+            lastPosition = position - center;
             lastRotation = rotation;
             lastFOV = camera.fieldOfView;
         }
