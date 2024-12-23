@@ -319,6 +319,32 @@ namespace SurgeEngine.Code.ActorSystem
                 _rigidbody.position = Vector3.MoveTowards(_rigidbody.position, predictedPosition, Time.fixedDeltaTime);
             }
         }
+        
+        public bool CheckForPredictedGround(Vector3 velocity, Vector3 normal, float deltaTime, float distance, int steps)
+        {
+            bool willBeGrounded = false;
+            Vector3 initialVelocity = velocity;
+            Vector3 predictedNormal = normal;
+            Vector3 predictedPos = _rigidbody.position;
+            for (int i = 0; i < steps; i++)
+            {
+                predictedPos += velocity * deltaTime / steps;
+                if (Physics.Raycast(predictedPos, -predictedNormal, out RaycastHit hit, distance, _config.castLayer))
+                {
+                    float dot = Vector3.Dot(_rigidbody.linearVelocity, hit.normal);
+                    float maxAngle = dot < 0 ? maxAngleDifference : 35f;
+                    if (Vector3.Angle(predictedNormal, hit.normal) < maxAngle)
+                    {
+                        predictedPos = hit.point + hit.normal;
+                        predictedNormal = hit.normal;
+                        initialVelocity = Quaternion.FromToRotation(_normal, predictedNormal) * initialVelocity;
+                        willBeGrounded = true;
+                    }
+                }
+            }
+
+            return willBeGrounded;
+        }
 
         #endregion
 
