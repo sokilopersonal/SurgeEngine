@@ -86,7 +86,7 @@ namespace SurgeEngine.Code.ActorStates
             BaseActorConfig config = Actor.config;
             float distance = config.castDistance * config.castDistanceCurve
                 .Evaluate(Kinematics.HorizontalSpeed / config.topSpeed);
-            if (Common.CheckForGround(out RaycastHit data, castDistance: distance))
+            if (Common.CheckForGround(out RaycastHit data, castDistance: distance) && Kinematics.CheckForPredictedGround(_rigidbody.linearVelocity, Kinematics.Normal, Time.fixedDeltaTime, config.castDistance, 6))
             {
                 Kinematics.Point = data.point;
                 Kinematics.Normal = data.normal;
