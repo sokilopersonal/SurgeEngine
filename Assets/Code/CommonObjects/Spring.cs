@@ -42,7 +42,7 @@ namespace SurgeEngine.Code.CommonObjects
             
             if (cancelBoost) context.stateMachine.GetSubState<FBoost>().Active = false;
             
-            FStateSpecialJump specialJump = context.stateMachine.SetState<FStateSpecialJump>(allowSameState: true);
+            FStateSpecialJump specialJump = context.stateMachine.SetState<FStateSpecialJump>(ignoreInactiveDelay: true, allowSameState: true);
             specialJump.SetSpecialData(new SpecialJumpData(SpecialJumpType.Spring, transform));
             specialJump.PlaySpecialAnimation(0);
             specialJump.SetKeepVelocity(keepVelocity);

@@ -38,7 +38,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
         protected override void SetPosition(Vector3 targetPosition)
         {
             Vector3 diff = targetPosition - _actor.transform.position;
-            _stateMachine.position = Vector3.Slerp(_lastData.position, diff, _stateMachine.interpolatedBlendFactor);
+            _stateMachine.position = Vector3.Lerp(_lastData.position, diff, _stateMachine.interpolatedBlendFactor);
             _stateMachine.position += _actor.transform.position;
         }
         

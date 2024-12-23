@@ -47,7 +47,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             Setup(targetPosition, actorPosition);
         }
 
-        private Vector3 CalculateTarget(out Vector3 targetPosition, float distance, float yOffset)
+        protected Vector3 CalculateTarget(out Vector3 targetPosition, float distance, float yOffset)
         {
             Quaternion horizontal;
             Quaternion vertical;

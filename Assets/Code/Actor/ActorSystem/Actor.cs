@@ -2,6 +2,7 @@
 using SurgeEngine.Code.ActorStates;
 using SurgeEngine.Code.ActorStates.SonicSubStates;
 using SurgeEngine.Code.CameraSystem;
+using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.Config;
 using SurgeEngine.Code.StateMachine;
 using UnityEngine;
@@ -52,16 +53,6 @@ namespace SurgeEngine.Code.ActorSystem
             
             FBoost boost = new FBoost(this);
             stateMachine.AddSubState(boost);
-            
-            StartData startData = GetComponentInParent<ActorStartDefiner>().startData;
-            if (startData.startType != StartType.None)
-            {
-                stateMachine.SetState<FStateStart>().SetData(startData);
-            }
-            else
-            {
-                stateMachine.SetState<FStateIdle>();
-            }
         }
 
         private void Update()
@@ -77,6 +68,18 @@ namespace SurgeEngine.Code.ActorSystem
         private void LateUpdate()
         {
             stateMachine?.LateTick(Time.deltaTime);
+        }
+
+        public void SetStart(StartData data)
+        {
+            if (data.startType != StartType.None)
+            {
+                stateMachine.SetState<FStateStart>().SetData(data);
+            }
+            else
+            {
+                stateMachine.SetState<FStateIdle>();
+            }
         }
     }
 }

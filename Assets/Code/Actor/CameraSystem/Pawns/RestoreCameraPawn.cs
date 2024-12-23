@@ -47,13 +47,17 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             Vector3 diff = targetPosition - center;
             _stateMachine.position = Vector3.Lerp(_lastData.position, diff, _stateMachine.interpolatedBlendFactor);
             _stateMachine.position += center;
-
-            Debug.DrawRay(targetPosition, Vector3.up, Color.cyan);
         }
 
         protected override void SetRotation(Vector3 actorPosition)
         {
-            _stateMachine.rotation = Quaternion.Lerp(_lastData.rotation, Quaternion.LookRotation(actorPosition + _master.lookOffset - _stateMachine.position, Vector3.up), _stateMachine.interpolatedBlendFactor);
+            _stateMachine.rotation = Quaternion.Lerp(_lastData.rotation, 
+                Quaternion.LookRotation(actorPosition + _master.lookOffset - _stateMachine.position), _stateMachine.interpolatedBlendFactor);
+        }
+
+        protected override void AutoLookDirection()
+        {
+            base.AutoLookDirection();
         }
     }
 }
