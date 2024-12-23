@@ -2,6 +2,7 @@
 using SurgeEngine.Code.ActorStates;
 using SurgeEngine.Code.ActorStates.SonicSubStates;
 using SurgeEngine.Code.CameraSystem;
+using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.Config;
 using SurgeEngine.Code.StateMachine;
 using UnityEngine;
@@ -24,6 +25,8 @@ namespace SurgeEngine.Code.ActorSystem
         public BaseActorConfig config;
         
         [HideInInspector] public FStateMachine stateMachine;
+        
+        private StartData _startData;
 
         public virtual void Initialize()
         {
@@ -34,6 +37,8 @@ namespace SurgeEngine.Code.ActorSystem
             
             Rigidbody body = GetComponent<Rigidbody>();
             stateMachine = new FStateMachine();
+
+            body.centerOfMass -= Vector3.up * 0.5f;
             
             stateMachine.AddState(new FStateStart(this, body));
             stateMachine.AddState(new FStateIdle(this, body));
@@ -52,16 +57,6 @@ namespace SurgeEngine.Code.ActorSystem
             
             FBoost boost = new FBoost(this);
             stateMachine.AddSubState(boost);
-            
-            StartData startData = GetComponentInParent<ActorStartDefiner>().startData;
-            if (startData.startType != StartType.None)
-            {
-                stateMachine.SetState<FStateStart>().SetData(startData);
-            }
-            else
-            {
-                stateMachine.SetState<FStateIdle>();
-            }
         }
 
         private void Update()
@@ -78,5 +73,21 @@ namespace SurgeEngine.Code.ActorSystem
         {
             stateMachine?.LateTick(Time.deltaTime);
         }
+
+        public void SetStart(StartData data)
+        {
+            _startData = data;
+            
+            if (data.startType != StartType.None)
+            {
+                stateMachine.SetState<FStateStart>().SetData(data);
+            }
+            else
+            {
+                stateMachine.SetState<FStateIdle>();
+            }
+        }
+        
+        public StartData GetStartData() => _startData;
     }
 }

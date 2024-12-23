@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Context
 {
-    [DefaultExecutionOrder(-9999)]
+    [DefaultExecutionOrder(-9000)]
     public class SceneContext : MonoBehaviour
     {
         private static SceneContext _instance = null;
@@ -22,7 +22,7 @@ namespace SurgeEngine.Code.Context
             _ = new ActorContext(Actor);
             _ = new ActorHUDContext(ActorHud);
             
-            Actor.Initialize();
+            actor.Initialize();
         }
     }
 }

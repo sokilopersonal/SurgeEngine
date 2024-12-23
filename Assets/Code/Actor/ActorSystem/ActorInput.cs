@@ -192,11 +192,6 @@ namespace SurgeEngine.Code.ActorSystem
         private void BoostInput(InputAction.CallbackContext obj)
         {
             if (obj.started) OnButtonPressed?.Invoke(ButtonType.X);
-            
-            if (actor.flags.HasFlag(FlagType.OutOfControl) && !actor.flags.CheckForTag(Tags.AllowBoost))
-            {
-                return;
-            }
 
             BoostAction?.Invoke(obj);
         }
@@ -204,21 +199,11 @@ namespace SurgeEngine.Code.ActorSystem
         private void BInput(InputAction.CallbackContext obj)
         {
             if (obj.started) OnButtonPressed?.Invoke(ButtonType.B);
-            
-            if (actor.flags.HasFlag(FlagType.OutOfControl))
-            {
-                return;
-            }
         }
 
         private void YInput(InputAction.CallbackContext obj)
         {
             if (obj.started) OnButtonPressed?.Invoke(ButtonType.Y);
-            
-            if (actor.flags.HasFlag(FlagType.OutOfControl))
-            {
-                return;
-            }
         }
 
         private void BumperInput(InputAction.CallbackContext obj)
@@ -227,11 +212,6 @@ namespace SurgeEngine.Code.ActorSystem
             {
                 int direction = (int)obj.ReadValue<Vector2>().x;
                 OnButtonPressed?.Invoke(direction == -1 ? ButtonType.LB : ButtonType.RB);
-                
-                if (actor.flags.HasFlag(FlagType.OutOfControl))
-                {
-                    return;
-                }
             }
         }
 

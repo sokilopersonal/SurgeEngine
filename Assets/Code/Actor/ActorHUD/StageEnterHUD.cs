@@ -21,7 +21,7 @@ namespace SurgeEngine.Code.ActorHUD
         private void Start()
         {
             CanvasGroup group = GetComponent<CanvasGroup>();
-            StartType startType = FindFirstObjectByType<ActorStartDefiner>().startData.startType;
+            StartType startType = ActorContext.Context.GetStartData().startType;
             group.alpha = 0;
 
             if (startType == StartType.None)

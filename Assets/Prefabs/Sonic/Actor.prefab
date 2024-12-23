@@ -103,19 +103,19 @@ MonoBehaviour:
     lastFOV: 0
     camera: {fileID: 4273712975694131987}
     transform: {fileID: 4604916912254361020}
-  sensitivity: 0.675
+  sensitivity: 0.75
   maxSensitivitySpeed: 1
   minSensitivitySpeed: 0.75
   smoothTime: 0.02
-  distance: 2.25
+  distance: 2.3
   yOffset: 0.01
   positionOffset: {x: 0, y: 0, z: 0}
-  lookOffset: {x: 0, y: -0.000016715132, z: 0}
-  horizontalAutoLookAmplitude: 5.5
-  horizontalAutoLookMinAmplitude: 0.2
-  verticalDefaultAmplitude: 11
-  verticalMinAmplitude: -5
-  verticalMaxAmplitude: 10
+  lookOffset: {x: 0, y: 0, z: 0}
+  horizontalAutoLookAmplitude: 5.75
+  horizontalAutoLookMinAmplitude: 0.4
+  verticalDefaultAmplitude: 6
+  verticalMinAmplitude: -0.75
+  verticalMaxAmplitude: 1.25
   verticalMinLerpSpeed: 0.75
   verticalLerpSpeed: 1.65
   zLagMax: 0.35
@@ -15113,7 +15113,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8308832228826993834}
-  - component: {fileID: 5303140704482955174}
   - component: {fileID: 8032504807134332376}
   - component: {fileID: 8699919761573115592}
   m_Layer: 0
@@ -15141,22 +15140,6 @@ Transform:
   - {fileID: 4638284470361493281}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5303140704482955174
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 930709539082581898}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77d5a6de9f9642cb9a159e1b847eb48c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  startData:
-    startType: 0
-    speed: 28
-    time: 1
 --- !u!114 &8032504807134332376
 MonoBehaviour:
   m_ObjectHideFlags: 0

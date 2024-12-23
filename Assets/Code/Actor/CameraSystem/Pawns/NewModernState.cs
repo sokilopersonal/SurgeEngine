@@ -1,4 +1,5 @@
-﻿using SurgeEngine.Code.ActorSystem;
+﻿using SurgeEngine.Code.ActorStates;
+using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Config;
 using SurgeEngine.Code.Tools;
 using UnityEngine;
@@ -47,7 +48,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             Setup(targetPosition, actorPosition);
         }
 
-        private Vector3 CalculateTarget(out Vector3 targetPosition, float distance, float yOffset)
+        protected Vector3 CalculateTarget(out Vector3 targetPosition, float distance, float yOffset)
         {
             Quaternion horizontal;
             Quaternion vertical;
@@ -115,10 +116,10 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
         private void YLag()
         {
             Vector3 vel = _actor.kinematics.Velocity;
-            float yLag = Mathf.Clamp(vel.y * -0.15f, _master.yLagMin, _master.yLagMax); // min is down lag, max value is up lag
+            float yLag = Mathf.Clamp(vel.y * -0.125f, _master.yLagMin, _master.yLagMax); // min is down lag, max value is up lag
             _stateMachine.yLag = Mathf.SmoothDamp(_stateMachine.yLag, yLag, ref _stateMachine.yLagVelocity, _master.yLagTime);
 
-            float mod = _actor.kinematics.HorizontalSpeed * 0.0175f;
+            float mod = _actor.kinematics.Speed * 0.0175f;
             
             // Look Y Time values
             float up = 0.6f;
@@ -126,15 +127,15 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             float restore = 0.75f;
 
             yLag *= yLag > 0 ? 1.3f : 0.3f;
-            
             float value = yLag < 0 ? up : Mathf.Approximately(yLag, 0) ? restore - restore * mod : down;
-            _lookYTime = Mathf.Lerp(_lookYTime, value, Time.deltaTime * 4f);
-            _master.lookOffset.y = Mathf.SmoothDamp(_master.lookOffset.y, -yLag * 1.25f, ref _lookVelocity, _lookYTime);
+            
+            _lookYTime = Mathf.Lerp(_lookYTime, value, Time.deltaTime * 5f);
+            _master.lookOffset.y = Mathf.SmoothDamp(_master.lookOffset.y, -yLag * 0.75f, ref _lookVelocity, _lookYTime);
         }
 
         protected virtual void AutoLookDirection()
         {
-            float speed = _actor.kinematics.Velocity.magnitude;
+            float speed = _actor.kinematics.Speed;
             BaseActorConfig config = _actor.config;
             float lookMod = speed / config.topSpeed;
             _sensSpeedMod = Mathf.Lerp(_master.maxSensitivitySpeed, _master.minSensitivitySpeed, lookMod);
@@ -143,11 +144,10 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             {
                 Vector3 vel = _actor.kinematics.Rigidbody.linearVelocity;
                 _velocity = Vector3.Lerp(_velocity, vel, Time.deltaTime * 8f);
-                float yAutoLook = Mathf.Abs(_velocity.y) > 0.2f ? Mathf.Clamp(-_velocity.y * 10f, _master.verticalMinAmplitude, _master.verticalMaxAmplitude)
-                    : _master.verticalDefaultAmplitude;
+                float yAutoLook = Mathf.Clamp(-_velocity.y * 1.25f, _master.verticalMinAmplitude, _master.verticalMaxAmplitude);
                 
-                _stateMachine.yAutoLook = yAutoLook;
-                _stateMachine.y = Mathf.SmoothDamp(_stateMachine.y, _stateMachine.yAutoLook, ref _yAutoLookVelocity, 0.65f);
+                _stateMachine.yAutoLook = yAutoLook + _master.verticalDefaultAmplitude;
+                _stateMachine.y = Mathf.SmoothDamp(_stateMachine.y, _stateMachine.yAutoLook, ref _yAutoLookVelocity, 0.75f);
                 AutoLook(_master.horizontalAutoLookAmplitude * Mathf.Max(_master.horizontalAutoLookMinAmplitude, Mathf.Clamp01(lookMod)));
                 
                 //_master.lookOffset.x = Mathf.SmoothDampAngle(_master.lookOffset.x, _stateMachine.xAutoLook, ref _xAutoLookVelocity, 0.5f);

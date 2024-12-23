@@ -1,4 +1,5 @@
-﻿using SurgeEngine.Code.Config.Graphics;
+﻿using System.Linq;
+using SurgeEngine.Code.Config.Graphics;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.HighDefinition;
@@ -8,7 +9,7 @@ namespace SurgeEngine.Code.Tools
     public class UserGraphics : MonoBehaviour
     {
         [SerializeField] private Light _directionalLight;
-        [SerializeField] private Volume _globalVolumeProfile;
+        [SerializeField] private VolumeProfile _globalVolumeProfile;
         
         private HDRenderPipelineAsset _pipelineAsset => (HDRenderPipelineAsset)GraphicsSettings.currentRenderPipeline;
         private HDAdditionalCameraData _cameraData;
@@ -25,7 +26,13 @@ namespace SurgeEngine.Code.Tools
         private void Awake()
         {
             _instance = this;
-            
+
+            var lights = FindObjectsByType<Light>(FindObjectsInactive.Include, FindObjectsSortMode.InstanceID).ToList();
+            _directionalLight = lights.Find((x) => x.type == LightType.Directional);
+
+            var profile = Instantiate(_pipelineAsset.volumeProfile);
+            _globalVolumeProfile = profile;
+                
             _cameraData = Camera.main.GetComponent<HDAdditionalCameraData>();
             _cameraData.customRenderingSettings = true;
 
@@ -80,7 +87,7 @@ namespace SurgeEngine.Code.Tools
         
         public void SetMotionBlurQuality(int value)
         {
-            _globalVolumeProfile.profile.TryGet(out MotionBlur motionBlur);
+            _globalVolumeProfile.TryGet(out MotionBlur motionBlur);
             motionBlur.quality.value = Mathf.Min(value, 2);
             
             data.motionBlurQuality = value;
@@ -99,7 +106,7 @@ namespace SurgeEngine.Code.Tools
         
         public void SetSSRQuality(int value)
         {
-            _globalVolumeProfile.profile.TryGet(out ScreenSpaceReflection ssr);
+            _globalVolumeProfile.TryGet(out ScreenSpaceReflection ssr);
             ssr.quality.value = Mathf.Min(value, 2);
             
             data.ssrQuality = value;
