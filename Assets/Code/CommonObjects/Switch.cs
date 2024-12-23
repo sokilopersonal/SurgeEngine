@@ -1,36 +1,41 @@
 using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.ActorEffects;
 using UnityEngine;
-using DG.Tweening;
+using UnityEngine.Events;
 
 namespace SurgeEngine.Code.CommonObjects
 {
     public class Switch : ContactBase
     {
-        public Transform button;
         public SkinnedMeshRenderer meshRenderer;
-
+        public bool toggleOnce = true;
+        public UnityEvent onActivated;
+        public UnityEvent onDeactivated;
         [HideInInspector] public Material active;
         [HideInInspector] public Material inactive;
 
         private bool toggled = false;
+        private bool hasBeenToggled = false;
         private BoxCollider _collider;
 
         public override void Contact(Collider msg)
         {
             base.Contact(msg);
 
-            Actor context = ActorContext.Context;
+            if (toggleOnce && hasBeenToggled)
+                return;
 
+            hasBeenToggled = true;
             toggled = !toggled;
+
+            if (toggled)
+                onActivated.Invoke();
+            else
+                onDeactivated.Invoke();
 
             Material[] mats = meshRenderer.sharedMaterials;
             mats[2] = toggled ? active : inactive;
             meshRenderer.sharedMaterials = mats;
-
-            button.DOKill(true);
-
-            button.DOLocalMoveY(toggled ? -0.175f : 0f, 0.2f).SetEase(Ease.OutCirc);
         }
 
         protected override void OnDrawGizmos()
