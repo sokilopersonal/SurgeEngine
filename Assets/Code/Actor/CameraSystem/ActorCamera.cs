@@ -140,15 +140,5 @@ namespace SurgeEngine.Code.CameraSystem
         }
 
         public Transform GetCameraTransform() => _cameraTransform;
-
-        private void OnDrawGizmos()
-        {
-            if (Application.isPlaying)
-            {
-                Gizmos.color = Color.yellow;
-                Gizmos.DrawWireSphere(transform.position + transform.TransformDirection(lookOffset), 0.2f);
-            }
-        }
-        
     }
 }

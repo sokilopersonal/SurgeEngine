@@ -31,46 +31,49 @@ namespace SurgeEngine.Code.ActorStates
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
+
+            if (!Actor.flags.HasFlag(FlagType.OutOfControl))
+            {
+                if (Input.JumpPressed)
+                {
+                    StateMachine.SetState<FStateJump>(0.1f);
+                }
+
+                if (!SonicTools.IsBoost())
+                {
+                    if (Kinematics.Skidding && Kinematics.HorizontalSpeed > 15f)
+                    {
+                        StateMachine.SetState<FStateBrake>();
+                    }
+                }
+
+                float minSpeed = StateMachine.GetState<FStateSlide>().GetConfig().minSpeed;
+                minSpeed += minSpeed * 1.5f;
+                float dot = Stats.moveDot;
+                float abs = Mathf.Abs(dot);
             
-            if (Input.JumpPressed)
-            {
-                StateMachine.SetState<FStateJump>(0.1f);
-            }
+                bool readyForDrift = Kinematics.HorizontalSpeed > 5f && abs < 0.4f && !Mathf.Approximately(dot, 0f);
+                bool readyForSlide = Kinematics.HorizontalSpeed > minSpeed;
 
-            if (!SonicTools.IsBoost())
-            {
-                if (Kinematics.Skidding && Kinematics.HorizontalSpeed > 15f)
+                if (Input.BHeld)
                 {
-                    StateMachine.SetState<FStateBrake>();
-                }
-            }
+                    if (readyForSlide && !readyForDrift)
+                    {
+                        StateMachine.SetState<FStateSlide>();
+                    }
 
-            float minSpeed = StateMachine.GetState<FStateSlide>().GetConfig().minSpeed;
-            minSpeed += minSpeed * 1.5f;
-            float dot = Stats.moveDot;
-            float abs = Mathf.Abs(dot);
-            
-            bool readyForDrift = Kinematics.HorizontalSpeed > 5f && abs < 0.4f && !Mathf.Approximately(dot, 0f);
-            bool readyForSlide = Kinematics.HorizontalSpeed > minSpeed;
-
-            if (Input.BHeld)
-            {
-                if (readyForSlide && !readyForDrift)
-                {
-                    StateMachine.SetState<FStateSlide>();
+                    if (readyForDrift)
+                    {
+                        StateMachine.SetState<FStateDrift>();
+                    }
                 }
 
-                if (readyForDrift)
+                if (SonicInputLayout.DriftHeld)
                 {
-                    StateMachine.SetState<FStateDrift>();
-                }
-            }
-
-            if (SonicInputLayout.DriftHeld)
-            {
-                if (readyForDrift)
-                {
-                    StateMachine.SetState<FStateDrift>();
+                    if (readyForDrift)
+                    {
+                        StateMachine.SetState<FStateDrift>();
+                    }
                 }
             }
         }
@@ -85,13 +88,13 @@ namespace SurgeEngine.Code.ActorStates
                 .Evaluate(Kinematics.HorizontalSpeed / config.topSpeed);
             if (Common.CheckForGround(out RaycastHit data, castDistance: distance))
             {
-                var point = data.point;
+                Kinematics.Point = data.point;
                 Kinematics.Normal = data.normal;
                 
                 Vector3 stored = _rigidbody.linearVelocity;
                 _rigidbody.linearVelocity = Quaternion.FromToRotation(_rigidbody.transform.up, prevNormal) * stored;
 
-                Actor.kinematics.BasePhysics(point, Kinematics.Normal);
+                Actor.kinematics.BasePhysics(Kinematics.Point, Kinematics.Normal);
                 Actor.model.RotateBody(Kinematics.Normal);
                 
                 _surfaceTag = data.transform.gameObject.GetGroundTag();
@@ -115,7 +118,7 @@ namespace SurgeEngine.Code.ActorStates
                 if (nextGroundAngle <= Kinematics.maxAngleDifference)
                 {
                     Vector3 fixedVelocity = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, Actor.transform.up);
-                    fixedVelocity = Quaternion.FromToRotation(Actor.transform.up, velocityFix.normal) * fixedVelocity;
+                    //fixedVelocity = Quaternion.FromToRotation(Actor.transform.up, velocityFix.normal) * fixedVelocity;
                     _rigidbody.linearVelocity = fixedVelocity;
                 }
             }

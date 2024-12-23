@@ -13,7 +13,7 @@ namespace SurgeEngine.Code.CommonObjects
     {
         [Header("Properties")] 
         [SerializeField] private float speedRequired = 20f;
-        [SerializeField, Range(0, 75)] private float pitch = 10f;
+        [SerializeField, Range(0, 90)] private float pitch = 10f;
         [SerializeField, Min(0)] private float impulseOnNormal = 15f;
         [SerializeField, Min(0)] private float impulseOnBoost = 15f;
         [SerializeField] private float outOfControl = 0.5f;
@@ -29,7 +29,7 @@ namespace SurgeEngine.Code.CommonObjects
             
             if (dot > 0) // Make sure the player is facing the same direction as the jump collision
             {
-                if (context.stats.currentSpeed >= speedRequired) // If the player is moving fast enough apply an impulse
+                if (context.kinematics.Speed >= speedRequired) // If the player is moving fast enough apply an impulse
                 {
                     if (impulse > 0)
                     {

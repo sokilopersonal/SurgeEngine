@@ -43,10 +43,11 @@ MonoBehaviour:
   railMask:
     serializedVersion: 2
     m_Bits: 32768
-  topSpeed: 28
-  maxSpeed: 40
+  topSpeed: 24
+  maxSpeed: 36
+  minParaloopSpeed: 28
   maxVerticalSpeed: 80
-  accelerationRate: 8
+  accelerationRate: 7.5
   accelerationCurve:
     serializedVersion: 2
     m_Curve:
@@ -95,7 +96,7 @@ MonoBehaviour:
   maxSkiddingRate: 75
   skiddingThreshold: -0.55
   skiddingSpeedThreshold: 15
-  turnSpeed: 6
+  turnSpeed: 7
   turnCurve:
     serializedVersion: 2
     m_Curve:
@@ -120,8 +121,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  turnSmoothing: 12
-  jumpForce: 6.5
+  turnSmoothing: 6.75
+  jumpForce: 7.5
   jumpHoldForce: 26
   jumpStartTime: 0.2
   jumpCollisionHeight: 1

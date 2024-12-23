@@ -25,6 +25,8 @@ namespace SurgeEngine.Code.ActorSystem
         public BaseActorConfig config;
         
         [HideInInspector] public FStateMachine stateMachine;
+        
+        private StartData _startData;
 
         public virtual void Initialize()
         {
@@ -35,6 +37,8 @@ namespace SurgeEngine.Code.ActorSystem
             
             Rigidbody body = GetComponent<Rigidbody>();
             stateMachine = new FStateMachine();
+
+            body.centerOfMass -= Vector3.up * 0.5f;
             
             stateMachine.AddState(new FStateStart(this, body));
             stateMachine.AddState(new FStateIdle(this, body));
@@ -72,6 +76,8 @@ namespace SurgeEngine.Code.ActorSystem
 
         public void SetStart(StartData data)
         {
+            _startData = data;
+            
             if (data.startType != StartType.None)
             {
                 stateMachine.SetState<FStateStart>().SetData(data);
@@ -81,5 +87,7 @@ namespace SurgeEngine.Code.ActorSystem
                 stateMachine.SetState<FStateIdle>();
             }
         }
+        
+        public StartData GetStartData() => _startData;
     }
 }

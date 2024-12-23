@@ -27,6 +27,12 @@ namespace SurgeEngine.Code.ActorSystem
 
         public float Angle => _angle;
 
+        public Vector3 Point
+        {
+            get => _point;
+            set => _point = value;
+        }
+        
         public Vector3 Normal
         {
             get => _normal;
@@ -55,10 +61,12 @@ namespace SurgeEngine.Code.ActorSystem
         private Transform _cameraTransform;
         private Vector3 _movementVector;
         private Vector3 _planarVelocity;
+        private Vector3 _point;
         private Vector3 _normal;
         
         private SplineContainer _path;
         private SplineContainer _rail;
+        private Vector3 _prevTg;
 
         private float _speed;
         private float _moveDot;
@@ -163,19 +171,45 @@ namespace SurgeEngine.Code.ActorSystem
             if (_path != null)
             {
                 var spline = _path.Spline;
-                SplineUtility.GetNearestPoint(spline, _path.transform.InverseTransformPoint(_rigidbody.position - Vector3.up * 0.5f), out float3 point, out float t);
-                _path.Evaluate(t, out float3 pos, out float3 tangent, out float3 up);
-                Vector3 normal = Vector3.Cross(tangent, up);
-                //Normal = up;
-                
-                Debug.DrawRay(transform.position, up);
-                
-                _rigidbody.linearVelocity = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, normal);
-                _inputDir = Vector3.ProjectOnPlane(_inputDir, normal);
+                Vector3 localPos = _path.transform.InverseTransformPoint(_rigidbody.position);
+                SplineUtility.GetNearestPoint(spline, localPos, out var p, out var f, 16, 10);
+                f *= spline.GetLength();
 
-                Vector3 near = _path.transform.TransformPoint(point);
-                near.y = _rigidbody.position.y;
-                _rigidbody.position = near;
+                SplineSample sample = new SplineSample
+                {
+                    pos = _path.EvaluatePosition(f / spline.GetLength()),
+                    tg = ((Vector3)_path.EvaluateTangent(f / spline.GetLength())).normalized,
+                    up = _path.EvaluateUpVector(f / spline.GetLength())
+                };
+                
+                if (_prevTg == Vector3.zero) _prevTg = sample.tg;
+                
+                Vector3 splinePlane = Vector3.Cross(sample.tg, sample.up);
+                Vector3 upSplinePlane = Vector3.Cross(sample.tg, Vector3.up);
+                
+                _inputDir = Vector3.ProjectOnPlane(_inputDir, splinePlane);
+                
+                _rigidbody.linearVelocity = Quaternion.FromToRotation(Vector3.ProjectOnPlane(_prevTg, Vector3.up).normalized, 
+                    Vector3.ProjectOnPlane(sample.tg, Vector3.up)) * _rigidbody.linearVelocity;
+                _rigidbody.linearVelocity = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, upSplinePlane);
+                _prevTg = sample.tg;
+
+                Vector3 newPos = sample.pos;
+                
+                SurgeMath.SplitPlanarVector(_rigidbody.position, 
+                    sample.ProjectOnUp(sample.tg).normalized, 
+                    out var pLat, 
+                    out var pVer);
+                
+                SurgeMath.SplitPlanarVector(newPos, sample.ProjectOnUp(sample.tg).normalized, 
+                    out var sLat,
+                    out var sVer);
+                
+                // TODO: Fix move towards flies Sonic off the ground
+                // pLat = Vector3.MoveTowards(pLat, sLat, Mathf.Min(Speed / 170f, 1) * 46f * Time.fixedDeltaTime);
+                // pLat.y = targetY;
+                
+                _rigidbody.position = pLat + pVer;
             }
         }
 
@@ -313,8 +347,10 @@ namespace SurgeEngine.Code.ActorSystem
 
             if (point != Vector3.zero && normal != Vector3.zero)
             {
+                Quaternion slopeRotation = Quaternion.FromToRotation(transform.up, normal) * _rigidbody.rotation;
                 Vector3 goal = point + normal;
-                _rigidbody.position = goal;
+                _rigidbody.position = Vector3.Lerp(_rigidbody.position, goal, 
+                    Time.fixedDeltaTime * (Mathf.Abs(Quaternion.Dot(_rigidbody.rotation, slopeRotation) + 1f) / 2f * _rigidbody.linearVelocity.magnitude + 15f));
             }
         }
 
@@ -395,12 +431,20 @@ namespace SurgeEngine.Code.ActorSystem
             return _path != null;
         }
     }
-
-    public class GroundData
+    
+    public struct SplineSample
     {
-        public Vector3 point;
-        public Vector3 normal;
-        public Transform transform;
-        public bool isValid;
+        public Vector3 pos;
+        public Vector3 tg;
+        public Vector3 up;
+        
+        public SplineSample(Vector3 pos, Vector3 tg, Vector3 up)
+        {
+            this.pos = pos;
+            this.tg = tg;
+            this.up = up;
+        }
+        
+        public Vector3 ProjectOnUp(Vector3 vector) => Vector3.ProjectOnPlane(vector, up);
     }
 }
