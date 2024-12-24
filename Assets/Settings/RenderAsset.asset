@@ -82,7 +82,7 @@ MonoBehaviour:
     supportProbeVolumeScenarios: 0
     supportProbeVolumeScenarioBlending: 0
     probeVolumeBlendingMemoryBudget: 128
-    supportRayTracing: 1
+    supportRayTracing: 0
     supportVFXRayTracing: 0
     supportedRayTracingMode: 3
     lightLoopSettings:
@@ -165,7 +165,7 @@ MonoBehaviour:
     dynamicResolutionSettings:
       enabled: 0
       useMipBias: 0
-      advancedUpscalersByPriority: 00
+      advancedUpscalersByPriority: 02
       DLSSPerfQualitySetting: 0
       DLSSInjectionPoint: 0
       TAAUInjectionPoint: 0
@@ -185,7 +185,7 @@ MonoBehaviour:
       dynResType: 1
       upsampleFilter: 5
       forceResolution: 1
-      forcedPercentage: 50
+      forcedPercentage: 75
       lowResTransparencyMinimumThreshold: 0
       rayTracingHalfResThreshold: 50
       lowResSSGIMinimumThreshold: 0
@@ -315,7 +315,7 @@ MonoBehaviour:
       mode: 1
       smallMeshScreenPercentage: 0
       enableOcclusionCullingInCameras: 0
-      useDepthPrepassForOccluders: 0
+      useDepthPrepassForOccluders: 1
     m_ObsoleteLightLayerName0: 
     m_ObsoleteLightLayerName1: 
     m_ObsoleteLightLayerName2: 
