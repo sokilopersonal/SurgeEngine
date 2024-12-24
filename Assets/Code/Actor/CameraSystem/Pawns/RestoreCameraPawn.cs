@@ -57,7 +57,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
 
         protected override void AutoLookDirection()
         {
-            base.AutoLookDirection();
+            //base.AutoLookDirection();
         }
     }
 }

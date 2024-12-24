@@ -17,6 +17,9 @@ namespace SurgeEngine.Code.CameraSystem
         
         public float lX;
         public float lY;
+
+        public float boostDistance;
+        public float boostFov;
         
         public float xAutoLook;
         public float yAutoLook;
@@ -26,11 +29,12 @@ namespace SurgeEngine.Code.CameraSystem
         public float zLag;
         public float zLagVelocity;
 
+        public float fov;
+
         public Vector3 position;
         public Quaternion rotation;
         public Vector3 lookOffset;
         
-        // Last Data
         public Vector3 lastPosition;
         public Quaternion lastRotation;
         public float lastFOV;
@@ -51,6 +55,10 @@ namespace SurgeEngine.Code.CameraSystem
             this.camera = camera;
             this.transform = transform;
             this.master = master;
+
+            boostDistance = 1f;
+            boostFov = 1f;
+            fov = 55f;
         }
 
         public override void Tick(float dt)
@@ -87,14 +95,17 @@ namespace SurgeEngine.Code.CameraSystem
                 lX = x;
                 lY = y;
             }
+            
+            transform.position = position;
+            transform.rotation = rotation;
+            camera.fieldOfView = fov;
         }
 
         public override void LateTick(float dt)
         {
             base.LateTick(dt);
             
-            transform.position = position;
-            transform.rotation = rotation;
+            
         }
         
         public void ResetBlendFactor()

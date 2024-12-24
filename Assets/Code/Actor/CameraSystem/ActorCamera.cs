@@ -45,8 +45,8 @@ namespace SurgeEngine.Code.CameraSystem
         public AnimationCurve boostBlendCurve;
         public AnimationCurve boostBlendFovCurve;
         public AnimationCurve boostDeblendCurve;
-        [SerializeField] private float boostBlendTime = 4f;
-        [SerializeField] private float boostDeblendTime = 1f;
+        public float boostBlendTime = 4f;
+        public float boostDeblendTime = 1f;
         public float boostBlendFactor { get; private set; }
         private Coroutine _boostBlendCoroutine;
         
@@ -108,9 +108,8 @@ namespace SurgeEngine.Code.CameraSystem
                 float t = 0;
                 float blendTime = active ? boostBlendTime : boostDeblendTime;
                 float lastBlendFactor = boostBlendFactor;
-                NewModernState state = stateMachine.GetState<NewModernState>();
-                float lastDistance = state.GetBoostDistance();
-                float baseFov = 60f;
+                float lastDistance = stateMachine.boostDistance;
+                float baseFov = 55f;
                 float lastFov = _camera.fieldOfView;
                 while (t < 1f)
                 {
@@ -119,14 +118,14 @@ namespace SurgeEngine.Code.CameraSystem
                     if (active)
                     {
                         boostBlendFactor = t;
-                        state.SetBoostDistance(boostBlendCurve.Evaluate(t));
-                        _camera.fieldOfView = baseFov * boostBlendFovCurve.Evaluate(t);
+                        stateMachine.boostDistance = boostBlendCurve.Evaluate(t);
+                        stateMachine.fov = baseFov * boostBlendFovCurve.Evaluate(t);
                     }
                     else
                     {
                         boostBlendFactor = Mathf.Lerp(lastBlendFactor, 0f, boostDeblendCurve.Evaluate(t));
-                        state.SetBoostDistance(Mathf.Lerp(lastDistance, 1f, boostDeblendCurve.Evaluate(t)));
-                        _camera.fieldOfView = Mathf.Lerp(lastFov, baseFov, boostDeblendCurve.Evaluate(t));
+                        stateMachine.boostDistance = Mathf.Lerp(lastDistance, 1f, boostDeblendCurve.Evaluate(t));
+                        stateMachine.fov = Mathf.Lerp(lastFov, baseFov, boostDeblendCurve.Evaluate(t));
                     }
                     
                     yield return null;
