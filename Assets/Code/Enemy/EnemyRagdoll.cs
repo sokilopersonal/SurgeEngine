@@ -8,7 +8,6 @@ namespace SurgeEngine.Code.Enemy
     {
         [Header("Collision")]
         public Rigidbody root;
-        public float collideRadius;
         public LayerMask collideLayers;
 
         float timer;
@@ -19,19 +18,17 @@ namespace SurgeEngine.Code.Enemy
         [SerializeField] private float explosionOffset = 0.5f;
         [SerializeField] private EventReference explosionReference;
 
-        private void OnDrawGizmos()
-        {
-            Gizmos.DrawWireSphere(root.position, collideRadius);
-        }
-
         private void Update()
         {
             timer += Time.deltaTime;
+            
+            if (timer >= 5f)
+                Explode();
         }
 
-        private void Explode()
+        public void Explode()
         {
-            if (hit)
+            if (hit || timer < 0.25f)
                 return;
 
             hit = true;
@@ -42,17 +39,6 @@ namespace SurgeEngine.Code.Enemy
             RuntimeManager.PlayOneShot(explosionReference, root.position);
 
             Destroy(gameObject);
-        }
-
-        private void FixedUpdate()
-        {
-            if (timer < 0.25f)
-                return;
-            
-            if (hit || !Physics.CheckSphere(root.position, collideRadius, collideLayers))
-                return;
-
-            Explode();
         }
     }
 }
