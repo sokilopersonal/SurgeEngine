@@ -49,7 +49,7 @@ namespace SurgeEngine.Code.ActorSystem
             FState prev = actor.stateMachine.PreviousState;
             _forwardVector = Vector3.Slerp(root.forward, actor.transform.forward, Time.deltaTime * horizontalRotationSpeed);
             _upVector = Vector3.Slerp(root.up, actor.transform.up, Time.deltaTime * verticalRotationSpeed
-                * (actor.kinematics.HorizontalSpeed / 4f));
+                * Mathf.Lerp(1f, 2f, actor.kinematics.HorizontalSpeed / actor.config.topSpeed));
 
             if (prev is FStateSpecialJump)
             {

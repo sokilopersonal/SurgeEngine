@@ -12,24 +12,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1f37b37c23e94746a87aa4ac3191046, type: 3}
   m_Name: BaseActorPhysics
   m_EditorClassIdentifier: 
-  castDistance: 1.2
+  castDistance: 1.15
   castDistanceCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
       value: 1
-      inSlope: 1
-      outSlope: 1
+      inSlope: 0.35000002
+      outSlope: 0.35000002
       tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0.33333334
     - serializedVersion: 3
       time: 1
-      value: 2
-      inSlope: 1
-      outSlope: 1
+      value: 1.35
+      inSlope: 0.35000002
+      outSlope: 0.35000002
       tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334
@@ -43,8 +43,8 @@ MonoBehaviour:
   railMask:
     serializedVersion: 2
     m_Bits: 32768
-  topSpeed: 27
-  maxSpeed: 36
+  topSpeed: 30
+  maxSpeed: 46
   minParaloopSpeed: 28
   maxVerticalSpeed: 80
   accelerationRate: 7.5
@@ -53,16 +53,16 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0.75
-      inSlope: 4.400012
-      outSlope: 4.400012
+      value: 0.6000061
+      inSlope: 3.3332977
+      outSlope: 3.3332977
       tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 0.125
-      value: 1.3000015
+      time: 0.14999999
+      value: 1.1000007
       inSlope: -0.009980005
       outSlope: -0.009980005
       tangentMode: 0
@@ -133,6 +133,6 @@ MonoBehaviour:
   slopeMinForceSpeed: 10
   slopeInactiveDuration: 0.15
   slopeUphillForce: 2
-  slopeDownhillForce: 7
+  slopeDownhillForce: 4
   slopeMinAngle: 5
   slopeMinSpeed: 10

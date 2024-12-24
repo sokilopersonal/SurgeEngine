@@ -331,9 +331,7 @@ namespace SurgeEngine.Code.ActorSystem
                 predictedPos += velocity * deltaTime / steps;
                 if (Physics.Raycast(predictedPos, -predictedNormal, out RaycastHit hit, distance, _config.castLayer))
                 {
-                    float dot = Vector3.Dot(_rigidbody.linearVelocity, hit.normal);
-                    float maxAngle = dot < 0 ? maxAngleDifference : 35f;
-                    if (Vector3.Angle(predictedNormal, hit.normal) < maxAngle)
+                    if (Vector3.Angle(predictedNormal, hit.normal) < maxAngleDifference)
                     {
                         predictedPos = hit.point + hit.normal;
                         predictedNormal = hit.normal;
@@ -392,7 +390,7 @@ namespace SurgeEngine.Code.ActorSystem
             
             float f = Mathf.Lerp(max, min, 
                 _movementVector.magnitude / _config.topSpeed);
-            if (_movementVector.magnitude > 0.2f)
+            if (_movementVector.magnitude > 0.02f)
                 _movementVector = Vector3.MoveTowards(_movementVector, Vector3.zero, Time.fixedDeltaTime * f);
             else
             {
