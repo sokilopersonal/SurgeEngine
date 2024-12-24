@@ -11,6 +11,7 @@ namespace SurgeEngine.Code.Enemy
         public new EnemyAnimation animation;
         public EGView view;
         public EGAnimationReference animationReference;
+        public EnemyRagdoll ragdollPrefab;
 
         [Header("Idle")]
         public float findDistance;
@@ -33,11 +34,14 @@ namespace SurgeEngine.Code.Enemy
         public float turnTime;
         
         private Rigidbody _rigidbody;
+        private int ragdollLayer = 69;
 
         protected override void Awake()
         {
             base.Awake();
-            
+
+            ragdollLayer = LayerMask.NameToLayer("EnemyRagdoll");
+
             _rigidbody = GetComponent<Rigidbody>();
             _rigidbody.freezeRotation = true;
             
@@ -89,15 +93,16 @@ namespace SurgeEngine.Code.Enemy
             
             Actor context = ActorContext.Context;
             Vector3 force = context.kinematics.Rigidbody.linearVelocity * 1.175f;
-            force += Vector3.up * 7.5f;
-            stateMachine.SetState<EGStateDead>(0f, true, true).ApplyKnockback(force);
+            force += Vector3.up * force.magnitude * 0.5f;
+            stateMachine.SetState<EGStateDead>(0f, true, true).ApplyKnockback(force, ragdollPrefab);
         }
 
         private void OnCollisionEnter(Collision other)
         {
-            if (other.transform.TryGetComponent(out EggFighter eggFighter))
+            if (other.gameObject.layer == ragdollLayer)
             {
-                eggFighter.stateMachine.SetState<EGStateDead>(allowSameState: true).ApplyKnockback(_rigidbody.linearVelocity * 1.2f);
+                Rigidbody rb = other.transform.GetComponent<Rigidbody>();
+                stateMachine.SetState<EGStateDead>(0f, true, true).ApplyKnockback(rb.linearVelocity, ragdollPrefab);
             }
         }
     }
