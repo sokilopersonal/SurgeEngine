@@ -168,6 +168,7 @@ namespace SurgeEngine.Code.ActorSystem
 
         public void SplineCalculation()
         {
+            // TODO: Move all spline data to a data class
             if (_path != null)
             {
                 var spline = _path.Spline;
@@ -204,10 +205,11 @@ namespace SurgeEngine.Code.ActorSystem
                 SurgeMath.SplitPlanarVector(newPos, sample.ProjectOnUp(sample.tg).normalized, 
                     out var sLat,
                     out var sVer);
+
+                var targetY = _rigidbody.position.y;
                 
-                // TODO: Fix move towards flies Sonic off the ground
-                // pLat = Vector3.MoveTowards(pLat, sLat, Mathf.Min(Speed / 170f, 1) * 46f * Time.fixedDeltaTime);
-                // pLat.y = targetY;
+                pLat = Vector3.MoveTowards(pLat, sLat, Mathf.Min(Speed / 64f, 1) * 16f * Time.fixedDeltaTime);
+                pLat.y = targetY;
                 
                 _rigidbody.position = pLat + pVer;
             }
@@ -469,6 +471,6 @@ namespace SurgeEngine.Code.ActorSystem
             this.up = up;
         }
         
-        public Vector3 ProjectOnUp(Vector3 vector) => Vector3.ProjectOnPlane(vector, up);
+        public Vector3 ProjectOnUp(Vector3 vector) => Vector3.ProjectOnPlane(vector, Vector3.up);
     }
 }
