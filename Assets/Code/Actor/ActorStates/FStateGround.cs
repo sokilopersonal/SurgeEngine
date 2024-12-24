@@ -86,12 +86,13 @@ namespace SurgeEngine.Code.ActorStates
             BaseActorConfig config = Actor.config;
             float distance = config.castDistance * config.castDistanceCurve
                 .Evaluate(Kinematics.HorizontalSpeed / config.topSpeed);
-            if (Common.CheckForGround(out RaycastHit data, castDistance: distance) && Kinematics.CheckForPredictedGround(_rigidbody.linearVelocity, Kinematics.Normal, Time.fixedDeltaTime, config.castDistance, 6))
+            if (Common.CheckForGround(out RaycastHit data, castDistance: distance) && 
+                Kinematics.CheckForPredictedGround(_rigidbody.linearVelocity, Kinematics.Normal, Time.fixedDeltaTime, distance, 6))
             {
                 Kinematics.Point = data.point;
                 Kinematics.Normal = data.normal;
                 
-                Vector3 stored = _rigidbody.linearVelocity;
+                Vector3 stored = Vector3.ClampMagnitude(_rigidbody.linearVelocity, config.maxSpeed);
                 _rigidbody.linearVelocity = Quaternion.FromToRotation(_rigidbody.transform.up, prevNormal) * stored;
 
                 Actor.kinematics.BasePhysics(Kinematics.Point, Kinematics.Normal);
@@ -117,8 +118,8 @@ namespace SurgeEngine.Code.ActorStates
                 float nextGroundAngle = Vector3.Angle(velocityFix.normal, Vector3.up);
                 if (nextGroundAngle <= Kinematics.maxAngleDifference)
                 {
-                    Vector3 fixedVelocity = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, Actor.transform.up);
-                    //fixedVelocity = Quaternion.FromToRotation(Actor.transform.up, velocityFix.normal) * fixedVelocity;
+                    Vector3 fixedVelocity = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, Kinematics.Normal);
+                    fixedVelocity = Quaternion.FromToRotation(Actor.transform.up, velocityFix.normal) * fixedVelocity;
                     _rigidbody.linearVelocity = fixedVelocity;
                 }
             }
