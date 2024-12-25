@@ -44,7 +44,7 @@ namespace SurgeEngine.Code.CommonObjects
             }
         }
 
-        private void OnDrawGizmos()
+        protected override void OnDrawGizmos()
         {
             TrajectoryDrawer.DrawTrajectory(startPoint.position, Common.GetImpulseWithPitch(Vector3.Cross(-startPoint.right, Vector3.up), startPoint.right, pitch, impulse), Color.green, impulse);
         }

@@ -141,6 +141,11 @@ namespace SurgeEngine.Code.ActorStates.SonicSubStates
 
                 if (actor.kinematics.HorizontalSpeed < startSpeed)
                 {
+                    if (actor.stateMachine.CurrentState is FStateIdle)
+                    {
+                        actor.stateMachine.SetState<FStateGround>();
+                    }
+                    
                     body.linearVelocity = body.transform.forward * startSpeed;
                     restoringTopSpeed = true;
                 }

@@ -7,51 +7,37 @@ namespace SurgeEngine.Code.Enemy.States
     public class EGStateDead : EGState
     {
         private float _timer;
-        
+
         public EGStateDead(EggFighter eggFighter, Transform transform, Rigidbody rb) : base(eggFighter, transform, rb)
         {
-            
+
         }
 
         public override void OnEnter()
         {
             base.OnEnter();
-            
+
             Actor context = ActorContext.Context;
             if (context.stateMachine.CurrentState is FStateHoming)
             {
                 context.stateMachine.SetState<FStateAfterHoming>();
             }
-            
-            eggFighter.view.Destroy();
+
+            Object.Destroy(eggFighter.gameObject);
         }
 
-        public void ApplyKnockback(Vector3 force)
+        public void ApplyKnockback(Vector3 force, EnemyRagdoll ragdoll)
         {
-            transform.forward = -ActorContext.Context.transform.forward;
-            
-            Rb.linearVelocity = Vector3.zero;
-            Rb.angularVelocity = Vector3.zero;
-            Rb.AddForce(force, ForceMode.VelocityChange);
-            Rb.AddTorque(force, ForceMode.VelocityChange);
-        }
+            GameObject newRagdoll = Object.Instantiate(ragdoll.gameObject, transform.parent);
+            newRagdoll.transform.position = transform.position;
+            newRagdoll.transform.forward = -ActorContext.Context.transform.forward;
 
-        public override void OnTick(float dt)
-        {
-            base.OnTick(dt);
+            EnemyRagdoll newRagdollScript = newRagdoll.GetComponent<EnemyRagdoll>();
 
-            if (_timer < 0.25f)
-            {
-                _timer += dt;
-            }
-            else
-            {
-                if (Physics.Raycast(transform.position + Vector3.up, Rb.linearVelocity,
-                        2f, 1 << LayerMask.NameToLayer("Default"), QueryTriggerInteraction.Ignore))
-                {
-                    Object.Destroy(transform.gameObject);
-                }
-            }
+            Object.Destroy(transform.gameObject);
+
+            newRagdollScript.root.AddForce(force * 3f, ForceMode.VelocityChange);
+            newRagdollScript.root.AddTorque(force, ForceMode.VelocityChange);
         }
     }
 }

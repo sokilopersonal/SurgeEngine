@@ -51,10 +51,11 @@ MonoBehaviour:
   animation: {fileID: 532031524004221244}
   view: {fileID: 1331910105712177873}
   animationReference: {fileID: 7560760262493947178}
-  findDistance: 5
-  chaseSpeed: 7
-  chaseMaxDistance: 12
-  punchRadius: 1
+  ragdollPrefab: {fileID: -148908003275165075, guid: 83c13cf7730a1744db609172caead5ec, type: 3}
+  findDistance: 0
+  chaseSpeed: 0
+  chaseMaxDistance: 0
+  punchRadius: 0
   patrolSpeedCurve:
     serializedVersion: 2
     m_Curve:
@@ -88,8 +89,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  patrolTime: 1
-  patrolDistance: 12
+  patrolTime: 0
+  patrolDistance: 0
   turnCurve:
     serializedVersion: 2
     m_Curve: []
@@ -156,7 +157,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  turnTime: 1.1
+  turnTime: 0
 --- !u!54 &2170706643375227302
 Rigidbody:
   m_ObjectHideFlags: 0
