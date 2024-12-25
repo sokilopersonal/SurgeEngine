@@ -10,8 +10,8 @@ namespace SurgeEngine.Code.Enemy
         public Rigidbody root;
         public LayerMask collideLayers;
 
-        float timer;
-        bool hit = false;
+        private float timer;
+        private bool hit;
 
         [Header("Explosion")]
         [SerializeField] private ParticleSystem explosionEffect;
@@ -22,13 +22,13 @@ namespace SurgeEngine.Code.Enemy
         {
             timer += Time.deltaTime;
             
-            if (timer >= 5f)
+            if (timer >= 3f)
                 Explode();
         }
 
         public void Explode()
         {
-            if (hit || timer < 0.25f)
+            if (hit || timer < 0.45f)
                 return;
 
             hit = true;

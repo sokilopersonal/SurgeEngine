@@ -23,7 +23,7 @@ namespace SurgeEngine.Code.Enemy.States
                 context.stateMachine.SetState<FStateAfterHoming>();
             }
 
-            Object.Destroy(eggFighter.view.gameObject);
+            Object.Destroy(eggFighter.gameObject);
         }
 
         public void ApplyKnockback(Vector3 force, EnemyRagdoll ragdoll)
