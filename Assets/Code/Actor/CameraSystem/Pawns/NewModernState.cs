@@ -105,7 +105,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
         private void YLag()
         {
             Vector3 vel = _actor.kinematics.Velocity;
-            float yLag = _actor.stateMachine.CurrentState is FStateAir ? Mathf.Clamp(vel.y * -0.125f, _master.yLagMin, _master.yLagMax) : 0f;
+            float yLag = _actor.stateMachine.CurrentState is FStateAir or FStateSpecialJump ? Mathf.Clamp(vel.y * -0.125f, _master.yLagMin, _master.yLagMax) : 0f;
             _stateMachine.yLag = Mathf.SmoothDamp(_stateMachine.yLag, yLag, ref _stateMachine.yLagVelocity, _master.yLagTime);
 
             float mod = _actor.kinematics.Speed * 0.0175f;
@@ -132,10 +132,10 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             {
                 Vector3 vel = _actor.kinematics.Rigidbody.linearVelocity;
                 _velocity = Vector3.Lerp(_velocity, vel, Time.deltaTime * 8f);
-                float yAutoLook = Mathf.Clamp(-_velocity.y * 1.25f, _master.verticalMinAmplitude, _master.verticalMaxAmplitude);
+                float yAutoLook = Mathf.Clamp(-_velocity.y, _master.verticalMinAmplitude, _master.verticalMaxAmplitude);
 
                 _stateMachine.yAutoLook = yAutoLook + _master.verticalDefaultAmplitude;
-                _stateMachine.y = Mathf.SmoothDamp(_stateMachine.y, _stateMachine.yAutoLook, ref _yAutoLookVelocity, 0.75f);
+                _stateMachine.y = Mathf.SmoothDamp(_stateMachine.y, _stateMachine.yAutoLook, ref _yAutoLookVelocity, 0.5f);
                 AutoLook(_master.horizontalAutoLookAmplitude * Mathf.Max(_master.horizontalAutoLookMinAmplitude, Mathf.Clamp01(lookMod)));
             }
             else
