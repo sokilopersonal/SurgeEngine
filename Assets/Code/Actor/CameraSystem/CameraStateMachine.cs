@@ -8,16 +8,13 @@ using UnityEngine;
 namespace SurgeEngine.Code.CameraSystem
 {
     [Serializable]
-    public class MasterCamera : FStateMachine
+    public class CameraStateMachine : FStateMachine
     {
         public ActorCamera master;
         
         public float x;
         public float y;
         
-        public float lX;
-        public float lY;
-
         public float boostDistance;
         public float boostFov;
         
@@ -29,6 +26,7 @@ namespace SurgeEngine.Code.CameraSystem
         public float zLag;
         public float zLagVelocity;
 
+        public float baseFov = 55f;
         public float fov;
 
         public Vector3 position;
@@ -44,13 +42,10 @@ namespace SurgeEngine.Code.CameraSystem
 
         public object currentData;
 
-        private float _lXVel;
-        private float _lYVel;
-
         public float blendFactor { get; private set; }
         public float interpolatedBlendFactor { get; private set; }
 
-        public MasterCamera(Camera camera, Transform transform, ActorCamera master)
+        public CameraStateMachine(Camera camera, Transform transform, ActorCamera master)
         {
             this.camera = camera;
             this.transform = transform;
@@ -58,7 +53,7 @@ namespace SurgeEngine.Code.CameraSystem
 
             boostDistance = 1f;
             boostFov = 1f;
-            fov = 55f;
+            fov = baseFov;
         }
 
         public override void Tick(float dt)
@@ -84,28 +79,17 @@ namespace SurgeEngine.Code.CameraSystem
             }
             
             base.Tick(dt);
-
-            if (!GetState<NewModernState>().IsAuto)
-            {
-                lX = Mathf.SmoothDamp(lX, x, ref _lXVel, master.smoothTime);
-                lY = Mathf.SmoothDamp(lY, y, ref _lYVel, master.smoothTime);
-            }
-            else
-            {
-                lX = x;
-                lY = y;
-            }
             
             transform.position = position;
             transform.rotation = rotation;
             camera.fieldOfView = fov;
         }
 
-        public override void LateTick(float dt)
+        public void SetDirection(Vector3 forward, bool resetY = false)
         {
-            base.LateTick(dt);
-            
-            
+            Quaternion direction = Quaternion.LookRotation(forward, Vector3.up);
+            x = direction.eulerAngles.y;
+            y = !resetY ? direction.eulerAngles.x : 0f;
         }
         
         public void ResetBlendFactor()
@@ -114,19 +98,33 @@ namespace SurgeEngine.Code.CameraSystem
             interpolatedBlendFactor = 0f;
         }
 
-        public void RememberLastData()
+        public LastCameraData RememberLastData()
         {
             lastPosition = position;
             lastRotation = rotation;
             lastFOV = camera.fieldOfView;
+
+            return new LastCameraData
+            {
+                position = lastPosition,
+                rotation = lastRotation,
+                fov = lastFOV
+            };
         }
         
-        public void RememberRelativeLastData()
+        public LastCameraData RememberRelativeLastData()
         {
             Vector3 center = master.transform.position; // Player
             lastPosition = position - center;
             lastRotation = rotation;
             lastFOV = camera.fieldOfView;
+            
+            return new LastCameraData
+            {
+                position = lastPosition,
+                rotation = lastRotation,
+                fov = lastFOV
+            };
         }
         
         public LastCameraData GetLastData()

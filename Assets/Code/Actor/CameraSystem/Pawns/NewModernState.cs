@@ -50,16 +50,8 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             Quaternion horizontal;
             Quaternion vertical;
 
-            if (IsAuto)
-            {
-                horizontal = Quaternion.AngleAxis(_stateMachine.x, Vector3.up);
-                vertical = Quaternion.AngleAxis(_stateMachine.y, Vector3.right);
-            }
-            else
-            {
-                horizontal = Quaternion.AngleAxis(_stateMachine.lX, Vector3.up);
-                vertical = Quaternion.AngleAxis(_stateMachine.lY, Vector3.right);
-            }
+            horizontal = Quaternion.AngleAxis(_stateMachine.x, Vector3.up);
+            vertical = Quaternion.AngleAxis(_stateMachine.y, Vector3.right);
 
             Vector3 direction = horizontal * vertical * Vector3.back;
             Vector3 actorPosition = _actor.transform.position + Vector3.up * yOffset + Vector3.up * _stateMachine.yLag;
@@ -74,6 +66,12 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
         {
             Vector3 cameraDirection = (targetPosition - actorPosition).normalized;
             float actualDistance = originalDistance * _stateMachine.boostDistance;
+
+            if (Physics.SphereCast(actorPosition, _master.collisionRadius, cameraDirection, out RaycastHit hit, actualDistance, _master.collisionMask))
+            {
+                float adjustedDistance = Mathf.Max(hit.distance - _master.collisionRadius, 0.1f);
+                return actorPosition + cameraDirection * adjustedDistance;
+            }
 
             return targetPosition;
         }
@@ -147,9 +145,9 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             }
         }
 
-        protected void AutoLook(float multiplier)
+        protected virtual void AutoLook(float multiplier)
         {
-            float fwd = _actor.stats.GetForwardSignedAngle() * Time.deltaTime;
+            float fwd = GetAutoAngle() * Time.deltaTime;
             float dot = Vector3.Dot(Vector3.Cross(_stateMachine.transform.right, Vector3.up), _actor.transform.forward);
 
             if (!Mathf.Approximately(dot, -1))
@@ -176,24 +174,15 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
 
             _stateMachine.rotation = Quaternion.LookRotation(lookDirection.normalized);
         }
-
-        public void SetDirection(Vector3 transformForward)
+        
+        public float GetAutoAngle()
         {
-            Quaternion direction = Quaternion.LookRotation(transformForward, Vector3.up);
-            _stateMachine.x = direction.eulerAngles.y;
-            _stateMachine.y = direction.eulerAngles.x;
-            _stateMachine.lX = direction.eulerAngles.y;
-            _stateMachine.lY = direction.eulerAngles.x;
-        }
-
-        public void SetBoostDistance(float value)
-        {
-            _stateMachine.boostDistance = value;
-        }
-
-        public float GetBoostDistance()
-        {
-            return _stateMachine.boostDistance;
+            Vector3 crossedForward = Vector3.Cross(_actor.transform.right, Vector3.up);
+            Vector3 crossedCamForward = Vector3.Cross(_stateMachine.transform.right, Vector3.up);
+            
+            Vector3 forward = Vector3.ProjectOnPlane(crossedForward, Vector3.up).normalized;
+            Vector3 camForward = Vector3.ProjectOnPlane(crossedCamForward, Vector3.up).normalized;
+            return Vector3.SignedAngle(forward, camForward, -Vector3.up);
         }
     }
 }

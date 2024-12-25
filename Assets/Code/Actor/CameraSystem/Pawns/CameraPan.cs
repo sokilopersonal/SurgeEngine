@@ -6,7 +6,6 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
     public class CameraPan : CameraPawn
     {
         private PanData _panData;
-        private bool _calculatedDiff;
         
         public CameraPan(Actor owner) : base(owner)
         {
@@ -17,9 +16,16 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
         {
             base.OnEnter();
 
-            _calculatedDiff = false;
+            _stateMachine.RememberLastData();
             
             _stateMachine.ResetBlendFactor();
+        }
+
+        public override void OnExit()
+        {
+            base.OnExit();
+            
+            _stateMachine.SetDirection(_panData.RestoreDirection());
         }
 
         public override void OnTick(float dt)
@@ -27,18 +33,9 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             base.OnTick(dt);
 
             _panData = (PanData)_data;
-
-            if (!_calculatedDiff)
-            {
-                _stateMachine.RememberRelativeLastData();
-                _calculatedDiff = true;
-            }
             LastCameraData last = _stateMachine.GetLastData();
             
-            Vector3 center = _actor.transform.position;
-            Vector3 diff = _panData.position - center;
-            _stateMachine.position = Vector3.Lerp(last.position, diff, _stateMachine.interpolatedBlendFactor);
-            _stateMachine.position += center;
+            _stateMachine.position = Vector3.Lerp(last.position, _panData.position, _stateMachine.interpolatedBlendFactor);
             
             Quaternion rotation = Quaternion.LookRotation(_actor.transform.position + _stateMachine.transform.TransformDirection(_stateMachine.lookOffset) - _stateMachine.position, Vector3.up);
             _stateMachine.rotation = Quaternion.Slerp(last.rotation, rotation, _stateMachine.interpolatedBlendFactor);

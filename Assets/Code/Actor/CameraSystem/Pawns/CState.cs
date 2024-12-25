@@ -7,7 +7,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
     {
         protected readonly Actor _actor;
         protected readonly ActorCamera _master;
-        protected readonly MasterCamera _stateMachine;
+        protected readonly CameraStateMachine _stateMachine;
 
         protected object _data;
 

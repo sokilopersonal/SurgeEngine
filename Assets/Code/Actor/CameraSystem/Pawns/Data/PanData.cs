@@ -1,4 +1,5 @@
 ﻿using System;
+using SurgeEngine.Code.ActorSystem;
 using UnityEngine;
 
 namespace SurgeEngine.Code.CameraSystem.Pawns
@@ -11,6 +12,13 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
         public float easeTimeExit = 1f;
         public float fov = 60f;
         public bool allowRotation = true;
+        public RestoreType restoreType = RestoreType.Player;
+
+        public Vector3 RestoreDirection()
+        {
+            var context = ActorContext.Context;
+            return restoreType == RestoreType.Player ? context.transform.forward : context.camera.GetCameraTransform().transform.forward;
+        }
     }
 
     [Serializable]
@@ -25,5 +33,11 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
     public class FixPanData : PanData
     {
         public Quaternion target;
+    }
+
+    public enum RestoreType
+    {
+        Player,
+        Camera
     }
 }

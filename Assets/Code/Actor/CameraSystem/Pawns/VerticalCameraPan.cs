@@ -21,6 +21,13 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             _lastData = _stateMachine.GetLastData();
         }
 
+        public override void OnExit()
+        {
+            base.OnExit();
+            
+            _stateMachine.SetDirection(_vData.RestoreDirection());
+        }
+
         public override void OnTick(float dt)
         {
             _vData = (VerticalPanData)_data;
@@ -28,7 +35,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             _distance = _vData.distance;
             _yOffset = _vData.yOffset;
             
-            SetDirection(_vData.forward);
+            _stateMachine.SetDirection(_vData.forward);
             
             _stateMachine.camera.fieldOfView = Mathf.Lerp(_lastData.fov, _vData.fov, _stateMachine.interpolatedBlendFactor);
             

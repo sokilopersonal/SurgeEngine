@@ -9,7 +9,7 @@ namespace SurgeEngine.Code.CameraSystem
 {
     public class ActorCamera : ActorComponent
     {
-        public MasterCamera stateMachine;
+        public CameraStateMachine stateMachine;
         
         [Header("Input")]
         public float sensitivity = 0.5f;
@@ -67,15 +67,16 @@ namespace SurgeEngine.Code.CameraSystem
         {
             _camera = Camera.main;
             _cameraTransform = _camera.transform;
-            stateMachine = new MasterCamera(_camera, _cameraTransform, this);
+            stateMachine = new CameraStateMachine(_camera, _cameraTransform, this);
             
             stateMachine.AddState(new NewModernState(actor));
             stateMachine.AddState(new CameraPan(actor));
             stateMachine.AddState(new VerticalCameraPan(actor));
             stateMachine.AddState(new FixedCameraPan(actor));
             stateMachine.AddState(new RestoreCameraPawn(actor));
-            
-            stateMachine.SetState<NewModernState>().SetDirection(transform.forward);
+
+            stateMachine.SetState<NewModernState>();
+            stateMachine.SetDirection(transform.forward);
             
             ActorContext.Context.stateMachine.GetSubState<FBoost>().OnActiveChanged += (state, value) => 
             {
@@ -109,7 +110,7 @@ namespace SurgeEngine.Code.CameraSystem
                 float blendTime = active ? boostBlendTime : boostDeblendTime;
                 float lastBlendFactor = boostBlendFactor;
                 float lastDistance = stateMachine.boostDistance;
-                float baseFov = 55f;
+                float baseFov = stateMachine.baseFov;
                 float lastFov = _camera.fieldOfView;
                 while (t < 1f)
                 {

@@ -16,9 +16,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
         public override void OnEnter()
         {
             _stateMachine.ResetBlendFactor();
-            _stateMachine.RememberRelativeLastData();
-            
-            _lastData = _stateMachine.GetLastData();
+            _lastData = _stateMachine.RememberLastData();
         }
 
         public override void OnExit()
@@ -34,7 +32,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             
             base.OnTick(dt);
             
-            _stateMachine.camera.fieldOfView = Mathf.Lerp(_lastData.fov, 60f, _stateMachine.interpolatedBlendFactor);
+            _stateMachine.camera.fieldOfView = Mathf.Lerp(_lastData.fov, _stateMachine.baseFov, _stateMachine.interpolatedBlendFactor);
             if (_stateMachine.blendFactor >= 1f)
             {
                 _stateMachine.SetState<NewModernState>();
@@ -43,10 +41,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
 
         protected override void SetPosition(Vector3 targetPosition)
         {
-            Vector3 center = _actor.transform.position;
-            Vector3 diff = targetPosition - center;
-            _stateMachine.position = Vector3.Lerp(_lastData.position, diff, _stateMachine.interpolatedBlendFactor);
-            _stateMachine.position += center;
+            _stateMachine.position = Vector3.Lerp(_lastData.position, targetPosition, _stateMachine.interpolatedBlendFactor);
         }
 
         protected override void SetRotation(Vector3 actorPosition)
@@ -55,9 +50,9 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
                 Quaternion.LookRotation(actorPosition + _master.lookOffset - _stateMachine.position), _stateMachine.interpolatedBlendFactor);
         }
 
-        protected override void AutoLookDirection()
+        protected override void AutoLook(float multiplier)
         {
-            //base.AutoLookDirection();
+            _stateMachine.xAutoLook = 0f;
         }
     }
 }
