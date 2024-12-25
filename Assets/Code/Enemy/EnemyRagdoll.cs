@@ -40,5 +40,20 @@ namespace SurgeEngine.Code.Enemy
 
             Destroy(gameObject);
         }
+
+        public void ExplodeImmediate()
+        {
+            if (hit)
+                return;
+
+            hit = true;
+
+            ParticleSystem particle = Instantiate(explosionEffect, root.position + Vector3.up * explosionOffset, Quaternion.identity);
+            Destroy(particle.gameObject, 2.5f);
+
+            RuntimeManager.PlayOneShot(explosionReference, root.position);
+
+            Destroy(gameObject);
+        }
     }
 }
