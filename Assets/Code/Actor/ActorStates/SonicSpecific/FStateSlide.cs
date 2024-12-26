@@ -51,13 +51,26 @@ namespace SurgeEngine.Code.ActorStates
                 else
                     StateMachine.SetState<FStateIdle>();
             }
+            
+            if (Input.LeftBumperPressed)
+            {
+                var qs = StateMachine.GetState<FStateQuickstep>();
+                qs.SetDirection(QuickstepDirection.Left);
+                StateMachine.SetState<FStateQuickstep>();
+            }
+            else if (Input.RightBumperPressed)
+            {
+                var qs = StateMachine.GetState<FStateQuickstep>();
+                qs.SetDirection(QuickstepDirection.Right);
+                StateMachine.SetState<FStateQuickstep>();
+            }
         }
 
         public override void OnFixedTick(float dt)
         {
             base.OnFixedTick(dt);
             
-            if (Common.CheckForGround(out RaycastHit hit))
+            if (Common.CheckForGround(out RaycastHit hit, CheckGroundType.Normal, 5f))
             {
                 Vector3 point = hit.point;
                 Vector3 normal = hit.normal;
@@ -66,6 +79,7 @@ namespace SurgeEngine.Code.ActorStates
                 Kinematics.WriteMovementVector(_rigidbody.linearVelocity);
                 _rigidbody.linearVelocity = Vector3.MoveTowards(_rigidbody.linearVelocity, Vector3.zero, _config.deceleration * dt);
                 Actor.model.RotateBody(normal);
+                Kinematics.Snap(point, normal, true);
             }
             else
             {

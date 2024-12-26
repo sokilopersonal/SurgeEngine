@@ -136,7 +136,7 @@ namespace SurgeEngine.Code.Custom
             }
             Ray ray = new Ray(origin, direction);
             
-            Debug.DrawLine(origin, origin + direction, Color.red);
+            Debug.DrawLine(origin, origin + direction * castDistance, Color.red);
             
             if (castDistance == 0) castDistance = context.config.castDistance;
             LayerMask castMask = context.config.castLayer;

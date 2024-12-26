@@ -55,6 +55,19 @@ namespace SurgeEngine.Code.ActorStates
                 bool readyForDrift = Kinematics.HorizontalSpeed > 5f && abs < 0.4f && !Mathf.Approximately(dot, 0f);
                 bool readyForSlide = Kinematics.HorizontalSpeed > minSpeed;
 
+                if (Input.LeftBumperPressed)
+                {
+                    var qs = StateMachine.GetState<FStateQuickstep>();
+                    qs.SetDirection(QuickstepDirection.Left);
+                    StateMachine.SetState<FStateQuickstep>();
+                }
+                else if (Input.RightBumperPressed)
+                {
+                    var qs = StateMachine.GetState<FStateQuickstep>();
+                    qs.SetDirection(QuickstepDirection.Right);
+                    StateMachine.SetState<FStateQuickstep>();
+                }
+                
                 if (Input.BHeld)
                 {
                     if (readyForSlide && !readyForDrift)

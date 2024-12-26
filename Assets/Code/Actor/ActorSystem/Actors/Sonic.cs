@@ -21,6 +21,9 @@ namespace SurgeEngine.Code.ActorSystem.Actors
         
         [Foldout("Slide")]
         [Expandable] public SlideConfig slideConfig;
+        
+        [Foldout("Quickstep")]
+        [Expandable] public QuickStepConfig quickstepConfig;
 
         public override void Initialize()
         {

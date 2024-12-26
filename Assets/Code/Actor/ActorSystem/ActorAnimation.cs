@@ -231,6 +231,20 @@ namespace SurgeEngine.Code.ActorSystem
             {
                 TransitionToState("BrakeTurn", 0.1f);
             }
+
+            if (obj is FStateQuickstep quickstep)
+            {
+                var dir = quickstep.GetDirection();
+                
+                if (dir == QuickstepDirection.Left)
+                {
+                    TransitionToState("QuickstepLeft", 0.1f);
+                }
+                else if (dir == QuickstepDirection.Right)
+                {
+                    TransitionToState("QuickstepRight", 0.1f);
+                }
+            }
         }
         
         protected void SetFloat(string state, float value)

@@ -23,7 +23,7 @@ namespace SurgeEngine.Code.CommonObjects
             ActorKinematics kinematics = context.kinematics;
             if (!kinematics.IsPathValid())
             {
-                kinematics.SetPath(path);
+                kinematics.SetPath(path, KinematicsMode.Forward);
             }
             else
             {

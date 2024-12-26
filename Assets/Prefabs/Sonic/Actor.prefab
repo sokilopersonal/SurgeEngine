@@ -70,6 +70,7 @@ MonoBehaviour:
   homingConfig: {fileID: 11400000, guid: 26d8aa117f8802940838f20a3156f005, type: 2}
   stompConfig: {fileID: 11400000, guid: 588815eaf43a5c74baefdf410bf8f0e7, type: 2}
   slideConfig: {fileID: 11400000, guid: 283ca8e9aad16f646a81ce036b53029d, type: 2}
+  quickstepConfig: {fileID: 11400000, guid: c647c84618c165449a31b694d78eba22, type: 2}
 --- !u!114 &6716957596991090240
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -87,8 +88,6 @@ MonoBehaviour:
     master: {fileID: 6716957596991090240}
     x: 0
     y: 0
-    lX: 0
-    lY: 0
     boostDistance: 0
     boostFov: 0
     xAutoLook: 0
@@ -97,6 +96,7 @@ MonoBehaviour:
     yLagVelocity: 0
     zLag: 0
     zLagVelocity: 0
+    baseFov: 0
     fov: 0
     position: {x: 0, y: 0, z: 0}
     rotation: {x: 0, y: 0, z: 0, w: 1}

@@ -51,6 +51,8 @@ namespace SurgeEngine.Code.ActorSystem
         public Action<InputAction.CallbackContext> YAction;
 
         // Bumpers
+        public bool LeftBumperPressed => playerInput.actions["Bumper"].ReadValue<Vector2>() == new Vector2(-1, 0);
+        public bool RightBumperPressed => playerInput.actions["Bumper"].ReadValue<Vector2>() == new Vector2(1, 0);
         public Action<InputAction.CallbackContext> BumperAction;
 
         private bool _lockCamera;

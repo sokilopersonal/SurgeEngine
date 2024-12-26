@@ -15,6 +15,7 @@ namespace SurgeEngine.Code.ActorSystem
         public Rigidbody Rigidbody => _rigidbody;
         
         [SerializeField, Range(25, 90)] public float maxAngleDifference = 75;
+        public KinematicsMode mode = KinematicsMode.Free;
 
         public float TurnRate
         {
@@ -169,7 +170,7 @@ namespace SurgeEngine.Code.ActorSystem
         public void SplineCalculation()
         {
             // TODO: Move all spline data to a data class
-            if (_path != null)
+            if (_path != null && mode == KinematicsMode.Forward || mode == KinematicsMode.Side) // 2D too for now
             {
                 var spline = _path.Spline;
                 Vector3 localPos = _path.transform.InverseTransformPoint(_rigidbody.position);
@@ -436,8 +437,6 @@ namespace SurgeEngine.Code.ActorSystem
             }
         }
 
-        
-
         public bool GetAttachState() => _canAttach;
         
         public Vector3 GetInputDir()
@@ -445,16 +444,25 @@ namespace SurgeEngine.Code.ActorSystem
             return _inputDir;
         }
         
-        public void SetPath(SplineContainer path)
+        public void SetPath(SplineContainer path, KinematicsMode desiredMode = KinematicsMode.Free)
         {
+            mode = desiredMode;
             _path = path;
+
+            if (path == null)
+            {
+                mode = KinematicsMode.Free;
+            }
         }
-
-        public void SetAngle() => _angle = Vector3.Angle(_normal, Vector3.up);
-
+        
         public bool IsPathValid()
         {
             return _path != null;
+        }
+
+        public SplineContainer GetPath()
+        {
+            return _path;
         }
     }
     
@@ -464,13 +472,14 @@ namespace SurgeEngine.Code.ActorSystem
         public Vector3 tg;
         public Vector3 up;
         
-        public SplineSample(Vector3 pos, Vector3 tg, Vector3 up)
-        {
-            this.pos = pos;
-            this.tg = tg;
-            this.up = up;
-        }
-        
         public Vector3 ProjectOnUp(Vector3 vector) => Vector3.ProjectOnPlane(vector, Vector3.up);
+    }
+
+    public enum KinematicsMode
+    {
+        Free,
+        Forward,
+        Dash,
+        Side // 2D
     }
 }
