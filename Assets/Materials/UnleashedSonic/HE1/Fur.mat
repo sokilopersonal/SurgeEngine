@@ -177,6 +177,7 @@ Material:
     - _AlphaCutoffPrepass: 0.5
     - _AlphaCutoffShadow: 0.5
     - _AlphaDstBlend: 0
+    - _AlphaMult: 1
     - _AlphaRemapMax: 1
     - _AlphaRemapMin: 0
     - _AlphaSrcBlend: 1
@@ -202,6 +203,8 @@ Material:
     - _DstBlend: 0
     - _DstBlend2: 0
     - _EmissionIntensity: 1
+    - _EmissionPowerReflection: 0
+    - _EmissionPowerSpecular: 0
     - _EmissiveColorMode: 1
     - _EmissiveExposureWeight: 1
     - _EmissiveIntensity: 1
@@ -294,6 +297,7 @@ Material:
     - _UseReflection: 0
     - _UseSecondNormalMap: 0
     - _UseShadowThreshold: 0
+    - _UseUV2: 0
     - _ZTestDepthEqualForOpaque: 3
     - _ZTestGBuffer: 4
     - _ZTestTransparent: 4
@@ -310,7 +314,7 @@ Material:
     - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissiveColorLDR: {r: 0, g: 0, b: 0, a: 1}
     - _FalloffColor: {r: 1, g: 1, b: 1, a: 1}
-    - _FalloffParam: {r: 0.15, g: 2, b: 3, a: 0}
+    - _FalloffParam: {r: 0, g: 1, b: 4, a: 0}
     - _InvPrimScale: {r: 1, g: 1, b: 0, a: 0}
     - _IridescenceThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
     - _ReflectionColor: {r: 1, g: 1, b: 1, a: 1}
