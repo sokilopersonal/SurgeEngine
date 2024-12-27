@@ -14,7 +14,16 @@ namespace SurgeEngine.Code.Enemy
         {
             if (collision.gameObject.layer == enemyLayer)
                 ragdoll.ExplodeImmediate();
-            else if (ragdoll.collideLayers == (ragdoll.collideLayers | (1 << collision.gameObject.layer)))
+            else if (ragdoll.timer >= ragdoll.minimumLifeTime && ragdoll.collideLayers == (ragdoll.collideLayers | (1 << collision.gameObject.layer)))
+                ragdoll.Explode();
+        }
+
+        public void OnCollisionStay(Collision collision)
+        {
+            if (ragdoll.timer < ragdoll.minimumLifeTime)
+                return;
+
+            if (ragdoll.collideLayers == (ragdoll.collideLayers | (1 << collision.gameObject.layer)))
                 ragdoll.Explode();
         }
     }
