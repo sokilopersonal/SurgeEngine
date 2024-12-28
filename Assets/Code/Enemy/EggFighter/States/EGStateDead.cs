@@ -7,6 +7,7 @@ namespace SurgeEngine.Code.Enemy.States
     public class EGStateDead : EGState
     {
         private float _timer;
+        private bool ragdollCreated = false;
 
         public EGStateDead(EggFighter eggFighter, Transform transform, Rigidbody rb) : base(eggFighter, transform, rb)
         {
@@ -28,13 +29,18 @@ namespace SurgeEngine.Code.Enemy.States
 
         public void ApplyKnockback(Vector3 force, EnemyRagdoll ragdoll)
         {
+            if (ragdollCreated)
+                return;
+
+            ragdollCreated = true;
+
             GameObject newRagdoll = Object.Instantiate(ragdoll.gameObject, transform.parent);
             newRagdoll.transform.position = transform.position;
             newRagdoll.transform.forward = -ActorContext.Context.transform.forward;
 
             EnemyRagdoll newRagdollScript = newRagdoll.GetComponent<EnemyRagdoll>();
 
-            Object.Destroy(transform.gameObject);
+            Object.Destroy(eggFighter.gameObject);
 
             newRagdollScript.root.AddForce(force * 3f, ForceMode.VelocityChange);
             newRagdollScript.root.AddTorque(force, ForceMode.VelocityChange);

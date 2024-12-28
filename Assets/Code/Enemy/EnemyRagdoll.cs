@@ -9,8 +9,10 @@ namespace SurgeEngine.Code.Enemy
         [Header("Collision")]
         public Rigidbody root;
         public LayerMask collideLayers;
+        public float minimumLifeTime = 0.25f;
 
-        private float timer;
+        [HideInInspector]
+        public float timer;
         private bool hit;
 
         [Header("Explosion")]
