@@ -8,8 +8,6 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
 {
     public class NewModernState : CState
     {
-        protected float _distance;
-        protected float _yOffset;
         private float _sensSpeedMod;
         private Vector3 _velocity;
         private float _lookVelocity;
@@ -23,8 +21,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
 
         public NewModernState(Actor owner) : base(owner)
         {
-            _distance = _master.distance;
-            _yOffset = _master.yOffset;
+            
         }
 
         public override void OnTick(float dt)
@@ -37,7 +34,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
 
         private void ModernSetup()
         {
-            Vector3 actorPosition = CalculateTarget(out Vector3 targetPosition, _distance * _stateMachine.boostDistance, _yOffset);
+            Vector3 actorPosition = CalculateTarget(out Vector3 targetPosition, _stateMachine.distance * _stateMachine.boostDistance, _stateMachine.yOffset);
 
             ZLag();
             YLag();
@@ -47,14 +44,11 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
 
         protected Vector3 CalculateTarget(out Vector3 targetPosition, float distance, float yOffset)
         {
-            Quaternion horizontal;
-            Quaternion vertical;
-
-            horizontal = Quaternion.AngleAxis(_stateMachine.x, Vector3.up);
-            vertical = Quaternion.AngleAxis(_stateMachine.y, Vector3.right);
+            var horizontal = Quaternion.AngleAxis(_stateMachine.x, Vector3.up);
+            var vertical = Quaternion.AngleAxis(_stateMachine.y, Vector3.right);
 
             Vector3 direction = horizontal * vertical * Vector3.back;
-            Vector3 actorPosition = _actor.transform.position + Vector3.up * yOffset + Vector3.up * _stateMachine.yLag;
+            Vector3 actorPosition = _stateMachine.actorPosition;
 
             Vector3 initialTargetPosition = actorPosition + direction * (distance + _stateMachine.zLag);
             targetPosition = HandleCameraCollision(actorPosition, initialTargetPosition, distance);

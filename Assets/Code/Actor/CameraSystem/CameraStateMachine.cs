@@ -14,6 +14,11 @@ namespace SurgeEngine.Code.CameraSystem
         
         public float x;
         public float y;
+
+        public float startDistance;
+        public float startYOffset;
+        public float distance;
+        public float yOffset;
         
         public float boostDistance;
         public float boostFov;
@@ -32,10 +37,7 @@ namespace SurgeEngine.Code.CameraSystem
         public Vector3 position;
         public Quaternion rotation;
         public Vector3 lookOffset;
-        
-        public Vector3 lastPosition;
-        public Quaternion lastRotation;
-        public float lastFOV;
+        public Vector3 actorPosition;
         
         public Camera camera;
         public Transform transform;
@@ -50,6 +52,11 @@ namespace SurgeEngine.Code.CameraSystem
             this.camera = camera;
             this.transform = transform;
             this.master = master;
+
+            startDistance = master.distance;
+            startYOffset = master.yOffset;
+            distance = startDistance;
+            yOffset = startYOffset;
 
             boostDistance = 1f;
             boostFov = 1f;
@@ -77,12 +84,19 @@ namespace SurgeEngine.Code.CameraSystem
             {
                 lookOffset = Vector3.zero;
             }
+
+            actorPosition = GetActorPosition();
             
             base.Tick(dt);
             
             transform.position = position;
             transform.rotation = rotation;
             camera.fieldOfView = fov;
+        }
+
+        private Vector3 GetActorPosition()
+        {
+            return master.transform.position + Vector3.up * yOffset + Vector3.up * yLag;
         }
 
         public void SetDirection(Vector3 forward, bool resetY = false)
@@ -100,30 +114,26 @@ namespace SurgeEngine.Code.CameraSystem
 
         public LastCameraData RememberLastData()
         {
-            lastPosition = position;
-            lastRotation = rotation;
-            lastFOV = camera.fieldOfView;
-
             return new LastCameraData
             {
-                position = lastPosition,
-                rotation = lastRotation,
-                fov = lastFOV
+                position = position,
+                rotation = rotation,
+                fov = camera.fieldOfView,
+                distance = distance,
+                yOffset = yOffset
             };
         }
         
         public LastCameraData RememberRelativeLastData()
         {
-            Vector3 center = master.transform.position; // Player
-            lastPosition = position - center;
-            lastRotation = rotation;
-            lastFOV = camera.fieldOfView;
-            
+            Vector3 center = actorPosition; // Player
             return new LastCameraData
             {
-                position = lastPosition,
-                rotation = lastRotation,
-                fov = lastFOV
+                position = position - center,
+                rotation = rotation,
+                fov = camera.fieldOfView,
+                distance = distance,
+                yOffset = yOffset
             };
         }
         
@@ -131,9 +141,9 @@ namespace SurgeEngine.Code.CameraSystem
         {
             return new LastCameraData
             {
-                position = lastPosition,
-                rotation = lastRotation,
-                fov = lastFOV
+                position = position,
+                rotation = rotation,
+                fov = fov
             };
         }
     }
@@ -143,5 +153,7 @@ namespace SurgeEngine.Code.CameraSystem
         public Vector3 position;
         public Quaternion rotation;
         public float fov;
+        public float distance;
+        public float yOffset;
     }
 }
