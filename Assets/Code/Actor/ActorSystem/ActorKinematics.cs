@@ -174,7 +174,7 @@ namespace SurgeEngine.Code.ActorSystem
             {
                 var spline = _path.Spline;
                 Vector3 localPos = _path.transform.InverseTransformPoint(_rigidbody.position);
-                SplineUtility.GetNearestPoint(spline, localPos, out var p, out var f, 16, 10);
+                SplineUtility.GetNearestPoint(spline, localPos, out var p, out var f, 12, 8);
                 f *= spline.GetLength();
 
                 SplineSample sample = new SplineSample
