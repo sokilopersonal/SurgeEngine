@@ -16,7 +16,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
         public override void OnEnter()
         {
             _stateMachine.ResetBlendFactor();
-            _lastData = _stateMachine.RememberLastData();
+            _lastData = _stateMachine.RememberRelativeLastData();
         }
 
         public override void OnExit()
@@ -28,11 +28,12 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
 
         public override void OnTick(float dt)
         {
-            _lastData = _stateMachine.GetLastData();
+            _stateMachine.distance = Mathf.Lerp(_lastData.distance, _stateMachine.startDistance, _stateMachine.interpolatedBlendFactor);
+            _stateMachine.yOffset = Mathf.Lerp(_lastData.yOffset, _stateMachine.startYOffset, _stateMachine.interpolatedBlendFactor);
             
             base.OnTick(dt);
             
-            _stateMachine.camera.fieldOfView = Mathf.Lerp(_lastData.fov, _stateMachine.baseFov, _stateMachine.interpolatedBlendFactor);
+            _stateMachine.camera.fieldOfView = Mathf.Lerp(_lastData.fov, _stateMachine.fov, _stateMachine.interpolatedBlendFactor);
             if (_stateMachine.blendFactor >= 1f)
             {
                 _stateMachine.SetState<NewModernState>();
@@ -41,7 +42,10 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
 
         protected override void SetPosition(Vector3 targetPosition)
         {
-            _stateMachine.position = Vector3.Lerp(_lastData.position, targetPosition, _stateMachine.interpolatedBlendFactor);
+            Vector3 center = _stateMachine.actorPosition;
+            Vector3 diff = targetPosition - center;
+            _stateMachine.position = Vector3.Slerp(_lastData.position, diff, _stateMachine.interpolatedBlendFactor);
+            _stateMachine.position += center;
         }
 
         protected override void SetRotation(Vector3 actorPosition)
