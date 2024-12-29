@@ -1,4 +1,5 @@
-﻿using SurgeEngine.Code.ActorStates;
+﻿using System;
+using SurgeEngine.Code.ActorStates;
 using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.Config;
 using SurgeEngine.Code.Custom;
@@ -16,6 +17,8 @@ namespace SurgeEngine.Code.ActorSystem
         
         [SerializeField, Range(25, 90)] public float maxAngleDifference = 75;
         public KinematicsMode mode = KinematicsMode.Free;
+        
+        public event Action<KinematicsMode> OnModeChange; 
 
         public float TurnRate
         {
@@ -170,7 +173,7 @@ namespace SurgeEngine.Code.ActorSystem
         public void SplineCalculation()
         {
             // TODO: Move all spline data to a data class
-            if (_path != null && mode == KinematicsMode.Forward || mode == KinematicsMode.Side) // 2D too for now
+            if (_path != null && mode == KinematicsMode.Forward || mode == KinematicsMode.Side)
             {
                 var spline = _path.Spline;
                 Vector3 localPos = _path.transform.InverseTransformPoint(_rigidbody.position);
@@ -448,6 +451,7 @@ namespace SurgeEngine.Code.ActorSystem
         {
             mode = desiredMode;
             _path = path;
+            OnModeChange?.Invoke(mode);
 
             if (path == null)
             {

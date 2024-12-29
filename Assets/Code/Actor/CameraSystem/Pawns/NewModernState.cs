@@ -47,50 +47,10 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
         {
             Vector3 actorPosition = _stateMachine.actorPosition;
 
-            Vector3 initialTargetPosition = actorPosition + GetDirection() * (distance + _stateMachine.zLag);
+            Vector3 initialTargetPosition = actorPosition + _stateMachine.direction * (distance + _stateMachine.zLag);
             targetPosition = HandleCameraCollision(actorPosition, initialTargetPosition, distance);
 
             return actorPosition;
-        }
-
-        private Vector3 GetDirection()
-        {
-            Vector3 direction;
-            if (_actor.kinematics.mode is KinematicsMode.Free or KinematicsMode.Forward or KinematicsMode.Dash)
-            {
-                var horizontal = Quaternion.AngleAxis(_stateMachine.x, Vector3.up);
-                var vertical = Quaternion.AngleAxis(_stateMachine.y, Vector3.right);
-
-                direction = horizontal * vertical * Vector3.back;
-            }
-            else
-            {
-                var path = _actor.kinematics.GetPath();
-                SplineUtility.GetNearestPoint(path.Spline, 
-                    path.transform.InverseTransformPoint(_actor.transform.position),
-                    out var p, 
-                    out var f, 
-                    6, 4);
-
-                path.Evaluate(path.Spline, f, out var p1, out var tg, out var up);
-
-                SplineSample sample = new SplineSample
-                {
-                    pos = p1,
-                    tg = ((Vector3)tg).normalized,
-                    up = up
-                };
-                
-                Vector3 plane = Vector3.Cross(-sample.tg, Vector3.up);
-                direction = plane * 4f;
-                
-                Debug.DrawRay(_actor.transform.position, direction, Color.red);
-                
-                Vector3 localPos = path.transform.TransformPoint(p);
-                Debug.DrawRay(localPos, sample.tg, Color.green);
-            }
-            
-            return direction;
         }
 
         private Vector3 HandleCameraCollision(Vector3 actorPosition, Vector3 targetPosition, float originalDistance)
@@ -109,7 +69,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
 
         protected virtual void LookAxis()
         {
-            if (IsAuto)
+            if (IsAuto && _actor.kinematics.mode != KinematicsMode.Side)
             {
                 AutoLookDirection();
             }

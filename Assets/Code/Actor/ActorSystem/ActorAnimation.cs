@@ -38,8 +38,8 @@ namespace SurgeEngine.Code.ActorSystem
             SetFloat("SpeedPercent", Mathf.Clamp01(actor.kinematics.Speed / actor.config.topSpeed));
 
             Vector3 vel = actor.kinematics.Velocity.normalized;
-            float signed = actor.model.root.forward.SignedAngleByAxis(vel, actor.transform.up);
-            float angle = signed * 0.4f;
+            float signed = Vector3.SignedAngle(vel, actor.model.root.forward, -Vector3.up);
+            float angle = signed * 0.3f;
             
             SetFloat("GrindLean", actor.kinematics.GetInputDir().x);
             
