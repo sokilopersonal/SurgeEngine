@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3109479031623433519}
   - component: {fileID: 8227937952997656287}
   - component: {fileID: 1864617313423080519}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Switch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46,16 +46,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 944075e817d4b594a85428f5c7cc9a08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  toggleOnce: 0
   meshRenderer: {fileID: 2772736810179136305}
-  toggleOnce: 1
+  active: {fileID: 2100000, guid: 8c69a6e923985ee4e93afc612a0de76b, type: 2}
+  inactive: {fileID: 2100000, guid: 3421af3593e72444084b81b00dc07f12, type: 2}
   onActivated:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: SurgeEngine.Code.Enemy.EnemyRagdoll, Assembly-CSharp
+        m_MethodName: Explode
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onDeactivated:
     m_PersistentCalls:
       m_Calls: []
-  active: {fileID: 2100000, guid: 8c69a6e923985ee4e93afc612a0de76b, type: 2}
-  inactive: {fileID: 2100000, guid: 3421af3593e72444084b81b00dc07f12, type: 2}
+  onReference:
+    Guid:
+      Data1: -1753135956
+      Data2: 1273063060
+      Data3: -1282707320
+      Data4: 925518985
+    Path: event:/CommonObjects/SwitchOn
+  offReference:
+    Guid:
+      Data1: 902414133
+      Data2: 1330463763
+      Data3: -210569793
+      Data4: 1830391182
+    Path: event:/CommonObjects/SwitchOff
 --- !u!65 &1864617313423080519
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -71,11 +97,11 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2, y: 1, z: 2}
+  m_Size: {x: 2, y: 0.4, z: 2}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &6505888893300661282
 PrefabInstance:
