@@ -11,6 +11,7 @@ namespace SurgeEngine.Code.Enemy
         public GameObject mainObject;
         public List<Collider> disableWhenRagdoll;
         public List<EnemyRagdollLimb> limbs;
+        public float limbMassScale = 1f;
         public LayerMask collideLayers;
 
         [HideInInspector]
@@ -32,6 +33,7 @@ namespace SurgeEngine.Code.Enemy
             foreach (EnemyRagdollLimb limb in limbs)
             {
                 limb.ragdoll = this;
+                limb.rb.mass *= limbMassScale;
             }
         }
 

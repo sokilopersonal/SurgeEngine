@@ -9,8 +9,10 @@ namespace SurgeEngine.Code.Enemy
         [HideInInspector]
         public EnemyRagdoll ragdoll;
 
+        [HideInInspector]
+        public Rigidbody rb;
+
         private Collider col;
-        private Rigidbody rb;
         private bool active = false;
         private void Awake()
         {
