@@ -537,7 +537,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -1797735252350156428, guid: c865f2d05ed80844281e86fa77f90dcb, type: 3}
       propertyPath: m_UpdateWhenOffscreen
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -1725289364616930295, guid: c865f2d05ed80844281e86fa77f90dcb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -1021,6 +1021,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa14b8f1724d6984ba87b6f871759b2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  meshRenderer: {fileID: 7693363134710386222}
   mainObject: {fileID: 1134928124351879982}
   disableWhenRagdoll:
   - {fileID: 5521076903748107578}
@@ -2161,6 +2162,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ragdoll: {fileID: 0}
   rb: {fileID: 0}
+--- !u!137 &7693363134710386222 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -1797735252350156428, guid: c865f2d05ed80844281e86fa77f90dcb, type: 3}
+  m_PrefabInstance: {fileID: 993457488928395098}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &7866254553239902834 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6981692696497657128, guid: c865f2d05ed80844281e86fa77f90dcb, type: 3}

@@ -8,6 +8,7 @@ namespace SurgeEngine.Code.Enemy
     public class EnemyRagdoll : MonoBehaviour
     {
         [Header("Collision")]
+        public SkinnedMeshRenderer meshRenderer;
         public GameObject mainObject;
         public List<Collider> disableWhenRagdoll;
         public List<EnemyRagdollLimb> limbs;
@@ -43,6 +44,8 @@ namespace SurgeEngine.Code.Enemy
                 return;
 
             ragdoll = true;
+
+            meshRenderer.updateWhenOffscreen = true;
 
             foreach (Collider disableCol in disableWhenRagdoll)
             {
