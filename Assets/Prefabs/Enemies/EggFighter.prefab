@@ -535,6 +535,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 13
       objectReference: {fileID: 0}
+    - target: {fileID: -1797735252350156428, guid: c865f2d05ed80844281e86fa77f90dcb, type: 3}
+      propertyPath: m_UpdateWhenOffscreen
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: -1725289364616930295, guid: c865f2d05ed80844281e86fa77f90dcb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -47.11498
@@ -1017,6 +1021,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa14b8f1724d6984ba87b6f871759b2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  meshRenderer: {fileID: 7693363134710386222}
   mainObject: {fileID: 1134928124351879982}
   disableWhenRagdoll:
   - {fileID: 5521076903748107578}
@@ -1032,6 +1037,7 @@ MonoBehaviour:
   - {fileID: 5682237435674108612}
   - {fileID: 3634681342811338073}
   - {fileID: 6209564949772884542}
+  limbMassScale: 1
   collideLayers:
     serializedVersion: 2
     m_Bits: 4097
@@ -1162,6 +1168,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ragdoll: {fileID: 0}
+  rb: {fileID: 0}
 --- !u!1 &292409405588047243 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -8518663575956862255, guid: c865f2d05ed80844281e86fa77f90dcb, type: 3}
@@ -1276,6 +1283,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ragdoll: {fileID: 0}
+  rb: {fileID: 0}
 --- !u!1 &423901957605603383 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -8634675063558506643, guid: c865f2d05ed80844281e86fa77f90dcb, type: 3}
@@ -1390,6 +1398,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ragdoll: {fileID: 0}
+  rb: {fileID: 0}
 --- !u!4 &739647175347808433 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c865f2d05ed80844281e86fa77f90dcb, type: 3}
@@ -1509,6 +1518,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ragdoll: {fileID: 0}
+  rb: {fileID: 0}
 --- !u!4 &899397099832564876 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 122218101290701782, guid: c865f2d05ed80844281e86fa77f90dcb, type: 3}
@@ -1626,6 +1636,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ragdoll: {fileID: 0}
+  rb: {fileID: 0}
 --- !u!1 &1362356583755888493 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2243188760188057655, guid: c865f2d05ed80844281e86fa77f90dcb, type: 3}
@@ -1738,6 +1749,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ragdoll: {fileID: 0}
+  rb: {fileID: 0}
 --- !u!1 &3217076881477831360 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2408337500635186586, guid: c865f2d05ed80844281e86fa77f90dcb, type: 3}
@@ -1804,6 +1816,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ragdoll: {fileID: 0}
+  rb: {fileID: 0}
 --- !u!1 &3436794576312795227 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -6739484938625986815, guid: c865f2d05ed80844281e86fa77f90dcb, type: 3}
@@ -1918,6 +1931,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ragdoll: {fileID: 0}
+  rb: {fileID: 0}
 --- !u!1 &4694339555069338885 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -3680324186892506529, guid: c865f2d05ed80844281e86fa77f90dcb, type: 3}
@@ -2032,6 +2046,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ragdoll: {fileID: 0}
+  rb: {fileID: 0}
 --- !u!1 &7053251662055070355 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -1428952426605537847, guid: c865f2d05ed80844281e86fa77f90dcb, type: 3}
@@ -2146,6 +2161,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ragdoll: {fileID: 0}
+  rb: {fileID: 0}
+--- !u!137 &7693363134710386222 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -1797735252350156428, guid: c865f2d05ed80844281e86fa77f90dcb, type: 3}
+  m_PrefabInstance: {fileID: 993457488928395098}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &7866254553239902834 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6981692696497657128, guid: c865f2d05ed80844281e86fa77f90dcb, type: 3}
@@ -2260,6 +2281,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ragdoll: {fileID: 0}
+  rb: {fileID: 0}
 --- !u!1001 &6396058292089601397
 PrefabInstance:
   m_ObjectHideFlags: 0
