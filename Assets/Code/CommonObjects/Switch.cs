@@ -1,5 +1,4 @@
-using SurgeEngine.Code.ActorSystem;
-using SurgeEngine.Code.ActorEffects;
+using FMODUnity;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -7,12 +6,23 @@ namespace SurgeEngine.Code.CommonObjects
 {
     public class Switch : ContactBase
     {
-        public SkinnedMeshRenderer meshRenderer;
+        [Header("Main")]
+        [Space(10)]
         public bool toggleOnce = true;
+        public SkinnedMeshRenderer meshRenderer;
+        [Space(5)]
+        public Material active;
+        public Material inactive;
+
+        [Header("Switch Events")]
+        [Space(10)]
         public UnityEvent onActivated;
         public UnityEvent onDeactivated;
-        [HideInInspector] public Material active;
-        [HideInInspector] public Material inactive;
+
+        [Header("Sounds")]
+        [Space(10)]
+        public EventReference onReference;
+        public EventReference offReference;
 
         private bool toggled = false;
         private bool hasBeenToggled = false;
@@ -36,6 +46,8 @@ namespace SurgeEngine.Code.CommonObjects
             Material[] mats = meshRenderer.sharedMaterials;
             mats[2] = toggled ? active : inactive;
             meshRenderer.sharedMaterials = mats;
+
+            RuntimeManager.PlayOneShot(toggled ? onReference : offReference, transform.position + Vector3.up);
         }
 
         protected override void OnDrawGizmos()
