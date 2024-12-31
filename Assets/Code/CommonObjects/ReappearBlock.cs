@@ -1,22 +1,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using FMODUnity;
 
 namespace SurgeEngine.Code.CommonObjects
 {
     [ExecuteAlways]
     public class ReappearBlock : MonoBehaviour
     {
-        public Vector3 size = Vector3.one;
+        public bool startHidden = false;
 
         [Space(10)]
 
-        public bool startHidden = false;
+        public Vector3 size = Vector3.one;
 
         [Space(10)]
 
         public bool alternate = true;
         public float alternateTimer = 1f;
+
+        [Space(10)]
+        public EventReference appearSound;
 
         Vector3 lastSize = Vector3.one;
 
@@ -162,6 +166,9 @@ namespace SurgeEngine.Code.CommonObjects
             {
                 lightMaterial.SetFloat("_Offset", offset);
             });
+
+            if (Time.timeSinceLevelLoad > 0)
+                RuntimeManager.PlayOneShot(appearSound, transform.position);
         }
 
         public void Hide()
