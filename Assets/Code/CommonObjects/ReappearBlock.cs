@@ -160,7 +160,11 @@ namespace SurgeEngine.Code.CommonObjects
 
         public void Show()
         {
+            if (lightMaterial == null)
+                return;
+
             col.isTrigger = false;
+            
             float offset = -0.5f;
             DOTween.To(() => offset, x => offset = x, 1, 0.25f).SetEase(Ease.OutExpo).OnUpdate(() =>
             {
@@ -173,7 +177,11 @@ namespace SurgeEngine.Code.CommonObjects
 
         public void Hide()
         {
+            if (lightMaterial == null)
+                return;
+
             col.isTrigger = true;
+            
             float offset = 1;
             DOTween.To(() => offset, x => offset = x, -0.5f, 0.25f).SetEase(Ease.OutExpo).OnUpdate(() =>
             {
