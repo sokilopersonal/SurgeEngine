@@ -51,13 +51,13 @@ namespace SurgeEngine
             switch (currentState)
             {
                 case 1:
-                    downHeight = -0.8f;
+                    downHeight = -0.75f;
                     break;
                 case 2:
-                    downHeight = -1.6f;
+                    downHeight = -1.5f;
                     break;
                 case 3:
-                    downHeight = -2.5f;
+                    downHeight = -2.25f;
 
                     Material[] mats = meshRenderer.sharedMaterials;
                     mats[1] = active;
