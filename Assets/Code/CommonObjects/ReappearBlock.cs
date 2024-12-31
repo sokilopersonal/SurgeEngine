@@ -46,8 +46,8 @@ namespace SurgeEngine.Code.CommonObjects
 
             if (Application.isPlaying)
             {
-                lightMaterial = new Material(lightBlock.GetComponent<MeshRenderer>().material);
-                lightBlock.GetComponent<MeshRenderer>().material = lightMaterial;
+                lightMaterial = new Material(lightBlock.GetComponent<MeshRenderer>().sharedMaterial);
+                lightBlock.GetComponent<MeshRenderer>().sharedMaterial = lightMaterial;
             }
 
             hidden = startHidden;
@@ -157,8 +157,8 @@ namespace SurgeEngine.Code.CommonObjects
         public void Show()
         {
             col.isTrigger = false;
-            float offset = 0;
-            DOTween.To(() => offset, x => offset = x, 1, 0.25f).OnUpdate(() =>
+            float offset = -0.5f;
+            DOTween.To(() => offset, x => offset = x, 1, 0.25f).SetEase(Ease.OutExpo).OnUpdate(() =>
             {
                 lightMaterial.SetFloat("_Offset", offset);
             });
@@ -168,7 +168,7 @@ namespace SurgeEngine.Code.CommonObjects
         {
             col.isTrigger = true;
             float offset = 1;
-            DOTween.To(() => offset, x => offset = x, 0, 0.25f).OnUpdate(() =>
+            DOTween.To(() => offset, x => offset = x, -0.5f, 0.25f).SetEase(Ease.OutExpo).OnUpdate(() =>
             {
                 lightMaterial.SetFloat("_Offset", offset);
             });
