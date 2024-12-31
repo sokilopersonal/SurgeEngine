@@ -11,6 +11,8 @@ namespace SurgeEngine.Code.CommonObjects
 
         private void Awake()
         {
+            collider = GetComponent<BoxCollider>();
+            
             if (target == null) // If we don't have a target, search it in the children
             {
                 target = GetComponentInChildren<ObjCameraBase>();
@@ -31,6 +33,17 @@ namespace SurgeEngine.Code.CommonObjects
             {
                 target.RemovePan();
             }
+        }
+
+        public void ResetPan()
+        {
+            target.RemovePan();
+        }
+
+        public void DisablePan()
+        {
+            collider.enabled = false;
+            target.RemovePan();
         }
 
         protected override void OnDrawGizmos()
