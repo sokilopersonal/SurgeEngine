@@ -1,9 +1,10 @@
-using UnityEngine;
 using DG.Tweening;
 using FMODUnity;
+using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
-namespace SurgeEngine
+namespace SurgeEngine.Code.CommonObjects
 {
     public class StompSwitch : MonoBehaviour
     {
@@ -27,20 +28,22 @@ namespace SurgeEngine
         public EventReference soundReference;
         public EventReference onReference;
 
+        [FormerlySerializedAs("DOWN_SPEED")]
         [Space(25)]
 
         [Header("Tweening")]
         [Space(10)]
-        public float DOWN_SPEED = 0.5f;
-        public Ease DOWN_EASE = Ease.OutBack;
+        public float downSpeed = 0.5f;
+        [FormerlySerializedAs("DOWN_EASE")] public Ease downEase = Ease.OutBack;
 
-        int currentState = 0;
+        int _currentState = 0;
+        
         public void Activate(Collider msg)
         {
-            if (currentState >= 3)
+            if (_currentState >= 3)
                 return;
 
-            currentState++;
+            _currentState++;
 
             particle.Play();
 
@@ -48,7 +51,7 @@ namespace SurgeEngine
 
             float downHeight = 0f;
             
-            switch (currentState)
+            switch (_currentState)
             {
                 case 1:
                     downHeight = -0.8f;
@@ -70,7 +73,7 @@ namespace SurgeEngine
             }
 
             switchTransform.DOKill(true);
-            switchTransform.DOLocalMoveY(downHeight, DOWN_SPEED).SetEase(DOWN_EASE);
+            switchTransform.DOLocalMoveY(downHeight, downSpeed).SetEase(downEase);
         }
     }
 }
