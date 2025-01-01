@@ -68,8 +68,84 @@ MonoBehaviour:
       Data3: -1282707320
       Data4: 925518985
     Path: event:/CommonObjects/SwitchOn
-  DOWN_SPEED: 0.5
-  DOWN_EASE: 27
+  downSpeed: 0.5
+  downEase: 27
+--- !u!1 &2844332394701291243
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8113662841094550269}
+  - component: {fileID: 4748341007409932556}
+  - component: {fileID: 3970264327219042202}
+  - component: {fileID: 2464395850631186747}
+  m_Layer: 0
+  m_Name: Sensor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8113662841094550269
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2844332394701291243}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalScale: {x: 1.4, y: 0.3, z: 1.4}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8825585779011367887}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4748341007409932556
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2844332394701291243}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fd5bd82135547599f3a50c6fe443881, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!33 &3970264327219042202
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2844332394701291243}
+  m_Mesh: {fileID: 2534964839176971238, guid: d1396369b431a554a87f4a96f43ea39a, type: 3}
+--- !u!64 &2464395850631186747
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2844332394701291243}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 2534964839176971238, guid: d1396369b431a554a87f4a96f43ea39a, type: 3}
 --- !u!1 &4171184782222473032
 GameObject:
   m_ObjectHideFlags: 0
@@ -5122,7 +5198,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 052810d766ad7e5438c5a0e86841f91d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8113662841094550269}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 052810d766ad7e5438c5a0e86841f91d, type: 3}
       insertIndex: -1
@@ -5130,6 +5209,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 052810d766ad7e5438c5a0e86841f91d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5068287117331397031}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 052810d766ad7e5438c5a0e86841f91d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 417017259892604151}
   m_SourcePrefab: {fileID: 100100000, guid: 052810d766ad7e5438c5a0e86841f91d, type: 3}
 --- !u!23 &7652156027091667104 stripped
 MeshRenderer:
@@ -5190,6 +5272,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &417017259892604151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8156325882555165045}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a81dd7f8acc34c65b29e2a3dbee8876c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &8825585779011367887 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 052810d766ad7e5438c5a0e86841f91d, type: 3}
