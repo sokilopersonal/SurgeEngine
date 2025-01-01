@@ -12,7 +12,6 @@ namespace SurgeEngine
         [SerializeField] Transform switchTransform;
         [SerializeField] MeshRenderer meshRenderer;
         [SerializeField] ParticleSystem particle;
-        public Material active;
 
         [Space(25)]
 
@@ -27,14 +26,19 @@ namespace SurgeEngine
         public EventReference soundReference;
         public EventReference onReference;
 
-        [Space(25)]
-
-        [Header("Tweening")]
-        [Space(10)]
-        public float DOWN_SPEED = 0.5f;
-        public Ease DOWN_EASE = Ease.OutBack;
+        private float DOWN_SPEED = 0.5f;
+        private Ease DOWN_EASE = Ease.OutBack;
+        private Material buttonMaterial;
 
         int currentState = 0;
+
+        private void Start()
+        {
+            Material[] mats = meshRenderer.sharedMaterials;
+            buttonMaterial = new Material(mats[1]);
+            mats[1] = buttonMaterial;
+            meshRenderer.sharedMaterials = mats;
+        }
         public void Activate(Collider msg)
         {
             if (currentState >= 3)
@@ -59,9 +63,17 @@ namespace SurgeEngine
                 case 3:
                     downHeight = -2.25f;
 
-                    Material[] mats = meshRenderer.sharedMaterials;
-                    mats[1] = active;
-                    meshRenderer.sharedMaterials = mats;
+                    float startEmissive = 1f;
+                    float endEmissive = 0f;
+
+                    float currentEmissive = startEmissive;
+
+                    buttonMaterial.SetFloat("_EmissiveExposureWeight", startEmissive);
+
+                    DOTween.To(() => currentEmissive, x => currentEmissive = x, endEmissive, 0.25f).SetEase(Ease.OutQuad).OnUpdate(() =>
+                    {
+                        buttonMaterial.SetFloat("_EmissiveExposureWeight", currentEmissive);
+                    });
 
                     RuntimeManager.PlayOneShot(onReference, transform.position + Vector3.up);
 
