@@ -166,9 +166,9 @@ namespace SurgeEngine.Code.CommonObjects
             col.isTrigger = false;
             
             float offset = -0.5f;
-            DOTween.To(() => offset, x => offset = x, 1, 0.25f).SetEase(Ease.OutExpo).OnUpdate(() =>
+            DOTween.To(() => offset, x => offset = x, 0, 1f).SetEase(Ease.OutSine).OnUpdate(() =>
             {
-                lightMaterial.SetFloat("_Offset", offset);
+                lightMaterial.mainTextureOffset = new Vector2(offset, 0);
             });
 
             if (Time.timeSinceLevelLoad > 0)
@@ -182,10 +182,10 @@ namespace SurgeEngine.Code.CommonObjects
 
             col.isTrigger = true;
             
-            float offset = 1;
-            DOTween.To(() => offset, x => offset = x, -0.5f, 0.25f).SetEase(Ease.OutExpo).OnUpdate(() =>
+            float offset = 0;
+            DOTween.To(() => offset, x => offset = x, -0.5f, 1f).SetEase(Ease.OutSine).OnUpdate(() =>
             {
-                lightMaterial.SetFloat("_Offset", offset);
+                lightMaterial.mainTextureOffset = new Vector2(offset, 0);
             });
         }
     }
