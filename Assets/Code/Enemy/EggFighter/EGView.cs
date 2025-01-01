@@ -1,4 +1,7 @@
-﻿using SurgeEngine.Code.StateMachine;
+﻿using System;
+using FMODUnity;
+using SurgeEngine.Code.Enemy.States;
+using SurgeEngine.Code.StateMachine;
 using UnityEngine;
 
 namespace SurgeEngine.Code.Enemy
@@ -15,6 +18,15 @@ namespace SurgeEngine.Code.Enemy
             {
                 eCollider.excludeLayers = 0;
             }
+        }
+
+        private void OnEnable()
+        {
+            enemyBase.stateMachine.OnStateAssign += state =>
+            {
+                if (state is EGStateDead)
+                    RuntimeManager.PlayOneShot(metalHitReference, transform.position);
+            };   
         }
     }
 }

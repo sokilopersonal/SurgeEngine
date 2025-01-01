@@ -1,4 +1,6 @@
-﻿using FMODUnity;
+﻿using System;
+using FMODUnity;
+using SurgeEngine.Code.Enemy.States;
 using UnityEngine;
 
 namespace SurgeEngine.Code.StateMachine
@@ -10,7 +12,8 @@ namespace SurgeEngine.Code.StateMachine
         public CapsuleCollider eCollider;
         [SerializeField] private ParticleSystem explosionEffect;
         [SerializeField] private float explosionOffset = 0.5f;
-        [SerializeField] private EventReference explosionReference;
+        [SerializeField] protected EventReference explosionReference;
+        [SerializeField] protected EventReference metalHitReference;
 
         private void Update()
         {
