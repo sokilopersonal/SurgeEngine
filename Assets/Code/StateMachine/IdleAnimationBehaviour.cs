@@ -65,8 +65,6 @@ namespace SurgeEngine.Code.StateMachine
             _isIdle = false;
             _idleTimer = 0;
             _idleIndex = 0;
-            
-            animator.SetInteger("IdleIndex", 0);
         }
     }
 }

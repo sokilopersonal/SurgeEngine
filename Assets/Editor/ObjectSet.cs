@@ -24,14 +24,14 @@ namespace SurgeEngine.Editor
             }
         }
 
-        private List<PrefabData> prefabDataList = new List<PrefabData>();
-        private float normalOffset = 0.5f;
-        private Vector2 scrollPosition;
+        private readonly List<PrefabData> _prefabDataList = new List<PrefabData>();
+        private float _normalOffset = 0.1f;
+        private Vector2 _scrollPosition;
         private const string SaveFilePath = "Assets/Editor/SelectedPrefabs.json";
-        private string[] categories;
-        private int selectedCategoryIndex = 0;
-        private GameObject currentPrefabInstance;
-        private bool isPlacingPrefab;
+        private string[] _categories;
+        private int _selectedCategoryIndex = 0;
+        private GameObject _currentPrefabInstance;
+        private bool _isPlacingPrefab;
         
         [MenuItem("Surge Engine/Asset Manager")]
         private static void ShowWindow()
@@ -43,7 +43,7 @@ namespace SurgeEngine.Editor
 
         private void OnEnable()
         {
-            selectedCategoryIndex = EditorPrefs.GetInt("AssetManagerCategoryIndex", 0);
+            _selectedCategoryIndex = EditorPrefs.GetInt("AssetManagerCategoryIndex", 0);
             
             LoadAssetsList();
         }
@@ -51,14 +51,14 @@ namespace SurgeEngine.Editor
         private void OnGUI()
         {
             GUILayout.Label("Asset Manager", EditorStyles.boldLabel);
-            categories = new[] { "All", "Common", "Enemies", "Ring Groups", "Cameras" };
+            _categories = new[] { "All", "Common", "Enemies", "Ring Groups", "Cameras" };
     
             GUILayout.Label("Category:");
-            selectedCategoryIndex = EditorGUILayout.Popup(selectedCategoryIndex, categories);
+            _selectedCategoryIndex = EditorGUILayout.Popup(_selectedCategoryIndex, _categories);
             
-            EditorPrefs.SetInt("AssetManagerCategoryIndex", selectedCategoryIndex);
+            EditorPrefs.SetInt("AssetManagerCategoryIndex", _selectedCategoryIndex);
 
-            normalOffset = EditorGUILayout.FloatField("Normal Offset", normalOffset, EditorStyles.label);
+            _normalOffset = EditorGUILayout.FloatField("Normal Offset", _normalOffset, EditorStyles.label);
     
             if (GUILayout.Button("Add Prefab"))
             {
@@ -66,11 +66,11 @@ namespace SurgeEngine.Editor
             }
 
             GUILayout.Space(10);
-            scrollPosition = GUILayout.BeginScrollView(scrollPosition);
+            _scrollPosition = GUILayout.BeginScrollView(_scrollPosition);
     
-            foreach (var prefabData in prefabDataList)
+            foreach (var prefabData in _prefabDataList)
             {
-                if (selectedCategoryIndex != 0 && prefabData.category != categories[selectedCategoryIndex])
+                if (_selectedCategoryIndex != 0 && prefabData.category != _categories[_selectedCategoryIndex])
                     continue;
 
                 if (DrawPrefabButton(prefabData))
@@ -122,30 +122,30 @@ namespace SurgeEngine.Editor
 
         private void MovePrefab(PrefabData prefabData, int direction)
         {
-            int index = prefabDataList.IndexOf(prefabData);
-            int newIndex = Mathf.Clamp(index + direction, 0, prefabDataList.Count - 1);
+            int index = _prefabDataList.IndexOf(prefabData);
+            int newIndex = Mathf.Clamp(index + direction, 0, _prefabDataList.Count - 1);
             if (index != newIndex)
             {
-                prefabDataList.RemoveAt(index);
-                prefabDataList.Insert(newIndex, prefabData);
+                _prefabDataList.RemoveAt(index);
+                _prefabDataList.Insert(newIndex, prefabData);
             }
         }
 
         private void MovePrefabToTop(PrefabData prefabData)
         {
-            prefabDataList.Remove(prefabData);
-            prefabDataList.Insert(0, prefabData);
+            _prefabDataList.Remove(prefabData);
+            _prefabDataList.Insert(0, prefabData);
         }
 
         private void MovePrefabToBottom(PrefabData prefabData)
         {
-            prefabDataList.Remove(prefabData);
-            prefabDataList.Add(prefabData);
+            _prefabDataList.Remove(prefabData);
+            _prefabDataList.Add(prefabData);
         }
 
         private void SelectPrefab()
         {
-            if (selectedCategoryIndex == 0)
+            if (_selectedCategoryIndex == 0)
             {
                 EditorUtility.DisplayDialog("Asset Manager",
                     "You can't add prefab in the 'All' category. Please select something different.", "OK");
@@ -158,23 +158,23 @@ namespace SurgeEngine.Editor
                 path = "Assets" + path.Substring(Application.dataPath.Length);
                 GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
 
-                if (prefab != null && !prefabDataList.Exists(data => data.prefab == prefab))
+                if (prefab != null && !_prefabDataList.Exists(data => data.prefab == prefab))
                 {
-                    string category = categories[selectedCategoryIndex];
-                    prefabDataList.Add(new PrefabData(path, category, prefab));
+                    string category = _categories[_selectedCategoryIndex];
+                    _prefabDataList.Add(new PrefabData(path, category, prefab));
                 }
             }
         }
 
         private void RemovePrefab(PrefabData prefabData)
         {
-            prefabDataList.Remove(prefabData);
+            _prefabDataList.Remove(prefabData);
         }
 
         private void SaveAssetsList()
         {
             var jsonList = new List<PrefabData>();
-            foreach (var data in prefabDataList)
+            foreach (var data in _prefabDataList)
             {
                 jsonList.Add(new PrefabData(data.path, data.category, null));
             }
@@ -193,7 +193,7 @@ namespace SurgeEngine.Editor
 
         private void LoadAssetsList()
         {
-            prefabDataList.Clear();
+            _prefabDataList.Clear();
 
             if (File.Exists(SaveFilePath))
             {
@@ -205,7 +205,7 @@ namespace SurgeEngine.Editor
                     GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(data.path);
                     if (prefab != null)
                     {
-                        prefabDataList.Add(new PrefabData(data.path, data.category, prefab));
+                        _prefabDataList.Add(new PrefabData(data.path, data.category, prefab));
                     }
                 }
             }
@@ -213,45 +213,56 @@ namespace SurgeEngine.Editor
 
         private void StartPlacingPrefab(GameObject prefab)
         {
-            if (currentPrefabInstance != null)
+            if (_currentPrefabInstance != null)
             {
-                DestroyImmediate(currentPrefabInstance);
+                DestroyImmediate(_currentPrefabInstance);
             }
 
-            currentPrefabInstance = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
+            _currentPrefabInstance = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
             GameObject parent = GameObject.FindGameObjectWithTag("SetData");
             if (parent != null)
             {
-                currentPrefabInstance.transform.SetParent(parent.transform, true);
+                _currentPrefabInstance.transform.SetParent(parent.transform, true);
             }
             
-            isPlacingPrefab = true;
+            _isPlacingPrefab = true;
             SceneView.duringSceneGui += DuringSceneGUI;
             FocusWindowIfItsOpen<SceneView>();
         }
         
         private void PlacePrefab()
         {
-            if (currentPrefabInstance != null)
+            if (_currentPrefabInstance != null)
             {
-                Undo.RegisterCreatedObjectUndo(currentPrefabInstance, "Place Prefab");
-                Selection.activeObject = currentPrefabInstance;
-                currentPrefabInstance = null;
-                isPlacingPrefab = false;
+                Undo.RegisterCreatedObjectUndo(_currentPrefabInstance, "Place Prefab");
+                Selection.activeObject = _currentPrefabInstance;
+                _currentPrefabInstance = null;
+                _isPlacingPrefab = false;
                 SceneView.duringSceneGui -= DuringSceneGUI;
             }
         }
         
         private void DuringSceneGUI(SceneView sceneView)
         {
-            if (isPlacingPrefab && currentPrefabInstance != null)
+            if (_isPlacingPrefab && _currentPrefabInstance != null)
             {
                 Event e = Event.current;
                 Ray ray = HandleUtility.GUIPointToWorldRay(e.mousePosition);
-
+                
+                Collider[] colliders = _currentPrefabInstance.GetComponentsInChildren<Collider>();
+                foreach (var collider in colliders)
+                {
+                    collider.enabled = false;
+                }
+                
                 if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, 1 << LayerMask.NameToLayer("Default")))
                 {
-                    currentPrefabInstance.transform.position = hit.point + hit.normal * normalOffset;
+                    _currentPrefabInstance.transform.position = hit.point + hit.normal * _normalOffset;
+                }
+
+                foreach (var collider in colliders)
+                {
+                    collider.enabled = true;
                 }
                 
                 Handles.color = Color.green;
@@ -265,7 +276,7 @@ namespace SurgeEngine.Editor
 
                 if (e.type == EventType.KeyDown && e.keyCode == KeyCode.Escape)
                 {
-                    DestroyImmediate(currentPrefabInstance);
+                    DestroyImmediate(_currentPrefabInstance);
                     e.Use();
                 }
 

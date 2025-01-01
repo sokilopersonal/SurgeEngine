@@ -50,7 +50,6 @@ MonoBehaviour:
   switchTransform: {fileID: 8825585779011367887}
   meshRenderer: {fileID: 7652156027091667104}
   particle: {fileID: 3590038372455536996}
-  active: {fileID: 2100000, guid: 8c69a6e923985ee4e93afc612a0de76b, type: 2}
   onActivated:
     m_PersistentCalls:
       m_Calls: []
@@ -68,8 +67,6 @@ MonoBehaviour:
       Data3: -1282707320
       Data4: 925518985
     Path: event:/CommonObjects/SwitchOn
-  downSpeed: 0.5
-  downEase: 27
 --- !u!1 &2844332394701291243
 GameObject:
   m_ObjectHideFlags: 0
@@ -5097,6 +5094,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: cmn_obj_km_switchpushM_000.model
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: ad289e82c17d3af419c5afb980d0b3d8, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5195,6 +5196,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 052810d766ad7e5438c5a0e86841f91d, type: 3}
       propertyPath: m_Name
       value: cmn_obj_km_switchbuttonM_000.model
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 052810d766ad7e5438c5a0e86841f91d, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

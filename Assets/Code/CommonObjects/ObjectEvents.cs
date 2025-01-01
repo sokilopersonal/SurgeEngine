@@ -1,7 +1,6 @@
 ﻿using System;
-using SurgeEngine.Code.CommonObjects;
 
-namespace SurgeEngine.Code.ActorSystem
+namespace SurgeEngine.Code.CommonObjects
 {
     public static class ObjectEvents
     {

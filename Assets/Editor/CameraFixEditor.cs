@@ -1,9 +1,10 @@
+using SurgeEngine.Code.CommonObjects.CameraObjects;
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
-[CustomEditor(typeof(SurgeEngine.Code.CommonObjects.ObjCameraFix))]
+[CustomEditor(typeof(ObjCameraFix))]
 public class CameraFixEditor : Editor
 {
     public VisualTreeAsset visualTree;

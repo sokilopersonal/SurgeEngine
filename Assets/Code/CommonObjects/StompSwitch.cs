@@ -1,10 +1,11 @@
-using UnityEngine;
 using DG.Tweening;
 using FMODUnity;
+using UnityEngine;
 using UnityEngine.Events;
 
-namespace SurgeEngine
+namespace SurgeEngine.Code.CommonObjects
 {
+    [SelectionBase]
     public class StompSwitch : MonoBehaviour
     {
         [Header("Main")]
@@ -26,25 +27,26 @@ namespace SurgeEngine
         public EventReference soundReference;
         public EventReference onReference;
 
-        private float DOWN_SPEED = 0.5f;
-        private Ease DOWN_EASE = Ease.OutBack;
-        private Material buttonMaterial;
+        private readonly float _downSpeed = 0.5f;
+        private readonly Ease _downEase = Ease.OutBack;
+        private Material _buttonMaterial;
 
-        int currentState = 0;
+        int _currentState;
 
         private void Start()
         {
             Material[] mats = meshRenderer.sharedMaterials;
-            buttonMaterial = new Material(mats[1]);
-            mats[1] = buttonMaterial;
+            _buttonMaterial = new Material(mats[1]);
+            mats[1] = _buttonMaterial;
             meshRenderer.sharedMaterials = mats;
         }
+        
         public void Activate(Collider msg)
         {
-            if (currentState >= 3)
+            if (_currentState >= 3)
                 return;
 
-            currentState++;
+            _currentState++;
 
             particle.Play();
 
@@ -52,7 +54,7 @@ namespace SurgeEngine
 
             float downHeight = 0f;
             
-            switch (currentState)
+            switch (_currentState)
             {
                 case 1:
                     downHeight = -0.75f;
@@ -68,11 +70,11 @@ namespace SurgeEngine
 
                     float currentEmissive = startEmissive;
 
-                    buttonMaterial.SetFloat("_EmissiveExposureWeight", startEmissive);
+                    _buttonMaterial.SetFloat("_EmissiveExposureWeight", startEmissive);
 
                     DOTween.To(() => currentEmissive, x => currentEmissive = x, endEmissive, 0.25f).SetEase(Ease.OutQuad).OnUpdate(() =>
                     {
-                        buttonMaterial.SetFloat("_EmissiveExposureWeight", currentEmissive);
+                        _buttonMaterial.SetFloat("_EmissiveExposureWeight", currentEmissive);
                     });
 
                     RuntimeManager.PlayOneShot(onReference, transform.position + Vector3.up);
@@ -82,7 +84,7 @@ namespace SurgeEngine
             }
 
             switchTransform.DOKill(true);
-            switchTransform.DOLocalMoveY(downHeight, DOWN_SPEED).SetEase(DOWN_EASE);
+            switchTransform.DOLocalMoveY(downHeight, _downSpeed).SetEase(_downEase);
         }
     }
 }

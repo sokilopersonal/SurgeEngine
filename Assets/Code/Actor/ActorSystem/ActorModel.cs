@@ -10,12 +10,11 @@ namespace SurgeEngine.Code.ActorSystem
         public Transform root;
 
         public CapsuleCollider collision;
-        private float collisionStartHeight;
-        private float collisionStartRadius;
+        private float _collisionStartHeight;
+        private float _collisionStartRadius;
         
         [SerializeField] private float horizontalRotationSpeed = 14f;
         [SerializeField] private float verticalRotationSpeed = 7.5f;
-        [SerializeField] private float verticalRestorationRotationSpeed = 3f;
         
         private Vector3 _modelForwardRotationVelocity;
         private Vector3 _modelUpRotationVelocity;
@@ -31,8 +30,8 @@ namespace SurgeEngine.Code.ActorSystem
 
         private void Start()
         {
-            collisionStartHeight = collision.height;
-            collisionStartRadius = collision.radius;
+            _collisionStartHeight = collision.height;
+            _collisionStartRadius = collision.radius;
             
             Quaternion parentRotation = actor.transform.parent.rotation;
             actor.transform.parent.rotation = Quaternion.identity;
@@ -174,12 +173,12 @@ namespace SurgeEngine.Code.ActorSystem
         {
             if (height == 0)
             {
-                collision.height = collisionStartHeight;
+                collision.height = _collisionStartHeight;
             }
 
             if (radius == 0)
             {
-                collision.radius = collisionStartRadius;
+                collision.radius = _collisionStartRadius;
             }
 
             if (vertical == 0)

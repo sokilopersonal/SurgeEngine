@@ -1,17 +1,17 @@
 ﻿using SurgeEngine.Code.ActorSystem;
 using UnityEngine;
 
-namespace SurgeEngine.Code.CommonObjects
+namespace SurgeEngine.Code.CommonObjects.CameraObjects
 {
     public class ChangeCameraVolume : ContactBase
     {
         [SerializeField] private ObjCameraBase target;
         
-        private BoxCollider collider;
+        private BoxCollider _boxCollider;
 
         private void Awake()
         {
-            collider = GetComponent<BoxCollider>();
+            _boxCollider = GetComponent<BoxCollider>();
             
             if (target == null) // If we don't have a target, search it in the children
             {
@@ -42,18 +42,18 @@ namespace SurgeEngine.Code.CommonObjects
 
         public void DisablePan()
         {
-            collider.enabled = false;
+            _boxCollider.enabled = false;
             target.RemovePan();
         }
 
         protected override void OnDrawGizmos()
         {
-            if (collider == null)
-                collider = GetComponent<BoxCollider>();
+            if (_boxCollider == null)
+                _boxCollider = GetComponent<BoxCollider>();
             
             Gizmos.color = new Color(0.15f, 1f, 0f, 0.1f);
             Gizmos.matrix = transform.localToWorldMatrix;
-            Gizmos.DrawCube(collider.center, collider.size);
+            Gizmos.DrawCube(_boxCollider.center, _boxCollider.size);
         }
     }
 }

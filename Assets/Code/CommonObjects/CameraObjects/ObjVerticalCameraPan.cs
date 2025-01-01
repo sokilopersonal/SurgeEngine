@@ -1,7 +1,7 @@
 ﻿using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.CameraSystem.Pawns;
 
-namespace SurgeEngine.Code.CommonObjects
+namespace SurgeEngine.Code.CommonObjects.CameraObjects
 {
     public class ObjVerticalCameraPan : ObjCameraBase
     {

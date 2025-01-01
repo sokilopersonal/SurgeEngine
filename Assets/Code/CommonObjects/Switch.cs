@@ -5,6 +5,7 @@ using DG.Tweening;
 
 namespace SurgeEngine.Code.CommonObjects
 {
+    [SelectionBase]
     public class Switch : ContactBase
     {
         [Header("Main")]
@@ -23,16 +24,16 @@ namespace SurgeEngine.Code.CommonObjects
         public EventReference onReference;
         public EventReference offReference;
 
-        private bool toggled = false;
-        private bool hasBeenToggled = false;
+        private bool _toggled = false;
+        private bool _hasBeenToggled = false;
         private BoxCollider _collider;
-        private Material buttonMaterial;
+        private Material _buttonMaterial;
 
         private void Start()
         {
             Material[] mats = meshRenderer.sharedMaterials;
-            buttonMaterial = new Material(mats[2]);
-            mats[2] = buttonMaterial;
+            _buttonMaterial = new Material(mats[2]);
+            mats[2] = _buttonMaterial;
             meshRenderer.sharedMaterials = mats;
         }
 
@@ -40,33 +41,33 @@ namespace SurgeEngine.Code.CommonObjects
         {
             base.Contact(msg);
 
-            if (toggleOnce && hasBeenToggled)
+            if (toggleOnce && _hasBeenToggled)
                 return;
 
-            hasBeenToggled = true;
-            toggled = !toggled;
+            _hasBeenToggled = true;
+            _toggled = !_toggled;
 
-            float startEmissive = toggled ? 1f : 0f;
-            float endEmissive = toggled ? 0f : 1f;
+            float startEmissive = _toggled ? 1f : 0f;
+            float endEmissive = _toggled ? 0f : 1f;
             
             float currentEmissive = startEmissive;
 
-            buttonMaterial.SetFloat("_EmissiveExposureWeight", startEmissive);
+            _buttonMaterial.SetFloat("_EmissiveExposureWeight", startEmissive);
             
             DOTween.To(() => currentEmissive, x => currentEmissive = x, endEmissive, 0.25f).SetEase(Ease.OutQuart).OnUpdate(() =>
             {
-                buttonMaterial.SetFloat("_EmissiveExposureWeight", currentEmissive);
+                _buttonMaterial.SetFloat("_EmissiveExposureWeight", currentEmissive);
             });
 
             buttonTransform.DOKill(true);
-            buttonTransform.DOLocalMoveY(toggled ? -0.175f : -0.1f, 0.25f).SetEase(Ease.OutQuart);
+            buttonTransform.DOLocalMoveY(_toggled ? -0.175f : -0.1f, 0.25f).SetEase(Ease.OutQuart);
 
-            if (toggled)
+            if (_toggled)
                 onActivated.Invoke();
             else
                 onDeactivated.Invoke();
 
-            RuntimeManager.PlayOneShot(toggled ? onReference : offReference, transform.position + Vector3.up);
+            RuntimeManager.PlayOneShot(_toggled ? onReference : offReference, transform.position + Vector3.up);
         }
 
         protected override void OnDrawGizmos()

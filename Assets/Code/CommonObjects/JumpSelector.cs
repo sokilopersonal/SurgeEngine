@@ -22,7 +22,6 @@ namespace SurgeEngine.Code.CommonObjects
         private JumpSelectorView _view;
         
         private float _timer;
-        private float _transitionTimer;
         private float _holdTimer;
         private bool _playerInside;
         private bool _launching;
@@ -136,7 +135,6 @@ namespace SurgeEngine.Code.CommonObjects
             
             _startPos = _actor.transform.position;
             _timer = 2f;
-            _transitionTimer = 0f;
             _holdTimer = 0;
             _playerInside = true;
             _launching = false;

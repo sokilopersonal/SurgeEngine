@@ -1,10 +1,7 @@
-﻿using UnityEngine;
+﻿using UnityEditor;
+using UnityEngine;
 
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
-
-namespace SurgeEngine.Code.CommonObjects
+namespace SurgeEngine.Code.CommonObjects.CameraObjects
 {
     public abstract class ObjCameraBase : MonoBehaviour
     {
