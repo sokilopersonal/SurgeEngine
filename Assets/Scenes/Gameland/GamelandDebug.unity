@@ -1297,6 +1297,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3446252520052211501, guid: 9fd77a6cdb9c24f46a84ac7935cb1f27, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8227937952997656287, guid: 9fd77a6cdb9c24f46a84ac7935cb1f27, type: 3}
+      propertyPath: buttonTransform
+      value: 
+      objectReference: {fileID: 2060989225}
     - target: {fileID: 8227937952997656287, guid: 9fd77a6cdb9c24f46a84ac7935cb1f27, type: 3}
       propertyPath: onActivated.m_PersistentCalls.m_Calls.Array.size
       value: 1
@@ -2393,6 +2401,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 56224409df3545940af6aec42e2cec2a, type: 3}
+--- !u!4 &2060989225 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3446252520052211501, guid: 9fd77a6cdb9c24f46a84ac7935cb1f27, type: 3}
+  m_PrefabInstance: {fileID: 1533209131}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2096196819
 PrefabInstance:
   m_ObjectHideFlags: 0

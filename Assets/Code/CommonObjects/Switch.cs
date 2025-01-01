@@ -10,6 +10,7 @@ namespace SurgeEngine.Code.CommonObjects
         [Header("Main")]
         [Space(10)]
         public bool toggleOnce = true;
+        public Transform buttonTransform;
         public SkinnedMeshRenderer meshRenderer;
 
         [Header("Switch Events")]
@@ -52,10 +53,13 @@ namespace SurgeEngine.Code.CommonObjects
 
             buttonMaterial.SetFloat("_EmissiveExposureWeight", startEmissive);
             
-            DOTween.To(() => currentEmissive, x => currentEmissive = x, endEmissive, 0.25f).SetEase(Ease.OutQuad).OnUpdate(() =>
+            DOTween.To(() => currentEmissive, x => currentEmissive = x, endEmissive, 0.25f).SetEase(Ease.OutQuart).OnUpdate(() =>
             {
                 buttonMaterial.SetFloat("_EmissiveExposureWeight", currentEmissive);
             });
+
+            buttonTransform.DOKill(true);
+            buttonTransform.DOLocalMoveY(toggled ? -0.175f : -0.1f, 0.25f).SetEase(Ease.OutQuart);
 
             if (toggled)
                 onActivated.Invoke();
