@@ -30,28 +30,26 @@ namespace SurgeEngine.Code.ActorSystem
 
         private void Update()
         {
-            SetBool(AnimatorParams.Idle, actor.stateMachine.CurrentState is FStateIdle);
-            SetBool(AnimatorParams.InAir, actor.stateMachine.CurrentState is FStateAir or FStateJump or FStateSpecialJump or FStateAirBoost);
             SetFloat(AnimatorParams.GroundSpeed, Mathf.Clamp(actor.kinematics.Speed, 4, 30f));
             SetFloat(AnimatorParams.VerticalSpeed, actor.stats.currentVerticalSpeed);
             
-            SetFloat("SpeedPercent", Mathf.Clamp01(actor.kinematics.Speed / actor.config.topSpeed));
+            SetFloat("SpeedPercent", Mathf.Clamp(actor.kinematics.Speed / actor.config.topSpeed, 0f, 1.25f));
 
-            Vector3 vel = actor.kinematics.Velocity.normalized;
+            Vector3 vel = actor.kinematics.Velocity;
             float signed = Vector3.SignedAngle(vel, actor.model.root.forward, -Vector3.up);
             float angle = signed * 0.3f;
-            
-            SetFloat("GrindLean", actor.kinematics.GetInputDir().x);
+
+            Vector3 cross = Vector3.Cross(actor.model.root.forward, actor.kinematics.Normal);
+            float mDot = Vector3.Dot(vel, cross);
+            mDot = Mathf.Clamp(mDot * 0.3f, -1f, 1f);
             
             SetFloat(AnimatorParams.SmoothTurnAngle, Mathf.Lerp(animator.GetFloat(AnimatorParams.SmoothTurnAngle), angle, 4f * Time.deltaTime));
-            SetFloat(AnimatorParams.TurnAngle, angle);
+            SetFloat(AnimatorParams.TurnAngle, Mathf.Lerp(animator.GetFloat(AnimatorParams.TurnAngle), -mDot, 4f * Time.deltaTime));
             
             float dot = Vector3.Dot(Vector3.up, actor.transform.right);
             SetFloat("WallDot", -dot);
             SetFloat("AbsWallDot", Mathf.Lerp(animator.GetFloat("AbsWallDot"), 
                 Mathf.Abs(Mathf.Approximately(actor.stats.groundAngle, 90) ? dot : 0), 1 * Time.deltaTime));
-            
-            SetBool("Skidding", actor.kinematics.Skidding && !SonicTools.IsBoost());
         }
 
         private void ChangeStateAnimation(FState obj)
@@ -307,11 +305,9 @@ namespace SurgeEngine.Code.ActorSystem
 
     public static class AnimatorParams
     {
-        public static readonly int Idle = Animator.StringToHash("Idle");
-        public static readonly int InAir = Animator.StringToHash("InAir");
         public static readonly int VerticalSpeed = Animator.StringToHash("VerticalSpeed");
         public static readonly int GroundSpeed = Animator.StringToHash("GroundSpeed");
-        public static readonly int TurnAngle = Animator.StringToHash("TurnAngle");
+        public static readonly int TurnAngle = Animator.StringToHash("LocalTurnAngle");
         public static readonly int SmoothTurnAngle = Animator.StringToHash("SmoothTurnAngle");
         public static readonly string RunCycle = "Run Cycle";
         public static readonly string AirCycle = "Air Cycle";
