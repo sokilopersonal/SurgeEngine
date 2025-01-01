@@ -22,48 +22,50 @@ namespace SurgeEngine.Code.CommonObjects
         [Space(10)]
         public EventReference appearSound;
 
-        Vector3 lastSize = Vector3.one;
+        private Vector3 _lastSize = Vector3.one;
 
-        List<Transform> pipes = new List<Transform>();
-        float[] pipeRotations = new float[] { -90, 180, -90, 180, 0, 90, 0, 90 };
+        private List<Transform> _pipes = new List<Transform>();
+        private float[] _pipeRotations = new float[] { -90, 180, -90, 180, 0, 90, 0, 90 };
 
-        List<Transform> joints = new List<Transform>();
-        Transform lightBlock;
+        private List<Transform> _joints = new List<Transform>();
+        private Transform _lightBlock;
 
-        Material lightMaterial;
+        private Material _lightMaterial;
 
-        BoxCollider col;
+        private BoxCollider _col;
 
-        bool hidden = false;
-        float timer;
-        void Start()
+        private bool _hidden = false;
+        private float _timer;
+
+        private void Start()
         {
             foreach (Transform pipe in transform.Find("pipes"))
-                pipes.Add(pipe);
+                _pipes.Add(pipe);
 
             foreach (Transform joint in transform.Find("joints"))
-                joints.Add(joint);
+                _joints.Add(joint);
 
-            lightBlock = transform.Find("lightBlock");
+            _lightBlock = transform.Find("lightBlock");
 
-            col = GetComponent<BoxCollider>();
+            _col = GetComponent<BoxCollider>();
 
             if (Application.isPlaying)
             {
-                lightMaterial = new Material(lightBlock.GetComponent<MeshRenderer>().sharedMaterial);
-                lightBlock.GetComponent<MeshRenderer>().sharedMaterial = lightMaterial;
+                _lightMaterial = new Material(_lightBlock.GetComponent<MeshRenderer>().sharedMaterial);
+                _lightBlock.GetComponent<MeshRenderer>().sharedMaterial = _lightMaterial;
             }
 
-            hidden = startHidden;
+            _hidden = startHidden;
 
-            if (hidden)
+            if (_hidden)
                 Hide();
             else
                 Show();
 
             VisualUpdate();
         }
-        void VisualUpdate()
+
+        private void VisualUpdate()
         {
             // Half-size offsets
             Vector3 halfSize = size * 0.5f;
@@ -98,51 +100,52 @@ namespace SurgeEngine.Code.CommonObjects
             };
 
             // Assign positions to joints
-            for (int i = 0; i < joints.Count; i++)
+            for (int i = 0; i < _joints.Count; i++)
             {
-                joints[i].localPosition = vertices[i];
-                joints[i].localRotation = Quaternion.Euler(0, pipeRotations[i], 0);
+                _joints[i].localPosition = vertices[i];
+                _joints[i].localRotation = Quaternion.Euler(0, _pipeRotations[i], 0);
             }
 
             // Assign positions, rotations, and scales to pipes
-            for (int i = 0; i < pipes.Count; i++)
+            for (int i = 0; i < _pipes.Count; i++)
             {
-                if (i < joints.Count)
+                if (i < _joints.Count)
                 {
-                    pipes[i].localPosition = joints[i].localPosition;
-                    pipes[i].localRotation = Quaternion.Euler(0, pipeRotations[i], 0);
-                    pipes[i].localScale = new Vector3(1, 1, pipeLengths[i]);
+                    _pipes[i].localPosition = _joints[i].localPosition;
+                    _pipes[i].localRotation = Quaternion.Euler(0, _pipeRotations[i], 0);
+                    _pipes[i].localScale = new Vector3(1, 1, pipeLengths[i]);
                 }
                 else
                 {
-                    pipes[i].localPosition = joints[i - 8].localPosition;
-                    pipes[i].localRotation = Quaternion.Euler(90, pipeRotations[i - 8], 0);
-                    pipes[i].localScale = new Vector3(1, 1, pipeLengths[i]);
+                    _pipes[i].localPosition = _joints[i - 8].localPosition;
+                    _pipes[i].localRotation = Quaternion.Euler(90, _pipeRotations[i - 8], 0);
+                    _pipes[i].localScale = new Vector3(1, 1, pipeLengths[i]);
 
                     if (i > 9)
-                        pipes[i].localPosition = Vector3.Scale(pipes[i].localPosition, new Vector3(1, -1, -1));
+                        _pipes[i].localPosition = Vector3.Scale(_pipes[i].localPosition, new Vector3(1, -1, -1));
                 }
             }
 
-            lightBlock.localScale = size;
-            lastSize = size;
+            _lightBlock.localScale = size;
+            _lastSize = size;
 
             float margin = 0.2f;
-            col.size = size + new Vector3(margin, margin, margin);
+            _col.size = size + new Vector3(margin, margin, margin);
         }
-        void Update()
+
+        private void Update()
         {
             if (alternate && Application.isPlaying)
             {
-                timer += Time.deltaTime;
-                if (timer > alternateTimer)
+                _timer += Time.deltaTime;
+                if (_timer > alternateTimer)
                 {
-                    timer = 0f;
+                    _timer = 0f;
                     Toggle();
                 }
             }
 
-            if (lastSize == size)
+            if (_lastSize == size)
                 return;
 
             VisualUpdate();
@@ -150,9 +153,9 @@ namespace SurgeEngine.Code.CommonObjects
 
         public void Toggle()
         {
-            hidden = !hidden;
+            _hidden = !_hidden;
 
-            if (hidden)
+            if (_hidden)
                 Hide();
             else
                 Show();
@@ -160,16 +163,16 @@ namespace SurgeEngine.Code.CommonObjects
 
         public void Show()
         {
-            if (lightMaterial == null)
+            if (_lightMaterial == null)
                 return;
 
-            col.isTrigger = false;
+            _col.isTrigger = false;
             
             float offset = -0.5f;
             DOTween.To(() => offset, x => offset = x, 0, 1f).SetEase(Ease.OutSine).OnUpdate(() =>
             {
-                lightMaterial.mainTextureOffset = new Vector2(offset, 0);
-                lightMaterial.SetTextureOffset("_EmissiveColorMap", new Vector2(offset, 0));
+                _lightMaterial.mainTextureOffset = new Vector2(offset, 0);
+                _lightMaterial.SetTextureOffset("_EmissiveColorMap", new Vector2(offset, 0));
             });
 
             if (Time.timeSinceLevelLoad > 0)
@@ -178,16 +181,16 @@ namespace SurgeEngine.Code.CommonObjects
 
         public void Hide()
         {
-            if (lightMaterial == null)
+            if (_lightMaterial == null)
                 return;
 
-            col.isTrigger = true;
+            _col.isTrigger = true;
             
             float offset = 0;
             DOTween.To(() => offset, x => offset = x, -0.5f, 1f).SetEase(Ease.OutSine).OnUpdate(() =>
             {
-                lightMaterial.mainTextureOffset = new Vector2(offset, 0);
-                lightMaterial.SetTextureOffset("_EmissiveColorMap", new Vector2(offset, 0));
+                _lightMaterial.mainTextureOffset = new Vector2(offset, 0);
+                _lightMaterial.SetTextureOffset("_EmissiveColorMap", new Vector2(offset, 0));
             });
         }
     }
