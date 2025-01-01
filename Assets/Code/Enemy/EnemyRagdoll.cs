@@ -2,6 +2,7 @@ using FMODUnity;
 using SurgeEngine.Code.Enemy.States;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace SurgeEngine.Code.Enemy
 {
@@ -11,6 +12,7 @@ namespace SurgeEngine.Code.Enemy
         public SkinnedMeshRenderer meshRenderer;
         public GameObject mainObject;
         public List<Collider> disableWhenRagdoll;
+        public UnityEvent onRagdoll;
         public List<EnemyRagdollLimb> limbs;
         public float limbMassScale = 1f;
         public LayerMask collideLayers;
@@ -57,6 +59,8 @@ namespace SurgeEngine.Code.Enemy
                 limb.SetActive(true);
                 limb.AddForce(force, mode);
             }
+
+            onRagdoll.Invoke();
         }
 
         private void Update()

@@ -1,6 +1,7 @@
 using FMODUnity;
 using UnityEngine;
 using UnityEngine.Events;
+using DG.Tweening;
 
 namespace SurgeEngine.Code.CommonObjects
 {
@@ -9,10 +10,8 @@ namespace SurgeEngine.Code.CommonObjects
         [Header("Main")]
         [Space(10)]
         public bool toggleOnce = true;
+        public Transform buttonTransform;
         public SkinnedMeshRenderer meshRenderer;
-        [Space(5)]
-        public Material active;
-        public Material inactive;
 
         [Header("Switch Events")]
         [Space(10)]
@@ -27,6 +26,15 @@ namespace SurgeEngine.Code.CommonObjects
         private bool toggled = false;
         private bool hasBeenToggled = false;
         private BoxCollider _collider;
+        private Material buttonMaterial;
+
+        private void Start()
+        {
+            Material[] mats = meshRenderer.sharedMaterials;
+            buttonMaterial = new Material(mats[2]);
+            mats[2] = buttonMaterial;
+            meshRenderer.sharedMaterials = mats;
+        }
 
         public override void Contact(Collider msg)
         {
@@ -38,14 +46,25 @@ namespace SurgeEngine.Code.CommonObjects
             hasBeenToggled = true;
             toggled = !toggled;
 
+            float startEmissive = toggled ? 1f : 0f;
+            float endEmissive = toggled ? 0f : 1f;
+            
+            float currentEmissive = startEmissive;
+
+            buttonMaterial.SetFloat("_EmissiveExposureWeight", startEmissive);
+            
+            DOTween.To(() => currentEmissive, x => currentEmissive = x, endEmissive, 0.25f).SetEase(Ease.OutQuart).OnUpdate(() =>
+            {
+                buttonMaterial.SetFloat("_EmissiveExposureWeight", currentEmissive);
+            });
+
+            buttonTransform.DOKill(true);
+            buttonTransform.DOLocalMoveY(toggled ? -0.175f : -0.1f, 0.25f).SetEase(Ease.OutQuart);
+
             if (toggled)
                 onActivated.Invoke();
             else
                 onDeactivated.Invoke();
-
-            Material[] mats = meshRenderer.sharedMaterials;
-            mats[2] = toggled ? active : inactive;
-            meshRenderer.sharedMaterials = mats;
 
             RuntimeManager.PlayOneShot(toggled ? onReference : offReference, transform.position + Vector3.up);
         }

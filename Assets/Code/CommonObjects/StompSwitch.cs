@@ -1,10 +1,9 @@
+using UnityEngine;
 using DG.Tweening;
 using FMODUnity;
-using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
 
-namespace SurgeEngine.Code.CommonObjects
+namespace SurgeEngine
 {
     public class StompSwitch : MonoBehaviour
     {
@@ -13,7 +12,6 @@ namespace SurgeEngine.Code.CommonObjects
         [SerializeField] Transform switchTransform;
         [SerializeField] MeshRenderer meshRenderer;
         [SerializeField] ParticleSystem particle;
-        public Material active;
 
         [Space(25)]
 
@@ -28,22 +26,25 @@ namespace SurgeEngine.Code.CommonObjects
         public EventReference soundReference;
         public EventReference onReference;
 
-        [FormerlySerializedAs("DOWN_SPEED")]
-        [Space(25)]
+        private float DOWN_SPEED = 0.5f;
+        private Ease DOWN_EASE = Ease.OutBack;
+        private Material buttonMaterial;
 
-        [Header("Tweening")]
-        [Space(10)]
-        public float downSpeed = 0.5f;
-        [FormerlySerializedAs("DOWN_EASE")] public Ease downEase = Ease.OutBack;
+        int currentState = 0;
 
-        int _currentState = 0;
-        
+        private void Start()
+        {
+            Material[] mats = meshRenderer.sharedMaterials;
+            buttonMaterial = new Material(mats[1]);
+            mats[1] = buttonMaterial;
+            meshRenderer.sharedMaterials = mats;
+        }
         public void Activate(Collider msg)
         {
-            if (_currentState >= 3)
+            if (currentState >= 3)
                 return;
 
-            _currentState++;
+            currentState++;
 
             particle.Play();
 
@@ -51,20 +52,28 @@ namespace SurgeEngine.Code.CommonObjects
 
             float downHeight = 0f;
             
-            switch (_currentState)
+            switch (currentState)
             {
                 case 1:
-                    downHeight = -0.8f;
+                    downHeight = -0.75f;
                     break;
                 case 2:
-                    downHeight = -1.6f;
+                    downHeight = -1.5f;
                     break;
                 case 3:
-                    downHeight = -2.5f;
+                    downHeight = -2.25f;
 
-                    Material[] mats = meshRenderer.sharedMaterials;
-                    mats[1] = active;
-                    meshRenderer.sharedMaterials = mats;
+                    float startEmissive = 1f;
+                    float endEmissive = 0f;
+
+                    float currentEmissive = startEmissive;
+
+                    buttonMaterial.SetFloat("_EmissiveExposureWeight", startEmissive);
+
+                    DOTween.To(() => currentEmissive, x => currentEmissive = x, endEmissive, 0.25f).SetEase(Ease.OutQuad).OnUpdate(() =>
+                    {
+                        buttonMaterial.SetFloat("_EmissiveExposureWeight", currentEmissive);
+                    });
 
                     RuntimeManager.PlayOneShot(onReference, transform.position + Vector3.up);
 
@@ -73,7 +82,7 @@ namespace SurgeEngine.Code.CommonObjects
             }
 
             switchTransform.DOKill(true);
-            switchTransform.DOLocalMoveY(downHeight, downSpeed).SetEase(downEase);
+            switchTransform.DOLocalMoveY(downHeight, DOWN_SPEED).SetEase(DOWN_EASE);
         }
     }
 }
