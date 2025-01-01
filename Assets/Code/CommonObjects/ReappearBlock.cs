@@ -168,7 +168,8 @@ namespace SurgeEngine.Code.CommonObjects
             float offset = -0.5f;
             DOTween.To(() => offset, x => offset = x, 0, 1f).SetEase(Ease.OutSine).OnUpdate(() =>
             {
-                lightMaterial.mainTextureOffset = new Vector2(offset, 0);
+                lightMaterial.SetTextureOffset("_MainTex", new Vector2(offset, 0));
+                lightMaterial.SetTextureOffset("_EmissiveColorMap", new Vector2(offset, 0));
             });
 
             if (Time.timeSinceLevelLoad > 0)
@@ -185,7 +186,8 @@ namespace SurgeEngine.Code.CommonObjects
             float offset = 0;
             DOTween.To(() => offset, x => offset = x, -0.5f, 1f).SetEase(Ease.OutSine).OnUpdate(() =>
             {
-                lightMaterial.mainTextureOffset = new Vector2(offset, 0);
+                lightMaterial.SetTextureOffset("_MainTex", new Vector2(offset, 0));
+                lightMaterial.SetTextureOffset("_EmissiveColorMap", new Vector2(offset, 0));
             });
         }
     }
