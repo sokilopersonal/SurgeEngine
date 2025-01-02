@@ -32,6 +32,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4790698341835882188}
+  - {fileID: 8976591869845856509}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &4891998907172753762
@@ -67,13 +68,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22dd4312d2b87b44fa589a25606bada1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
-  keepVelocity: 0.25
-  outOfControl: 0.25
-  yOffset: 0.5
-  center: 1
-  cancelBoost: 0
+  speed: 15
+  keepVelocity: 0.1
   pole: {fileID: 4790698341835882188}
+  point: {fileID: 8976591869845856509}
   animator: {fileID: 3383494264364121772}
   soundEffect:
     Guid:
@@ -82,6 +80,37 @@ MonoBehaviour:
       Data3: -1603228006
       Data4: -811513998
     Path: event:/CommonObjects/SpringPole
+--- !u!1 &3154074192637407388
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8976591869845856509}
+  m_Layer: 8
+  m_Name: Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8976591869845856509
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3154074192637407388}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 1.15}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5991573975504605064}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &5039883945715652903
 PrefabInstance:
   m_ObjectHideFlags: 0

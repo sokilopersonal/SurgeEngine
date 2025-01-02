@@ -8,9 +8,12 @@ using FMODUnity;
 
 namespace SurgeEngine.Code.CommonObjects
 {
-    public class SpringPole : Spring
+    public class SpringPole : ContactBase
     {
+        [SerializeField] float speed = 10f;
+        [SerializeField] float keepVelocity = 0.1f;
         [SerializeField] Transform pole;
+        [SerializeField] Transform point;
         [SerializeField] Animator animator;
         [SerializeField] EventReference soundEffect;
 
@@ -21,9 +24,13 @@ namespace SurgeEngine.Code.CommonObjects
 
         public override void Contact(Collider msg)
         {
+            base.Contact(msg);
+
             Actor context = ActorContext.Context;
 
             float vertSpeed = Mathf.Abs(context.kinematics.Velocity.y);
+
+            float pointDistance = Mathf.Clamp01(Vector3.Distance(new Vector3(context.transform.position.x, point.position.y, context.transform.position.z), point.position) * 0.5f);
 
             if (vertSpeed > 25f)
                 animator.Play("Large", 0, 0);
@@ -34,7 +41,21 @@ namespace SurgeEngine.Code.CommonObjects
 
             RuntimeManager.PlayOneShot(soundEffect, transform.position);
 
-            base.Contact(msg);
+            FStateSpecialJump specialJump = context.stateMachine.SetState<FStateSpecialJump>(ignoreInactiveDelay: true, allowSameState: true);
+            specialJump.SetSpecialData(new SpecialJumpData(SpecialJumpType.Spring, transform));
+            specialJump.PlaySpecialAnimation(0);
+            specialJump.SetKeepVelocity(keepVelocity);
+
+            float finalSpeed = Mathf.Lerp(speed, speed * 0.5f, pointDistance);
+
+            Common.ApplyImpulse(transform.up * finalSpeed);
+        }
+
+        protected override void OnDrawGizmos()
+        {
+            base.OnDrawGizmos();
+            Gizmos.color = Color.green;
+            Gizmos.DrawLine(point.position, point.position + point.up * speed);
         }
     }
 }
