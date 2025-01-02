@@ -54,6 +54,8 @@ namespace SurgeEngine.Code.ActorSystem
             stateMachine.AddState(new FStateGrindSquat(this, body));
             stateMachine.AddState(new FStateJumpSelector(this, body));
             stateMachine.AddState(new FStateJumpSelectorLaunch(this, body));
+            stateMachine.AddState(new FStateSwing(this, body));
+            stateMachine.AddState(new FStateSwingJump(this, body));
             
             FBoost boost = new FBoost(this);
             stateMachine.AddSubState(boost);
