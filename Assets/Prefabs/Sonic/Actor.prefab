@@ -88,6 +88,10 @@ MonoBehaviour:
     master: {fileID: 6716957596991090240}
     x: 0
     y: 0
+    startDistance: 0
+    startYOffset: 0
+    distance: 0
+    yOffset: 0
     boostDistance: 0
     boostFov: 0
     xAutoLook: 0
@@ -101,9 +105,11 @@ MonoBehaviour:
     position: {x: 0, y: 0, z: 0}
     rotation: {x: 0, y: 0, z: 0, w: 1}
     lookOffset: {x: 0, y: 0, z: 0}
-    lastPosition: {x: 0, y: 0, z: 0}
-    lastRotation: {x: 0, y: 0, z: 0, w: 0}
-    lastFOV: 0
+    actorPosition: {x: 0, y: 0, z: 0}
+    direction: {x: 0, y: 0, z: 0}
+    freeDirection: {x: 0, y: 0, z: 0}
+    sideDirection: {x: 0, y: 0, z: 0}
+    sideOffset: {x: 0, y: 0, z: 0}
     camera: {fileID: 4273712975694131987}
     transform: {fileID: 4604916912254361020}
   sensitivity: 0.75
@@ -333,6 +339,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxAngleDifference: 45
+  mode: 0
 --- !u!136 &6497409939340660902
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -25513,7 +25520,6 @@ MonoBehaviour:
   collision: {fileID: 6497409939340660902}
   horizontalRotationSpeed: 16
   verticalRotationSpeed: 7
-  verticalRestorationRotationSpeed: 5
 --- !u!1 &3182707708092555364
 GameObject:
   m_ObjectHideFlags: 0
@@ -30427,6 +30433,8 @@ GameObject:
   - component: {fileID: 5613109573097416191}
   - component: {fileID: 4109363033627661366}
   - component: {fileID: 3843729156831640190}
+  - component: {fileID: 901914677090446478}
+  - component: {fileID: 2889595739742054052}
   m_Layer: 3
   m_Name: Audio
   m_TagString: Untagged
@@ -30726,6 +30734,58 @@ MonoBehaviour:
       Data4: 1012995992
     Path: event:/Common/Paraloop
   paraloopEffect: {fileID: 8823258531851677657}
+--- !u!114 &901914677090446478
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3999411662334716339}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 573843f826b8e77428d9f621d80b1779, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  catchSound:
+    Guid:
+      Data1: 747429279
+      Data2: 1190388362
+      Data3: 1985555846
+      Data4: 882015800
+    Path: event:/Sonic/SwingCatch
+  swingSound:
+    Guid:
+      Data1: -1715839600
+      Data2: 1239499147
+      Data3: 1333921410
+      Data4: 87942880
+    Path: event:/Sonic/Swing
+  jumpSound:
+    Guid:
+      Data1: 2015944784
+      Data2: 1179692746
+      Data3: -2136057174
+      Data4: 1581743355
+    Path: event:/Sonic/Spin
+--- !u!114 &2889595739742054052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3999411662334716339}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3adc824a50c652b46a8845773efed246, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  quickstepSound:
+    Guid:
+      Data1: -1235584736
+      Data2: 1076159831
+      Data3: -284623988
+      Data4: 2088538178
+    Path: event:/Sonic/Quickstep
 --- !u!1 &4232932930214798659
 GameObject:
   m_ObjectHideFlags: 0

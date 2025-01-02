@@ -243,6 +243,17 @@ namespace SurgeEngine.Code.ActorSystem
                     TransitionToState("QuickstepRight", 0.1f);
                 }
             }
+
+            if (obj is FStateSwing)
+            {
+                TransitionToState("SwingLoop", 0f);
+            }
+
+            if (obj is FStateSwingJump)
+            {
+                TransitionToState("SwingJump", 0f);
+                TransitionToStateDelayed("SwingJumpLoop", 0f, 0.28f);
+            }
         }
         
         protected void SetFloat(string state, float value)
