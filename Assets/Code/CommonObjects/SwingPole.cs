@@ -1,0 +1,41 @@
+using SurgeEngine.Code.ActorStates;
+using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.SurgeDebug;
+using UnityEngine;
+
+namespace SurgeEngine.Code.CommonObjects
+{
+    public class SwingPole : ContactBase
+    {
+        public float shotVelSuccess;
+        public float shotVelFail;
+        public Transform grip;
+        public override void Contact(Collider msg)
+        {
+            base.Contact(msg);
+
+            Actor context = ActorContext.Context;
+
+            context.transform.position = grip.position;
+
+            float lookDot = Vector3.Dot(context.transform.forward, transform.forward);
+
+            if (lookDot < 0f)
+                grip.localEulerAngles = new Vector3(grip.localEulerAngles.x, 180, grip.localEulerAngles.z);
+            else
+                grip.localEulerAngles = new Vector3(grip.localEulerAngles.x, 0, grip.localEulerAngles.z);
+
+            context.stateMachine.GetState<FStateSwingJump>().successVel = shotVelSuccess;
+            context.stateMachine.GetState<FStateSwingJump>().failVel = shotVelFail;
+
+            context.stateMachine.GetState<FStateSwing>().poleGrip = grip;
+            context.stateMachine.SetState<FStateSwing>();
+        }
+
+        protected override void OnDrawGizmos()
+        {
+            TrajectoryDrawer.DrawTrajectory(transform.position, (transform.up + transform.forward).normalized, Color.green, shotVelSuccess);
+            TrajectoryDrawer.DrawTrajectory(transform.position, (transform.up + transform.forward).normalized, Color.red, shotVelFail);
+        }
+    }
+}

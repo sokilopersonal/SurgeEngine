@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3109479031623433519}
   - component: {fileID: 8227937952997656287}
-  - component: {fileID: 1864617313423080519}
-  m_Layer: 8
+  - component: {fileID: 5234239692463123463}
+  m_Layer: 0
   m_Name: Switch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -51,19 +51,7 @@ MonoBehaviour:
   meshRenderer: {fileID: 2772736810179136305}
   onActivated:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: SurgeEngine.Code.Enemy.EnemyRagdoll, Assembly-CSharp
-        m_MethodName: Explode
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   onDeactivated:
     m_PersistentCalls:
       m_Calls: []
@@ -81,7 +69,7 @@ MonoBehaviour:
       Data3: -210569793
       Data4: 1830391182
     Path: event:/CommonObjects/SwitchOff
---- !u!65 &1864617313423080519
+--- !u!65 &5234239692463123463
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -100,7 +88,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2, y: 0.4, z: 2}
+  m_Size: {x: 1.9, y: 0.4, z: 1.9}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &6505888893300661282
 PrefabInstance:
@@ -168,7 +156,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8474089028476068623, guid: c1635226447a20a45a559982c8776082, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.175
+      value: -0.1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
