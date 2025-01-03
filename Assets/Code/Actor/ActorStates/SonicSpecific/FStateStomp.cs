@@ -30,10 +30,14 @@ namespace SurgeEngine.Code.ActorStates
             _rigidbody.rotation = Quaternion.LookRotation(Vector3.Cross(_rigidbody.transform.right, Vector3.up), Vector3.up);
 
             _timer = 0;
+
+            Actor.effects.CreateLocus(1f);
         }
 
         public override void OnExit()
         {
+            Actor.effects.DestroyLocus();
+
             base.OnExit();
             
             Animation.ResetAction();

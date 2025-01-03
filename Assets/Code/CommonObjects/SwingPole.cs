@@ -19,11 +19,17 @@ namespace SurgeEngine.Code.CommonObjects
             context.transform.position = grip.position;
 
             float lookDot = Vector3.Dot(context.transform.forward, transform.forward);
+            float lookAngle = Vector3.Angle(context.transform.forward, transform.forward);
+
+            //Debug.Log("Look Dot: " + lookDot);
+            //Debug.Log("Look Angle: " + lookAngle);
 
             if (lookDot < 0f)
                 grip.localEulerAngles = new Vector3(grip.localEulerAngles.x, 180, grip.localEulerAngles.z);
             else
                 grip.localEulerAngles = new Vector3(grip.localEulerAngles.x, 0, grip.localEulerAngles.z);
+
+            context.transform.rotation = grip.rotation;
 
             context.stateMachine.GetState<FStateSwingJump>().successVel = shotVelSuccess;
             context.stateMachine.GetState<FStateSwingJump>().failVel = shotVelFail;

@@ -35,6 +35,7 @@ namespace SurgeEngine.Code.ActorStates
 
             BaseActorConfig config = Actor.config;
             Actor.model.SetCollisionParam(config.jumpCollisionHeight, config.jumpCollisionCenter, config.jumpCollisionRadius);
+            Actor.effects.CreateLocus(1f);
 
             Common.ResetVelocity(ResetVelocityType.Both);
         }

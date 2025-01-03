@@ -11,6 +11,7 @@ namespace SurgeEngine.Code.ActorSystem
     {
         [Header("Trail")]
         [SerializeField] private VolumeTrailRenderer trailRenderer;
+        public SwingEffect swingTrail;
 
         [Header("Boost")]
         [SerializeField] private Effect boostAura;
@@ -39,6 +40,16 @@ namespace SurgeEngine.Code.ActorSystem
             stompEffect.Toggle(false);
             slideEffect.Toggle(false);
             grindEffect.Toggle(false);
+        }
+
+        public void CreateLocus(float time = 0.5f)
+        {
+            trailRenderer.Emit(time);
+        }
+
+        public void DestroyLocus(bool instant = false)
+        {
+            trailRenderer.Clear(instant);
         }
 
         private void OnBoostActivate(FSubState obj, bool value)
