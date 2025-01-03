@@ -37,7 +37,7 @@ namespace SurgeEngine.Code.ActorStates.SonicSubStates
             canAirBoost = true;
             BoostEnergy = 100;
             
-            _config = (owner as Sonic).boostConfig;
+            _config = (owner as Sonic)?.boostConfig;
             
             actor.input.BoostAction += BoostAction;
             actor.stateMachine.OnStateAssign += OnStateAssign;
@@ -122,7 +122,7 @@ namespace SurgeEngine.Code.ActorStates.SonicSubStates
             BoostEnergy = Mathf.Clamp(BoostEnergy, 0, 100);
         }
 
-        public bool CanBoost() => BoostEnergy > 0 && !actor.stateMachine.IsExact<FStateSpecialJump>() && !actor.stateMachine.IsExact<FStateSwing>();
+        public bool CanBoost() => BoostEnergy > 0 && _boostHandler != null;
 
         private void BoostAction(InputAction.CallbackContext obj)
         {
