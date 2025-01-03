@@ -3,6 +3,7 @@ using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Custom;
 using UnityEngine;
 using SurgeEngine.Code.ActorSoundEffects;
+using SurgeEngine.Code.ActorStates.SonicSubStates;
 
 namespace SurgeEngine.Code.ActorStates
 {
@@ -21,8 +22,10 @@ namespace SurgeEngine.Code.ActorStates
         public override void OnEnter()
         {
             base.OnEnter();
-            rotation = 0f;
+
             Common.ResetVelocity(ResetVelocityType.Both);
+            StateMachine.GetSubState<FBoost>().Active = false;
+
             Actor.effects.swingTrail.trail.Clear();
             Actor.effects.swingTrail.Toggle(true);
         }
