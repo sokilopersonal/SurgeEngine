@@ -81,6 +81,12 @@ public class VolumeTrailRenderer : MonoBehaviour
     {
     	if (fadeOut) fadeBias -= Time.deltaTime * fadeSpeed;
     	fadeBias = Mathf.Clamp01((fadeOut ? fadeBias : 1.0f));
+
+        if (Mathf.Approximately(fadeBias, 0f) && emit)
+        {
+            emit = false;
+            vertices.Clear();
+        }
     }
 
     void LateUpdate() 
@@ -90,18 +96,15 @@ public class VolumeTrailRenderer : MonoBehaviour
 	
         renderer.enabled = vertices.Count > 2;
 
-        if (emit && emitTime != 0) 
+        if (emit && emitTime > 0) 
         {
             emitTime -= Time.deltaTime;
-            if (emitTime == 0) 
-            {
-				emitTime = -1;
-			}
-            if (emitTime < 0) 
-            {
-				emit = false;
-			}
         }
+        else if (emit && emitTime <= 0)
+        {
+            fadeOut = true;
+        }
+
         
         if (!emit && vertices.Count == 0 && autoDestruct) 
         {
@@ -219,7 +222,21 @@ public class VolumeTrailRenderer : MonoBehaviour
         emit = true;
         lifeTime = lifetime;
         fadeBias = 1.0f;
+        fadeOut = false;
     }
+
+    public void Clear(bool instant = false)
+    {
+        if (instant)
+        {
+            emit = false;
+            vertices.Clear();
+        }
+        else
+        {
+            fadeOut = true;
+        }
+    } 
 
     void CalculateVertexColors() 
     {

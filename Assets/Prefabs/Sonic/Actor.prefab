@@ -15301,6 +15301,7 @@ Transform:
   - {fileID: 962906239990678227}
   - {fileID: 6941319327879500376}
   - {fileID: 6744568326573401027}
+  - {fileID: 8176853483164855293}
   m_Father: {fileID: 4638284470361493281}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &289070888726962416
@@ -35833,7 +35834,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8176853483164855293
 Transform:
   m_ObjectHideFlags: 0
@@ -35842,12 +35843,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4643749529410642505}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3911659134670193167}
+  m_Father: {fileID: 377323914507647460}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &4829713356159917686
 MeshRenderer:
@@ -35918,7 +35919,7 @@ MonoBehaviour:
   emitTime: 0
   autoDestruct: 0
   material: {fileID: 2100000, guid: 0ce80516a049ab547a5c2fad91c74bfa, type: 2}
-  target: {fileID: 2456151525592967584}
+  target: {fileID: 377323914507647460}
   offset: {x: 0, y: -0.5, z: 0}
   crossSegments: 18
   radius:
@@ -43432,9 +43433,6 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: b5197d4abc58dd14180947022fd32ae9, type: 3}
-      insertIndex: 0
-      addedObject: {fileID: 8176853483164855293}
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: b5197d4abc58dd14180947022fd32ae9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 868344073439563935}

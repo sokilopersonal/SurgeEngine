@@ -42,6 +42,16 @@ namespace SurgeEngine.Code.ActorSystem
             grindEffect.Toggle(false);
         }
 
+        public void CreateLocus(float time = 0.5f)
+        {
+            trailRenderer.Emit(time);
+        }
+
+        public void DestroyLocus(bool instant = false)
+        {
+            trailRenderer.Clear(instant);
+        }
+
         private void OnBoostActivate(FSubState obj, bool value)
         {
             if (obj is not FBoost) return;
