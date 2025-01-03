@@ -25,6 +25,8 @@ namespace SurgeEngine.Code.CommonObjects
             else
                 grip.localEulerAngles = new Vector3(grip.localEulerAngles.x, 0, grip.localEulerAngles.z);
 
+            context.transform.rotation = grip.rotation;
+
             context.stateMachine.GetState<FStateSwingJump>().successVel = shotVelSuccess;
             context.stateMachine.GetState<FStateSwingJump>().failVel = shotVelFail;
 

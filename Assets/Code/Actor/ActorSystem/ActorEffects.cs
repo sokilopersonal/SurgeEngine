@@ -11,6 +11,7 @@ namespace SurgeEngine.Code.ActorSystem
     {
         [Header("Trail")]
         [SerializeField] private VolumeTrailRenderer trailRenderer;
+        public SwingEffect swingTrail;
 
         [Header("Boost")]
         [SerializeField] private Effect boostAura;

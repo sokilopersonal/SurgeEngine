@@ -23,11 +23,14 @@ namespace SurgeEngine.Code.ActorStates
             base.OnEnter();
             rotation = 0f;
             Common.ResetVelocity(ResetVelocityType.Both);
+            Actor.effects.swingTrail.trail.Clear();
+            Actor.effects.swingTrail.Toggle(true);
         }
 
         public override void OnExit()
         {
             base.OnExit();
+            Actor.effects.swingTrail.Toggle(false);
         }
 
         void Jump()
