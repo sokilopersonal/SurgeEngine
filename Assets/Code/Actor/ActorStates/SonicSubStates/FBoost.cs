@@ -122,7 +122,7 @@ namespace SurgeEngine.Code.ActorStates.SonicSubStates
             BoostEnergy = Mathf.Clamp(BoostEnergy, 0, 100);
         }
 
-        public bool CanBoost() => BoostEnergy > 0 && !actor.stateMachine.IsExact<FStateSpecialJump>();
+        public bool CanBoost() => BoostEnergy > 0 && !actor.stateMachine.IsExact<FStateSpecialJump>() && !actor.stateMachine.IsExact<FStateSwing>();
 
         private void BoostAction(InputAction.CallbackContext obj)
         {
