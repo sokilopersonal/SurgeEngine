@@ -4,266 +4,225 @@ using System.Collections.Generic;
 using SurgeEngine.Code.ActorSystem;
 using UnityEngine;
 
-[RequireComponent(typeof(MeshRenderer))]
-[RequireComponent(typeof(MeshFilter))]
-public class VolumeTrailRenderer : MonoBehaviour 
+namespace SurgeEngine.Code.Shaders
 {
-    [Serializable]
-    public class TubeVertex 
-    {
-        public float timeCreated = 0.00f;
-        public Vector3 point = Vector3.zero;
-        public float radius = 1.0f;
-        public Color color = Color.white;
+	[RequireComponent(typeof(MeshRenderer))]
+	[RequireComponent(typeof(MeshFilter))]
+	public class VolumeTrailRenderer : MonoBehaviour 
+	{
+		[Serializable]
+		public class TubeVertex 
+		{
+			public float timeCreated;
+			public Vector3 point = Vector3.zero;
+			public float radius = 1.0f;
 
-        public float timeAlive => Time.time - timeCreated;
+			public TubeVertex() 
+			{
+			}
 
-        public TubeVertex() 
-        {
+			public TubeVertex(Vector3 pt, float r, Color c) 
+			{
+				point = pt;
+				radius = r;
+			}
 		}
 
-        public TubeVertex(Vector3 pt, float r, Color c) 
-        {
-            point = pt;
-            radius = r;
-            color = c;
-        }
-    }
+		private bool _emit = true;
+		private float _emitTime;
+		private readonly bool _autoDestruct = false;
+		[SerializeField] private Material material;
+		[SerializeField] private Transform target;
+		[SerializeField] private Vector3 offset;
+		[SerializeField] private int crossSegments = 18;
+		[SerializeField] private AnimationCurve radius;
+		[SerializeField] private Gradient colorOverLifeTime;
+		[SerializeField] private float lifeTime;
+		[SerializeField] private float fadeSpeed = 2f;
 
-    public bool emit = true;
-    public float emitTime = 0.00f;
-    public bool autoDestruct = false;
-    public Material material;
-    public Transform target;
-    [SerializeField] Vector3 offset;
-    public int crossSegments = 18;
-    public AnimationCurve radius;
-    public Gradient colorOverLifeTime;
-    public float lifeTime;
+		private List<TubeVertex> _vertices;
+		private Color[] _vertexColors;
+		private MeshRenderer _meshRenderer;
+		private MeshFilter _meshFilter;
+		private Vector3[] _crossPoints;
+		private int _lastCrossSegments;
+		private Renderer _renderer;
+		private bool _fadeOut;
+		private float _fadeBias;
 
-    [SerializeField] float fadeSpeed = 2f;
-
-	public List<TubeVertex> vertices;
-	private Color[] vertexColors;
-
-    private MeshRenderer meshRenderer;
-	private MeshFilter meshFilter;
-    private Vector3[] crossPoints;
-    private int lastCrossSegments;
-    private Renderer renderer;
-
-    internal bool fadeOut;
-    internal float fadeBias;
-
-    void Reset() 
-    {
-    	meshFilter.hideFlags = HideFlags.HideInInspector;
-        meshRenderer.hideFlags = HideFlags.HideInInspector;
-
-        vertices = new List<TubeVertex>() 
-        {
-            new TubeVertex(Vector3.zero, 1.0f, Color.white),
-            new TubeVertex(new Vector3(1,0,0), 1.0f, Color.white),
-        };
-    }
-
-    void Start() 
-    {
-        meshRenderer = GetComponent<MeshRenderer>();
-        meshRenderer.material = material;
-        
-        meshFilter = GetComponent<MeshFilter>();
-
-        renderer = GetComponent<Renderer>();
-    }
-
-    void Update() 
-    {
-    	if (fadeOut) fadeBias -= Time.deltaTime * fadeSpeed;
-    	fadeBias = Mathf.Clamp01((fadeOut ? fadeBias : 1.0f));
-
-        if (Mathf.Approximately(fadeBias, 0f) && emit)
-        {
-            emit = false;
-            vertices.Clear();
-        }
-    }
-
-    void LateUpdate() 
-    {
-	    transform.position = Vector3.zero;
-		transform.rotation = Quaternion.identity;
-	
-        renderer.enabled = vertices.Count > 2;
-
-        if (emit && emitTime > 0) 
-        {
-            emitTime -= Time.deltaTime;
-        }
-        else if (emit && emitTime <= 0)
-        {
-            fadeOut = true;
-        }
-
-        
-        if (!emit && vertices.Count == 0 && autoDestruct) 
-        {
-            Destroy(gameObject);
-        }
-
-        if (emit && ActorContext.Context.stats.currentSpeed > 1) 
-        {
-			TubeVertex p = new TubeVertex
-			{
-				point = target.position + target.TransformDirection(offset),
-				timeCreated = Time.time
-			};
-			vertices.Add(p);
-        }
-
-		ArrayList remove = new ArrayList();
-		int i = 0;
-		foreach (TubeVertex p in vertices) 
+		private void Start() 
 		{
-			if (Time.time - p.timeCreated > lifeTime) 
+			_meshRenderer = GetComponent<MeshRenderer>();
+			_meshRenderer.material = material;
+        
+			_meshFilter = GetComponent<MeshFilter>();
+			_renderer = GetComponent<Renderer>();
+
+			_vertices = new List<TubeVertex>();
+			
+			_meshFilter.hideFlags = HideFlags.HideInInspector;
+			_meshRenderer.hideFlags = HideFlags.HideInInspector;
+
+			_fadeOut = true;
+			_fadeBias = 0f;
+		}
+
+		private void Update() 
+		{
+			if (_fadeOut) _fadeBias -= Time.deltaTime * fadeSpeed;
+			_fadeBias = Mathf.Clamp01(_fadeOut ? _fadeBias : 1.0f);
+
+			if (Mathf.Approximately(_fadeBias, 0f) && _emit)
 			{
-				remove.Add(p);
+				_emit = false;
+				_vertices.Clear();
+			}
+		}
+
+		private void LateUpdate() 
+		{
+			transform.position = Vector3.zero;
+			transform.rotation = Quaternion.identity;
+			
+			_renderer.enabled = _vertices.Count > 2;
+
+			if (_emit && _emitTime > 0) 
+			{
+				_emitTime -= Time.deltaTime;
+			}
+			else if (_emit && _emitTime <= 0)
+			{
+				_fadeOut = true;
 			}
 			
-			i++;
-		}
+			if (!_emit && _vertices.Count == 0 && _autoDestruct) 
+			{
+				Destroy(gameObject);
+			}
 
-		foreach (TubeVertex p in remove) 
-		{
-			vertices.Remove(p);
-		}
+			if (_emit && ActorContext.Context.stats.currentSpeed > 1) 
+			{
+				TubeVertex p = new TubeVertex
+				{
+					point = target.position + target.TransformDirection(offset),
+					timeCreated = Time.time
+				};
+				_vertices.Add(p);
+			}
+
+			ArrayList remove = new ArrayList();
+			foreach (TubeVertex p in _vertices) 
+			{
+				if (Time.time - p.timeCreated > lifeTime) 
+				{
+					remove.Add(p);
+				}
+			}
+
+			foreach (TubeVertex p in remove) 
+			{
+				_vertices.Remove(p);
+			}
 		
-		remove.Clear();
+			remove.Clear();
 
-		if (vertices.Count > 1) 
-		{
-			for (int k = 0; k < vertices.Count; k++) 
+			if (_vertices.Count > 1) 
 			{
-				vertices[k].radius = radius.Evaluate((vertices.Count - 1 - k) / (float)(vertices.Count - 1));
-			}
-
-			if (crossSegments != lastCrossSegments) 
-			{
-				crossPoints = new Vector3[crossSegments];
-				float theta = 2.0f * Mathf.PI / crossSegments;
-				for (int c = 0; c < crossSegments; c++) 
+				for (int k = 0; k < _vertices.Count; k++) 
 				{
-					crossPoints[c] = new Vector3(Mathf.Cos(theta * c), Mathf.Sin(theta * c), 0);
-				}
-				lastCrossSegments = crossSegments;
-			}
-
-			Vector3[] meshVertices = new Vector3[vertices.Count * crossSegments];
-			Vector2[] uvs = new Vector2[vertices.Count * crossSegments];
-			Color[] colors = new Color[vertices.Count * crossSegments];
-			int[] tris = new int[vertices.Count * crossSegments * 6];
-			int[] lastVertices = new int[crossSegments];
-			int[] theseVertices = new int[crossSegments];
-			Quaternion rotation = Quaternion.identity;
-
-			for (int p = 0; p < vertices.Count; p++) 
-			{
-				if (p < vertices.Count - 1) 
-				{
-					rotation = Quaternion.FromToRotation(Vector3.forward, vertices[p + 1].point - vertices[p].point);
+					_vertices[k].radius = radius.Evaluate((_vertices.Count - 1 - k) / (float)(_vertices.Count - 1));
 				}
 
-				for (int c = 0; c < crossSegments; c++) 
+				if (crossSegments != _lastCrossSegments) 
 				{
-					int vertexIndex = p * crossSegments + c;
-					meshVertices[vertexIndex] = vertices[p].point + rotation * crossPoints[c] * vertices[p].radius;
-					uvs[vertexIndex] = new Vector2((0f + c) / crossSegments, (1f + p) / vertices.Count);
-
-					float overlifetime = (vertices.Count - 1 - p) / (float)(vertices.Count - 1);
-
-					Color color = colorOverLifeTime.Evaluate(overlifetime) * fadeBias;
-					colors[vertexIndex] = color;
-
-					lastVertices[c] = theseVertices[c];
-					theseVertices[c] = p * crossSegments + c;	
+					_crossPoints = new Vector3[crossSegments];
+					float theta = 2.0f * Mathf.PI / crossSegments;
+					for (int c = 0; c < crossSegments; c++) 
+					{
+						_crossPoints[c] = new Vector3(Mathf.Cos(theta * c), Mathf.Sin(theta * c), 0);
+					}
+					_lastCrossSegments = crossSegments;
 				}
+
+				Vector3[] meshVertices = new Vector3[_vertices.Count * crossSegments];
+				Vector2[] uvs = new Vector2[_vertices.Count * crossSegments];
+				Color[] colors = new Color[_vertices.Count * crossSegments];
+				int[] tris = new int[_vertices.Count * crossSegments * 6];
+				int[] lastVertices = new int[crossSegments];
+				int[] theseVertices = new int[crossSegments];
+				Quaternion rotation = Quaternion.identity;
+
+				for (int p = 0; p < _vertices.Count; p++) 
+				{
+					if (p < _vertices.Count - 1) 
+					{
+						rotation = Quaternion.FromToRotation(Vector3.forward, _vertices[p + 1].point - _vertices[p].point);
+					}
+
+					for (int c = 0; c < crossSegments; c++) 
+					{
+						int vertexIndex = p * crossSegments + c;
+						meshVertices[vertexIndex] = _vertices[p].point + rotation * _crossPoints[c] * _vertices[p].radius;
+						uvs[vertexIndex] = new Vector2((0f + c) / crossSegments, (1f + p) / _vertices.Count);
+
+						float overlifetime = (_vertices.Count - 1 - p) / (float)(_vertices.Count - 1);
+
+						Color color = colorOverLifeTime.Evaluate(overlifetime) * _fadeBias;
+						colors[vertexIndex] = color;
+
+						lastVertices[c] = theseVertices[c];
+						theseVertices[c] = p * crossSegments + c;	
+					}
 				
-                if (p > 0) 
-                {
-                    for (int c = 0; c < crossSegments; c++) 
-                    {
-                        int start = (p * crossSegments + c) * 6;
-                        tris[start] = lastVertices[c];
-                        tris[start + 1] = lastVertices[(c + 1) % crossSegments];
-						tris[start + 2] = theseVertices[c];
-                        tris[start + 3] = tris[start + 2];
-						tris[start + 4] = tris[start + 1];
-						tris[start + 5] = theseVertices[(c + 1) % crossSegments];
+					if (p > 0) 
+					{
+						for (int c = 0; c < crossSegments; c++) 
+						{
+							int start = (p * crossSegments + c) * 6;
+							tris[start] = lastVertices[c];
+							tris[start + 1] = lastVertices[(c + 1) % crossSegments];
+							tris[start + 2] = theseVertices[c];
+							tris[start + 3] = tris[start + 2];
+							tris[start + 4] = tris[start + 1];
+							tris[start + 5] = theseVertices[(c + 1) % crossSegments];
+						}
 					}
 				}
+
+				Mesh mesh = GetComponent<MeshFilter>().mesh;
+				if (!mesh) 
+				{
+					mesh = new Mesh();
+				}
+				mesh.Clear();
+				mesh.vertices = meshVertices;
+				mesh.triangles = tris;
+				mesh.colors = colors;
+
+				mesh.RecalculateNormals();
+				mesh.uv = uvs;
 			}
+		}
 
-			Mesh mesh = GetComponent<MeshFilter>().mesh;
-			if (!mesh) {
-				mesh = new Mesh();
+		public void Emit(float lifetime = 0.5f) 
+		{
+			_emit = true;
+			lifeTime = lifetime;
+			_fadeBias = 1.0f;
+			_fadeOut = false;
+		}
+
+		public void Clear(bool instant = false)
+		{
+			if (instant)
+			{
+				_emit = false;
+				_vertices.Clear();
 			}
-			mesh.Clear();
-			mesh.vertices = meshVertices;
-			mesh.triangles = tris;
-			mesh.colors = colors;
-
-			mesh.RecalculateNormals();
-			mesh.uv = uvs;
-        }
-    }
-
-    public void Emit(float lifetime = 0.5f) 
-    {
-        emit = true;
-        lifeTime = lifetime;
-        fadeBias = 1.0f;
-        fadeOut = false;
-    }
-
-    public void Clear(bool instant = false)
-    {
-        if (instant)
-        {
-            emit = false;
-            vertices.Clear();
-        }
-        else
-        {
-            fadeOut = true;
-        }
-    } 
-
-    void CalculateVertexColors() 
-    {
-        vertexColors = new Color[vertices.Count * crossSegments];
-
-        for (int i = 0; i < vertices.Count; i++) 
-        {
-            vertexColors[i] = Color.white;
-        }
-
-        int divisions = crossSegments;
-
-        for (int i = 0; i < divisions; i++)
-        {
-            vertexColors[i].a = 0;
-
-            if (vertices.Count > divisions) 
-            {
-                vertexColors[divisions + i] = new Color(1, 1, 1, 1f);
-            }
-
-            if (vertices.Count > divisions * 4)
-            {
-                vertexColors[divisions + i] = new Color(1, 1, 1, 1f);
-            }
-
-            vertexColors[vertices.Count * i].a = 0;
-        }
-    }
+			else
+			{
+				_fadeOut = true;
+			}
+		}
+	}
 }

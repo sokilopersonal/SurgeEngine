@@ -10,6 +10,7 @@ namespace SurgeEngine.Code.CommonObjects
         public float shotVelSuccess;
         public float shotVelFail;
         public Transform grip;
+        
         public override void Contact(Collider msg)
         {
             base.Contact(msg);

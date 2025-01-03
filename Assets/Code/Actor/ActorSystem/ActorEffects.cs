@@ -2,6 +2,7 @@
 using SurgeEngine.Code.ActorEffects;
 using SurgeEngine.Code.ActorStates;
 using SurgeEngine.Code.ActorStates.SonicSubStates;
+using SurgeEngine.Code.Shaders;
 using SurgeEngine.Code.StateMachine;
 using UnityEngine;
 
@@ -42,7 +43,7 @@ namespace SurgeEngine.Code.ActorSystem
             grindEffect.Toggle(false);
         }
 
-        public void CreateLocus(float time = 0.5f)
+        public void CreateLocus(float time = 2f)
         {
             trailRenderer.Emit(time);
         }
