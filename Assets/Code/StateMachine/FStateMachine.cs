@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace SurgeEngine.Code.StateMachine
 {
@@ -13,6 +14,7 @@ namespace SurgeEngine.Code.StateMachine
         private Dictionary<Type, FState> _states = new Dictionary<Type, FState>();
         private Dictionary<Type, FSubState> _subStates = new Dictionary<Type, FSubState>();
         private List<FSubState> _subStatesList = new List<FSubState>();
+        private List<IStateTimeout> _stateTimeouts = new List<IStateTimeout>();
         
         public event Action<FState> OnStateAssign;
         
@@ -21,6 +23,11 @@ namespace SurgeEngine.Code.StateMachine
         public void AddState(FState state)
         {
             _states.Add(state.GetType(), state);
+
+            if (state is IStateTimeout timeout)
+            {
+                _stateTimeouts.Add(timeout);
+            }
         }
         
         public void AddSubState(FSubState subState)
@@ -42,13 +49,21 @@ namespace SurgeEngine.Code.StateMachine
 
             if (_states.TryGetValue(type, out FState newState))
             {
-                CurrentState?.OnExit();
-                PreviousState = CurrentState;
-                CurrentState = newState;
-                OnStateAssign?.Invoke(CurrentState);
-                CurrentState.OnEnter();
-                
-                currentStateName = CurrentState.GetType().Name;
+                if (newState is IStateTimeout timeout)
+                {
+                    Debug.Log($"State {timeout.GetType().Name} is timeouted!");
+                    
+                    if (Mathf.Approximately(timeout.Timeout, 0f))
+                    {
+                        EnterState<T>(newState);
+                    }
+                }
+                else
+                {
+                    EnterState<T>(newState);
+                }
+
+                currentStateName = CurrentState?.GetType().Name;
                 
                 _inactiveDelay = inactiveDelay;
                 
@@ -57,7 +72,16 @@ namespace SurgeEngine.Code.StateMachine
             
             return null;
         }
-        
+
+        private void EnterState<T>(FState newState) where T : FState
+        {
+            CurrentState?.OnExit();
+            PreviousState = CurrentState;
+            CurrentState = newState;
+            OnStateAssign?.Invoke(CurrentState);
+            CurrentState.OnEnter();
+        }
+
         public TState GetState<TState>() where TState : FState
         {
             return _states[typeof(TState)] as TState;
@@ -97,6 +121,11 @@ namespace SurgeEngine.Code.StateMachine
             foreach (FSubState subState in _subStatesList)
             {
                 subState?.OnTick(dt);
+            }
+            
+            foreach (IStateTimeout timeout in _stateTimeouts)
+            {
+                timeout?.Tick(dt);
             }
         }
         

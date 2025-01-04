@@ -5,14 +5,15 @@ using SurgeEngine.Code.ActorSystem.Actors;
 using SurgeEngine.Code.Config.SonicSpecific;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.Inputs;
+using SurgeEngine.Code.StateMachine;
 using SurgeEngine.Code.Tools;
 using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
 using Vector3 = UnityEngine.Vector3;
 
-namespace SurgeEngine.Code.ActorStates
+namespace SurgeEngine.Code.ActorStates.SonicSpecific
 {
-    public class FStateDrift : FStateMove, IBoostHandler
+    public class FStateDrift : FStateMove, IBoostHandler, IStateTimeout
     {
         private float _driftXDirection;
         private float _ignoreTimer;
@@ -27,7 +28,8 @@ namespace SurgeEngine.Code.ActorStates
         public override void OnEnter()
         {
             base.OnEnter();
-            
+
+            Timeout = 0.75f;
             _ignoreTimer = 0;
         }
 
@@ -90,5 +92,7 @@ namespace SurgeEngine.Code.ActorStates
         {
             StateMachine.GetSubState<FBoost>().BaseGroundBoost();
         }
+
+        public float Timeout { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using FMOD.Studio;
 using FMODUnity;
 using SurgeEngine.Code.ActorStates;
+using SurgeEngine.Code.ActorStates.SonicSpecific;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.StateMachine;
 using UnityEngine;

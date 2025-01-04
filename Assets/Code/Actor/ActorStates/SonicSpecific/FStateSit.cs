@@ -3,7 +3,7 @@ using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Custom;
 using UnityEngine;
 
-namespace SurgeEngine.Code.ActorStates
+namespace SurgeEngine.Code.ActorStates.SonicSpecific
 {
     public class FStateSit : FStateMove
     {

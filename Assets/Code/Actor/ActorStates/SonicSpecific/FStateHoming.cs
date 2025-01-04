@@ -6,11 +6,12 @@ using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.Config;
 using SurgeEngine.Code.Config.SonicSpecific;
 using SurgeEngine.Code.Custom;
+using SurgeEngine.Code.StateMachine;
 using UnityEngine;
 
-namespace SurgeEngine.Code.ActorStates
+namespace SurgeEngine.Code.ActorStates.SonicSpecific
 {
-    public class FStateHoming : FStateMove
+    public class FStateHoming : FStateMove, IStateTimeout
     {
         private HomingTarget _target;
         private float _timer;
@@ -32,6 +33,7 @@ namespace SurgeEngine.Code.ActorStates
             StateMachine.GetSubState<FBoost>().Active = false;
 
             _timer = 0f;
+            Timeout = _config.delay;
 
             BaseActorConfig config = Actor.config;
             Actor.model.SetCollisionParam(config.jumpCollisionHeight, config.jumpCollisionCenter, config.jumpCollisionRadius);
@@ -96,5 +98,7 @@ namespace SurgeEngine.Code.ActorStates
         {
             _target = target;
         }
+
+        public float Timeout { get; set; }
     }
 }

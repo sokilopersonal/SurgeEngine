@@ -7,7 +7,7 @@ using SurgeEngine.Code.Custom;
 using UnityEngine;
 using Vector3 = UnityEngine.Vector3;
 
-namespace SurgeEngine.Code.ActorStates
+namespace SurgeEngine.Code.ActorStates.SonicSpecific
 {
     public class FStateStomp : FStateMove
     {

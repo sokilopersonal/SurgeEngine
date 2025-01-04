@@ -4,11 +4,12 @@ using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.ActorSystem.Actors;
 using SurgeEngine.Code.Config.SonicSpecific;
 using SurgeEngine.Code.Custom;
+using SurgeEngine.Code.StateMachine;
 using UnityEngine;
 
-namespace SurgeEngine.Code.ActorStates
+namespace SurgeEngine.Code.ActorStates.SonicSpecific
 {
-    public class FStateSlide : FStateMove
+    public class FStateSlide : FStateMove, IStateTimeout
     {
         private float collisionHeight = 0.3f;
         private float collisionCenterY = -0.5f;
@@ -23,7 +24,8 @@ namespace SurgeEngine.Code.ActorStates
         public override void OnEnter()
         {
             base.OnEnter();
-            
+
+            Timeout = 0.3f;
             StateMachine.GetSubState<FBoost>().Active = false;
             
             Actor.model.SetCollisionParam(collisionHeight, -0.75f, 0.25f);
@@ -88,5 +90,6 @@ namespace SurgeEngine.Code.ActorStates
         }
         
         public SlideConfig GetConfig() => _config;
+        public float Timeout { get; set; }
     }
 }

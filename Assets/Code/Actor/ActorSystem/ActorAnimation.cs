@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using SurgeEngine.Code.ActorStates;
+using SurgeEngine.Code.ActorStates.SonicSpecific;
 using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.StateMachine;
@@ -152,7 +153,7 @@ namespace SurgeEngine.Code.ActorSystem
             }
             if (obj is FStateSlide)
             {
-                TransitionToState("Sliding", 0.2f, true);
+                TransitionToState("Sliding", 0.15f, true);
             }
             if (obj is FStateSit)
             {

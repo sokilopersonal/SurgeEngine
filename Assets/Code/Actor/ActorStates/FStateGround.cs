@@ -1,9 +1,11 @@
 ﻿using SurgeEngine.Code.ActorStates.BaseStates;
+using SurgeEngine.Code.ActorStates.SonicSpecific;
 using SurgeEngine.Code.ActorStates.SonicSubStates;
 using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Config;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.Inputs;
+using SurgeEngine.Code.StateMachine;
 using SurgeEngine.Code.Tools;
 using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;

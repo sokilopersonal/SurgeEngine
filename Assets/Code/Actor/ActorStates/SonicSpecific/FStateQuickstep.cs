@@ -2,12 +2,13 @@
 using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.ActorSystem.Actors;
 using SurgeEngine.Code.Config.SonicSpecific;
+using SurgeEngine.Code.StateMachine;
 using UnityEngine;
 using UnityEngine.Splines;
 
-namespace SurgeEngine.Code.ActorStates
+namespace SurgeEngine.Code.ActorStates.SonicSpecific
 {
-    public class FStateQuickstep : FStateMove
+    public class FStateQuickstep : FStateMove, IStateTimeout
     {
         private QuickstepDirection _direction;
         private float _timer;
@@ -26,11 +27,12 @@ namespace SurgeEngine.Code.ActorStates
             base.OnEnter();
 
             _timer = 0f;
+            Timeout = _config.delay;
 
             if (Kinematics.mode != KinematicsMode.Dash)
             {
                 var local = Actor.transform.InverseTransformDirection(_rigidbody.linearVelocity);
-                _savedXSpeed = _config.quickStepForce * (int)_direction;
+                _savedXSpeed = _config.force * (int)_direction;
                 local.x = _savedXSpeed;
                 _rigidbody.linearVelocity = Actor.transform.TransformDirection(local);
             }
@@ -49,7 +51,7 @@ namespace SurgeEngine.Code.ActorStates
         {
             base.OnTick(dt);
             
-            _timer += dt / _config.quickStepDuration;
+            _timer += dt / _config.duration;
 
             // TODO: Do better spline search and fix "overjump"
             if (Kinematics.mode == KinematicsMode.Dash)
@@ -60,7 +62,6 @@ namespace SurgeEngine.Code.ActorStates
                 float shortestDist = float.MaxValue;
 
                 SplineSample sample = new SplineSample();
-                
                 
                 Vector3 searchDirection = Actor.transform.right * (int)_direction;
 
@@ -122,6 +123,8 @@ namespace SurgeEngine.Code.ActorStates
         {
             return _direction;
         }
+
+        public float Timeout { get; set; }
     }
     
     public enum QuickstepDirection

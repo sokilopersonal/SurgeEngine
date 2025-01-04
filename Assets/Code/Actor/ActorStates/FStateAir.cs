@@ -1,4 +1,5 @@
 ﻿using SurgeEngine.Code.ActorStates.BaseStates;
+using SurgeEngine.Code.ActorStates.SonicSpecific;
 using SurgeEngine.Code.ActorStates.SonicSubStates;
 using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.CommonObjects;
@@ -43,7 +44,7 @@ namespace SurgeEngine.Code.ActorStates
                         {
                             if (homingTarget != null)
                             {
-                                StateMachine.SetState<FStateHoming>().SetTarget(homingTarget);
+                                StateMachine.SetState<FStateHoming>()?.SetTarget(homingTarget);
                             }
                             else
                             {

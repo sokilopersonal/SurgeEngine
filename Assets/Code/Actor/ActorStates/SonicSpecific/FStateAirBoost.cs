@@ -6,7 +6,7 @@ using SurgeEngine.Code.Config.SonicSpecific;
 using SurgeEngine.Code.Custom;
 using UnityEngine;
 
-namespace SurgeEngine.Code.ActorStates
+namespace SurgeEngine.Code.ActorStates.SonicSpecific
 {
     public class FStateAirBoost : FStateMove
     {

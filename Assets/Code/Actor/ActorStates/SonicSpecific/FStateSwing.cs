@@ -1,11 +1,11 @@
+using SurgeEngine.Code.ActorSoundEffects;
 using SurgeEngine.Code.ActorStates.BaseStates;
+using SurgeEngine.Code.ActorStates.SonicSubStates;
 using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Custom;
 using UnityEngine;
-using SurgeEngine.Code.ActorSoundEffects;
-using SurgeEngine.Code.ActorStates.SonicSubStates;
 
-namespace SurgeEngine.Code.ActorStates
+namespace SurgeEngine.Code.ActorStates.SonicSpecific
 {
     public class FStateSwing : FStateMove
     {

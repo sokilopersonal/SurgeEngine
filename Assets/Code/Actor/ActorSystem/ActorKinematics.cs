@@ -1,5 +1,6 @@
 ﻿using System;
 using SurgeEngine.Code.ActorStates;
+using SurgeEngine.Code.ActorStates.SonicSpecific;
 using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.Config;
 using SurgeEngine.Code.Custom;

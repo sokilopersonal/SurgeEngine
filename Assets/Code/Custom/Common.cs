@@ -2,6 +2,7 @@
 using System.Collections;
 using Cysharp.Threading.Tasks;
 using SurgeEngine.Code.ActorStates;
+using SurgeEngine.Code.ActorStates.SonicSpecific;
 using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.CommonObjects;
 using UnityEngine;
