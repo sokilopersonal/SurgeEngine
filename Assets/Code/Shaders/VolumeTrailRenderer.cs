@@ -32,7 +32,7 @@ namespace SurgeEngine.Code.Shaders
 		private float _emitTime;
 		private readonly bool _autoDestruct = false;
 		[SerializeField] private Material material;
-		[SerializeField] private Transform target;
+		[SerializeField] private Rigidbody target;
 		[SerializeField] private Vector3 offset;
 		[SerializeField] private int crossSegments = 18;
 		[SerializeField] private AnimationCurve radius;
@@ -70,7 +70,7 @@ namespace SurgeEngine.Code.Shaders
 		private void Update() 
 		{
 			if (_fadeOut) _fadeBias -= Time.deltaTime * fadeSpeed;
-			_fadeBias = Mathf.Clamp01(_fadeOut ? _fadeBias : 1.0f);
+			_fadeBias = Mathf.Clamp(_fadeBias, 0, lifeTime);
 
 			if (Mathf.Approximately(_fadeBias, 0f) && _emit)
 			{
@@ -104,7 +104,7 @@ namespace SurgeEngine.Code.Shaders
 			{
 				TubeVertex p = new TubeVertex
 				{
-					point = target.position + target.TransformDirection(offset),
+					point = target.transform.position + target.transform.TransformDirection(offset),
 					timeCreated = Time.time
 				};
 				_vertices.Add(p);
@@ -208,7 +208,7 @@ namespace SurgeEngine.Code.Shaders
 		{
 			_emit = true;
 			lifeTime = lifetime;
-			_fadeBias = 1.0f;
+			_fadeBias = lifetime;
 			_fadeOut = false;
 		}
 

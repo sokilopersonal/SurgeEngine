@@ -16,7 +16,6 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
         private HomingTarget _target;
         private float _timer;
 
-        private Vector3 _startPos;
         private readonly HomingConfig _config;
 
         public FStateHoming(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
@@ -27,8 +26,6 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
         public override void OnEnter()
         {
             base.OnEnter();
-            
-            _startPos = Actor.transform.position;
 
             StateMachine.GetSubState<FBoost>().Active = false;
 
@@ -37,7 +34,7 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
 
             BaseActorConfig config = Actor.config;
             Actor.model.SetCollisionParam(config.jumpCollisionHeight, config.jumpCollisionCenter, config.jumpCollisionRadius);
-            Actor.effects.CreateLocus(1f);
+            Actor.effects.CreateLocus(1.5f);
 
             Common.ResetVelocity(ResetVelocityType.Both);
         }
