@@ -8,6 +8,9 @@ namespace SurgeEngine.Code.Misc
     {
         public void Vibrate(float low, float high, float duration)
         {
+            if (Gamepad.current == null)
+                return;
+
             if (Gamepad.current.wasUpdatedThisFrame) // We don't want to rumble if the input was from another device
             {
                 _ = Rumbling(low, high, duration);
