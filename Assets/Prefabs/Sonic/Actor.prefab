@@ -435,7 +435,7 @@ ParticleSystem:
   m_GameObject: {fileID: 127891137820082316}
   serializedVersion: 8
   lengthInSec: 999
-  simulationSpeed: 4.5
+  simulationSpeed: 6
   stopAction: 0
   cullingMode: 0
   ringBufferMode: 0
@@ -5326,7 +5326,7 @@ ParticleSystem:
   m_GameObject: {fileID: 594555944062624342}
   serializedVersion: 8
   lengthInSec: 999
-  simulationSpeed: 4.5
+  simulationSpeed: 6
   stopAction: 0
   cullingMode: 0
   ringBufferMode: 0
@@ -35915,9 +35915,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0646d517d6a648deb8e88cf0a61da000, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  emit: 0
-  emitTime: 0
-  autoDestruct: 0
   material: {fileID: 2100000, guid: 0ce80516a049ab547a5c2fad91c74bfa, type: 2}
   target: {fileID: 377323914507647460}
   offset: {x: 0, y: -0.5, z: 0}
@@ -35978,7 +35975,6 @@ MonoBehaviour:
     m_NumAlphaKeys: 4
   lifeTime: 2
   fadeSpeed: 1
-  vertices: []
 --- !u!1 &4715359743476350253
 GameObject:
   m_ObjectHideFlags: 0

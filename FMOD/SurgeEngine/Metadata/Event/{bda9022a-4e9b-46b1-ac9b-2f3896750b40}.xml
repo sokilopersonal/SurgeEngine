@@ -5,7 +5,7 @@
 			<value>StepAppear</value>
 		</property>
 		<property name="outputFormat">
-			<value>1</value>
+			<value>2</value>
 		</property>
 		<relationship name="folder">
 			<destination>{8036121a-42e7-484c-b402-635b48d2ea18}</destination>
@@ -91,9 +91,18 @@
 	<object class="MixerBusEffectChain" id="{3f7c9b02-df22-47b6-ac4c-105818c6e0f4}">
 		<relationship name="effects">
 			<destination>{e8b251c6-3927-41c3-9046-b71a7cd6a359}</destination>
+			<destination>{7f2e7bf5-c060-462c-a6f2-0b01ee683819}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{56656fd4-c329-4125-af66-3165d24c6e4a}" />
 	<object class="MixerBusFader" id="{e43674f9-979c-40fc-8e50-167f4ef72604}" />
 	<object class="MixerBusFader" id="{e8b251c6-3927-41c3-9046-b71a7cd6a359}" />
+	<object class="SpatialiserEffect" id="{7f2e7bf5-c060-462c-a6f2-0b01ee683819}">
+		<property name="extentMode">
+			<value>1</value>
+		</property>
+		<property name="soundSize">
+			<value>10</value>
+		</property>
+	</object>
 </objects>

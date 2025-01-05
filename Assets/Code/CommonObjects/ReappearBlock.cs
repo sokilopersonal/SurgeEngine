@@ -166,13 +166,14 @@ namespace SurgeEngine.Code.CommonObjects
             if (_lightMaterial == null)
                 return;
 
-            _col.isTrigger = false;
-            
             float offset = -0.5f;
-            DOTween.To(() => offset, x => offset = x, 0, 1f).SetEase(Ease.OutSine).OnUpdate(() =>
+            DOTween.To(() => offset, x => offset = x, 0, 0.5f).SetEase(Ease.OutSine).OnUpdate(() =>
             {
                 _lightMaterial.mainTextureOffset = new Vector2(offset, 0);
                 _lightMaterial.SetTextureOffset("_EmissiveColorMap", new Vector2(offset, 0));
+
+                if (offset > -0.4f)
+                    _col.isTrigger = false;
             });
 
             if (Time.timeSinceLevelLoad > 0)
@@ -184,13 +185,14 @@ namespace SurgeEngine.Code.CommonObjects
             if (_lightMaterial == null)
                 return;
 
-            _col.isTrigger = true;
-            
             float offset = 0;
-            DOTween.To(() => offset, x => offset = x, -0.5f, 1f).SetEase(Ease.OutSine).OnUpdate(() =>
+            DOTween.To(() => offset, x => offset = x, -0.5f, 0.5f).SetEase(Ease.OutSine).OnUpdate(() =>
             {
                 _lightMaterial.mainTextureOffset = new Vector2(offset, 0);
                 _lightMaterial.SetTextureOffset("_EmissiveColorMap", new Vector2(offset, 0));
+                
+                if (offset < -0.4f)
+                    _col.isTrigger = true;
             });
         }
     }
