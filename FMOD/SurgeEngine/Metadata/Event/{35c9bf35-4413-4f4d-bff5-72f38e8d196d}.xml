@@ -5,7 +5,7 @@
 			<value>SwitchOff</value>
 		</property>
 		<property name="outputFormat">
-			<value>0</value>
+			<value>2</value>
 		</property>
 		<relationship name="folder">
 			<destination>{8036121a-42e7-484c-b402-635b48d2ea18}</destination>
@@ -91,9 +91,18 @@
 	<object class="MixerBusEffectChain" id="{6c6aa451-5096-4121-93ba-1a33e4d3f72a}">
 		<relationship name="effects">
 			<destination>{b64f0d76-c367-4915-a52e-ec1759cc3426}</destination>
+			<destination>{f001ff03-107f-48e6-9da1-5e4f9a442d1d}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{84b6ae04-1375-441c-b009-da7eb6ca1a1f}" />
 	<object class="MixerBusFader" id="{0093ea93-f950-4746-9543-c510a1d97743}" />
 	<object class="MixerBusFader" id="{b64f0d76-c367-4915-a52e-ec1759cc3426}" />
+	<object class="SpatialiserEffect" id="{f001ff03-107f-48e6-9da1-5e4f9a442d1d}">
+		<property name="extentMode">
+			<value>1</value>
+		</property>
+		<property name="soundSize">
+			<value>20</value>
+		</property>
+	</object>
 </objects>

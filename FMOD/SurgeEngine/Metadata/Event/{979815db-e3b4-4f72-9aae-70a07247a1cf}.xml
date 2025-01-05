@@ -5,7 +5,7 @@
 			<value>SpringPole</value>
 		</property>
 		<property name="outputFormat">
-			<value>0</value>
+			<value>2</value>
 		</property>
 		<relationship name="folder">
 			<destination>{8036121a-42e7-484c-b402-635b48d2ea18}</destination>
@@ -91,9 +91,11 @@
 	<object class="MixerBusEffectChain" id="{099be21b-c490-4be0-a7b0-43995f1d60b0}">
 		<relationship name="effects">
 			<destination>{0ff8b4bb-4421-477f-b2ed-5b7f621b98be}</destination>
+			<destination>{4adb8670-3180-4e86-b8a4-f168d30ba6a6}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{a1c00443-ce32-46df-b253-049208717255}" />
 	<object class="MixerBusFader" id="{205de617-8606-46ba-9859-ec73c34a049a}" />
 	<object class="MixerBusFader" id="{0ff8b4bb-4421-477f-b2ed-5b7f621b98be}" />
+	<object class="SpatialiserEffect" id="{4adb8670-3180-4e86-b8a4-f168d30ba6a6}" />
 </objects>
