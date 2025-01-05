@@ -115,7 +115,8 @@ namespace SurgeEngine.Code.ActorSystem
             playerInput.actions["Bumper"].canceled -= BumperInput;
             
             Gamepad pad = Gamepad.current;
-            pad.SetMotorSpeeds(0, 0);
+            if (pad != null)
+                pad.SetMotorSpeeds(0, 0);
         }
 
         private void Update()
