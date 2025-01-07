@@ -74,6 +74,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: 5d1e07aab0902d04cbd4255e2f03e719, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _GlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _HeightMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -112,6 +116,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _ReflectionMask:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleCubemap_3bdb42361f3a4a43b1c8d4e5add4318a_Cube_1_Cubemap:
+        m_Texture: {fileID: 8900000, guid: 5d9146ad52d52274c8d8058916b3f97a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SecondNormalMap:
@@ -218,6 +226,7 @@ Material:
     - _EnergyConservingSpecularColor: 1
     - _ExcludeFromTUAndAA: 0
     - _GlossMapScale: 1
+    - _GlossPower: 1
     - _Glossiness: 0
     - _GlossyReflections: 1
     - _HeightAmplitude: 0.02

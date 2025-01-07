@@ -91,6 +91,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: 478b774630807e942a4a99dc181991be, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _GlossMap:
+        m_Texture: {fileID: 2800000, guid: 3c73d646b1680dd4a98c5ce5da951426, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _HeightMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -124,15 +128,19 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _PowTexture:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 3c73d646b1680dd4a98c5ce5da951426, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ReflectionMap:
-        m_Texture: {fileID: 8900000, guid: 203d820bb32f761468cc6b96e7c7fb06, type: 3}
+        m_Texture: {fileID: 8900000, guid: 5d9146ad52d52274c8d8058916b3f97a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ReflectionMask:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 478b774630807e942a4a99dc181991be, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleCubemap_3bdb42361f3a4a43b1c8d4e5add4318a_Cube_1_Cubemap:
+        m_Texture: {fileID: 8900000, guid: 5d9146ad52d52274c8d8058916b3f97a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SecondNormalMap:
@@ -245,6 +253,7 @@ Material:
     - _FalloffIntensity: 1
     - _FalloffPower: 12
     - _GlossMapScale: 1
+    - _GlossPower: 1
     - _Glossiness: 0
     - _GlossyReflections: 1
     - _HeightAmplitude: 0.02
@@ -285,7 +294,7 @@ Material:
     - _RayTracing: 0
     - _ReceivesSSR: 0
     - _ReceivesSSRTransparent: 0
-    - _ReflectionIntensity: 0.1
+    - _ReflectionIntensity: 4
     - _RefractionModel: 0
     - _RenderQueueType: 1
     - _RequireSplitLighting: 0
@@ -334,7 +343,7 @@ Material:
     - _UseEmissiveIntensity: 0
     - _UseNormalMap: 1
     - _UseProbeColor: 1
-    - _UseReflectedCubeMap: 1
+    - _UseReflectedCubeMap: 0
     - _UseReflection: 1
     - _UseSecondNormalMap: 0
     - _UseShadowThreshold: 0
@@ -346,8 +355,8 @@ Material:
     m_Colors:
     - _AlbedoColor: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _BlinnParam: {r: 100, g: 1, b: 0, a: 0}
-    - _BlinnParam2: {r: 50, g: 0.5, b: 0, a: 0}
+    - _BlinnParam: {r: 400, g: 0.1, b: 0, a: 0}
+    - _BlinnParam2: {r: 200, g: 0.1, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _DiffusionProfileAsset: {r: 0, g: 0, b: 0, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
@@ -355,7 +364,7 @@ Material:
     - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissiveColorLDR: {r: 0, g: 0, b: 0, a: 1}
     - _FalloffColor: {r: 1, g: 1, b: 1, a: 1}
-    - _FalloffParam: {r: 0, g: 2, b: 2, a: 0}
+    - _FalloffParam: {r: 0, g: 2, b: 4, a: 0}
     - _InvPrimScale: {r: 1, g: 1, b: 0, a: 0}
     - _IridescenceThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
     - _ReflectionColor: {r: 1, g: 1, b: 1, a: 1}
