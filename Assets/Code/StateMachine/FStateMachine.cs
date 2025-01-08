@@ -51,8 +51,6 @@ namespace SurgeEngine.Code.StateMachine
             {
                 if (newState is IStateTimeout timeout)
                 {
-                    Debug.Log($"State {timeout.GetType().Name} is timeouted!");
-                    
                     if (Mathf.Approximately(timeout.Timeout, 0f))
                     {
                         EnterState<T>(newState);

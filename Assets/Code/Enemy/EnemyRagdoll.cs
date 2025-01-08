@@ -1,5 +1,4 @@
 using FMODUnity;
-using SurgeEngine.Code.Enemy.States;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -21,7 +20,7 @@ namespace SurgeEngine.Code.Enemy
         public float timer;
 
         private bool hit;
-        private bool ragdoll = false;
+        private bool ragdoll;
 
         [Header("Explosion")]
         public Transform explosionPoint;
