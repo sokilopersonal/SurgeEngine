@@ -54,6 +54,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: 00b0fb992affe454d94aa3b486cfedcb, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _AlphaMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _AnisotropyMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -68,6 +72,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _BentNormalMapOS:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BlinnMask:
+        m_Texture: {fileID: 2800000, guid: 4e37884fa39edf446afcc823b6b2fa6c, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _CoatMaskMap:
@@ -238,7 +246,7 @@ Material:
     - _DstBlend2: 0
     - _EmissionIntensity: 1
     - _EmissionPowerReflection: 0
-    - _EmissionPowerSpecular: 0
+    - _EmissionPowerSpecular: 1000
     - _EmissiveColorMode: 1
     - _EmissiveExposureWeight: 1
     - _EmissiveIntensity: 1
@@ -354,8 +362,8 @@ Material:
     m_Colors:
     - _AlbedoColor: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _BlinnParam: {r: 400, g: 0.1, b: 0, a: 0}
-    - _BlinnParam2: {r: 200, g: 0.1, b: 0, a: 0}
+    - _BlinnParam: {r: 50, g: 10, b: 0, a: 0}
+    - _BlinnParam2: {r: 25, g: 5, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _DiffusionProfileAsset: {r: 0, g: 0, b: 0, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
