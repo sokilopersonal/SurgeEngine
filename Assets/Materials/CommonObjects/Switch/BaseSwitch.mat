@@ -35,6 +35,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: ee8442c2fe791024e895ef03eb6dbf69, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _AlphaMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _AnisotropyMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -49,6 +53,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _BentNormalMapOS:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BlinnMask:
+        m_Texture: {fileID: 2800000, guid: ee8442c2fe791024e895ef03eb6dbf69, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _CoatMaskMap:
@@ -69,6 +77,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _Falloff:
         m_Texture: {fileID: 2800000, guid: 39c3a7e12e547bc44917bf96ff97fc5d, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _GlossMap:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _HeightMap:
@@ -109,6 +121,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _ReflectionMask:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleCubemap_3bdb42361f3a4a43b1c8d4e5add4318a_Cube_1_Cubemap:
+        m_Texture: {fileID: 8900000, guid: 5d9146ad52d52274c8d8058916b3f97a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SecondNormalMap:
@@ -172,6 +188,7 @@ Material:
     - _AlphaCutoffPrepass: 0.5
     - _AlphaCutoffShadow: 0.5
     - _AlphaDstBlend: 0
+    - _AlphaMult: 1
     - _AlphaRemapMax: 1
     - _AlphaRemapMin: 0
     - _AlphaSrcBlend: 1
@@ -209,6 +226,7 @@ Material:
     - _EnableGeometricSpecularAA: 0
     - _EnergyConservingSpecularColor: 1
     - _ExcludeFromTUAndAA: 0
+    - _GlossPower: 1
     - _HeightAmplitude: 0.02
     - _HeightCenter: 0.5
     - _HeightMapParametrization: 0
@@ -225,7 +243,7 @@ Material:
     - _LinkDetailsWithBase: 1
     - _MaterialID: 1
     - _MaterialTypeMask: 18
-    - _Metallic: 0
+    - _Metallic: 0.5
     - _MetallicRemapMax: 1
     - _MetallicRemapMin: 0
     - _NormalMapSpace: 0
@@ -239,7 +257,7 @@ Material:
     - _PPDPrimitiveLength: 1
     - _PPDPrimitiveWidth: 1
     - _PerPixelSorting: 0
-    - _PowPower: 1
+    - _PowPower: 0.5
     - _RayTracing: 0
     - _ReceivesSSR: 1
     - _ReceivesSSRTransparent: 0
@@ -288,6 +306,7 @@ Material:
     - _UseReflection: 0
     - _UseSecondNormalMap: 0
     - _UseShadowThreshold: 0
+    - _UseUV2: 0
     - _ZTestDepthEqualForOpaque: 3
     - _ZTestGBuffer: 4
     - _ZTestTransparent: 4
@@ -295,16 +314,16 @@ Material:
     m_Colors:
     - _AlbedoColor: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _BlinnParam: {r: 0, g: 0, b: 0, a: 0}
-    - _BlinnParam2: {r: 0, g: 0, b: 0, a: 0}
+    - _BlinnParam: {r: 100, g: 1, b: 0, a: 0}
+    - _BlinnParam2: {r: 25, g: 1, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _DiffusionProfileAsset: {r: 0, g: 0, b: 0, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissiveColorLDR: {r: 0, g: 0, b: 0, a: 1}
-    - _FalloffColor: {r: 1, g: 1, b: 1, a: 1}
-    - _FalloffParam: {r: 0, g: 1, b: 4, a: 0}
+    - _FalloffColor: {r: 1, g: 0.7028302, b: 0.7028302, a: 1}
+    - _FalloffParam: {r: 0, g: 0.75, b: 3, a: 0}
     - _InvPrimScale: {r: 1, g: 1, b: 0, a: 0}
     - _IridescenceThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
     - _ReflectionColor: {r: 1, g: 1, b: 1, a: 1}

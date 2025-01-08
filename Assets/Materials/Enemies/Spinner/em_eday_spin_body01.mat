@@ -19,7 +19,7 @@ MonoBehaviour:
 --- !u!21 &2100000
 Material:
   serializedVersion: 8
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 32
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -54,6 +54,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: f8bee69ef35a5754090665cdbc4da332, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _AlphaMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _AnisotropyMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -68,6 +72,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _BentNormalMapOS:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BlinnMask:
+        m_Texture: {fileID: 2800000, guid: 58fd44051d219904ca1e2877ed36a258, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _CoatMaskMap:
@@ -88,6 +96,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _Falloff:
         m_Texture: {fileID: 2800000, guid: 58fd44051d219904ca1e2877ed36a258, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _GlossMap:
+        m_Texture: {fileID: 2800000, guid: b90b1cd5bc140ed4b9b710b8ef88d67b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _HeightMap:
@@ -123,7 +135,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _PowTexture:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: b90b1cd5bc140ed4b9b710b8ef88d67b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ReflectionMap:
@@ -131,7 +143,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ReflectionMask:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 58fd44051d219904ca1e2877ed36a258, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SecondNormalMap:
@@ -230,7 +242,7 @@ Material:
     - _DstBlend2: 0
     - _EmissionIntensity: 1
     - _EmissionPowerReflection: 0
-    - _EmissionPowerSpecular: 0
+    - _EmissionPowerSpecular: 10000
     - _EmissiveColorMode: 1
     - _EmissiveExposureWeight: 1
     - _EmissiveIntensity: 1
@@ -262,7 +274,7 @@ Material:
     - _LinkDetailsWithBase: 1
     - _MaterialID: 1
     - _MaterialTypeMask: 18
-    - _Metallic: 1
+    - _Metallic: 0.5
     - _MetallicRemapMax: 1
     - _MetallicRemapMin: 0
     - _Mode: 0
@@ -280,11 +292,11 @@ Material:
     - _PPDPrimitiveWidth: 1
     - _Parallax: 0.02
     - _PerPixelSorting: 0
-    - _PowPower: 1
+    - _PowPower: 0.25
     - _RayTracing: 0
     - _ReceivesSSR: 0
     - _ReceivesSSRTransparent: 0
-    - _ReflectionIntensity: 0.5
+    - _ReflectionIntensity: 2
     - _RefractionModel: 0
     - _RenderQueueType: 1
     - _RequireSplitLighting: 0
@@ -331,9 +343,9 @@ Material:
     - _UVEmissive: 0
     - _UVSec: 0
     - _UseEmissiveIntensity: 0
-    - _UseNormalMap: 0
+    - _UseNormalMap: 1
     - _UseProbeColor: 1
-    - _UseReflectedCubeMap: 1
+    - _UseReflectedCubeMap: 0
     - _UseReflection: 1
     - _UseSecondNormalMap: 0
     - _UseShadowThreshold: 0
@@ -346,7 +358,7 @@ Material:
     - _AlbedoColor: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _BlinnParam: {r: 100, g: 1, b: 0, a: 0}
-    - _BlinnParam2: {r: 50, g: 0.25, b: 0, a: 0}
+    - _BlinnParam2: {r: 50, g: 1, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _DiffusionProfileAsset: {r: 0, g: 0, b: 0, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
@@ -354,7 +366,7 @@ Material:
     - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissiveColorLDR: {r: 0, g: 0, b: 0, a: 1}
     - _FalloffColor: {r: 1, g: 1, b: 1, a: 1}
-    - _FalloffParam: {r: 0, g: 1, b: 5, a: 0}
+    - _FalloffParam: {r: 0, g: 1, b: 2, a: 0}
     - _InvPrimScale: {r: 1, g: 1, b: 0, a: 0}
     - _IridescenceThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
     - _ReflectionColor: {r: 1, g: 1, b: 1, a: 1}

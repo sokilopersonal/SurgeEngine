@@ -87,6 +87,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _GlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _HeightMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -125,6 +129,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _ReflectionMask:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleCubemap_3bdb42361f3a4a43b1c8d4e5add4318a_Cube_1_Cubemap:
+        m_Texture: {fileID: 8900000, guid: 5d9146ad52d52274c8d8058916b3f97a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SecondNormalMap:
@@ -188,6 +196,7 @@ Material:
     - _AlphaCutoffPrepass: 0.5
     - _AlphaCutoffShadow: 0.5
     - _AlphaDstBlend: 0
+    - _AlphaMult: 1
     - _AlphaRemapMax: 1
     - _AlphaRemapMin: 0
     - _AlphaSrcBlend: 1
@@ -215,16 +224,20 @@ Material:
     - _DstBlend: 0
     - _DstBlend2: 0
     - _EmissionIntensity: 1
+    - _EmissionPowerReflection: 0
+    - _EmissionPowerSpecular: 0
     - _EmissiveColorMode: 1
     - _EmissiveExposureWeight: 1
     - _EmissiveIntensity: 1
     - _EmissiveIntensityUnit: 0
     - _EnableBlendModePreserveSpecularLighting: 1
+    - _EnableFalloff: 1
     - _EnableFogOnTransparent: 1
     - _EnableGeometricSpecularAA: 0
     - _EnergyConservingSpecularColor: 1
     - _ExcludeFromTUAndAA: 0
     - _GlossMapScale: 1
+    - _GlossPower: 1
     - _Glossiness: 0.1
     - _GlossyReflections: 1
     - _HeightAmplitude: 0.02
@@ -260,6 +273,7 @@ Material:
     - _PPDPrimitiveWidth: 1
     - _Parallax: 0.02
     - _PerPixelSorting: 0
+    - _PowPower: 1
     - _RayTracing: 0
     - _ReceivesSSR: 1
     - _ReceivesSSRTransparent: 0
@@ -311,6 +325,7 @@ Material:
     - _UseReflection: 0
     - _UseSecondNormalMap: 0
     - _UseShadowThreshold: 0
+    - _UseUV2: 0
     - _ZTestDepthEqualForOpaque: 3
     - _ZTestGBuffer: 4
     - _ZTestTransparent: 4
@@ -319,6 +334,7 @@ Material:
     - _AlbedoColor: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _BlinnParam: {r: 50, g: 0.25, b: 0, a: 0}
+    - _BlinnParam2: {r: 0, g: 0, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _DiffusionProfileAsset: {r: 0, g: 0, b: 0, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
