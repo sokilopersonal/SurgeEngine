@@ -30,7 +30,6 @@ Material:
   m_ValidKeywords:
   - _DISABLE_SSR
   - _DISABLE_SSR_TRANSPARENT
-  - _MATERIAL_FEATURE_SPECULAR_COLOR
   m_InvalidKeywords:
   - _NORMALMAP_TANGENT_SPACE
   - _SPECULARCOLORMAP
@@ -245,8 +244,8 @@ Material:
     - _DstBlend: 0
     - _DstBlend2: 0
     - _EmissionIntensity: 1
-    - _EmissionPowerReflection: 1
-    - _EmissionPowerSpecular: 1
+    - _EmissionPowerReflection: 0.5
+    - _EmissionPowerSpecular: 0.25
     - _EmissiveColorMode: 1
     - _EmissiveExposureWeight: 1
     - _EmissiveIntensity: 1
@@ -278,9 +277,9 @@ Material:
     - _IridescenceThickness: 1
     - _LightmapSampleBlend: 1
     - _LinkDetailsWithBase: 1
-    - _MaterialID: 4
+    - _MaterialID: 1
     - _MaterialTypeMask: 18
-    - _Metallic: 1
+    - _Metallic: 0.5
     - _MetallicRemapMax: 1
     - _MetallicRemapMin: 0
     - _Mode: 0
@@ -298,7 +297,7 @@ Material:
     - _PPDPrimitiveWidth: 1
     - _Parallax: 0.02
     - _PerPixelSorting: 0
-    - _PowPower: 1
+    - _PowPower: 0.5
     - _RayTracing: 0
     - _ReceivesSSR: 0
     - _ReceivesSSRTransparent: 0
@@ -373,7 +372,7 @@ Material:
     - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissiveColorLDR: {r: 0, g: 0, b: 0, a: 1}
     - _FalloffColor: {r: 1, g: 1, b: 1, a: 1}
-    - _FalloffParam: {r: 0, g: 2, b: 4, a: 0}
+    - _FalloffParam: {r: 0, g: 4, b: 3, a: 0}
     - _InvPrimScale: {r: 1, g: 1, b: 0, a: 0}
     - _IridescenceThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
     - _ReflectionColor: {r: 1, g: 1, b: 1, a: 1}
