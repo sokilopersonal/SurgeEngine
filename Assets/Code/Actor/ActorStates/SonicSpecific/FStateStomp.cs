@@ -31,7 +31,7 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
 
             _timer = 0;
 
-            Actor.effects.CreateLocus(1f);
+            Actor.effects.CreateLocus();
         }
 
         public override void OnExit()

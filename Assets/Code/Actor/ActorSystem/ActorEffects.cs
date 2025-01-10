@@ -44,7 +44,7 @@ namespace SurgeEngine.Code.ActorSystem
             grindEffect.Toggle(false);
         }
 
-        public void CreateLocus(float time = 2f)
+        public void CreateLocus(float time = 0.6f)
         {
             trailRenderer.Emit(time);
         }

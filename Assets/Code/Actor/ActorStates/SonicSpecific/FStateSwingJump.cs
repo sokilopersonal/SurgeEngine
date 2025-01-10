@@ -21,7 +21,7 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
         public void Launch(bool successful)
         {
             _rigidbody.linearVelocity = (Actor.transform.forward + Actor.transform.up).normalized * (successful ? successVel : failVel);
-            Actor.effects.CreateLocus(1f);
+            Actor.effects.CreateLocus();
         }
 
         public override void OnExit()
