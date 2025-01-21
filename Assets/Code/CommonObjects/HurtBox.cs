@@ -56,7 +56,7 @@ namespace SurgeEngine.Code.CommonObjects
 
         private static int GetMask()
         {
-            return LayerMask.GetMask("Enemy", "Breakable");
+            return LayerMask.GetMask("Default", "Enemy", "Breakable");
         } 
     }
 }

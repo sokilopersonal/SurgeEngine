@@ -41,7 +41,7 @@ namespace SurgeEngine.Code.CommonObjects
             meshRenderer.sharedMaterials = mats;
         }
         
-        public void Activate(Collider msg)
+        public void Activate()
         {
             if (_currentState >= 3)
                 return;

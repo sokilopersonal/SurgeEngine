@@ -6,7 +6,8 @@ namespace SurgeEngine.Code.CommonObjects
 {
     public class StompListener : ContactBase
     {
-        public UnityEvent<Collider> onContact;
+        public UnityEvent onContact;
+        
         public override void Contact(Collider msg)
         {
             base.Contact(msg);
@@ -14,7 +15,7 @@ namespace SurgeEngine.Code.CommonObjects
             Actor context = ActorContext.Context;
 
             if (context.stateMachine.PreviousState is FStateStomp)
-                onContact.Invoke(msg);
+                onContact.Invoke();
         }
     }
 }
