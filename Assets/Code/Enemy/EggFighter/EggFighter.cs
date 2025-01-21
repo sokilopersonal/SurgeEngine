@@ -89,7 +89,7 @@ namespace SurgeEngine.Code.Enemy
         {
             Actor context = ActorContext.Context;
             Vector3 force = context.kinematics.Rigidbody.linearVelocity * 1.25f;
-            force += Vector3.up * force.magnitude * 0.15f;
+            force += Vector3.up * (force.magnitude * 0.15f);
             Debug.DrawRay(context.transform.position, force, Color.red, 999f);
             stateMachine.SetState<EGStateDead>(0f, true, true).ApplyKnockback(force, ragdollPrefab);
         }

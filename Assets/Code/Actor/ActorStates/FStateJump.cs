@@ -42,11 +42,6 @@ namespace SurgeEngine.Code.ActorStates
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
-            
-            if (HurtBox.Create(Actor.transform.position + new Vector3(0f, -0.45f, 0f), Actor.transform.rotation, new Vector3(0.5f, 0.5f, 0.5f)))
-            {
-                StateMachine.SetState<FStateJump>(allowSameState: true);
-            }
 
             if (!Actor.flags.HasFlag(FlagType.OutOfControl))
             {
@@ -66,6 +61,16 @@ namespace SurgeEngine.Code.ActorStates
             if (GetAirTime() > _maxAirTime)
             {
                 StateMachine.SetState<FStateAir>();
+            }
+        }
+
+        public override void OnFixedTick(float dt)
+        {
+            base.OnFixedTick(dt);
+            
+            if (HurtBox.Create(Actor.transform.position + new Vector3(0f, -0.45f, 0f), Actor.transform.rotation, new Vector3(0.5f, 0.5f, 0.5f)))
+            {
+                StateMachine.SetState<FStateJump>(allowSameState: true);
             }
         }
     }

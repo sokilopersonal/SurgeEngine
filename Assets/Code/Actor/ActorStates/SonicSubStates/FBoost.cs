@@ -94,9 +94,6 @@ namespace SurgeEngine.Code.ActorStates.SonicSubStates
 
             if (Active)
             {
-                HurtBox.Create(actor.transform.position + new Vector3(0.0f, 0.5f, -0.4f), actor.transform.rotation,
-                    new Vector3(1.0f, 1.0f, 1.5f));
-                
                 if (state is FStateAir or FStateSpecialJump)
                 {
                     _boostCancelTimer += dt;
@@ -124,6 +121,14 @@ namespace SurgeEngine.Code.ActorStates.SonicSubStates
             }
             
             BoostEnergy = Mathf.Clamp(BoostEnergy, 0, 100);
+        }
+
+        public override void OnFixedTick(float dt)
+        {
+            base.OnFixedTick(dt);
+            
+            HurtBox.Create(actor.transform.position + new Vector3(0.0f, 0.5f, -0.4f), actor.transform.rotation,
+                new Vector3(1.0f, 1.0f, 1.5f));
         }
 
         public bool CanBoost() => BoostEnergy > 0 && _boostHandler != null;
