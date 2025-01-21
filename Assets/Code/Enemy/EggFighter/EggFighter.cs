@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Enemy
 {
-    public class EggFighter : EnemyBase, IPlayerContactable
+    public class EggFighter : EnemyBase, IDamageable
     {
         public new EnemyAnimation animation;
         public EGView view;
@@ -85,13 +85,8 @@ namespace SurgeEngine.Code.Enemy
             Gizmos.DrawWireSphere(transform.position, patrolDistance);
         }
 
-        public void OnContact()
+        public void TakeDamage(float damage)
         {
-            if (!CanBeDamaged())
-            {
-                return;
-            }
-            
             Actor context = ActorContext.Context;
             Vector3 force = context.kinematics.Rigidbody.linearVelocity * 1.25f;
             force += Vector3.up * force.magnitude * 0.15f;

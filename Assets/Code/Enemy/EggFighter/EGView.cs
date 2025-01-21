@@ -10,14 +10,14 @@ namespace SurgeEngine.Code.Enemy
     {
         protected override void ViewTick()
         {
-            if (IsAbleExcludePlayer())
-            {
-                eCollider.excludeLayers = 1 << LayerMask.NameToLayer("Actor");
-            }
-            else
-            {
-                eCollider.excludeLayers = 0;
-            }
+            // if (IsAbleExcludePlayer())
+            // {
+            //     eCollider.excludeLayers = 1 << LayerMask.NameToLayer("Actor");
+            // }
+            // else
+            // {
+            //     eCollider.excludeLayers = 0;
+            // }
         }
 
         private void OnEnable()

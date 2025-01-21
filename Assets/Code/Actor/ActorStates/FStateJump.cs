@@ -1,5 +1,8 @@
-﻿using SurgeEngine.Code.ActorSystem;
+﻿using SurgeEngine.Code.ActorStates.SonicSpecific;
+using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.Config;
+using SurgeEngine.Code.StateMachine;
 using UnityEngine;
 
 namespace SurgeEngine.Code.ActorStates
@@ -12,7 +15,7 @@ namespace SurgeEngine.Code.ActorStates
 
         public FStateJump(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
-            _maxAirTime = 0.8f;
+            _maxAirTime = 1.25f;
             _config = Actor.config;
         }
 
@@ -39,6 +42,11 @@ namespace SurgeEngine.Code.ActorStates
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
+            
+            if (HurtBox.Create(Actor.transform.position + new Vector3(0f, -0.45f, 0f), Actor.transform.rotation, new Vector3(0.5f, 0.5f, 0.5f)))
+            {
+                StateMachine.SetState<FStateJump>(allowSameState: true);
+            }
 
             if (!Actor.flags.HasFlag(FlagType.OutOfControl))
             {

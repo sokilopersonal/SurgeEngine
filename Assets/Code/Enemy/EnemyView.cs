@@ -24,11 +24,6 @@ namespace SurgeEngine.Code.StateMachine
         {
             
         }
-
-        protected bool IsAbleExcludePlayer()
-        {
-            return enemyBase.CanBeDamaged();
-        }
         
         public void Destroy()
         {

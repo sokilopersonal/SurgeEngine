@@ -180,7 +180,7 @@ namespace SurgeEngine.Code.ActorSystem
             {
                 TransitionToState("Air Boost", 0f, true);
             }
-            if (obj is FStateAfterHoming && prev is not FStateJump)
+            if (obj is FStateAfterHoming)
             {
                 int index = Random.Range(0, 4);
                 TransitionToState($"AfterHoming{index}", 0f);

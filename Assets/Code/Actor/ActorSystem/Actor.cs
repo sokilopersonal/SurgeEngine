@@ -21,6 +21,7 @@ namespace SurgeEngine.Code.ActorSystem
         [Foldout("Components")] public ActorModel model;
         [Foldout("Components")] public ActorFlags flags;
         [Foldout("Components")] public ActorKinematics kinematics;
+        [Foldout("Damage")] public LayerMask damageLayer;
         
         [Foldout("Base Physics")]
         public BaseActorConfig config;

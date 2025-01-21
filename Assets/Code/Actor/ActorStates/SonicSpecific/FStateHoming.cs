@@ -89,6 +89,11 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
                     StateMachine.SetState<FStateAir>();
                 }
             }
+            
+            if (HurtBox.CreateAttached(Actor.transform, Vector3.one))
+            {
+                StateMachine.SetState<FStateAfterHoming>();
+            }
         }
 
         public void SetTarget(HomingTarget target)

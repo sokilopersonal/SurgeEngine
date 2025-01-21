@@ -8,6 +8,7 @@ namespace SurgeEngine.Code.CommonObjects
         public SpecialJumpType type;
         public Vector3 direction;
         public Vector3 up;
+        public float outOfControl;
         public Transform transform;
 
         public SpecialJumpData(SpecialJumpType type)
@@ -22,10 +23,11 @@ namespace SurgeEngine.Code.CommonObjects
             this.up = up;
         }
         
-        public SpecialJumpData(SpecialJumpType type, Transform transform)
+        public SpecialJumpData(SpecialJumpType type, Transform transform, float outOfControl)
         {
             this.type = type;
             this.transform = transform;
+            this.outOfControl = outOfControl;
         }
     }
 }

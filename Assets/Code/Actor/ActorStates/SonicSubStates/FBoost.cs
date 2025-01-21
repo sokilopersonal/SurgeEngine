@@ -94,6 +94,9 @@ namespace SurgeEngine.Code.ActorStates.SonicSubStates
 
             if (Active)
             {
+                HurtBox.Create(actor.transform.position + new Vector3(0.0f, 0.5f, -0.4f), actor.transform.rotation,
+                    new Vector3(1.0f, 1.0f, 1.5f));
+                
                 if (state is FStateAir or FStateSpecialJump)
                 {
                     _boostCancelTimer += dt;

@@ -50,7 +50,7 @@ namespace SurgeEngine.Code.ActorStates
             
             if (Mathf.Approximately(_jumpTimer, 0))
             {
-                if (Common.CheckForGround(out RaycastHit hit))
+                if (Common.CheckForGround(out _, CheckGroundType.Predict))
                 {
                     StateMachine.SetState<FStateGround>();
                 }
@@ -63,7 +63,7 @@ namespace SurgeEngine.Code.ActorStates
 
             if (data.type is SpecialJumpType.Spring or SpecialJumpType.DashRing)
             {
-                Actor.model.StartAirRestore(0.65f);
+                Actor.model.StartAirRestore(data.outOfControl);
             }
         }
 
