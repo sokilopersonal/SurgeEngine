@@ -2,6 +2,7 @@
 using SurgeEngine.Code.ActorStates.SonicSubStates;
 using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.ActorSystem.Actors;
+using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.Config.SonicSpecific;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.Inputs;
@@ -58,6 +59,9 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
         public override void OnFixedTick(float dt)
         {
             base.OnFixedTick(dt);
+
+            HurtBox.Create(Actor.transform.position + new Vector3(0f, -0.75f, 0f), Actor.transform.rotation,
+                new Vector3(1f, 0.3f, 1f));
             
             if (Common.CheckForGround(out RaycastHit hit))
             {
