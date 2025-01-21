@@ -10,7 +10,7 @@ namespace SurgeEngine.Code.ActorStates
 {
     public class FStateAir : FStateMove, IBoostHandler
     {
-        private float _airTime;
+        protected float _airTime;
 
         public FStateAir(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {

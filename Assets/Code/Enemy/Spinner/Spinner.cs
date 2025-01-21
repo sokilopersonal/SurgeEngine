@@ -7,13 +7,12 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Enemy
 {
-    public class Spinner : EnemyBase, IPlayerContactable
+    public class Spinner : EnemyBase, IDamageable
     {
         [SerializeField] private EnemyView view;
 
-        public void OnContact()
+        public void TakeDamage(float damage)
         {
-            ActorContext.Context.stateMachine.SetState<FStateAfterHoming>();
             view.Destroy();
         }
     }

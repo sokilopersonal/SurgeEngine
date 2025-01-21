@@ -33,8 +33,6 @@ namespace SurgeEngine.Editor
 
         private void OnGUI()
         {
-            EditorGUILayout.LabelField("Assign transform and size", EditorStyles.boldLabel);
-            
             _mode = (HurtBoxVisualizerMode)EditorGUILayout.EnumPopup("Mode", _mode);
             
             _transform = EditorGUILayout.ObjectField("Transform", _transform, typeof(Transform), true) as Transform;

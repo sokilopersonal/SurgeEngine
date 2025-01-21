@@ -2,6 +2,7 @@
 using SurgeEngine.Code.ActorStates.SonicSubStates;
 using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.ActorSystem.Actors;
+using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.Config.SonicSpecific;
 using SurgeEngine.Code.Custom;
 using UnityEngine;
@@ -62,6 +63,9 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
         public override void OnFixedTick(float dt)
         {
             base.OnFixedTick(dt);
+
+            HurtBox.Create(Actor.transform.position + new Vector3(0f, -0.1f, 0f), Actor.transform.rotation,
+                new Vector3(1.1f, 2f, 1.1f));
 
             Vector3 vel = _rigidbody.linearVelocity;
             float horizontalSpeedMultiplier = _config.curve.Evaluate(_timer);
