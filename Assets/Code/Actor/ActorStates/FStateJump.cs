@@ -70,8 +70,7 @@ namespace SurgeEngine.Code.ActorStates
             
             if (HurtBox.Create(Actor.transform.position + new Vector3(0f, -0.45f, 0f), Actor.transform.rotation, new Vector3(0.5f, 0.5f, 0.5f)))
             {
-                _airTime = 0;
-                _rigidbody.linearVelocity += Vector3.up * (_config.jumpForce * 2);
+                StateMachine.SetState<FStateJump>(allowSameState: true);
             }
         }
     }
