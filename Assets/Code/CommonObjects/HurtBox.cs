@@ -20,8 +20,9 @@ namespace SurgeEngine.Code.CommonObjects
 
             foreach (var hit in hits)
             {
-                Transform hitTransform = hit.transform.parent ? hit.transform.parent : hit.transform;
-                if (hitTransform && hitTransform.TryGetComponent(out IDamageable damageable))
+                Transform hitTransform = hit.transform;
+                IDamageable damageable = hit.GetComponentInParent<IDamageable>();
+                if (hitTransform && damageable != null)
                 {
                     damageable.TakeDamage(sender, 0);
                     return true;
@@ -45,8 +46,9 @@ namespace SurgeEngine.Code.CommonObjects
             
             foreach (var hit in hits)
             {
-                Transform transform = hit.transform.parent ? hit.transform.parent : hit.transform;
-                if (transform && transform.TryGetComponent(out IDamageable damageable))
+                Transform transform = hit.transform;
+                IDamageable damageable = hit.GetComponentInParent<IDamageable>();
+                if (transform && damageable != null)
                 {
                     damageable?.TakeDamage(sender, 0);
                     return true;

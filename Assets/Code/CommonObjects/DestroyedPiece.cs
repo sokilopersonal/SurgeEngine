@@ -17,6 +17,14 @@ namespace SurgeEngine.Code.CommonObjects
             }
         }
 
+        public void ApplyDirectionForce(Vector3 direction, float force)
+        {
+            for (int i = 0; i < rigidbodies.Length; i++)
+            {
+                rigidbodies[i].AddForce(direction * force, ForceMode.VelocityChange);
+            }
+        }
+
         private void Awake()
         {
             Destroy(gameObject, destroyTime);
