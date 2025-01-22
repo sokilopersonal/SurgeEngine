@@ -8,7 +8,7 @@ using UnityEngine.Splines;
 
 namespace SurgeEngine.Code.CommonObjects
 {
-    public class Rail : ContactBase
+    public class Rail : MonoBehaviour
     {
         public SplineContainer container;
         public float radius = 0.25f;
@@ -32,25 +32,13 @@ namespace SurgeEngine.Code.CommonObjects
 
         public void End()
         {
-            if (_coroutine != null)
-            {
-                StopCoroutine(_coroutine);
-            }
-            
-            //_coroutine = StartCoroutine(DisableCollision());
-        }
-
-        public override void Contact(Collider msg)
-        {
-            base.Contact(msg);
-            
-            AttachToRail();
         }
 
         public void AttachToRail()
         {
             Actor context = ActorContext.Context;
-            context.stateMachine.SetState<FStateGrind>().SetRail(this);
+            context.stateMachine.SetState<FStateGrind>();
+            context.stateMachine.GetState<FStateGrind>().SetRail(this);
         }
 
         private IEnumerator DisableCollision(float duration = 0.1f)

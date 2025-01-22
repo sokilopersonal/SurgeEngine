@@ -15,6 +15,7 @@ namespace SurgeEngine.Code.ActorStates
     public class FStateGrind : FStateMove, IBoostHandler
     {
         private Rail _rail;
+        private Vector3 _prevTg;
 
         protected float _grindGravityPower;
 
@@ -64,51 +65,58 @@ namespace SurgeEngine.Code.ActorStates
             
             if (_rail != null)
             {
-                SplineContainer container = _rail.container;
-                Vector3 offset = _rigidbody.position - Actor.transform.up * (_rail.radius);
-                SplineUtility.GetNearestPoint(container.Spline, 
-                    SurgeMath.Vector3ToFloat3(container.transform.InverseTransformPoint(offset)), 
-                    out float3 near, out float t);
-                Vector3 normal = SurgeMath.Float3ToVector3(container.EvaluateUpVector(t));
-                container.Evaluate(t, out float3 point, out float3 tangent, out float3 up);
-                Vector3 tangentNormal = Vector3.Cross(tangent, up);
-                
-                Debug.DrawRay(offset, normal, Color.yellow, 1f);
-                
-                float sign = Mathf.Sign(Vector3.Dot(Actor.transform.forward, tangent));
-                bool forward = Mathf.Approximately(sign, 1);
-                Vector3 direction = forward ? tangent : -tangent;
-                
-                Quaternion rot = Quaternion.LookRotation(direction, normal);
-                _rigidbody.rotation = rot;
-                Actor.model.root.rotation = rot;
-                
-                Vector3 nearPoint = container.transform.TransformPoint(near);
-                nearPoint += normal * _rail.radius;
-                _rigidbody.position = nearPoint;
-                
-                Kinematics.Normal = normal;
-                Kinematics.Project();
-                Kinematics.Project(tangentNormal);
-                
-                if (!SonicTools.IsBoost())
-                {
-                    if (Kinematics.Angle > 3f)
-                    {
-                        Vector3 slopeForce = Vector3.ProjectOnPlane(Vector3.down, Actor.transform.up) * _grindGravityPower;
-                        _rigidbody.AddForce(slopeForce * Time.fixedDeltaTime, ForceMode.Impulse);
-                    }
-                }
-                
-                container.Evaluate(0f, out float3 startPoint, out _, out _);
-                container.Evaluate(1f, out float3 endPoint, out _, out _);
-                Debug.DrawRay(startPoint, Vector3.up * 2);
-                Debug.DrawRay(endPoint, Vector3.up * 2);
+                var spline = _rail.container.Spline;
+                Vector3 pos = _rigidbody.position - Actor.transform.up * _rail.radius;
+                Vector3 localPos = _rail.transform.InverseTransformPoint(pos);
+                SplineUtility.GetNearestPoint(spline, localPos, out var p, out var f, 12, 8);
+                f *= spline.GetLength();
 
-                if (!container.Spline.Closed)
+                SplineSample sample = new SplineSample
                 {
-                    Debug.Log(t);
-                    if (1f - t < 0.01f || t < 0.01f)
+                    pos = _rail.container.EvaluatePosition(f / spline.GetLength()),
+                    tg = ((Vector3)spline.EvaluateTangent(f / spline.GetLength())).normalized,
+                    up = spline.EvaluateUpVector(f / spline.GetLength())
+                };
+                
+                if (_prevTg == Vector3.zero) _prevTg = sample.tg;
+                
+                Debug.DrawRay(pos, sample.up);
+                Vector3 upSplinePlane = Vector3.Cross(sample.tg, Vector3.up);
+                
+                Kinematics.Project();
+                Kinematics.Project(upSplinePlane);
+                
+                float sign = Mathf.Sign(Vector3.Dot(Actor.transform.forward, sample.tg));
+                bool forward = Mathf.Approximately(sign, 1);
+                Vector3 direction = forward ? sample.tg : -sample.tg;
+                _rigidbody.rotation = Quaternion.LookRotation(direction, sample.up);
+                
+                _prevTg = sample.tg;
+
+                Vector3 newPos = sample.pos;
+                newPos += sample.up * _rail.radius;
+
+                SurgeMath.SplitPlanarVector(_rigidbody.position, 
+                    sample.ProjectOnUp(sample.tg).normalized, 
+                    out var pLat, 
+                    out var pVer);
+                
+                SurgeMath.SplitPlanarVector(newPos, sample.ProjectOnUp(sample.tg).normalized, 
+                    out var sLat,
+                    out var sVer);
+                
+                pLat = sLat;
+                
+                Vector3 slopeForce = Vector3.ProjectOnPlane(Vector3.down, Actor.transform.up) * _grindGravityPower;
+                _rigidbody.AddForce(slopeForce * Time.fixedDeltaTime, ForceMode.Impulse);
+                
+                Kinematics.SlopePhysics();
+                _rigidbody.position = pLat + pVer;
+
+                if (!_rail.container.Spline.Closed)
+                {
+                    float f1 = f / spline.GetLength();
+                    if (1f - f1 < 0.005f || f1 < 0.005f)
                     {
                         _rail.End();
                         StateMachine.SetState<FStateAir>();
