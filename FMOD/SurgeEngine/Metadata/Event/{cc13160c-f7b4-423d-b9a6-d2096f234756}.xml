@@ -134,6 +134,9 @@
 		<property name="length">
 			<value>2</value>
 		</property>
+		<property name="playlistMode">
+			<value>1</value>
+		</property>
 		<relationship name="sounds">
 			<destination>{b696fe42-cad9-4203-ab32-6128a17fd5e8}</destination>
 			<destination>{04f56839-4a2c-4ef8-a792-bd488eb57742}</destination>
@@ -165,7 +168,6 @@
 		<relationship name="effects">
 			<destination>{74d8c304-e544-463b-a299-d83e5bfca17d}</destination>
 			<destination>{012acb66-77fd-4f10-9a27-e935a89c8f63}</destination>
-			<destination>{9391fa27-257e-4839-ab33-0244513f4d2a}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{c64e550d-f92b-4913-bcc2-464ef09259a0}" />
@@ -193,24 +195,5 @@
 	<object class="MixerBusFader" id="{c8d140ed-63fe-4e0b-87d9-131de74d7b8d}" />
 	<object class="MixerBusFader" id="{74d8c304-e544-463b-a299-d83e5bfca17d}" />
 	<object class="LimiterEffect" id="{012acb66-77fd-4f10-9a27-e935a89c8f63}" />
-	<object class="PitchShifterEffect" id="{9391fa27-257e-4839-ab33-0244513f4d2a}">
-		<property name="pitch">
-			<value>1</value>
-		</property>
-		<property name="fftSize">
-			<value>1560</value>
-		</property>
-		<relationship name="modulators">
-			<destination>{16766420-e6c9-4a4f-90f3-71bb340b7f80}</destination>
-		</relationship>
-	</object>
 	<object class="MixerBusFader" id="{4edc4f31-1d59-4d89-aafb-83ee467dd261}" />
-	<object class="RandomizerModulator" id="{16766420-e6c9-4a4f-90f3-71bb340b7f80}">
-		<property name="nameOfPropertyBeingModulated">
-			<value>pitch</value>
-		</property>
-		<property name="amount">
-			<value>1</value>
-		</property>
-	</object>
 </objects>

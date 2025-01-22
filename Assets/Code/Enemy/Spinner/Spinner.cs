@@ -11,7 +11,7 @@ namespace SurgeEngine.Code.Enemy
     {
         [SerializeField] private EnemyView view;
 
-        public void TakeDamage(float damage)
+        public void TakeDamage(object sender, float damage)
         {
             view.Destroy();
         }

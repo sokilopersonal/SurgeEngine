@@ -128,7 +128,7 @@ namespace SurgeEngine.Code.ActorStates.SonicSubStates
             base.OnFixedTick(dt);
             
             if (Active)
-                HurtBox.Create(actor.transform.position + new Vector3(0f, 0.6f, -0.3f), actor.transform.rotation, new Vector3(0.9f, 1f, 1.25f));
+                HurtBox.Create(actor, actor.transform.position + new Vector3(0f, 0.6f, -0.3f), actor.transform.rotation, new Vector3(0.9f, 1f, 1.5f));
         }
 
         public bool CanBoost() => BoostEnergy > 0 && _boostHandler != null;

@@ -5,7 +5,7 @@
 			<value>Cool Edge (Day) - Sonic Unleashed [OST]</value>
 		</property>
 		<property name="outputFormat">
-			<value>1</value>
+			<value>0</value>
 		</property>
 		<relationship name="folder">
 			<destination>{7879d29c-4dd7-4404-b56b-b585b45ce719}</destination>
@@ -62,17 +62,11 @@
 	<object class="EventAutomatableProperties" id="{317c9997-af9f-491a-91dd-8184a2dc8202}" />
 	<object class="MarkerTrack" id="{8647d8a7-856d-4c09-ae4b-2d6ff2ec05fb}" />
 	<object class="GroupTrack" id="{44e02608-7d7e-43a6-87f6-f131e70155b6}">
-		<relationship name="modules">
-			<destination>{5f3df611-522e-4b04-9821-b100f5500b14}</destination>
-		</relationship>
 		<relationship name="mixerGroup">
 			<destination>{ae9df758-81ae-4288-bcd4-1164c07dd291}</destination>
 		</relationship>
 	</object>
 	<object class="Timeline" id="{92e63fc8-0703-4d6f-a18f-0f9e0b98a45f}">
-		<relationship name="modules">
-			<destination>{5f3df611-522e-4b04-9821-b100f5500b14}</destination>
-		</relationship>
 		<relationship name="markers">
 			<destination>{e90e1df9-2029-47b3-8aab-254d03760495}</destination>
 		</relationship>
@@ -94,14 +88,6 @@
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{254176e1-ff76-4404-937a-bc652ed29b0d}" />
-	<object class="SingleSound" id="{5f3df611-522e-4b04-9821-b100f5500b14}">
-		<property name="length">
-			<value>320.13600000000002</value>
-		</property>
-		<relationship name="audioFile">
-			<destination>{9140193e-11f5-4bdc-a62c-26ef493651b9}</destination>
-		</relationship>
-	</object>
 	<object class="EventMixerGroup" id="{ae9df758-81ae-4288-bcd4-1164c07dd291}">
 		<property name="name">
 			<value>Audio 1</value>

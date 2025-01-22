@@ -85,7 +85,7 @@ namespace SurgeEngine.Code.Enemy
             Gizmos.DrawWireSphere(transform.position, patrolDistance);
         }
 
-        public void TakeDamage(float damage)
+        public void TakeDamage(object sender, float damage)
         {
             Actor context = ActorContext.Context;
             Vector3 force = context.kinematics.Rigidbody.linearVelocity * 1.25f;

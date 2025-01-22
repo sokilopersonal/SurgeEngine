@@ -110,6 +110,9 @@
 	</object>
 	<object class="MixerBusPanner" id="{1567a935-f9c1-4759-b72e-a84712da01e7}" />
 	<object class="MultiSound" id="{446568dc-443b-43b5-95cd-7aed80fedb49}">
+		<property name="playlistMode">
+			<value>1</value>
+		</property>
 		<relationship name="sounds">
 			<destination>{cecbb1d4-f244-40de-9a0a-19a2f86a9900}</destination>
 			<destination>{0327dbf1-4ed8-4f13-a158-eea4f2c8c828}</destination>
@@ -122,6 +125,9 @@
 		<property name="start">
 			<value>1</value>
 		</property>
+		<property name="playlistMode">
+			<value>1</value>
+		</property>
 		<relationship name="sounds">
 			<destination>{0a6e2501-9247-42c2-8c00-67ed7bd52ccf}</destination>
 			<destination>{edd8044c-4993-4c0e-81db-24df87e0a598}</destination>
@@ -132,6 +138,9 @@
 	<object class="MultiSound" id="{6aaf3619-686b-49da-9351-7d9a524f6cda}">
 		<property name="start">
 			<value>2</value>
+		</property>
+		<property name="playlistMode">
+			<value>1</value>
 		</property>
 		<relationship name="sounds">
 			<destination>{c75d055f-4ecd-4531-b232-a19dc38f1fe9}</destination>
