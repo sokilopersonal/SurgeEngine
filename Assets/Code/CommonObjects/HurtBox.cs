@@ -44,7 +44,7 @@ namespace SurgeEngine.Code.CommonObjects
             
             foreach (var hit in hits)
             {
-                if (hit.transform.parent.TryGetComponent(out IDamageable damageable))
+                if (hit.transform.parent && hit.transform.parent.TryGetComponent(out IDamageable damageable))
                 {
                     damageable.TakeDamage(0);
                     return true;
