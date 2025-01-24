@@ -5,27 +5,25 @@ namespace SurgeEngine.Code.Misc
 {
     public class MouthDubleSwitcher : MonoBehaviour
     {
-        [SerializeField] private Animator animator;
+        [SerializeField] Transform mouthReference;
 
         private Transform _cameraTransform;
         private Actor _actor;
 
-        private void Update()
+        private void Start()
         {
             _actor = ActorContext.Context;
             _cameraTransform = _actor.camera.GetCamera().transform;
-            
-            float dot = Vector3.Dot(-_cameraTransform.forward, _actor.transform.right);
-            Debug.Log(dot);
+        }
 
-            if (dot > 0)
-            {
-                animator.SetLayerWeight(1, 1);
-            }
-            else if (dot < 0)
-            {
-                animator.SetLayerWeight(1, 0);
-            }
+        private void LateUpdate()
+        {
+            float dot = Vector3.Dot(-_cameraTransform.forward, _actor.transform.right);
+
+            if (dot < 0)
+                mouthReference.localScale = new Vector3(-1, 1, 1);
+            else if (dot > 0)
+                mouthReference.localScale = new Vector3(1, 1, 1);
         }
     }
 }

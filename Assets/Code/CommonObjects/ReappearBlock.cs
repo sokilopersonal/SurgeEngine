@@ -21,6 +21,7 @@ namespace SurgeEngine.Code.CommonObjects
 
         [Space(10)]
         public EventReference appearSound;
+        public EventReference disappearSound;
 
         private Vector3 _lastSize = Vector3.one;
 
@@ -194,6 +195,9 @@ namespace SurgeEngine.Code.CommonObjects
                 if (offset < -0.4f)
                     _col.isTrigger = true;
             });
+
+            if (Time.timeSinceLevelLoad > 0)
+                RuntimeManager.PlayOneShot(disappearSound, transform.position);
         }
     }
 }

@@ -1005,7 +1005,7 @@ ParticleSystem:
     gravitySource: 0
     maxNumParticles: 2
     customEmitterVelocity: {x: 0, y: 0, z: 0}
-    size3D: 1
+    size3D: 0
     rotation3D: 0
     gravityModifier:
       serializedVersion: 2
@@ -6212,14 +6212,14 @@ ParticleSystem:
     curve:
       serializedVersion: 2
       minMaxState: 1
-      scalar: 1.3
+      scalar: 1.2
       minScalar: 1
       maxCurve:
         serializedVersion: 2
         m_Curve:
         - serializedVersion: 3
           time: 0
-          value: 0.7
+          value: 0.8
           inSlope: 0
           outSlope: 0
           tangentMode: 0
@@ -20336,7 +20336,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 0.875
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -30730,7 +30730,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 0.875
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -36322,7 +36322,7 @@ ParticleSystem:
     gravitySource: 0
     maxNumParticles: 2
     customEmitterVelocity: {x: 0, y: 0, z: 0}
-    size3D: 1
+    size3D: 0
     rotation3D: 0
     gravityModifier:
       serializedVersion: 2
@@ -45876,7 +45876,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1.25
+      scalar: 1
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -51056,7 +51056,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 0.875
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -57955,6 +57955,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b5197d4abc58dd14180947022fd32ae9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3194816441016445746}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b5197d4abc58dd14180947022fd32ae9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1590764472600410437}
   m_SourcePrefab: {fileID: 100100000, guid: b5197d4abc58dd14180947022fd32ae9, type: 3}
 --- !u!4 &1537953583096795223 stripped
 Transform:
@@ -58033,6 +58036,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00a597ae1ed078f44a0abf8e0a4eba50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1590764472600410437
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4396307008796334261}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc859899c76c48229ac4470c12ab1e15, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mouthReference: {fileID: 8899232975504904158}
+--- !u!4 &8899232975504904158 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5351354990516054586, guid: b5197d4abc58dd14180947022fd32ae9, type: 3}
+  m_PrefabInstance: {fileID: 3585912310831556068}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4378130629464863777
 PrefabInstance:
   m_ObjectHideFlags: 0
