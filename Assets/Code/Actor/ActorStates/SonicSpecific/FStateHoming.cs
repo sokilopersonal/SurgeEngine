@@ -90,7 +90,7 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
                 }
             }
             
-            if (HurtBox.CreateAttached(Actor, Actor.transform, Vector3.one))
+            if (HurtBox.CreateAttached(Actor, Actor.transform, Vector3.one * 0.5f))
             {
                 StateMachine.SetState<FStateAfterHoming>();
             }
