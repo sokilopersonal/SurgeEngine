@@ -148,7 +148,7 @@ namespace SurgeEngine.Code.ActorSystem
 
                     switch (state)
                     {
-                        case FStateGround or FStateSlide:
+                        case FStateGround or FStateSlide or FStateCrawl:
                             BaseGroundPhysics();
                             break;
                         case FStateAir or FStateJump:
@@ -402,7 +402,10 @@ namespace SurgeEngine.Code.ActorSystem
             else
             {
                 _movementVector = Vector3.zero;
-                actor.stateMachine.SetState<FStateIdle>();
+                if (!(actor.stateMachine.CurrentState is FStateCrawl))
+                {
+                    actor.stateMachine.SetState<FStateIdle>();
+                }
             }
         }
         

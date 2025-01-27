@@ -46,6 +46,28 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
+
+            if (!Input.BHeld)
+            {
+                if (Input.moveVector.magnitude > 0.1f)
+                {
+                    StateMachine.SetState<FStateGround>();
+                }
+                else
+                {
+                    StateMachine.SetState<FStateIdle>();
+                }
+            }
+
+            if (Input.JumpPressed)
+            {
+                StateMachine.SetState<FStateJump>(0.1f);
+            }
+
+            if (Input.moveVector.magnitude < 0.1)
+            {
+                StateMachine.SetState<FStateSit>();
+            }
         }
 
         public override void OnFixedTick(float dt)
@@ -54,15 +76,23 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
 
             // how the hell do i make him move
 
-            if (Common.CheckForGround(out RaycastHit hit, CheckGroundType.Normal, 5f))
+            Vector3 prevNormal = Kinematics.Normal;
+            BaseActorConfig config = Actor.config;
+            float distance = config.castDistance * config.castDistanceCurve
+                .Evaluate(Kinematics.HorizontalSpeed / crawlConfig.topSpeed);
+            if (Common.CheckForGround(out RaycastHit data, castDistance: distance) &&
+                Kinematics.CheckForPredictedGround(_rigidbody.linearVelocity, Kinematics.Normal, Time.fixedDeltaTime, distance, 6))
             {
-                Vector3 point = hit.point;
-                Vector3 normal = hit.normal;
-                Kinematics.Normal = normal;
+                Kinematics.Point = data.point;
+                Kinematics.Normal = data.normal;
 
-                Kinematics.WriteMovementVector(Input.moveVector);
-                Actor.model.RotateBody(normal);
-                Kinematics.Snap(point, normal, true);
+                Vector3 stored = Vector3.ClampMagnitude(_rigidbody.linearVelocity, crawlConfig.maxSpeed);
+                _rigidbody.linearVelocity = Quaternion.FromToRotation(_rigidbody.transform.up, prevNormal) * stored;
+
+                Actor.kinematics.BasePhysics(Kinematics.Point, Kinematics.Normal);
+                Actor.model.RotateBody(Kinematics.Normal);
+
+                _surfaceTag = data.transform.gameObject.GetGroundTag();
             }
             else
             {

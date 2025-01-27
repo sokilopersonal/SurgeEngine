@@ -72,7 +72,7 @@ namespace SurgeEngine.Code.ActorSystem
             spinball.Toggle(machine.IsExact<FStateJump>());
             grindEffect.Toggle(obj is FStateGrind or FStateGrindSquat);
 
-            if (obj is FStateGround or FStateIdle && prev is FStateStomp)
+            if ((obj is FStateGround or FStateIdle or FStateSit) && prev is FStateStomp)
             {
                 stompEffect.Land();
             }
