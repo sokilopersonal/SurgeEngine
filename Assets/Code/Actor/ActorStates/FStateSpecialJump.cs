@@ -63,7 +63,7 @@ namespace SurgeEngine.Code.ActorStates
 
             if (data.type is SpecialJumpType.Spring or SpecialJumpType.DashRing)
             {
-                Actor.model.StartAirRestore(data.outOfControl);
+                Actor.model.StartAirRestore(0.4f);
             }
         }
 

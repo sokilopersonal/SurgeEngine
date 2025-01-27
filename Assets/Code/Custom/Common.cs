@@ -26,19 +26,23 @@ namespace SurgeEngine.Code.Custom
         }
 
         /// <summary>
-        /// Counts the timer and returns true if timer is greater than 0
+        /// Start a timer with the specified values
         /// </summary>
-        /// <param name="timer"></param>
-        /// <returns></returns>
-        public static bool CountTimer(ref float timer)
+        /// <param name="waitTimer">Current timer value.</param>
+        /// <param name="waitTime">Maximum timer value.</param>
+        /// <param name="autoReset">True,  if you prefer the timer to reset automatically.</param>
+        /// <returns>True, when the timer value is 0</returns>
+        public static bool TickTimer(ref float waitTimer, float waitTime, bool autoReset = true) 
         {
-            if (timer > 0)
+            if (waitTimer == 0) 
             {
-                timer -= Time.deltaTime;
+                if (autoReset)
+                    waitTimer = waitTime;
                 return true;
             }
-            
-            timer = 0;
+
+            waitTimer -= Time.deltaTime;
+            waitTimer = Mathf.Clamp(waitTimer, 0, waitTime);
             return false;
         }
         

@@ -46,9 +46,8 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
 
                 _rigidbody.linearVelocity = force;
             }
-
-            bool result = Common.CountTimer(ref _timer);
-            if (!result)
+            
+            if (Common.TickTimer(ref _timer, 0.3f))
             {
                 StateMachine.SetState<FStateAir>();
             }
