@@ -20,9 +20,9 @@ namespace SurgeEngine.Code.Misc
         {
             float dot = Vector3.Dot(-_cameraTransform.forward, _actor.transform.right);
 
-            if (dot < 0)
+            if (dot < -0.1f)
                 mouthReference.localScale = new Vector3(-1, 1, 1);
-            else if (dot > 0)
+            else if (dot > 0.1f)
                 mouthReference.localScale = new Vector3(1, 1, 1);
         }
     }
