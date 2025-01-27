@@ -16,12 +16,6 @@ namespace SurgeEngine.Code.Enemy.States
         public override void OnEnter()
         {
             base.OnEnter();
-
-            Actor context = ActorContext.Context;
-            if (context.stateMachine.CurrentState is FStateHoming)
-            {
-                context.stateMachine.SetState<FStateAfterHoming>();
-            }
         }
 
         public void ApplyKnockback(Vector3 force, EnemyRagdoll ragdoll)

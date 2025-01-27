@@ -19,7 +19,7 @@ MonoBehaviour:
 --- !u!21 &2100000
 Material:
   serializedVersion: 8
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 32
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -309,6 +309,9 @@ Material:
     - _SSSProfile: 0
     - _SSSTMask: 0
     - _SSSThickness: 0.005
+    - _SampleColorMultiplier: 2.5
+    - _SampleMax: 0.75
+    - _SampleMin: 0.3
     - _Smoothness: 0.5
     - _SmoothnessRemapMax: 1
     - _SmoothnessRemapMin: 0
@@ -355,7 +358,7 @@ Material:
     - _UseReflection: 1
     - _UseSecondNormalMap: 0
     - _UseShadowThreshold: 0
-    - _UseUV2: 1
+    - _UseUV2: 0
     - _ZTestDepthEqualForOpaque: 3
     - _ZTestGBuffer: 4
     - _ZTestTransparent: 4

@@ -7,13 +7,12 @@ namespace SurgeEngine.Code.Enemy
 {
     public class EnemyRagdoll : MonoBehaviour
     {
-        [Header("Collision")]
-        public SkinnedMeshRenderer meshRenderer;
-        public GameObject mainObject;
-        public List<Collider> disableWhenRagdoll;
-        public UnityEvent onRagdoll;
-        public List<EnemyRagdollLimb> limbs;
-        public float limbMassScale = 1f;
+        [Header("Collision")] 
+        [SerializeField] private SkinnedMeshRenderer meshRenderer;
+        [SerializeField] private List<Collider> disableWhenRagdoll;
+        [SerializeField] private UnityEvent onRagdoll;
+        [SerializeField] private List<EnemyRagdollLimb> limbs;
+        [SerializeField] private float limbMassScale = 1f;
         public LayerMask collideLayers;
 
         [HideInInspector]
@@ -22,16 +21,16 @@ namespace SurgeEngine.Code.Enemy
         private bool hit;
         private bool ragdoll;
 
-        [Header("Explosion")]
-        public Transform explosionPoint;
+        [Header("Lifetime")]
         public float minimumLifeTime = 0.25f;
         public float maximumLifeTime = 4f;
-        [SerializeField] private ParticleSystem explosionEffect;
-        [SerializeField] private float explosionOffset = 0.5f;
-        [SerializeField] private EventReference explosionReference;
+
+        private EggFighter _eggFighter;
 
         private void Start()
         {
+            _eggFighter = GetComponentInParent<EggFighter>();
+            
             foreach (EnemyRagdollLimb limb in limbs)
             {
                 limb.ragdoll = this;
@@ -45,7 +44,6 @@ namespace SurgeEngine.Code.Enemy
                 return;
 
             ragdoll = true;
-
             meshRenderer.updateWhenOffscreen = true;
 
             foreach (Collider disableCol in disableWhenRagdoll)
@@ -79,13 +77,8 @@ namespace SurgeEngine.Code.Enemy
                 return;
 
             hit = true;
-
-            ParticleSystem particle = Instantiate(explosionEffect, explosionPoint.position + Vector3.up * explosionOffset, Quaternion.identity);
-            Destroy(particle.gameObject, 2.5f);
-
-            RuntimeManager.PlayOneShot(explosionReference, explosionPoint.position);
-
-            Destroy(mainObject);
+            
+            _eggFighter.view.Destroy();
         }
     }
 }

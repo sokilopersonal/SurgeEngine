@@ -269,9 +269,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3f871f11f4040e78339027a7a185be4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eCollider: {fileID: 5521076903748107578}
+  explosionPoint: {fileID: 899397099832564876}
   explosionEffect: {fileID: 4211897682676449617, guid: 9a30f2c112ea816458c86fae9415142e, type: 3}
-  explosionOffset: 1.25
+  destroyedPiece: {fileID: 2783773666713308101, guid: 995491a75952f7444a646b0ffc7b14f9, type: 3}
+  explosionOffset: 0
   explosionReference:
     Guid:
       Data1: 1791883060
@@ -1033,7 +1034,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meshRenderer: {fileID: 7693363134710386222}
-  mainObject: {fileID: 1134928124351879982}
   disableWhenRagdoll:
   - {fileID: 5521076903748107578}
   onRagdoll:
@@ -1068,18 +1068,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4097
   timer: 0
-  explosionPoint: {fileID: 899397099832564876}
   minimumLifeTime: 0.25
   maximumLifeTime: 4
-  explosionEffect: {fileID: 4211897682676449617, guid: 9a30f2c112ea816458c86fae9415142e, type: 3}
-  explosionOffset: 0
-  explosionReference:
-    Guid:
-      Data1: 1791883060
-      Data2: 1255048755
-      Data3: -179035972
-      Data4: 1232330811
-    Path: event:/Enemies/Destroy
 --- !u!1 &98690313311198896 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 907446753662915050, guid: c865f2d05ed80844281e86fa77f90dcb, type: 3}
