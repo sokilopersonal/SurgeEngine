@@ -33,6 +33,11 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
             {
                 StateMachine.SetState<FStateIdle>(0.1f);
             }
+
+            if (Input.moveVector.magnitude >= 0.5f)
+            {
+                StateMachine.SetState<FStateCrawl>();
+            }
         }
     }
 }

@@ -86,7 +86,8 @@ namespace SurgeEngine.Code.ActorSystem
                             TransitionToStateDelayed("Idle", 1f, 0.4f);
                             break;
                         case FStateSit:
-                            TransitionToState("Idle", 0.15f);
+                            TransitionToState("SitExit", 0f);
+                            TransitionToStateDelayed("Idle", 0f, 0.167f);
                             break;
                         case FStateBrakeTurn:
                             TransitionToState("Idle", 0.1f);
@@ -157,7 +158,21 @@ namespace SurgeEngine.Code.ActorSystem
             }
             if (obj is FStateSit)
             {
-                TransitionToState("Sit", 0.2f, true);
+                if (prev is FStateSlide)
+                {
+                    TransitionToState("SlideToSit", 0f, true);
+                    TransitionToStateDelayed("SitLoop", 0f, 0.5f, true);
+                }
+                else
+                {
+                    TransitionToState("SitEnter", 0f, true);
+                    TransitionToStateDelayed("SitLoop", 0f, 0.167f, true);
+                }
+            }
+            if (obj is FStateCrawl)
+            {
+                TransitionToState("CrawlEnter", 0f, true);
+                TransitionToStateDelayed("CrawlLoop", 0f, 0.333f);
             }
             if (obj is FStateJump)
             {

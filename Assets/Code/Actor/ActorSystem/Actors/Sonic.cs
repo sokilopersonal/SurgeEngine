@@ -26,6 +26,9 @@ namespace SurgeEngine.Code.ActorSystem.Actors
         [Foldout("Quickstep")]
         [Expandable] public QuickStepConfig quickstepConfig;
 
+        [Foldout("Crawl")]
+        [Expandable] public CrawlConfig crawlConfig;
+
         public override void Initialize()
         {
             base.Initialize();
@@ -39,6 +42,7 @@ namespace SurgeEngine.Code.ActorSystem.Actors
             stateMachine.AddState(new FStateDrift(this, body));
             stateMachine.AddState(new FStateSlide(this, body));
             stateMachine.AddState(new FStateQuickstep(this, body));
+            stateMachine.AddState(new FStateCrawl(this, body));
         }
     }
 }

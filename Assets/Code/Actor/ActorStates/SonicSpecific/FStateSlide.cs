@@ -51,7 +51,12 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
                     StateMachine.SetState<FStateGround>();
                 }
                 else
-                    StateMachine.SetState<FStateIdle>();
+                {
+                    if (Input.BHeld)
+                        StateMachine.SetState<FStateSit>();
+                    else
+                        StateMachine.SetState<FStateIdle>();
+                }
             }
             
             if (Input.LeftBumperPressed)
