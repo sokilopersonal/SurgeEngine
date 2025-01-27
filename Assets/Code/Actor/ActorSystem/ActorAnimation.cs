@@ -114,7 +114,7 @@ namespace SurgeEngine.Code.ActorSystem
                     if (machine.IsPrevExact<FStateCrawl>())
                     {
                         TransitionToState("CrawlExit", 0f, true);
-                        TransitionToStateDelayed(AnimatorParams.RunCycle, 0.1f, 0.1665f);
+                        TransitionToStateDelayed(AnimatorParams.RunCycle, 0.15f, 0.11655f);
                         return;
                     }
 

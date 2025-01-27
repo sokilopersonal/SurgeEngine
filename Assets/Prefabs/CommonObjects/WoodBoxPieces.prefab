@@ -80,6 +80,24 @@ MonoBehaviour:
   - {fileID: 4499831681546394997}
   - {fileID: 864120452264175156}
   - {fileID: 5041128012301013910}
+  meshes:
+  - {fileID: 2855150001006120183}
+  - {fileID: 6756703211667162521}
+  - {fileID: 8719028139371917540}
+  - {fileID: 4278649154698002675}
+  - {fileID: 2932474315019500861}
+  - {fileID: 1581852755296864002}
+  - {fileID: 2632408825709748923}
+  - {fileID: 8102126576423327412}
+  - {fileID: 92142215975244211}
+  - {fileID: 5450334314950370293}
+  - {fileID: 6248922639064019286}
+  - {fileID: 7081442824017901121}
+  - {fileID: 2971341978786960837}
+  - {fileID: 494756803297501667}
+  - {fileID: 6277868528236208636}
+  - {fileID: 8363681281610934122}
+  - {fileID: 2803852178976624408}
 --- !u!1001 &1219602870288909574
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -129,9 +147,13 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -5330662260655961570, guid: a73388f38c477d841936629f1e6a9e0b, type: 3}
+      propertyPath: m_CastShadows
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -5330662260655961570, guid: a73388f38c477d841936629f1e6a9e0b, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: f971f51f4fca89e42b141a63ec7df842, type: 2}
+      objectReference: {fileID: 2100000, guid: ab17b191966d60f4ea8b0659e94fb38f, type: 2}
     - target: {fileID: 919132149155446097, guid: a73388f38c477d841936629f1e6a9e0b, type: 3}
       propertyPath: m_Name
       value: cmn_obj_kt3_woodbox_brk_016.model
@@ -210,6 +232,11 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 1513256974585293885, guid: a73388f38c477d841936629f1e6a9e0b, type: 3}
+--- !u!137 &2803852178976624408 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -5330662260655961570, guid: a73388f38c477d841936629f1e6a9e0b, type: 3}
+  m_PrefabInstance: {fileID: 1219602870288909574}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1902168988539009556
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -267,9 +294,13 @@ PrefabInstance:
       value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 3663644519952287529, guid: 505c17f9890e72047a4fc353909f305a, type: 3}
+      propertyPath: m_CastShadows
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3663644519952287529, guid: 505c17f9890e72047a4fc353909f305a, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: f971f51f4fca89e42b141a63ec7df842, type: 2}
+      objectReference: {fileID: 2100000, guid: ab17b191966d60f4ea8b0659e94fb38f, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -340,6 +371,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 505c17f9890e72047a4fc353909f305a, type: 3}
   m_PrefabInstance: {fileID: 1902168988539009556}
   m_PrefabAsset: {fileID: 0}
+--- !u!137 &2932474315019500861 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 3663644519952287529, guid: 505c17f9890e72047a4fc353909f305a, type: 3}
+  m_PrefabInstance: {fileID: 1902168988539009556}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2737141932256275230
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -397,9 +433,13 @@ PrefabInstance:
       value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 6700368817011547130, guid: 8075ea432390a4841add4ec6448c3a0d, type: 3}
+      propertyPath: m_CastShadows
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6700368817011547130, guid: 8075ea432390a4841add4ec6448c3a0d, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: f971f51f4fca89e42b141a63ec7df842, type: 2}
+      objectReference: {fileID: 2100000, guid: ab17b191966d60f4ea8b0659e94fb38f, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -470,6 +510,11 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 1433671407946466333, guid: 8075ea432390a4841add4ec6448c3a0d, type: 3}
+--- !u!137 &8719028139371917540 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 6700368817011547130, guid: 8075ea432390a4841add4ec6448c3a0d, type: 3}
+  m_PrefabInstance: {fileID: 2737141932256275230}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3375470286405795608
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -527,9 +572,13 @@ PrefabInstance:
       value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 5520923782598429017, guid: d01eb1cee942c924fb37a142572691ef, type: 3}
+      propertyPath: m_CastShadows
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5520923782598429017, guid: d01eb1cee942c924fb37a142572691ef, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: f971f51f4fca89e42b141a63ec7df842, type: 2}
+      objectReference: {fileID: 2100000, guid: ab17b191966d60f4ea8b0659e94fb38f, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -600,6 +649,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d01eb1cee942c924fb37a142572691ef, type: 3}
   m_PrefabInstance: {fileID: 3375470286405795608}
   m_PrefabAsset: {fileID: 0}
+--- !u!137 &7081442824017901121 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 5520923782598429017, guid: d01eb1cee942c924fb37a142572691ef, type: 3}
+  m_PrefabInstance: {fileID: 3375470286405795608}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3573426281238375216
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -648,6 +702,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -1417510727795888471, guid: 02752cb4a4becd141ada7d79414eb5da, type: 3}
+      propertyPath: m_CastShadows
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -1417510727795888471, guid: 02752cb4a4becd141ada7d79414eb5da, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: ab17b191966d60f4ea8b0659e94fb38f, type: 2}
     - target: {fileID: 919132149155446097, guid: 02752cb4a4becd141ada7d79414eb5da, type: 3}
       propertyPath: m_Name
       value: cmn_obj_kt3_woodbox_brk_001.model
@@ -726,6 +788,11 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -2683537802711027462, guid: 02752cb4a4becd141ada7d79414eb5da, type: 3}
+--- !u!137 &6756703211667162521 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -1417510727795888471, guid: 02752cb4a4becd141ada7d79414eb5da, type: 3}
+  m_PrefabInstance: {fileID: 3573426281238375216}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3840848060403826982
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -783,9 +850,13 @@ PrefabInstance:
       value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4709829689204450892, guid: aad80c06b98347e428ba33f52b384916, type: 3}
+      propertyPath: m_CastShadows
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4709829689204450892, guid: aad80c06b98347e428ba33f52b384916, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: f971f51f4fca89e42b141a63ec7df842, type: 2}
+      objectReference: {fileID: 2100000, guid: ab17b191966d60f4ea8b0659e94fb38f, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -856,6 +927,11 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 1798411437141252831, guid: aad80c06b98347e428ba33f52b384916, type: 3}
+--- !u!137 &8363681281610934122 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 4709829689204450892, guid: aad80c06b98347e428ba33f52b384916, type: 3}
+  m_PrefabInstance: {fileID: 3840848060403826982}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5802942347547155419
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -905,9 +981,13 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -1447658870199395544, guid: 26a320ed15789ba4bb5d3469fc838a24, type: 3}
+      propertyPath: m_CastShadows
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -1447658870199395544, guid: 26a320ed15789ba4bb5d3469fc838a24, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: f971f51f4fca89e42b141a63ec7df842, type: 2}
+      objectReference: {fileID: 2100000, guid: ab17b191966d60f4ea8b0659e94fb38f, type: 2}
     - target: {fileID: 919132149155446097, guid: 26a320ed15789ba4bb5d3469fc838a24, type: 3}
       propertyPath: m_Name
       value: cmn_obj_kt3_woodbox_brk_003.model
@@ -927,6 +1007,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 4574320676847787436}
   m_SourcePrefab: {fileID: 100100000, guid: 26a320ed15789ba4bb5d3469fc838a24, type: 3}
+--- !u!137 &4278649154698002675 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -1447658870199395544, guid: 26a320ed15789ba4bb5d3469fc838a24, type: 3}
+  m_PrefabInstance: {fileID: 5802942347547155419}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6269723356550134832 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 26a320ed15789ba4bb5d3469fc838a24, type: 3}
@@ -1043,9 +1128,13 @@ PrefabInstance:
       value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8413218177205032788, guid: ecdb51953c73f504189e4bc84fbfc188, type: 3}
+      propertyPath: m_CastShadows
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8413218177205032788, guid: ecdb51953c73f504189e4bc84fbfc188, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: f971f51f4fca89e42b141a63ec7df842, type: 2}
+      objectReference: {fileID: 2100000, guid: ab17b191966d60f4ea8b0659e94fb38f, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1057,6 +1146,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1543184910325708089}
   m_SourcePrefab: {fileID: 100100000, guid: ecdb51953c73f504189e4bc84fbfc188, type: 3}
+--- !u!137 &1581852755296864002 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 8413218177205032788, guid: ecdb51953c73f504189e4bc84fbfc188, type: 3}
+  m_PrefabInstance: {fileID: 7003695453021343830}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7401849147384821693 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: ecdb51953c73f504189e4bc84fbfc188, type: 3}
@@ -1165,9 +1259,13 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -2222473314584057279, guid: c165a10c06aa61f4db356808101cf92c, type: 3}
+      propertyPath: m_CastShadows
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -2222473314584057279, guid: c165a10c06aa61f4db356808101cf92c, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: f971f51f4fca89e42b141a63ec7df842, type: 2}
+      objectReference: {fileID: 2100000, guid: ab17b191966d60f4ea8b0659e94fb38f, type: 2}
     - target: {fileID: 919132149155446097, guid: c165a10c06aa61f4db356808101cf92c, type: 3}
       propertyPath: m_Name
       value: cmn_obj_kt3_woodbox_brk_013.model
@@ -1187,6 +1285,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 4803007347932428404}
   m_SourcePrefab: {fileID: 100100000, guid: c165a10c06aa61f4db356808101cf92c, type: 3}
+--- !u!137 &494756803297501667 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -2222473314584057279, guid: c165a10c06aa61f4db356808101cf92c, type: 3}
+  m_PrefabInstance: {fileID: 7491046367447468962}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6953333000856841289 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c165a10c06aa61f4db356808101cf92c, type: 3}
@@ -1303,9 +1406,13 @@ PrefabInstance:
       value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 7516646456303085949, guid: a800877fe087cb343bd1fc7c28aadffe, type: 3}
+      propertyPath: m_CastShadows
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7516646456303085949, guid: a800877fe087cb343bd1fc7c28aadffe, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: f971f51f4fca89e42b141a63ec7df842, type: 2}
+      objectReference: {fileID: 2100000, guid: ab17b191966d60f4ea8b0659e94fb38f, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1317,6 +1424,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 4902220277298616750}
   m_SourcePrefab: {fileID: 100100000, guid: a800877fe087cb343bd1fc7c28aadffe, type: 3}
+--- !u!137 &92142215975244211 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 7516646456303085949, guid: a800877fe087cb343bd1fc7c28aadffe, type: 3}
+  m_PrefabInstance: {fileID: 7572561963165776078}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &7338137486069876127 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: a800877fe087cb343bd1fc7c28aadffe, type: 3}
@@ -1424,6 +1536,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -2943471765453228224, guid: 6d151349f18b7f449b42d81eb5d290a9, type: 3}
+      propertyPath: m_CastShadows
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -2943471765453228224, guid: 6d151349f18b7f449b42d81eb5d290a9, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: ab17b191966d60f4ea8b0659e94fb38f, type: 2}
     - target: {fileID: 919132149155446097, guid: 6d151349f18b7f449b42d81eb5d290a9, type: 3}
       propertyPath: m_Name
       value: cmn_obj_kt3_woodbox_brk_000.model
@@ -1443,6 +1563,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 4963884366730977682}
   m_SourcePrefab: {fileID: 100100000, guid: 6d151349f18b7f449b42d81eb5d290a9, type: 3}
+--- !u!137 &2855150001006120183 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -2943471765453228224, guid: 6d151349f18b7f449b42d81eb5d290a9, type: 3}
+  m_PrefabInstance: {fileID: 8122584744529083319}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8589365832249039964 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 6d151349f18b7f449b42d81eb5d290a9, type: 3}
@@ -1551,9 +1676,13 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 49191933874142117, guid: 8b3b4a7097a4c4742bfaaeaa066e9598, type: 3}
+      propertyPath: m_CastShadows
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 49191933874142117, guid: 8b3b4a7097a4c4742bfaaeaa066e9598, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: f971f51f4fca89e42b141a63ec7df842, type: 2}
+      objectReference: {fileID: 2100000, guid: ab17b191966d60f4ea8b0659e94fb38f, type: 2}
     - target: {fileID: 919132149155446097, guid: 8b3b4a7097a4c4742bfaaeaa066e9598, type: 3}
       propertyPath: m_Name
       value: cmn_obj_kt3_woodbox_brk_007.model
@@ -1573,6 +1702,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1228108885351338533}
   m_SourcePrefab: {fileID: 100100000, guid: 8b3b4a7097a4c4742bfaaeaa066e9598, type: 3}
+--- !u!137 &8102126576423327412 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 49191933874142117, guid: 8b3b4a7097a4c4742bfaaeaa066e9598, type: 3}
+  m_PrefabInstance: {fileID: 8133020424890428689}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8598765324439538426 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8b3b4a7097a4c4742bfaaeaa066e9598, type: 3}
@@ -1689,9 +1823,13 @@ PrefabInstance:
       value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 2545778177631885798, guid: 75d7761a738db6c42981580e1f6c67fd, type: 3}
+      propertyPath: m_CastShadows
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2545778177631885798, guid: 75d7761a738db6c42981580e1f6c67fd, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: f971f51f4fca89e42b141a63ec7df842, type: 2}
+      objectReference: {fileID: 2100000, guid: ab17b191966d60f4ea8b0659e94fb38f, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1703,6 +1841,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 3299689260279582679}
   m_SourcePrefab: {fileID: 100100000, guid: 75d7761a738db6c42981580e1f6c67fd, type: 3}
+--- !u!137 &6248922639064019286 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 2545778177631885798, guid: 75d7761a738db6c42981580e1f6c67fd, type: 3}
+  m_PrefabInstance: {fileID: 8497388472820967600}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8243400099200454491 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 75d7761a738db6c42981580e1f6c67fd, type: 3}
@@ -1811,9 +1954,13 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -3344183408934991639, guid: 6410d9256e288b345bba6c54be63a214, type: 3}
+      propertyPath: m_CastShadows
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -3344183408934991639, guid: 6410d9256e288b345bba6c54be63a214, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: f971f51f4fca89e42b141a63ec7df842, type: 2}
+      objectReference: {fileID: 2100000, guid: ab17b191966d60f4ea8b0659e94fb38f, type: 2}
     - target: {fileID: 919132149155446097, guid: 6410d9256e288b345bba6c54be63a214, type: 3}
       propertyPath: m_Name
       value: cmn_obj_kt3_woodbox_brk_012.model
@@ -1833,6 +1980,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 7246561207255289758}
   m_SourcePrefab: {fileID: 100100000, guid: 6410d9256e288b345bba6c54be63a214, type: 3}
+--- !u!137 &2971341978786960837 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -3344183408934991639, guid: 6410d9256e288b345bba6c54be63a214, type: 3}
+  m_PrefabInstance: {fileID: 8695115115715976492}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &8388562271171534973 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 6410d9256e288b345bba6c54be63a214, type: 3}
@@ -1949,9 +2101,13 @@ PrefabInstance:
       value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 6405980234606885580, guid: 0d0f71f865be30549ba575936c67f4f1, type: 3}
+      propertyPath: m_CastShadows
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6405980234606885580, guid: 0d0f71f865be30549ba575936c67f4f1, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: f971f51f4fca89e42b141a63ec7df842, type: 2}
+      objectReference: {fileID: 2100000, guid: ab17b191966d60f4ea8b0659e94fb38f, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1963,6 +2119,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 145807843908195366}
   m_SourcePrefab: {fileID: 100100000, guid: 0d0f71f865be30549ba575936c67f4f1, type: 3}
+--- !u!137 &2632408825709748923 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 6405980234606885580, guid: 0d0f71f865be30549ba575936c67f4f1, type: 3}
+  m_PrefabInstance: {fileID: 8966294072144877687}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &8119925419734459686 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 0d0f71f865be30549ba575936c67f4f1, type: 3}
@@ -2071,9 +2232,13 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -5257602428346228088, guid: 5f58221034960a749881797d9f85dd3c, type: 3}
+      propertyPath: m_CastShadows
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -5257602428346228088, guid: 5f58221034960a749881797d9f85dd3c, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: f971f51f4fca89e42b141a63ec7df842, type: 2}
+      objectReference: {fileID: 2100000, guid: ab17b191966d60f4ea8b0659e94fb38f, type: 2}
     - target: {fileID: 919132149155446097, guid: 5f58221034960a749881797d9f85dd3c, type: 3}
       propertyPath: m_Name
       value: cmn_obj_kt3_woodbox_brk_009.model
@@ -2093,6 +2258,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 8638938528897182940}
   m_SourcePrefab: {fileID: 100100000, guid: 5f58221034960a749881797d9f85dd3c, type: 3}
+--- !u!137 &5450334314950370293 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -5257602428346228088, guid: 5f58221034960a749881797d9f85dd3c, type: 3}
+  m_PrefabInstance: {fileID: 8983067569301487997}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &8100618441616079916 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 5f58221034960a749881797d9f85dd3c, type: 3}
@@ -2209,9 +2379,13 @@ PrefabInstance:
       value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 3040021099388285047, guid: dcbf67fc30766b44a9c6a1004e60d392, type: 3}
+      propertyPath: m_CastShadows
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3040021099388285047, guid: dcbf67fc30766b44a9c6a1004e60d392, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: f971f51f4fca89e42b141a63ec7df842, type: 2}
+      objectReference: {fileID: 2100000, guid: ab17b191966d60f4ea8b0659e94fb38f, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2223,6 +2397,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 3100956550768004443}
   m_SourcePrefab: {fileID: 100100000, guid: dcbf67fc30766b44a9c6a1004e60d392, type: 3}
+--- !u!137 &6277868528236208636 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 3040021099388285047, guid: dcbf67fc30766b44a9c6a1004e60d392, type: 3}
+  m_PrefabInstance: {fileID: 9020476130354041227}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &8209572763307453658 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: dcbf67fc30766b44a9c6a1004e60d392, type: 3}
