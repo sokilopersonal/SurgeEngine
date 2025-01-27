@@ -111,6 +111,13 @@ namespace SurgeEngine.Code.ActorSystem
                         return;
                     }
 
+                    if (machine.IsPrevExact<FStateCrawl>())
+                    {
+                        TransitionToState("CrawlExit", 0f, true);
+                        TransitionToStateDelayed(AnimatorParams.RunCycle, 0.1f, 0.1665f);
+                        return;
+                    }
+
                     TransitionToState(AnimatorParams.RunCycle, 0.2f);
                 }
                 else
@@ -158,15 +165,20 @@ namespace SurgeEngine.Code.ActorSystem
             }
             if (obj is FStateSit)
             {
-                if (prev is FStateSlide)
+                switch (prev)
                 {
-                    TransitionToState("SlideToSit", 0f, true);
-                    TransitionToStateDelayed("SitLoop", 0f, 0.5f, true);
-                }
-                else
-                {
-                    TransitionToState("SitEnter", 0f, true);
-                    TransitionToStateDelayed("SitLoop", 0f, 0.167f, true);
+                    case FStateSlide:
+                        TransitionToState("SlideToSit", 0f, true);
+                        TransitionToStateDelayed("SitLoop", 0f, 0.5f, true);
+                        break;
+                    case FStateCrawl:
+                        TransitionToState("CrawlExit", 0f, true);
+                        TransitionToStateDelayed("SitLoop", 0f, 0.333f, true);
+                        break;
+                    default:
+                        TransitionToState("SitEnter", 0f, true);
+                        TransitionToStateDelayed("SitLoop", 0f, 0.167f, true);
+                        break;
                 }
             }
             if (obj is FStateCrawl)
