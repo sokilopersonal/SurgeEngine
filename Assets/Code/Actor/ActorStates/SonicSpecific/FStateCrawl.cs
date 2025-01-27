@@ -59,6 +59,11 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
                 }
             }
 
+            if (Input.JumpPressed)
+            {
+                StateMachine.SetState<FStateJump>(0.1f);
+            }
+
             if (Input.moveVector.magnitude < 0.1)
             {
                 StateMachine.SetState<FStateSit>();
