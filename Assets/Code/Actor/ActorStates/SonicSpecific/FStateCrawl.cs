@@ -14,16 +14,13 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
     {
         private string _surfaceTag;
 
-        private float collisionHeight = 0.3f;
-        private float collisionCenterY = -0.5f;
+        private const float collisionHeight = 0.3f;
 
         private CrawlConfig crawlConfig;
-        BaseActorConfig baseConfig;
 
         public FStateCrawl(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
             crawlConfig = (owner as Sonic).crawlConfig;
-            baseConfig = Actor.config;
         }
 
         public override void OnEnter()
@@ -75,6 +72,7 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
             base.OnFixedTick(dt);
 
             // how the hell do i make him move
+            // you did it!!
 
             Vector3 prevNormal = Kinematics.Normal;
             BaseActorConfig config = Actor.config;

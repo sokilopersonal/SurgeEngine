@@ -14,8 +14,8 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
     {
         private float collisionHeight = 0.3f;
         private float collisionCenterY = -0.5f;
-        private float timer = 0f;
-        private bool fadeOut = false;
+        private float timer;
+        private bool fadeOut;
 
         private SweepConfig _config;
 
@@ -85,7 +85,7 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
         {
             base.OnFixedTick(dt);
 
-            if (Common.CheckForGround(out RaycastHit hit, CheckGroundType.Normal, 5f))
+            if (Common.CheckForGround(out RaycastHit hit, CheckGroundType.Normal, Actor.config.castDistance))
             {
                 Vector3 point = hit.point;
                 Vector3 normal = hit.normal;

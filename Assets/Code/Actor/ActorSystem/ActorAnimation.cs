@@ -201,7 +201,7 @@ namespace SurgeEngine.Code.ActorSystem
             }
             if (obj is FStateSweepKick)
             {
-                TransitionToState("Sweepkick", 0f, true);
+                TransitionToState("Sweepkick", 0.2f, true);
             }
             if (obj is FStateJump)
             {
