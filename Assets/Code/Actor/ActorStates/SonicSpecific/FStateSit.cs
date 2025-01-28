@@ -1,11 +1,12 @@
 ﻿using SurgeEngine.Code.ActorStates.BaseStates;
+using SurgeEngine.Code.ActorStates.SonicSubStates;
 using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Custom;
 using UnityEngine;
 
 namespace SurgeEngine.Code.ActorStates.SonicSpecific
 {
-    public class FStateSit : FStateMove
+    public class FStateSit : FStateMove, ISweepKickHandler
     {
         public FStateSit(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
@@ -31,7 +32,7 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
 
             if (!Input.BHeld)
             {
-                StateMachine.SetState<FStateIdle>(0.1f);
+                StateMachine.SetState<FStateIdle>();
             }
 
             if (Input.moveVector.magnitude >= 0.5f)

@@ -1,6 +1,7 @@
 ﻿using FMOD.Studio;
 using FMODUnity;
 using SurgeEngine.Code.ActorStates;
+using SurgeEngine.Code.ActorStates.SonicSpecific;
 using SurgeEngine.Code.StateMachine;
 using UnityEngine;
 
@@ -9,9 +10,11 @@ namespace SurgeEngine.Code.ActorSoundEffects
     public class StepSound : ActorSound
     {
         [SerializeField] private EventReference stepSound;
+        [SerializeField] private EventReference crawlSound;
         [SerializeField] private EventReference landSound;
         
         private EventInstance _stepSoundInstance;
+        private EventInstance _crawlSoundInstance;
         private EventInstance _landSoundInstance;
 
         public override void Initialize()
@@ -20,7 +23,11 @@ namespace SurgeEngine.Code.ActorSoundEffects
             
             _stepSoundInstance = RuntimeManager.CreateInstance(stepSound);
             _stepSoundInstance.set3DAttributes(transform.To3DAttributes());
-            
+
+            _crawlSoundInstance = RuntimeManager.CreateInstance(crawlSound);
+            _crawlSoundInstance.set3DAttributes(transform.To3DAttributes());
+            _crawlSoundInstance.setVolume(0.1f);
+
             _landSoundInstance = RuntimeManager.CreateInstance(landSound);
             _landSoundInstance.set3DAttributes(transform.To3DAttributes());
         }
@@ -32,6 +39,11 @@ namespace SurgeEngine.Code.ActorSoundEffects
                 RuntimeManager.AttachInstanceToGameObject(_stepSoundInstance, transform);
                 _stepSoundInstance.setParameterByNameWithLabel("GroundTag", actor.stateMachine.GetState<FStateGround>().GetSurfaceTag());
                 _stepSoundInstance.start();
+            }
+            if (_crawlSoundInstance.isValid() && actor.stateMachine.CurrentState is FStateCrawl)
+            {
+                RuntimeManager.AttachInstanceToGameObject(_crawlSoundInstance, transform);
+                _crawlSoundInstance.start();
             }
         }
 

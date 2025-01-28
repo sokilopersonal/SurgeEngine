@@ -89,6 +89,10 @@ namespace SurgeEngine.Code.ActorSystem
                             TransitionToState("SitExit", 0f);
                             TransitionToStateDelayed("Idle", 0f, 0.167f);
                             break;
+                        case FStateSweepKick:
+                            TransitionToState("SitExit", 0f);
+                            TransitionToStateDelayed("Idle", 0f, 0.167f);
+                            break;
                         case FStateBrakeTurn:
                             TransitionToState("Idle", 0.1f);
                             break;
@@ -115,6 +119,12 @@ namespace SurgeEngine.Code.ActorSystem
                     {
                         TransitionToState("CrawlExit", 0f, true);
                         TransitionToStateDelayed(AnimatorParams.RunCycle, 0.15f, 0.11655f);
+                        return;
+                    }
+
+                    if (machine.IsPrevExact<FStateSweepKick>())
+                    {
+                        TransitionToState(AnimatorParams.RunCycle, 0.25f);
                         return;
                     }
 
@@ -175,6 +185,9 @@ namespace SurgeEngine.Code.ActorSystem
                         TransitionToState("CrawlExit", 0f, true);
                         TransitionToStateDelayed("SitLoop", 0f, 0.333f, true);
                         break;
+                    case FStateSweepKick:
+                        TransitionToState("SitLoop", 0.1f, true);
+                        break;
                     default:
                         TransitionToState("SitEnter", 0f, true);
                         TransitionToStateDelayed("SitLoop", 0f, 0.167f, true);
@@ -185,6 +198,10 @@ namespace SurgeEngine.Code.ActorSystem
             {
                 TransitionToState("CrawlEnter", 0f, true);
                 TransitionToStateDelayed("CrawlLoop", 0f, 0.333f);
+            }
+            if (obj is FStateSweepKick)
+            {
+                TransitionToState("Sweepkick", 0f, true);
             }
             if (obj is FStateJump)
             {

@@ -29,6 +29,9 @@ namespace SurgeEngine.Code.ActorSystem.Actors
         [Foldout("Crawl")]
         [Expandable] public CrawlConfig crawlConfig;
 
+        [Foldout("SweepKick")]
+        [Expandable] public SweepConfig sweepKickConfig;
+
         public override void Initialize()
         {
             base.Initialize();
@@ -43,6 +46,7 @@ namespace SurgeEngine.Code.ActorSystem.Actors
             stateMachine.AddState(new FStateSlide(this, body));
             stateMachine.AddState(new FStateQuickstep(this, body));
             stateMachine.AddState(new FStateCrawl(this, body));
+            stateMachine.AddState(new FStateSweepKick(this, body));
         }
     }
 }

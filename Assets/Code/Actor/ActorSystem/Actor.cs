@@ -61,6 +61,9 @@ namespace SurgeEngine.Code.ActorSystem
             
             FBoost boost = new FBoost(this);
             stateMachine.AddSubState(boost);
+
+            FSweepKick sweepKick = new FSweepKick(this);
+            stateMachine.AddSubState(sweepKick);
         }
 
         private void Update()

@@ -1,4 +1,4 @@
-﻿using SurgeEngine.Code.ActorStates.BaseStates;
+using SurgeEngine.Code.ActorStates.BaseStates;
 using SurgeEngine.Code.ActorStates.SonicSubStates;
 using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.ActorSystem.Actors;
@@ -10,25 +10,36 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.ActorStates.SonicSpecific
 {
-    public class FStateSlide : FStateMove, IStateTimeout, ISweepKickHandler
+    public class FStateSweepKick : FStateMove
     {
         private float collisionHeight = 0.3f;
         private float collisionCenterY = -0.5f;
+        private float timer = 0f;
+        private bool fadeOut = false;
 
-        private SlideConfig _config;
+        private SweepConfig _config;
 
-        public FStateSlide(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        public FStateSweepKick(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
-            _config = (owner as Sonic).slideConfig;
+            _config = (owner as Sonic).sweepKickConfig;
         }
 
         public override void OnEnter()
         {
             base.OnEnter();
 
-            Timeout = 0.3f;
+            timer = 0f;
+
+            fadeOut = false;
+
+            if (_rigidbody.linearVelocity.magnitude < 1f)
+                Common.ResetVelocity(ResetVelocityType.Both);
+
             StateMachine.GetSubState<FBoost>().Active = false;
-            
+
+            Actor.effects.sweepKickEffect.Clear();
+            Actor.effects.sweepKickEffect.Toggle(true);
+
             Actor.model.SetCollisionParam(collisionHeight, -0.75f, 0.25f);
         }
 
@@ -36,8 +47,13 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
         {
             base.OnExit();
 
-            Actor.model.SetCollisionParam(0,0);
-            
+            Actor.model.SetCollisionParam(0, 0);
+
+            if (fadeOut)
+                Actor.effects.sweepKickEffect.Toggle(false);
+            else
+                Actor.effects.sweepKickEffect.Clear();
+
             Animation.ResetAction();
         }
 
@@ -45,39 +61,30 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
         {
             base.OnTick(dt);
 
-            if (Stats.currentSpeed < _config.minSpeed || !Input.BHeld)
+            timer += dt;
+            if (timer > 0.85f && _rigidbody.linearVelocity.magnitude > 1f)
             {
-                if (Stats.currentSpeed > _config.minSpeed)
+                fadeOut = true;
+                StateMachine.SetState<FStateGround>();
+            }
+            if (timer > 1f && _rigidbody.linearVelocity.magnitude < 1f)
+            {
+                fadeOut = true;
+                if (Input.BHeld)
                 {
-                    StateMachine.SetState<FStateGround>();
+                    StateMachine.SetState<FStateSit>();
                 }
                 else
                 {
-                    if (Input.BHeld)
-                        StateMachine.SetState<FStateSit>();
-                    else
-                        StateMachine.SetState<FStateIdle>();
+                    StateMachine.SetState<FStateIdle>();
                 }
-            }
-            
-            if (Input.LeftBumperPressed)
-            {
-                var qs = StateMachine.GetState<FStateQuickstep>();
-                qs.SetDirection(QuickstepDirection.Left);
-                StateMachine.SetState<FStateQuickstep>();
-            }
-            else if (Input.RightBumperPressed)
-            {
-                var qs = StateMachine.GetState<FStateQuickstep>();
-                qs.SetDirection(QuickstepDirection.Right);
-                StateMachine.SetState<FStateQuickstep>();
             }
         }
 
         public override void OnFixedTick(float dt)
         {
             base.OnFixedTick(dt);
-            
+
             if (Common.CheckForGround(out RaycastHit hit, CheckGroundType.Normal, 5f))
             {
                 Vector3 point = hit.point;
@@ -94,10 +101,8 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
                 StateMachine.SetState<FStateAir>();
             }
 
-            HurtBox.Create(Actor, Actor.transform.position + new Vector3(0f, 0.25f, 0.25f), Actor.transform.rotation, new Vector3(0.5f, 0.5f, 0.75f));
+            if (timer >= 0.2f && timer <= 0.7f)
+                HurtBox.Create(Actor, Actor.transform.position + new Vector3(0f, 0.25f, 0f), Actor.transform.rotation, new Vector3(1f, 0.5f, 1f));
         }
-        
-        public SlideConfig GetConfig() => _config;
-        public float Timeout { get; set; }
     }
 }

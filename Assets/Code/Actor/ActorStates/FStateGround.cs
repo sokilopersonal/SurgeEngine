@@ -13,7 +13,7 @@ using Vector3 = UnityEngine.Vector3;
 
 namespace SurgeEngine.Code.ActorStates
 {
-    public sealed class FStateGround : FStateMove, IBoostHandler
+    public sealed class FStateGround : FStateMove, IBoostHandler, ISweepKickHandler
     {
         private string _surfaceTag;
 

@@ -1,12 +1,13 @@
 ﻿using SurgeEngine.Code.ActorStates.BaseStates;
 using SurgeEngine.Code.ActorStates.SonicSpecific;
+using SurgeEngine.Code.ActorStates.SonicSubStates;
 using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Custom;
 using UnityEngine;
 
 namespace SurgeEngine.Code.ActorStates
 {
-    public class FStateIdle : FStateMove
+    public class FStateIdle : FStateMove, ISweepKickHandler
     {
         public FStateIdle(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
@@ -33,7 +34,7 @@ namespace SurgeEngine.Code.ActorStates
 
                 if (Input.BPressed)
                 {
-                    StateMachine.SetState<FStateSit>(0.1f);
+                    StateMachine.SetState<FStateSit>();
                 }
             }
         }

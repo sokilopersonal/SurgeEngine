@@ -402,9 +402,15 @@ namespace SurgeEngine.Code.ActorSystem
             else
             {
                 _movementVector = Vector3.zero;
-                if (!(actor.stateMachine.CurrentState is FStateCrawl))
+                switch (actor.stateMachine.CurrentState)
                 {
-                    actor.stateMachine.SetState<FStateIdle>();
+                    case FStateCrawl:
+                        break;
+                    case FStateSweepKick:
+                        break;
+                    default:
+                        actor.stateMachine.SetState<FStateIdle>();
+                        break;
                 }
             }
         }

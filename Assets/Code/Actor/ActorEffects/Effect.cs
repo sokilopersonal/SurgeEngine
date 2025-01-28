@@ -39,6 +39,11 @@ namespace SurgeEngine.Code.ActorEffects
             }
         }
 
+        public virtual void Clear()
+        {
+            particle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        }
+
         private IEnumerator StopParticlesWithDelay()
         {
             yield return new WaitForSeconds(stopDelay);
