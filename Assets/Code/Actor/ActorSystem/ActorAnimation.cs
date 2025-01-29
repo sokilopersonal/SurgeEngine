@@ -16,6 +16,7 @@ namespace SurgeEngine.Code.ActorSystem
         public Animator animator;
 
         private string _currentAnimation;
+        private string _hopAnimation = "HopL";
         
         private Coroutine _coroutine;
 
@@ -51,31 +52,6 @@ namespace SurgeEngine.Code.ActorSystem
             SetFloat("WallDot", -dot);
             SetFloat("AbsWallDot", Mathf.Lerp(animator.GetFloat("AbsWallDot"), 
                 Mathf.Abs(Mathf.Approximately(actor.stats.groundAngle, 90) ? dot : 0), 1 * Time.deltaTime));
-        }
-
-        string hopAnimation = "HopL";
-        IEnumerator PlayJump()
-        {
-            bool hop = actor.kinematics.HorizontalSpeed > 5;
-            hopAnimation = hopAnimation == "HopL" ? "HopR" : "HopL";
-            TransitionToState(hop ? hopAnimation : "JumpStart", 0f, true);
-            yield return new WaitForSeconds(0.117f);
-            if (actor.input.JumpHeld)
-            {
-                TransitionToState("Ball", 0f, true);
-            }
-            else
-            {
-                if (hop)
-                {
-                    TransitionToStateDelayed(AnimatorParams.AirCycle, 0.25f, 0.5f);
-                }
-                else
-                {
-                    TransitionToState("JumpLow", 0.25f, true);
-                    TransitionToStateDelayed(AnimatorParams.AirCycle, 0.25f, 0.25f);
-                }
-            }
         }
 
         private void ChangeStateAnimation(FState obj)
@@ -240,7 +216,7 @@ namespace SurgeEngine.Code.ActorSystem
                 if (machine.IsPrevExact<FStateJump>())
                     TransitionToState("Ball", 0f, true);
                 else
-                    StartCoroutine(PlayJump());
+                    StartCoroutine(PlayHop());
             }
             if (obj is FStateGrindJump)
             {
@@ -388,6 +364,30 @@ namespace SurgeEngine.Code.ActorSystem
             yield return new WaitForSeconds(delay);
             
             animator.TransitionToState(stateName, ref _currentAnimation, transitionTime);
+        }
+        
+        IEnumerator PlayHop()
+        {
+            bool hop = actor.kinematics.HorizontalSpeed > 5;
+            _hopAnimation = _hopAnimation == "HopL" ? "HopR" : "HopL";
+            TransitionToState(hop ? _hopAnimation : "JumpStart", 0f, true);
+            yield return new WaitForSeconds(0.117f);
+            if (actor.input.JumpHeld)
+            {
+                TransitionToState("Ball", 0f, true);
+            }
+            else
+            {
+                if (hop)
+                {
+                    TransitionToStateDelayed(AnimatorParams.AirCycle, 0.25f, 0.5f);
+                }
+                else
+                {
+                    TransitionToState("JumpLow", 0.25f, true);
+                    TransitionToStateDelayed(AnimatorParams.AirCycle, 0.25f, 0.25f);
+                }
+            }
         }
         
         public void ResetCurrentAnimationState() => _currentAnimation = string.Empty;
