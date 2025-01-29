@@ -53,6 +53,31 @@ namespace SurgeEngine.Code.ActorSystem
                 Mathf.Abs(Mathf.Approximately(actor.stats.groundAngle, 90) ? dot : 0), 1 * Time.deltaTime));
         }
 
+        string hopAnimation = "HopL";
+        IEnumerator PlayJump()
+        {
+            bool hop = actor.kinematics.HorizontalSpeed > 5;
+            hopAnimation = hopAnimation == "HopL" ? "HopR" : "HopL";
+            TransitionToState(hop ? hopAnimation : "JumpStart", 0f, true);
+            yield return new WaitForSeconds(0.117f);
+            if (actor.input.JumpHeld)
+            {
+                TransitionToState("Ball", 0f, true);
+            }
+            else
+            {
+                if (hop)
+                {
+                    TransitionToStateDelayed(AnimatorParams.AirCycle, 0.25f, 0.5f);
+                }
+                else
+                {
+                    TransitionToState("JumpLow", 0.25f, true);
+                    TransitionToStateDelayed(AnimatorParams.AirCycle, 0.25f, 0.25f);
+                }
+            }
+        }
+
         private void ChangeStateAnimation(FState obj)
         {
             FStateMachine machine = actor.stateMachine;
@@ -212,7 +237,10 @@ namespace SurgeEngine.Code.ActorSystem
             }
             if (obj is FStateJump)
             {
-                TransitionToState("Ball", 0f);
+                if (machine.IsPrevExact<FStateJump>())
+                    TransitionToState("Ball", 0f, true);
+                else
+                    StartCoroutine(PlayJump());
             }
             if (obj is FStateGrindJump)
             {

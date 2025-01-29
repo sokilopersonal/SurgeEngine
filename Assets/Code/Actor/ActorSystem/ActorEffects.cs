@@ -65,12 +65,31 @@ namespace SurgeEngine.Code.ActorSystem
             if (value) boostDistortion.Play(viewportPosition);
         }
 
+        IEnumerator PlayJumpball()
+        {
+            yield return new WaitForSeconds(0.117f);
+            if (actor.input.JumpHeld)
+            {
+                spinball.Toggle(true);
+            }
+        }
+
         private void OnStateAssign(FState obj)
         {
             FStateMachine machine = actor.stateMachine;
             FState prev = actor.stateMachine.PreviousState;
             
-            spinball.Toggle(machine.IsExact<FStateJump>());
+            if (obj is FStateJump)
+            {
+                if (prev is FStateJump)
+                    spinball.Toggle(true);
+                else
+                    StartCoroutine(PlayJumpball());
+            }
+            else
+            {
+                spinball.Toggle(false);
+            }
             grindEffect.Toggle(obj is FStateGrind or FStateGrindSquat);
 
             if ((obj is FStateGround or FStateIdle or FStateSit) && prev is FStateStomp)

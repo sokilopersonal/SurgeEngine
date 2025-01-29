@@ -14,7 +14,6 @@ namespace SurgeEngine.Code.ActorSoundEffects
         [SerializeField] private EventReference sweepKickVoice;
 
         private EventInstance sweep;
-        private EventInstance voiceInstance;
 
         public override void Initialize()
         {
@@ -22,8 +21,6 @@ namespace SurgeEngine.Code.ActorSoundEffects
 
             sweep = RuntimeManager.CreateInstance(sweepKickSound);
             sweep.set3DAttributes(transform.To3DAttributes());
-
-            voiceInstance = RuntimeManager.CreateInstance(sweepKickVoice);
         }
 
         protected override void SoundState(FState obj)
@@ -32,7 +29,7 @@ namespace SurgeEngine.Code.ActorSoundEffects
             {
                 sweep.set3DAttributes(transform.To3DAttributes());
                 sweep.start();
-                voiceInstance.start();
+                voice.Play(sweepKickVoice);
             }
         }
     }

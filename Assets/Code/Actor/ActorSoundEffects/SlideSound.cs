@@ -31,7 +31,7 @@ namespace SurgeEngine.Code.ActorSoundEffects
                 slideLoop.start();
                 if (actor.stateMachine.PreviousState is FStateGround)
                 {
-                    RuntimeManager.PlayOneShot(slideVoice);
+                    voice.Play(slideVoice);
                 }
             }
             else

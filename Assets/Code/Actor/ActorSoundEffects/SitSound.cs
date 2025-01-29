@@ -14,7 +14,7 @@ namespace SurgeEngine.Code.ActorSoundEffects
         {
             if (obj is FStateSit && actor.stateMachine.PreviousState is FStateIdle)
             {
-                RuntimeManager.PlayOneShot(sitVoice);
+                voice.Play(sitVoice);
             }
         }
     }
