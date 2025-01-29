@@ -122,6 +122,13 @@ namespace SurgeEngine.Code.ActorSystem
                         return;
                     }
 
+                    if (machine.IsPrevExact<FStateSlide>())
+                    {
+                        TransitionToState("SlideToSit", 0f, true);
+                        TransitionToStateDelayed(AnimatorParams.RunCycle, 0.2f, 0.175f);
+                        return;
+                    }
+
                     if (machine.IsPrevExact<FStateSweepKick>())
                     {
                         TransitionToState(AnimatorParams.RunCycle, 0.25f);

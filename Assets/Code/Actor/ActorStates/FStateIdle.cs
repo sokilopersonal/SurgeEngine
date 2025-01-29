@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.ActorStates
 {
-    public class FStateIdle : FStateMove, ISweepKickHandler
+    public class FStateIdle : FStateMove
     {
         public FStateIdle(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {

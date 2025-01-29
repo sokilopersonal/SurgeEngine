@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.ActorStates.SonicSpecific
 {
-    public class FStateSlide : FStateMove, IStateTimeout, ISweepKickHandler
+    public class FStateSlide : FStateMove, IStateTimeout
     {
         private float collisionHeight = 0.3f;
         private float collisionCenterY = -0.5f;

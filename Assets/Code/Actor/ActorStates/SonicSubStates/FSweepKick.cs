@@ -8,6 +8,7 @@ using SurgeEngine.Code.Config.SonicSpecific;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.Misc;
 using SurgeEngine.Code.StateMachine;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -15,53 +16,25 @@ namespace SurgeEngine.Code.ActorStates.SonicSubStates
 {
     public class FSweepKick : FActorSubState
     {
-        private ISweepKickHandler _sweepKickHandler;
-        private int pressAmount;
-        private float lastPressTime;
+        private List<string> includedAnimationStates = new List<string>()
+        {
+            "SitEnter",
+            "SitExit",
+            "Sliding",
+            "SlideToSit",
+            "CrawlEnter",
+            "CrawlExit"
+        };
         public FSweepKick(Actor owner) : base(owner)
         {
             actor.input.OnButtonPressed += ButtonPressed;
-            actor.stateMachine.OnStateAssign += OnStateAssign;
-        }
-
-        private void OnStateAssign(FState obj)
-        {
-            if (obj is ISweepKickHandler casted)
-            {
-                _sweepKickHandler = casted;
-            }
-            else
-            {
-                _sweepKickHandler = null;
-                pressAmount = 0;
-            }
-        }
-
-        public override void OnTick(float dt)
-        {
-            base.OnTick(dt);
-           
-            if (Time.time - lastPressTime > 0.3f)
-                pressAmount = 0;
-        }
-
-        public override void OnFixedTick(float dt)
-        {
-            base.OnFixedTick(dt);
         }
 
         private void ButtonPressed(ButtonType button)
         {
-            if (button != ButtonType.B || _sweepKickHandler == null)
+            if (button != ButtonType.B || !includedAnimationStates.Contains(actor.animation.GetCurrentAnimationState()))
                 return;
-
-            pressAmount += 1;
-            if (pressAmount == 2 && Time.time - lastPressTime <= 0.3f)
-            {
-                actor.stateMachine.SetState<FStateSweepKick>();
-                pressAmount = 0;
-            }
-            lastPressTime = Time.time;
+            actor.stateMachine.SetState<FStateSweepKick>();
         }
     }
 }
