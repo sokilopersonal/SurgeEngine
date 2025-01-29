@@ -33,7 +33,7 @@ namespace SurgeEngine.Code.ActorSystem
 
         [Header("Other")]
         public Effect jumpDeluxEffect;
-        public Effect paraloopEffect;
+        public ParaloopEffect paraloopEffect;
         public Effect sweepKickEffect;
 
         private void Start()
@@ -80,6 +80,27 @@ namespace SurgeEngine.Code.ActorSystem
             
             stompEffect.Toggle(obj is FStateStomp);
             slideEffect.Toggle(obj is FStateSlide);
+
+            if (obj is FStateSweepKick)
+            {
+                sweepKickEffect.Clear();
+                sweepKickEffect.Toggle(true);
+            }
+            else if (prev is FStateSweepKick && (obj is FStateGround or FStateIdle or FStateSit))
+            {
+                sweepKickEffect.Toggle(false);
+            }
+            else if (prev is FStateSweepKick && !(obj is FStateGround or FStateIdle or FStateSit))
+            {
+                sweepKickEffect.Clear();
+            }
+        }
+
+        public void CreateParaloop()
+        {
+            paraloopEffect.startPoint = actor.kinematics.Rigidbody.position;
+            paraloopEffect.sonicContext = actor;
+            paraloopEffect.Toggle(true);
         }
 
         private void OnEnable()

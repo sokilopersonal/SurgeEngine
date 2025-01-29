@@ -13,11 +13,7 @@ namespace SurgeEngine.Code.ActorEffects
         [HideInInspector] public Vector3 startPoint;
         
         private bool toggled;
-        private ParaloopSound sound;
-        private Color targetColor;
-        private const float ColorSpeed = 10f;
-
-        public event Action<bool> OnParaloopToggle; 
+        Tweener colorTween;
         
         public void Start()
         {
@@ -35,33 +31,25 @@ namespace SurgeEngine.Code.ActorEffects
             if (toggled)
                 return;
 
-            if (value)
+            toggled = value;
+
+            colorTween.Kill(true);
+            Color targetColor = value ? Color.white : Color.clear;
+            colorTween = DOVirtual.Color(trail1.startColor, targetColor, 0.5f, (Color color) =>
             {
-                toggled = true;
-            }
-            
-            OnParaloopToggle?.Invoke(value);
-        }
-
-        private void LerpTrails()
-        {
-            targetColor = toggled ? Color.white : Color.clear;
-
-            trail1.startColor = Color.Lerp(trail1.startColor, targetColor, Time.deltaTime * ColorSpeed);
-            trail1.endColor = Color.Lerp(trail1.endColor, targetColor, Time.deltaTime * ColorSpeed);
-
-            trail2.startColor = Color.Lerp(trail2.startColor, targetColor, Time.deltaTime * ColorSpeed);
-            trail2.endColor = Color.Lerp(trail2.endColor, targetColor, Time.deltaTime * ColorSpeed);
+                trail1.startColor = color;
+                trail1.endColor = color;
+                trail2.startColor = color;
+                trail2.endColor = color;
+            });
         }
 
         private void Update()
-        {
-            LerpTrails();
-            
+        {  
             if (!toggled || sonicContext == null)
                 return;
 
-            if (sonicContext.kinematics.Speed < sonicContext.config.minParaloopSpeed || Vector3.Distance(sonicContext.kinematics.Rigidbody.position, startPoint) > 50f)
+            if (sonicContext.kinematics.HorizontalSpeed < sonicContext.config.minParaloopSpeed || Vector3.Distance(sonicContext.kinematics.Rigidbody.position, startPoint) > 50f)
             {
                 toggled = false;
                 Toggle(false);

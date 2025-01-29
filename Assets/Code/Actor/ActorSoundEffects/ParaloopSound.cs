@@ -14,21 +14,16 @@ namespace SurgeEngine.Code.ActorSoundEffects
         protected override void OnEnable()
         {
             base.OnEnable();
-            
-            paraloopEffect.OnParaloopToggle += Play;
         }
         
         protected override void OnDisable()
         {
             base.OnDisable();
-            
-            paraloopEffect.OnParaloopToggle -= Play;
         }
 
-        public void Play(bool value)
+        public void Play()
         {
-            // Paraloop effect should not depend on sound class, so handle the paraloop sound using an action
-            if (value) RuntimeManager.PlayOneShotAttached(paraloopSound, gameObject);
+            RuntimeManager.PlayOneShotAttached(paraloopSound, gameObject);
         }
     }
 }

@@ -1,6 +1,7 @@
 using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.ActorEffects;
 using UnityEngine;
+using SurgeEngine.Code.ActorSoundEffects;
 
 namespace SurgeEngine.Code.CommonObjects
 {
@@ -16,10 +17,8 @@ namespace SurgeEngine.Code.CommonObjects
 
             if (context.kinematics.Speed >= context.config.minParaloopSpeed)
             {
-                ParaloopEffect effect = (ParaloopEffect)context.effects.paraloopEffect;
-                effect.sonicContext = context;
-                effect.startPoint = context.kinematics.Rigidbody.position;
-                effect.Toggle(true);
+                context.effects.CreateParaloop();
+                context.sounds.GetComponent<ParaloopSound>().Play();
             }
         }
 

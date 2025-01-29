@@ -15,7 +15,6 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
         private float collisionHeight = 0.3f;
         private float collisionCenterY = -0.5f;
         private float timer;
-        private bool fadeOut;
 
         private SweepConfig _config;
 
@@ -30,15 +29,10 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
 
             timer = 0f;
 
-            fadeOut = false;
-
             if (_rigidbody.linearVelocity.magnitude < 1f)
                 Common.ResetVelocity(ResetVelocityType.Both);
 
             StateMachine.GetSubState<FBoost>().Active = false;
-
-            Actor.effects.sweepKickEffect.Clear();
-            Actor.effects.sweepKickEffect.Toggle(true);
 
             Actor.model.SetCollisionParam(collisionHeight, -0.75f, 0.25f);
         }
@@ -48,11 +42,6 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
             base.OnExit();
 
             Actor.model.SetCollisionParam(0, 0);
-
-            if (fadeOut)
-                Actor.effects.sweepKickEffect.Toggle(false);
-            else
-                Actor.effects.sweepKickEffect.Clear();
 
             Animation.ResetAction();
         }
@@ -64,12 +53,10 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
             timer += dt;
             if (timer > 0.85f && _rigidbody.linearVelocity.magnitude > 1f)
             {
-                fadeOut = true;
                 StateMachine.SetState<FStateGround>();
             }
             if (timer > 1f && _rigidbody.linearVelocity.magnitude < 1f)
             {
-                fadeOut = true;
                 if (Input.BHeld)
                 {
                     StateMachine.SetState<FStateSit>();
