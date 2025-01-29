@@ -76,6 +76,10 @@ namespace SurgeEngine.Code.ActorStates
                     {
                         StateMachine.SetState<FStateSlide>();
                     }
+                    else if(!readyForSlide && !readyForDrift)
+                    {
+                        StateMachine.SetState<FStateCrawl>();
+                    }
 
                     if (readyForDrift)
                     {

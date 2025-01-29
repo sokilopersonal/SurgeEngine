@@ -12,7 +12,7 @@ namespace SurgeEngine.Code.ActorSoundEffects
 
         protected override void SoundState(FState obj)
         {
-            if (obj is FStateSit)
+            if (obj is FStateSit && actor.stateMachine.PreviousState is FStateIdle)
             {
                 RuntimeManager.PlayOneShot(sitVoice);
             }
