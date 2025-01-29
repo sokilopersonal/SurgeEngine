@@ -136,7 +136,10 @@ namespace SurgeEngine.Code.ActorSystem
                     
                     if (machine.IsPrevExact<FStateJump>())
                     {
-                        TransitionToState(AnimatorParams.RunCycle, 0f);
+                        if (GetCurrentAnimationState() == "Ball")
+                            TransitionToState(AnimatorParams.RunCycle, 0f);
+                        else
+                            TransitionToState(AnimatorParams.RunCycle, 0.2f);
                         return;
                     }
 
