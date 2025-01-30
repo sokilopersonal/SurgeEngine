@@ -6,6 +6,7 @@ namespace SurgeEngine.Code.Config.SonicSpecific
     public class StompConfig : ScriptableObject
     {
         public float speed;
+        public float slideSpeed = 5f;
         public AnimationCurve curve;
     }
 }

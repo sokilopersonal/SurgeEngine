@@ -51,6 +51,14 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
             {
                 StateMachine.SetState<FStateAir>();
             }
+
+            if (!Actor.flags.HasFlag(FlagType.OutOfControl))
+            {
+                if (Input.BPressed)
+                {
+                    StateMachine.SetState<FStateStomp>();
+                }
+            }
         }
     }
 }

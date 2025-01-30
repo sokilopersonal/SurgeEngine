@@ -92,7 +92,7 @@ namespace SurgeEngine.Code.ActorSystem
             }
             grindEffect.Toggle(obj is FStateGrind or FStateGrindSquat);
 
-            if ((obj is FStateGround or FStateIdle or FStateSit) && prev is FStateStomp)
+            if ((obj is FStateGround or FStateStompLand) && prev is FStateStomp)
             {
                 stompEffect.Land();
             }

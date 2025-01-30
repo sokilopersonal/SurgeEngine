@@ -23,7 +23,8 @@ namespace SurgeEngine.Code.ActorStates.SonicSubStates
             "Sliding",
             "SlideToSit",
             "CrawlEnter",
-            "CrawlExit"
+            "CrawlExit",
+            "StompSquat"
         };
         public FSweepKick(Actor owner) : base(owner)
         {
