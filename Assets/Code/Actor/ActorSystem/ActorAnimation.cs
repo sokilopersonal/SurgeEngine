@@ -103,14 +103,15 @@ namespace SurgeEngine.Code.ActorSystem
                                 TransitionToState("Idle", 0.1f);
                             }
                             break;
-                        case FStateStomp:
-                            TransitionToState("StompSquat", 0.1f);
-                            break;
                         case FStateAir:
                             TransitionToState("Landing", 0f);
                             TransitionToStateDelayed("Idle", 1f, 0.4f);
                             break;
                         case FStateSit:
+                            TransitionToState("SitExit", 0f);
+                            TransitionToStateDelayed("Idle", 0f, 0.167f);
+                            break;
+                        case FStateStompLand:
                             TransitionToState("SitExit", 0f);
                             TransitionToStateDelayed("Idle", 0f, 0.167f);
                             break;
@@ -223,6 +224,9 @@ namespace SurgeEngine.Code.ActorSystem
                     case FStateSweepKick:
                         TransitionToState("SitLoop", 0.1f, true);
                         break;
+                    case FStateStompLand:
+                        TransitionToState("SitLoop", 0f, true);
+                        break;
                     default:
                         TransitionToState("SitEnter", 0f, true);
                         TransitionToStateDelayed("SitLoop", 0f, 0.167f, true);
@@ -257,6 +261,10 @@ namespace SurgeEngine.Code.ActorSystem
             if (obj is FStateStomp)
             {
                 TransitionToState("Stomp", 0.1f, true);
+            }
+            if (obj is FStateStompLand)
+            {
+                TransitionToState("StompSquat", 0f, true);
             }
             if (obj is FStateAirBoost)
             {
