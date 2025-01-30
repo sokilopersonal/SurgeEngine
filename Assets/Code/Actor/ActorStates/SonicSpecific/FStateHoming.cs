@@ -75,7 +75,7 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
             {
                 if (Common.CheckForGround(out _, CheckGroundType.PredictJump))
                 {
-                    StateMachine.SetState<FStateAir>();
+                    //StateMachine.SetState<FStateAir>();
                 }
                 
                 Vector3 direction = Vector3.Cross(Actor.transform.right, Vector3.up);
@@ -90,7 +90,8 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
                 }
             }
             
-            if (HurtBox.CreateAttached(Actor, Actor.transform, Vector3.one * 0.5f))
+            bool foundDamageable = HurtBox.CreateAttached(Actor, Actor.transform, Vector3.one * 0.5f);
+            if (foundDamageable)
             {
                 StateMachine.SetState<FStateAfterHoming>();
             }

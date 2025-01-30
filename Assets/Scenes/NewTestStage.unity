@@ -93,7 +93,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 112000000, guid: d05d264791d8ebc488300de1839d806b, type: 2}
+  m_LightingDataAsset: {fileID: 0}
   m_LightingSettings: {fileID: 4890085278179872738, guid: 221ac07bb8f1f5a4a8df2ca1f5552313, type: 2}
 --- !u!196 &4
 NavMeshSettings:
@@ -235,10 +235,6 @@ PrefabInstance:
     - target: {fileID: 7827181201705845679, guid: c58152dc6192a304283c311b469fe9f6, type: 3}
       propertyPath: m_Name
       value: WoodBox_12
-      objectReference: {fileID: 0}
-    - target: {fileID: 7827181201705845679, guid: c58152dc6192a304283c311b469fe9f6, type: 3}
-      propertyPath: m_Layer
-      value: 16
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -795,10 +791,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: WoodBox_8
       objectReference: {fileID: 0}
-    - target: {fileID: 7827181201705845679, guid: c58152dc6192a304283c311b469fe9f6, type: 3}
-      propertyPath: m_Layer
-      value: 16
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -962,10 +954,6 @@ PrefabInstance:
     - target: {fileID: 7827181201705845679, guid: c58152dc6192a304283c311b469fe9f6, type: 3}
       propertyPath: m_Name
       value: WoodBox_3
-      objectReference: {fileID: 0}
-    - target: {fileID: 7827181201705845679, guid: c58152dc6192a304283c311b469fe9f6, type: 3}
-      propertyPath: m_Layer
-      value: 16
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2441,13 +2429,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 318756152}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.30438137, y: 0.6870638, z: -0.52720183, w: 0.39667818}
+  m_LocalRotation: {x: 0.23911765, y: 0.3696438, z: -0.09904577, w: 0.89239913}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 952776344}
-  m_LocalEulerAnglesHint: {x: 75, y: 120, z: 0}
+  m_LocalEulerAnglesHint: {x: 30, y: 45, z: 0}
 --- !u!114 &318756154
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2470,7 +2458,7 @@ MonoBehaviour:
   m_InnerSpotPercent: 0
   m_SpotIESCutoffPercent: 100
   m_LightDimmer: 1
-  m_VolumetricDimmer: 4
+  m_VolumetricDimmer: 16
   m_FadeDistance: 10000
   m_VolumetricFadeDistance: 10000
   m_AffectDiffuse: 1
@@ -2981,10 +2969,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: WoodBox_1
       objectReference: {fileID: 0}
-    - target: {fileID: 7827181201705845679, guid: c58152dc6192a304283c311b469fe9f6, type: 3}
-      propertyPath: m_Layer
-      value: 16
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3195,10 +3179,6 @@ PrefabInstance:
     - target: {fileID: 7827181201705845679, guid: c58152dc6192a304283c311b469fe9f6, type: 3}
       propertyPath: m_Name
       value: WoodBox_7
-      objectReference: {fileID: 0}
-    - target: {fileID: 7827181201705845679, guid: c58152dc6192a304283c311b469fe9f6, type: 3}
-      propertyPath: m_Layer
-      value: 16
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4758,10 +4738,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: WoodBox_10
       objectReference: {fileID: 0}
-    - target: {fileID: 7827181201705845679, guid: c58152dc6192a304283c311b469fe9f6, type: 3}
-      propertyPath: m_Layer
-      value: 16
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4867,6 +4843,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 801403881147322373, guid: 0d9453574171efb4d9767bf95688d90d, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4200805958389027054, guid: 0d9453574171efb4d9767bf95688d90d, type: 3}
       propertyPath: m_Name
       value: DebugCanvas
@@ -7046,10 +7026,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: WoodBox_2
       objectReference: {fileID: 0}
-    - target: {fileID: 7827181201705845679, guid: c58152dc6192a304283c311b469fe9f6, type: 3}
-      propertyPath: m_Layer
-      value: 16
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -7193,10 +7169,6 @@ PrefabInstance:
     - target: {fileID: 7827181201705845679, guid: c58152dc6192a304283c311b469fe9f6, type: 3}
       propertyPath: m_Name
       value: WoodBox_9
-      objectReference: {fileID: 0}
-    - target: {fileID: 7827181201705845679, guid: c58152dc6192a304283c311b469fe9f6, type: 3}
-      propertyPath: m_Layer
-      value: 16
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -7844,10 +7816,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: WoodBox_5
       objectReference: {fileID: 0}
-    - target: {fileID: 7827181201705845679, guid: c58152dc6192a304283c311b469fe9f6, type: 3}
-      propertyPath: m_Layer
-      value: 16
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -7992,10 +7960,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: WoodBox_11
       objectReference: {fileID: 0}
-    - target: {fileID: 7827181201705845679, guid: c58152dc6192a304283c311b469fe9f6, type: 3}
-      propertyPath: m_Layer
-      value: 16
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -8139,10 +8103,6 @@ PrefabInstance:
     - target: {fileID: 7827181201705845679, guid: c58152dc6192a304283c311b469fe9f6, type: 3}
       propertyPath: m_Name
       value: WoodBox_13
-      objectReference: {fileID: 0}
-    - target: {fileID: 7827181201705845679, guid: c58152dc6192a304283c311b469fe9f6, type: 3}
-      propertyPath: m_Layer
-      value: 16
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8327,10 +8287,6 @@ PrefabInstance:
     - target: {fileID: 7827181201705845679, guid: c58152dc6192a304283c311b469fe9f6, type: 3}
       propertyPath: m_Name
       value: WoodBox_15
-      objectReference: {fileID: 0}
-    - target: {fileID: 7827181201705845679, guid: c58152dc6192a304283c311b469fe9f6, type: 3}
-      propertyPath: m_Layer
-      value: 16
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8972,7 +8928,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mode: 0
-  size: {x: 221.75, y: 33.75, z: 221.75}
+  size: {x: 218, y: 30, z: 218}
   overrideRendererFilters: 0
   minRendererVolumeSize: 0.1
   objectLayerMask:
@@ -8986,7 +8942,7 @@ MonoBehaviour:
     e00: 1
     e01: 0
     e02: 0
-    e03: 71.75
+    e03: -14
     e10: 0
     e11: 1
     e12: 0
@@ -8994,12 +8950,12 @@ MonoBehaviour:
     e20: 0
     e21: 0
     e22: 1
-    e23: 48.375
+    e23: -15
     e30: 0
     e31: 0
     e32: 0
     e33: 1
-  cachedHashCode: 1591674988
+  cachedHashCode: -1159149460
   fillEmptySpaces: 0
   version: 2
   globalVolume: 0
@@ -9606,10 +9562,6 @@ PrefabInstance:
     - target: {fileID: 7827181201705845679, guid: c58152dc6192a304283c311b469fe9f6, type: 3}
       propertyPath: m_Name
       value: WoodBox_16
-      objectReference: {fileID: 0}
-    - target: {fileID: 7827181201705845679, guid: c58152dc6192a304283c311b469fe9f6, type: 3}
-      propertyPath: m_Layer
-      value: 16
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -10590,10 +10542,6 @@ PrefabInstance:
     - target: {fileID: 7827181201705845679, guid: c58152dc6192a304283c311b469fe9f6, type: 3}
       propertyPath: m_Name
       value: WoodBox_4
-      objectReference: {fileID: 0}
-    - target: {fileID: 7827181201705845679, guid: c58152dc6192a304283c311b469fe9f6, type: 3}
-      propertyPath: m_Layer
-      value: 16
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -11706,33 +11654,33 @@ MonoBehaviour:
     m_Aspect: 0
   m_HasValidSHForNormalization: 1
   m_SHForNormalization:
-    'sh[ 0]': 2579.0452
-    'sh[ 1]': 606.2741
-    'sh[ 2]': 1478.2238
-    'sh[ 3]': -328.0585
-    'sh[ 4]': -97.678185
-    'sh[ 5]': 16.30749
-    'sh[ 6]': 304.68527
-    'sh[ 7]': -79.99276
-    'sh[ 8]': 41.17863
-    'sh[ 9]': 2677.4072
-    'sh[10]': 611.56696
-    'sh[11]': 1540.703
-    'sh[12]': -345.8455
-    'sh[13]': -102.01426
-    'sh[14]': 8.136888
-    'sh[15]': 318.70703
-    'sh[16]': -81.185585
-    'sh[17]': 45.800495
-    'sh[18]': 3152.1921
-    'sh[19]': 691.2151
-    'sh[20]': 1828.7764
-    'sh[21]': -417.14758
-    'sh[22]': -124.386826
-    'sh[23]': -3.0824301
-    'sh[24]': 379.7096
-    'sh[25]': -95.942535
-    'sh[26]': 57.893402
+    'sh[ 0]': 2809.4946
+    'sh[ 1]': -43.240726
+    'sh[ 2]': -1622.3871
+    'sh[ 3]': 770.26733
+    'sh[ 4]': -214.23807
+    'sh[ 5]': 339.7728
+    'sh[ 6]': 244.78445
+    'sh[ 7]': -446.1597
+    'sh[ 8]': 49.741135
+    'sh[ 9]': 2922.2322
+    'sh[10]': -51.28547
+    'sh[11]': -1690.7751
+    'sh[12]': 803.7498
+    'sh[13]': -225.99152
+    'sh[14]': 356.49954
+    'sh[15]': 256.5177
+    'sh[16]': -466.53375
+    'sh[17]': 50.40654
+    'sh[18]': 3453.3613
+    'sh[19]': -73.16798
+    'sh[20]': -2001.3264
+    'sh[21]': 956.9845
+    'sh[22]': -272.73123
+    'sh[23]': 427.88028
+    'sh[24]': 306.10855
+    'sh[25]': -556.0127
+    'sh[26]': 57.74161
   m_SHValidForCapturePosition: {x: -35.77601, y: 4.157876, z: -26}
   m_SHValidForSourcePosition: {x: -35.77601, y: 4.157876, z: -26}
   m_HDProbeVersion: 9
@@ -13723,10 +13671,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: WoodBox_17
       objectReference: {fileID: 0}
-    - target: {fileID: 7827181201705845679, guid: c58152dc6192a304283c311b469fe9f6, type: 3}
-      propertyPath: m_Layer
-      value: 16
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -14099,10 +14043,6 @@ PrefabInstance:
     - target: {fileID: 7827181201705845679, guid: c58152dc6192a304283c311b469fe9f6, type: 3}
       propertyPath: m_Name
       value: WoodBox_14
-      objectReference: {fileID: 0}
-    - target: {fileID: 7827181201705845679, guid: c58152dc6192a304283c311b469fe9f6, type: 3}
-      propertyPath: m_Layer
-      value: 16
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -16567,10 +16507,6 @@ PrefabInstance:
     - target: {fileID: 7827181201705845679, guid: c58152dc6192a304283c311b469fe9f6, type: 3}
       propertyPath: m_Name
       value: WoodBox_6
-      objectReference: {fileID: 0}
-    - target: {fileID: 7827181201705845679, guid: c58152dc6192a304283c311b469fe9f6, type: 3}
-      propertyPath: m_Layer
-      value: 16
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -21139,33 +21075,33 @@ MonoBehaviour:
     m_Aspect: 0
   m_HasValidSHForNormalization: 1
   m_SHForNormalization:
-    'sh[ 0]': 13748.68
-    'sh[ 1]': -7619.158
-    'sh[ 2]': -1566.8041
-    'sh[ 3]': 2808.903
-    'sh[ 4]': -370.0791
-    'sh[ 5]': -112.99531
-    'sh[ 6]': -99.95424
-    'sh[ 7]': -58.409763
-    'sh[ 8]': -478.9852
-    'sh[ 9]': 14375.622
-    'sh[10]': -8020.523
-    'sh[11]': -1658.5072
-    'sh[12]': 2923.317
-    'sh[13]': -389.5552
-    'sh[14]': -118.36666
-    'sh[15]': -106.68791
-    'sh[16]': -67.555305
-    'sh[17]': -507.81238
-    'sh[18]': 17103.656
-    'sh[19]': -9605.558
-    'sh[20]': -1996.3036
-    'sh[21]': 3448.3547
-    'sh[22]': -461.45886
-    'sh[23]': -145.23811
-    'sh[24]': -129.458
-    'sh[25]': -85.35102
-    'sh[26]': -614.3485
+    'sh[ 0]': 2372.8894
+    'sh[ 1]': 263.1669
+    'sh[ 2]': 1567.4901
+    'sh[ 3]': 594.17944
+    'sh[ 4]': -48.28879
+    'sh[ 5]': 100.71564
+    'sh[ 6]': 119.50765
+    'sh[ 7]': 330.24667
+    'sh[ 8]': 26.725204
+    'sh[ 9]': 2450.9487
+    'sh[10]': 276.12375
+    'sh[11]': 1621.4445
+    'sh[12]': 610.43787
+    'sh[13]': -49.463387
+    'sh[14]': 104.236534
+    'sh[15]': 123.818214
+    'sh[16]': 339.50616
+    'sh[17]': 26.629522
+    'sh[18]': 2882.4111
+    'sh[19]': 334.86215
+    'sh[20]': 1914.4335
+    'sh[21]': 712.97974
+    'sh[22]': -56.77844
+    'sh[23]': 124.4283
+    'sh[24]': 146.50763
+    'sh[25]': 397.40454
+    'sh[26]': 30.016907
   m_SHValidForCapturePosition: {x: 22.763247, y: 3.92626, z: 11.2364}
   m_SHValidForSourcePosition: {x: 22.763247, y: 3.92626, z: 11.2364}
   m_HDProbeVersion: 9
