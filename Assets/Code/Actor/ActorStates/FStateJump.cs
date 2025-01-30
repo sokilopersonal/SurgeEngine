@@ -15,7 +15,7 @@ namespace SurgeEngine.Code.ActorStates
 
         public FStateJump(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
-            _maxAirTime = 1.25f;
+            _maxAirTime = 0.8f;
             _config = Actor.config;
         }
 
