@@ -131,9 +131,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0646d517d6a648deb8e88cf0a61da000, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  emit: 0
-  emitTime: 0
-  autoDestruct: 0
   material: {fileID: 2100000, guid: 0ce80516a049ab547a5c2fad91c74bfa, type: 2}
   target: {fileID: 0}
   offset: {x: 0, y: -0.5, z: 0}
@@ -194,7 +191,6 @@ MonoBehaviour:
     m_NumAlphaKeys: 4
   lifeTime: 1
   fadeSpeed: 2
-  vertices: []
 --- !u!1 &4270339925615812927
 GameObject:
   m_ObjectHideFlags: 0
@@ -220,7 +216,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4270339925615812927}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.707107, z: -0, w: 0.7071066}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -43.5, y: 0, z: 19.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1874,7 +1870,7 @@ PrefabInstance:
     - target: {fileID: 7510116113416940277, guid: b5197d4abc58dd14180947022fd32ae9, type: 3}
       propertyPath: 'm_Materials.Array.data[1]'
       value: 
-      objectReference: {fileID: 2100000, guid: 7184030e3d838fe458267209b72c11f7, type: 2}
+      objectReference: {fileID: 2100000, guid: 2ef15ea86a2e64e4fa40a0ec45f81356, type: 2}
     - target: {fileID: 7510116113416940277, guid: b5197d4abc58dd14180947022fd32ae9, type: 3}
       propertyPath: 'm_Materials.Array.data[2]'
       value: 
