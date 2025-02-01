@@ -16,11 +16,12 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
 
         private const float collisionHeight = 0.3f;
 
-        private CrawlConfig crawlConfig;
-        private QuickStepConfig _quickstepConfig;
+        private readonly CrawlConfig _crawlConfig;
+        private readonly QuickStepConfig _quickstepConfig;
+        
         public FStateCrawl(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
-            crawlConfig = (owner as Sonic).crawlConfig;
+            _crawlConfig = (owner as Sonic).crawlConfig;
             _quickstepConfig = (owner as Sonic).quickstepConfig;
         }
 
@@ -109,14 +110,14 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
             Vector3 prevNormal = Kinematics.Normal;
             BaseActorConfig config = Actor.config;
             float distance = config.castDistance * config.castDistanceCurve
-                .Evaluate(Kinematics.HorizontalSpeed / crawlConfig.topSpeed);
+                .Evaluate(Kinematics.HorizontalSpeed / _crawlConfig.topSpeed);
             if (Common.CheckForGround(out RaycastHit data, castDistance: distance) &&
                 Kinematics.CheckForPredictedGround(_rigidbody.linearVelocity, Kinematics.Normal, Time.fixedDeltaTime, distance, 6))
             {
                 Kinematics.Point = data.point;
                 Kinematics.Normal = data.normal;
 
-                Vector3 stored = Vector3.ClampMagnitude(_rigidbody.linearVelocity, crawlConfig.maxSpeed);
+                Vector3 stored = Vector3.ClampMagnitude(_rigidbody.linearVelocity, _crawlConfig.maxSpeed);
                 _rigidbody.linearVelocity = Quaternion.FromToRotation(_rigidbody.transform.up, prevNormal) * stored;
 
                 Actor.kinematics.BasePhysics(Kinematics.Point, Kinematics.Normal);
