@@ -93,7 +93,7 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
         {
             base.OnFixedTick(dt);
             
-            if (Common.CheckForGround(out RaycastHit hit, CheckGroundType.Normal, 5f))
+            if (Common.CheckForGround(out RaycastHit hit, CheckGroundType.Normal, Actor.config.castDistance))
             {
                 Vector3 point = hit.point;
                 Vector3 normal = hit.normal;

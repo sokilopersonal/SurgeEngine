@@ -3413,14 +3413,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1235974799}
     m_Modifications:
-    - target: {fileID: 429887859882323179, guid: a4be8a2f4d3bf334d80635828f72b451, type: 3}
-      propertyPath: speed
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 429887859882323179, guid: a4be8a2f4d3bf334d80635828f72b451, type: 3}
-      propertyPath: keepVelocity
-      value: 0.35
-      objectReference: {fileID: 0}
     - target: {fileID: 5957124819982976523, guid: d26830aafc8508a4d9c4f66a3ae0c7e8, type: 3}
       propertyPath: m_Name
       value: RainbowDashRing
@@ -3472,6 +3464,14 @@ PrefabInstance:
     - target: {fileID: 7174459843504873028, guid: d26830aafc8508a4d9c4f66a3ae0c7e8, type: 3}
       propertyPath: keepVelocity
       value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 429887859882323179, guid: a4be8a2f4d3bf334d80635828f72b451, type: 3}
+      propertyPath: speed
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 429887859882323179, guid: a4be8a2f4d3bf334d80635828f72b451, type: 3}
+      propertyPath: keepVelocity
+      value: 0.35
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -7329,7 +7329,7 @@ GameObject:
   m_Component:
   - component: {fileID: 874167373}
   m_Layer: 0
-  m_Name: Geometry
+  m_Name: '- Geometry'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8211,7 +8211,7 @@ GameObject:
   m_Component:
   - component: {fileID: 952776344}
   m_Layer: 0
-  m_Name: Lighting
+  m_Name: '- Lighting'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11291,7 +11291,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1235974799}
   m_Layer: 0
-  m_Name: SetData
+  m_Name: '- SetData'
   m_TagString: SetData
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18032,7 +18032,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1661031258}
   m_Layer: 0
-  m_Name: Volumes
+  m_Name: '- Volumes'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -24331,7 +24331,7 @@ GameObject:
   - component: {fileID: 9198260885147865997}
   - component: {fileID: 4453908615155400098}
   m_Layer: 0
-  m_Name: Stage
+  m_Name: + Stage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

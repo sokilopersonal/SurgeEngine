@@ -8,7 +8,9 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
 {
     public class FStateStompLand : FStateMove
     {
-        float timer = 0f;
+        private float _timer;
+        private const float WaitTime = 0.15f;
+        
         public FStateStompLand(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
         }
@@ -16,20 +18,17 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
         public override void OnEnter()
         {
             base.OnEnter();
-            timer = 0f;
+            
+            _timer = WaitTime;
+            
             Common.ResetVelocity(ResetVelocityType.Both);
-        }
-
-        public override void OnExit()
-        {
-            base.OnExit();
         }
 
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
-            timer += dt;
-            if (timer >= 0.833f)
+
+            if (Common.TickTimer(ref _timer, WaitTime))
             {
                 if (Input.BHeld)
                 {

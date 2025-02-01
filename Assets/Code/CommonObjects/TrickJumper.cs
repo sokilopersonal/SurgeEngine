@@ -223,7 +223,7 @@ namespace SurgeEngine.Code.CommonObjects
                 Vector3 arcPeak = Trajectory.GetArcPosition(startPoint.position,
                     Common.GetCross(transform, firstPitch, true), firstSpeed);
                 body.position = arcPeak; // should snap Sonic to the arc point
-                context.animation.TransitionToState($"Trick {Random.Range(1, 8)}", 0.2f);
+                context.animation.TransitionToState($"Trick {Random.Range(1, 8)}", 0.2f).Then(() => context.animation.TransitionToState(AnimatorParams.AirCycle, 0.2f));
                 
                 Vector3 impulse = Common.GetImpulseWithPitch(Vector3.Cross(-startPoint.right, Vector3.up), startPoint.right, secondPitch, secondSpeed);
                 Common.ApplyImpulse(impulse);

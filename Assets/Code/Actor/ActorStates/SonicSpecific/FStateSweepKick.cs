@@ -12,8 +12,6 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
 {
     public class FStateSweepKick : FStateMove
     {
-        private float collisionHeight = 0.3f;
-        private float collisionCenterY = -0.5f;
         private float timer;
 
         private SweepConfig _config;
