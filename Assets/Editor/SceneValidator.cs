@@ -15,7 +15,7 @@ namespace SurgeEngine.Editor
             {
                 if (!Object.FindFirstObjectByType<Stage>())
                 {
-                    var stage = new GameObject("Stage").AddComponent<Stage>();
+                    var stage = new GameObject("+ Stage").AddComponent<Stage>();
                     Undo.RegisterCreatedObjectUndo(stage, "Add Stage");
                 }
 
@@ -27,7 +27,10 @@ namespace SurgeEngine.Editor
 
                 if (!GameObject.Find("- SetData"))
                 {
-                    var setdata = new GameObject("- SetData");
+                    var setdata = new GameObject("- SetData")
+                    {
+                        tag = "SetData"
+                    };
                     Undo.RegisterCreatedObjectUndo(setdata, "Add SetData folder");
                 }
 

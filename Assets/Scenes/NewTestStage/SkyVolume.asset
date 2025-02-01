@@ -276,39 +276,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   components:
   - {fileID: -5485771276445389716}
-  - {fileID: 1872999831673601223}
   - {fileID: 3328597732035772239}
   - {fileID: -1747510907799892311}
   - {fileID: 8259387270190645824}
   - {fileID: -8873273352521303689}
---- !u!114 &1872999831673601223
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f034cba68ab55e046ae1445a42f18c0e, type: 3}
-  m_Name: IndirectLightingController
-  m_EditorClassIdentifier: 
-  active: 0
-  indirectDiffuseLightingMultiplier:
-    m_OverrideState: 1
-    m_Value: 1
-  indirectDiffuseLightingLayers:
-    m_OverrideState: 1
-    m_Value: 2
-  reflectionLightingMultiplier:
-    m_OverrideState: 0
-    m_Value: 0
-  reflectionLightingLayers:
-    m_OverrideState: 0
-    m_Value: 1
-  reflectionProbeIntensityMultiplier:
-    m_OverrideState: 1
-    m_Value: 1
 --- !u!114 &3328597732035772239
 MonoBehaviour:
   m_ObjectHideFlags: 3
