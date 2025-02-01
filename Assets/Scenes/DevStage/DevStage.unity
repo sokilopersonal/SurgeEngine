@@ -1412,7 +1412,7 @@ GameObject:
   - component: {fileID: 80815024}
   - component: {fileID: 80815023}
   m_Layer: 0
-  m_Name: Stage
+  m_Name: + Stage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2149,7 +2149,7 @@ GameObject:
   m_Component:
   - component: {fileID: 218426850}
   m_Layer: 0
-  m_Name: Geometry
+  m_Name: '- Geometry'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4055,7 +4055,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 467240598}
     m_Modifications:
     - target: {fileID: 7481723051273001237, guid: c58152dc6192a304283c311b469fe9f6, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4063,7 +4063,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7481723051273001237, guid: c58152dc6192a304283c311b469fe9f6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.00000047683716
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7481723051273001237, guid: c58152dc6192a304283c311b469fe9f6, type: 3}
       propertyPath: m_LocalPosition.z
@@ -4075,15 +4075,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7481723051273001237, guid: c58152dc6192a304283c311b469fe9f6, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 7481723051273001237, guid: c58152dc6192a304283c311b469fe9f6, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 7481723051273001237, guid: c58152dc6192a304283c311b469fe9f6, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 7481723051273001237, guid: c58152dc6192a304283c311b469fe9f6, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -4116,7 +4116,7 @@ GameObject:
   m_Component:
   - component: {fileID: 467240598}
   m_Layer: 0
-  m_Name: SetData
+  m_Name: '- SetData'
   m_TagString: SetData
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4174,6 +4174,7 @@ Transform:
   - {fileID: 1897177954}
   - {fileID: 625984005}
   - {fileID: 675754858}
+  - {fileID: 1457984911}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &503606966 stripped
@@ -10786,6 +10787,11 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!4 &1457984911 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7481723051273001237, guid: c58152dc6192a304283c311b469fe9f6, type: 3}
+  m_PrefabInstance: {fileID: 427328571}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1474178101
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11146,7 +11152,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1560597959}
   m_Layer: 0
-  m_Name: Volumes
+  m_Name: '- Volumes'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12474,7 +12480,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1880334441}
   m_Layer: 0
-  m_Name: Lighting
+  m_Name: '- Lighting'
   m_TagString: Untagged
   m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -14736,12 +14742,11 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 80815024}
-  - {fileID: 1710511027}
   - {fileID: 1560597959}
   - {fileID: 467240598}
   - {fileID: 1880334441}
   - {fileID: 218426850}
+  - {fileID: 1710511027}
   - {fileID: 1304058302}
   - {fileID: 1090840666}
   - {fileID: 1344598021}
-  - {fileID: 427328571}
