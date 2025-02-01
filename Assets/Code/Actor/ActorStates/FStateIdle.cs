@@ -58,7 +58,7 @@ namespace SurgeEngine.Code.ActorStates
             
             if (Common.CheckForGround(out RaycastHit hit))
             {
-                Actor.model.RotateBody(Kinematics.Normal);
+                Model.RotateBody(Kinematics.Normal);
                 
                 Kinematics.Normal = hit.normal;
                 Kinematics.Snap(hit.point, hit.normal, true);

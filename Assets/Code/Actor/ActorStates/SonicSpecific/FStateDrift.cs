@@ -37,8 +37,6 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
         public override void OnExit()
         {
             base.OnExit();
-            
-            Animation.ResetAction();
         }
 
         public override void OnTick(float dt)
@@ -72,7 +70,7 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
                 Vector3 dir = Input.moveVector;
                 _driftXDirection = Mathf.Sign(dir.x);
             
-                Actor.model.RotateBody(Kinematics.Normal);
+                Model.RotateBody(Kinematics.Normal);
                 
                 Kinematics.SlopePhysics();
                 

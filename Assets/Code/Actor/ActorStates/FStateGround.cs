@@ -135,7 +135,7 @@ namespace SurgeEngine.Code.ActorStates
                 _rigidbody.linearVelocity = Quaternion.FromToRotation(_rigidbody.transform.up, prevNormal) * stored;
 
                 Actor.kinematics.BasePhysics(Kinematics.Point, Kinematics.Normal);
-                Actor.model.RotateBody(Kinematics.Normal);
+                Model.RotateBody(Kinematics.Normal);
                 
                 _surfaceTag = data.transform.gameObject.GetGroundTag();
             }

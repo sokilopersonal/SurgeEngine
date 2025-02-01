@@ -30,13 +30,12 @@ namespace SurgeEngine.Code.ActorStates
             
             Actor.transform.rotation = Quaternion.Euler(0, Actor.transform.rotation.eulerAngles.y, 0);
             
-            Actor.model.SetCollisionParam(_config.jumpCollisionHeight, _config.jumpCollisionCenter, _config.jumpCollisionRadius);
+            Model.SetCollisionParam(_config.jumpCollisionHeight, _config.jumpCollisionCenter, _config.jumpCollisionRadius);
         }
 
         public override void OnExit()
         {
-            Animation.ResetAction();
-            Actor.model.SetCollisionParam(0,0);
+            Model.ResetCollisionToDefault();
         }
 
         public override void OnTick(float dt)

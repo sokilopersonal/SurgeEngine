@@ -43,8 +43,6 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
             Actor.effects.DestroyLocus();
 
             base.OnExit();
-            
-            Animation.ResetAction();
         }
 
         public override void OnTick(float dt)

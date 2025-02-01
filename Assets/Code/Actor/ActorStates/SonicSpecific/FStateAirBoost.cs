@@ -32,7 +32,6 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
             FBoost boost = StateMachine.GetSubState<FBoost>();
             boost.canAirBoost = false;
             boost.Active = false;
-            Animation.ResetAction();
         }
 
         public override void OnTick(float dt)

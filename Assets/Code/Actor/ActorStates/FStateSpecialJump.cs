@@ -63,7 +63,7 @@ namespace SurgeEngine.Code.ActorStates
 
             if (data.type is SpecialJumpType.Spring or SpecialJumpType.DashRing)
             {
-                Actor.model.StartAirRestore(0.4f);
+                Model.StartAirRestore(0.4f);
             }
         }
 
@@ -78,12 +78,12 @@ namespace SurgeEngine.Code.ActorStates
                     Common.ApplyGravity(Stats.gravity, dt);
                     break;
                 case SpecialJumpType.Spring:
-                    Actor.model.SetRestoreUp(data.transform.up);
-                    Actor.model.VelocityRotation();
+                    Model.SetRestoreUp(data.transform.up);
+                    Model.VelocityRotation();
                     break;
                 case SpecialJumpType.DashRing:
-                    Actor.model.SetRestoreUp(data.transform.up);
-                    Actor.model.VelocityRotation();
+                    Model.SetRestoreUp(data.transform.up);
+                    Model.VelocityRotation();
                     break;
                 case SpecialJumpType.JumpSelector:
                     Common.ApplyGravity(Stats.gravity, dt);

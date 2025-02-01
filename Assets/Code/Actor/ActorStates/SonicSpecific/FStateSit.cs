@@ -17,13 +17,13 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
             base.OnEnter();
             
             Common.ResetVelocity(ResetVelocityType.Both);
+            Model.SetLowerCollision();
         }
 
         public override void OnExit()
         {
             base.OnExit();
-            
-            Animation.ResetAction();
+            Model.ResetCollisionToDefault();
         }
 
         public override void OnTick(float dt)

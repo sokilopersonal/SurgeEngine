@@ -1,5 +1,4 @@
-﻿using SurgeEngine.Code.ActorSystem;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace SurgeEngine.Code.ActorEffects
 {
@@ -7,7 +6,6 @@ namespace SurgeEngine.Code.ActorEffects
     {
         public void ResetAction()
         {
-            ActorContext.Context.animation.ResetAction();
         }
     }
 }

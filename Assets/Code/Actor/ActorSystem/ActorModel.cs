@@ -164,34 +164,39 @@ namespace SurgeEngine.Code.ActorSystem
 
 
         /// <summary>
-        /// Sets the collision parameters for the actor (Set height and vertical to 0 to reset to default)
+        /// Sets the collision parameters for the actor
         /// </summary>
         /// <param name="height"></param>
         /// <param name="vertical"></param>
         /// <param name="radius"></param>
         public void SetCollisionParam(float height, float vertical, float radius = 0)
         {
-            if (height == 0)
-            {
-                collision.height = _collisionStartHeight;
-            }
-
-            if (radius == 0)
-            {
-                collision.radius = _collisionStartRadius;
-            }
-
-            if (vertical == 0)
-            {
-                collision.center = new Vector3(0, -0.25f, 0);
-            }
-
             if (height != 0 || vertical != 0 || radius != 0)
             {
                 collision.height = height;
                 collision.radius = radius;
                 collision.center = new Vector3(0, vertical, 0);
             }
+        }
+
+        /// <summary>
+        /// Sets the collision to lower level (sitting, crawling, etc.)
+        /// </summary>
+        public void SetLowerCollision()
+        {
+            collision.height = 0.3f;
+            collision.radius = 0.25f;
+            collision.center = new Vector3(0, -0.7f, 0);
+        }
+
+        /// <summary>
+        /// Sets the collision to default
+        /// </summary>
+        public void ResetCollisionToDefault()
+        {
+            collision.height = _collisionStartHeight;
+            collision.radius = _collisionStartRadius;
+            collision.center = new Vector3(0, -0.25f, 0);
         }
         
         public void SetRestoreUp(Vector3 tUp)

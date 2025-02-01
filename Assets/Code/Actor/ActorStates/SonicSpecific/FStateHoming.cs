@@ -33,7 +33,7 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
             Timeout = _config.delay;
 
             BaseActorConfig config = Actor.config;
-            Actor.model.SetCollisionParam(config.jumpCollisionHeight, config.jumpCollisionCenter, config.jumpCollisionRadius);
+            Model.SetCollisionParam(config.jumpCollisionHeight, config.jumpCollisionCenter, config.jumpCollisionRadius);
             Actor.effects.CreateLocus();
 
             Common.ResetVelocity(ResetVelocityType.Both);
@@ -42,9 +42,8 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
         public override void OnExit()
         {
             base.OnExit();
-            
-            Animation.ResetAction();
-            Actor.model.SetCollisionParam(0, 0);
+
+            Model.ResetCollisionToDefault();
             _target = null;
         }
 

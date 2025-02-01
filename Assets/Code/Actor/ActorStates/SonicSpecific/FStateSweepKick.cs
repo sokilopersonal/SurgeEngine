@@ -34,16 +34,14 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
 
             StateMachine.GetSubState<FBoost>().Active = false;
 
-            Actor.model.SetCollisionParam(collisionHeight, -0.75f, 0.25f);
+            Model.SetLowerCollision();
         }
 
         public override void OnExit()
         {
             base.OnExit();
 
-            Actor.model.SetCollisionParam(0, 0);
-
-            Animation.ResetAction();
+            Model.ResetCollisionToDefault();
         }
 
         public override void OnTick(float dt)
@@ -80,7 +78,7 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
 
                 Kinematics.WriteMovementVector(_rigidbody.linearVelocity);
                 _rigidbody.linearVelocity = Vector3.MoveTowards(_rigidbody.linearVelocity, Vector3.zero, _config.deceleration * dt);
-                Actor.model.RotateBody(normal);
+                Model.RotateBody(normal);
                 Kinematics.Snap(point, normal, true);
             }
             else

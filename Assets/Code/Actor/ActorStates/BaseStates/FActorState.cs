@@ -10,6 +10,7 @@ namespace SurgeEngine.Code.ActorStates.BaseStates
         protected ActorStats Stats { get; private set; }
         protected ActorAnimation Animation { get; private set; }
         protected ActorKinematics Kinematics { get; private set; }
+        protected ActorModel Model { get; private set; }
         protected FStateMachine StateMachine { get; private set; }
 
         protected FActorState(Actor owner)
@@ -22,6 +23,7 @@ namespace SurgeEngine.Code.ActorStates.BaseStates
             Stats = owner.stats;
             Animation = owner.animation;
             Kinematics = owner.kinematics;
+            Model = owner.model;
         }
     }
 }

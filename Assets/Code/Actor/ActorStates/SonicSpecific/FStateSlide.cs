@@ -12,11 +12,9 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
 {
     public class FStateSlide : FStateMove, IStateTimeout
     {
-        private float collisionHeight = 0.3f;
-        private float collisionCenterY = -0.5f;
-
-        private SlideConfig _config;
-        private QuickStepConfig _quickstepConfig;
+        private readonly SlideConfig _config;
+        private readonly QuickStepConfig _quickstepConfig;
+        
         public FStateSlide(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
             _config = (owner as Sonic).slideConfig;
@@ -30,16 +28,14 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
             Timeout = 0.3f;
             StateMachine.GetSubState<FBoost>().Active = false;
             
-            Actor.model.SetCollisionParam(collisionHeight, -0.75f, 0.25f);
+            Model.SetLowerCollision();
         }
 
         public override void OnExit()
         {
             base.OnExit();
 
-            Actor.model.SetCollisionParam(0,0);
-            
-            Animation.ResetAction();
+            Model.ResetCollisionToDefault();
         }
 
         public override void OnTick(float dt)
@@ -105,7 +101,7 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
 
                 Kinematics.WriteMovementVector(_rigidbody.linearVelocity);
                 _rigidbody.linearVelocity = Vector3.MoveTowards(_rigidbody.linearVelocity, Vector3.zero, _config.deceleration * dt);
-                Actor.model.RotateBody(normal);
+                Model.RotateBody(normal);
                 Kinematics.Snap(point, normal, true);
             }
             else

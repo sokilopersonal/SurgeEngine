@@ -23,8 +23,6 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
         public override void OnExit()
         {
             base.OnExit();
-
-            Animation.ResetAction();
         }
 
         public override void OnTick(float dt)

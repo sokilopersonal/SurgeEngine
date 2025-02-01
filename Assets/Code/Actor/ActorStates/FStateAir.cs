@@ -76,7 +76,7 @@ namespace SurgeEngine.Code.ActorStates
                 
                 Vector3 vel = Actor.kinematics.Velocity;
                 vel.y = 0;
-                Actor.model.RotateBody(vel, Vector3.up);
+                Model.RotateBody(vel, Vector3.up);
                 
                 Common.ApplyGravity(Stats.gravity, Time.fixedDeltaTime);
             }

@@ -32,7 +32,7 @@ namespace SurgeEngine.Code.ActorStates
                 _timer += dt;
                 
                 _rigidbody.rotation = Quaternion.Lerp(_rigidbodyRotation, _rigidbodyRotation * Quaternion.Euler(0f, 180f, 0f), _timer / duration);
-                Actor.model.root.rotation = _rigidbody.rotation;
+                Model.root.rotation = _rigidbody.rotation;
             }
             else
             {

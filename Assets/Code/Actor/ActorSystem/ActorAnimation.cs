@@ -361,11 +361,6 @@ namespace SurgeEngine.Code.ActorSystem
             SetBool("InAction", value);
         }
 
-        public void ResetAction()
-        {
-            SetAction(false);
-        }
-
         public void TransitionToState(string stateName, float transitionTime = 0.25f, bool isAction = false)
         {
             animator.TransitionToState(stateName, ref _currentAnimation, transitionTime);
