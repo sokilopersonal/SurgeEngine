@@ -297,10 +297,23 @@ namespace SurgeEngine.Code.ActorSystem
                 TransitionToState("BrakeTurn", 0.1f);
             }
 
-            if (obj is FStateQuickstep quickstep)
+            if (obj is FStateRunQuickstep runQuickstep)
+            {
+                var dir = runQuickstep.GetDirection();
+                
+                if (dir == QuickstepDirection.Left)
+                {
+                    TransitionToState("RunQuickstepLeft", 0.1f);
+                }
+                else if (dir == QuickstepDirection.Right)
+                {
+                    TransitionToState("RunQuickstepRight", 0.1f);
+                }
+            }
+            else if (obj is FStateQuickstep quickstep)
             {
                 var dir = quickstep.GetDirection();
-                
+
                 if (dir == QuickstepDirection.Left)
                 {
                     TransitionToState("QuickstepLeft", 0.1f);

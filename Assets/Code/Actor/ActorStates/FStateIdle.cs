@@ -36,6 +36,19 @@ namespace SurgeEngine.Code.ActorStates
                 {
                     StateMachine.SetState<FStateSit>();
                 }
+
+                if (Input.LeftBumperPressed)
+                {
+                    var qs = StateMachine.GetState<FStateQuickstep>();
+                    qs.SetDirection(QuickstepDirection.Left);
+                    StateMachine.SetState<FStateQuickstep>();
+                }
+                else if (Input.RightBumperPressed)
+                {
+                    var qs = StateMachine.GetState<FStateQuickstep>();
+                    qs.SetDirection(QuickstepDirection.Right);
+                    StateMachine.SetState<FStateQuickstep>();
+                }
             }
         }
 

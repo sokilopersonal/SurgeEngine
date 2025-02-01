@@ -13,7 +13,7 @@ namespace SurgeEngine.Code.ActorSoundEffects
 
         protected override void SoundState(FState obj)
         {
-            if (obj is FStateQuickstep)
+            if (obj is FStateRunQuickstep or FStateQuickstep)
             {
                 RuntimeManager.PlayOneShot(quickstepSound);
                 voice.Play(quickstepVoice);

@@ -44,6 +44,7 @@ namespace SurgeEngine.Code.ActorSystem.Actors
             stateMachine.AddState(new FStateAfterHoming(this));
             stateMachine.AddState(new FStateDrift(this, body));
             stateMachine.AddState(new FStateSlide(this, body));
+            stateMachine.AddState(new FStateRunQuickstep(this, body));
             stateMachine.AddState(new FStateQuickstep(this, body));
             stateMachine.AddState(new FStateCrawl(this, body));
             stateMachine.AddState(new FStateSweepKick(this, body));

@@ -17,10 +17,11 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
         private const float collisionHeight = 0.3f;
 
         private CrawlConfig crawlConfig;
-
+        private QuickStepConfig _quickstepConfig;
         public FStateCrawl(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
             crawlConfig = (owner as Sonic).crawlConfig;
+            _quickstepConfig = (owner as Sonic).quickstepConfig;
         }
 
         public override void OnEnter()
@@ -64,6 +65,37 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
             if (Input.moveVector.magnitude < 0.1)
             {
                 StateMachine.SetState<FStateSit>();
+            }
+
+            if (Input.LeftBumperPressed)
+            {
+                if (Kinematics.HorizontalSpeed >= _quickstepConfig.minSpeed)
+                {
+                    var qs = StateMachine.GetState<FStateRunQuickstep>();
+                    qs.SetDirection(QuickstepDirection.Left);
+                    StateMachine.SetState<FStateRunQuickstep>();
+                }
+                else
+                {
+                    var qs = StateMachine.GetState<FStateQuickstep>();
+                    qs.SetDirection(QuickstepDirection.Left);
+                    StateMachine.SetState<FStateQuickstep>();
+                }
+            }
+            else if (Input.RightBumperPressed)
+            {
+                if (Kinematics.HorizontalSpeed >= _quickstepConfig.minSpeed)
+                {
+                    var qs = StateMachine.GetState<FStateRunQuickstep>();
+                    qs.SetDirection(QuickstepDirection.Right);
+                    StateMachine.SetState<FStateRunQuickstep>();
+                }
+                else
+                {
+                    var qs = StateMachine.GetState<FStateQuickstep>();
+                    qs.SetDirection(QuickstepDirection.Right);
+                    StateMachine.SetState<FStateQuickstep>();
+                }
             }
         }
 
