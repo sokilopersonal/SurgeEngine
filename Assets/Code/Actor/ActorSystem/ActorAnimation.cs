@@ -183,7 +183,7 @@ namespace SurgeEngine.Code.ActorSystem
             }
             if (obj is FStateSlide)
             {
-                TransitionToState("Sliding", 0.15f);
+                TransitionToState("Sliding", 0.15f).After(0.5f, () => Debug.Log("123"));
             }
             if (obj is FStateSit)
             {
@@ -371,7 +371,7 @@ namespace SurgeEngine.Code.ActorSystem
             }
             animator.TransitionToState(stateName, ref _currentAnimation, transitionTime);
     
-            var transition = new AnimationTransition();
+            var transition = new AnimationTransition(this);
             _currentTransition = transition;
             _animationWaitCoroutine = StartCoroutine(WaitForAnimationEnd(stateName, transition));
             return transition;
@@ -446,12 +446,32 @@ namespace SurgeEngine.Code.ActorSystem
     
     public class AnimationTransition
     {
+        private ActorAnimation _owner;
+        public AnimationTransition(ActorAnimation owner) => _owner = owner;
+    
         public event Action OnAnimationEnd;
         public bool IsCanceled { get; private set; }
         public void Cancel() => IsCanceled = true;
         internal void InvokeEnd() => OnAnimationEnd?.Invoke();
-        
+
+        /// <summary>
+        /// Add action to be executed when animation ends
+        /// </summary>
         public void Then(Action action) => OnAnimationEnd += action;
+        
+        /// <summary>
+        /// Add action to be executed after delay when animation ends
+        /// </summary>
+        public void After(float delay, Action action)
+        {
+            OnAnimationEnd += () => { _owner.StartCoroutine(DelayedAction(delay, action)); };
+        }
+    
+        private IEnumerator DelayedAction(float delay, Action action)
+        {
+            yield return new WaitForSeconds(delay);
+            action?.Invoke();
+        }
     }
 
     public static class AnimatorParams
