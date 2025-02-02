@@ -429,7 +429,10 @@ namespace SurgeEngine.Code.ActorSystem
                 }
                 else
                 {
-                    TransitionToState("JumpLow", 0.25f, true).After(0.25f, () => TransitionToState(AnimatorParams.AirCycle, 0.25f));
+                    TransitionToState("JumpLow", 0.25f, true).After(0.25f, () =>
+                    {
+                        TransitionToState(AnimatorParams.AirCycle, 0.25f);
+                    });
                 }
             }
         }
@@ -451,14 +454,30 @@ namespace SurgeEngine.Code.ActorSystem
         }
         internal void InvokeEnd() => OnAnimationEnd?.Invoke();
 
+        /// <summary>
+        /// Adds an action to be called when the animation ends
+        /// </summary>
+        /// <param name="action"></param>
         public void Then(Action action) => OnAnimationEnd += action;
 
+        /// <summary>
+        /// Adds an action to be called after a delay after the animation starts
+        /// </summary>
+        /// <param name="delay"></param>
+        /// <param name="action"></param>
         public void After(float delay, Action action)
         {
-            OnAnimationEnd += () =>
-            {
-                _owner.animationDelayedCoroutine = _owner.StartCoroutine(DelayedAction(delay, action));
-            };
+            _owner.animationDelayedCoroutine = _owner.StartCoroutine(DelayedAction(delay, action));
+        }
+
+        /// <summary>
+        /// Adds an action to be called after a delay after the animation ends
+        /// </summary>
+        /// <param name="delay"></param>
+        /// <param name="action"></param>
+        public void AfterThen(float delay, Action action)
+        {
+            OnAnimationEnd += () => _owner.StartCoroutine(DelayedAction(delay, action));
         }
 
         private IEnumerator DelayedAction(float delay, Action action)
