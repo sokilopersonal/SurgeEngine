@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace SurgeEngine.Code.Config.SonicSpecific
@@ -6,6 +7,14 @@ namespace SurgeEngine.Code.Config.SonicSpecific
     public class SweepConfig : ScriptableObject
     {
         public float deceleration = 6f;
-        [Range(0.15f, 0.3f)] public float inputBufferTime = 0.2f;
+        public List<string> eligibleAnimationStates = new List<string>() {
+            "SitEnter",
+            "SitExit",
+            "Sliding",
+            "SlideToSit",
+            "CrawlEnter",
+            "CrawlExit",
+            "StompSquat"
+        };
     }
 }

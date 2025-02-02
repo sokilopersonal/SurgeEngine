@@ -2,6 +2,7 @@
 using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.ActorSystem.Actors;
 using SurgeEngine.Code.Config.SonicSpecific;
+using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.StateMachine;
 using UnityEngine;
 using UnityEngine.Splines;
@@ -114,6 +115,15 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
             if (_timer >= 1f)
             {
                 StateMachine.SetState<FStateGround>();
+            }
+        }
+        public override void OnFixedTick(float dt)
+        {
+            base.OnFixedTick(dt);
+
+            if (!Common.CheckForGround(out _))
+            {
+                Actor.stateMachine.SetState<FStateAir>();
             }
         }
 

@@ -109,12 +109,6 @@ namespace SurgeEngine.Code.ActorSystem
             {
                 if (prev is not FStateDrift)
                 {
-                    if (machine.IsPrevExact<FStateAir>())
-                    {
-                        TransitionToState(AnimatorParams.RunCycle);
-                        return;
-                    }
-                    
                     if (machine.IsPrevExact<FStateJump>())
                     {
                         if (GetCurrentAnimationState() == "Ball")
@@ -124,15 +118,23 @@ namespace SurgeEngine.Code.ActorSystem
                         return;
                     }
 
+                    if (machine.IsPrevExact<FStateAir>())
+                    {
+                        TransitionToState(AnimatorParams.RunCycle);
+                        return;
+                    }
+
                     if (machine.IsPrevExact<FStateCrawl>())
                     {
-                        TransitionToState("CrawlExit", 0f, true).Then(() => TransitionToState(AnimatorParams.RunCycle, 0.15f));
+                        TransitionToState("CrawlExit", 0f, true);
+                        TransitionToStateDelayed(AnimatorParams.RunCycle, 0.15f, 0.11655f);
                         return;
                     }
 
                     if (machine.IsPrevExact<FStateSlide>())
                     {
-                        TransitionToState(AnimatorParams.RunCycle, 0.2f);
+                        TransitionToState("SlideToSit", 0f, true);
+                        TransitionToStateDelayed(AnimatorParams.RunCycle, 0.2f, 0.175f);
                         return;
                     }
 
@@ -198,7 +200,7 @@ namespace SurgeEngine.Code.ActorSystem
                         TransitionToState("SitLoop", 0.1f, true);
                         break;
                     case FStateStompLand:
-                        TransitionToState("SitLoop", 0f, true);
+                        TransitionToStateDelayed("SitLoop", 0.1f, 0.673f, true);
                         break;
                     default:
                         TransitionToState("SitEnter", 0f, true);
@@ -410,7 +412,12 @@ namespace SurgeEngine.Code.ActorSystem
             bool hop = actor.kinematics.HorizontalSpeed > 5;
             _hopAnimation = _hopAnimation == "HopL" ? "HopR" : "HopL";
             TransitionToState(hop ? _hopAnimation : "JumpStart", 0f, true);
+            
             yield return new WaitForSeconds(0.117f);
+            
+            if (!(actor.stateMachine.CurrentState is FStateJump))
+                yield return null;
+            
             if (actor.input.JumpHeld)
             {
                 TransitionToState("Ball", 0f, true);

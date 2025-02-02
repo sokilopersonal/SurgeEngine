@@ -16,43 +16,18 @@ namespace SurgeEngine.Code.ActorStates.SonicSubStates
 {
     public class FSweepKick : FActorSubState
     {
-        private float lastClickTime;
-
-        private readonly SweepConfig _config;
-        private ISweepKickHandler _handler;
-
+        SweepConfig _config;
         public FSweepKick(Actor owner) : base(owner)
         {
             _config = (owner as Sonic).sweepKickConfig;
-            
             actor.input.OnButtonPressed += ButtonPressed;
-            actor.stateMachine.OnStateAssign += OnStateAssign;
-        }
-
-        private void OnStateAssign(FState obj)
-        {
-            if (obj is ISweepKickHandler casted)
-            {
-                _handler = casted;
-            }
-            else
-            {
-                _handler = null;
-            }
         }
 
         private void ButtonPressed(ButtonType button)
         {
-            if (button != ButtonType.B || _handler == null)
+            if (button != ButtonType.B || !_config.eligibleAnimationStates.Contains(actor.animation.GetCurrentAnimationState()))
                 return;
-            float currentTime = Time.time;
-            if (currentTime - lastClickTime < _config.inputBufferTime)
-            {
-                actor.stateMachine.SetState<FStateSweepKick>();
-            }
-            lastClickTime = currentTime;
+            actor.stateMachine.SetState<FStateSweepKick>();
         }
     }
-    
-    public interface ISweepKickHandler { }
 }
