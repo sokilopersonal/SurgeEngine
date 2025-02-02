@@ -1,21 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-2979287662100231527
-MonoBehaviour:
-  m_ObjectHideFlags: 11
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da692e001514ec24dbc4cca1949ff7e8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  version: 13
-  hdPluginSubTargetMaterialVersions:
-    m_Keys: []
-    m_Values: 
 --- !u!21 &2100000
 Material:
   serializedVersion: 8
@@ -23,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: enm_aerocannon_body01
+  m_Name: enm_aerocannon_body02
   m_Shader: {fileID: -6465566751694194690, guid: 679379dcb0937df49b94809b671fd578, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -49,7 +33,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _Albedo:
-        m_Texture: {fileID: 2800000, guid: 3b0f9033f7f6c154dbad67a3c19b89ac, type: 3}
+        m_Texture: {fileID: 2800000, guid: 1a1d5c2055222f646a05c452b79dfced, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _AlphaMask:
@@ -73,7 +57,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BlinnMask:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 9a53daa0e667dce478401f1c42829199, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _CoatMaskMap:
@@ -93,11 +77,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Falloff:
-        m_Texture: {fileID: 2800000, guid: d5b7a297ad263b341884519f78e339df, type: 3}
+        m_Texture: {fileID: 2800000, guid: 2a8f02fd4604b2d4b8a5d24d9539f195, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _GlossMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 69b5b9d4a19724d43ad2fa4156c7a049, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _HeightMap:
@@ -137,7 +121,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ReflectionMask:
-        m_Texture: {fileID: 2800000, guid: 3bceea51e6a549145a768f9425732982, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SecondNormalMap:
@@ -145,7 +129,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Specular:
-        m_Texture: {fileID: 2800000, guid: 39476724b87b0224489c54a21bc70afd, type: 3}
+        m_Texture: {fileID: 2800000, guid: 9a53daa0e667dce478401f1c42829199, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecularColorMap:
@@ -230,7 +214,7 @@ Material:
     - _DstBlend: 0
     - _DstBlend2: 0
     - _EmissionMaskIntensity: 1
-    - _EmissionPowerFalloff: 1
+    - _EmissionPowerFalloff: 0
     - _EmissionPowerReflection: 0
     - _EmissionPowerSpecular: 0
     - _EmissiveColorMode: 1
@@ -284,11 +268,11 @@ Material:
     - _RayTracing: 0
     - _ReceivesSSR: 1
     - _ReceivesSSRTransparent: 0
-    - _ReflectionIntensity: 0.4
+    - _ReflectionIntensity: 0.5
     - _RefractionModel: 0
     - _RenderQueueType: 1
     - _RequireSplitLighting: 0
-    - _SampleColorMultiplier: 3
+    - _SampleColorMultiplier: 2.5
     - _SampleMax: 0.75
     - _SampleMin: 0.3
     - _Smoothness: 0.06324556
@@ -331,7 +315,7 @@ Material:
     - _UVSec: 0
     - _UseEmissiveIntensity: 0
     - _UseNormalMap: 1
-    - _UseReflectedCubeMap: 1
+    - _UseReflectedCubeMap: 0
     - _UseReflection: 1
     - _UseSecondNormalMap: 0
     - _UseShadowThreshold: 0
@@ -343,8 +327,8 @@ Material:
     m_Colors:
     - _AlbedoColor: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColor: {r: 0.9063317, g: 0.9063317, b: 0.9063317, a: 1}
-    - _BlinnParam: {r: 75, g: 0.5, b: 0, a: 0}
-    - _BlinnParam2: {r: 0, g: 0, b: 0, a: 0}
+    - _BlinnParam: {r: 25, g: 1, b: 0, a: 0}
+    - _BlinnParam2: {r: 100, g: 1, b: 0, a: 0}
     - _Color: {r: 0.9063317, g: 0.9063317, b: 0.9063317, a: 1}
     - _DiffusionProfileAsset: {r: 0, g: 0, b: 0, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
@@ -353,7 +337,7 @@ Material:
     - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissiveColorLDR: {r: 0, g: 0, b: 0, a: 1}
     - _FalloffColor: {r: 1, g: 1, b: 1, a: 1}
-    - _FalloffParam: {r: 0, g: 1, b: 4, a: 0}
+    - _FalloffParam: {r: 0, g: 4, b: 3, a: 0}
     - _InvPrimScale: {r: 1, g: 1, b: 0, a: 0}
     - _IridescenceThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
     - _ReflectionColor: {r: 1, g: 1, b: 1, a: 1}
@@ -365,3 +349,19 @@ Material:
     - _UVMappingMaskEmissive: {r: 1, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
+--- !u!114 &209404506964160559
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da692e001514ec24dbc4cca1949ff7e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 13
+  hdPluginSubTargetMaterialVersions:
+    m_Keys: []
+    m_Values: 
