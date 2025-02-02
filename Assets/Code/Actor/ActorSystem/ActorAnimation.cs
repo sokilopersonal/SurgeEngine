@@ -223,6 +223,10 @@ namespace SurgeEngine.Code.ActorSystem
                 else
                     StartCoroutine(PlayHop());
             }
+            else
+            {
+                StopCoroutine(PlayHop());
+            }
             if (obj is FStateGrindJump)
             {
                 TransitionToState("GrindJump", 0.2f, true);
@@ -414,9 +418,9 @@ namespace SurgeEngine.Code.ActorSystem
             TransitionToState(hop ? _hopAnimation : "JumpStart", 0f, true);
             
             yield return new WaitForSeconds(0.117f);
-            
+
             if (!(actor.stateMachine.CurrentState is FStateJump))
-                yield return null;
+                yield break;
             
             if (actor.input.JumpHeld)
             {
