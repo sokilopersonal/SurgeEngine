@@ -18,11 +18,15 @@ namespace SurgeEngine.Code.ActorStates
     public sealed class FStateGround : FStateMove, IBoostHandler, ISweepKickHandler
     {
         private string _surfaceTag;
+        
         private readonly QuickStepConfig _quickstepConfig;
         
         public FStateGround(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
-            _quickstepConfig = (owner as Sonic).quickstepConfig;
+            if (owner is Sonic)
+            {
+                _quickstepConfig = (owner as Sonic).quickstepConfig;
+            }
         }
 
         public override void OnEnter()
@@ -60,34 +64,37 @@ namespace SurgeEngine.Code.ActorStates
                 bool readyForDrift = Kinematics.HorizontalSpeed > 5f && abs < 0.4f && !Mathf.Approximately(dot, 0f);
                 bool readyForSlide = Kinematics.HorizontalSpeed > minSpeed;
 
-                if (Input.LeftBumperPressed)
+                if (Actor.stateMachine.Exists<FStateQuickstep>() && Actor.stateMachine.Exists<FStateRunQuickstep>())
                 {
-                    if (Kinematics.HorizontalSpeed >= _quickstepConfig.minSpeed)
+                    if (Input.LeftBumperPressed)
                     {
-                        var qs = StateMachine.GetState<FStateRunQuickstep>();
-                        qs.SetDirection(QuickstepDirection.Left);
-                        StateMachine.SetState<FStateRunQuickstep>();
+                        if (Kinematics.HorizontalSpeed >= _quickstepConfig.minSpeed)
+                        {
+                            var qs = StateMachine.GetState<FStateRunQuickstep>();
+                            qs.SetDirection(QuickstepDirection.Left);
+                            StateMachine.SetState<FStateRunQuickstep>();
+                        }
+                        else
+                        {
+                            var qs = StateMachine.GetState<FStateQuickstep>();
+                            qs.SetDirection(QuickstepDirection.Left);
+                            StateMachine.SetState<FStateQuickstep>();
+                        }
                     }
-                    else
+                    else if (Input.RightBumperPressed)
                     {
-                        var qs = StateMachine.GetState<FStateQuickstep>();
-                        qs.SetDirection(QuickstepDirection.Left);
-                        StateMachine.SetState<FStateQuickstep>();
-                    }
-                }
-                else if (Input.RightBumperPressed)
-                {
-                    if (Kinematics.HorizontalSpeed >= _quickstepConfig.minSpeed)
-                    {
-                        var qs = StateMachine.GetState<FStateRunQuickstep>();
-                        qs.SetDirection(QuickstepDirection.Right);
-                        StateMachine.SetState<FStateRunQuickstep>();
-                    }
-                    else
-                    {
-                        var qs = StateMachine.GetState<FStateQuickstep>();
-                        qs.SetDirection(QuickstepDirection.Right);
-                        StateMachine.SetState<FStateQuickstep>();
+                        if (Kinematics.HorizontalSpeed >= _quickstepConfig.minSpeed)
+                        {
+                            var qs = StateMachine.GetState<FStateRunQuickstep>();
+                            qs.SetDirection(QuickstepDirection.Right);
+                            StateMachine.SetState<FStateRunQuickstep>();
+                        }
+                        else
+                        {
+                            var qs = StateMachine.GetState<FStateQuickstep>();
+                            qs.SetDirection(QuickstepDirection.Right);
+                            StateMachine.SetState<FStateQuickstep>();
+                        }
                     }
                 }
                 

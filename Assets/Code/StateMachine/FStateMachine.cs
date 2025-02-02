@@ -35,6 +35,11 @@ namespace SurgeEngine.Code.StateMachine
             _subStates.Add(subState.GetType(), subState);
             _subStatesList.Add(subState);
         }
+
+        public bool Exists<T>() where T : FState
+        {
+            return _states.ContainsKey(typeof(T));
+        }
         
         public T SetState<T>(float inactiveDelay = 0, bool ignoreInactiveDelay = false, bool allowSameState = false) where T : FState
         {
