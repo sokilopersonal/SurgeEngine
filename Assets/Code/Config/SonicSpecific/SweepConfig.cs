@@ -6,5 +6,6 @@ namespace SurgeEngine.Code.Config.SonicSpecific
     public class SweepConfig : ScriptableObject
     {
         public float deceleration = 6f;
+        [Range(0.15f, 0.3f)] public float inputBufferTime = 0.2f;
     }
 }

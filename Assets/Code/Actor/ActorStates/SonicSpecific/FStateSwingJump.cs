@@ -18,12 +18,6 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
             base.OnEnter();
         }
 
-        public void Launch(bool successful)
-        {
-            _rigidbody.linearVelocity = (Actor.transform.forward + Actor.transform.up).normalized * (successful ? successVel : failVel);
-            Actor.effects.CreateLocus();
-        }
-
         public override void OnExit()
         {
             base.OnExit();
@@ -35,6 +29,12 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
 
             if (GetAirTime() > _maxAirTime)
                 StateMachine.SetState<FStateAir>();
+        }
+
+        public void Launch(bool successful)
+        {
+            _rigidbody.linearVelocity = (Actor.transform.forward + Actor.transform.up).normalized * (successful ? successVel : failVel);
+            //Actor.effects.CreateLocus();
         }
     }
 }

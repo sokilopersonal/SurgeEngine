@@ -10,11 +10,9 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.ActorStates.SonicSpecific
 {
-    public class FStateCrawl : FStateMove
+    public class FStateCrawl : FStateMove, ISweepKickHandler
     {
         private string _surfaceTag;
-
-        private const float collisionHeight = 0.3f;
 
         private readonly CrawlConfig _crawlConfig;
         private readonly QuickStepConfig _quickstepConfig;

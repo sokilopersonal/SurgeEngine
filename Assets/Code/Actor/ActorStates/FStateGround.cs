@@ -15,10 +15,11 @@ using Vector3 = UnityEngine.Vector3;
 
 namespace SurgeEngine.Code.ActorStates
 {
-    public sealed class FStateGround : FStateMove, IBoostHandler
+    public sealed class FStateGround : FStateMove, IBoostHandler, ISweepKickHandler
     {
         private string _surfaceTag;
-        private QuickStepConfig _quickstepConfig;
+        private readonly QuickStepConfig _quickstepConfig;
+        
         public FStateGround(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
             _quickstepConfig = (owner as Sonic).quickstepConfig;

@@ -22,7 +22,7 @@ namespace SurgeEngine.Code.ActorStates
         public override void OnEnter()
         {
             base.OnEnter();
-            
+
             _jumpTimer = 0.25f;
         }
 
@@ -30,14 +30,7 @@ namespace SurgeEngine.Code.ActorStates
         {
             base.OnTick(dt);
             
-            if (_jumpTimer > 0)
-            {
-                _jumpTimer -= dt;
-            }
-            else
-            {
-                _jumpTimer = 0;
-            }
+            Common.TickTimer(ref _jumpTimer, 0.25f, false);
             
             CountTimer(dt);
         }

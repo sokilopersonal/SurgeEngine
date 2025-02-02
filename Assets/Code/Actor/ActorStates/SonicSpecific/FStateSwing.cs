@@ -10,10 +10,11 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
     public class FStateSwing : FStateMove
     {
         public Transform poleGrip;
-        float rotation;
+        private float _rotationAngle;
 
-        bool swingSound = false;
-        SwingSound soundReference;
+        private bool _swingSound;
+        private readonly SwingSound soundReference;
+        
         public FStateSwing(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
             soundReference = owner.sounds.GetComponent<SwingSound>();
@@ -38,7 +39,7 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
 
         void Jump()
         {
-            bool angleCorrect = rotation > 0.1f && rotation < 0.35f;
+            bool angleCorrect = _rotationAngle > 0.1f && _rotationAngle < 0.35f;
 
             StateMachine.SetState<FStateSwingJump>();
             StateMachine.GetState<FStateSwingJump>().Launch(angleCorrect);
@@ -48,16 +49,16 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
         {
             base.OnTick(dt);
 
-            rotation = Actor.animation.animator.GetCurrentAnimatorStateInfo(0).normalizedTime % 1;
+            _rotationAngle = Actor.animation.animator.GetCurrentAnimatorStateInfo(0).normalizedTime % 1;
 
-            if (rotation > 0.9f && !swingSound)
+            if (_rotationAngle > 0.9f && !_swingSound)
             {
-                swingSound = true;
+                _swingSound = true;
                 soundReference.Swing();
             }
-            else if (rotation < 0.9f && swingSound)
+            else if (_rotationAngle < 0.9f && _swingSound)
             {
-                swingSound = false;
+                _swingSound = false;
             }
 
             if(Input.JumpPressed)

@@ -14,7 +14,7 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
     {
         private float timer;
 
-        private SweepConfig _config;
+        private readonly SweepConfig _config;
 
         public FStateSweepKick(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {

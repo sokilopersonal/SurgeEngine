@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.ActorStates.SonicSpecific
 {
-    public class FStateSit : FStateMove
+    public class FStateSit : FStateMove, ISweepKickHandler
     {
         public FStateSit(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {

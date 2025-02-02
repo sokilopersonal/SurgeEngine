@@ -109,9 +109,14 @@ namespace SurgeEngine.Code.ActorSystem
             {
                 sweepKickEffect.Toggle(false);
             }
-            else if (prev is FStateSweepKick && !(obj is FStateGround or FStateIdle or FStateSit))
+            else if (prev is FStateSweepKick)
             {
                 sweepKickEffect.Clear();
+            }
+
+            if (obj is FStateHoming or FStateStomp or FStateSwingJump)
+            {
+                CreateLocus();
             }
         }
 

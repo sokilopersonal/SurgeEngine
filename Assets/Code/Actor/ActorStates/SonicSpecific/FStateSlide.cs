@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.ActorStates.SonicSpecific
 {
-    public class FStateSlide : FStateMove, IStateTimeout
+    public class FStateSlide : FStateMove, IStateTimeout, ISweepKickHandler
     {
         private readonly SlideConfig _config;
         private readonly QuickStepConfig _quickstepConfig;

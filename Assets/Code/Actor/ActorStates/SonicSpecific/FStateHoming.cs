@@ -34,7 +34,6 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
 
             BaseActorConfig config = Actor.config;
             Model.SetCollisionParam(config.jumpCollisionHeight, config.jumpCollisionCenter, config.jumpCollisionRadius);
-            Actor.effects.CreateLocus();
 
             Common.ResetVelocity(ResetVelocityType.Both);
         }
