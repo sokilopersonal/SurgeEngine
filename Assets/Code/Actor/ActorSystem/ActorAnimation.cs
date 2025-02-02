@@ -125,13 +125,13 @@ namespace SurgeEngine.Code.ActorSystem
 
                     if (machine.IsPrevExact<FStateCrawl>())
                     {
-                        TransitionToState("CrawlExit", 0f, true).After(1.11655f, () => TransitionToState(AnimatorParams.RunCycle));
+                        TransitionToState("CrawlExit", 0f).After(0.11655f, () => TransitionToState(AnimatorParams.RunCycle));
                         return;
                     }
 
                     if (machine.IsPrevExact<FStateSlide>())
                     {
-                        TransitionToState("SlideToSit", 0f, true).After(0.175f, () => TransitionToState(AnimatorParams.RunCycle, 0.2f));
+                        TransitionToState("SlideToSit", 0f).After(0.175f, () => TransitionToState(AnimatorParams.RunCycle, 0.2f));
                         return;
                     }
 
@@ -187,19 +187,19 @@ namespace SurgeEngine.Code.ActorSystem
                 switch (prev)
                 {
                     case FStateSlide:
-                        TransitionToState("SlideToSit", 0f, true).Then(() => TransitionToState("SitLoop", 0f));
+                        TransitionToState("SlideToSit", 0f).Then(() => TransitionToState("SitLoop", 0f));
                         break;
                     case FStateCrawl:
-                        TransitionToState("CrawlExit", 0f, true).After(0.333f, () => TransitionToState("SitLoop", 0f));
+                        TransitionToState("CrawlExit", 0f).After(0.333f, () => TransitionToState("SitLoop", 0f));
                         break;
                     case FStateSweepKick:
-                        TransitionToState("SitLoop", 0.1f, true);
+                        TransitionToState("SitLoop", 0.1f);
                         break;
                     case FStateStompLand:
-                        TransitionToStateDelayed("SitLoop", 0.1f, 0.673f, true);
+                        TransitionToStateDelayed("SitLoop", 0.1f, 0.673f);
                         break;
                     default:
-                        TransitionToState("SitEnter", 0f, true).After(0.167f, () => TransitionToState("SitLoop", 0f));
+                        TransitionToState("SitEnter", 0f).After(0.167f, () => TransitionToState("SitLoop", 0f));
                         break;
                 }
             }
@@ -209,12 +209,12 @@ namespace SurgeEngine.Code.ActorSystem
             }
             if (obj is FStateSweepKick)
             {
-                TransitionToState("Sweepkick", 0.2f, true);
+                TransitionToState("Sweepkick", 0.2f);
             }
             if (obj is FStateJump)
             {
                 if (machine.IsPrevExact<FStateJump>())
-                    TransitionToState("Ball", 0f, true);
+                    TransitionToState("Ball", 0f);
                 else
                     StartCoroutine(PlayHop());
             }
@@ -224,15 +224,15 @@ namespace SurgeEngine.Code.ActorSystem
             }
             if (obj is FStateGrindJump)
             {
-                TransitionToState("GrindJump", 0.2f, true);
+                TransitionToState("GrindJump", 0.2f);
             }
             if (obj is FStateHoming)
             {
-                TransitionToState("BallOnce", 0f, true).Then(() => TransitionToState(AnimatorParams.AirCycle, 0.15f));
+                TransitionToState("BallOnce", 0f).Then(() => TransitionToState(AnimatorParams.AirCycle, 0.15f));
             }
             if (obj is FStateStomp)
             {
-                TransitionToState("Stomp", 0.1f, true);
+                TransitionToState("Stomp", 0.1f);
             }
             if (obj is FStateStompLand)
             {
@@ -240,7 +240,7 @@ namespace SurgeEngine.Code.ActorSystem
             }
             if (obj is FStateAirBoost)
             {
-                TransitionToState("Air Boost", 0f, true);
+                TransitionToState("Air Boost", 0f);
             }
             if (obj is FStateAfterHoming)
             {
@@ -254,11 +254,11 @@ namespace SurgeEngine.Code.ActorSystem
                 float angle = animator.GetFloat(AnimatorParams.TurnAngle);
                 if (angle < 0)
                 {
-                    TransitionToState("Drift_SL", 0.2f, true);
+                    TransitionToState("Drift_SL", 0.2f);
                 }
                 else if (angle > 0)
                 {
-                    TransitionToState("Drift_SR", 0.2f, true);
+                    TransitionToState("Drift_SR", 0.2f);
                 }
                 
                 _currentAnimation = AnimatorParams.Drift;
@@ -266,17 +266,17 @@ namespace SurgeEngine.Code.ActorSystem
 
             if (obj is FStateGrind && prev is not FStateGrindSquat)
             {
-                TransitionToState("Grind_S", 0f, true);
+                TransitionToState("Grind_S", 0f);
             }
 
             if (obj is FStateGrindSquat)
             {
-                TransitionToState("GrindSquat", 0.25f, true);
+                TransitionToState("GrindSquat", 0.25f);
             }
 
             if (obj is FStateGrind && prev is FStateGrindSquat)
             {
-                TransitionToState("GrindLoop", 0.25f, true);
+                TransitionToState("GrindLoop", 0.25f);
             }
 
             if (obj is FStateJumpSelectorLaunch)
@@ -356,7 +356,7 @@ namespace SurgeEngine.Code.ActorSystem
             SetBool("InAction", value);
         }
 
-        public AnimationTransition TransitionToState(string stateName, float transitionTime = 0.25f, bool isAction = false)
+        public AnimationTransition TransitionToState(string stateName, float transitionTime = 0.25f)
         {
             if (_animationWaitCoroutine != null)
             {
@@ -372,15 +372,15 @@ namespace SurgeEngine.Code.ActorSystem
             return transition;
         }
         
-        public void TransitionToStateDelayed(string stateName, float transitionTime = 0.25f, float delay = 0.5f, bool isAction = false)
+        public void TransitionToStateDelayed(string stateName, float transitionTime = 0.25f, float delay = 0.5f)
         {
             if (_coroutine != null)
                 StopCoroutine(_coroutine);
             
-            _coroutine = StartCoroutine(TransitionDelayed(stateName, transitionTime, delay, isAction));
+            _coroutine = StartCoroutine(TransitionDelayed(stateName, transitionTime, delay));
         }
 
-        private IEnumerator TransitionDelayed(string stateName, float transitionTime = 0.25f, float delay = 0.5f, bool isAction = false)
+        private IEnumerator TransitionDelayed(string stateName, float transitionTime = 0.25f, float delay = 0.5f)
         {
             yield return new WaitForSeconds(delay);
             
@@ -410,7 +410,7 @@ namespace SurgeEngine.Code.ActorSystem
         {
             bool hop = actor.kinematics.HorizontalSpeed > 5;
             _hopAnimation = _hopAnimation == "HopL" ? "HopR" : "HopL";
-            TransitionToState(hop ? _hopAnimation : "JumpStart", 0f, true);
+            TransitionToState(hop ? _hopAnimation : "JumpStart", 0f);
             
             yield return new WaitForSeconds(0.117f);
 
@@ -419,7 +419,7 @@ namespace SurgeEngine.Code.ActorSystem
             
             if (actor.input.JumpHeld)
             {
-                TransitionToState("Ball", 0f, true);
+                TransitionToState("Ball", 0f);
             }
             else
             {
@@ -429,7 +429,7 @@ namespace SurgeEngine.Code.ActorSystem
                 }
                 else
                 {
-                    TransitionToState("JumpLow", 0.25f, true).After(0.25f, () =>
+                    TransitionToState("JumpLow", 0.25f).After(0.25f, () =>
                     {
                         TransitionToState(AnimatorParams.AirCycle, 0.25f);
                     });
