@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.ActorStates.SonicSpecific
 {
-    public class FStateCrawl : FStateMove, ISweepKickHandler
+    public class FStateCrawl : FStateMove
     {
         private string _surfaceTag;
 
