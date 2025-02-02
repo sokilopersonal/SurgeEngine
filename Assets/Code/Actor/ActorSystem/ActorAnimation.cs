@@ -2,10 +2,8 @@
 using System.Collections;
 using SurgeEngine.Code.ActorStates;
 using SurgeEngine.Code.ActorStates.SonicSpecific;
-using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.StateMachine;
-using SurgeEngine.Code.Tools;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -160,23 +158,19 @@ namespace SurgeEngine.Code.ActorSystem
                     _currentAnimation = AnimatorParams.RunCycle;
                 }
             }
-            if (obj is FStateAir && prev is not FStateAirBoost and not FStateAfterHoming)
+            if (obj is FStateAir && prev is not FStateSpecialJump and not FStateAfterHoming and not FStateAirBoost)
             {
-                if (prev is not FStateSpecialJump)
+                TransitionToState(AnimatorParams.AirCycle, prev switch
                 {
-                    TransitionToState(AnimatorParams.AirCycle, prev switch
-                    {
-                        FStateGround => 0.2f,
-                        FStateGrindJump => 0.5f,
-                        FStateJump or FStateHoming => 0f,
-                        _ => 0.2f
-                    });
-                }
-                else
-                {
-                    SpecialJumpData data = actor.stateMachine.GetState<FStateSpecialJump>().data;
-                    if (data.type == SpecialJumpType.Spring || data.type == SpecialJumpType.DashRing) TransitionToStateDelayed(AnimatorParams.AirCycle, 0.5f, 0.4f);
-                }
+                    FStateGround => 0.2f,
+                    FStateGrindJump => 0.5f,
+                    FStateJump or FStateHoming => 0f,
+                    _ => 0.2f
+                });
+            }
+            if (obj is FStateAir && prev is FStateSpecialJump)
+            {
+                if (actor.stateMachine.GetState<FStateSpecialJump>().data.type != SpecialJumpType.TrickJumper) TransitionToState(AnimatorParams.AirCycle, 0.5f);
             }
             if (obj is FStateSlide)
             {
@@ -240,7 +234,7 @@ namespace SurgeEngine.Code.ActorSystem
             }
             if (obj is FStateAirBoost)
             {
-                TransitionToState("Air Boost", 0f);
+                TransitionToState("Air Boost", 0f).AfterThen(0.25f, () => TransitionToState(AnimatorParams.AirCycle, 0.5f));
             }
             if (obj is FStateAfterHoming)
             {
@@ -349,11 +343,6 @@ namespace SurgeEngine.Code.ActorSystem
         protected void SetBool(int id, bool value)
         {
             animator.SetBool(id, value);
-        }
-
-        protected void SetAction(bool value)
-        {
-            SetBool("InAction", value);
         }
 
         public AnimationTransition TransitionToState(string stateName, float transitionTime = 0.25f)
