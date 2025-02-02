@@ -183,7 +183,7 @@ namespace SurgeEngine.Code.ActorSystem
             }
             if (obj is FStateSlide)
             {
-                TransitionToState("Sliding", 0.15f).After(0.5f, () => Debug.Log("123"));
+                TransitionToState("Sliding", 0.15f);
             }
             if (obj is FStateSit)
             {
