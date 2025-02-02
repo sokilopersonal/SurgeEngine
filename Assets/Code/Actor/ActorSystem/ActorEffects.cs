@@ -68,10 +68,12 @@ namespace SurgeEngine.Code.ActorSystem
         IEnumerator PlayJumpball()
         {
             yield return new WaitForSeconds(0.117f);
-            if (actor.input.JumpHeld && actor.stateMachine.CurrentState is FStateJump)
-            {
+            
+            if (!(actor.stateMachine.CurrentState is FStateJump))
+                yield break;
+            
+            if (actor.input.JumpHeld)
                 spinball.Toggle(true);
-            }
         }
 
         private void OnStateAssign(FState obj)
@@ -88,6 +90,7 @@ namespace SurgeEngine.Code.ActorSystem
             }
             else
             {
+                StopCoroutine(PlayJumpball());
                 spinball.Toggle(false);
             }
             grindEffect.Toggle(obj is FStateGrind or FStateGrindSquat);
