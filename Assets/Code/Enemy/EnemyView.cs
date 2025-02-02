@@ -40,7 +40,7 @@ namespace SurgeEngine.Code.Enemy
             
             RuntimeManager.PlayOneShot(explosionReference, explosionPoint.position);
             
-            Destroy(gameObject);
+            Destroy(enemyBase.gameObject);
         }
     }
 }

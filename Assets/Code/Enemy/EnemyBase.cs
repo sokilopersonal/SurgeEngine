@@ -1,6 +1,7 @@
 ﻿using SurgeEngine.Code.ActorStates;
 using SurgeEngine.Code.ActorStates.SonicSpecific;
 using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.Enemy;
 using SurgeEngine.Code.Enemy.States;
 using SurgeEngine.Code.Tools;
 using UnityEngine;
@@ -10,11 +11,18 @@ namespace SurgeEngine.Code.StateMachine
     [DefaultExecutionOrder(-9888)]
     public class EnemyBase : MonoBehaviour
     {
+        public EnemyView view;
+        public new EnemyAnimation animation;
         public FStateMachine stateMachine;
 
         protected virtual void Awake()
         {
             stateMachine = new FStateMachine();
+
+            foreach (var component in new IEnemyComponent[] { view, animation })
+            {
+                component?.SetOwner(this);
+            }
         }
     }
 }

@@ -78,7 +78,7 @@ namespace SurgeEngine.Code.Enemy
 
             hit = true;
             
-            _eggFighter.view.Destroy();
+            _eggFighter.View.Destroy();
         }
     }
 }

@@ -9,8 +9,7 @@ namespace SurgeEngine.Code.Enemy
 {
     public class EggFighter : EnemyBase, IDamageable
     {
-        public new EnemyAnimation animation;
-        public EGView view;
+        public EGView View => view as EGView;
         public EGAnimationReference animationReference;
         public EnemyRagdoll ragdollPrefab;
 
@@ -54,7 +53,6 @@ namespace SurgeEngine.Code.Enemy
             stateMachine.AddState(new EGStateDead(this, transform, _rigidbody));
             
             stateMachine.SetState<EGStateIdle>();
-            InitializeComponents();
         }
 
         private void Update()
@@ -70,14 +68,6 @@ namespace SurgeEngine.Code.Enemy
         private void LateUpdate()
         {
             stateMachine.LateTick(Time.deltaTime);
-        }
-
-        public void InitializeComponents()
-        {
-            foreach (IEnemyComponent component in new IEnemyComponent[] { view, animation })
-            {
-                component?.SetOwner(this);
-            }
         }
 
         private void OnDrawGizmosSelected()
