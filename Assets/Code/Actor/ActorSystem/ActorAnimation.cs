@@ -18,6 +18,7 @@ namespace SurgeEngine.Code.ActorSystem
         private string _currentAnimation;
         private string _hopAnimation = "HopL";
         
+        public Coroutine animationDelayedCoroutine;
         private Coroutine _animationWaitCoroutine;
         private AnimationTransition _currentTransition;
         
@@ -438,31 +439,42 @@ namespace SurgeEngine.Code.ActorSystem
     {
         private ActorAnimation _owner;
         public AnimationTransition(ActorAnimation owner) => _owner = owner;
-    
+
         public event Action OnAnimationEnd;
         public bool IsCanceled { get; private set; }
-        public void Cancel() => IsCanceled = true;
+        public void Cancel()
+        {
+            IsCanceled = true;
+            if (_owner.animationDelayedCoroutine != null)
+            {
+                _owner.StopCoroutine(_owner.animationDelayedCoroutine);
+                _owner.animationDelayedCoroutine = null;
+            }
+        }
         internal void InvokeEnd() => OnAnimationEnd?.Invoke();
 
-        /// <summary>
-        /// Add action to be executed when animation ends
-        /// </summary>
         public void Then(Action action) => OnAnimationEnd += action;
-        
-        /// <summary>
-        /// Add action to be executed after delay when animation ends
-        /// </summary>
+
         public void After(float delay, Action action)
         {
-            OnAnimationEnd += () => { _owner.StartCoroutine(DelayedAction(delay, action)); };
+            OnAnimationEnd += () =>
+            {
+                if (_owner.animationDelayedCoroutine != null)
+                {
+                    _owner.StopCoroutine(_owner.animationDelayedCoroutine);
+                    _owner.animationDelayedCoroutine = null;
+                }
+                _owner.animationDelayedCoroutine = _owner.StartCoroutine(DelayedAction(delay, action));
+            };
         }
-    
+
         private IEnumerator DelayedAction(float delay, Action action)
         {
             yield return new WaitForSeconds(delay);
             action?.Invoke();
         }
     }
+
 
     public static class AnimatorParams
     {
