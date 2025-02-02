@@ -68,7 +68,7 @@ namespace SurgeEngine.Code.ActorSystem
         IEnumerator PlayJumpball()
         {
             yield return new WaitForSeconds(0.117f);
-            if (actor.input.JumpHeld)
+            if (actor.input.JumpHeld && actor.stateMachine.CurrentState is FStateJump)
             {
                 spinball.Toggle(true);
             }

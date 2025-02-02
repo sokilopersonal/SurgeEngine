@@ -109,18 +109,18 @@ namespace SurgeEngine.Code.ActorSystem
             {
                 if (prev is not FStateDrift)
                 {
-                    if (machine.IsPrevExact<FStateAir>())
-                    {
-                        TransitionToState(AnimatorParams.RunCycle);
-                        return;
-                    }
-                    
                     if (machine.IsPrevExact<FStateJump>())
                     {
                         if (GetCurrentAnimationState() == "Ball")
                             TransitionToState(AnimatorParams.RunCycle, 0f);
                         else
                             TransitionToState(AnimatorParams.RunCycle, 0.2f);
+                        return;
+                    }
+
+                    if (machine.IsPrevExact<FStateAir>())
+                    {
+                        TransitionToState(AnimatorParams.RunCycle);
                         return;
                     }
 
@@ -412,7 +412,12 @@ namespace SurgeEngine.Code.ActorSystem
             bool hop = actor.kinematics.HorizontalSpeed > 5;
             _hopAnimation = _hopAnimation == "HopL" ? "HopR" : "HopL";
             TransitionToState(hop ? _hopAnimation : "JumpStart", 0f, true);
+            
             yield return new WaitForSeconds(0.117f);
+            
+            if (!(actor.stateMachine.CurrentState is FStateJump))
+                yield return null;
+            
             if (actor.input.JumpHeld)
             {
                 TransitionToState("Ball", 0f, true);
