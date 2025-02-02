@@ -67,6 +67,9 @@ namespace SurgeEngine.Code.ActorSystem
             if (_coroutine != null)
                 StopCoroutine(_coroutine);
             
+            if (animationDelayedCoroutine != null)
+                StopCoroutine(animationDelayedCoroutine);
+            
             if (obj is FStateIdle)
             {
                 if (prev is not FStateStart)
@@ -445,11 +448,6 @@ namespace SurgeEngine.Code.ActorSystem
         public void Cancel()
         {
             IsCanceled = true;
-            if (_owner.animationDelayedCoroutine != null)
-            {
-                _owner.StopCoroutine(_owner.animationDelayedCoroutine);
-                _owner.animationDelayedCoroutine = null;
-            }
         }
         internal void InvokeEnd() => OnAnimationEnd?.Invoke();
 
@@ -459,11 +457,6 @@ namespace SurgeEngine.Code.ActorSystem
         {
             OnAnimationEnd += () =>
             {
-                if (_owner.animationDelayedCoroutine != null)
-                {
-                    _owner.StopCoroutine(_owner.animationDelayedCoroutine);
-                    _owner.animationDelayedCoroutine = null;
-                }
                 _owner.animationDelayedCoroutine = _owner.StartCoroutine(DelayedAction(delay, action));
             };
         }
