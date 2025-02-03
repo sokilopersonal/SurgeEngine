@@ -2377,8 +2377,8 @@ MonoBehaviour:
   m_MinFilterSize: 0.1
   m_DirLightPCSSBlockerSampleCount: 24
   m_DirLightPCSSFilterSampleCount: 24
-  m_DirLightPCSSMaxPenumbraSize: 16
-  m_DirLightPCSSMaxSamplingDistance: 12
+  m_DirLightPCSSMaxPenumbraSize: 6
+  m_DirLightPCSSMaxSamplingDistance: 16
   m_DirLightPCSSMinFilterSizeTexels: 0.25
   m_DirLightPCSSMinFilterMaxAngularDiameter: 1
   m_DirLightPCSSBlockerSearchAngularDiameter: 75
@@ -4558,6 +4558,10 @@ PrefabInstance:
     - target: {fileID: 801403881147322373, guid: 0d9453574171efb4d9767bf95688d90d, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3827348558673598289, guid: 0d9453574171efb4d9767bf95688d90d, type: 3}
+      propertyPath: m_SortingOrder
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 4200805958389027054, guid: 0d9453574171efb4d9767bf95688d90d, type: 3}
       propertyPath: m_Name
