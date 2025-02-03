@@ -69,7 +69,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   explosionPoint: {fileID: 1723759853784742694}
   explosionEffect: {fileID: 4211897682676449617, guid: 9a30f2c112ea816458c86fae9415142e, type: 3}
-  destroyedPiece: {fileID: 0}
+  destroyedPiece: {fileID: 6901466563624377399, guid: 796b180bc008eb244b2f5ea93c3b2c42, type: 3}
   explosionOffset: 1
   explosionReference:
     Guid:
@@ -232,9 +232,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f50756c955c4b78847492b29215d99d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  view: {fileID: 1932007215240878132}
+  animation: {fileID: 0}
   stateMachine:
     currentStateName: 
-  view: {fileID: 1932007215240878132}
 --- !u!1001 &4371102358636233317
 PrefabInstance:
   m_ObjectHideFlags: 0
