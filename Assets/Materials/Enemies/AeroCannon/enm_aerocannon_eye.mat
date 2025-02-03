@@ -26,9 +26,9 @@ Material:
   stringTagMap:
     RenderType: Transparent
   disabledShaderPasses:
-  - DistortionVectors
   - MOTIONVECTORS
-  m_LockedProperties: 
+  - DistortionVectors
+  m_LockedProperties: _EmissiveColorMap
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -156,12 +156,12 @@ Material:
     - _AlphaCutoffPostpass: 0.5
     - _AlphaCutoffPrepass: 0.5
     - _AlphaCutoffShadow: 0.5
-    - _AlphaDstBlend: 10
+    - _AlphaDstBlend: 1
     - _AlphaRemapMax: 1
     - _AlphaRemapMin: 0
     - _AlphaSrcBlend: 1
     - _Anisotropy: 0
-    - _BlendMode: 0
+    - _BlendMode: 1
     - _BlendOp: 0
     - _BumpScale: 1
     - _CameraFadingEnabled: 0
@@ -205,7 +205,7 @@ Material:
     - _DoubleSidedEnable: 0
     - _DoubleSidedGIMode: 0
     - _DoubleSidedNormalMode: 1
-    - _DstBlend: 10
+    - _DstBlend: 1
     - _DstBlend2: 10
     - _EmissionEnabled: 0
     - _EmissiveColorMode: 1
@@ -294,7 +294,7 @@ Material:
     - _TransparentDepthPrepassEnable: 0
     - _TransparentSortPriority: 0
     - _TransparentWritingMotionVec: 0
-    - _TransparentZWrite: 0
+    - _TransparentZWrite: 1
     - _UVBase: 0
     - _UVDetail: 0
     - _UVEmissive: 0
@@ -305,11 +305,11 @@ Material:
     - _ZTestGBuffer: 4
     - _ZTestModeDistortion: 4
     - _ZTestTransparent: 4
-    - _ZWrite: 0
+    - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0.9063317, g: 0.9063317, b: 0.9063317, a: 1}
     - _CameraFadeParams: {r: 0, g: Infinity, b: 0, a: 0}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 0.101960786}
     - _ColorAddSubDiff: {r: 1, g: 0, b: 0, a: 0}
     - _DiffusionProfileAsset: {r: 0, g: 0, b: 0, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
@@ -325,7 +325,7 @@ Material:
     - _UVDetailsMappingMask: {r: 1, g: 0, b: 0, a: 0}
     - _UVMappingMask: {r: 1, g: 0, b: 0, a: 0}
     - _UVMappingMaskEmissive: {r: 1, g: 0, b: 0, a: 0}
-    - _UnlitColor: {r: 1, g: 1, b: 1, a: 1}
+    - _UnlitColor: {r: 1, g: 1, b: 1, a: 0.101960786}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &5931185156610023209
