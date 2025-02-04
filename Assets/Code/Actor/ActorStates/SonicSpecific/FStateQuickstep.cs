@@ -16,11 +16,11 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
         private float _savedXSpeed;
         private Vector3 _lastPosition;
 
-        private QuickStepConfig _config;
+        private readonly QuickStepConfig _config;
 
         public FStateQuickstep(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
-            _config = (owner as Sonic).quickstepConfig;
+            owner.TryGetConfig(out _config);
         }
 
         public override void OnEnter()

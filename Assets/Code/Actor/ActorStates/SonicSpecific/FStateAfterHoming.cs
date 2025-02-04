@@ -9,11 +9,11 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
 {
     public class FStateAfterHoming : FActorState
     {
-        private HomingConfig _config;
+        private readonly HomingConfig _config;
         
         public FStateAfterHoming(Actor owner) : base(owner)
         {
-            _config = (owner as Sonic).homingConfig;
+            owner.TryGetConfig(out _config);
         }
         
         public override void OnEnter()

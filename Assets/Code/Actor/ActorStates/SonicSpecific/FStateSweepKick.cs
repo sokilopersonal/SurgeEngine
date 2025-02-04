@@ -18,7 +18,7 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
 
         public FStateSweepKick(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
-            _config = (owner as Sonic).sweepKickConfig;
+            owner.TryGetConfig(out _config);
         }
 
         public override void OnEnter()

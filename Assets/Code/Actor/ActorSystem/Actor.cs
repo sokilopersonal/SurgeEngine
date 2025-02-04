@@ -1,4 +1,6 @@
-﻿using NaughtyAttributes;
+﻿using System;
+using System.Collections.Generic;
+using NaughtyAttributes;
 using SurgeEngine.Code.ActorStates;
 using SurgeEngine.Code.ActorStates.SonicSpecific;
 using SurgeEngine.Code.ActorStates.SonicSubStates;
@@ -21,7 +23,6 @@ namespace SurgeEngine.Code.ActorSystem
         [Foldout("Components")] public ActorModel model;
         [Foldout("Components")] public ActorFlags flags;
         [Foldout("Components")] public ActorKinematics kinematics;
-        [Foldout("Damage")] public LayerMask damageLayer;
         
         [Foldout("Base Physics")]
         public BaseActorConfig config;
@@ -29,6 +30,7 @@ namespace SurgeEngine.Code.ActorSystem
         [HideInInspector] public FStateMachine stateMachine;
         
         private StartData _startData;
+        private readonly Dictionary<Type, ScriptableObject> _configs = new Dictionary<Type, ScriptableObject>();
 
         public virtual void Initialize()
         {
@@ -41,6 +43,8 @@ namespace SurgeEngine.Code.ActorSystem
             stateMachine = new FStateMachine();
 
             body.centerOfMass -= Vector3.up * 0.5f;
+            
+            InitializeConfigs();
             
             stateMachine.AddState(new FStateStart(this, body));
             stateMachine.AddState(new FStateIdle(this, body));
@@ -58,13 +62,6 @@ namespace SurgeEngine.Code.ActorSystem
             stateMachine.AddState(new FStateJumpSelectorLaunch(this, body));
             stateMachine.AddState(new FStateSwing(this, body));
             stateMachine.AddState(new FStateSwingJump(this, body));
-            stateMachine.AddState(new FStateStompLand(this, body));
-            
-            FBoost boost = new FBoost(this);
-            stateMachine.AddSubState(boost);
-
-            FSweepKick sweepKick = new FSweepKick(this);
-            stateMachine.AddSubState(sweepKick);
         }
 
         private void Update()
@@ -95,7 +92,29 @@ namespace SurgeEngine.Code.ActorSystem
                 stateMachine.SetState<FStateIdle>();
             }
         }
+
+        protected virtual void InitializeConfigs()
+        {
+            AddConfig(config);
+        }
         
+        protected void AddConfig(ScriptableObject config)
+        {
+            _configs.Add(config.GetType(), config);
+        }
+        
+        public bool TryGetConfig<T>(out T request) where T : ScriptableObject
+        {
+            if (_configs.TryGetValue(typeof(T), out var result))
+            {
+                request = (T)result;
+                return true;
+            }
+
+            request = null;
+            return false;
+        }
+
         public StartData GetStartData() => _startData;
     }
 }

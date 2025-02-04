@@ -1,6 +1,7 @@
 ﻿using NaughtyAttributes;
 using SurgeEngine.Code.ActorStates;
 using SurgeEngine.Code.ActorStates.SonicSpecific;
+using SurgeEngine.Code.ActorStates.SonicSubStates;
 using SurgeEngine.Code.Config.SonicSpecific;
 using UnityEngine;
 
@@ -40,6 +41,7 @@ namespace SurgeEngine.Code.ActorSystem.Actors
             
             stateMachine.AddState(new FStateAirBoost(this, body));
             stateMachine.AddState(new FStateStomp(this, body));
+            stateMachine.AddState(new FStateStompLand(this, body));
             stateMachine.AddState(new FStateHoming(this, body));
             stateMachine.AddState(new FStateAfterHoming(this));
             stateMachine.AddState(new FStateDrift(this, body));
@@ -48,6 +50,23 @@ namespace SurgeEngine.Code.ActorSystem.Actors
             stateMachine.AddState(new FStateQuickstep(this, body));
             stateMachine.AddState(new FStateCrawl(this, body));
             stateMachine.AddState(new FStateSweepKick(this, body));
+
+            stateMachine.AddSubState(new FBoost(this));
+            stateMachine.AddSubState(new FSweepKick(this));
+        }
+
+        protected override void InitializeConfigs()
+        {
+            base.InitializeConfigs();
+            
+            AddConfig(boostConfig);
+            AddConfig(driftConfig);
+            AddConfig(homingConfig);
+            AddConfig(stompConfig);
+            AddConfig(slideConfig);
+            AddConfig(quickstepConfig);
+            AddConfig(crawlConfig);
+            AddConfig(sweepKickConfig);
         }
     }
 }

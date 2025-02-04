@@ -37,8 +37,8 @@ namespace SurgeEngine.Code.ActorStates.SonicSubStates
         {
             canAirBoost = true;
             BoostEnergy = 100;
-            
-            _config = (owner as Sonic)?.boostConfig;
+
+            owner.TryGetConfig(out _config);
             
             actor.input.BoostAction += BoostAction;
             actor.stateMachine.OnStateAssign += OnStateAssign;

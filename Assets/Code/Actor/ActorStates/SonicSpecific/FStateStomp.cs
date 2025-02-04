@@ -15,11 +15,11 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
         private float _timer;
 
         private bool released = false;
-        private StompConfig _config;
+        private readonly StompConfig _config;
 
         public FStateStomp(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
-            _config = (owner as Sonic).stompConfig;
+            owner.TryGetConfig(out _config);
         }
 
         public override void OnEnter()

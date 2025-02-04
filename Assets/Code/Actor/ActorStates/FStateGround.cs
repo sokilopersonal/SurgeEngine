@@ -20,13 +20,12 @@ namespace SurgeEngine.Code.ActorStates
         private string _surfaceTag;
         
         private readonly QuickStepConfig _quickstepConfig;
+        private readonly SlideConfig _slideConfig;
         
         public FStateGround(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
-            if (owner is Sonic)
-            {
-                _quickstepConfig = (owner as Sonic).quickstepConfig;
-            }
+            owner.TryGetConfig(out _quickstepConfig);
+            owner.TryGetConfig(out _slideConfig);
         }
 
         public override void OnEnter()
@@ -47,7 +46,7 @@ namespace SurgeEngine.Code.ActorStates
                 {
                     StateMachine.SetState<FStateJump>(0.1f);
                 }
-
+                
                 if (!SonicTools.IsBoost())
                 {
                     if (Kinematics.Skidding && Kinematics.HorizontalSpeed > 15f)
@@ -56,7 +55,7 @@ namespace SurgeEngine.Code.ActorStates
                     }
                 }
 
-                float minSpeed = StateMachine.GetState<FStateSlide>().GetConfig().minSpeed;
+                float minSpeed = _slideConfig.minSpeed;
                 minSpeed += minSpeed * 1.5f;
                 float dot = Stats.moveDot;
                 float abs = Mathf.Abs(dot);
@@ -64,7 +63,7 @@ namespace SurgeEngine.Code.ActorStates
                 bool readyForDrift = Kinematics.HorizontalSpeed > 5f && abs < 0.4f && !Mathf.Approximately(dot, 0f);
                 bool readyForSlide = Kinematics.HorizontalSpeed > minSpeed;
 
-                if (Actor.stateMachine.Exists<FStateQuickstep>() && Actor.stateMachine.Exists<FStateRunQuickstep>())
+                if (_quickstepConfig && StateMachine.Exists<FStateRunQuickstep>())
                 {
                     if (Input.LeftBumperPressed)
                     {

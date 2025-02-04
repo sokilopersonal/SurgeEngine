@@ -11,11 +11,11 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
     public class FStateAirBoost : FStateMove
     {
         private float _timer;
-        private BoostConfig _config;
+        private readonly BoostConfig _config;
         
         public FStateAirBoost(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
-            _config = (owner as Sonic).boostConfig;
+            owner.TryGetConfig(out _config);
         }
 
         public override void OnEnter()

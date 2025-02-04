@@ -20,7 +20,7 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
 
         public FStateHoming(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
-            _config = (owner as Sonic).homingConfig;
+            owner.TryGetConfig(out _config);
         }
 
         public override void OnEnter()

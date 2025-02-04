@@ -36,9 +36,9 @@ namespace SurgeEngine.Code.StateMachine
             _subStatesList.Add(subState);
         }
 
-        public bool Exists<T>() where T : FState
+        public bool Exists<T>(bool isSubState = false) where T : FState
         {
-            return _states.ContainsKey(typeof(T));
+            return !isSubState ? _states.ContainsKey(typeof(T)) : _subStates.ContainsKey(typeof(T));
         }
         
         public T SetState<T>(float inactiveDelay = 0, bool ignoreInactiveDelay = false, bool allowSameState = false) where T : FState

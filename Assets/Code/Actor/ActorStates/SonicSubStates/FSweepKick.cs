@@ -16,10 +16,11 @@ namespace SurgeEngine.Code.ActorStates.SonicSubStates
 {
     public class FSweepKick : FActorSubState
     {
-        SweepConfig _config;
+        private readonly SweepConfig _config;
+        
         public FSweepKick(Actor owner) : base(owner)
         {
-            _config = (owner as Sonic).sweepKickConfig;
+            owner.TryGetConfig(out _config);
             actor.input.OnButtonPressed += ButtonPressed;
         }
 

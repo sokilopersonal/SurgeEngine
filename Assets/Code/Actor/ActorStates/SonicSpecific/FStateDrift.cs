@@ -23,7 +23,7 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
 
         public FStateDrift(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
-            _config = (owner as Sonic).driftConfig;
+            owner.TryGetConfig(out _config);
         }
 
         public override void OnEnter()
