@@ -21,8 +21,6 @@ namespace SurgeEngine.Code.Context
             
             _ = new ActorContext(Actor);
             _ = new ActorHUDContext(ActorHud);
-            
-            actor.Initialize();
         }
     }
 }

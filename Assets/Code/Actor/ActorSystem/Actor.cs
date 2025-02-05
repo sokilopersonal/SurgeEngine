@@ -27,11 +27,9 @@ namespace SurgeEngine.Code.ActorSystem
         [Foldout("Base Physics")]
         public BaseActorConfig config;
         
-        [HideInInspector] public FStateMachine stateMachine;
-        
         private StartData _startData;
 
-        public virtual void Initialize()
+        protected override void Awake()
         {
             if (!gameObject.activeSelf)
             {
@@ -39,8 +37,6 @@ namespace SurgeEngine.Code.ActorSystem
             }
             
             Rigidbody body = GetComponent<Rigidbody>();
-            stateMachine = new FStateMachine();
-
             body.centerOfMass -= Vector3.up * 0.5f;
             
             InitializeConfigs();
@@ -63,21 +59,6 @@ namespace SurgeEngine.Code.ActorSystem
             stateMachine.AddState(new FStateSwingJump(this, body));
             
             animation?.Initialize(stateMachine);
-        }
-
-        private void Update()
-        {
-            stateMachine?.Tick(Time.deltaTime);
-        }
-
-        private void FixedUpdate()
-        {
-            stateMachine?.FixedTick(Time.fixedDeltaTime);
-        }
-
-        private void LateUpdate()
-        {
-            stateMachine?.LateTick(Time.deltaTime);
         }
 
         public void SetStart(StartData data)

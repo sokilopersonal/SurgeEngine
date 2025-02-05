@@ -33,9 +33,9 @@ namespace SurgeEngine.Code.ActorSystem.Actors
         [Foldout("SweepKick")]
         [Expandable] public SweepConfig sweepKickConfig;
 
-        public override void Initialize()
+        protected override void Awake()
         {
-            base.Initialize();
+            base.Awake();
             
             Rigidbody body = GetComponent<Rigidbody>();
             
