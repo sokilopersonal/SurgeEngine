@@ -2,7 +2,7 @@
 using TMPro;
 using UnityEngine;
 
-namespace SurgeEngine.Code.SurgeDebug
+namespace SurgeEngine.Code.Debug
 {
     public class DebugWindow : MonoBehaviour
     {

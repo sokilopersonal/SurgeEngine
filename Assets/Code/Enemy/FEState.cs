@@ -1,7 +1,7 @@
-﻿using SurgeEngine.Code.Enemy;
+﻿using SurgeEngine.Code.StateMachine;
 using UnityEngine;
 
-namespace SurgeEngine.Code.StateMachine
+namespace SurgeEngine.Code.Enemy
 {
     public class FEState : FState
     {

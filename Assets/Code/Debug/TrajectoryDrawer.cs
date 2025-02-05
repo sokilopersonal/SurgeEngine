@@ -1,7 +1,7 @@
 ﻿using SurgeEngine.Code.CommonObjects;
 using UnityEngine;
 
-namespace SurgeEngine.Code.SurgeDebug
+namespace SurgeEngine.Code.Debug
 {
     public static class TrajectoryDrawer
     {
@@ -53,11 +53,11 @@ namespace SurgeEngine.Code.SurgeDebug
             {
                 if (Physics.Linecast(positions[i], positions[i + 1], out RaycastHit hit, layerMask, QueryTriggerInteraction.Ignore))
                 {
-                    Debug.DrawLine(positions[i], hit.point, color);
+                    UnityEngine.Debug.DrawLine(positions[i], hit.point, color);
                     break;
                 }
 
-                Debug.DrawLine(positions[i], positions[i + 1], color);
+                UnityEngine.Debug.DrawLine(positions[i], positions[i + 1], color);
             }
         }
     }

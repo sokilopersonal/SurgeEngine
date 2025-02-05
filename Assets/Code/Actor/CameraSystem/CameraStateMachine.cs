@@ -2,6 +2,7 @@
 using System.Collections;
 using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.CameraSystem.Pawns;
+using SurgeEngine.Code.CameraSystem.Pawns.Data;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.StateMachine;
 using UnityEngine;

@@ -1,6 +1,4 @@
-﻿using SurgeEngine.Code.Enemy;
-
-namespace SurgeEngine.Code.StateMachine
+﻿namespace SurgeEngine.Code.Enemy
 {
     public interface IEnemyComponent
     {

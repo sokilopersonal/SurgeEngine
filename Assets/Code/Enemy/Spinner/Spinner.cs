@@ -1,11 +1,6 @@
-﻿using SurgeEngine.Code.ActorStates;
-using SurgeEngine.Code.ActorStates.SonicSpecific;
-using SurgeEngine.Code.ActorSystem;
-using SurgeEngine.Code.CommonObjects;
-using SurgeEngine.Code.StateMachine;
-using UnityEngine;
+﻿using SurgeEngine.Code.CommonObjects;
 
-namespace SurgeEngine.Code.Enemy
+namespace SurgeEngine.Code.Enemy.Spinner
 {
     public class Spinner : EnemyBase, IDamageable
     {

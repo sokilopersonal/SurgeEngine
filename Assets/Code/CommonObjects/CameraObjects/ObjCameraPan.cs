@@ -1,5 +1,6 @@
 ﻿using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.CameraSystem.Pawns;
+using SurgeEngine.Code.CameraSystem.Pawns.Data;
 
 namespace SurgeEngine.Code.CommonObjects.CameraObjects
 {
