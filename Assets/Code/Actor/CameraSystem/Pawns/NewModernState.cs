@@ -76,7 +76,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             else
             {
                 _sensSpeedMod = 1f;
-                _stateMachine.xAutoLook = 0;
+                _stateMachine.xAutoLook = Mathf.Lerp(_stateMachine.xAutoLook, 0, Time.deltaTime * 6f);
             }
 
             Vector2 v = _actor.input.lookVector * (_master.sensitivity * _sensSpeedMod);
