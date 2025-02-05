@@ -1,30 +1,22 @@
-﻿using SurgeEngine.Code.Enemy.States;
+﻿using SurgeEngine.Code.Enemy.EggFighter.States;
+using SurgeEngine.Code.StateMachine;
 using SurgeEngine.Code.StateMachine.Components;
 
-namespace SurgeEngine.Code.StateMachine
+namespace SurgeEngine.Code.Enemy
 {
-    public class EnemyAnimation : StateAnimator, IEnemyComponent
+    public class EGAnimation : StateAnimator, IEnemyComponent
     {
         public EnemyBase enemyBase { get; set; }
-
-        private void OnEnable()
-        {
-            enemyBase.stateMachine.OnStateAssign += OnStateAssign;
-        }
-
-        private void OnDisable()
-        {
-            enemyBase.stateMachine.OnStateAssign -= OnStateAssign;
-        }
 
         protected override void AnimationTick()
         {
             
         }
 
-        private void OnStateAssign(FState obj)
+        protected override void ChangeStateAnimation(FState obj)
         {
-            FState prev = enemyBase.stateMachine.PreviousState;
+            base.ChangeStateAnimation(obj);
+
             if (obj is EGStateIdle)
             {
                 TransitionToState("Idle");
@@ -42,17 +34,17 @@ namespace SurgeEngine.Code.StateMachine
 
             if (obj is EGStatePunch)
             {
-                TransitionToState("PunchCharge", 0.25f, true);
+                TransitionToState("PunchCharge", 0.25f);
             }
 
             if (obj is EGStateTurn)
             {
-                TransitionToState("Turn", 0f, true);
+                TransitionToState("Turn", 0f);
             }
 
             if (obj is EGStateDead)
             {
-                TransitionToState("IdleDead", 0f, true);
+                TransitionToState("IdleDead", 0f);
             }
         }
     }

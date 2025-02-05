@@ -1,11 +1,12 @@
 ﻿using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.StateMachine;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Enemy.States
+namespace SurgeEngine.Code.Enemy.EggFighter.States
 {
     public class EGStateChase : EGState
     {
-        public EGStateChase(EggFighter eggFighter, Transform transform, Rigidbody rb) : base(eggFighter, transform, rb)
+        public EGStateChase(EnemyBase enemy) : base(enemy)
         {
             
         }
@@ -19,7 +20,7 @@ namespace SurgeEngine.Code.Enemy.States
             Vector3 direction = context.transform.position - transform.position;
             direction.Normalize();
             direction.y = 0f;
-            Rb.linearVelocity = direction * eggFighter.chaseSpeed;
+            eggFighter.rb.linearVelocity = direction * eggFighter.chaseSpeed;
             
             Quaternion rotation = Quaternion.LookRotation(context.transform.position - transform.position, Vector3.up);
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, rotation.eulerAngles.y, 0), 24f * Time.deltaTime);

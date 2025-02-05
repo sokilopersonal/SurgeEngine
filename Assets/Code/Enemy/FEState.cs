@@ -1,16 +1,19 @@
-﻿using UnityEngine;
+﻿using SurgeEngine.Code.Enemy;
+using UnityEngine;
 
 namespace SurgeEngine.Code.StateMachine
 {
     public class FEState : FState
     {
+        protected EnemyBase enemy;
+        protected FStateMachine stateMachine;
         protected Transform transform;
-        protected Rigidbody Rb;
 
-        public FEState(Transform transform, Rigidbody rb)
+        public FEState(EnemyBase enemy)
         {
-            this.transform = transform;
-            this.Rb = rb;
+            this.enemy = enemy;
+            stateMachine = enemy.stateMachine;
+            transform = enemy.transform;
         }
     }
 }

@@ -1,15 +1,15 @@
 ﻿using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.StateMachine;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Enemy.States
+namespace SurgeEngine.Code.Enemy.EggFighter.States
 {
     public class EGStateIdle : EGState
     {
         private float _stayTimer;
         
-        public EGStateIdle(EggFighter eggFighter, Transform transform, Rigidbody rb) : base(eggFighter, transform, rb)
+        public EGStateIdle(EnemyBase enemy) : base(enemy)
         {
-            
         }
 
         public override void OnEnter()
@@ -23,7 +23,7 @@ namespace SurgeEngine.Code.Enemy.States
         {
             base.OnTick(dt);
             
-            Rb.linearVelocity = Vector3.zero;
+            eggFighter.rb.linearVelocity = Vector3.zero;
 
             if (eggFighter.patrolTime == 0) return;
 

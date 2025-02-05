@@ -12,7 +12,7 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.ActorSystem
 {
-    public class Actor : MonoBehaviour
+    public class Actor : Entity
     {
         [Foldout("Components")] public ActorInput input;
         [Foldout("Components")] public ActorStats stats;
@@ -30,7 +30,6 @@ namespace SurgeEngine.Code.ActorSystem
         [HideInInspector] public FStateMachine stateMachine;
         
         private StartData _startData;
-        private readonly Dictionary<Type, ScriptableObject> _configs = new Dictionary<Type, ScriptableObject>();
 
         public virtual void Initialize()
         {
@@ -62,6 +61,8 @@ namespace SurgeEngine.Code.ActorSystem
             stateMachine.AddState(new FStateJumpSelectorLaunch(this, body));
             stateMachine.AddState(new FStateSwing(this, body));
             stateMachine.AddState(new FStateSwingJump(this, body));
+            
+            animation?.Initialize(stateMachine);
         }
 
         private void Update()
@@ -96,23 +97,6 @@ namespace SurgeEngine.Code.ActorSystem
         protected virtual void InitializeConfigs()
         {
             AddConfig(config);
-        }
-        
-        protected void AddConfig(ScriptableObject config)
-        {
-            _configs.Add(config.GetType(), config);
-        }
-        
-        public bool TryGetConfig<T>(out T request) where T : ScriptableObject
-        {
-            if (_configs.TryGetValue(typeof(T), out var result))
-            {
-                request = (T)result;
-                return true;
-            }
-
-            request = null;
-            return false;
         }
 
         public StartData GetStartData() => _startData;

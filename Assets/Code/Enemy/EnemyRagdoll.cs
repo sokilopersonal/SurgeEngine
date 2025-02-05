@@ -25,11 +25,11 @@ namespace SurgeEngine.Code.Enemy
         public float minimumLifeTime = 0.25f;
         public float maximumLifeTime = 4f;
 
-        private EggFighter _eggFighter;
+        private EggFighter.EggFighter _eggFighter;
 
         private void Start()
         {
-            _eggFighter = GetComponentInParent<EggFighter>();
+            _eggFighter = GetComponentInParent<EggFighter.EggFighter>();
             
             foreach (EnemyRagdollLimb limb in limbs)
             {

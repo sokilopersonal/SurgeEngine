@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using SurgeEngine.Code.StateMachine;
+using UnityEngine;
 
-namespace SurgeEngine.Code.Enemy.States
+namespace SurgeEngine.Code.Enemy.EggFighter.States
 {
     public class EGStateTurn : EGState
     {
@@ -8,9 +9,8 @@ namespace SurgeEngine.Code.Enemy.States
         private Vector3 _startPos;
         private Quaternion _startRot;
         
-        public EGStateTurn(EggFighter eggFighter, Transform transform, Rigidbody rb) : base(eggFighter, transform, rb)
+        public EGStateTurn(EnemyBase enemy) : base(enemy)
         {
-            
         }
 
         public override void OnEnter()
@@ -36,8 +36,6 @@ namespace SurgeEngine.Code.Enemy.States
             
             if (_timer >= 1.85f)
             {
-                eggFighter.animation.ResetAction();
-                
                 eggFighter.stateMachine.SetState<EGStatePatrol>(1f);
             }
         }

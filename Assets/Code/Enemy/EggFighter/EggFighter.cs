@@ -1,11 +1,10 @@
 ﻿using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.CommonObjects;
-using SurgeEngine.Code.Enemy.States;
+using SurgeEngine.Code.Enemy.EggFighter.States;
 using SurgeEngine.Code.StateMachine;
-using SurgeEngine.Code.Tools;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Enemy
+namespace SurgeEngine.Code.Enemy.EggFighter
 {
     public class EggFighter : EnemyBase, IDamageable
     {
@@ -33,7 +32,7 @@ namespace SurgeEngine.Code.Enemy
         public AnimationCurve turnHeightCurve;
         public float turnTime;
         
-        private Rigidbody _rigidbody;
+        [HideInInspector] public Rigidbody rb;
         private int ragdollLayer = 69;
 
         protected override void Awake()
@@ -42,32 +41,17 @@ namespace SurgeEngine.Code.Enemy
 
             ragdollLayer = LayerMask.NameToLayer("EnemyRagdoll");
 
-            _rigidbody = GetComponent<Rigidbody>();
-            _rigidbody.freezeRotation = true;
+            rb = GetComponent<Rigidbody>();
+            rb.freezeRotation = true;
             
-            stateMachine.AddState(new EGStateIdle(this, transform, _rigidbody));
-            stateMachine.AddState(new EGStateChase(this, transform, _rigidbody));
-            stateMachine.AddState(new EGStatePatrol(this, transform, _rigidbody));
-            stateMachine.AddState(new EGStateTurn(this, transform, _rigidbody));
-            stateMachine.AddState(new EGStatePunch(this, transform, _rigidbody));
-            stateMachine.AddState(new EGStateDead(this, transform, _rigidbody));
+            stateMachine.AddState(new EGStateIdle(this));
+            stateMachine.AddState(new EGStateChase(this));
+            stateMachine.AddState(new EGStatePatrol(this));
+            stateMachine.AddState(new EGStateTurn(this));
+            stateMachine.AddState(new EGStatePunch(this));
+            stateMachine.AddState(new EGStateDead(this));
             
             stateMachine.SetState<EGStateIdle>();
-        }
-
-        private void Update()
-        {
-            stateMachine.Tick(Time.deltaTime);
-        }
-        
-        private void FixedUpdate()
-        {
-            stateMachine.FixedTick(Time.fixedDeltaTime);
-        }
-
-        private void LateUpdate()
-        {
-            stateMachine.LateTick(Time.deltaTime);
         }
 
         private void OnDrawGizmosSelected()

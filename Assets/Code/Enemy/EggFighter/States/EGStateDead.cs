@@ -1,16 +1,14 @@
-﻿using SurgeEngine.Code.ActorStates;
-using SurgeEngine.Code.ActorStates.SonicSpecific;
-using SurgeEngine.Code.ActorSystem;
+﻿using SurgeEngine.Code.StateMachine;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Enemy.States
+namespace SurgeEngine.Code.Enemy.EggFighter.States
 {
     public class EGStateDead : EGState
     {
         private float _timer;
-        public EGStateDead(EggFighter eggFighter, Transform transform, Rigidbody rb) : base(eggFighter, transform, rb)
+        
+        public EGStateDead(EnemyBase enemy) : base(enemy)
         {
-
         }
 
         public override void OnEnter()

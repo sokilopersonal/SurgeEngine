@@ -4,23 +4,17 @@ using SurgeEngine.Code.ActorStates;
 using SurgeEngine.Code.ActorStates.SonicSpecific;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.StateMachine;
+using SurgeEngine.Code.StateMachine.Components;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace SurgeEngine.Code.ActorSystem
 {
-    public class ActorAnimation : ActorComponent
+    public class ActorAnimation : StateAnimator
     {
-        public Animator animator;
-
-        private string _currentAnimation;
         private string _hopAnimation = "HopL";
         
-        public Coroutine animationDelayedCoroutine;
-        private Coroutine _animationWaitCoroutine;
-        private AnimationTransition _currentTransition;
-        
-        private Coroutine _coroutine;
+        private Actor actor => ActorContext.Context;
 
         private void OnEnable()
         {
@@ -34,10 +28,10 @@ namespace SurgeEngine.Code.ActorSystem
 
         private void Update()
         {
-            SetFloat(AnimatorParams.GroundSpeed, Mathf.Clamp(actor.kinematics.Speed, 4, 30f));
-            SetFloat(AnimatorParams.VerticalSpeed, actor.stats.currentVerticalSpeed);
+            animator.SetFloat(AnimatorParams.GroundSpeed, Mathf.Clamp(actor.kinematics.Speed, 4, 30f));
+            animator.SetFloat(AnimatorParams.VerticalSpeed, actor.stats.currentVerticalSpeed);
             
-            SetFloat("SpeedPercent", Mathf.Clamp(actor.kinematics.Speed / actor.config.topSpeed, 0f, 1.25f));
+            animator.SetFloat("SpeedPercent", Mathf.Clamp(actor.kinematics.Speed / actor.config.topSpeed, 0f, 1.25f));
 
             Vector3 vel = actor.kinematics.Velocity;
             float signed = Vector3.SignedAngle(vel, actor.model.root.forward, -Vector3.up);
@@ -47,25 +41,26 @@ namespace SurgeEngine.Code.ActorSystem
             float mDot = Vector3.Dot(vel, cross);
             mDot = Mathf.Clamp(mDot * 0.3f, -1f, 1f);
             
-            SetFloat(AnimatorParams.SmoothTurnAngle, Mathf.Lerp(animator.GetFloat(AnimatorParams.SmoothTurnAngle), angle, 4f * Time.deltaTime));
-            SetFloat(AnimatorParams.TurnAngle, Mathf.Lerp(animator.GetFloat(AnimatorParams.TurnAngle), -mDot, 4f * Time.deltaTime));
+            animator.SetFloat(AnimatorParams.SmoothTurnAngle, Mathf.Lerp(animator.GetFloat(AnimatorParams.SmoothTurnAngle), angle, 4f * Time.deltaTime));
+            animator.SetFloat(AnimatorParams.TurnAngle, Mathf.Lerp(animator.GetFloat(AnimatorParams.TurnAngle), -mDot, 4f * Time.deltaTime));
             
             float dot = Vector3.Dot(Vector3.up, actor.transform.right);
-            SetFloat("WallDot", -dot);
-            SetFloat("AbsWallDot", Mathf.Lerp(animator.GetFloat("AbsWallDot"), 
+            animator.SetFloat("WallDot", -dot);
+            animator.SetFloat("AbsWallDot", Mathf.Lerp(animator.GetFloat("AbsWallDot"), 
                 Mathf.Abs(Mathf.Approximately(actor.stats.groundAngle, 90) ? dot : 0), 1 * Time.deltaTime));
         }
-        
-        private void ChangeStateAnimation(FState obj)
+
+        protected override void AnimationTick()
         {
+            
+        }
+
+        protected override void ChangeStateAnimation(FState obj)
+        {
+            base.ChangeStateAnimation(obj);
+            
             FStateMachine machine = actor.stateMachine;
             FState prev = machine.PreviousState;
-            
-            if (_coroutine != null)
-                StopCoroutine(_coroutine);
-            
-            if (animationDelayedCoroutine != null)
-                StopCoroutine(animationDelayedCoroutine);
             
             if (obj is FStateIdle)
             {
@@ -189,7 +184,7 @@ namespace SurgeEngine.Code.ActorSystem
                         TransitionToState("SitLoop", 0.1f);
                         break;
                     case FStateStompLand:
-                        TransitionToStateDelayed("SitLoop", 0.1f, 0.673f);
+                        //TransitionToStateDelayed("SitLoop", 0.1f, 0.673f);
                         break;
                     default:
                         TransitionToState("SitEnter", 0f).After(0.167f, () => TransitionToState("SitLoop", 0f));
@@ -323,50 +318,6 @@ namespace SurgeEngine.Code.ActorSystem
                 TransitionToState("SwingJump", 0f).Then(() => { TransitionToState("SwingJumpLoop", 0f); });
             }
         }
-        
-        protected void SetFloat(string state, float value)
-        {
-            animator.SetFloat(state, value);
-        }
-
-        protected void SetBool(string state, bool value)
-        {
-            animator.SetBool(state, value);
-        }
-
-        protected void SetFloat(int id, float value)
-        {
-            animator.SetFloat(id, value);
-        }
-
-        protected void SetBool(int id, bool value)
-        {
-            animator.SetBool(id, value);
-        }
-
-        public AnimationTransition TransitionToState(string stateName, float transitionTime = 0.25f)
-        {
-            if (_animationWaitCoroutine != null)
-            {
-                _currentTransition?.Cancel();
-                StopCoroutine(_animationWaitCoroutine);
-                _animationWaitCoroutine = null;
-            }
-            animator.TransitionToState(stateName, ref _currentAnimation, transitionTime);
-    
-            var transition = new AnimationTransition(this);
-            _currentTransition = transition;
-            _animationWaitCoroutine = StartCoroutine(WaitForAnimationEnd(stateName, transition));
-            return transition;
-        }
-        
-        public void TransitionToStateDelayed(string stateName, float transitionTime = 0.25f, float delay = 0.5f)
-        {
-            if (_coroutine != null)
-                StopCoroutine(_coroutine);
-            
-            _coroutine = StartCoroutine(TransitionDelayed(stateName, transitionTime, delay));
-        }
 
         private IEnumerator TransitionDelayed(string stateName, float transitionTime = 0.25f, float delay = 0.5f)
         {
@@ -375,25 +326,6 @@ namespace SurgeEngine.Code.ActorSystem
             animator.TransitionToState(stateName, ref _currentAnimation, transitionTime);
         }
         
-        private IEnumerator WaitForAnimationEnd(string stateName, AnimationTransition transition)
-        {
-            var stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-            while (!stateInfo.IsName(stateName))
-            {
-                yield return null;
-                stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-            }
-            while (stateInfo.normalizedTime < 1f)
-            {
-                yield return null;
-                stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-            }
-            if (!transition.IsCanceled)
-                transition.InvokeEnd();
-            _animationWaitCoroutine = null;
-            _currentTransition = null;
-        }
-
         private IEnumerator PlayHop()
         {
             bool hop = actor.kinematics.HorizontalSpeed > 5;
@@ -413,7 +345,7 @@ namespace SurgeEngine.Code.ActorSystem
             {
                 if (hop)
                 {
-                    TransitionToStateDelayed(AnimatorParams.AirCycle, 0.25f, 0.5f);
+                    TransitionToState(AnimatorParams.AirCycle, 0.8f);
                 }
                 else
                 {
@@ -424,58 +356,8 @@ namespace SurgeEngine.Code.ActorSystem
                 }
             }
         }
-        
-        public void ResetCurrentAnimationState() => _currentAnimation = string.Empty;
-        public string GetCurrentAnimationState() => _currentAnimation;
     }
     
-    public class AnimationTransition
-    {
-        private ActorAnimation _owner;
-        public AnimationTransition(ActorAnimation owner) => _owner = owner;
-
-        public event Action OnAnimationEnd;
-        public bool IsCanceled { get; private set; }
-        public void Cancel()
-        {
-            IsCanceled = true;
-        }
-        internal void InvokeEnd() => OnAnimationEnd?.Invoke();
-
-        /// <summary>
-        /// Adds an action to be called when the animation ends
-        /// </summary>
-        /// <param name="action"></param>
-        public void Then(Action action) => OnAnimationEnd += action;
-
-        /// <summary>
-        /// Adds an action to be called after a delay after the animation starts
-        /// </summary>
-        /// <param name="delay"></param>
-        /// <param name="action"></param>
-        public void After(float delay, Action action)
-        {
-            _owner.animationDelayedCoroutine = _owner.StartCoroutine(DelayedAction(delay, action));
-        }
-
-        /// <summary>
-        /// Adds an action to be called after a delay after the animation ends
-        /// </summary>
-        /// <param name="delay"></param>
-        /// <param name="action"></param>
-        public void AfterThen(float delay, Action action)
-        {
-            OnAnimationEnd += () => _owner.animationDelayedCoroutine = _owner.StartCoroutine(DelayedAction(delay, action));
-        }
-
-        private IEnumerator DelayedAction(float delay, Action action)
-        {
-            yield return new WaitForSeconds(delay);
-            action?.Invoke();
-        }
-    }
-
-
     public static class AnimatorParams
     {
         public static readonly int VerticalSpeed = Animator.StringToHash("VerticalSpeed");

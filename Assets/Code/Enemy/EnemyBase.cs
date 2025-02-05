@@ -1,28 +1,42 @@
-﻿using SurgeEngine.Code.ActorStates;
-using SurgeEngine.Code.ActorStates.SonicSpecific;
-using SurgeEngine.Code.ActorSystem;
-using SurgeEngine.Code.Enemy;
-using SurgeEngine.Code.Enemy.States;
-using SurgeEngine.Code.Tools;
+﻿using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.StateMachine;
+using SurgeEngine.Code.StateMachine.Components;
 using UnityEngine;
 
-namespace SurgeEngine.Code.StateMachine
+namespace SurgeEngine.Code.Enemy
 {
     [DefaultExecutionOrder(-9888)]
-    public class EnemyBase : MonoBehaviour
+    public class EnemyBase : Entity
     {
         public EnemyView view;
-        public new EnemyAnimation animation;
+        public new StateAnimator animation;
         public FStateMachine stateMachine;
 
         protected virtual void Awake()
         {
             stateMachine = new FStateMachine();
 
-            foreach (var component in new IEnemyComponent[] { view, animation })
+            foreach (var component in new IEnemyComponent[] { view })
             {
                 component?.SetOwner(this);
             }
+            
+            animation?.Initialize(stateMachine);
+        }
+        
+        private void Update()
+        {
+            stateMachine.Tick(Time.deltaTime);
+        }
+
+        private void FixedUpdate()
+        {
+            stateMachine.FixedTick(Time.fixedDeltaTime);
+        }
+
+        private void LateUpdate()
+        {
+            stateMachine.LateTick(Time.deltaTime);
         }
     }
 }

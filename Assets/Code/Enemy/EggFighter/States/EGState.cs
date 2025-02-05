@@ -1,15 +1,14 @@
 ﻿using SurgeEngine.Code.StateMachine;
-using UnityEngine;
 
-namespace SurgeEngine.Code.Enemy.States
+namespace SurgeEngine.Code.Enemy.EggFighter.States
 {
     public class EGState : FEState
     {
         protected EggFighter eggFighter;
-        
-        public EGState(EggFighter eggFighter, Transform transform, Rigidbody rb) : base(transform, rb)
+
+        public EGState(EnemyBase enemy) : base(enemy)
         {
-            this.eggFighter = eggFighter;
+            eggFighter = (EggFighter)enemy;
         }
     }
 }

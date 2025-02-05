@@ -375,6 +375,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4904433037013026246}
   - component: {fileID: 4547457691980812445}
+  - component: {fileID: 5006998213474647552}
   - component: {fileID: 6170386477459605054}
   m_Layer: 12
   m_Name: Model
@@ -430,6 +431,19 @@ MonoBehaviour:
       Data3: -1591140736
       Data4: 1219544592
     Path: event:/Enemies/MetalDamage
+--- !u!114 &5006998213474647552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3804416265619641354}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d806e6f285d4d549f8c3512189f15f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 6170386477459605054}
 --- !u!95 &6170386477459605054
 Animator:
   serializedVersion: 7
@@ -755,9 +769,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   view: {fileID: 4547457691980812445}
-  animation: {fileID: 0}
+  animation: {fileID: 5006998213474647552}
   stateMachine:
     currentStateName: 
+  config: {fileID: 11400000, guid: f90b2f0ab11050b488a4d360cd395cf3, type: 2}
+  shootPoint: {fileID: 4949581083101068224}
+  bulletPrefab: {fileID: 7123386352214734269, guid: f7ded45629c0e9b4c8012de5735564ad, type: 3}
 --- !u!65 &2570968368960566440
 BoxCollider:
   m_ObjectHideFlags: 0

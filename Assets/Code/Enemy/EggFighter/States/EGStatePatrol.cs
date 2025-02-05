@@ -1,7 +1,8 @@
 ﻿using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.StateMachine;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Enemy.States
+namespace SurgeEngine.Code.Enemy.EggFighter.States
 {
     public class EGStatePatrol : EGState
     {
@@ -10,7 +11,7 @@ namespace SurgeEngine.Code.Enemy.States
         private float _timer;
         private float _patrolTimer;
         
-        public EGStatePatrol(EggFighter eggFighter, Transform transform, Rigidbody rb) : base(eggFighter, transform, rb)
+        public EGStatePatrol(EnemyBase enemy) : base(enemy)
         {
         }
 
@@ -23,7 +24,7 @@ namespace SurgeEngine.Code.Enemy.States
 
             if (eggFighter.stateMachine.PreviousState is EGStateTurn)
             {
-                _targetPoint = Rb.position + transform.forward * eggFighter.patrolDistance;
+                _targetPoint = eggFighter.rb.position + transform.forward * eggFighter.patrolDistance;
             }
             else
             {

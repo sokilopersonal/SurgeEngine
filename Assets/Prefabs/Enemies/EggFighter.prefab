@@ -46,10 +46,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bc4cd860cc8409799c2f1df1bad294b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  view: {fileID: 1331910105712177873}
+  animation: {fileID: 8187130217706908636}
   stateMachine:
     currentStateName: 
-  animation: {fileID: 532031524004221244}
-  view: {fileID: 1331910105712177873}
   animationReference: {fileID: 7560760262493947178}
   ragdollPrefab: {fileID: 4729933678536235600}
   findDistance: 0
@@ -158,6 +158,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   turnTime: 0
+  rb: {fileID: 0}
 --- !u!54 &2170706643375227302
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -332,7 +333,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5913160398915718345}
   - component: {fileID: 5521076903748107578}
-  - component: {fileID: 532031524004221244}
+  - component: {fileID: 8187130217706908636}
   - component: {fileID: 1331910105712177873}
   m_Layer: 12
   m_Name: Model
@@ -381,7 +382,7 @@ CapsuleCollider:
   m_Height: 2.2
   m_Direction: 1
   m_Center: {x: 0, y: 1.1, z: 0}
---- !u!114 &532031524004221244
+--- !u!114 &8187130217706908636
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -390,7 +391,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6598288326902543729}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a76a97b45064fdc991b86a31efee01f, type: 3}
+  m_Script: {fileID: 11500000, guid: 86ad81379cd10a44b8bc1dbbd8d7663d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 720597540709991440}

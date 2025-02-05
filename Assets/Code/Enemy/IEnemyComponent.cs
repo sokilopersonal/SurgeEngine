@@ -1,4 +1,6 @@
-﻿namespace SurgeEngine.Code.StateMachine
+﻿using SurgeEngine.Code.Enemy;
+
+namespace SurgeEngine.Code.StateMachine
 {
     public interface IEnemyComponent
     {

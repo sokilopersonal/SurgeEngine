@@ -1,10 +1,7 @@
-﻿using System;
-using FMODUnity;
-using SurgeEngine.Code.Enemy.States;
-using SurgeEngine.Code.StateMachine;
-using UnityEngine;
+﻿using FMODUnity;
+using SurgeEngine.Code.Enemy.EggFighter.States;
 
-namespace SurgeEngine.Code.Enemy
+namespace SurgeEngine.Code.Enemy.EggFighter
 {
     public class EGView : EnemyView
     {

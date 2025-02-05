@@ -242,9 +242,4 @@ namespace SurgeEngine.Code.ActorSystem
         public InputDevice GetDevice() { return _device; }
         public string GetTranslatedDeviceName(InputDevice device) { return _translatedDeviceNames[device.name]; }
     }
-
-    public class ActorComponent : MonoBehaviour
-    {
-        protected Actor actor => ActorContext.Context;
-    }
 }
