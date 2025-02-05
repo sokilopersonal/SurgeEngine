@@ -1,6 +1,6 @@
 ﻿using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Custom;
-using SurgeEngine.Code.Debug;
+using SurgeEngine.Code.CustomDebug;
 using SurgeEngine.Code.Tools;
 using UnityEngine;
 

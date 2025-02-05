@@ -1,7 +1,7 @@
 ﻿using SurgeEngine.Code.CommonObjects;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Debug
+namespace SurgeEngine.Code.CustomDebug
 {
     public static class TrajectoryDrawer
     {

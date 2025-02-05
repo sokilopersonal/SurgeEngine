@@ -1,7 +1,7 @@
 using SurgeEngine.Code.ActorStates;
 using SurgeEngine.Code.ActorStates.SonicSpecific;
 using SurgeEngine.Code.ActorSystem;
-using SurgeEngine.Code.Debug;
+using SurgeEngine.Code.CustomDebug;
 using UnityEngine;
 
 namespace SurgeEngine.Code.CommonObjects

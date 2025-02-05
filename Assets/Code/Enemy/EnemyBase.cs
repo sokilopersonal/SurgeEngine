@@ -10,12 +10,11 @@ namespace SurgeEngine.Code.Enemy
     {
         public EnemyView view;
         public new StateAnimator animation;
-        public FStateMachine stateMachine;
 
-        protected virtual void Awake()
+        protected override void Awake()
         {
-            stateMachine = new FStateMachine();
-
+            base.Awake();
+            
             foreach (var component in new IEnemyComponent[] { view })
             {
                 component?.SetOwner(this);
