@@ -55,8 +55,7 @@ namespace SurgeEngine.Code.ActorSystem
             SetFloat("AbsWallDot", Mathf.Lerp(animator.GetFloat("AbsWallDot"), 
                 Mathf.Abs(Mathf.Approximately(actor.stats.groundAngle, 90) ? dot : 0), 1 * Time.deltaTime));
         }
-
-        // TODO: Get rid of Delayed animations (switch to my transition)
+        
         private void ChangeStateAnimation(FState obj)
         {
             FStateMachine machine = actor.stateMachine;
@@ -466,7 +465,7 @@ namespace SurgeEngine.Code.ActorSystem
         /// <param name="action"></param>
         public void AfterThen(float delay, Action action)
         {
-            OnAnimationEnd += () => _owner.StartCoroutine(DelayedAction(delay, action));
+            OnAnimationEnd += () => _owner.animationDelayedCoroutine = _owner.StartCoroutine(DelayedAction(delay, action));
         }
 
         private IEnumerator DelayedAction(float delay, Action action)
