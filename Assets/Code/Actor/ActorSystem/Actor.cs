@@ -12,7 +12,7 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.ActorSystem
 {
-    public class Actor : Entity
+    public class Actor : Entity, IDamageable
     {
         [Foldout("Components")] public ActorInput input;
         [Foldout("Components")] public ActorStats stats;
@@ -26,6 +26,7 @@ namespace SurgeEngine.Code.ActorSystem
         
         [Foldout("Base Physics")]
         public BaseActorConfig config;
+        public DamageKickConfig damageKickConfig;
         
         private StartData _startData;
 
@@ -57,6 +58,8 @@ namespace SurgeEngine.Code.ActorSystem
             stateMachine.AddState(new FStateJumpSelectorLaunch(this, body));
             stateMachine.AddState(new FStateSwing(this, body));
             stateMachine.AddState(new FStateSwingJump(this, body));
+            stateMachine.AddState(new FStateDamage(this, body));
+            stateMachine.AddState(new FStateDamageLand(this, body));
             
             animation?.Initialize(stateMachine);
         }
@@ -78,6 +81,18 @@ namespace SurgeEngine.Code.ActorSystem
         protected virtual void InitializeConfigs()
         {
             AddConfig(config);
+            AddConfig(damageKickConfig);
+        }
+
+        public void TakeDamage(object sender, float damage)
+        {
+            if (sender is PlayerDamageObject obj)
+            {
+                Vector3 dir = transform.position - obj.transform.position;
+                var dmg = stateMachine.SetState<FStateDamage>();
+                dmg?.SetDirection(dir);
+                Debug.DrawRay(transform.position, dir * 3, Color.red, 5);
+            }
         }
 
         public StartData GetStartData() => _startData;

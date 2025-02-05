@@ -53,7 +53,33 @@ namespace SurgeEngine.Code.StateMachine.Components
             _animationWaitCoroutine = StartCoroutine(WaitForAnimationEnd(stateName, transition));
             return transition;
         }
-        
+
+        public AnimationHandle TransitionToStateDelayed(string stateName, float delay, float transitionTime = 0.25f)
+        {
+            if (animationDelayedCoroutine != null)
+            {
+                StopCoroutine(animationDelayedCoroutine);
+                animationDelayedCoroutine = null;
+            }
+
+            var handle = new AnimationHandle(this);
+            animationDelayedCoroutine = StartCoroutine(DelayedTransitionCoroutine(stateName, delay, transitionTime, handle));
+            return handle;
+        }
+
+        private IEnumerator DelayedTransitionCoroutine(string stateName, float delay, float transitionTime, AnimationHandle handle)
+        {
+            yield return new WaitForSeconds(delay);
+            animationDelayedCoroutine = null;
+
+            if (handle.IsCanceled)
+                yield break;
+
+            var animationHandle = TransitionToState(stateName, transitionTime);
+            handle.LinkAnimationHandle(animationHandle);
+            animationHandle.Then(() => handle.InvokeEnd());
+        }
+
         private IEnumerator WaitForAnimationEnd(string stateName, AnimationHandle handle)
         {
             var stateInfo = animator.GetCurrentAnimatorStateInfo(0);
@@ -81,38 +107,39 @@ namespace SurgeEngine.Code.StateMachine.Components
     
     public class AnimationHandle
     {
-        private StateAnimator _owner;
+        private readonly StateAnimator _owner;
+        private AnimationHandle _linkedAnimationHandle;
+
         public AnimationHandle(StateAnimator owner) => _owner = owner;
 
         public event Action OnAnimationEnd;
         public bool IsCanceled { get; private set; }
+
+        internal void LinkAnimationHandle(AnimationHandle animationHandle)
+        {
+            _linkedAnimationHandle = animationHandle;
+        }
+
         public void Cancel()
         {
             IsCanceled = true;
+            if (_owner.animationDelayedCoroutine != null)
+            {
+                _owner.StopCoroutine(_owner.animationDelayedCoroutine);
+                _owner.animationDelayedCoroutine = null;
+            }
+            _linkedAnimationHandle?.Cancel();
         }
+
         internal void InvokeEnd() => OnAnimationEnd?.Invoke();
 
-        /// <summary>
-        /// Adds an action to be called when the animation ends
-        /// </summary>
-        /// <param name="action"></param>
         public void Then(Action action) => OnAnimationEnd += action;
 
-        /// <summary>
-        /// Adds an action to be called after a delay after the animation starts
-        /// </summary>
-        /// <param name="delay"></param>
-        /// <param name="action"></param>
         public void After(float delay, Action action)
         {
             _owner.animationDelayedCoroutine = _owner.StartCoroutine(DelayedAction(delay, action));
         }
 
-        /// <summary>
-        /// Adds an action to be called after a delay after the animation ends
-        /// </summary>
-        /// <param name="delay"></param>
-        /// <param name="action"></param>
         public void AfterThen(float delay, Action action)
         {
             OnAnimationEnd += () => _owner.animationDelayedCoroutine = _owner.StartCoroutine(DelayedAction(delay, action));
