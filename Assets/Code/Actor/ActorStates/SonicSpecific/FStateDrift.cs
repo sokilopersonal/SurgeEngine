@@ -59,7 +59,7 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
             base.OnFixedTick(dt);
 
             HurtBox.Create(Actor, Actor.transform.position + new Vector3(0f, -0.75f, 0f), Actor.transform.rotation,
-                new Vector3(0.75f, 0.3f, 0.75f));
+                new Vector3(0.75f, 0.3f, 0.75f), HurtBoxTarget.Enemy | HurtBoxTarget.Breakable);
             
             if (Common.CheckForGround(out RaycastHit hit))
             {

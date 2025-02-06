@@ -112,7 +112,9 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
                 StateMachine.SetState<FStateAir>();
             }
 
-            HurtBox.Create(Actor, Actor.transform.position + new Vector3(0f, 0.25f, 0.25f), Actor.transform.rotation, new Vector3(0.5f, 0.5f, 0.75f));
+            HurtBox.Create(Actor, 
+                Actor.transform.position + new Vector3(0f, 0.25f, 0.25f),
+                Actor.transform.rotation, new Vector3(0.5f, 0.5f, 0.75f), HurtBoxTarget.Enemy | HurtBoxTarget.Breakable);
         }
         
         public float Timeout { get; set; }

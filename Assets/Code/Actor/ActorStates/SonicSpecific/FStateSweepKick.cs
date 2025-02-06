@@ -85,7 +85,9 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
             }
 
             if (timer >= 0.2f && timer <= 0.7f)
-                HurtBox.Create(Actor, Actor.transform.position + new Vector3(0f, 0.25f, 0f), Actor.transform.rotation, new Vector3(1f, 0.5f, 1f));
+                HurtBox.Create(Actor, 
+                    Actor.transform.position + new Vector3(0f, 0.25f, 0f),
+                    Actor.transform.rotation, new Vector3(1f, 0.5f, 1f), HurtBoxTarget.Enemy | HurtBoxTarget.Breakable);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace SurgeEngine.Code.CommonObjects
 {
@@ -13,18 +14,18 @@ namespace SurgeEngine.Code.CommonObjects
         /// <param name="transform">Transform to create the hurtbox around</param>
         /// <param name="size">Size of the hurtbox</param>
         /// <returns>True, if it hits anything</returns>
-        public static bool CreateAttached(object sender, Transform transform, Vector3 size)
+        public static bool CreateAttached(object sender, Transform transform, Vector3 size, HurtBoxTarget target)
         {
-            int mask = GetMask();
+            int mask = GetMask(target);
             var hits = Physics.OverlapBox(transform.position, size, transform.rotation, mask);
 
             foreach (var hit in hits)
             {
                 Transform hitTransform = hit.transform;
                 IDamageable damageable = hit.GetComponentInParent<IDamageable>();
-                if (hitTransform && damageable != null)
+                if (hitTransform)
                 {
-                    damageable.TakeDamage(sender, 0);
+                    damageable?.TakeDamage(sender, 0);
                     return true;
                 }
             }
@@ -39,17 +40,18 @@ namespace SurgeEngine.Code.CommonObjects
         /// <param name="rotation">Box rotation</param>
         /// <param name="size">Box size</param>
         /// <returns>True, if it hits anything</returns>
-        public static bool Create(object sender, Vector3 position, Quaternion rotation, Vector3 size)
+        public static bool Create(object sender, Vector3 position, Quaternion rotation, Vector3 size, HurtBoxTarget target)
         {
-            int mask = GetMask();
+            int mask = GetMask(target);
             var hits = Physics.OverlapBox(position, size, rotation, mask);
             
             foreach (var hit in hits)
             {
                 Transform transform = hit.transform;
                 IDamageable damageable = hit.GetComponentInParent<IDamageable>();
-                if (transform && damageable != null)
+                if (transform)
                 {
+                    Debug.Log(transform.name);
                     damageable?.TakeDamage(sender, 0);
                     return true;
                 }
@@ -58,9 +60,25 @@ namespace SurgeEngine.Code.CommonObjects
             return false;
         }
 
-        private static int GetMask()
+        private static int GetMask(HurtBoxTarget target)
         {
-            return LayerMask.GetMask("Default", "Enemy", "Breakable");
-        } 
+            int mask = 0;
+            if (target.HasFlag(HurtBoxTarget.Player))
+                mask |= LayerMask.GetMask("Actor");
+            if (target.HasFlag(HurtBoxTarget.Enemy))
+                mask |= LayerMask.GetMask("Enemy");
+            if (target.HasFlag(HurtBoxTarget.Breakable))
+                mask |= LayerMask.GetMask("Breakable");
+            return mask;
+        }
+
+    }
+
+    [Flags]
+    public enum HurtBoxTarget
+    {
+        Player = 1,
+        Enemy = 2,
+        Breakable = 4
     }
 }

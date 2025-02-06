@@ -67,7 +67,9 @@ namespace SurgeEngine.Code.ActorStates
         {
             base.OnFixedTick(dt);
             
-            if (Actor.animation.GetCurrentAnimationState() == "Ball" && HurtBox.Create(Actor, Actor.transform.position + new Vector3(0f, -0.45f, 0f), Actor.transform.rotation, new Vector3(0.6f, 0.6f, 0.6f)))
+            if (Actor.animation.GetCurrentAnimationState() == "Ball" 
+                && HurtBox.Create(Actor, Actor.transform.position + new Vector3(0f, -0.45f, 0f), Actor.transform.rotation, new Vector3(0.6f, 0.6f, 0.6f), 
+                    HurtBoxTarget.Enemy | HurtBoxTarget.Breakable))
             {
                 StateMachine.SetState<FStateJump>(allowSameState: true);
             }

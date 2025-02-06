@@ -71,7 +71,7 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
             base.OnFixedTick(dt);
 
             HurtBox.Create(Actor, Actor.transform.position + new Vector3(0f, -0.1f, 0f), Actor.transform.rotation,
-                new Vector3(1.1f, 2f, 1.1f));
+                new Vector3(1.1f, 2f, 1.1f), HurtBoxTarget.Enemy | HurtBoxTarget.Breakable);
 
             Vector3 vel = _rigidbody.linearVelocity;
             float horizontalSpeedMultiplier = released ? 0f : _config.curve.Evaluate(_timer);
