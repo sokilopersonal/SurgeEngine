@@ -24844,8 +24844,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 6170386477459605054}
-  chargeParticle: {fileID: 4666673407792663521}
-  fireParticle: {fileID: 1625192285862662323}
 --- !u!95 &6170386477459605054
 Animator:
   serializedVersion: 7
@@ -54546,6 +54544,8 @@ GameObject:
   - component: {fileID: 8369128971721817301}
   - component: {fileID: 4759353780106401067}
   - component: {fileID: 2570968368960566440}
+  - component: {fileID: 7280012961521008136}
+  - component: {fileID: 3832595014372491440}
   m_Layer: 12
   m_Name: AeroCannon
   m_TagString: Untagged
@@ -54610,6 +54610,48 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.225, y: 1, z: 2}
   m_Center: {x: 0, y: 0, z: 0.425}
+--- !u!114 &7280012961521008136
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8844729648764271733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f6ce8f90d933544c91a95254c232d15, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemy: {fileID: 4759353780106401067}
+  chargeParticle: {fileID: 4666673407792663521}
+  fireParticle: {fileID: 1625192285862662323}
+--- !u!114 &3832595014372491440
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8844729648764271733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 560f1ac8921e92a4093eb36508411459, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemy: {fileID: 4759353780106401067}
+  chargeSound:
+    Guid:
+      Data1: -570961814
+      Data2: 1075075800
+      Data3: -1926693974
+      Data4: 165125488
+    Path: event:/Enemies/AeroCannon/Charge
+  fireSound:
+    Guid:
+      Data1: -2009642275
+      Data2: 1331417112
+      Data3: -1499674480
+      Data4: 590393400
+    Path: event:/Enemies/AeroCannon/Fire
 --- !u!1001 &1760174047140124336
 PrefabInstance:
   m_ObjectHideFlags: 0

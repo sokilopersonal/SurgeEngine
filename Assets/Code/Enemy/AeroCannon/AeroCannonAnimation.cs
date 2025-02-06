@@ -7,8 +7,6 @@ namespace SurgeEngine.Code.Enemy.AeroCannon
 {
     public class AeroCannonAnimation : StateAnimator
     {
-        [SerializeField] ParticleSystem chargeParticle;
-        [SerializeField] ParticleSystem fireParticle;
         protected override void AnimationTick()
         {
         }
@@ -22,15 +20,9 @@ namespace SurgeEngine.Code.Enemy.AeroCannon
                 TransitionToState("Idle");
             }
 
-            if (obj is ACStatePrepare)
-                chargeParticle.Play(true);
-            else
-                chargeParticle.Stop(true);
-
             if (obj is ACStateShoot)
             {
                 TransitionToState("Shoot");
-                fireParticle.Play(true);
             }
         }
     }
