@@ -18,7 +18,7 @@ namespace SurgeEngine.Code.CommonObjects
 
         protected Vector3 direction = Vector3.up;
 
-        protected virtual void Awake()
+        protected override void Awake()
         {
             direction = transform.up;
         }

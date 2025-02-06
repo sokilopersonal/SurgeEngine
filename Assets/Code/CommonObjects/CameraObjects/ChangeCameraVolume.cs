@@ -9,7 +9,7 @@ namespace SurgeEngine.Code.CommonObjects.CameraObjects
         
         private BoxCollider _boxCollider;
 
-        private void Awake()
+        protected override void Awake()
         {
             _boxCollider = GetComponent<BoxCollider>();
             

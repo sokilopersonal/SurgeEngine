@@ -31,7 +31,7 @@ namespace SurgeEngine.Code.CommonObjects
             }
         }
 
-        private void Update()
+        protected override void Update()
         {
             if (_actor == null)
             {

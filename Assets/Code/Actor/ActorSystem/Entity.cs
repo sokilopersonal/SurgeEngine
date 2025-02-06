@@ -15,17 +15,17 @@ namespace SurgeEngine.Code.ActorSystem
             stateMachine = new FStateMachine();
         }
 
-        private void Update()
+        protected virtual void Update()
         {
             stateMachine?.Tick(Time.deltaTime);
         }
 
-        private void FixedUpdate()
+        protected virtual void FixedUpdate()
         {
             stateMachine?.FixedTick(Time.fixedDeltaTime);
         }
 
-        private void LateUpdate()
+        protected virtual void LateUpdate()
         {
             stateMachine?.LateTick(Time.deltaTime);
         }

@@ -22,18 +22,18 @@ namespace SurgeEngine.Code.Enemy
             
             animation?.Initialize(stateMachine);
         }
-        
-        private void Update()
+
+        protected override void Update()
         {
             stateMachine.Tick(Time.deltaTime);
         }
 
-        private void FixedUpdate()
+        protected override void FixedUpdate()
         {
             stateMachine.FixedTick(Time.fixedDeltaTime);
         }
 
-        private void LateUpdate()
+        protected override void LateUpdate()
         {
             stateMachine.LateTick(Time.deltaTime);
         }

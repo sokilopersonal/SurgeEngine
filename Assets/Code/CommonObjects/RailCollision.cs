@@ -7,7 +7,7 @@ namespace SurgeEngine.Code.CommonObjects
     {
         private Rail _rail;
 
-        private void Awake()
+        protected override void Awake()
         {
             _rail = GetComponentInParent<Rail>();
         }

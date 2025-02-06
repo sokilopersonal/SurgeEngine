@@ -32,14 +32,14 @@ namespace SurgeEngine.Code.CommonObjects
         private Actor _actor;
         private Sequence _rotationSequence;
 
-        public event Action<JumpSelectorResultType> OnJumpSelectorResult; 
+        public event Action<JumpSelectorResultType> OnJumpSelectorResult;
 
-        private void Awake()
+        protected override void Awake()
         {
             _view = GetComponentInChildren<JumpSelectorView>();
         }
 
-        private void Update()
+        protected override void Update()
         {
             _actor ??= ActorContext.Context;
             

@@ -47,7 +47,7 @@ namespace SurgeEngine.Code.CommonObjects
         private QuickTimeEventUI _currentQTEUI;
         private float timer;
 
-        private void Awake()
+        protected override void Awake()
         {
             _qteSequences = new List<QTESequence>();
         }
@@ -62,7 +62,7 @@ namespace SurgeEngine.Code.CommonObjects
             OnQTEResultReceived -= OnResultReceived;
         }
 
-        private void Update()
+        protected override void Update()
         {
             if (_qteSequences.Count > 0)
             {
