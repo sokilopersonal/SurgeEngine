@@ -27,6 +27,11 @@ namespace SurgeEngine.Code.Enemy.AeroCannon.States
             enemy.stateMachine.OnStateAssign += OnStateAssign;
         }
 
+        private void OnDestroy()
+        {
+            charge.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        }
+
         void OnStateAssign(FState obj)
         {
             if (obj is ACStatePrepare)
