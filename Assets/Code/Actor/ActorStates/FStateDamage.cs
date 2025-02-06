@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using SurgeEngine.Code.ActorStates.BaseStates;
+using SurgeEngine.Code.ActorStates.SonicSubStates;
 using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Config;
 using SurgeEngine.Code.Custom;
@@ -34,7 +35,8 @@ namespace SurgeEngine.Code.ActorStates
         public override void OnEnter()
         {
             base.OnEnter();
-            
+
+            StateMachine.GetSubState<FBoost>().Active = false;
             Common.ResetVelocity(ResetVelocityType.Both);
             _timer = 0.6f;
         }

@@ -53,6 +53,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bd6cbed6149450d8915473bfd11948e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stateMachine:
+    currentStateName: 
   input: {fileID: 8032504807134332376}
   stats: {fileID: 7099733658116403469}
   sounds: {fileID: 8348964648566409893}
@@ -62,12 +64,8 @@ MonoBehaviour:
   model: {fileID: 6916054324571523613}
   flags: {fileID: 1696099844310411520}
   kinematics: {fileID: 3514203903129675520}
-  damageLayer:
-    serializedVersion: 2
-    m_Bits: 0
   config: {fileID: 11400000, guid: 4943dea0e9db112488453fa3fc70581d, type: 2}
-  stateMachine:
-    currentStateName: 
+  damageKickConfig: {fileID: 0}
   boostConfig: {fileID: 11400000, guid: cefe272c9833c134599bdf98dc172d8f, type: 2}
   driftConfig: {fileID: 11400000, guid: 3963394ce6d7cbc4981f7467b1f4aa59, type: 2}
   homingConfig: {fileID: 11400000, guid: 26d8aa117f8802940838f20a3156f005, type: 2}
@@ -40300,6 +40298,7 @@ GameObject:
   - component: {fileID: 1749019467311376387}
   - component: {fileID: 5677909171274304080}
   - component: {fileID: 4778545105552515917}
+  - component: {fileID: 9105569923019656384}
   - component: {fileID: 8603560060382622326}
   - component: {fileID: 4193459189463378298}
   - component: {fileID: 2517253991312522078}
@@ -40437,6 +40436,25 @@ MonoBehaviour:
       Data3: 1891073425
       Data4: -985354981
     Path: event:/Common/Land
+--- !u!114 &9105569923019656384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3999411662334716339}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a42ba4cd452490b4ab4f5ac10bf26bfe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damageVoice:
+    Guid:
+      Data1: 2030514725
+      Data2: 1149029014
+      Data3: -1356646783
+      Data4: 616066077
+    Path: event:/Sonic/DamageVoice
 --- !u!114 &8603560060382622326
 MonoBehaviour:
   m_ObjectHideFlags: 0
