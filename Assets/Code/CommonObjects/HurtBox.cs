@@ -51,7 +51,6 @@ namespace SurgeEngine.Code.CommonObjects
                 IDamageable damageable = hit.GetComponentInParent<IDamageable>();
                 if (transform)
                 {
-                    Debug.Log(transform.name);
                     damageable?.TakeDamage(sender, 0);
                     return true;
                 }
