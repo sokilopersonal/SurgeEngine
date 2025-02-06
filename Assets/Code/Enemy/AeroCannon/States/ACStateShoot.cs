@@ -6,8 +6,6 @@ namespace SurgeEngine.Code.Enemy.AeroCannon.States
 {
     public class ACStateShoot : ACState
     {
-        private float _timer;
-        
         public ACStateShoot(EnemyBase enemy) : base(enemy)
         {
         }
@@ -16,7 +14,7 @@ namespace SurgeEngine.Code.Enemy.AeroCannon.States
         {
             base.OnEnter();
 
-            _timer = config.prepareTime;
+            timer = 1;
 
             if (IsInSight(out var target))
             {
@@ -32,7 +30,7 @@ namespace SurgeEngine.Code.Enemy.AeroCannon.States
         {
             base.OnTick(dt);
 
-            if (Common.TickTimer(ref _timer, config.prepareTime))
+            if (Common.TickTimer(ref timer, 1, false))
             {
                 stateMachine.SetState<ACStateIdle>();
             }

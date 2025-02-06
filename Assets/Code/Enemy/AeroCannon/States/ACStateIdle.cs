@@ -1,4 +1,6 @@
-﻿namespace SurgeEngine.Code.Enemy.AeroCannon.States
+﻿using SurgeEngine.Code.Custom;
+
+namespace SurgeEngine.Code.Enemy.AeroCannon.States
 {
     public class ACStateIdle : ACState
     {
@@ -6,11 +8,21 @@
         {
         }
 
+        public override void OnEnter()
+        {
+            base.OnEnter();
+
+            timer = config.idleTime;
+        }
+
         public override void OnTick(float dt)
         {
-            if (IsInSight(out var target))
+            if (Common.TickTimer(ref timer, config.idleTime, false))
             {
-                stateMachine.SetState<ACStatePrepare>();
+                if (IsInSight(out var target))
+                {
+                    stateMachine.SetState<ACStatePrepare>();
+                }
             }
         }
     }

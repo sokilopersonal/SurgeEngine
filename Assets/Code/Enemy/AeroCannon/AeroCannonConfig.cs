@@ -7,6 +7,7 @@ namespace SurgeEngine.Code.Enemy.AeroCannon
     {
         public float viewDistance = 10;
         public LayerMask mask;
+        public float idleTime = 1.5f;
         public float prepareTime = 1;
     }
 }

@@ -101,6 +101,7 @@ namespace SurgeEngine.Code.ActorSystem
         None = 0,
         OutOfControl = 1,
         OnWater = 2,
-        Underwater = 4
+        Underwater = 4,
+        Invincible = 8
     }
 }

@@ -8,6 +8,7 @@ namespace SurgeEngine.Code.Enemy.AeroCannon.States
     {
         protected readonly AeroCannon aeroCannon;
         protected readonly AeroCannonConfig config;
+        protected float timer;
         
         public ACState(EnemyBase enemy) : base(enemy)
         {

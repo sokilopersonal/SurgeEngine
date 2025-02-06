@@ -5,8 +5,6 @@ namespace SurgeEngine.Code.Enemy.AeroCannon.States
 {
     public class ACStatePrepare : ACState
     {
-        private float _timer;
-        
         public ACStatePrepare(EnemyBase enemy) : base(enemy)
         {
         }
@@ -15,7 +13,7 @@ namespace SurgeEngine.Code.Enemy.AeroCannon.States
         {
             base.OnEnter();
 
-            _timer = config.prepareTime;
+            timer = config.prepareTime;
         }
 
         public override void OnTick(float dt)
@@ -29,7 +27,7 @@ namespace SurgeEngine.Code.Enemy.AeroCannon.States
                 Quaternion rotation = Quaternion.LookRotation(direction, Vector3.up);
                 transform.rotation = Quaternion.Slerp(transform.rotation, rotation, 8f * Time.deltaTime);
                 
-                if (Common.TickTimer(ref _timer, config.prepareTime, false))
+                if (Common.TickTimer(ref timer, config.prepareTime, false))
                 {
                     stateMachine.SetState<ACStateShoot>();
                 }

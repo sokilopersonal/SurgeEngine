@@ -86,12 +86,12 @@ namespace SurgeEngine.Code.ActorSystem
 
         public void TakeDamage(object sender, float damage)
         {
-            if (sender is PlayerDamageObject obj)
+            if (sender is PlayerDamageObject obj && !flags.HasFlag(FlagType.Invincible))
             {
                 Vector3 dir = transform.position - obj.transform.position;
                 var dmg = stateMachine.SetState<FStateDamage>();
                 dmg?.SetDirection(dir);
-                Debug.DrawRay(transform.position, dir * 3, Color.red, 5);
+                flags.AddFlag(new Flag(FlagType.Invincible, null, true, damageKickConfig.invincibleTime));
             }
         }
 
