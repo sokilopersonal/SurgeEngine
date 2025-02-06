@@ -84,11 +84,11 @@ namespace SurgeEngine.Code.ActorSystem
             AddConfig(damageKickConfig);
         }
 
-        public void TakeDamage(object sender, float damage)
+        public void TakeDamage(Entity sender, float damage)
         {
-            if (sender is PlayerDamageObject obj && !flags.HasFlag(FlagType.Invincible))
+            if (sender && !flags.HasFlag(FlagType.Invincible))
             {
-                Vector3 dir = transform.position - obj.transform.position;
+                Vector3 dir = transform.position - sender.transform.position;
                 var dmg = stateMachine.SetState<FStateDamage>();
                 dmg?.SetDirection(dir);
                 flags.AddFlag(new Flag(FlagType.Invincible, null, true, damageKickConfig.invincibleTime));

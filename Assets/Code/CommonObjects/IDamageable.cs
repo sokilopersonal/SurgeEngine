@@ -1,7 +1,9 @@
-﻿namespace SurgeEngine.Code.CommonObjects
+﻿using SurgeEngine.Code.ActorSystem;
+
+namespace SurgeEngine.Code.CommonObjects
 {
     public interface IDamageable
     {
-        void TakeDamage(object sender, float damage);
+        void TakeDamage(Entity sender, float damage);
     }
 }

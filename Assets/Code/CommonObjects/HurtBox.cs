@@ -1,4 +1,5 @@
 ﻿using System;
+using SurgeEngine.Code.ActorSystem;
 using UnityEngine;
 
 namespace SurgeEngine.Code.CommonObjects
@@ -14,7 +15,7 @@ namespace SurgeEngine.Code.CommonObjects
         /// <param name="transform">Transform to create the hurtbox around</param>
         /// <param name="size">Size of the hurtbox</param>
         /// <returns>True, if it hits anything</returns>
-        public static bool CreateAttached(object sender, Transform transform, Vector3 size, HurtBoxTarget target)
+        public static bool CreateAttached(Entity sender, Transform transform, Vector3 size, HurtBoxTarget target)
         {
             int mask = GetMask(target);
             var hits = Physics.OverlapBox(transform.position, size, transform.rotation, mask);
@@ -40,7 +41,7 @@ namespace SurgeEngine.Code.CommonObjects
         /// <param name="rotation">Box rotation</param>
         /// <param name="size">Box size</param>
         /// <returns>True, if it hits anything</returns>
-        public static bool Create(object sender, Vector3 position, Quaternion rotation, Vector3 size, HurtBoxTarget target)
+        public static bool Create(Entity sender, Vector3 position, Quaternion rotation, Vector3 size, HurtBoxTarget target)
         {
             int mask = GetMask(target);
             var hits = Physics.OverlapBox(position, size, rotation, mask);

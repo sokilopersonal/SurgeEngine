@@ -1,4 +1,5 @@
 ﻿using System;
+using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.Enemy.AeroCannon.States;
 using SurgeEngine.Code.StateMachine;
@@ -26,7 +27,7 @@ namespace SurgeEngine.Code.Enemy.AeroCannon
             stateMachine.SetState<ACStateIdle>();
         }
 
-        public void TakeDamage(object sender, float damage)
+        public void TakeDamage(Entity sender, float damage)
         {
             view.Destroy();
         }
