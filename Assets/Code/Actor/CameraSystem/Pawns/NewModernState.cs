@@ -131,8 +131,8 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             }
             else
             {
-                _stateMachine.xAutoLook = 0;
-                _stateMachine.yAutoLook = 0;
+                _stateMachine.xAutoLook = Mathf.Lerp(_stateMachine.xAutoLook, 0, Time.deltaTime * 12f);
+                _stateMachine.yAutoLook = Mathf.Lerp(_stateMachine.yAutoLook, 0, Time.deltaTime * 12f);
             }
         }
 
