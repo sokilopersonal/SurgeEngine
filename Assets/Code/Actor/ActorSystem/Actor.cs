@@ -89,11 +89,9 @@ namespace SurgeEngine.Code.ActorSystem
 
         public void TakeDamage(Entity sender, float damage)
         {
-            if (sender && !flags.HasFlag(FlagType.Invincible))
+            if (stateMachine.CurrentState is IDamageableState dmgState && !flags.HasFlag(FlagType.Invincible))
             {
-                Vector3 dir = transform.position - sender.transform.position;
-                var dmg = stateMachine.SetState<FStateDamage>();
-                dmg?.SetDirection(dir);
+                dmgState.TakeDamage(this, sender);
                 flags.AddFlag(new Flag(FlagType.Invincible, null, true, damageKickConfig.invincibleTime));
             }
         }

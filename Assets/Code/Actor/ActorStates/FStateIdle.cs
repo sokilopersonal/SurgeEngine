@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.ActorStates
 {
-    public class FStateIdle : FStateMove
+    public class FStateIdle : FStateMove, IDamageableState
     {
         public FStateIdle(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
@@ -61,10 +61,10 @@ namespace SurgeEngine.Code.ActorStates
             
             if (Common.CheckForGround(out RaycastHit hit))
             {
-                Model.RotateBody(Kinematics.Normal);
+                Kinematics.Normal = Vector3.up;
                 
-                Kinematics.Normal = hit.normal;
-                Kinematics.Snap(hit.point, hit.normal, true);
+                Model.RotateBody(Kinematics.Normal);
+                Kinematics.Snap(hit.point, Kinematics.Normal, true);
             }
             else
             {

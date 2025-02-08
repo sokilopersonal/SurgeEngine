@@ -12,20 +12,7 @@ namespace SurgeEngine.Code.ActorStates
     public class FStateDamage : FStateMove
     {
         private readonly DamageKickConfig _config;
-        private Vector3 _direction;
         private float _timer;
-
-        private List<string> _allowedDamageStates = new List<string>()
-        {
-            nameof(FStateGround),
-            nameof(FStateAir),
-            nameof(FStateBrake),
-            nameof(FStateGrind),
-            nameof(FStateGrindJump),
-            nameof(FStateGrindSquat),
-            nameof(FStateIdle),
-            nameof(FStateBrakeTurn)
-        };
 
         public FStateDamage(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
@@ -40,7 +27,7 @@ namespace SurgeEngine.Code.ActorStates
             Common.ResetVelocity(ResetVelocityType.Both);
             _timer = 0.4f;
             
-            _rigidbody.AddForce(-Actor.transform.forward * (_config.directionalForce), ForceMode.VelocityChange);
+            _rigidbody.AddForce(-Actor.transform.forward * _config.directionalForce, ForceMode.VelocityChange);
         }
 
         public override void OnFixedTick(float dt)
@@ -59,22 +46,6 @@ namespace SurgeEngine.Code.ActorStates
                     StateMachine.SetState<FStateDamageLand>();
                 }
             }
-            else
-            {
-                //StateMachine.SetState<FStateAir>();
-            }
-            
-        }
-
-        public void SetDirection(Vector3 direction)
-        {
-            _direction = direction;
-        }
-        
-        public List<string> GetAllowedDamageStates()
-        {
-            Debug.Log(_allowedDamageStates[0]);
-            return _allowedDamageStates;
         }
     }
 }

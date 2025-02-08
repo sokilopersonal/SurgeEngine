@@ -3,7 +3,7 @@ using SurgeEngine.Code.ActorSystem;
 using UnityEngine;
 namespace SurgeEngine.Code.ActorStates
 {
-    public class FStateBrakeTurn : FStateMove
+    public class FStateBrakeTurn : FStateMove, IDamageableState
     {
         private float _timer;
         private Quaternion _rigidbodyRotation;

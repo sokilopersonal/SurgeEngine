@@ -15,7 +15,7 @@ using Vector3 = UnityEngine.Vector3;
 
 namespace SurgeEngine.Code.ActorStates
 {
-    public sealed class FStateGround : FStateMove, IBoostHandler
+    public sealed class FStateGround : FStateMove, IBoostHandler, IDamageableState
     {
         private string _surfaceTag;
         
@@ -132,11 +132,17 @@ namespace SurgeEngine.Code.ActorStates
             BaseActorConfig config = Actor.config;
             float distance = config.castDistance * config.castDistanceCurve
                 .Evaluate(Kinematics.HorizontalSpeed / config.topSpeed);
-            if (Common.CheckForGround(out RaycastHit data, castDistance: distance) && 
-                Kinematics.CheckForPredictedGround(_rigidbody.linearVelocity, Kinematics.Normal, Time.fixedDeltaTime, distance, 6))
+            if (Common.CheckForGround(out RaycastHit data, castDistance: distance))
             {
                 Kinematics.Point = data.point;
-                Kinematics.Normal = data.normal;
+                if (Kinematics.Speed < 7)
+                {
+                    Kinematics.Normal = Vector3.Slerp(Kinematics.Normal, Vector3.up, 12 * Time.fixedDeltaTime);
+                }
+                else
+                {
+                    Kinematics.Normal = Vector3.Slerp(Kinematics.Normal, data.normal, 8 * Time.fixedDeltaTime);
+                }
                 
                 Vector3 stored = Vector3.ClampMagnitude(_rigidbody.linearVelocity, config.maxSpeed);
                 _rigidbody.linearVelocity = Quaternion.FromToRotation(_rigidbody.transform.up, prevNormal) * stored;

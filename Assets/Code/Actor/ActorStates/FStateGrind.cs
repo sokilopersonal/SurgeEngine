@@ -4,6 +4,7 @@ using SurgeEngine.Code.ActorStates.SonicSubStates;
 using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.ActorSystem.Actors;
 using SurgeEngine.Code.CommonObjects;
+using SurgeEngine.Code.Config.SonicSpecific;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.Tools;
 using Unity.Mathematics;
@@ -12,7 +13,7 @@ using UnityEngine.Splines;
 
 namespace SurgeEngine.Code.ActorStates
 {
-    public class FStateGrind : FStateMove, IBoostHandler
+    public class FStateGrind : FStateMove, IBoostHandler, IDamageableState
     {
         private Rail _rail;
         private Vector3 _prevTg;
@@ -32,9 +33,11 @@ namespace SurgeEngine.Code.ActorStates
 
             _timer = 0.1f;
 
+            Actor.TryGetConfig(out HomingConfig homingConfig);
+
             if (StateMachine.PreviousState is FStateHoming)
             {
-                _rigidbody.linearVelocity = _rigidbody.transform.forward * (Actor as Sonic).homingConfig.speed;
+                _rigidbody.linearVelocity = _rigidbody.transform.forward * homingConfig.speed;
             }
         }
 

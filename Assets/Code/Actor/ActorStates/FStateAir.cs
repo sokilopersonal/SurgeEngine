@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.ActorStates
 {
-    public class FStateAir : FStateMove, IBoostHandler
+    public class FStateAir : FStateMove, IBoostHandler, IDamageableState
     {
         protected float _airTime;
 
