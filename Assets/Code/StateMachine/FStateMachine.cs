@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.StateMachine
 {
-    [Serializable]
     public class FStateMachine
     {
         public FState CurrentState { get; private set; }
