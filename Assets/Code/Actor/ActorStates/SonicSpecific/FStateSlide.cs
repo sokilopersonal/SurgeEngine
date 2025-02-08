@@ -104,7 +104,7 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
 
                 Kinematics.WriteMovementVector(_rigidbody.linearVelocity);
                 _rigidbody.linearVelocity = Vector3.MoveTowards(_rigidbody.linearVelocity, Vector3.zero, _config.deceleration * dt);
-                Model.RotateBody(normal);
+                Model.RotateBody(normal, true);
                 Kinematics.Snap(point, normal, true);
             }
             else

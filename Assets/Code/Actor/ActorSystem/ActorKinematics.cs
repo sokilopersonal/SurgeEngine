@@ -168,7 +168,7 @@ namespace SurgeEngine.Code.ActorSystem
             
             _rigidbody.linearVelocity = _movementVector + vertical;
             
-            Snap(point, normal);
+            Snap(point, normal, true);
         }
 
         public void SplineCalculation()
@@ -407,6 +407,8 @@ namespace SurgeEngine.Code.ActorSystem
                     case FStateCrawl:
                         break;
                     case FStateSweepKick:
+                        break;
+                    case FStateSit:
                         break;
                     default:
                         actor.stateMachine.SetState<FStateIdle>();
