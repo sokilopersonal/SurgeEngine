@@ -5,13 +5,13 @@ using SurgeEngine.Code.Custom;
 using UnityEngine;
 namespace SurgeEngine.Code.ActorStates
 {
-    public class FStateBrake : FStateMove
+    public class FStateBrake : FStateMove, IDamageableState
     {
-        private BaseActorConfig _config;
+        private readonly BaseActorConfig _config;
         
         public FStateBrake(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
-            _config = owner.config;
+            owner.TryGetConfig(out _config);
         }
 
         public override void OnTick(float dt)
