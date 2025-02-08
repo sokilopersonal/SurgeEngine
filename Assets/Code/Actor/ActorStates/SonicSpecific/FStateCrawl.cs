@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.ActorStates.SonicSpecific
 {
-    public class FStateCrawl : FStateMove
+    public class FStateCrawl : FStateMove, IStateTimeout
     {
         private string _surfaceTag;
 
@@ -27,6 +27,8 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
         {
             base.OnEnter();
             StateMachine.GetSubState<FBoost>().Active = false;
+
+            Timeout = 0.5f;
             
             Model.SetLowerCollision();
         }
@@ -110,11 +112,10 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
             BaseActorConfig config = Actor.config;
             float distance = config.castDistance * config.castDistanceCurve
                 .Evaluate(Kinematics.HorizontalSpeed / _crawlConfig.topSpeed);
-            if (Common.CheckForGround(out RaycastHit data, castDistance: distance) &&
-                Kinematics.CheckForPredictedGround(_rigidbody.linearVelocity, Kinematics.Normal, Time.fixedDeltaTime, distance, 6))
+            if (Common.CheckForGround(out RaycastHit data, castDistance: distance))
             {
                 Kinematics.Point = data.point;
-                Kinematics.Normal = data.normal;
+                Kinematics.Normal = Vector3.up;
 
                 Vector3 stored = Vector3.ClampMagnitude(_rigidbody.linearVelocity, _crawlConfig.maxSpeed);
                 _rigidbody.linearVelocity = Quaternion.FromToRotation(_rigidbody.transform.up, prevNormal) * stored;
@@ -128,8 +129,14 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
             {
                 StateMachine.SetState<FStateAir>();
             }
+
+            if (Vector3.Angle(data.normal, Vector3.up) > 15)
+            {
+                StateMachine.SetState<FStateGround>();
+            }
         }
 
         public string GetSurfaceTag() => _surfaceTag;
+        public float Timeout { get; set; }
     }
 }

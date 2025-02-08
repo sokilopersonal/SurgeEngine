@@ -21,7 +21,7 @@ namespace SurgeEngine.Code.ActorStates
         
         private readonly QuickStepConfig _quickstepConfig;
         private readonly SlideConfig _slideConfig;
-        
+
         public FStateGround(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
             owner.TryGetConfig(out _quickstepConfig);
@@ -99,7 +99,7 @@ namespace SurgeEngine.Code.ActorStates
                 
                 if (Input.BHeld)
                 {
-                    if (readyForSlide && !readyForDrift)
+                    if (readyForSlide && !readyForDrift && StateMachine.PreviousState is not FStateCrawl)
                     {
                         StateMachine.SetState<FStateSlide>();
                     }
@@ -141,7 +141,7 @@ namespace SurgeEngine.Code.ActorStates
                 }
                 else
                 {
-                    Kinematics.Normal = Vector3.Slerp(Kinematics.Normal, data.normal, 8 * Time.fixedDeltaTime);
+                    Kinematics.Normal = Vector3.Slerp(Kinematics.Normal, data.normal, 6 * Time.fixedDeltaTime);
                 }
                 
                 Vector3 stored = Vector3.ClampMagnitude(_rigidbody.linearVelocity, config.maxSpeed);

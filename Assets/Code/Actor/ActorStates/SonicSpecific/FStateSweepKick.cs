@@ -71,7 +71,7 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
             if (Common.CheckForGround(out RaycastHit hit, CheckGroundType.Normal, Actor.config.castDistance))
             {
                 Vector3 point = hit.point;
-                Vector3 normal = hit.normal;
+                Vector3 normal = Vector3.up;
                 Kinematics.Normal = normal;
 
                 Kinematics.WriteMovementVector(_rigidbody.linearVelocity);

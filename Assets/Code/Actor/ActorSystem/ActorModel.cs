@@ -185,8 +185,8 @@ namespace SurgeEngine.Code.ActorSystem
         public void SetLowerCollision()
         {
             collision.height = 0.3f;
-            collision.radius = 0.25f;
-            collision.center = new Vector3(0, -0.7f, 0);
+            collision.radius = 0.15f;
+            collision.center = new Vector3(0, -0.5f, 0);
         }
 
         /// <summary>

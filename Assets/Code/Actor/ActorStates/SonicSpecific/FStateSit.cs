@@ -1,6 +1,7 @@
 ﻿using SurgeEngine.Code.ActorStates.BaseStates;
 using SurgeEngine.Code.ActorStates.SonicSubStates;
 using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.Config;
 using SurgeEngine.Code.Custom;
 using UnityEngine;
 
@@ -40,7 +41,7 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
                 StateMachine.SetState<FStateJump>(0.1f);
             }
 
-            if (Input.moveVector.magnitude >= 0.5f)
+            if (Input.moveVector.magnitude >= 0.2f)
             {
                 StateMachine.SetState<FStateCrawl>();
             }
@@ -63,12 +64,30 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
         {
             base.OnFixedTick(dt);
 
-            if (Common.CheckForGround(out RaycastHit hit))
+            Vector3 prevNormal = Kinematics.Normal;
+            BaseActorConfig config = Actor.config;
+            float distance = config.castDistance;
+            if (Common.CheckForGround(out RaycastHit data, castDistance: distance))
             {
-                Vector3 point = hit.point;
-                Vector3 normal = hit.normal;
+                Kinematics.Point = data.point;
+                if (Kinematics.Speed < 7)
+                {
+                    Kinematics.Normal = Vector3.Slerp(Kinematics.Normal, Vector3.up, 12 * Time.fixedDeltaTime);
+                }
+                else
+                {
+                    Kinematics.Normal = Vector3.Slerp(Kinematics.Normal, data.normal, 8 * Time.fixedDeltaTime);
+                }
 
-                Kinematics.Snap(point, normal, true);
+                Vector3 stored = Vector3.ClampMagnitude(_rigidbody.linearVelocity, config.maxSpeed);
+                _rigidbody.linearVelocity = Quaternion.FromToRotation(_rigidbody.transform.up, prevNormal) * stored;
+
+                Actor.kinematics.BasePhysics(Kinematics.Point, Kinematics.Normal);
+                Model.RotateBody(Kinematics.Normal);
+            }
+            else
+            {
+                StateMachine.SetState<FStateAir>();
             }
         }
     }
