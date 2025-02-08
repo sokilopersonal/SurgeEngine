@@ -37,6 +37,8 @@ namespace SurgeEngine.Code.ActorSystem
                 return;
             }
             
+            base.Awake();
+            
             Rigidbody body = GetComponent<Rigidbody>();
             body.centerOfMass -= Vector3.up * 0.5f;
             

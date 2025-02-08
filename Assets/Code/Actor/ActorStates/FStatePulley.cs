@@ -15,16 +15,16 @@ namespace SurgeEngine.Code.ActorStates
         public override void OnEnter()
         {
             base.OnEnter();
-
-            _rigidbody.interpolation = RigidbodyInterpolation.None; // For some reason the player lags behind the pulley with interpolation
+            
             _rigidbody.linearVelocity = Vector3.zero;
+            _rigidbody.isKinematic = true;
         }
 
         public override void OnExit()
         {
             base.OnExit();
 
-            _rigidbody.interpolation = RigidbodyInterpolation.Interpolate;
+            _rigidbody.isKinematic = false;
         }
 
         public override void OnTick(float dt)
@@ -35,15 +35,11 @@ namespace SurgeEngine.Code.ActorStates
             {
                 StateMachine.SetState<FStateJump>();
             }
-        }
-
-        public override void OnFixedTick(float dt)
-        {
-            base.OnFixedTick(dt);
             
             if (_attach)
             {
-                _rigidbody.Move(_attach.position, _attach.rotation);
+                _rigidbody.transform.position = _attach.position;
+                _rigidbody.transform.rotation = _attach.rotation;
             }
         }
 

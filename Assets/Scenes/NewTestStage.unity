@@ -2854,7 +2854,7 @@ GameObject:
   - component: {fileID: 367576136}
   - component: {fileID: 367576138}
   - component: {fileID: 367576137}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Pulley
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2910,11 +2910,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f85322d79e5341be9370f512308fcb26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stateMachine:
-    currentStateName: 
   attachPoint: {fileID: 1922520237}
   model: {fileID: 386183011}
-  moveTime: 6
+  moveTime: 1.75
   length: 21
   forwardPushForce: 3
   upPushForce: 13
