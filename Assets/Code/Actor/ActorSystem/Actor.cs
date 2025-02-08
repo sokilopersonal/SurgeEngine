@@ -60,6 +60,7 @@ namespace SurgeEngine.Code.ActorSystem
             stateMachine.AddState(new FStateSwingJump(this, body));
             stateMachine.AddState(new FStateDamage(this, body));
             stateMachine.AddState(new FStateDamageLand(this, body));
+            stateMachine.AddState(new FStatePulley(this, body));
             
             animation?.Initialize(stateMachine);
         }

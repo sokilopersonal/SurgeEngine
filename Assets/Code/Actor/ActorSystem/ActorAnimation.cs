@@ -155,7 +155,7 @@ namespace SurgeEngine.Code.ActorSystem
                     _currentAnimation = AnimatorParams.RunCycle;
                 }
             }
-            if (obj is FStateAir && prev is not FStateSpecialJump and not FStateAfterHoming and not FStateAirBoost)
+            if (obj is FStateAir && prev is not FStateSpecialJump and not FStateAfterHoming and not FStateAirBoost and not FStatePulley)
             {
                 TransitionToState(AnimatorParams.AirCycle, prev switch
                 {
@@ -205,9 +205,17 @@ namespace SurgeEngine.Code.ActorSystem
             if (obj is FStateJump)
             {
                 if (machine.IsPrevExact<FStateJump>())
+                {
                     TransitionToState("Ball", 0f);
+                }
                 else
-                    StartCoroutine(PlayHop());
+                {
+                    if (prev is not FStatePulley) StartCoroutine(PlayHop());
+                    else
+                    {
+                        TransitionToState("PulleyJump", 0.2f).Then(() => TransitionToState(AnimatorParams.AirCycle, 0.1f));
+                    }
+                }
             }
             else
             {
@@ -269,12 +277,10 @@ namespace SurgeEngine.Code.ActorSystem
             {
                 TransitionToState("GrindLoop", 0.25f);
             }
-            
             if (obj is FStateJumpSelectorLaunch)
             {
                 
             }
-            
             if (obj is FStateBrake)
             {
                 TransitionToState("BrakeCycle");
@@ -283,7 +289,6 @@ namespace SurgeEngine.Code.ActorSystem
             {
                 TransitionToState("BrakeTurn", 0.1f);
             }
-            
             if (obj is FStateRunQuickstep runQuickstep)
             {
                 var dir = runQuickstep.GetDirection();
@@ -329,6 +334,16 @@ namespace SurgeEngine.Code.ActorSystem
             if (obj is FStateDamageLand)
             {
                 TransitionToStateDelayed("DamageRestore", 1f, 0);
+            }
+
+            if (obj is FStatePulley)
+            {
+                TransitionToState("PulleyStart", 0f).Then(() => TransitionToState("PulleyLoop"));
+            }
+
+            if (stateMachine.IsExact<FStateAir>() && prev is FStatePulley)
+            {
+                TransitionToState("PulleyExit", 0.1f).AfterThen(0.75f, () => TransitionToState(AnimatorParams.AirCycle, 1f));
             }
         }
         

@@ -69,7 +69,7 @@ namespace SurgeEngine.Code.ActorSystem
         {
             yield return new WaitForSeconds(0.117f);
             
-            if (!(actor.stateMachine.CurrentState is FStateJump))
+            if (actor.stateMachine.CurrentState is not FStateJump)
                 yield break;
             
             if (actor.input.JumpHeld)
@@ -81,7 +81,7 @@ namespace SurgeEngine.Code.ActorSystem
             FStateMachine machine = actor.stateMachine;
             FState prev = actor.stateMachine.PreviousState;
             
-            if (obj is FStateJump)
+            if (obj is FStateJump && prev is not FStatePulley)
             {
                 if (prev is FStateJump)
                     spinball.Toggle(true);
