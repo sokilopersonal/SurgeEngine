@@ -7,6 +7,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Rope
+    second: {fileID: 2100000, guid: ddeb0a52c85288b4db97ebe5ded84aee, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: cmn_obj_pulley_HD_handle
     second: {fileID: 2100000, guid: ded2e63108b338e48bc7c51c614c4825, type: 2}
   - first:
@@ -25,15 +30,35 @@ ModelImporter:
       name: cmn_obj_pulley_HD_pulley
     second: {fileID: 2100000, guid: 64a629f090c85d440a01146aad3527a7, type: 2}
   - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: cmn_obj_upreel_HD_body
+    second: {fileID: 2100000, guid: 17ea78accc5db1849a35492bbd71af85, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: handle
+    second: {fileID: 2100000, guid: 87faa0391ed0da542866dd0c052f4eeb, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: pulley__NSP_CMN_ChaoTexSpecNrmTan__
+    second: {fileID: 2100000, guid: 18a4d6ab65e567a4e82794353c2042a5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: updown_light
+    second: {fileID: 2100000, guid: e8b4ef1e49157f643a5e467265be9b45, type: 2}
+  - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: cmn_metal_ms_pulley_dif
-    second: {fileID: 2800000, guid: 7c2ba0c11e130ae4e82467a610201e5c, type: 3}
+    second: {fileID: 2800000, guid: 366b73e3bc5dcf442ac79a3b141d6c7e, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: cmn_metal_ms_pulley_light_dif
-    second: {fileID: 2800000, guid: f0bd2b4e52cc769438e4e5061e11f80a, type: 3}
+    second: {fileID: 2800000, guid: 19d0f1f5f670e1c4b9ab9cbe74544b2f, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
@@ -48,12 +73,17 @@ ModelImporter:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: cmn_metal_ms_updownreel_handle_dif
-    second: {fileID: 2800000, guid: cf31fe43569670641874e710386796b7, type: 3}
+    second: {fileID: 2800000, guid: 9bd92964396588a40b8b090f7c2ff453, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: cmn_metal_ms_updownreel_handle_nrm
-    second: {fileID: 2800000, guid: 540059c586ad4234795d480d1fcfd82b, type: 3}
+    second: {fileID: 2800000, guid: cfa2f757066f9b3489e2020a2d5fdcf9, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: cmn_metal_ts1_upreel_dif
+    second: {fileID: 2800000, guid: e82f82f1b1643314394584a6ed88b64a, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0

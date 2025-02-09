@@ -35,12 +35,6 @@ namespace SurgeEngine.Code.ActorStates
             {
                 StateMachine.SetState<FStateJump>();
             }
-            
-            if (_attach)
-            {
-                _rigidbody.transform.position = _attach.position;
-                _rigidbody.transform.rotation = _attach.rotation;
-            }
         }
 
         public void SetAttach(Transform attach)

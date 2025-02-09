@@ -338,7 +338,7 @@ namespace SurgeEngine.Code.ActorSystem
 
             if (obj is FStatePulley)
             {
-                TransitionToState("PulleyStart", 0f).Then(() => TransitionToState("PulleyLoop"));
+                TransitionToState("PulleyStart", 0.1f).Then(() => TransitionToState("PulleyLoop", 0.5f));
             }
 
             if (stateMachine.IsExact<FStateAir>() && prev is FStatePulley)
