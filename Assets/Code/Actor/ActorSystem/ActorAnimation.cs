@@ -155,7 +155,7 @@ namespace SurgeEngine.Code.ActorSystem
                     _currentAnimation = AnimatorParams.RunCycle;
                 }
             }
-            if (obj is FStateAir && prev is not FStateSpecialJump and not FStateAfterHoming and not FStateAirBoost and not FStatePulley)
+            if (obj is FStateAir && prev is not FStateSpecialJump and not FStateAfterHoming and not FStateAirBoost and not FStateUpreel)
             {
                 TransitionToState(AnimatorParams.AirCycle, prev switch
                 {
@@ -210,7 +210,7 @@ namespace SurgeEngine.Code.ActorSystem
                 }
                 else
                 {
-                    if (prev is not FStatePulley) StartCoroutine(PlayHop());
+                    if (prev is not FStateUpreel) StartCoroutine(PlayHop());
                     else
                     {
                         TransitionToState("PulleyJump", 0.2f).Then(() => TransitionToState(AnimatorParams.AirCycle, 0.1f));
@@ -336,14 +336,14 @@ namespace SurgeEngine.Code.ActorSystem
                 TransitionToStateDelayed("DamageRestore", 1f, 0);
             }
 
-            if (obj is FStatePulley)
+            if (obj is FStateUpreel)
             {
-                TransitionToState("PulleyStart", 0.1f).Then(() => TransitionToState("PulleyLoop", 0.5f));
+                TransitionToState("UpreelStart", 0f).Then(() => TransitionToState("PulleyLoop", 0.25f));
             }
 
-            if (stateMachine.IsExact<FStateAir>() && prev is FStatePulley)
+            if (stateMachine.IsExact<FStateAir>() && prev is FStateUpreel)
             {
-                TransitionToState("PulleyExit", 0.1f).AfterThen(0.75f, () => TransitionToState(AnimatorParams.AirCycle, 1f));
+                TransitionToState("PulleyExit", 0.1f).AfterThen(0.25f, () => TransitionToState(AnimatorParams.AirCycle, 1f));
             }
         }
         

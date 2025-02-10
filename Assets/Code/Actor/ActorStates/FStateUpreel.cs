@@ -4,11 +4,11 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.ActorStates
 {
-    public class FStatePulley : FStateMove
+    public class FStateUpreel : FStateMove
     {
         private Transform _attach;
         
-        public FStatePulley(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        public FStateUpreel(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
         }
 

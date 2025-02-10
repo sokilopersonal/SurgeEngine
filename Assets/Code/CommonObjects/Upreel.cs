@@ -9,8 +9,7 @@ using STOP_MODE = FMOD.Studio.STOP_MODE;
 
 namespace SurgeEngine.Code.CommonObjects
 {
-    // TODO: Fix that player lags behind the moving upreel
-    public class Pulley : ContactBase
+    public class Upreel : ContactBase
     {
         [Header("Transforms")]
         [SerializeField] private Transform attachPoint;
@@ -18,7 +17,7 @@ namespace SurgeEngine.Code.CommonObjects
         [SerializeField] private LineRenderer rope;
         [SerializeField] private BoxCollider box;
         
-        [Header("Pulley Movement")]
+        [Header("Upreel Movement")]
         [SerializeField, Tooltip("How long it takes to move to the target position")] private float moveTime = 2;
         [SerializeField, Min(1)] private float length = 25;
         
@@ -45,7 +44,7 @@ namespace SurgeEngine.Code.CommonObjects
             _eventInstance.set3DAttributes(transform.To3DAttributes());
             
             model.localPosition = new Vector3(model.localPosition.x, -length, model.localPosition.z);
-            box.center = new Vector3(box.center.x, -length + 0.15f, box.center.z);
+            box.center = new Vector3(box.center.x, model.localPosition.y + 0.15f, box.center.z);
         }
 
         protected override void Update()
@@ -66,7 +65,7 @@ namespace SurgeEngine.Code.CommonObjects
                 {
                     ctx.stateMachine.SetState<FStateAir>();
                     ctx.kinematics.Rigidbody.position += Vector3.up;
-                    ctx.kinematics.Rigidbody.AddForce(Vector3.up * upPushForce, ForceMode.Impulse);
+                    ctx.kinematics.Rigidbody.AddForce(transform.up * upPushForce, ForceMode.Impulse);
                     ctx.kinematics.Rigidbody.AddForce(model.forward * forwardPushForce, ForceMode.Impulse);
                     
                     Cancel(ctx);
@@ -91,7 +90,7 @@ namespace SurgeEngine.Code.CommonObjects
             base.Contact(msg);
             
             Actor context = ActorContext.Context;
-            context.stateMachine.SetState<FStatePulley>(0.1f)?.SetAttach(attachPoint);
+            context.stateMachine.SetState<FStateUpreel>(0.1f)?.SetAttach(attachPoint);
             context.stateMachine.OnStateAssign += OnStateAssign;
 
             _contactPoint = context.transform.position;
@@ -113,7 +112,7 @@ namespace SurgeEngine.Code.CommonObjects
 
         private void OnStateAssign(FState obj)
         {
-            if (obj is not FStatePulley)
+            if (obj is not FStateUpreel)
             {
                 Cancel(ActorContext.Context);
             }
@@ -132,7 +131,7 @@ namespace SurgeEngine.Code.CommonObjects
 
                 if (box)
                 {
-                    box.center = new Vector3(box.center.x, -length + 0.15f, box.center.z);
+                    box.center = new Vector3(box.center.x, model.localPosition.y + 0.15f, box.center.z);
                 }
 
                 if (rope)

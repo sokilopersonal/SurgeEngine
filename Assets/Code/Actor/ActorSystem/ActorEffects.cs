@@ -81,7 +81,7 @@ namespace SurgeEngine.Code.ActorSystem
             FStateMachine machine = actor.stateMachine;
             FState prev = actor.stateMachine.PreviousState;
             
-            if (obj is FStateJump && prev is not FStatePulley)
+            if (obj is FStateJump && prev is not FStateUpreel)
             {
                 if (prev is FStateJump)
                     spinball.Toggle(true);
