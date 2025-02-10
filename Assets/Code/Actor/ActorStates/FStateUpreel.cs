@@ -30,11 +30,6 @@ namespace SurgeEngine.Code.ActorStates
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
-
-            if (Input.JumpPressed)
-            {
-                StateMachine.SetState<FStateJump>();
-            }
         }
 
         public void SetAttach(Transform attach)
