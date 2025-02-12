@@ -1,32 +1,30 @@
-﻿using System;
-using SurgeEngine.Code.StateMachine.Components;
+﻿using SurgeEngine.Code.StateMachine.Components;
 using UnityEngine;
-using UnityEngine.Animations.Rigging;
 
 namespace SurgeEngine.Code.ActorSystem.IK
 {
     public class ActorIKController : MonoBehaviour
     {
-        [SerializeField] private Rig[] rigs;
+        [SerializeField] private AnimationRiggingFootPlanter[] planters;
         [SerializeField] private float weightSpeed = 14;
         private StateAnimator _stateAnimator;
+
+        private float _ikWeight;
 
         private void Awake()
         {
             _stateAnimator = GetComponent<StateAnimator>();
 
-            foreach (var rig in rigs)
-            {
-                rig.weight = 1;
-            }
+            _ikWeight = 1;
         }
 
         private void Update()
         {
             float value = _stateAnimator.IsIKAllowed() ? 1 : 0;
-            foreach (var rig in rigs)
+            _ikWeight = Mathf.Lerp(_ikWeight, value, Time.deltaTime * weightSpeed);
+            foreach (var rig in planters)
             {
-                rig.weight = Mathf.Lerp(rig.weight, value, Time.deltaTime * weightSpeed);
+                rig.SolveIK(_ikWeight);
             }
         }
     }

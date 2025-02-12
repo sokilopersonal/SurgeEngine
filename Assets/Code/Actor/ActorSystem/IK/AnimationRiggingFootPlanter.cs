@@ -19,24 +19,26 @@ namespace SurgeEngine.Code.ActorSystem.IK
         private Vector3 _rayOrigin;
         private Vector3 _positionVelocity;
 
-        private void LateUpdate()
+        public void SolveIK(float multiplier)
         {
             footIK.weight = 0;
             footRefConstraint.weight = 1;
             transform.position = footRefConstraint.transform.position;
             _rayOrigin = transform.position + Vector3.up * rayYOffset;
-
+            
             if (Physics.Raycast(_rayOrigin, Vector3.down, out var hit, rayDistance,mask))
             {
-                footIK.weight = 1;
+                footIK.weight = 1 * multiplier;
                 var pos = hit.point;
                 pos.y += plantedYOffset;
-                IKTarget.position = pos;
+                IKTarget.position = Vector3.SmoothDamp(IKTarget.position, pos, ref _positionVelocity, positionTime);
                 var tarRot = Quaternion.FromToRotation(Vector3.up, hit.normal) * footRefConstraint.transform.rotation;
                 IKTarget.rotation = tarRot;
             }
             
             Debug.DrawRay(_rayOrigin, Vector3.down * rayDistance, Color.red);
         }
+        
+        public TwoBoneIKConstraint GetFootIKConstrain() => footIK;
     }
 }
