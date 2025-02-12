@@ -4728,7 +4728,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2248048767635427180, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
       propertyPath: ikAllowedAnimations.Array.size
-      value: 1
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 2248048767635427180, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
       propertyPath: 'ikAllowedAnimations.Array.data[0]'
@@ -4736,32 +4736,32 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2248048767635427180, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
       propertyPath: 'ikAllowedAnimations.Array.data[1]'
-      value: 
-      objectReference: {fileID: 7400000, guid: 6732e91aa2f2da543b2a5a0b74fd73b2, type: 2}
+      value: sonic_idle_A
+      objectReference: {fileID: 0}
     - target: {fileID: 2248048767635427180, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
       propertyPath: 'ikAllowedAnimations.Array.data[2]'
-      value: 
-      objectReference: {fileID: 7400000, guid: 59d608b8cc67a1d41a8ded1f3f73c680, type: 2}
+      value: sonic_idle_B
+      objectReference: {fileID: 0}
     - target: {fileID: 2248048767635427180, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
       propertyPath: 'ikAllowedAnimations.Array.data[3]'
-      value: 
-      objectReference: {fileID: 7400000, guid: 14d8e691cb980c04e965f507f9c2fc1e, type: 2}
+      value: sonic_idle_C
+      objectReference: {fileID: 0}
     - target: {fileID: 2248048767635427180, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
       propertyPath: 'ikAllowedAnimations.Array.data[4]'
-      value: 
-      objectReference: {fileID: 7400000, guid: 3596fa8adaeef324bbc2ee4f83367b54, type: 2}
+      value: sonic_idle_D
+      objectReference: {fileID: 0}
     - target: {fileID: 2248048767635427180, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
       propertyPath: 'ikAllowedAnimations.Array.data[5]'
-      value: 
-      objectReference: {fileID: 7400000, guid: 12d2667e186a5b444b75421eea8cfc18, type: 2}
+      value: sonic_idle_E_start
+      objectReference: {fileID: 0}
     - target: {fileID: 2248048767635427180, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
       propertyPath: 'ikAllowedAnimations.Array.data[6]'
-      value: 
-      objectReference: {fileID: 7400000, guid: 6dcbb40707dc8784ebeeb6210839b6ca, type: 2}
+      value: sonic_idle_EA
+      objectReference: {fileID: 0}
     - target: {fileID: 2248048767635427180, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
       propertyPath: 'ikAllowedAnimations.Array.data[7]'
-      value: 
-      objectReference: {fileID: 7400000, guid: 65c563cd5743d6d4c908e30d8b9c124e, type: 2}
+      value: sonic_idle_EB
+      objectReference: {fileID: 0}
     - target: {fileID: 2248048767635427180, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
       propertyPath: 'ikAllowedAnimations.Array.data[8]'
       value: 
@@ -4942,10 +4942,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3ecab5f07de4f77923cbb9324fc6c01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rigs:
-  - {fileID: 5864575540287023135}
-  - {fileID: 1118828065735233568}
-  weightSpeed: 14
+  planters:
+  - {fileID: 5212790592425738790}
+  - {fileID: 4966710534018165798}
+  weightSpeed: 10
 --- !u!4 &6635409787500332797 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8308832228826993834, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
