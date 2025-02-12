@@ -8,6 +8,8 @@ namespace SurgeEngine.Code.StateMachine.Components
     public abstract class StateAnimator : MonoBehaviour
     {
         public Animator animator;
+        [SerializeField] private bool allowIK;
+        [SerializeField] private string[] ikAllowedAnimations;
         
         protected string _currentAnimation;
         public Coroutine animationDelayedCoroutine;
@@ -103,6 +105,16 @@ namespace SurgeEngine.Code.StateMachine.Components
         
         public void ResetCurrentAnimationState() => _currentAnimation = string.Empty;
         public string GetCurrentAnimationState() => _currentAnimation;
+
+        public bool IsIKAllowed()
+        {
+            foreach (var state in ikAllowedAnimations)
+            {
+                if (state == _currentAnimation)
+                    return true;
+            }
+            return false;
+        }
     }
     
     public class AnimationHandle
