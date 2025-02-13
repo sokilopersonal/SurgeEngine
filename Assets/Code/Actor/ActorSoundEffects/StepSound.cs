@@ -16,6 +16,8 @@ namespace SurgeEngine.Code.ActorSoundEffects
         private EventInstance _stepSoundInstance;
         private EventInstance _crawlSoundInstance;
         private EventInstance _landSoundInstance;
+        
+        private const float LAND_SOUND_ACTIVATION_THRESHOLD = -5;
 
         public override void Initialize()
         {
@@ -55,7 +57,7 @@ namespace SurgeEngine.Code.ActorSoundEffects
             {
                 FState prev = machine.PreviousState;
 
-                if (prev is FStateAir)
+                if (prev is FStateAir && actor.kinematics.Velocity.y < LAND_SOUND_ACTIVATION_THRESHOLD)
                 {
                     _landSoundInstance.start();
                 }
