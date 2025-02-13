@@ -15,16 +15,27 @@ namespace SurgeEngine.Code.Config
         public float topSpeed = 28;
         public float maxSpeed = 35;
         public float minParaloopSpeed = 28;
+        
+        [Header("Air Physics")]
         public float maxVerticalSpeed;
+        [Range(0.1f, 1)] public float airControl = 0.4f;
+        
+        [Header("Acceleration")]
         public float accelerationRate = 7.5f;
         public AnimationCurve accelerationCurve;
+        
+        [Header("Deceleration")]
         public float minDecelerationRate = 18;
         public float maxDecelerationRate = 15;
         public float airDecelerationRate = 6;
+        
+        [Header("Skidding")]
         public float minSkiddingRate = 10;
         public float maxSkiddingRate = 15;
         public float skiddingThreshold = 0.5f;
         public float skiddingSpeedThreshold = 15f;
+        
+        [Header("Turn")]
         public float turnSpeed = 8;
         public AnimationCurve turnCurve;
         public float turnSmoothing = 10;

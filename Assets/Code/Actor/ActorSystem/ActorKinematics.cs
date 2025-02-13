@@ -358,7 +358,7 @@ namespace SurgeEngine.Code.ActorSystem
         private void BaseAirPhysics()
         {
             float handling = _turnRate;
-            handling *= 0.2f;
+            handling *= _config.airControl;
             _movementVector = Vector3.Lerp(_planarVelocity, _inputDir.normalized * _planarVelocity.magnitude, 
                 handling * Time.fixedDeltaTime);
         }
