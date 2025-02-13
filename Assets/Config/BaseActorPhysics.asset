@@ -47,6 +47,7 @@ MonoBehaviour:
   maxSpeed: 40
   minParaloopSpeed: 28
   maxVerticalSpeed: 80
+  airControl: 0.4
   accelerationRate: 12
   accelerationCurve:
     serializedVersion: 2
@@ -72,8 +73,9 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  minDeaccelerationRate: 18
-  maxDeaccelerationRate: 15
+  minDecelerationRate: 18
+  maxDecelerationRate: 15
+  airDecelerationRate: 24
   minSkiddingRate: 46
   maxSkiddingRate: 75
   skiddingThreshold: -0.55

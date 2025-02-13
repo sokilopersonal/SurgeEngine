@@ -132,17 +132,12 @@ namespace SurgeEngine.Code.ActorStates
             BaseActorConfig config = Actor.config;
             float distance = config.castDistance * config.castDistanceCurve
                 .Evaluate(Kinematics.HorizontalSpeed / config.topSpeed);
-            if (Common.CheckForGround(out RaycastHit data, castDistance: distance))
+            bool checkForPredictedGround =
+                Kinematics.CheckForPredictedGround(Kinematics.Velocity, Kinematics.Normal, Time.deltaTime, distance, 6);
+            if (Common.CheckForGround(out RaycastHit data, castDistance: distance) && checkForPredictedGround)
             {
                 Kinematics.Point = data.point;
-                if (Kinematics.Speed < 7)
-                {
-                    Kinematics.Normal = Vector3.Slerp(Kinematics.Normal, Vector3.up, 12 * Time.fixedDeltaTime);
-                }
-                else
-                {
-                    Kinematics.Normal = Vector3.Slerp(Kinematics.Normal, data.normal, 6 * Time.fixedDeltaTime);
-                }
+                Kinematics.SlerpSnapNormal(data.normal);
                 
                 Vector3 stored = Vector3.ClampMagnitude(_rigidbody.linearVelocity, config.maxSpeed);
                 _rigidbody.linearVelocity = Quaternion.FromToRotation(_rigidbody.transform.up, prevNormal) * stored;

@@ -42,7 +42,11 @@ namespace SurgeEngine.Code.ActorStates
 
                 if (_rigidbody.linearVelocity.magnitude < 0.2f)
                 {
-                    StateMachine.SetState<FStateBrakeTurn>();
+                    if (Kinematics.Skidding) StateMachine.SetState<FStateBrakeTurn>();
+                    else
+                    {
+                        StateMachine.SetState<FStateGround>();
+                    }
                 }
             }
             else
