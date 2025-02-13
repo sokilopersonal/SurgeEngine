@@ -142,15 +142,20 @@ namespace SurgeEngine.Code.ActorSystem
             {
                 if (_inputDir.magnitude > 0.2f)
                 {
-                    _turnRate = Mathf.Lerp(_turnRate, _config.turnSpeed, _config.turnSmoothing * Time.fixedDeltaTime);
-                    float accelRateMod = _config.accelerationCurve.Evaluate(_planarVelocity.magnitude / _config.topSpeed);
-                    if (_planarVelocity.magnitude < _config.topSpeed)
-                        _planarVelocity += dir * (_config.accelerationRate * accelRateMod * Time.fixedDeltaTime);
-                    else if (!SonicTools.IsBoost())
-                        _planarVelocity = Vector3.MoveTowards(_planarVelocity, _planarVelocity.normalized * _config.topSpeed, 8f * Time.fixedDeltaTime);
+                    if (!_skidding)
+                    {
+                        _turnRate = Mathf.Lerp(_turnRate, _config.turnSpeed, _config.turnSmoothing * Time.fixedDeltaTime);
+                        float accelRateMod = _config.accelerationCurve.Evaluate(_planarVelocity.magnitude / _config.topSpeed);
+                        if (_planarVelocity.magnitude < _config.topSpeed)
+                            _planarVelocity += dir * (_config.accelerationRate * accelRateMod * Time.fixedDeltaTime);
+                        
+                        BaseAirPhysics();
+                    }
+                    else
+                    {
+                        Deceleration(_config.airDecelerationRate, _config.airDecelerationRate);
+                    }
                 }
-                
-                BaseAirPhysics();
             }
             
             _rigidbody.linearVelocity = _movementVector + vertical;
@@ -404,6 +409,8 @@ namespace SurgeEngine.Code.ActorSystem
                 _movementVector = Vector3.zero;
                 switch (actor.stateMachine.CurrentState)
                 {
+                    case FStateAir:
+                        break;
                     case FStateCrawl:
                         break;
                     case FStateSweepKick:

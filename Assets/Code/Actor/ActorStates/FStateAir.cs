@@ -72,7 +72,7 @@ namespace SurgeEngine.Code.ActorStates
             {
                 Kinematics.Normal = Vector3.up;
                 
-                Actor.kinematics.BasePhysics(Vector3.zero, Vector3.up);
+                Actor.kinematics.BasePhysics(Vector3.zero, Vector3.up, MovementType.Air);
                 
                 Vector3 vel = Actor.kinematics.Velocity;
                 vel.y = 0;
