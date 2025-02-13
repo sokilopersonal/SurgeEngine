@@ -22,6 +22,13 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
             _timer = WaitTime;
             
             Common.ResetVelocity(ResetVelocityType.Both);
+            if (Common.CheckForGround(out RaycastHit hit))
+            {
+                Vector3 point = hit.point;
+                Vector3 normal = hit.normal;
+
+                Kinematics.Snap(point, normal, true);
+            }
         }
 
         public override void OnTick(float dt)
@@ -38,19 +45,6 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
                 {
                     StateMachine.SetState<FStateIdle>();
                 }
-            }
-        }
-
-        public override void OnFixedTick(float dt)
-        {
-            base.OnFixedTick(dt);
-
-            if (Common.CheckForGround(out RaycastHit hit))
-            {
-                Vector3 point = hit.point;
-                Vector3 normal = hit.normal;
-
-                Kinematics.Snap(point, normal, true);
             }
         }
     }
