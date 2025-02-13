@@ -104,7 +104,7 @@ namespace SurgeEngine.Code.ActorSystem
             SplineCalculation();
         }
 
-        public void BasePhysics(Vector3 point, Vector3 normal)
+        public void BasePhysics(Vector3 point, Vector3 normal, MovementType movementType = MovementType.Ground)
         {
             Vector3 vel = _rigidbody.linearVelocity;
             Vector3 dir = _inputDir;
@@ -113,53 +113,51 @@ namespace SurgeEngine.Code.ActorSystem
             WriteMovementVector(planar);
             _planarVelocity = planar;
 
-            FStateMachine stateMachine = actor.stateMachine;
-            FState state = stateMachine.CurrentState;
-            
-            if (_inputDir.magnitude > 0.2f)
+            if (movementType == MovementType.Ground)
             {
-                if (!_skidding)
+                if (_inputDir.magnitude > 0.2f)
                 {
-                    _turnRate = Mathf.Lerp(_turnRate, _config.turnSpeed, 
-                        _config.turnSmoothing * Time.fixedDeltaTime);
-                    
-                    float accelRateMod = _config.accelerationCurve
-                        .Evaluate(_planarVelocity.magnitude / _config.topSpeed);
-                    if (_planarVelocity.magnitude < _config.topSpeed)
-                        _planarVelocity += dir * (_config.accelerationRate * accelRateMod * Time.fixedDeltaTime);
+                    if (!_skidding)
+                    {
+                        _turnRate = Mathf.Lerp(_turnRate, _config.turnSpeed, _config.turnSmoothing * Time.fixedDeltaTime);
+                        float accelRateMod = _config.accelerationCurve.Evaluate(_planarVelocity.magnitude / _config.topSpeed);
+                        if (_planarVelocity.magnitude < _config.topSpeed)
+                            _planarVelocity += dir * (_config.accelerationRate * accelRateMod * Time.fixedDeltaTime);
+                        else if (!SonicTools.IsBoost())
+                            _planarVelocity = Vector3.MoveTowards(_planarVelocity, _planarVelocity.normalized * _config.topSpeed, 8f * Time.fixedDeltaTime);
+                        
+                        BaseGroundPhysics();
+                    }
                     else
                     {
-                        if (!SonicTools.IsBoost())
-                        {
-                            _planarVelocity = Vector3.MoveTowards(_planarVelocity, _planarVelocity.normalized * _config.topSpeed, 8f * Time.fixedDeltaTime);
-                        }
-                    }
-
-                    switch (state)
-                    {
-                        case FStateGround or FStateSlide or FStateCrawl:
-                            BaseGroundPhysics();
-                            break;
-                        case FStateAir or FStateJump:
-                            BaseAirPhysics();
-                            break;
+                        Deceleration(_config.minSkiddingRate, _config.maxSkiddingRate);
                     }
                 }
                 else
                 {
-                    Deceleration(_config.minSkiddingRate, _config.maxSkiddingRate);
+                    Deceleration(_config.minDeaccelerationRate, _config.maxDeaccelerationRate);
                 }
             }
             else
             {
-                Deceleration(_config.minDeaccelerationRate, _config.maxDeaccelerationRate);
+                if (_inputDir.magnitude > 0.2f)
+                {
+                    _turnRate = Mathf.Lerp(_turnRate, _config.turnSpeed, _config.turnSmoothing * Time.fixedDeltaTime);
+                    float accelRateMod = _config.accelerationCurve.Evaluate(_planarVelocity.magnitude / _config.topSpeed);
+                    if (_planarVelocity.magnitude < _config.topSpeed)
+                        _planarVelocity += dir * (_config.accelerationRate * accelRateMod * Time.fixedDeltaTime);
+                    else if (!SonicTools.IsBoost())
+                        _planarVelocity = Vector3.MoveTowards(_planarVelocity, _planarVelocity.normalized * _config.topSpeed, 8f * Time.fixedDeltaTime);
+                }
+                
+                BaseAirPhysics();
             }
             
             _rigidbody.linearVelocity = _movementVector + vertical;
-            
             Snap(point, normal);
         }
 
+        
         public void SplineCalculation()
         {
             // TODO: Move all spline data to a data class
@@ -395,11 +393,6 @@ namespace SurgeEngine.Code.ActorSystem
 
         public void Deceleration(float min, float max)
         {
-            if (actor.stateMachine.CurrentState is FStateAir)
-            {
-                return;
-            }
-            
             if (SonicTools.IsBoost()) return;
             if (actor.flags.HasFlag(FlagType.OutOfControl)) return;
             
