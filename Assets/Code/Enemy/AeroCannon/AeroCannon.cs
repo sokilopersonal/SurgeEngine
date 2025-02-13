@@ -24,7 +24,7 @@ namespace SurgeEngine.Code.Enemy.AeroCannon
             stateMachine.AddState(new ACStatePrepare(this));
             stateMachine.AddState(new ACStateShoot(this));
             
-            stateMachine.SetState<ACStateIdle>();
+            stateMachine.SetState<ACStateIdle>().SetStartRotation(transform.rotation);
         }
 
         public void TakeDamage(Entity sender, float damage)
