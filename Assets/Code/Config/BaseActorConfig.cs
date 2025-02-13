@@ -18,8 +18,9 @@ namespace SurgeEngine.Code.Config
         public float maxVerticalSpeed;
         public float accelerationRate = 7.5f;
         public AnimationCurve accelerationCurve;
-        public float minDeaccelerationRate = 12;
-        public float maxDeaccelerationRate = 20;
+        public float minDecelerationRate = 18;
+        public float maxDecelerationRate = 15;
+        public float airDecelerationRate = 6;
         public float minSkiddingRate = 10;
         public float maxSkiddingRate = 15;
         public float skiddingThreshold = 0.5f;

@@ -135,7 +135,7 @@ namespace SurgeEngine.Code.ActorSystem
                 }
                 else
                 {
-                    Deceleration(_config.minDeaccelerationRate, _config.maxDeaccelerationRate);
+                    Deceleration(_config.minDecelerationRate, _config.maxDecelerationRate);
                 }
             }
             else
@@ -156,7 +156,6 @@ namespace SurgeEngine.Code.ActorSystem
             _rigidbody.linearVelocity = _movementVector + vertical;
             Snap(point, normal);
         }
-
         
         public void SplineCalculation()
         {
