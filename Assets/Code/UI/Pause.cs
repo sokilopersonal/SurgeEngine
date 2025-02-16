@@ -1,4 +1,7 @@
-﻿using SurgeEngine.Code.ActorSystem;
+﻿using System;
+using DG.Tweening;
+using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.UI.Settings;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -8,12 +11,17 @@ namespace SurgeEngine.Code.UI
 {
     public class Pause : MonoBehaviour
     {
-        private CanvasGroup _uiCanvasGroup;
+        private float _delayTimer;
+        private bool CanPause => _delayTimer <= 0f;
+        private const float DelayTime = 1f;
         
+        private CanvasGroup _uiCanvasGroup;
         private PlayerInput _uiInput;
         private InputAction _pauseInputAction;
 
         private bool _isPaused;
+        private Sequence _pauseFadeTween;
+        private Tween _timeFadeTween;
 
         private void Awake()
         {
@@ -39,27 +47,39 @@ namespace SurgeEngine.Code.UI
             _pauseInputAction.performed -= OnPauseAction;
         }
 
+        private void Update()
+        {
+            Common.TickTimer(ref _delayTimer, DelayTime, false, true);
+        }
+
         private void OnPauseAction(InputAction.CallbackContext obj)
         {
             _isPaused = !_isPaused;
-            PlayerInput playerInput = ActorContext.Context.input.playerInput;
-            if (_isPaused)
+                
+            SetPause(_isPaused);
+        }
+
+        public void SetPause(bool isPaused)
+        {
+            if (_pauseFadeTween != null && _pauseFadeTween.IsPlaying()) return;
+    
+            _delayTimer = DelayTime;
+            _uiCanvasGroup.interactable = isPaused;
+            
+            _pauseFadeTween = DOTween.Sequence();
+            _pauseFadeTween.Append(_uiCanvasGroup.DOFade(isPaused ? 1 : 0, 0.4f).SetUpdate(true));
+            _pauseFadeTween.Join(DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 
+                isPaused ? 0f : 1f, isPaused ? 0f : 0.25f).SetUpdate(true)).SetUpdate(true);
+    
+            var context = ActorContext.Context;
+            if (context)
             {
-                playerInput.actions.FindActionMap("Gameplay").Disable();
-                EventSystem.current.SetSelectedGameObject(GetComponentInChildren<SettingsBarElement>().gameObject);
+                PlayerInput playerInput = context.input.playerInput;
+                playerInput.enabled = !isPaused;
             }
-            else
-            {
-                playerInput.actions.FindActionMap("Gameplay").Enable();
-                EventSystem.current.SetSelectedGameObject(null);
-            }
-            
-            _uiCanvasGroup.alpha = _isPaused ? 1 : 0;
-            
-            Cursor.visible = _isPaused;
-            Cursor.lockState = _isPaused ? CursorLockMode.None : CursorLockMode.Locked;
-            
-            Time.timeScale = _isPaused ? 0f : 1f;
+    
+            Cursor.visible = isPaused;
+            Cursor.lockState = isPaused ? CursorLockMode.None : CursorLockMode.Locked;
         }
     }
 }

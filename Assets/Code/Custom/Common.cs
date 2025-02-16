@@ -32,7 +32,7 @@ namespace SurgeEngine.Code.Custom
         /// <param name="waitTime">Maximum timer value.</param>
         /// <param name="autoReset">True,  if you prefer the timer to reset automatically.</param>
         /// <returns>True, when the timer value is 0</returns>
-        public static bool TickTimer(ref float waitTimer, float waitTime, bool autoReset = true) 
+        public static bool TickTimer(ref float waitTimer, float waitTime, bool autoReset = true, bool unscaled = false) 
         {
             if (waitTimer == 0) 
             {
@@ -41,7 +41,7 @@ namespace SurgeEngine.Code.Custom
                 return true;
             }
 
-            waitTimer -= Time.deltaTime;
+            waitTimer -= unscaled ? Time.unscaledDeltaTime : Time.deltaTime;
             waitTimer = Mathf.Clamp(waitTimer, 0, waitTime);
             return false;
         }
