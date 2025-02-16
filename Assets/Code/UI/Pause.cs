@@ -13,8 +13,8 @@ namespace SurgeEngine.Code.UI
     public class Pause : MonoBehaviour
     {
         private float _delayTimer;
-        private bool CanPause => _delayTimer <= 0f;
-        private const float DelayTime = 1f;
+        private bool CanPause => _pauseFadeTween != null && !_pauseFadeTween.IsPlaying();
+        private const float DelayTime = 0.6f;
         
         private CanvasGroup _uiCanvasGroup;
         private PlayerInput _uiInput;
@@ -30,6 +30,7 @@ namespace SurgeEngine.Code.UI
             _uiInput = GetComponent<PlayerInput>();
 
             _uiCanvasGroup.alpha = 0f;
+            _uiCanvasGroup.interactable = false;
             Time.timeScale = 1f;
             
             _pauseInputAction = _uiInput.actions["Pause"];
@@ -49,22 +50,16 @@ namespace SurgeEngine.Code.UI
             _pauseInputAction.performed -= OnPauseAction;
         }
 
-        private void Update()
-        {
-            Common.TickTimer(ref _delayTimer, DelayTime, false, true);
-        }
-
         private void OnPauseAction(InputAction.CallbackContext obj)
         {
             _isPaused = !_isPaused;
-                
+            EventSystem.current.SetSelectedGameObject(EventSystem.current.firstSelectedGameObject);    
+            
             SetPause(_isPaused);
         }
 
         public void SetPause(bool isPaused)
         {
-            if (_pauseFadeTween != null && _pauseFadeTween.IsPlaying()) return;
-    
             _delayTimer = DelayTime;
             _uiCanvasGroup.interactable = isPaused;
             
