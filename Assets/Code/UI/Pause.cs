@@ -6,6 +6,7 @@ using SurgeEngine.Code.UI.Settings;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 namespace SurgeEngine.Code.UI
 {
@@ -29,6 +30,7 @@ namespace SurgeEngine.Code.UI
             _uiInput = GetComponent<PlayerInput>();
 
             _uiCanvasGroup.alpha = 0f;
+            Time.timeScale = 1f;
             
             _pauseInputAction = _uiInput.actions["Pause"];
         }
@@ -70,6 +72,7 @@ namespace SurgeEngine.Code.UI
             _pauseFadeTween.Append(_uiCanvasGroup.DOFade(isPaused ? 1 : 0, 0.4f).SetUpdate(true));
             _pauseFadeTween.Join(DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 
                 isPaused ? 0f : 1f, isPaused ? 0f : 0.25f).SetUpdate(true)).SetUpdate(true);
+            _pauseFadeTween.SetLink(gameObject);
     
             var context = ActorContext.Context;
             if (context)
@@ -80,6 +83,11 @@ namespace SurgeEngine.Code.UI
     
             Cursor.visible = isPaused;
             Cursor.lockState = isPaused ? CursorLockMode.None : CursorLockMode.Locked;
+        }
+
+        public void RestartAction()
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
 }

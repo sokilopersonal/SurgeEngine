@@ -6,13 +6,15 @@ namespace SurgeEngine.Code.ActorEffects
     public class Sliding : Effect
     {
         [SerializeField] private TrailRenderer slidingTrail;
-        Tweener colorTween;
+        private Tweener colorTween;
+        
         private void Start()
         {
             slidingTrail.emitting = true;
             slidingTrail.startColor = Color.clear;
             slidingTrail.endColor = Color.clear;
         }
+        
         public override void Toggle(bool value)
         {
             base.Toggle(value);
@@ -22,7 +24,7 @@ namespace SurgeEngine.Code.ActorEffects
             {
                 slidingTrail.startColor = color;
                 slidingTrail.endColor = color;
-            });
+            }).SetLink(gameObject);
         }
     }
 }

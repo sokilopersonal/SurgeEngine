@@ -96,7 +96,7 @@ namespace SurgeEngine.Code.CommonObjects
             _contactPoint = context.transform.position;
             _attachTimer = 0;
             
-            model.DOLocalMove(_localStartPosition + Vector3.up * length, moveTime).SetEase(Ease.InSine).SetUpdate(UpdateType.Fixed);
+            model.DOLocalMove(_localStartPosition + Vector3.up * length, moveTime).SetEase(Ease.InSine).SetUpdate(UpdateType.Fixed).SetLink(gameObject);
             _isPlayerAttached = true;
             _eventInstance.start();
         }
@@ -106,7 +106,7 @@ namespace SurgeEngine.Code.CommonObjects
             _isPlayerAttached = false;
             _attachTimer = 0;
             _eventInstance.stop(STOP_MODE.ALLOWFADEOUT);
-            model.DOLocalMove(_localStartPosition, 1f).SetEase(Ease.InSine).SetDelay(0.5f);
+            model.DOLocalMove(_localStartPosition, 1f).SetEase(Ease.InSine).SetDelay(0.5f).SetLink(gameObject);
             ctx.stateMachine.OnStateAssign -= OnStateAssign;
         }
 
