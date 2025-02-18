@@ -15,11 +15,11 @@ namespace SurgeEngine.Code.UI
     {
         public static Pause Instance { get; private set; }
         public bool Active { get; private set; }
+        [SerializeField] private PlayerInput uiInput;
         
         private bool CanPause => _pauseFadeTween == null;
         
         private CanvasGroup _uiCanvasGroup;
-        private PlayerInput _uiInput;
         private InputAction _pauseInputAction;
 
         private Sequence _pauseFadeTween;
@@ -30,13 +30,12 @@ namespace SurgeEngine.Code.UI
             Instance = this;
             
             _uiCanvasGroup = GetComponent<CanvasGroup>();
-            _uiInput = GetComponent<PlayerInput>();
 
             _uiCanvasGroup.alpha = 0f;
             _uiCanvasGroup.interactable = false;
             Time.timeScale = 1f;
             
-            _pauseInputAction = _uiInput.actions["Pause"];
+            _pauseInputAction = uiInput.actions["Pause"];
         }
 
         private void OnEnable()
@@ -56,7 +55,7 @@ namespace SurgeEngine.Code.UI
         private void OnPauseAction(InputAction.CallbackContext obj)
         {
             var context = ActorContext.Context;
-            if (context.stateMachine.IsExact<FStateSpecialJump>() && context.stateMachine.GetState<FStateSpecialJump>().data.type ==
+            if (context != null && context.stateMachine.IsExact<FStateSpecialJump>() && context.stateMachine.GetState<FStateSpecialJump>().data.type ==
                 SpecialJumpType.TrickJumper) return;
             
             Active = !Active;
