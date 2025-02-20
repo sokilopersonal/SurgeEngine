@@ -11,9 +11,7 @@ namespace SurgeEngine.Code.ActorSystem
     public class ActorInput : ActorComponent
     {
         public Vector3 moveVector;
-
         public Vector2 lookVector;
-
         public PlayerInput playerInput;
 
         // Boost
@@ -56,6 +54,7 @@ namespace SurgeEngine.Code.ActorSystem
         public Action<InputAction.CallbackContext> BumperAction;
 
         private bool _lockCamera;
+        private Rect _screenRect;
         private InputDevice _device;
 
         private Dictionary<string, string> _translatedDeviceNames;
@@ -68,6 +67,7 @@ namespace SurgeEngine.Code.ActorSystem
         private void Awake()
         {
             playerInput ??= GetComponent<PlayerInput>();
+            _screenRect = new Rect(0, 0, Screen.width, Screen.height);
             
             _translatedDeviceNames = new Dictionary<string, string>()
             {
@@ -115,8 +115,7 @@ namespace SurgeEngine.Code.ActorSystem
             playerInput.actions["Bumper"].canceled -= BumperInput;
             
             Gamepad pad = Gamepad.current;
-            if (pad != null)
-                pad.SetMotorSpeeds(0, 0);
+            pad?.SetMotorSpeeds(0, 0);
         }
 
         private void Update()
@@ -156,24 +155,14 @@ namespace SurgeEngine.Code.ActorSystem
                     }
                 }
             }
-
-#if UNITY_EDITOR
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                CameraLock(true);
-            }
-
-            if (Input.GetMouseButtonDown(0))
-            {
-                CameraLock(false);
-            }
             
+            CameraLock(!_screenRect.Contains(playerInput.actions["MousePosition"].ReadValue<Vector2>()));
+
             if (_lockCamera)
             {
                 lookVector = Vector2.zero;
             }
-#endif
-
+            
             if (actor.flags.HasFlag(FlagType.OutOfControl))
             {
                 moveVector = Vector3.zero;
