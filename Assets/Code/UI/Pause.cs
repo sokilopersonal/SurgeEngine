@@ -59,7 +59,6 @@ namespace SurgeEngine.Code.UI
                 SpecialJumpType.TrickJumper) return;
             
             Active = !Active;
-            EventSystem.current.SetSelectedGameObject(EventSystem.current.firstSelectedGameObject);
             
             SetPause(Active);
         }
