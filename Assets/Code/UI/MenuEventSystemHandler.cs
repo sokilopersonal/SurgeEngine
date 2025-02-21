@@ -20,6 +20,7 @@ namespace SurgeEngine.Code.UI
 
         [Header("Sound")]
         [SerializeField] private EventReference selectSound;
+        [SerializeField] private EventReference submitSound;
 
         protected void Awake()
         {
@@ -54,18 +55,30 @@ namespace SurgeEngine.Code.UI
             {
                 eventID = EventTriggerType.PointerExit
             };
+            var submitEntry = new EventTrigger.Entry
+            {
+                eventID = EventTriggerType.Submit
+            };
+            var clickEntry = new EventTrigger.Entry
+            {
+                eventID = EventTriggerType.PointerClick
+            };
             
             // Add triggers to EventTrigger
             trigger.triggers.Add(selectEntry);
             trigger.triggers.Add(deselectEntry);
             trigger.triggers.Add(pointerEnterEntry);
             trigger.triggers.Add(pointerExitEntry);
+            trigger.triggers.Add(submitEntry);
+            trigger.triggers.Add(clickEntry);
             
             // Add listeners
             selectEntry.callback.AddListener(OnSelect);
             deselectEntry.callback.AddListener(OnDeselect);
             pointerEnterEntry.callback.AddListener(OnPointerEnter);
             pointerExitEntry.callback.AddListener(OnPointerExit);
+            submitEntry.callback.AddListener(OnUISubmit);
+            clickEntry.callback.AddListener(OnUISubmit);
         }
 
         private void OnEnable()
@@ -128,7 +141,12 @@ namespace SurgeEngine.Code.UI
                 data.selectedObject = null;
             }
         }
-        
+
+        private void OnUISubmit(BaseEventData eventData)
+        {
+            RuntimeManager.PlayOneShot(submitSound);
+        }
+
         private void OnUINavigate(InputAction.CallbackContext context)
         {
             if (EventSystem.current.currentSelectedGameObject == null && _lastSelectable != null)

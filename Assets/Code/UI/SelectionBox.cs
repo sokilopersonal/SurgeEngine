@@ -8,6 +8,7 @@ namespace SurgeEngine.Code.UI
     {
         [SerializeField] private RectTransform rect;
         [SerializeField] private float scaleDuration = 0.3f;
+        [SerializeField] private Ease scaleEase = Ease.OutQuad;
 
         private Tween _tween;
         private float _startHeight;
@@ -23,14 +24,13 @@ namespace SurgeEngine.Code.UI
         public void Select()
         {
             _tween?.Kill(true);
-            _tween = rect.DOSizeDelta(new Vector2(rect.sizeDelta.x, _startHeight), scaleDuration).SetEase(Ease.OutQuad)
-                .SetUpdate(true);
+            _tween = rect.DOSizeDelta(new Vector2(rect.sizeDelta.x, _startHeight), scaleDuration).SetEase(scaleEase).SetUpdate(true);
         }
         
         public void Deselect()
         {
             _tween?.Kill(true);
-            _tween = rect.DOSizeDelta(new Vector2(rect.sizeDelta.x, 0), scaleDuration).SetEase(Ease.OutQuad).SetUpdate(true);
+            _tween = rect.DOSizeDelta(new Vector2(rect.sizeDelta.x, 0), scaleDuration).SetEase(scaleEase).SetUpdate(true);
         }
     }
 }
