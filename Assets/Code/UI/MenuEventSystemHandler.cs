@@ -96,11 +96,13 @@ namespace SurgeEngine.Code.UI
         private IEnumerator SelectAfterAFrame()
         {
             yield return null;
-            EventSystem.current.SetSelectedGameObject(_lastSelectable.gameObject);
+            if (_lastSelectable != null) EventSystem.current.SetSelectedGameObject(_lastSelectable.gameObject);
         }
 
         private void OnSelect(BaseEventData eventData)
         {
+            if (!PlayerUI.Instance.GetCurrentMenu().canvasGroup.interactable) return;
+            
             _lastSelectable = eventData.selectedObject.GetComponent<Selectable>();
             RuntimeManager.PlayOneShot(selectSound);
             
@@ -144,6 +146,8 @@ namespace SurgeEngine.Code.UI
 
         private void OnUISubmit(BaseEventData eventData)
         {
+            if (!PlayerUI.Instance.GetCurrentMenu().canvasGroup.interactable) return;
+            
             RuntimeManager.PlayOneShot(submitSound);
         }
 

@@ -17,7 +17,7 @@ namespace SurgeEngine.Code.UI
         public bool Active { get; private set; }
         [SerializeField] private PlayerInput uiInput;
         
-        private bool CanPause => _pauseFadeTween == null;
+        private bool CanPause => !_pauseFadeTween.IsActive();
         
         private CanvasGroup _uiCanvasGroup;
         private InputAction _pauseInputAction;
@@ -63,7 +63,7 @@ namespace SurgeEngine.Code.UI
             SetPause(Active);
         }
 
-        public async void SetPause(bool isPaused)
+        public void SetPause(bool isPaused)
         {
             if (!CanPause) return;
             
@@ -79,15 +79,12 @@ namespace SurgeEngine.Code.UI
             Cursor.visible = isPaused;
             Cursor.lockState = isPaused ? CursorLockMode.None : CursorLockMode.Locked;
             
+            _pauseFadeTween?.Kill(true);
             _pauseFadeTween = DOTween.Sequence();
             _pauseFadeTween.Append(_uiCanvasGroup.DOFade(isPaused ? 1 : 0, 0.4f).SetUpdate(true));
             _pauseFadeTween.Join(DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 
                 isPaused ? 0f : 1f, isPaused ? 0f : 0.25f).SetUpdate(true)).SetUpdate(true);
             _pauseFadeTween.SetLink(gameObject);
-            await _pauseFadeTween.AsyncWaitForCompletion();
-            
-            _pauseFadeTween?.Kill();
-            _pauseFadeTween = null;
         }
 
         public void RestartAction()

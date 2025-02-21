@@ -59,6 +59,8 @@ namespace SurgeEngine.Code.UI
                 _currentMenu = target;
             }
         }
+        
+        public UIDefinerComponent GetCurrentMenu() => _currentMenu;
 
         private void OnDestroy()
         {
