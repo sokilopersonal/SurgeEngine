@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using FMODUnity;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -16,6 +17,9 @@ namespace SurgeEngine.Code.UI
         [Header("Navigation Reference")]
         [SerializeField] private InputActionReference navigationReference;
         private Selectable _lastSelectable;
+
+        [Header("Sound")]
+        [SerializeField] private EventReference selectSound;
 
         protected void Awake()
         {
@@ -86,12 +90,12 @@ namespace SurgeEngine.Code.UI
         {
             _lastSelectable = eventData.selectedObject.GetComponent<Selectable>();
             
-            Debug.Log($"Selected gameObject {eventData.selectedObject.name}");
+            RuntimeManager.PlayOneShot(selectSound);
         }
 
         private void OnDeselect(BaseEventData eventData)
         {
-            Debug.Log($"Deselected gameObject {eventData.selectedObject.name}");
+            
         }
 
         private void OnPointerEnter(BaseEventData eventData)
