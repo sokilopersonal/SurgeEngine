@@ -89,13 +89,22 @@ namespace SurgeEngine.Code.UI
         private void OnSelect(BaseEventData eventData)
         {
             _lastSelectable = eventData.selectedObject.GetComponent<Selectable>();
-            
             RuntimeManager.PlayOneShot(selectSound);
+            
+            SelectionBox selBox = eventData.selectedObject.GetComponentInChildren<SelectionBox>();
+            if (selBox != null)
+            {
+                selBox.Select();
+            }
         }
 
         private void OnDeselect(BaseEventData eventData)
         {
-            
+            SelectionBox selBox = eventData.selectedObject.GetComponentInChildren<SelectionBox>();
+            if (selBox != null)
+            {
+                selBox.Deselect();
+            }
         }
 
         private void OnPointerEnter(BaseEventData eventData)
