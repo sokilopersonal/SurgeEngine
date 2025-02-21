@@ -25,12 +25,14 @@ namespace SurgeEngine.Code.UI
         {
             _tween?.Kill(true);
             _tween = rect.DOSizeDelta(new Vector2(rect.sizeDelta.x, _startHeight), scaleDuration).SetEase(scaleEase).SetUpdate(true);
+            _tween.SetLink(gameObject);
         }
         
         public void Deselect()
         {
             _tween?.Kill(true);
             _tween = rect.DOSizeDelta(new Vector2(rect.sizeDelta.x, 0), scaleDuration).SetEase(scaleEase).SetUpdate(true);
+            _tween.SetLink(gameObject);
         }
     }
 }

@@ -146,8 +146,6 @@ namespace SurgeEngine.Code.UI
 
         private void OnUISubmit(BaseEventData eventData)
         {
-            if (!PlayerUI.Instance.GetCurrentMenu().canvasGroup.interactable) return;
-            
             RuntimeManager.PlayOneShot(submitSound);
         }
 
