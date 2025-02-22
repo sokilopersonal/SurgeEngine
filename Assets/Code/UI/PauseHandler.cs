@@ -2,54 +2,54 @@
 using DG.Tweening;
 using SurgeEngine.Code.ActorStates;
 using SurgeEngine.Code.ActorSystem;
-using SurgeEngine.Code.Custom;
-using SurgeEngine.Code.UI.Settings;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 namespace SurgeEngine.Code.UI
 {
-    public class Pause : MonoBehaviour
+    public class PauseHandler : MonoBehaviour
     {
-        public static Pause Instance { get; private set; }
+        public static PauseHandler Instance { get; private set; }
+
         public bool Active { get; private set; }
-        [SerializeField] private PlayerInput uiInput;
+        public event Action<bool> OnPauseChanged; 
+
+        [SerializeField] private InputActionReference pauseInputReference;
+        [SerializeField] private Pause pauseMenu;
         
         private bool CanPause => !_pauseFadeTween.IsActive();
         
         private CanvasGroup _uiCanvasGroup;
-        private InputAction _pauseInputAction;
-
         private Sequence _pauseFadeTween;
-        private Tween _timeFadeTween;
+        private InputAction _pauseAction;
+        private InputDevice _device;
 
         private void Awake()
         {
             Instance = this;
-            
             _uiCanvasGroup = GetComponent<CanvasGroup>();
 
             _uiCanvasGroup.alpha = 0f;
             _uiCanvasGroup.interactable = false;
             Time.timeScale = 1f;
             
-            _pauseInputAction = uiInput.actions["Pause"];
+            _pauseAction = pauseInputReference.action;
+            _pauseAction.Enable();
         }
 
         private void OnEnable()
         {
 #if UNITY_EDITOR
-            _pauseInputAction.ApplyBindingOverride("<Keyboard>/tab", path: "<Keyboard>/escape");
+            _pauseAction.ApplyBindingOverride("<Keyboard>/tab", path: "<Keyboard>/escape");
 #endif
             
-            _pauseInputAction.performed += OnPauseAction;
+            _pauseAction.performed += OnPauseAction;
         }
 
         private void OnDisable()
         {
-            _pauseInputAction.performed -= OnPauseAction;
+            _pauseAction.performed -= OnPauseAction;
         }
 
         private void OnPauseAction(InputAction.CallbackContext obj)
@@ -59,13 +59,24 @@ namespace SurgeEngine.Code.UI
                 SpecialJumpType.TrickJumper) return;
             
             Active = !Active;
-            
+            OnPauseChanged?.Invoke(Active);
+
+            _device = obj.control.device;
             SetPause(Active);
         }
 
         public void SetPause(bool isPaused)
         {
-            if (!CanPause) return;
+            Active = isPaused;
+            
+            if (Active)
+            {
+                pauseMenu.Open();
+            }
+            else
+            {
+                pauseMenu.Close();
+            }
             
             _uiCanvasGroup.interactable = isPaused;
             
@@ -75,16 +86,20 @@ namespace SurgeEngine.Code.UI
                 PlayerInput playerInput = context.input.playerInput;
                 playerInput.enabled = !isPaused;
             }
-    
-            Cursor.visible = isPaused;
-            Cursor.lockState = isPaused ? CursorLockMode.None : CursorLockMode.Locked;
+            
+            if (_device is Keyboard)
+            {
+                Cursor.visible = isPaused;
+                Cursor.lockState = isPaused ? CursorLockMode.None : CursorLockMode.Locked;
+            }
             
             _pauseFadeTween?.Kill(true);
             _pauseFadeTween = DOTween.Sequence();
-            _pauseFadeTween.Append(_uiCanvasGroup.DOFade(isPaused ? 1 : 0, 0.4f).SetUpdate(true));
-            _pauseFadeTween.Join(DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 
-                isPaused ? 0f : 1f, isPaused ? 0f : 0.25f).SetUpdate(true)).SetUpdate(true);
+            _pauseFadeTween.Append(_uiCanvasGroup.DOFade(isPaused ? 1 : 0, 0.4f));
+            _pauseFadeTween.Join(DOTween.To(() => Time.timeScale, x => Time.timeScale = x,
+                isPaused ? 0f : 1f, isPaused ? 0f : 0.25f));
             _pauseFadeTween.SetLink(gameObject);
+            _pauseFadeTween.SetUpdate(true);
         }
 
         public void RestartAction()

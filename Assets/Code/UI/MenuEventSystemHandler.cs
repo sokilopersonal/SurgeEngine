@@ -5,6 +5,7 @@ using FMODUnity;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.UI;
 using UnityEngine.UI;
 
 namespace SurgeEngine.Code.UI
@@ -13,6 +14,7 @@ namespace SurgeEngine.Code.UI
     {
         [Header("References")]
         [SerializeField] private List<Selectable> selectables = new List<Selectable>();
+        private CanvasGroup _parentGroup;
         
         [Header("Navigation Reference")]
         [SerializeField] private InputActionReference navigationReference;
@@ -24,6 +26,8 @@ namespace SurgeEngine.Code.UI
 
         protected void Awake()
         {
+            _parentGroup = GetComponent<CanvasGroup>();
+            
             foreach (var sel in selectables)
             {
                 AddTriggerListeners(sel);
@@ -101,11 +105,12 @@ namespace SurgeEngine.Code.UI
 
         private void OnSelect(BaseEventData eventData)
         {
-            if (!PlayerUI.Instance.GetCurrentMenu().canvasGroup.interactable) return;
+            if (AllowToNavigate())
+            {
+                RuntimeManager.PlayOneShot(selectSound);
+            }
             
             _lastSelectable = eventData.selectedObject.GetComponent<Selectable>();
-            RuntimeManager.PlayOneShot(selectSound);
-            
             SelectionBox selBox = eventData.selectedObject.GetComponentInChildren<SelectionBox>();
             if (selBox != null)
             {
@@ -146,7 +151,16 @@ namespace SurgeEngine.Code.UI
 
         private void OnUISubmit(BaseEventData eventData)
         {
-            RuntimeManager.PlayOneShot(submitSound);
+            if (AllowToNavigate())
+            {
+                RuntimeManager.PlayOneShot(submitSound);
+                
+                SelectionBox selBox = eventData.selectedObject.GetComponentInChildren<SelectionBox>();
+                if (selBox != null)
+                {
+                    selBox.Select();
+                }
+            }
         }
 
         private void OnUINavigate(InputAction.CallbackContext context)
@@ -155,6 +169,11 @@ namespace SurgeEngine.Code.UI
             {
                 EventSystem.current.SetSelectedGameObject(_lastSelectable.gameObject);
             }
+        }
+        
+        private bool AllowToNavigate()
+        {
+            return Mathf.Approximately(_parentGroup.alpha, 1);
         }
     }
 }

@@ -24,7 +24,7 @@ namespace SurgeEngine.Code.UI
         public void Select()
         {
             _tween?.Kill(true);
-            _tween = rect.DOSizeDelta(new Vector2(rect.sizeDelta.x, _startHeight), scaleDuration).SetEase(scaleEase).SetUpdate(true);
+            _tween = rect.DOSizeDelta(new Vector2(rect.sizeDelta.x, _startHeight), scaleDuration).SetEase(scaleEase).From(new Vector2(rect.sizeDelta.x, 0)).SetUpdate(true);
             _tween.SetLink(gameObject);
         }
         

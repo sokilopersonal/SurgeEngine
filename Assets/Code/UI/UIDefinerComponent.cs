@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace SurgeEngine.Code.UI
@@ -10,10 +11,14 @@ namespace SurgeEngine.Code.UI
         
         [SerializeField] private GameObject firstSelectedObject;
 
+        private void OnEnable()
+        {
+            if (firstSelectedObject) EventSystem.current.SetSelectedGameObject(firstSelectedObject);
+        }
+
         public void Open()
         {
-            PlayerUI.Instance.OpenMenu(menuType);
-            if (firstSelectedObject) EventSystem.current.SetSelectedGameObject(firstSelectedObject);
+            
         }
     }
 }
