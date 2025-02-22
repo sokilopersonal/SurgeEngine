@@ -16,7 +16,6 @@ namespace SurgeEngine.Code.UI
         public event Action<bool> OnPauseChanged; 
 
         [SerializeField] private InputActionReference pauseInputReference;
-        [SerializeField] private Pause pauseMenu;
         
         private bool CanPause => !_pauseFadeTween.IsActive();
         
@@ -71,11 +70,11 @@ namespace SurgeEngine.Code.UI
             
             if (Active)
             {
-                pauseMenu.Open();
+                MenusHandler.Instance.OpenMenu<Pause>();
             }
             else
             {
-                pauseMenu.Close();
+                MenusHandler.Instance.CloseMenu<Pause>();
             }
             
             _uiCanvasGroup.interactable = isPaused;

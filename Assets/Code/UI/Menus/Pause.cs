@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 
@@ -23,7 +24,7 @@ namespace SurgeEngine.Code.UI
             _duration = 0.35f;
         }
 
-        public override void Open()
+        public override async Task Open()
         {
             base.Open();
             
@@ -34,9 +35,11 @@ namespace SurgeEngine.Code.UI
             _sequence.Join(secondBox.DOSizeDelta(new Vector2(_startWidth, _endHeight), _duration).SetEase(Ease.OutCubic).From(new Vector2(_startWidth, 10)));
             _sequence.Join(firstBox.DOSizeDelta(new Vector2(_startWidth, _endHeight), _duration).SetEase(Ease.OutCubic).SetDelay(0.1f).From(new Vector2(_startWidth, 10)));
             _sequence.SetUpdate(true);
+
+            await _sequence.AsyncWaitForCompletion();
         }
 
-        public override void Close()
+        public override async Task Close()
         {
             _sequence?.Kill(true);
             _sequence = DOTween.Sequence();
@@ -45,6 +48,8 @@ namespace SurgeEngine.Code.UI
             _sequence.Join(secondBox.DOSizeDelta(new Vector2(_startWidth, 10), _duration).SetEase(Ease.InCubic).From(new Vector2(_startWidth, _endHeight)));
             _sequence.Join(firstBox.DOSizeDelta(new Vector2(_startWidth, 10), _duration).SetEase(Ease.InCubic).SetDelay(0.1f).From(new Vector2(_startWidth, _endHeight)));
             _sequence.SetUpdate(true);
+            
+            await _sequence.AsyncWaitForCompletion();
         }
     }
 }

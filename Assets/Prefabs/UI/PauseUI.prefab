@@ -565,6 +565,7 @@ GameObject:
   - component: {fileID: 143803530030890869}
   - component: {fileID: 103926677018174845}
   - component: {fileID: 2072006410278246420}
+  - component: {fileID: 3155015142381594029}
   m_Layer: 5
   m_Name: PauseUI
   m_TagString: Untagged
@@ -715,7 +716,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseInputReference: {fileID: -8436990913645838437, guid: aa82a2cdd5263bc4a8583ac6684fc349, type: 3}
-  pauseMenu: {fileID: 1345815592717887578}
+--- !u!114 &3155015142381594029
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7881295906275178592}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ec5c4ff5c754762b2dfa0d5000627b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  menus:
+  - {fileID: 1345815592717887578}
 --- !u!1 &8203722010725829781
 GameObject:
   m_ObjectHideFlags: 0
@@ -1006,6 +1020,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6286703384861301511}
     m_Modifications:
+    - target: {fileID: 2352309949068547823, guid: aa1cdb19b4806194591a89c6104dfb40, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2352309949068547823, guid: aa1cdb19b4806194591a89c6104dfb40, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2352309949068547823, guid: aa1cdb19b4806194591a89c6104dfb40, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 4350117029813213552}
+    - target: {fileID: 2352309949068547823, guid: aa1cdb19b4806194591a89c6104dfb40, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4746250495134390681, guid: aa1cdb19b4806194591a89c6104dfb40, type: 3}
       propertyPath: m_SortingLayer
       value: 1

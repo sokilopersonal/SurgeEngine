@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -11,12 +12,12 @@ namespace SurgeEngine.Code.UI
         
         private void Awake() => Group = GetComponent<CanvasGroup>();
 
-        public virtual void Open()
+        public async virtual Task Open()
         {
             EventSystem.current.SetSelectedGameObject(selected.gameObject);    
         }
         
-        public virtual void Close()
+        public async virtual Task Close()
         {
             
         }
