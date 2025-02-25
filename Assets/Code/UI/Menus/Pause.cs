@@ -21,7 +21,7 @@ namespace SurgeEngine.Code.UI
         {
             _startWidth = 500f;
             _endY = 175f;
-            _endHeight = 650f;
+            _endHeight = 660f;
             _duration = 0.525f;
         }
 
@@ -38,7 +38,7 @@ namespace SurgeEngine.Code.UI
             _sequence.Join(grid.DOSizeDelta(new Vector2(grid.sizeDelta.x, 2500f), _duration * 1.2f).SetEase(Ease.OutCubic).From(new Vector2(grid.sizeDelta.x, 0)));
             _sequence.Join(parent.DOAnchorPosY(_endY, _duration).SetEase(Ease.OutCubic).From(new Vector2(0, 0)));
             _sequence.Join(secondBox.DOSizeDelta(new Vector2(_startWidth, _endHeight), _duration).SetEase(Ease.OutCubic).From(new Vector2(_startWidth, 10)));
-            _sequence.Join(firstBox.DOSizeDelta(new Vector2(_startWidth, _endHeight - 25), _duration).SetEase(Ease.OutCubic).SetDelay(0.1f).From(new Vector2(_startWidth, 10)));
+            _sequence.Join(firstBox.DOSizeDelta(new Vector2(_startWidth, _endHeight), _duration).SetEase(Ease.OutCubic).SetDelay(0.1f).From(new Vector2(_startWidth, 10)));
             _sequence.SetUpdate(true);
 
             await _sequence.AsyncWaitForCompletion();
