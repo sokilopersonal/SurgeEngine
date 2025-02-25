@@ -2,6 +2,7 @@
 using DG.Tweening;
 using SurgeEngine.Code.ActorStates;
 using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.Custom;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -16,9 +17,11 @@ namespace SurgeEngine.Code.UI
         public event Action<bool> OnPauseChanged; 
 
         [SerializeField] private InputActionReference pauseInputReference;
+        [SerializeField] private float pauseDelay = 0.5f;
         
-        private bool CanPause => !_pauseFadeTween.IsActive();
-        
+        private bool CanPause => _delay <= 0f;
+
+        private float _delay;
         private CanvasGroup _uiCanvasGroup;
         private Sequence _pauseFadeTween;
         private InputAction _pauseAction;
@@ -51,11 +54,18 @@ namespace SurgeEngine.Code.UI
             _pauseAction.performed -= OnPauseAction;
         }
 
+        private void Update()
+        {
+            Common.TickTimer(ref _delay, pauseDelay, false, true);
+        }
+
         private void OnPauseAction(InputAction.CallbackContext obj)
         {
             var context = ActorContext.Context;
             if (context != null && context.stateMachine.IsExact<FStateSpecialJump>() && context.stateMachine.GetState<FStateSpecialJump>().data.type ==
                 SpecialJumpType.TrickJumper) return;
+            
+            if (!CanPause) return;
             
             Active = !Active;
             OnPauseChanged?.Invoke(Active);
@@ -67,6 +77,7 @@ namespace SurgeEngine.Code.UI
         public void SetPause(bool isPaused)
         {
             Active = isPaused;
+            _delay = pauseDelay;
             
             if (Active)
             {

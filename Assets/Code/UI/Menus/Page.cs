@@ -3,23 +3,24 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace SurgeEngine.Code.UI
+namespace SurgeEngine.Code.UI.Menus
 {
-    public abstract class Menu : MonoBehaviour
+    public abstract class Page : MonoBehaviour
     {
         protected CanvasGroup Group;
         [SerializeField] private Selectable selected;
         
         private void Awake() => Group = GetComponent<CanvasGroup>();
 
-        public async virtual Task Open()
+        public virtual Task Open()
         {
-            EventSystem.current.SetSelectedGameObject(selected.gameObject);    
+            EventSystem.current.SetSelectedGameObject(selected.gameObject);
+            return Task.CompletedTask;
         }
         
-        public async virtual Task Close()
+        public virtual Task Close()
         {
-            
+            return Task.CompletedTask;
         }
     }
 }

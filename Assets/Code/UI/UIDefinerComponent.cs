@@ -1,13 +1,15 @@
 ﻿using System;
+using SurgeEngine.Code.UI.Menus;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 
 namespace SurgeEngine.Code.UI
 {
     public class UIDefinerComponent : MonoBehaviour
     {
         public CanvasGroup canvasGroup;
-        public Menu menuType;
+        [FormerlySerializedAs("menuType")] public Page pageType;
         
         [SerializeField] private GameObject firstSelectedObject;
 

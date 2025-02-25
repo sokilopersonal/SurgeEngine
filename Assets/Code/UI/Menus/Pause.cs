@@ -1,11 +1,12 @@
 using System;
 using System.Threading.Tasks;
 using DG.Tweening;
+using SurgeEngine.Code.UI.Menus;
 using UnityEngine;
 
 namespace SurgeEngine.Code.UI
 {
-    public class Pause : Menu
+    public class Pause : Page
     {
         [SerializeField] private RectTransform parent, firstBox, secondBox, grid;
 
@@ -28,13 +29,16 @@ namespace SurgeEngine.Code.UI
         {
             base.Open();
             
+            // Second box - Cyan
+            // First box - Black
+            
             _sequence?.Kill(true);
             _sequence = DOTween.Sequence();
             _sequence.Append(Group.DOFade(1f, 0.2f).From(0));
             _sequence.Join(grid.DOSizeDelta(new Vector2(grid.sizeDelta.x, 2500f), _duration * 1.2f).SetEase(Ease.OutCubic).From(new Vector2(grid.sizeDelta.x, 0)));
             _sequence.Join(parent.DOAnchorPosY(_endY, _duration).SetEase(Ease.OutCubic).From(new Vector2(0, 0)));
             _sequence.Join(secondBox.DOSizeDelta(new Vector2(_startWidth, _endHeight), _duration).SetEase(Ease.OutCubic).From(new Vector2(_startWidth, 10)));
-            _sequence.Join(firstBox.DOSizeDelta(new Vector2(_startWidth, _endHeight), _duration).SetEase(Ease.OutCubic).SetDelay(0.1f).From(new Vector2(_startWidth, 10)));
+            _sequence.Join(firstBox.DOSizeDelta(new Vector2(_startWidth, _endHeight - 25), _duration).SetEase(Ease.OutCubic).SetDelay(0.1f).From(new Vector2(_startWidth, 10)));
             _sequence.SetUpdate(true);
 
             await _sequence.AsyncWaitForCompletion();
@@ -45,9 +49,9 @@ namespace SurgeEngine.Code.UI
             _sequence?.Kill(true);
             _sequence = DOTween.Sequence();
             _sequence.Append(Group.DOFade(0f, 0.2f).From(1));
-            _sequence.Join(parent.DOAnchorPosY(0, _duration).SetEase(Ease.InCubic).From(new Vector2(0, _endY)));
-            _sequence.Join(secondBox.DOSizeDelta(new Vector2(_startWidth, 10), _duration).SetEase(Ease.InCubic).From(new Vector2(_startWidth, _endHeight)));
-            _sequence.Join(firstBox.DOSizeDelta(new Vector2(_startWidth, 10), _duration).SetEase(Ease.InCubic).SetDelay(0.1f).From(new Vector2(_startWidth, _endHeight)));
+            _sequence.Join(parent.DOAnchorPosY(0, _duration).SetEase(Ease.OutCubic).From(new Vector2(0, _endY)));
+            _sequence.Join(secondBox.DOSizeDelta(new Vector2(_startWidth, 10), _duration).SetEase(Ease.OutCubic).From(new Vector2(_startWidth, _endHeight)));
+            _sequence.Join(firstBox.DOSizeDelta(new Vector2(_startWidth, 10), _duration).SetEase(Ease.OutCubic).SetDelay(0.1f).From(new Vector2(_startWidth, _endHeight)));
             _sequence.SetUpdate(true);
             
             await _sequence.AsyncWaitForCompletion();

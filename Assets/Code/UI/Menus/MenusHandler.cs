@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using SurgeEngine.Code.UI.Menus;
 using UnityEngine;
 
 namespace SurgeEngine.Code.UI
@@ -9,10 +10,10 @@ namespace SurgeEngine.Code.UI
     {
         public static MenusHandler Instance { get; private set; }
         
-        [SerializeField] private Menu[] menus;
-        private readonly Dictionary<Type, Menu> _menusDictionary = new Dictionary<Type, Menu>();
+        [SerializeField] private Page[] menus;
+        private readonly Dictionary<Type, Page> _menusDictionary = new Dictionary<Type, Page>();
         
-        private Menu _currentMenu;
+        private Page _currentPage;
 
         private void Awake()
         {
@@ -24,24 +25,24 @@ namespace SurgeEngine.Code.UI
             }
         }
 
-        public async void OpenMenu<T>() where T : Menu
+        public async void OpenMenu<T>() where T : Page
         {
             var menu = _menusDictionary[typeof(T)];
             
-            if (_currentMenu != null)
+            if (_currentPage != null)
             {
-                await _currentMenu.Close();
+                await _currentPage.Close();
             }
             
-            _currentMenu = menu;
+            _currentPage = menu;
             
             await menu.Open();
         }
         
-        public async void CloseMenu<T>() where T : Menu
+        public async void CloseMenu<T>() where T : Page
         {
             var menu = _menusDictionary[typeof(T)];
-            _currentMenu = null;
+            _currentPage = null;
             await menu.Close();
         }
     }
