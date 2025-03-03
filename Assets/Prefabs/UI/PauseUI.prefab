@@ -6108,6 +6108,34 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6286703384861301511}
     m_Modifications:
+    - target: {fileID: 2352309949068547823, guid: aa1cdb19b4806194591a89c6104dfb40, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2352309949068547823, guid: aa1cdb19b4806194591a89c6104dfb40, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2352309949068547823, guid: aa1cdb19b4806194591a89c6104dfb40, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2072006410278246420}
+    - target: {fileID: 2352309949068547823, guid: aa1cdb19b4806194591a89c6104dfb40, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2352309949068547823, guid: aa1cdb19b4806194591a89c6104dfb40, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: QuitAction
+      objectReference: {fileID: 0}
+    - target: {fileID: 2352309949068547823, guid: aa1cdb19b4806194591a89c6104dfb40, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: SurgeEngine.Code.UI.PauseHandler, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2352309949068547823, guid: aa1cdb19b4806194591a89c6104dfb40, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 4746250495134390681, guid: aa1cdb19b4806194591a89c6104dfb40, type: 3}
       propertyPath: m_SortingLayer
       value: 1

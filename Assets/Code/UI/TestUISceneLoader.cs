@@ -7,7 +7,7 @@ namespace SurgeEngine.Code.UI
     {
         public void LoadScene(string sceneName)
         {
-            SceneLoader.Instance.LoadScene(sceneName);
+            SceneLoader.LoadScene(sceneName);
         }
     }
 }

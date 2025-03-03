@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
@@ -15,6 +16,9 @@ namespace SurgeEngine.Code.Tools
         [SerializeField] private float fadeOutDelay = 1.25f;
         [SerializeField] private float artificialDelay = 2f;
 
+        private Tween _groupTween;
+        private bool _isLoading;
+
         public static SceneLoader Instance { get; private set; }
 
         [Inject]
@@ -25,32 +29,50 @@ namespace SurgeEngine.Code.Tools
             group.alpha = 0;
         }
         
-        public async void LoadScene(string name)
+        public static void LoadScene(string name)
         {
-            screen.SetActive(false);
-            await group.DOFade(1f, transitionDuration).From(0).SetLink(gameObject).SetUpdate(true).AsyncWaitForCompletion();
+            if (!Instance._isLoading)
+            {
+                Instance.StartCoroutine(LoadSceneRoutine(name));
+            }
+        }
+
+        private static IEnumerator LoadSceneRoutine(string name)
+        {
+            Time.timeScale = 1;
             
-            screen.SetActive(true);
+            Instance._isLoading = true;
+            Instance.screen.SetActive(false);
+            Instance._groupTween = Instance.group.DOFade(1f, Instance.transitionDuration).From(0).SetUpdate(true);
+            Instance._groupTween.SetLink(Instance.gameObject);
+            yield return Instance._groupTween.WaitForCompletion();
+            
+            Instance.screen.SetActive(true);
             
             var scene = SceneManager.LoadSceneAsync(name);
-            scene.allowSceneActivation = false;
+            if (scene != null)
+            {
+                scene.allowSceneActivation = false;
 
-            while (scene.progress < 0.9f)
-                await UniTask.Yield();
+                while (scene.progress < 0.9f)
+                    yield return null;
 
-            await UniTask.Delay(TimeSpan.FromSeconds(artificialDelay), DelayType.Realtime);
+                yield return new WaitForSecondsRealtime(Instance.artificialDelay);
+
+                scene.allowSceneActivation = true;
+            }
+
+            Instance._groupTween = Instance.group.DOFade(0f, Instance.transitionDuration).From(1).SetDelay(Instance.fadeOutDelay).SetUpdate(true);
+            Instance._groupTween.SetLink(Instance.gameObject);
+            yield return Instance._groupTween.WaitForCompletion();
             
-            scene.allowSceneActivation = true;
-
-            await scene;
-            await group.DOFade(0f, transitionDuration).From(1).SetDelay(fadeOutDelay).SetUpdate(true).SetLink(gameObject).AsyncWaitForCompletion();
-            
-            screen.SetActive(false);
+            Instance.screen.SetActive(false);
+            Instance._isLoading = false;
         }
-        
-        public async void LoadScene(int index)
+
+        private void OnDestroy()
         {
-            
+            Instance = null;
         }
     }
 }

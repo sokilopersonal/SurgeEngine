@@ -3,6 +3,7 @@ using DG.Tweening;
 using SurgeEngine.Code.ActorStates;
 using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Custom;
+using SurgeEngine.Code.Tools;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -115,6 +116,11 @@ namespace SurgeEngine.Code.UI
         public void RestartAction()
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+
+        public void QuitAction()
+        {
+            SceneLoader.LoadScene("Scene1");
         }
     }
 }
