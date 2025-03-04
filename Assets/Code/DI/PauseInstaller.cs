@@ -12,6 +12,8 @@ namespace SurgeEngine.Code.DI
         {
             var pauseHandler = Container.InstantiatePrefabForComponent<PauseHandler>(pauseHandlerPrefab);
             Container.Bind<PauseHandler>().FromInstance(pauseHandler).AsSingle().NonLazy();
+
+            Container.Bind<PauseContext>().FromNew().AsSingle().NonLazy();
         }
     }
 }

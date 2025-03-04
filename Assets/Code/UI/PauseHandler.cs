@@ -7,13 +7,12 @@ using SurgeEngine.Code.Tools;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using Zenject;
 
 namespace SurgeEngine.Code.UI
 {
     public class PauseHandler : MonoBehaviour
     {
-        public static PauseHandler Instance { get; private set; }
-
         public bool Active { get; private set; }
         public event Action<bool> OnPauseChanged; 
 
@@ -27,10 +26,9 @@ namespace SurgeEngine.Code.UI
         private Sequence _pauseFadeTween;
         private InputAction _pauseAction;
         private InputDevice _device;
-
+        
         private void Awake()
         {
-            Instance = this;
             _uiCanvasGroup = GetComponent<CanvasGroup>();
 
             _uiCanvasGroup.alpha = 0f;
@@ -121,6 +119,17 @@ namespace SurgeEngine.Code.UI
         public void QuitAction()
         {
             SceneLoader.LoadScene("Scene1");
+        }
+    }
+
+    public class PauseContext
+    {
+        public static PauseHandler Context;
+
+        [Inject]
+        public void Init(PauseHandler pauseHandler)
+        {
+            Context = pauseHandler;
         }
     }
 }
