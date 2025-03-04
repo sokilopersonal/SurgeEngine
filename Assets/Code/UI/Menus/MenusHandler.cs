@@ -13,6 +13,7 @@ namespace SurgeEngine.Code.UI
         
         [SerializeField] private Page[] menus;
         private readonly Dictionary<Type, Page> _menusDictionary = new Dictionary<Type, Page>();
+        private readonly Dictionary<string, Page> _menusDictionaryString = new Dictionary<string, Page>();
         
         private Page _currentPage;
 
@@ -23,6 +24,7 @@ namespace SurgeEngine.Code.UI
             foreach (var menu in menus)
             {
                 _menusDictionary.Add(menu.GetType(), menu);
+                _menusDictionaryString.Add(menu.GetType().Name, menu);
             }
         }
 
@@ -45,6 +47,19 @@ namespace SurgeEngine.Code.UI
             var menu = _menusDictionary[typeof(T)];
             _currentPage = null;
             await menu.Close();
+        }
+
+        public async void OpenMenu(string page)
+        {
+            var menu = _menusDictionaryString[page];
+            
+            if (_currentPage != null)
+            {
+                await _currentPage.Close();
+            }
+            
+            _currentPage = menu;
+            await menu.Open();
         }
     }
 }

@@ -113,7 +113,7 @@ namespace SurgeEngine.Code.UI
 
         public void RestartAction()
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            SceneLoader.LoadScene(SceneManager.GetActiveScene().name);
         }
 
         public void QuitAction()

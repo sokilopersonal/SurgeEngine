@@ -8,21 +8,32 @@ using UnityEngine.UI;
 
 namespace SurgeEngine.Code.UI.Menus
 {
+    [RequireComponent(typeof(CanvasGroup))]
     public abstract class Page : MonoBehaviour
     {
-        protected CanvasGroup Group;
+        protected CanvasGroup Group { get; private set; }
         [SerializeField] private Selectable selected;
+        [SerializeField] protected float duration = 0.3f;
 
         protected Sequence AnimationSequence { get; private set; }
         
         private void Awake()
         {
             Group = GetComponent<CanvasGroup>();
+            
+            Group.interactable = false;
+            Group.blocksRaycasts = false;
+            Group.alpha = 0;
         }
 
         public async UniTask Open()
         {
-            EventSystem.current.SetSelectedGameObject(selected.gameObject);
+            var current = EventSystem.current;
+            if (selected != null) current.SetSelectedGameObject(selected.gameObject);
+
+            Group.interactable = true;
+            Group.blocksRaycasts = true;
+            
             AnimationSequence?.Kill(true);
             AnimationSequence = DOTween.Sequence();
             AnimationSequence.SetUpdate(true);
@@ -33,6 +44,9 @@ namespace SurgeEngine.Code.UI.Menus
         
         public async UniTask Close()
         {
+            Group.interactable = false;
+            Group.blocksRaycasts = false;
+            
             AnimationSequence?.Kill(true);
             AnimationSequence = DOTween.Sequence();
             AnimationSequence.SetUpdate(true);
