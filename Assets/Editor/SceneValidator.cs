@@ -1,6 +1,7 @@
 ﻿using SurgeEngine.Code.CommonObjects;
 using UnityEditor;
 using UnityEngine;
+using Zenject;
 
 namespace SurgeEngine.Editor
 {
@@ -17,6 +18,13 @@ namespace SurgeEngine.Editor
                 {
                     var stage = new GameObject("+ Stage").AddComponent<Stage>();
                     Undo.RegisterCreatedObjectUndo(stage, "Add Stage");
+                }
+
+                if (!Object.FindFirstObjectByType<SceneContext>())
+                {
+                    var prefab = AssetDatabase.LoadAssetAtPath<SceneContext>("Assets/Prefabs/DI/SceneContext.prefab");
+                    var sceneContext = PrefabUtility.InstantiatePrefab(prefab, GameObject.Find("+ Stage").transform);
+                    Undo.RegisterCreatedObjectUndo(sceneContext, "Add SceneContext");
                 }
 
                 if (!GameObject.Find("- Volumes"))
