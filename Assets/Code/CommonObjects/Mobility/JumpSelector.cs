@@ -103,11 +103,11 @@ namespace SurgeEngine.Code.CommonObjects
                         
                         if (_direction == Vector3.up)
                         {
-                            _actor.animation.TransitionToState("SelectJumpS", 0f);
+                            //_actor.animation.TransitionToState("SelectJumpS", 0f);
                         }
                         else
                         {
-                            _actor.animation.TransitionToState("Ball", 0f);
+                            //_actor.animation.TransitionToState("Ball", 0f);
                         }
                         
                         if (correct)

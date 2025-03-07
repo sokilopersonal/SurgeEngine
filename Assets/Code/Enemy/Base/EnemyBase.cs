@@ -20,7 +20,7 @@ namespace SurgeEngine.Code.Enemy
                 component?.SetOwner(this);
             }
             
-            animation?.Initialize(stateMachine);
+            //animation?.Initialize(stateMachine);
         }
 
         protected override void Update()

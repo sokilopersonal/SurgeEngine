@@ -1,11 +1,15 @@
-﻿namespace SurgeEngine.Code.ActorSystem
+﻿using UnityEngine;
+using Zenject;
+
+namespace SurgeEngine.Code.ActorSystem
 {
     public class ActorContext
     {
         private static Actor _actor;
         public static Actor Context => _actor;
         
-        public ActorContext(Actor actor)
+        [Inject]
+        private void SetActor(Actor actor)
         {
             _actor = actor;
         }

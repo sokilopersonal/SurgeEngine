@@ -5,39 +5,31 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.StateMachine.Components
 {
-    public abstract class StateAnimator : MonoBehaviour
+    public class StateAnimator : MonoBehaviour
     {
         public Animator animator;
         [SerializeField] private bool allowIK;
         [SerializeField] private string[] ikAllowedAnimations;
-        
-        protected string _currentAnimation;
-        public Coroutine animationDelayedCoroutine;
+
+        private string _currentAnimation;
+        public Coroutine AnimationDelayedCoroutine;
         private Coroutine _animationWaitCoroutine;
         private AnimationHandle _currentHandle;
         
         private Coroutine _coroutine;
-        protected FStateMachine stateMachine;
-
-        public void Initialize(FStateMachine stateMachine)
-        {
-            this.stateMachine = stateMachine;
-            
-            this.stateMachine.OnStateAssign += ChangeStateAnimation;
-        }
-
+        
         private void Update()
         {
-            AnimationTick();
+            
         }
 
-        protected virtual void ChangeStateAnimation(FState obj)
+        public void StopWork()
         {
             if (_coroutine != null)
                 StopCoroutine(_coroutine);
             
-            if (animationDelayedCoroutine != null)
-                StopCoroutine(animationDelayedCoroutine);
+            if (AnimationDelayedCoroutine != null)
+                StopCoroutine(AnimationDelayedCoroutine);
         }
 
         public AnimationHandle TransitionToState(string stateName, float transitionTime = 0.25f)
@@ -58,21 +50,21 @@ namespace SurgeEngine.Code.StateMachine.Components
 
         public AnimationHandle TransitionToStateDelayed(string stateName, float delay, float transitionTime = 0.25f)
         {
-            if (animationDelayedCoroutine != null)
+            if (AnimationDelayedCoroutine != null)
             {
-                StopCoroutine(animationDelayedCoroutine);
-                animationDelayedCoroutine = null;
+                StopCoroutine(AnimationDelayedCoroutine);
+                AnimationDelayedCoroutine = null;
             }
 
             var handle = new AnimationHandle(this);
-            animationDelayedCoroutine = StartCoroutine(DelayedTransitionCoroutine(stateName, delay, transitionTime, handle));
+            AnimationDelayedCoroutine = StartCoroutine(DelayedTransitionCoroutine(stateName, delay, transitionTime, handle));
             return handle;
         }
 
         private IEnumerator DelayedTransitionCoroutine(string stateName, float delay, float transitionTime, AnimationHandle handle)
         {
             yield return new WaitForSeconds(delay);
-            animationDelayedCoroutine = null;
+            AnimationDelayedCoroutine = null;
 
             if (handle.IsCanceled)
                 yield break;
@@ -101,10 +93,9 @@ namespace SurgeEngine.Code.StateMachine.Components
             _currentHandle = null;
         }
         
-        protected abstract void AnimationTick();
-        
-        public void ResetCurrentAnimationState() => _currentAnimation = string.Empty;
+        public void SetCurrentAnimationState(string state) => _currentAnimation = state;
         public string GetCurrentAnimationState() => _currentAnimation;
+        public void ResetCurrentAnimationState() => _currentAnimation = string.Empty;
 
         public bool IsIKAllowed()
         {
@@ -135,10 +126,10 @@ namespace SurgeEngine.Code.StateMachine.Components
         public void Cancel()
         {
             IsCanceled = true;
-            if (_owner.animationDelayedCoroutine != null)
+            if (_owner.AnimationDelayedCoroutine != null)
             {
-                _owner.StopCoroutine(_owner.animationDelayedCoroutine);
-                _owner.animationDelayedCoroutine = null;
+                _owner.StopCoroutine(_owner.AnimationDelayedCoroutine);
+                _owner.AnimationDelayedCoroutine = null;
             }
             _linkedAnimationHandle?.Cancel();
         }
@@ -149,12 +140,12 @@ namespace SurgeEngine.Code.StateMachine.Components
 
         public void After(float delay, Action action)
         {
-            _owner.animationDelayedCoroutine = _owner.StartCoroutine(DelayedAction(delay, action));
+            _owner.AnimationDelayedCoroutine = _owner.StartCoroutine(DelayedAction(delay, action));
         }
 
         public void AfterThen(float delay, Action action)
         {
-            OnAnimationEnd += () => _owner.animationDelayedCoroutine = _owner.StartCoroutine(DelayedAction(delay, action));
+            OnAnimationEnd += () => _owner.AnimationDelayedCoroutine = _owner.StartCoroutine(DelayedAction(delay, action));
         }
 
         private IEnumerator DelayedAction(float delay, Action action)

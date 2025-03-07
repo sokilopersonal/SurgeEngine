@@ -21,8 +21,7 @@ namespace SurgeEngine.Code.CustomDebug
                 $"Body Velocity: {actor.kinematics.Velocity}",
                 $"Planar Velocity: {actor.kinematics.PlanarVelocity}",
                 $"State: {actor.stateMachine.currentStateName}",
-                $"Camera State: {actor.camera.stateMachine.currentStateName}",
-                $"Animation State: {actor.animation.GetCurrentAnimationState()}"
+                $"Camera State: {actor.camera.stateMachine.currentStateName}"
             };
             
             holder.text = string.Join("\n", text);

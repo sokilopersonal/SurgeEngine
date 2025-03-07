@@ -6,7 +6,7 @@ namespace SurgeEngine.Code.ActorSoundEffects
 {
     public class ActorSound : MonoBehaviour
     {
-        protected Actor actor => ActorContext.Context;
+        protected Actor actor;
         protected VoiceHandler voice;
         
         public virtual void Initialize()
@@ -16,6 +16,7 @@ namespace SurgeEngine.Code.ActorSoundEffects
 
         private void Awake()
         {
+            actor = GetComponentInParent<Actor>();
             voice = GetComponent<VoiceHandler>();
         }
 

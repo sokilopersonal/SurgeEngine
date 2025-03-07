@@ -109,21 +109,21 @@ namespace SurgeEngine.Code.ActorStates
         
         public void PlaySpecialAnimation(float time, object arg = null)
         {
-            Animation.ResetCurrentAnimationState();
+            Animation.StateAnimator.ResetCurrentAnimationState();
             
             switch (data.type)
             {
                 case SpecialJumpType.JumpBoard:
-                    Animation.TransitionToState((bool)arg ? "Jump Delux" : "Jump Standard", time);
+                    Animation.StateAnimator.TransitionToState((bool)arg ? "Jump Delux" : "Jump Standard", time);
                     break;
                 case SpecialJumpType.TrickJumper:
-                    Animation.TransitionToState("Jump Spring", time);
+                    Animation.StateAnimator.TransitionToState("Jump Spring", time);
                     break;
                 case SpecialJumpType.Spring:
-                    Animation.TransitionToState("Jump Spring", time);
+                    Animation.StateAnimator.TransitionToState("Jump Spring", time);
                     break;
                 case SpecialJumpType.DashRing:
-                    Animation.TransitionToState("Dash Ring", time);
+                    Animation.StateAnimator.TransitionToState("Dash Ring", time);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(data), data, null);

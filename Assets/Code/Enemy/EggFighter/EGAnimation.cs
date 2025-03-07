@@ -8,44 +8,39 @@ namespace SurgeEngine.Code.Enemy
     {
         public EnemyBase enemyBase { get; set; }
 
-        protected override void AnimationTick()
-        {
-            
-        }
-
-        protected override void ChangeStateAnimation(FState obj)
-        {
-            base.ChangeStateAnimation(obj);
-
-            if (obj is EGStateIdle)
-            {
-                TransitionToState("Idle");
-            }
-            
-            if (obj is EGStatePatrol)
-            {
-                TransitionToState("Walk", 0.1f);
-            }
-            
-            if (obj is EGStateChase)
-            {
-                TransitionToState("Run");
-            }
-
-            if (obj is EGStatePunch)
-            {
-                TransitionToState("PunchCharge", 0.25f);
-            }
-
-            if (obj is EGStateTurn)
-            {
-                TransitionToState("Turn", 0f);
-            }
-
-            if (obj is EGStateDead)
-            {
-                TransitionToState("IdleDead", 0f);
-            }
-        }
+        // protected override void ChangeStateAnimation(FState obj)
+        // {
+        //     base.StopWork(obj);
+        //
+        //     if (obj is EGStateIdle)
+        //     {
+        //         TransitionToState("Idle");
+        //     }
+        //     
+        //     if (obj is EGStatePatrol)
+        //     {
+        //         TransitionToState("Walk", 0.1f);
+        //     }
+        //     
+        //     if (obj is EGStateChase)
+        //     {
+        //         TransitionToState("Run");
+        //     }
+        //
+        //     if (obj is EGStatePunch)
+        //     {
+        //         TransitionToState("PunchCharge", 0.25f);
+        //     }
+        //
+        //     if (obj is EGStateTurn)
+        //     {
+        //         TransitionToState("Turn", 0f);
+        //     }
+        //
+        //     if (obj is EGStateDead)
+        //     {
+        //         TransitionToState("IdleDead", 0f);
+        //     }
+        // }
     }
 }

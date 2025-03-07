@@ -36,6 +36,25 @@ namespace SurgeEngine.Code.ActorSystem.Actors
         protected override void Awake()
         {
             base.Awake();
+        }
+
+        protected override void InitializeConfigs()
+        {
+            base.InitializeConfigs();
+            
+            AddConfig(boostConfig);
+            AddConfig(driftConfig);
+            AddConfig(homingConfig);
+            AddConfig(stompConfig);
+            AddConfig(slideConfig);
+            AddConfig(quickstepConfig);
+            AddConfig(crawlConfig);
+            AddConfig(sweepKickConfig);
+        }
+
+        protected override void AddStates()
+        {
+            base.AddStates();
             
             Rigidbody body = GetComponent<Rigidbody>();
             
@@ -53,20 +72,6 @@ namespace SurgeEngine.Code.ActorSystem.Actors
 
             stateMachine.AddSubState(new FBoost(this));
             stateMachine.AddSubState(new FSweepKick(this));
-        }
-
-        protected override void InitializeConfigs()
-        {
-            base.InitializeConfigs();
-            
-            AddConfig(boostConfig);
-            AddConfig(driftConfig);
-            AddConfig(homingConfig);
-            AddConfig(stompConfig);
-            AddConfig(slideConfig);
-            AddConfig(quickstepConfig);
-            AddConfig(crawlConfig);
-            AddConfig(sweepKickConfig);
         }
     }
 }

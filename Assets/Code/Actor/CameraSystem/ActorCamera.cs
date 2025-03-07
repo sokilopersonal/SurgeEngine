@@ -1,6 +1,8 @@
 using System.Collections;
+using System.Collections.Generic;
 using SurgeEngine.Code.ActorStates.SonicSubStates;
 using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.CameraSystem.Modifiers;
 using SurgeEngine.Code.CameraSystem.Pawns;
 using SurgeEngine.Code.StateMachine;
 using UnityEngine;
@@ -54,6 +56,8 @@ namespace SurgeEngine.Code.CameraSystem
         public LayerMask collisionMask;
         public float collisionRadius = 0.2f;
         
+        public List<ICameraFloatModifier> FloatModifiers { get; } = new List<ICameraFloatModifier>();
+        
         private Camera _camera;
         private Transform _cameraTransform;
 
@@ -69,11 +73,11 @@ namespace SurgeEngine.Code.CameraSystem
             _cameraTransform = _camera.transform;
             stateMachine = new CameraStateMachine(_camera, _cameraTransform, this);
             
-            stateMachine.AddState(new NewModernState(actor));
-            stateMachine.AddState(new CameraPan(actor));
-            stateMachine.AddState(new VerticalCameraPan(actor));
-            stateMachine.AddState(new FixedCameraPan(actor));
-            stateMachine.AddState(new RestoreCameraPawn(actor));
+            stateMachine.AddState(new NewModernState(Actor));
+            stateMachine.AddState(new CameraPan(Actor));
+            stateMachine.AddState(new VerticalCameraPan(Actor));
+            stateMachine.AddState(new FixedCameraPan(Actor));
+            stateMachine.AddState(new RestoreCameraPawn(Actor));
 
             stateMachine.SetState<NewModernState>();
             stateMachine.SetDirection(transform.forward);
@@ -133,6 +137,9 @@ namespace SurgeEngine.Code.CameraSystem
                 }
             }
         }
+        
+        public void AddFloatModifier(ICameraFloatModifier modifier) => FloatModifiers.Add(modifier);
+        public void RemoveFloatModifier(ICameraFloatModifier modifier) => FloatModifiers.Remove(modifier);
         
         public Camera GetCamera()
         {

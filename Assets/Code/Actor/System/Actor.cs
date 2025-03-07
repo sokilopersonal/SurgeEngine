@@ -29,42 +29,54 @@ namespace SurgeEngine.Code.ActorSystem
         public DamageKickConfig damageKickConfig;
         
         private StartData _startData;
+        private Rigidbody _rigidbody;
 
         protected override void Awake()
         {
-            if (!gameObject.activeSelf)
-            {
-                return;
-            }
-            
             base.Awake();
             
-            Rigidbody body = GetComponent<Rigidbody>();
-            body.centerOfMass -= Vector3.up * 0.5f;
-            
+            _rigidbody = GetComponent<Rigidbody>();
+            _rigidbody.centerOfMass -= Vector3.up * 0.5f;
+
             InitializeConfigs();
+            InitializeComponents();
             
-            stateMachine.AddState(new FStateStart(this, body));
-            stateMachine.AddState(new FStateIdle(this, body));
-            stateMachine.AddState(new FStateGround(this, body));
-            stateMachine.AddState(new FStateBrake(this, body));
-            stateMachine.AddState(new FStateBrakeTurn(this, body));
-            stateMachine.AddState(new FStateAir(this, body));
-            stateMachine.AddState(new FStateSpecialJump(this, body));
-            stateMachine.AddState(new FStateSit(this, body));
-            stateMachine.AddState(new FStateJump(this, body));
-            stateMachine.AddState(new FStateGrind(this, body));
-            stateMachine.AddState(new FStateGrindJump(this, body));
-            stateMachine.AddState(new FStateGrindSquat(this, body));
-            stateMachine.AddState(new FStateJumpSelector(this, body));
-            stateMachine.AddState(new FStateJumpSelectorLaunch(this, body));
-            stateMachine.AddState(new FStateSwing(this, body));
-            stateMachine.AddState(new FStateSwingJump(this, body));
-            stateMachine.AddState(new FStateDamage(this, body));
-            stateMachine.AddState(new FStateDamageLand(this, body));
-            stateMachine.AddState(new FStateUpreel(this, body));
-            
-            animation?.Initialize(stateMachine);
+            AddStates();
+        }
+
+        private void InitializeComponents()
+        {
+            input?.Set(this);
+            stats?.Set(this);
+            sounds?.Set(this);
+            camera?.Set(this);
+            animation?.Set(this);
+            effects?.Set(this);
+            model?.Set(this);
+            kinematics?.Set(this);
+        }
+
+        protected virtual void AddStates()
+        {
+            stateMachine.AddState(new FStateStart(this, _rigidbody));
+            stateMachine.AddState(new FStateIdle(this, _rigidbody));
+            stateMachine.AddState(new FStateGround(this, _rigidbody));
+            stateMachine.AddState(new FStateBrake(this, _rigidbody));
+            stateMachine.AddState(new FStateBrakeTurn(this, _rigidbody));
+            stateMachine.AddState(new FStateAir(this, _rigidbody));
+            stateMachine.AddState(new FStateSpecialJump(this, _rigidbody));
+            stateMachine.AddState(new FStateSit(this, _rigidbody));
+            stateMachine.AddState(new FStateJump(this, _rigidbody));
+            stateMachine.AddState(new FStateGrind(this, _rigidbody));
+            stateMachine.AddState(new FStateGrindJump(this, _rigidbody));
+            stateMachine.AddState(new FStateGrindSquat(this, _rigidbody));
+            stateMachine.AddState(new FStateJumpSelector(this, _rigidbody));
+            stateMachine.AddState(new FStateJumpSelectorLaunch(this, _rigidbody));
+            stateMachine.AddState(new FStateSwing(this, _rigidbody));
+            stateMachine.AddState(new FStateSwingJump(this, _rigidbody));
+            stateMachine.AddState(new FStateDamage(this, _rigidbody));
+            stateMachine.AddState(new FStateDamageLand(this, _rigidbody));
+            stateMachine.AddState(new FStateUpreel(this, _rigidbody));
         }
 
         public void SetStart(StartData data)

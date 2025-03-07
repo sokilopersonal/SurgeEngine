@@ -27,7 +27,7 @@ namespace SurgeEngine.Code.ActorSoundEffects
             _boostSoundInstance = RuntimeManager.CreateInstance(boostSound);
             _boostLoopInstance = RuntimeManager.CreateInstance(boostLoopSound);
             _boostVoiceInstance = RuntimeManager.CreateInstance(boostVoiceSound);
-            actor.stateMachine.GetSubState<FBoost>().OnActiveChanged += OnBoostActivate;
+            //actor.stateMachine.GetSubState<FBoost>().OnActiveChanged += OnBoostActivate;
         }
 
         private void OnBoostActivate(FSubState arg1, bool arg2)

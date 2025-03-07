@@ -27,7 +27,7 @@ namespace SurgeEngine.Code.CommonObjects
                 body.position = transform.position + transform.up * 0.5f;
             }
             
-            context.animation.TransitionToState(AnimatorParams.RunCycle);
+            context.animation.StateAnimator.TransitionToState(AnimatorParams.RunCycle);
             body.linearVelocity = transform.forward * speed;
             context.stateMachine.SetState<FStateGround>();
             

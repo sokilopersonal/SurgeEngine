@@ -19,7 +19,7 @@ namespace SurgeEngine.Code.Context
         {
             _instance = this;
             
-            _ = new ActorContext(Actor);
+            //_ = new ActorContext(Actor);
             _ = new ActorHUDContext(ActorHud);
         }
     }

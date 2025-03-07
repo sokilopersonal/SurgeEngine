@@ -49,7 +49,7 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
         {
             base.OnTick(dt);
 
-            _rotationAngle = Actor.animation.animator.GetCurrentAnimatorStateInfo(0).normalizedTime % 1;
+            _rotationAngle = Actor.animation.StateAnimator.animator.GetCurrentAnimatorStateInfo(0).normalizedTime % 1;
 
             if (_rotationAngle > 0.9f && !_swingSound)
             {

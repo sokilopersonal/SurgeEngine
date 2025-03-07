@@ -60,7 +60,7 @@ namespace SurgeEngine.Code.ActorSystem
             if (obj is not FBoost) return;
             
             boostAura.Toggle(value);
-            Vector3 viewportPosition = actor.camera.GetCamera().WorldToViewportPoint(actor.transform.position);
+            Vector3 viewportPosition = Actor.camera.GetCamera().WorldToViewportPoint(Actor.transform.position);
             viewportPosition.y *= 0.8f; // Correction because the player's pivot is in the head (wtf?)
             if (value) boostDistortion.Play(viewportPosition);
         }
@@ -69,17 +69,17 @@ namespace SurgeEngine.Code.ActorSystem
         {
             yield return new WaitForSeconds(0.117f);
             
-            if (actor.stateMachine.CurrentState is not FStateJump)
+            if (Actor.stateMachine.CurrentState is not FStateJump)
                 yield break;
             
-            if (actor.input.JumpHeld)
+            if (Actor.input.JumpHeld)
                 spinball.Toggle(true);
         }
 
         private void OnStateAssign(FState obj)
         {
-            FStateMachine machine = actor.stateMachine;
-            FState prev = actor.stateMachine.PreviousState;
+            FStateMachine machine = Actor.stateMachine;
+            FState prev = Actor.stateMachine.PreviousState;
             
             if (obj is FStateJump && prev is not FStateUpreel)
             {
@@ -125,21 +125,21 @@ namespace SurgeEngine.Code.ActorSystem
 
         public void CreateParaloop()
         {
-            paraloopEffect.startPoint = actor.kinematics.Rigidbody.position;
-            paraloopEffect.sonicContext = actor;
+            paraloopEffect.startPoint = Actor.kinematics.Rigidbody.position;
+            paraloopEffect.sonicContext = Actor;
             paraloopEffect.Toggle(true);
         }
 
         private void OnEnable()
         {
-            actor.stateMachine.GetSubState<FBoost>().OnActiveChanged += OnBoostActivate;
-            actor.stateMachine.OnStateAssign += OnStateAssign;
+            Actor.stateMachine.GetSubState<FBoost>().OnActiveChanged += OnBoostActivate;
+            Actor.stateMachine.OnStateAssign += OnStateAssign;
         }
 
         private void OnDisable()
         {
-            actor.stateMachine.GetSubState<FBoost>().OnActiveChanged -= OnBoostActivate;
-            actor.stateMachine.OnStateAssign -= OnStateAssign;
+            Actor.stateMachine.GetSubState<FBoost>().OnActiveChanged -= OnBoostActivate;
+            Actor.stateMachine.OnStateAssign -= OnStateAssign;
         }
     }
 }

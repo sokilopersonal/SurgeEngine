@@ -13,9 +13,7 @@ GameObject:
   - component: {fileID: 6716957596991090240}
   - component: {fileID: 7099733658116403469}
   - component: {fileID: 1696099844310411520}
-  - component: {fileID: 2248048767635427180}
   - component: {fileID: 3514203903129675520}
-  - component: {fileID: 2591391624317095217}
   - component: {fileID: 6497409939340660902}
   - component: {fileID: 5828909329531261166}
   m_Layer: 3
@@ -34,7 +32,7 @@ Transform:
   m_GameObject: {fileID: 100729958831981340}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -58,7 +56,7 @@ MonoBehaviour:
   stats: {fileID: 7099733658116403469}
   sounds: {fileID: 8348964648566409893}
   camera: {fileID: 6716957596991090240}
-  animation: {fileID: 2248048767635427180}
+  animation: {fileID: 8309013420478706678}
   effects: {fileID: 289070888726962416}
   model: {fileID: 6916054324571523613}
   flags: {fileID: 1696099844310411520}
@@ -315,27 +313,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   flagType: 0
---- !u!114 &2248048767635427180
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 100729958831981340}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ae28f8edff08479cb311cefb339a5a6e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 7194784858183372997}
-  allowIK: 1
-  ikAllowedAnimations:
-  - Idle
-  - sonic_idle_A
-  - sonic_idle_B
-  - sonic_idle_C
-  - sonic_idle_D
-  - sonic_idle_E_start
 --- !u!114 &3514203903129675520
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -348,24 +325,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da03e2aea0004e6a85744b21dbd938ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxAngleDifference: 45
+  maxAngleDifference: 85
   mode: 0
---- !u!114 &2591391624317095217
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 100729958831981340}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e3ecab5f07de4f77923cbb9324fc6c01, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  planters:
-  - {fileID: 1232248046546053147}
-  - {fileID: 6023830480336772076}
-  weightSpeed: 12
+  normalLerpSpeed: 7
+  normalSpeedThreshold: 10
 --- !u!136 &6497409939340660902
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -5332,6 +5295,9 @@ GameObject:
   - component: {fileID: 420970829371151369}
   - component: {fileID: 1569309938121577590}
   - component: {fileID: 4999302565617241035}
+  - component: {fileID: 8309013420478706678}
+  - component: {fileID: 4489472361400553381}
+  - component: {fileID: 919272589128347919}
   m_Layer: 0
   m_Name: UnleashedSonic_IK
   m_TagString: Untagged
@@ -5452,6 +5418,54 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mouthReference: {fileID: 6645284270683270860}
+--- !u!114 &8309013420478706678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 148834884957308453}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae28f8edff08479cb311cefb339a5a6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4489472361400553381
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 148834884957308453}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da6493e362584b0ab638b59ffe29f5f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 7194784858183372997}
+  allowIK: 1
+  ikAllowedAnimations:
+  - Idle
+  - sonic_idle_A
+  - sonic_idle_B
+  - sonic_idle_C
+  - sonic_idle_D
+--- !u!114 &919272589128347919
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 148834884957308453}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3ecab5f07de4f77923cbb9324fc6c01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  planters:
+  - {fileID: 1232248046546053147}
+  - {fileID: 6023830480336772076}
+  weightSpeed: 12
 --- !u!1 &172326168808283029
 GameObject:
   m_ObjectHideFlags: 0
@@ -15741,7 +15755,7 @@ Transform:
   m_GameObject: {fileID: 930709539082581898}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.1, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -70726,6 +70740,10 @@ PrefabInstance:
     - target: {fileID: 918901109560652366, guid: 71b112c5f2262004a8a1836ad970b46f, type: 3}
       propertyPath: m_Name
       value: BoostEffect
+      objectReference: {fileID: 0}
+    - target: {fileID: 2309013460188122886, guid: 71b112c5f2262004a8a1836ad970b46f, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4894437833673752107, guid: 71b112c5f2262004a8a1836ad970b46f, type: 3}
       propertyPath: m_LocalPosition.x

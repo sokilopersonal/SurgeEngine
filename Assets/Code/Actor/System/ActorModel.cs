@@ -32,23 +32,16 @@ namespace SurgeEngine.Code.ActorSystem
         {
             _collisionStartHeight = collision.height;
             _collisionStartRadius = collision.radius;
-            
-            Quaternion parentRotation = actor.transform.parent.rotation;
-            actor.transform.parent.rotation = Quaternion.identity;
-
-            root.localPosition = actor.transform.localPosition;
-            actor.transform.rotation = parentRotation;
-            root.localRotation = parentRotation;
         }
 
         private void Update()
         {
-            root.localPosition = actor.transform.localPosition;
+            root.localPosition = Actor.transform.localPosition;
             
-            FState prev = actor.stateMachine.PreviousState;
-            _forwardVector = Vector3.Slerp(root.forward, actor.transform.forward, Time.deltaTime * horizontalRotationSpeed);
-            _upVector = Vector3.Slerp(root.up, actor.transform.up, Time.deltaTime * verticalRotationSpeed
-                * Mathf.Lerp(1f, 2f, actor.kinematics.HorizontalSpeed / actor.config.topSpeed));
+            FState prev = Actor.stateMachine.PreviousState;
+            _forwardVector = Vector3.Slerp(root.forward, Actor.transform.forward, Time.deltaTime * horizontalRotationSpeed);
+            _upVector = Vector3.Slerp(root.up, Actor.transform.up, Time.deltaTime * verticalRotationSpeed
+                * Mathf.Lerp(1f, 2f, Actor.kinematics.HorizontalSpeed / Actor.config.topSpeed));
 
             if (prev is FStateSpecialJump)
             {
@@ -70,7 +63,7 @@ namespace SurgeEngine.Code.ActorSystem
                 {
                     if (_upRestoring)
                     {
-                        _upVector = Vector3.Slerp(root.up, actor.transform.up, Easings.Get(Easing.InCirc, _upRestoreTimer));
+                        _upVector = Vector3.Slerp(root.up, Actor.transform.up, Easings.Get(Easing.InCirc, _upRestoreTimer));
                         _upRestoreTimer += Time.deltaTime / 0.8f;
                         
                         if (_upRestoreTimer >= 1)
@@ -95,23 +88,23 @@ namespace SurgeEngine.Code.ActorSystem
 
         public void RotateBody(Vector3 normal, bool project = false)
         {
-            Vector3 vel = actor.kinematics.Velocity;
+            Vector3 vel = Actor.kinematics.Velocity;
             if (project) vel = Vector3.ProjectOnPlane(vel, normal);
             if (vel.sqrMagnitude > 0.01f)
             {
                 Quaternion targetRotation = Quaternion.LookRotation(vel, normal);
-                actor.kinematics.Rigidbody.rotation = targetRotation;
+                Actor.kinematics.Rigidbody.rotation = targetRotation;
             }
             else
             {
-                Quaternion targetRotation = Quaternion.LookRotation(actor.transform.forward, normal);
-                actor.kinematics.Rigidbody.rotation = targetRotation;
+                Quaternion targetRotation = Quaternion.LookRotation(Actor.transform.forward, normal);
+                Actor.kinematics.Rigidbody.rotation = targetRotation;
             }
 
-            if (actor.stateMachine.IsExact<FStateIdle>())
+            if (Actor.stateMachine.IsExact<FStateIdle>())
             {
-                Quaternion targetRotation = Quaternion.LookRotation(actor.transform.forward, normal);
-                actor.kinematics.Rigidbody.rotation = targetRotation;
+                Quaternion targetRotation = Quaternion.LookRotation(Actor.transform.forward, normal);
+                Actor.kinematics.Rigidbody.rotation = targetRotation;
             }
         }
         
@@ -123,43 +116,43 @@ namespace SurgeEngine.Code.ActorSystem
             if (vector.sqrMagnitude > 0.01f)
             {
                 Quaternion targetRotation = Quaternion.LookRotation(vector, normal);
-                actor.kinematics.Rigidbody.rotation = targetRotation;
+                Actor.kinematics.Rigidbody.rotation = targetRotation;
             }
             else
             {
-                Quaternion targetRotation = Quaternion.LookRotation(actor.transform.forward, normal);
-                actor.kinematics.Rigidbody.rotation = targetRotation;
+                Quaternion targetRotation = Quaternion.LookRotation(Actor.transform.forward, normal);
+                Actor.kinematics.Rigidbody.rotation = targetRotation;
             }
 
-            if (actor.stateMachine.IsExact<FStateIdle>())
+            if (Actor.stateMachine.IsExact<FStateIdle>())
             {
-                Quaternion targetRotation = Quaternion.LookRotation(actor.transform.forward, normal);
-                actor.kinematics.Rigidbody.rotation = targetRotation;
+                Quaternion targetRotation = Quaternion.LookRotation(Actor.transform.forward, normal);
+                Actor.kinematics.Rigidbody.rotation = targetRotation;
             }
         }
         
         public void VelocityRotation(bool transformRotation = false)
         {
-            Vector3 vel = actor.kinematics.Velocity.normalized;
+            Vector3 vel = Actor.kinematics.Velocity.normalized;
             float dot = Vector3.Dot(_tUp, Vector3.up);
             Vector3 left = Vector3.Cross(vel, Vector3.up);
 
             if (dot >= 0.99f)
             {
-                if (!transformRotation) actor.kinematics.Rigidbody.rotation = Quaternion.FromToRotation(actor.transform.up, Vector3.up) * actor.kinematics.Rigidbody.rotation;
-                else root.rotation = Quaternion.FromToRotation(actor.transform.up, Vector3.up) * root.rotation;
+                if (!transformRotation) Actor.kinematics.Rigidbody.rotation = Quaternion.FromToRotation(Actor.transform.up, Vector3.up) * Actor.kinematics.Rigidbody.rotation;
+                else root.rotation = Quaternion.FromToRotation(Actor.transform.up, Vector3.up) * root.rotation;
             }
             else
             {
                 if (vel.sqrMagnitude > 0.1f)
                 {
                     Vector3 forward = Vector3.Cross(vel, left); 
-                    if (!transformRotation) actor.kinematics.Rigidbody.rotation = Quaternion.LookRotation(forward, vel);
+                    if (!transformRotation) Actor.kinematics.Rigidbody.rotation = Quaternion.LookRotation(forward, vel);
                     else root.rotation = Quaternion.LookRotation(forward, vel);
                 }
             }
             
-            if (!transformRotation) root.rotation = actor.kinematics.Rigidbody.rotation;
+            if (!transformRotation) root.rotation = Actor.kinematics.Rigidbody.rotation;
         }
 
 

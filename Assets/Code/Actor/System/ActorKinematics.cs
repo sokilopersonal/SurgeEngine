@@ -77,19 +77,19 @@ namespace SurgeEngine.Code.ActorSystem
             _rigidbody = GetComponent<Rigidbody>();
             Normal = Vector3.up;
 
-            _config = actor.config;
+            _config = Actor.config;
         }
 
         private void Update()
         {
-            _cameraTransform = actor.camera.GetCameraTransform();
+            _cameraTransform = Actor.camera.GetCameraTransform();
             
             Vector3 transformedInput = Quaternion.FromToRotation(_cameraTransform.up, Normal) *
-                                       (_cameraTransform.rotation * actor.input.moveVector);
+                                       (_cameraTransform.rotation * Actor.input.moveVector);
             transformedInput = Vector3.ProjectOnPlane(transformedInput, Normal);
-            _inputDir = transformedInput.normalized * actor.input.moveVector.magnitude;
+            _inputDir = transformedInput.normalized * Actor.input.moveVector.magnitude;
             
-            _moveDot = Vector3.Dot(actor.kinematics.GetInputDir().normalized, _rigidbody.linearVelocity.normalized);
+            _moveDot = Vector3.Dot(Actor.kinematics.GetInputDir().normalized, _rigidbody.linearVelocity.normalized);
             
             _skidding = _moveDot < _config.skiddingThreshold;
             _speed = _rigidbody.linearVelocity.magnitude;
@@ -230,7 +230,7 @@ namespace SurgeEngine.Code.ActorSystem
             if (_speed < _config.slopeMinSpeed && _angle >= _config.slopeDeslopeAngle)
             {
                 _rigidbody.AddForce(Normal * _config.slopeDeslopeForce, ForceMode.Impulse);
-                actor.stateMachine.SetState<FStateAir>(_config.slopeInactiveDuration);
+                Actor.stateMachine.SetState<FStateAir>(_config.slopeInactiveDuration);
             }
             
             if (_angle > _config.slopeMinAngle && _speed > _config.slopeMinForceSpeed)
@@ -240,7 +240,7 @@ namespace SurgeEngine.Code.ActorSystem
                 _rigidbody.AddForce(slopeForce * Time.fixedDeltaTime, ForceMode.Impulse);
             }
             
-            float rDot = Vector3.Dot(Vector3.up, actor.transform.right);
+            float rDot = Vector3.Dot(Vector3.up, Actor.transform.right);
             if (Mathf.Abs(rDot) > 0.1f && Mathf.Approximately(_angle, 90))
             {
                 _rigidbody.linearVelocity += Vector3.down * (4 * Time.fixedDeltaTime);
@@ -283,7 +283,7 @@ namespace SurgeEngine.Code.ActorSystem
         private void HighSpeedFix()
         {
             Vector3 predictedPosition = _rigidbody.position;
-            Vector3 predictedNormal = actor.stats.groundNormal;
+            Vector3 predictedNormal = Actor.stats.groundNormal;
             Vector3 predictedVelocity = _rigidbody.linearVelocity;
             int steps = 16;
             LayerMask mask = _config.castLayer;
@@ -296,7 +296,7 @@ namespace SurgeEngine.Code.ActorSystem
                     if (Vector3.Angle(predictedNormal, pGround.normal) < 45)
                     {
                         predictedPosition = pGround.point + pGround.normal * 0.5f;
-                        predictedVelocity = Quaternion.FromToRotation(actor.stats.groundNormal, pGround.normal) * predictedVelocity;
+                        predictedVelocity = Quaternion.FromToRotation(Actor.stats.groundNormal, pGround.normal) * predictedVelocity;
                         predictedNormal = pGround.normal;
                     } 
                     else
@@ -313,7 +313,7 @@ namespace SurgeEngine.Code.ActorSystem
             }
             if (i >= steps)
             {
-                actor.stats.groundNormal = predictedNormal;
+                Actor.stats.groundNormal = predictedNormal;
                 _rigidbody.position = Vector3.MoveTowards(_rigidbody.position, predictedPosition, Time.fixedDeltaTime);
             }
         }
@@ -398,7 +398,7 @@ namespace SurgeEngine.Code.ActorSystem
         public void Deceleration(float min, float max)
         {
             if (SonicTools.IsBoost()) return;
-            if (actor.flags.HasFlag(FlagType.OutOfControl)) return;
+            if (Actor.flags.HasFlag(FlagType.OutOfControl)) return;
             
             float f = Mathf.Lerp(max, min, 
                 _movementVector.magnitude / _config.topSpeed);
@@ -407,7 +407,7 @@ namespace SurgeEngine.Code.ActorSystem
             else
             {
                 _movementVector = Vector3.zero;
-                switch (actor.stateMachine.CurrentState)
+                switch (Actor.stateMachine.CurrentState)
                 {
                     case FStateAir:
                         break;
@@ -418,7 +418,7 @@ namespace SurgeEngine.Code.ActorSystem
                     case FStateSit:
                         break;
                     default:
-                        actor.stateMachine.SetState<FStateIdle>();
+                        Actor.stateMachine.SetState<FStateIdle>();
                         break;
                 }
             }
