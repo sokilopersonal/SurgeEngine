@@ -32,6 +32,8 @@ namespace SurgeEngine.Code.ActorSystem
         {
             _collisionStartHeight = collision.height;
             _collisionStartRadius = collision.radius;
+            
+            root.rotation = Actor.transform.rotation;
         }
 
         private void Update()

@@ -12,12 +12,15 @@ namespace SurgeEngine.Code.DI
 
         public override void InstallBindings()
         {
-            var instance = Container.InstantiatePrefabForComponent<Actor>(actorPrefab, data.startTransform.position, Quaternion.identity, null);
-            instance.transform.rotation = data.startTransform.rotation;
+            var instance = Container.InstantiatePrefabForComponent<Actor>(actorPrefab, data.startTransform.position, data.startTransform.rotation, null);
             Container.Bind<Actor>().FromInstance(instance).AsSingle().NonLazy();
             Container.Bind<ActorContext>().FromNew().AsSingle().NonLazy();
             
             instance.SetStart(data);
+            
+            Quaternion par = instance.transform.parent.rotation;
+            instance.transform.parent.rotation = Quaternion.identity;
+            instance.transform.rotation = par;
         }
     }
 }

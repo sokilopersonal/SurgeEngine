@@ -36,7 +36,7 @@ namespace SurgeEngine.Code.ActorSystem
         private void Update()
         {
             _animator.SetFloat(AnimatorParams.GroundSpeed, Mathf.Clamp(Actor.kinematics.Speed, 4, 30f));
-            _animator.SetFloat(AnimatorParams.VerticalSpeed, Actor.stats.currentVerticalSpeed);
+            _animator.SetFloat(AnimatorParams.VerticalSpeed, Actor.kinematics.Velocity.y);
             
             _animator.SetFloat("SpeedPercent", Mathf.Clamp(Actor.kinematics.Speed / Actor.config.topSpeed, 0f, 1.25f));
 
@@ -54,7 +54,7 @@ namespace SurgeEngine.Code.ActorSystem
             float dot = Vector3.Dot(Vector3.up, Actor.transform.right);
             _animator.SetFloat("WallDot", -dot);
             _animator.SetFloat("AbsWallDot", Mathf.Lerp(_animator.GetFloat("AbsWallDot"), 
-                Mathf.Abs(Mathf.Approximately(Actor.stats.groundAngle, 90) ? dot : 0), 1 * Time.deltaTime));
+                Mathf.Abs(Mathf.Approximately(Actor.kinematics.Angle, 90) ? dot : 0), 1 * Time.deltaTime));
         }
 
         private void ChangeStateAnimation(FState obj)
