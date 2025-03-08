@@ -42,6 +42,10 @@ namespace SurgeEngine.Code.CameraSystem
         public float yLagMin = -1f;
         public float yLagMax = 0.5f;
         [Range(0, 1)] public float yLagTime = 0.1f;
+        
+        [Header("Lateral Offset")]
+        [SerializeField] private AnimationCurve lateralOffsetSpeedCurve;
+        public AnimationCurve LateralOffsetSpeedCurve => lateralOffsetSpeedCurve;
 
         [Header("Boost Blend")] 
         public AnimationCurve boostBlendCurve;

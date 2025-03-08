@@ -132,6 +132,39 @@ MonoBehaviour:
   yLagMin: -0.55
   yLagMax: 0.75
   yLagTime: 0.125
+  lateralOffsetSpeedCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 3.1984432
+      outSlope: 3.1984432
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.023146613
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0.009521682
+      outSlope: 0.009521682
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.116077065
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1.3
+      value: 0.5
+      inSlope: -4.225546
+      outSlope: -4.225546
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.041403778
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   boostBlendCurve:
     serializedVersion: 2
     m_Curve:
