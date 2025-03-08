@@ -3,41 +3,72 @@ using UnityEngine;
 
 namespace SurgeEngine.Editor
 {
-    public class AddTag : EditorWindow
+    public static class AddTag
     {
-        private Tags _tag;
-        
-        [MenuItem("Surge Engine/Tag Window")]
-        private static void ShowWindow()
+        [MenuItem("GameObject/Surge Engine/Set Tags/Set As Concrete")]
+        private static void SetAsConcrete()
         {
-            var window = GetWindow<AddTag>();
-            window.titleContent = new GUIContent("Tag Adder");
-            window.minSize = new Vector2(300, 180);
-            window.Show();
-        }
-
-        private void OnGUI()
-        {
-            _tag = (Tags)EditorGUILayout.EnumPopup("Tag", _tag);
-            
-            if (GUILayout.Button("Add Tag"))
+            var tag = Tags.Concrete;
+            var selection = Selection.gameObjects;
+            foreach (var obj in selection)
             {
-                Undo.RecordObjects(Selection.gameObjects, "Tagged Objects");
-                
-                foreach (var obj in Selection.gameObjects)
+                var name = obj.name;
+                if (!name.Contains("@"))
                 {
-                    var name = obj.name;
-                    if (!name.Contains("@"))
-                    {
-                        obj.name = $"{name}@{_tag}";
-                    }
-                    else
-                    {
-                        var split = name.Split('@');
-                        obj.name = $"{split[0]}@{_tag}";
-                    }
+                    obj.name = $"{name}@{tag}";
+                }
+                else
+                {
+                    var split = name.Split('@');
+                    obj.name = $"{split[0]}@{tag}";
                 }
             }
+                
+            Undo.RecordObjects(selection, "Set As Concrete");
+        }
+        
+        [MenuItem("GameObject/Surge Engine/Set Tags/Set As Grass")]
+        private static void SetAsGrass()
+        {
+            var tag = Tags.Grass;
+            var selection = Selection.gameObjects;
+            foreach (var obj in selection)
+            {
+                var name = obj.name;
+                if (!name.Contains("@"))
+                {
+                    obj.name = $"{name}@{tag}";
+                }
+                else
+                {
+                    var split = name.Split('@');
+                    obj.name = $"{split[0]}@{tag}";
+                }
+            }
+                
+            Undo.RecordObjects(selection, "Set As Grass");
+        }
+        
+        [MenuItem("GameObject/Surge Engine/Set Tags/Set As Water")]
+        private static void SetAsWater()
+        {
+            var tag = Tags.Water;
+            var selection = Selection.gameObjects;
+            foreach (var obj in selection)
+            {
+                var name = obj.name;
+                if (!name.Contains("@"))
+                {
+                    obj.name = $"{name}@{tag}";
+                }
+                else
+                {
+                    var split = name.Split('@');
+                    obj.name = $"{split[0]}@{tag}";
+                }
+            }
+                
+            Undo.RecordObjects(selection, "Set As Water");
         }
     }
 
