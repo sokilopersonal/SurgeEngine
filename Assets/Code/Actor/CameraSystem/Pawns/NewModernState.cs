@@ -33,6 +33,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
         private const float MinPitch = -75f;
         private const float MaxPitch = 85f;
         private const float LateralOffsetLerpSpeed = 1.6f;
+        private const float LateralOffsetResetSpeed = 3.25f;
         private const float MinCollisionDistance = 0.1f;
 
         private bool IsAuto => _actor.input.IsAutoCamera();
@@ -154,6 +155,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
 
         protected void LateralOffset()
         {
+            float x = _actor.input.moveVector.x;
             float time = _actor.kinematics.Speed / _actor.config.topSpeed;
             AnimationCurve curve = _master.LateralOffsetSpeedCurve;
             float modifier = 0;
@@ -162,10 +164,17 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
             {
                 modifier += f.Value;
             }
-            
-            _master.lookOffset.x = Mathf.Lerp(_master.lookOffset.x, _actor.input.moveVector.x * 0.6f * curve.Evaluate(time) * modifier, Time.deltaTime * LateralOffsetLerpSpeed); 
-        }
 
+            if (Mathf.Abs(x) > 0)
+            {
+                _master.lookOffset.x = Mathf.Lerp(_master.lookOffset.x, x * 0.6f * curve.Evaluate(time) * modifier, Time.deltaTime * LateralOffsetLerpSpeed); 
+            }
+            else
+            {
+                _master.lookOffset.x = Mathf.Lerp(_master.lookOffset.x, 0, Time.deltaTime * LateralOffsetResetSpeed);
+            }
+        }
+        
         private void Setup(Vector3 targetPosition, Vector3 actorPosition)
         {
             SetPosition(targetPosition);
