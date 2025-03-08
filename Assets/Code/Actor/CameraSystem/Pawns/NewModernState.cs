@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using SurgeEngine.Code.ActorStates;
 using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.CameraSystem.Modifiers;
 
 namespace SurgeEngine.Code.CameraSystem.Pawns
 {
@@ -155,7 +156,14 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
         {
             float time = _actor.kinematics.Speed / _actor.config.topSpeed;
             AnimationCurve curve = _master.LateralOffsetSpeedCurve;
-            _master.lookOffset.x = Mathf.Lerp(_master.lookOffset.x, _actor.input.moveVector.x * 0.6f * curve.Evaluate(time), Time.deltaTime * LateralOffsetLerpSpeed); 
+            float modifier = 0;
+
+            foreach (var f in _master.FloatModifiers)
+            {
+                modifier += f.Value;
+            }
+            
+            _master.lookOffset.x = Mathf.Lerp(_master.lookOffset.x, _actor.input.moveVector.x * 0.6f * curve.Evaluate(time) * modifier, Time.deltaTime * LateralOffsetLerpSpeed); 
         }
 
         private void Setup(Vector3 targetPosition, Vector3 actorPosition)

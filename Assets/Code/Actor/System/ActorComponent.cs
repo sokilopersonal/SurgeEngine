@@ -4,8 +4,8 @@ namespace SurgeEngine.Code.ActorSystem
 {
     public class ActorComponent : MonoBehaviour
     {
-        protected Actor Actor;
-        
+        public Actor Actor { get; private set; }
+
         internal virtual void Set(Actor actor) => Actor = actor;
     }
 }

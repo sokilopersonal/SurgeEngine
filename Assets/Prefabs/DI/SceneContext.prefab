@@ -160,6 +160,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actorPrefab: {fileID: 8308832228826993834, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
+  data:
+    startTransform: {fileID: 0}
+    startType: 0
+    speed: 0
+    time: 0
 --- !u!1 &7836224540015269915
 GameObject:
   m_ObjectHideFlags: 0
@@ -204,8 +209,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b28a30f816ae4d30bf8645b00fde9021, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data:
-    startTransform: {fileID: 0}
-    startType: 1
-    speed: 0
-    time: 0

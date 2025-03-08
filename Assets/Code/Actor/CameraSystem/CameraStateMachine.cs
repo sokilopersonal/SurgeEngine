@@ -123,7 +123,7 @@ namespace SurgeEngine.Code.CameraSystem
 
         private Vector3 GetActorPosition()
         {
-            Vector3 basePosition = master.transform.position + Vector3.up * yOffset + Vector3.up * yLag;
+            Vector3 basePosition = master.Actor.transform.position + Vector3.up * yOffset + Vector3.up * yLag;
             var kinematics = ActorContext.Context.kinematics;
             var path = kinematics.GetPath();
             KinematicsMode mode = kinematics.mode;

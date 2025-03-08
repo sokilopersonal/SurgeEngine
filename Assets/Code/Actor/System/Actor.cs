@@ -9,6 +9,7 @@ using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.Config;
 using SurgeEngine.Code.StateMachine;
 using UnityEngine;
+using Zenject;
 
 namespace SurgeEngine.Code.ActorSystem
 {

@@ -69,12 +69,13 @@ namespace SurgeEngine.Code.CameraSystem
         {
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
+            
+            _camera = Camera.main;
+            _cameraTransform = _camera.transform;
         }
 
         public void Start()
         {
-            _camera = Camera.main;
-            _cameraTransform = _camera.transform;
             stateMachine = new CameraStateMachine(_camera, _cameraTransform, this);
             
             stateMachine.AddState(new NewModernState(Actor));
@@ -84,15 +85,20 @@ namespace SurgeEngine.Code.CameraSystem
             stateMachine.AddState(new RestoreCameraPawn(Actor));
 
             stateMachine.SetState<NewModernState>();
-            stateMachine.SetDirection(transform.forward);
+            stateMachine.SetDirection(Actor.transform.forward);
             
-            ActorContext.Context.stateMachine.GetSubState<FBoost>().OnActiveChanged += (state, value) => 
+            Actor.stateMachine.GetSubState<FBoost>().OnActiveChanged += (state, value) => 
             {
                 if (_boostBlendCoroutine != null)
                     StopCoroutine(_boostBlendCoroutine);
                 
                 _boostBlendCoroutine = StartCoroutine(OnBoostActivate(state, value));
             };
+
+            foreach (var modifier in GetComponentsInChildren<BaseCameraModifier>())
+            {
+                modifier.Set(Actor);
+            }
         }
 
         private void Update()

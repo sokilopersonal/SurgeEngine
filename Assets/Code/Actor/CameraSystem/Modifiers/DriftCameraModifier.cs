@@ -7,24 +7,18 @@ using Zenject;
 
 namespace SurgeEngine.Code.CameraSystem.Modifiers
 {
-    public class DriftCameraModifier : MonoBehaviour, ICameraFloatModifier
+    public class DriftCameraModifier : BaseCameraModifier, ICameraFloatModifier
     {
         [SerializeField] private float multiplier;
         
         public float Value { get; set; }
-        
-        private Actor _actor => ActorContext.Context;
 
-        private void OnEnable()
+        public override void Set(Actor actor)
         {
-            _actor.camera.AddFloatModifier(this);
-            _actor.stateMachine.OnStateAssign += OnDrift;
-        }
-        
-        private void OnDisable()
-        {
-            _actor.camera.RemoveFloatModifier(this);
-            _actor.stateMachine.OnStateAssign -= OnDrift;
+            base.Set(actor);
+            
+            actor.camera.AddFloatModifier(this);
+            actor.stateMachine.OnStateAssign += OnDrift;
         }
 
         private void OnDrift(FState obj)
