@@ -2,6 +2,7 @@
 using FMODUnity;
 using SurgeEngine.Code.ActorStates;
 using SurgeEngine.Code.ActorStates.SonicSpecific;
+using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.StateMachine;
 using UnityEngine;
@@ -16,9 +17,9 @@ namespace SurgeEngine.Code.ActorSoundEffects
 
         private EventInstance _stompLoopInstance;
 
-        public override void Initialize()
+        public override void Initialize(Actor actor)
         {
-            base.Initialize();
+            base.Initialize(actor);
             
             _stompLoopInstance = RuntimeManager.CreateInstance(stompLoopSound);
         }
@@ -34,7 +35,7 @@ namespace SurgeEngine.Code.ActorSoundEffects
                 _stompLoopInstance.stop(STOP_MODE.IMMEDIATE);
             }
 
-            if (obj is FStateGround or FStateSpecialJump or FStateStompLand or FStateSlide && actor.stateMachine.PreviousState is FStateStomp && Common.CheckForGround(out RaycastHit hit))
+            if (obj is FStateGround or FStateSpecialJump or FStateStompLand or FStateSlide && Actor.stateMachine.PreviousState is FStateStomp && Common.CheckForGround(out RaycastHit hit))
             {
                 RuntimeManager.PlayOneShot(stompLandSound);
             }

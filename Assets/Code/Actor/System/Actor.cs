@@ -38,11 +38,11 @@ namespace SurgeEngine.Code.ActorSystem
             
             _rigidbody = GetComponent<Rigidbody>();
             _rigidbody.centerOfMass -= Vector3.up * 0.5f;
-
-            InitializeConfigs();
-            InitializeComponents();
             
+            InitializeConfigs();
             AddStates();
+
+            InitializeComponents();
         }
 
         private void InitializeComponents()

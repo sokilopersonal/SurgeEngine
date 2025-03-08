@@ -15,7 +15,7 @@ namespace SurgeEngine.Code.ActorSoundEffects
             
             if (obj is FStateBrake)
             {
-                RuntimeManager.PlayOneShotAttached(brakeSound, actor.gameObject);
+                RuntimeManager.PlayOneShotAttached(brakeSound, Actor.gameObject);
             }
         }
     }

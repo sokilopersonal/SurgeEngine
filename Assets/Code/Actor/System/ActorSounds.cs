@@ -6,20 +6,18 @@ namespace SurgeEngine.Code.ActorSystem
 {
     public class ActorSounds : ActorComponent
     {
-        private List<ActorSound> _sounds = new List<ActorSound>(); 
-        
-        private const float BOOST_VOICE_DELAY = 1.5f;
+        private List<ActorSound> _sounds = new List<ActorSound>();
 
-        private void Awake()
+        internal override void Set(Actor actor)
         {
+            base.Set(actor);
+            
             _sounds = GetComponents<ActorSound>().ToList();
 
             foreach (ActorSound sound in _sounds)
             {
-                sound.Initialize();
+                sound.Initialize(actor);
             }
         }
-        
-        public void OnInit() { }
     }
 }

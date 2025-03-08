@@ -1,6 +1,7 @@
 ﻿using FMOD.Studio;
 using FMODUnity;
 using SurgeEngine.Code.ActorStates;
+using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.StateMachine;
 using UnityEngine;
 using STOP_MODE = FMOD.Studio.STOP_MODE;
@@ -14,9 +15,9 @@ namespace SurgeEngine.Code.ActorSoundEffects
         
         private EventInstance _grindLoopInstance;
 
-        public override void Initialize()
+        public override void Initialize(Actor actor)
         {
-            base.Initialize();
+            base.Initialize(actor);
             
             _grindLoopInstance = RuntimeManager.CreateInstance(grindLoop);
         }
@@ -28,7 +29,7 @@ namespace SurgeEngine.Code.ActorSoundEffects
 
         protected override void SoundState(FState obj)
         {
-            FState prev = actor.stateMachine.PreviousState;
+            FState prev = Actor.stateMachine.PreviousState;
             if (obj is FStateGrind and not FStateGrindSquat && prev is not FStateGrindSquat)
             {
                 RuntimeManager.PlayOneShotAttached(grindStart, gameObject);

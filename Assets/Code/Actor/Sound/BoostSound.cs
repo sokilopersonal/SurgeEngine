@@ -1,6 +1,7 @@
 ﻿using FMOD.Studio;
 using FMODUnity;
 using SurgeEngine.Code.ActorStates.SonicSubStates;
+using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.StateMachine;
 using UnityEngine;
 using STOP_MODE = FMOD.Studio.STOP_MODE;
@@ -20,14 +21,15 @@ namespace SurgeEngine.Code.ActorSoundEffects
         
         private float _lastBoostVoiceTime;
 
-        public override void Initialize()
+        public override void Initialize(Actor actor)
         {
-            base.Initialize();
+            base.Initialize(actor);
             
             _boostSoundInstance = RuntimeManager.CreateInstance(boostSound);
             _boostLoopInstance = RuntimeManager.CreateInstance(boostLoopSound);
             _boostVoiceInstance = RuntimeManager.CreateInstance(boostVoiceSound);
-            //actor.stateMachine.GetSubState<FBoost>().OnActiveChanged += OnBoostActivate;
+            
+            Actor.stateMachine.GetSubState<FBoost>().OnActiveChanged += OnBoostActivate;
         }
 
         private void OnBoostActivate(FSubState arg1, bool arg2)
@@ -37,7 +39,7 @@ namespace SurgeEngine.Code.ActorSoundEffects
                 _boostSoundInstance.start();
                 _boostLoopInstance.start();
 
-                voice.Play(_boostVoiceInstance);
+                Voice.Play(_boostVoiceInstance);
                 
                 boostAudioDistortion.Toggle();
             }

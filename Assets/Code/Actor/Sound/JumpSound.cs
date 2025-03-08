@@ -16,8 +16,8 @@ namespace SurgeEngine.Code.ActorSoundEffects
         {
             if (obj is FStateJump)
             {
-                voice.Play(_voiceSound);
-                if (actor.stateMachine.IsPrevExact<FStateJump>())
+                Voice.Play(_voiceSound);
+                if (Actor.stateMachine.IsPrevExact<FStateJump>())
                     RuntimeManager.PlayOneShot(_spinSound);
                 else
                     StartCoroutine(SpinSound());
@@ -28,7 +28,7 @@ namespace SurgeEngine.Code.ActorSoundEffects
         {
             RuntimeManager.PlayOneShot(_jumpSound);
             yield return new WaitForSeconds(0.117f);
-            if (actor.input.JumpHeld)
+            if (Actor.input.JumpHeld)
             {
                 RuntimeManager.PlayOneShot(_spinSound);
             }

@@ -2,6 +2,7 @@
 using FMODUnity;
 using SurgeEngine.Code.ActorStates;
 using SurgeEngine.Code.ActorStates.SonicSpecific;
+using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.StateMachine;
 using UnityEngine;
 using STOP_MODE = FMOD.Studio.STOP_MODE;
@@ -13,30 +14,30 @@ namespace SurgeEngine.Code.ActorSoundEffects
         [SerializeField] private EventReference slideLoopSound;
         [SerializeField] private EventReference slideVoice;
 
-        private EventInstance slideLoop;
+        private EventInstance _slideLoop;
 
-        public override void Initialize()
+        public override void Initialize(Actor actor)
         {
-            base.Initialize();
+            base.Initialize(actor);
             
-            slideLoop = RuntimeManager.CreateInstance(slideLoopSound);
-            slideLoop.set3DAttributes(transform.To3DAttributes());
+            _slideLoop = RuntimeManager.CreateInstance(slideLoopSound);
+            _slideLoop.set3DAttributes(transform.To3DAttributes());
         }
 
         protected override void SoundState(FState obj)
         {
             if (obj is FStateSlide)
             {
-                slideLoop.set3DAttributes(transform.To3DAttributes());
-                slideLoop.start();
-                if (actor.stateMachine.PreviousState is FStateGround)
+                _slideLoop.set3DAttributes(transform.To3DAttributes());
+                _slideLoop.start();
+                if (Actor.stateMachine.PreviousState is FStateGround)
                 {
-                    voice.Play(slideVoice);
+                    Voice.Play(slideVoice);
                 }
             }
             else
             {
-                slideLoop.stop(STOP_MODE.ALLOWFADEOUT);
+                _slideLoop.stop(STOP_MODE.ALLOWFADEOUT);
             }
         }
     }

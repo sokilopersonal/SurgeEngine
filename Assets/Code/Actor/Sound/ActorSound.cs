@@ -6,28 +6,27 @@ namespace SurgeEngine.Code.ActorSoundEffects
 {
     public class ActorSound : MonoBehaviour
     {
-        protected Actor actor;
-        protected VoiceHandler voice;
+        protected Actor Actor;
+        protected VoiceHandler Voice;
         
-        public virtual void Initialize()
+        public virtual void Initialize(Actor actor)
         {
-            
+            Actor = actor;
         }
 
         private void Awake()
         {
-            actor = GetComponentInParent<Actor>();
-            voice = GetComponent<VoiceHandler>();
+            Voice = GetComponent<VoiceHandler>();
         }
 
         protected virtual void OnEnable()
         {
-            actor.stateMachine.OnStateAssign += SoundState;
+            Actor.stateMachine.OnStateAssign += SoundState;
         }
 
         protected virtual void OnDisable()
         {
-            actor.stateMachine.OnStateAssign -= SoundState;
+            Actor.stateMachine.OnStateAssign -= SoundState;
         }
 
         protected virtual void SoundState(FState obj) { }

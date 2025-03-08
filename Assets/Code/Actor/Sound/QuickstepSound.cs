@@ -16,7 +16,7 @@ namespace SurgeEngine.Code.ActorSoundEffects
             if (obj is FStateRunQuickstep or FStateQuickstep)
             {
                 RuntimeManager.PlayOneShot(quickstepSound);
-                voice.Play(quickstepVoice);
+                Voice.Play(quickstepVoice);
             }
         }
     }
