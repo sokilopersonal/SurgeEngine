@@ -1,7 +1,6 @@
-﻿using SurgeEngine.Code.ActorStates.BaseStates;
-using SurgeEngine.Code.ActorStates.SonicSubStates;
-using SurgeEngine.Code.ActorSystem;
-using SurgeEngine.Code.ActorSystem.Actors;
+﻿using SurgeEngine.Code.Actor.States.BaseStates;
+using SurgeEngine.Code.Actor.States.SonicSubStates;
+using SurgeEngine.Code.Actor.System;
 using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.Config.SonicSpecific;
 using SurgeEngine.Code.Custom;
@@ -12,7 +11,7 @@ using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
 using Vector3 = UnityEngine.Vector3;
 
-namespace SurgeEngine.Code.ActorStates.SonicSpecific
+namespace SurgeEngine.Code.Actor.States.SonicSpecific
 {
     public class FStateDrift : FStateMove, IBoostHandler, IStateTimeout
     {
@@ -21,7 +20,7 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
 
         private readonly DriftConfig _config;
 
-        public FStateDrift(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        public FStateDrift(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
             owner.TryGetConfig(out _config);
         }

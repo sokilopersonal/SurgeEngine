@@ -1,17 +1,16 @@
-﻿using SurgeEngine.Code.ActorStates.BaseStates;
-using SurgeEngine.Code.ActorSystem;
-using SurgeEngine.Code.ActorSystem.Actors;
+﻿using SurgeEngine.Code.Actor.States.BaseStates;
+using SurgeEngine.Code.Actor.System;
 using SurgeEngine.Code.Config.SonicSpecific;
 using SurgeEngine.Code.Custom;
 using UnityEngine;
 
-namespace SurgeEngine.Code.ActorStates.SonicSpecific
+namespace SurgeEngine.Code.Actor.States.SonicSpecific
 {
     public class FStateAfterHoming : FActorState
     {
         private readonly HomingConfig _config;
         
-        public FStateAfterHoming(Actor owner) : base(owner)
+        public FStateAfterHoming(ActorBase owner) : base(owner)
         {
             owner.TryGetConfig(out _config);
         }

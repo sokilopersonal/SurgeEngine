@@ -1,5 +1,5 @@
-﻿using SurgeEngine.Code.ActorHUD;
-using SurgeEngine.Code.ActorSystem;
+﻿using SurgeEngine.Code.Actor.HUD;
+using SurgeEngine.Code.Actor.System;
 using SurgeEngine.Code.Custom;
 using UnityEngine;
 

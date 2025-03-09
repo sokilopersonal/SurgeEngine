@@ -1,13 +1,13 @@
-﻿using SurgeEngine.Code.ActorSystem;
+﻿using SurgeEngine.Code.Actor.System;
 using SurgeEngine.Code.StateMachine;
 
-namespace SurgeEngine.Code.ActorStates.BaseStates
+namespace SurgeEngine.Code.Actor.States.BaseStates
 {
     public class FActorSubState : FSubState
     {
-        protected Actor actor { get; private set; }
+        protected ActorBase actor { get; private set; }
 
-        public FActorSubState(Actor owner)
+        public FActorSubState(ActorBase owner)
         {
             actor = owner;
         }

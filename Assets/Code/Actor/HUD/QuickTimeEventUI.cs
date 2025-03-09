@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.Actor.System;
 using SurgeEngine.Code.CommonObjects;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-namespace SurgeEngine.Code.ActorHUD
+namespace SurgeEngine.Code.Actor.HUD
 {
     public class QuickTimeEventUI : MonoBehaviour
     {
@@ -52,7 +52,7 @@ namespace SurgeEngine.Code.ActorHUD
         public void CreateButtonIcon(QTESequence sequence)
         {
             _buttons.Capacity = sequence.buttons.Count;
-            Actor context = ActorContext.Context;
+            ActorBase context = ActorContext.Context;
             ActorInput input = context.input;
             for (int i = 0; i < sequence.buttons.Count; i++)
             {

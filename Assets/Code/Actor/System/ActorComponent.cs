@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 
-namespace SurgeEngine.Code.ActorSystem
+namespace SurgeEngine.Code.Actor.System
 {
     public class ActorComponent : MonoBehaviour
     {
-        public Actor Actor { get; private set; }
+        public ActorBase Actor { get; private set; }
 
-        internal virtual void Set(Actor actor) => Actor = actor;
+        internal virtual void Set(ActorBase actor) => Actor = actor;
     }
 }

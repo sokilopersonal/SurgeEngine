@@ -1,11 +1,11 @@
-﻿using SurgeEngine.Code.ActorSystem;
+﻿using SurgeEngine.Code.Actor.System;
 using SurgeEngine.Code.StateMachine;
 
-namespace SurgeEngine.Code.ActorStates.BaseStates
+namespace SurgeEngine.Code.Actor.States.BaseStates
 {
     public abstract class FActorState : FState
     {
-        protected Actor Actor { get; private set; }
+        protected ActorBase Actor { get; private set; }
         protected ActorInput Input { get; private set; }
         protected ActorStats Stats { get; private set; }
         protected ActorAnimation Animation { get; private set; }
@@ -13,7 +13,7 @@ namespace SurgeEngine.Code.ActorStates.BaseStates
         protected ActorModel Model { get; private set; }
         protected FStateMachine StateMachine { get; private set; }
 
-        protected FActorState(Actor owner)
+        protected FActorState(ActorBase owner)
         {
             Actor = owner;
             

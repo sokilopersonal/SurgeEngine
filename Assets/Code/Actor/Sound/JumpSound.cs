@@ -1,10 +1,10 @@
-﻿using FMODUnity;
-using SurgeEngine.Code.ActorStates;
+﻿using System.Collections;
+using FMODUnity;
+using SurgeEngine.Code.Actor.States;
 using SurgeEngine.Code.StateMachine;
-using System.Collections;
 using UnityEngine;
 
-namespace SurgeEngine.Code.ActorSoundEffects
+namespace SurgeEngine.Code.Actor.Sound
 {
     public class JumpSound : ActorSound
     {

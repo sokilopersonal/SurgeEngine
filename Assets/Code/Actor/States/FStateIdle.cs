@@ -1,15 +1,14 @@
-﻿using SurgeEngine.Code.ActorStates.BaseStates;
-using SurgeEngine.Code.ActorStates.SonicSpecific;
-using SurgeEngine.Code.ActorStates.SonicSubStates;
-using SurgeEngine.Code.ActorSystem;
+﻿using SurgeEngine.Code.Actor.States.BaseStates;
+using SurgeEngine.Code.Actor.States.SonicSpecific;
+using SurgeEngine.Code.Actor.System;
 using SurgeEngine.Code.Custom;
 using UnityEngine;
 
-namespace SurgeEngine.Code.ActorStates
+namespace SurgeEngine.Code.Actor.States
 {
     public class FStateIdle : FStateMove, IDamageableState
     {
-        public FStateIdle(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        public FStateIdle(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
         }
 

@@ -1,4 +1,4 @@
-﻿using SurgeEngine.Code.ActorStates;
+﻿using SurgeEngine.Code.Actor.States;
 using UnityEngine;
 
 namespace SurgeEngine.Code.CommonObjects

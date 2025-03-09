@@ -1,6 +1,6 @@
 ﻿using System.Collections;
-using SurgeEngine.Code.ActorStates;
-using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.Actor.States;
+using SurgeEngine.Code.Actor.System;
 using SurgeEngine.Code.Custom;
 using Unity.Mathematics;
 using UnityEngine;
@@ -36,7 +36,7 @@ namespace SurgeEngine.Code.CommonObjects
 
         public void AttachToRail()
         {
-            Actor context = ActorContext.Context;
+            ActorBase context = ActorContext.Context;
             context.stateMachine.SetState<FStateGrind>();
             context.stateMachine.GetState<FStateGrind>().SetRail(this);
         }

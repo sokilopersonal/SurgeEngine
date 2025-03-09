@@ -1,12 +1,12 @@
 ﻿using System;
-using SurgeEngine.Code.ActorStates.SonicSubStates;
-using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.Actor.States.SonicSubStates;
+using SurgeEngine.Code.Actor.System;
 using SurgeEngine.Code.CommonObjects;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace SurgeEngine.Code.ActorHUD
+namespace SurgeEngine.Code.Actor.HUD
 {
     public class ActorStageHUD : MonoBehaviour
     {
@@ -38,7 +38,7 @@ namespace SurgeEngine.Code.ActorHUD
         [SerializeField] private BoostBarSize maxBoostBarSize;
         private float _extEnergy;
 
-        private Actor _actor;
+        private ActorBase _actor;
         
         private void OnValidate()
         {

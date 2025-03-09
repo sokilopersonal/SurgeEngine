@@ -1,19 +1,18 @@
-﻿using SurgeEngine.Code.ActorStates.BaseStates;
-using SurgeEngine.Code.ActorStates.SonicSubStates;
-using SurgeEngine.Code.ActorSystem;
-using SurgeEngine.Code.ActorSystem.Actors;
+﻿using SurgeEngine.Code.Actor.States.BaseStates;
+using SurgeEngine.Code.Actor.States.SonicSubStates;
+using SurgeEngine.Code.Actor.System;
 using SurgeEngine.Code.Config.SonicSpecific;
 using SurgeEngine.Code.Custom;
 using UnityEngine;
 
-namespace SurgeEngine.Code.ActorStates.SonicSpecific
+namespace SurgeEngine.Code.Actor.States.SonicSpecific
 {
     public class FStateAirBoost : FStateMove
     {
         private float _timer;
         private readonly BoostConfig _config;
         
-        public FStateAirBoost(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        public FStateAirBoost(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
             owner.TryGetConfig(out _config);
         }

@@ -1,4 +1,4 @@
-﻿using SurgeEngine.Code.ActorSystem;
+﻿using SurgeEngine.Code.Actor.System;
 using UnityEditor;
 using UnityEngine;
 
@@ -14,7 +14,7 @@ namespace SurgeEngine.Editor
             
             Ray ray = new Ray(camera.transform.position, camera.transform.forward);
 
-            var instance = Object.FindFirstObjectByType<Actor>();
+            var instance = Object.FindFirstObjectByType<ActorBase>();
             if (instance != null)
             {
                 if (Physics.Raycast(ray, out RaycastHit hit))

@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections;
-using SurgeEngine.Code.ActorStates;
-using SurgeEngine.Code.ActorStates.SonicSpecific;
-using SurgeEngine.Code.Custom;
+﻿using System.Collections;
+using SurgeEngine.Code.Actor.States;
+using SurgeEngine.Code.Actor.States.SonicSpecific;
 using SurgeEngine.Code.StateMachine;
 using SurgeEngine.Code.StateMachine.Components;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace SurgeEngine.Code.ActorSystem
+namespace SurgeEngine.Code.Actor.System
 {
     public class ActorAnimation : ActorComponent
     {

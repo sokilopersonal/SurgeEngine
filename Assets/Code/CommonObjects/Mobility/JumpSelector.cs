@@ -1,8 +1,8 @@
 ﻿
 using System;
 using DG.Tweening;
-using SurgeEngine.Code.ActorStates;
-using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.Actor.States;
+using SurgeEngine.Code.Actor.System;
 using SurgeEngine.Code.CustomDebug;
 using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
@@ -29,7 +29,7 @@ namespace SurgeEngine.Code.CommonObjects
         private Vector3 _startPos;
         private Vector3 _direction;
         
-        private Actor _actor;
+        private ActorBase _actor;
         private Sequence _rotationSequence;
 
         public event Action<JumpSelectorResultType> OnJumpSelectorResult;

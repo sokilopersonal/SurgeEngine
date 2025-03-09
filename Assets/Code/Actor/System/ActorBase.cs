@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using NaughtyAttributes;
-using SurgeEngine.Code.ActorStates;
-using SurgeEngine.Code.ActorStates.SonicSpecific;
-using SurgeEngine.Code.ActorStates.SonicSubStates;
-using SurgeEngine.Code.CameraSystem;
+﻿using NaughtyAttributes;
+using SurgeEngine.Code.Actor.CameraSystem;
+using SurgeEngine.Code.Actor.States;
+using SurgeEngine.Code.Actor.States.SonicSpecific;
 using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.Config;
-using SurgeEngine.Code.StateMachine;
 using UnityEngine;
-using Zenject;
 
-namespace SurgeEngine.Code.ActorSystem
+namespace SurgeEngine.Code.Actor.System
 {
-    public class Actor : Entity, IDamageable
+    public class ActorBase : Entity, IDamageable
     {
         [Foldout("Components")] public ActorInput input;
         [Foldout("Components")] public ActorStats stats;

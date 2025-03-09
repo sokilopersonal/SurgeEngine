@@ -1,7 +1,7 @@
 ﻿using System;
 using DG.Tweening;
-using SurgeEngine.Code.ActorStates;
-using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.Actor.States;
+using SurgeEngine.Code.Actor.System;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.Tools;
 using UnityEngine;

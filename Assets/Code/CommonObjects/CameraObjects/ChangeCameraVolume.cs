@@ -1,4 +1,4 @@
-﻿using SurgeEngine.Code.ActorSystem;
+﻿using SurgeEngine.Code.Actor.System;
 using UnityEngine;
 
 namespace SurgeEngine.Code.CommonObjects.CameraObjects
@@ -28,7 +28,7 @@ namespace SurgeEngine.Code.CommonObjects.CameraObjects
         
         private void OnTriggerExit(Collider other)
         {
-            Actor context = ActorContext.Context;
+            ActorBase context = ActorContext.Context;
             if (context.gameObject == other.transform.parent.gameObject)
             {
                 target.RemovePan();

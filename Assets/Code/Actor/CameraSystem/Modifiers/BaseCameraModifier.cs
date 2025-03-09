@@ -1,14 +1,11 @@
-using System;
-using SurgeEngine.Code.ActorSystem;
-using SurgeEngine.Code.StateMachine;
+using SurgeEngine.Code.Actor.System;
 using UnityEngine;
-using Zenject;
 
-namespace SurgeEngine.Code.CameraSystem.Modifiers
+namespace SurgeEngine.Code.Actor.CameraSystem.Modifiers
 {
     public abstract class BaseCameraModifier : MonoBehaviour
     {
-        public virtual void Set(Actor actor)
+        public virtual void Set(ActorBase actor)
         {
             
         }

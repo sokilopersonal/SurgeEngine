@@ -1,4 +1,4 @@
-﻿using SurgeEngine.Code.ActorSystem;
+﻿using SurgeEngine.Code.Actor.System;
 using SurgeEngine.Code.CommonObjects;
 
 namespace SurgeEngine.Code.Enemy.Spinner

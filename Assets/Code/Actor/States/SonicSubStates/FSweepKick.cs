@@ -1,16 +1,16 @@
-using SurgeEngine.Code.ActorStates.BaseStates;
-using SurgeEngine.Code.ActorStates.SonicSpecific;
-using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.Actor.States.BaseStates;
+using SurgeEngine.Code.Actor.States.SonicSpecific;
+using SurgeEngine.Code.Actor.System;
 using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.Config.SonicSpecific;
 
-namespace SurgeEngine.Code.ActorStates.SonicSubStates
+namespace SurgeEngine.Code.Actor.States.SonicSubStates
 {
     public class FSweepKick : FActorSubState
     {
         private readonly SweepConfig _config;
         
-        public FSweepKick(Actor owner) : base(owner)
+        public FSweepKick(ActorBase owner) : base(owner)
         {
             owner.TryGetConfig(out _config);
             actor.input.OnButtonPressed += ButtonPressed;

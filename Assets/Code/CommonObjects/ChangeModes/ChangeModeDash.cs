@@ -1,4 +1,4 @@
-﻿using SurgeEngine.Code.ActorSystem;
+﻿using SurgeEngine.Code.Actor.System;
 using UnityEngine;
 using UnityEngine.Splines;
 
@@ -14,7 +14,7 @@ namespace SurgeEngine.Code.CommonObjects
         {
             base.Contact(msg);
             
-            Actor actor = ActorContext.Context;
+            ActorBase actor = ActorContext.Context;
             ActorKinematics kinematics = actor.kinematics;
             if (!kinematics.IsPathValid())
             {

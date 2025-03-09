@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace SurgeEngine.Code.ActorHUD
+namespace SurgeEngine.Code.Actor.HUD
 {
     public class QuickTimeEventUIButton : MonoBehaviour
     {

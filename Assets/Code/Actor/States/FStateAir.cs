@@ -1,18 +1,18 @@
-﻿using SurgeEngine.Code.ActorStates.BaseStates;
-using SurgeEngine.Code.ActorStates.SonicSpecific;
-using SurgeEngine.Code.ActorStates.SonicSubStates;
-using SurgeEngine.Code.ActorSystem;
+﻿using SurgeEngine.Code.Actor.States.BaseStates;
+using SurgeEngine.Code.Actor.States.SonicSpecific;
+using SurgeEngine.Code.Actor.States.SonicSubStates;
+using SurgeEngine.Code.Actor.System;
 using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.Custom;
 using UnityEngine;
 
-namespace SurgeEngine.Code.ActorStates
+namespace SurgeEngine.Code.Actor.States
 {
     public class FStateAir : FStateMove, IBoostHandler, IDamageableState
     {
         protected float _airTime;
 
-        public FStateAir(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        public FStateAir(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
             
         }

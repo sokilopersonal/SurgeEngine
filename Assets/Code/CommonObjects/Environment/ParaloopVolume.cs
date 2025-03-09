@@ -1,7 +1,7 @@
-using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.Actor.Sound;
+using SurgeEngine.Code.Actor.System;
 using SurgeEngine.Code.ActorEffects;
 using UnityEngine;
-using SurgeEngine.Code.ActorSoundEffects;
 
 namespace SurgeEngine.Code.CommonObjects
 {
@@ -13,7 +13,7 @@ namespace SurgeEngine.Code.CommonObjects
         {
             base.Contact(msg);
 
-            Actor context = ActorContext.Context;
+            ActorBase context = ActorContext.Context;
 
             if (context.kinematics.Speed >= context.config.minParaloopSpeed)
             {

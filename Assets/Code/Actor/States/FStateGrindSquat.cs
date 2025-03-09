@@ -1,11 +1,11 @@
-﻿using SurgeEngine.Code.ActorSystem;
+﻿using SurgeEngine.Code.Actor.System;
 using UnityEngine;
 
-namespace SurgeEngine.Code.ActorStates
+namespace SurgeEngine.Code.Actor.States
 {
     public class FStateGrindSquat : FStateGrind
     {
-        public FStateGrindSquat(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        public FStateGrindSquat(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
             _grindGravityPower = 13;
         }

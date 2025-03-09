@@ -1,11 +1,11 @@
 ﻿using System;
-using SurgeEngine.Code.ActorStates.BaseStates;
-using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.Actor.States.BaseStates;
+using SurgeEngine.Code.Actor.System;
 using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.Custom;
 using UnityEngine;
 
-namespace SurgeEngine.Code.ActorStates
+namespace SurgeEngine.Code.Actor.States
 {
     public class FStateSpecialJump : FStateMove
     {
@@ -14,7 +14,7 @@ namespace SurgeEngine.Code.ActorStates
         
         private float _keepVelocityTimer;
 
-        public FStateSpecialJump(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        public FStateSpecialJump(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
             
         }

@@ -1,19 +1,17 @@
-﻿using SurgeEngine.Code.ActorStates.BaseStates;
-using SurgeEngine.Code.ActorStates.SonicSpecific;
-using SurgeEngine.Code.ActorStates.SonicSubStates;
-using SurgeEngine.Code.ActorSystem;
-using SurgeEngine.Code.ActorSystem.Actors;
+﻿using SurgeEngine.Code.Actor.States.BaseStates;
+using SurgeEngine.Code.Actor.States.SonicSpecific;
+using SurgeEngine.Code.Actor.States.SonicSubStates;
+using SurgeEngine.Code.Actor.System;
 using SurgeEngine.Code.Config;
 using SurgeEngine.Code.Config.SonicSpecific;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.Inputs;
-using SurgeEngine.Code.StateMachine;
 using SurgeEngine.Code.Tools;
 using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
 using Vector3 = UnityEngine.Vector3;
 
-namespace SurgeEngine.Code.ActorStates
+namespace SurgeEngine.Code.Actor.States
 {
     public sealed class FStateGround : FStateMove, IBoostHandler, IDamageableState
     {
@@ -22,7 +20,7 @@ namespace SurgeEngine.Code.ActorStates
         private readonly QuickStepConfig _quickstepConfig;
         private readonly SlideConfig _slideConfig;
 
-        public FStateGround(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        public FStateGround(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
             owner.TryGetConfig(out _quickstepConfig);
             owner.TryGetConfig(out _slideConfig);

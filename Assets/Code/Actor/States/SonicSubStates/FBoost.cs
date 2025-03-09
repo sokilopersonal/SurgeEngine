@@ -1,17 +1,15 @@
-﻿using SurgeEngine.Code.ActorStates.BaseStates;
-using SurgeEngine.Code.ActorStates.SonicSpecific;
-using SurgeEngine.Code.ActorSystem;
-using SurgeEngine.Code.ActorSystem.Actors;
+﻿using SurgeEngine.Code.Actor.States.BaseStates;
+using SurgeEngine.Code.Actor.States.SonicSpecific;
+using SurgeEngine.Code.Actor.System;
 using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.Config;
 using SurgeEngine.Code.Config.SonicSpecific;
-using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.Misc;
 using SurgeEngine.Code.StateMachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace SurgeEngine.Code.ActorStates.SonicSubStates
+namespace SurgeEngine.Code.Actor.States.SonicSubStates
 {
     public class FBoost : FActorSubState
     {
@@ -33,7 +31,7 @@ namespace SurgeEngine.Code.ActorStates.SonicSubStates
 
         private float _boostCancelTimer;
 
-        public FBoost(Actor owner) : base(owner)
+        public FBoost(ActorBase owner) : base(owner)
         {
             canAirBoost = true;
             BoostEnergy = 100;

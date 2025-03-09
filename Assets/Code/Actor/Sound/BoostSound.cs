@@ -1,12 +1,12 @@
 ﻿using FMOD.Studio;
 using FMODUnity;
-using SurgeEngine.Code.ActorStates.SonicSubStates;
-using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.Actor.States.SonicSubStates;
+using SurgeEngine.Code.Actor.System;
 using SurgeEngine.Code.StateMachine;
 using UnityEngine;
 using STOP_MODE = FMOD.Studio.STOP_MODE;
 
-namespace SurgeEngine.Code.ActorSoundEffects
+namespace SurgeEngine.Code.Actor.Sound
 {
     public class BoostSound : ActorSound
     {
@@ -21,7 +21,7 @@ namespace SurgeEngine.Code.ActorSoundEffects
         
         private float _lastBoostVoiceTime;
 
-        public override void Initialize(Actor actor)
+        public override void Initialize(ActorBase actor)
         {
             base.Initialize(actor);
             

@@ -1,16 +1,16 @@
 ﻿using System;
-using SurgeEngine.Code.ActorStates.BaseStates;
-using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.Actor.States.BaseStates;
+using SurgeEngine.Code.Actor.System;
 using UnityEngine;
 
-namespace SurgeEngine.Code.ActorStates
+namespace SurgeEngine.Code.Actor.States
 {
     public class FStateStart : FStateMove
     {
         private StartData _startData;
         private float _timer;
         
-        public FStateStart(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        public FStateStart(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
             
         }

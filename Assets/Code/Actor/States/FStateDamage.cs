@@ -1,20 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using SurgeEngine.Code.ActorStates.BaseStates;
-using SurgeEngine.Code.ActorStates.SonicSubStates;
-using SurgeEngine.Code.ActorSystem;
+﻿using SurgeEngine.Code.Actor.States.BaseStates;
+using SurgeEngine.Code.Actor.States.SonicSubStates;
+using SurgeEngine.Code.Actor.System;
 using SurgeEngine.Code.Config;
 using SurgeEngine.Code.Custom;
 using UnityEngine;
 
-namespace SurgeEngine.Code.ActorStates
+namespace SurgeEngine.Code.Actor.States
 {
     public class FStateDamage : FStateMove
     {
         private readonly DamageKickConfig _config;
         private float _timer;
 
-        public FStateDamage(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        public FStateDamage(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
             owner.TryGetConfig(out _config);
         }

@@ -1,14 +1,14 @@
-using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.Actor.System;
 using UnityEngine;
 
-namespace SurgeEngine.Code.ActorStates.SonicSpecific
+namespace SurgeEngine.Code.Actor.States.SonicSpecific
 {
     public class FStateSwingJump : FStateAir
     {
         public float failVel;
         public float successVel;
         protected float _maxAirTime;
-        public FStateSwingJump(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        public FStateSwingJump(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
             _maxAirTime = 0.4f;
         }

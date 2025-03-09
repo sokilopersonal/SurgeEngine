@@ -1,18 +1,13 @@
 ﻿using SurgeEngine.Code.CommonObjects;
 using UnityEngine;
 
-namespace SurgeEngine.Code.ActorSystem
+namespace SurgeEngine.Code.Actor.System
 {
+    /// <summary>
+    /// Listens for collisions
+    /// </summary>
     public class ContactListener : MonoBehaviour
     {
-        private Collider _collider;
-        private Coroutine _coroutine;
-
-        private void Start()
-        {
-            _collider = GetComponent<Collider>();
-        }
-
         private void OnTriggerEnter(Collider other)
         {
             IPlayerContactable playerContactable = null;

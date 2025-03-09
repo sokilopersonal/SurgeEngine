@@ -1,4 +1,4 @@
-﻿namespace SurgeEngine.Code.ActorHUD
+﻿namespace SurgeEngine.Code.Actor.HUD
 {
     public class ActorHUDContext
     {

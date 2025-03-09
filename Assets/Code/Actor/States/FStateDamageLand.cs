@@ -1,15 +1,15 @@
-﻿using SurgeEngine.Code.ActorStates.BaseStates;
-using SurgeEngine.Code.ActorSystem;
+﻿using SurgeEngine.Code.Actor.States.BaseStates;
+using SurgeEngine.Code.Actor.System;
 using SurgeEngine.Code.Custom;
 using UnityEngine;
 
-namespace SurgeEngine.Code.ActorStates
+namespace SurgeEngine.Code.Actor.States
 {
     public class FStateDamageLand : FStateMove
     {
         private float _timer;
         
-        public FStateDamageLand(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        public FStateDamageLand(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
         }
 

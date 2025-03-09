@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using FMODUnity;
-using SurgeEngine.Code.ActorHUD;
-using SurgeEngine.Code.ActorStates;
-using SurgeEngine.Code.ActorStates.SonicSubStates;
-using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.Actor.HUD;
+using SurgeEngine.Code.Actor.States;
+using SurgeEngine.Code.Actor.States.SonicSubStates;
+using SurgeEngine.Code.Actor.System;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.CustomDebug;
 using UnityEngine;
@@ -78,7 +78,7 @@ namespace SurgeEngine.Code.CommonObjects
         {
             base.Contact(msg);
 
-            Actor context = ActorContext.Context;
+            ActorBase context = ActorContext.Context;
 
             if (context.stateMachine.CurrentState is FStateSpecialJump) return;
             if (firstSpeed > 0)
@@ -212,7 +212,7 @@ namespace SurgeEngine.Code.CommonObjects
             _sequenceId = 0;
             if (_currentQTEUI) Destroy(_currentQTEUI.gameObject);
             
-            Actor context = ActorContext.Context;
+            ActorBase context = ActorContext.Context;
             Rigidbody body = context.kinematics.Rigidbody;
             if (result.success)
             {

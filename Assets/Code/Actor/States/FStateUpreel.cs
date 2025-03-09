@@ -1,14 +1,14 @@
-﻿using SurgeEngine.Code.ActorStates.BaseStates;
-using SurgeEngine.Code.ActorSystem;
+﻿using SurgeEngine.Code.Actor.States.BaseStates;
+using SurgeEngine.Code.Actor.System;
 using UnityEngine;
 
-namespace SurgeEngine.Code.ActorStates
+namespace SurgeEngine.Code.Actor.States
 {
     public class FStateUpreel : FStateMove
     {
         private Transform _attach;
         
-        public FStateUpreel(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        public FStateUpreel(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
         }
 

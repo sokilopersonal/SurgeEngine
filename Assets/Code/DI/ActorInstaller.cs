@@ -1,5 +1,5 @@
-using SurgeEngine.Code.ActorStates;
-using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.Actor.States;
+using SurgeEngine.Code.Actor.System;
 using UnityEngine;
 using Zenject;
 
@@ -13,9 +13,9 @@ namespace SurgeEngine.Code.DI
         public override void InstallBindings()
         {
             var instanceObject = Instantiate(actorPrefab, data.startTransform.position, data.startTransform.rotation);
-            var instance = instanceObject.GetComponentInChildren<Actor>();
+            var instance = instanceObject.GetComponentInChildren<ActorBase>();
             
-            Container.Bind<Actor>().FromInstance(instance).AsSingle().NonLazy();
+            Container.Bind<ActorBase>().FromInstance(instance).AsSingle().NonLazy();
             Container.Bind<ActorContext>().FromNew().AsSingle().NonLazy();
 
             Container.InjectGameObject(instanceObject.gameObject);

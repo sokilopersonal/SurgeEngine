@@ -1,5 +1,5 @@
-using SurgeEngine.Code.ActorStates.SonicSpecific;
-using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.Actor.States.SonicSpecific;
+using SurgeEngine.Code.Actor.System;
 using UnityEngine;
 using UnityEngine.Events;
 namespace SurgeEngine.Code.CommonObjects
@@ -12,7 +12,7 @@ namespace SurgeEngine.Code.CommonObjects
         {
             base.Contact(msg);
 
-            Actor context = ActorContext.Context;
+            ActorBase context = ActorContext.Context;
 
             if (context.stateMachine.PreviousState is FStateStomp)
                 onContact.Invoke();

@@ -1,4 +1,4 @@
-﻿using SurgeEngine.Code.ActorSystem;
+﻿using SurgeEngine.Code.Actor.System;
 using UnityEngine;
 using UnityEngine.Splines;
 
@@ -19,7 +19,7 @@ namespace SurgeEngine.Code.CommonObjects
         
         private void TogglePath()
         {
-            Actor context = ActorContext.Context;
+            ActorBase context = ActorContext.Context;
             ActorKinematics kinematics = context.kinematics;
             if (!kinematics.IsPathValid())
             {

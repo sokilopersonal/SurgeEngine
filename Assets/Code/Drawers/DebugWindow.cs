@@ -1,4 +1,4 @@
-﻿using SurgeEngine.Code.ActorSystem;
+﻿using SurgeEngine.Code.Actor.System;
 using TMPro;
 using UnityEngine;
 
@@ -10,7 +10,7 @@ namespace SurgeEngine.Code.CustomDebug
 
         private void Update()
         {
-            Actor actor = ActorContext.Context;
+            ActorBase actor = ActorContext.Context;
             string[] text = 
             {
                 $"Position: {actor.transform.position}",

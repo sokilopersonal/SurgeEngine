@@ -1,7 +1,6 @@
 ﻿using FMODUnity;
-using SurgeEngine.Code.ActorStates;
-using SurgeEngine.Code.ActorStates.SonicSpecific;
-using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.Actor.States.SonicSpecific;
+using SurgeEngine.Code.Actor.System;
 using SurgeEngine.Code.Custom;
 using UnityEngine;
 
@@ -55,7 +54,7 @@ namespace SurgeEngine.Code.CommonObjects
 
         protected override void FixedUpdate()
         {
-            Actor actor = ActorContext.Context;
+            ActorBase actor = ActorContext.Context;
             if (_isActorOnSurface)
             {
                 Rigidbody actorRigidbody = actor.kinematics.Rigidbody;
@@ -125,7 +124,7 @@ namespace SurgeEngine.Code.CommonObjects
         
         private void OnTriggerExit(Collider other)
         {
-            Actor context = ActorContext.Context;
+            ActorBase context = ActorContext.Context;
             
             if (context.gameObject == other.transform.parent.gameObject)
             {

@@ -1,9 +1,8 @@
-using SurgeEngine.Code.ActorStates;
-using SurgeEngine.Code.ActorStates.SonicSubStates;
-using SurgeEngine.Code.ActorSystem;
 using SurgeEngine.Code.Custom;
 using UnityEngine;
 using FMODUnity;
+using SurgeEngine.Code.Actor.States;
+using SurgeEngine.Code.Actor.System;
 
 namespace SurgeEngine.Code.CommonObjects
 {
@@ -25,7 +24,7 @@ namespace SurgeEngine.Code.CommonObjects
         {
             base.Contact(msg);
 
-            Actor context = ActorContext.Context;
+            ActorBase context = ActorContext.Context;
 
             float vertSpeed = Mathf.Abs(context.kinematics.Velocity.y);
 

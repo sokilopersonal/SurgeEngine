@@ -1,4 +1,4 @@
-using SurgeEngine.Code.ActorHUD;
+using SurgeEngine.Code.Actor.HUD;
 using UnityEngine;
 using Zenject;
 

@@ -1,4 +1,4 @@
-﻿using SurgeEngine.Code.ActorSystem;
+﻿using SurgeEngine.Code.Actor.System;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.CustomDebug;
 using SurgeEngine.Code.Tools;
@@ -22,7 +22,7 @@ namespace SurgeEngine.Code.CommonObjects
         {
             base.Contact(msg);
             
-            Actor context = ActorContext.Context;
+            ActorBase context = ActorContext.Context;
             float dot = Vector3.Dot(context.transform.forward, context.transform.forward);
             float impulse = SonicTools.IsBoost() ? impulseOnBoost : impulseOnNormal;
             Vector3 cross = Common.GetCross(transform, pitch);

@@ -1,17 +1,14 @@
-﻿using SurgeEngine.Code.ActorStates.BaseStates;
-using SurgeEngine.Code.ActorStates.SonicSpecific;
-using SurgeEngine.Code.ActorStates.SonicSubStates;
-using SurgeEngine.Code.ActorSystem;
-using SurgeEngine.Code.ActorSystem.Actors;
+﻿using SurgeEngine.Code.Actor.States.BaseStates;
+using SurgeEngine.Code.Actor.States.SonicSpecific;
+using SurgeEngine.Code.Actor.States.SonicSubStates;
+using SurgeEngine.Code.Actor.System;
 using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.Config.SonicSpecific;
 using SurgeEngine.Code.Custom;
-using SurgeEngine.Code.Tools;
-using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Splines;
 
-namespace SurgeEngine.Code.ActorStates
+namespace SurgeEngine.Code.Actor.States
 {
     public class FStateGrind : FStateMove, IBoostHandler, IDamageableState
     {
@@ -22,7 +19,7 @@ namespace SurgeEngine.Code.ActorStates
 
         private float _timer;
         
-        public FStateGrind(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        public FStateGrind(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
             _grindGravityPower = 10f;
         }

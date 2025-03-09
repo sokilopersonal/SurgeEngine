@@ -1,10 +1,9 @@
 using FMODUnity;
-using SurgeEngine.Code.ActorStates;
-using SurgeEngine.Code.ActorStates.SonicSpecific;
+using SurgeEngine.Code.Actor.States.SonicSpecific;
 using SurgeEngine.Code.StateMachine;
 using UnityEngine;
 
-namespace SurgeEngine.Code.ActorSoundEffects
+namespace SurgeEngine.Code.Actor.Sound
 {
     public class SwingSound : ActorSound
     {

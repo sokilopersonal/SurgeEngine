@@ -1,13 +1,13 @@
 ﻿using System;
-using SurgeEngine.Code.ActorStates;
-using SurgeEngine.Code.ActorStates.SonicSpecific;
+using SurgeEngine.Code.Actor.States;
+using SurgeEngine.Code.Actor.States.SonicSpecific;
 using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.StateMachine;
 using SurgeEngine.Code.Tools;
 using UnityEngine;
 
-namespace SurgeEngine.Code.ActorSystem
+namespace SurgeEngine.Code.Actor.System
 {
     public class ActorStats : ActorComponent
     {

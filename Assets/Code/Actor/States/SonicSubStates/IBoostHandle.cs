@@ -1,4 +1,4 @@
-﻿namespace SurgeEngine.Code.ActorStates.SonicSubStates
+﻿namespace SurgeEngine.Code.Actor.States.SonicSubStates
 {
     public interface IBoostHandler
     {

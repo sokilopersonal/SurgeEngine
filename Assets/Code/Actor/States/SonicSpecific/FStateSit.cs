@@ -1,15 +1,14 @@
-﻿using SurgeEngine.Code.ActorStates.BaseStates;
-using SurgeEngine.Code.ActorStates.SonicSubStates;
-using SurgeEngine.Code.ActorSystem;
+﻿using SurgeEngine.Code.Actor.States.BaseStates;
+using SurgeEngine.Code.Actor.System;
 using SurgeEngine.Code.Config;
 using SurgeEngine.Code.Custom;
 using UnityEngine;
 
-namespace SurgeEngine.Code.ActorStates.SonicSpecific
+namespace SurgeEngine.Code.Actor.States.SonicSpecific
 {
     public class FStateSit : FStateMove
     {
-        public FStateSit(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        public FStateSit(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
         }
 

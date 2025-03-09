@@ -1,11 +1,11 @@
-using SurgeEngine.Code.ActorSoundEffects;
-using SurgeEngine.Code.ActorStates.BaseStates;
-using SurgeEngine.Code.ActorStates.SonicSubStates;
-using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.Actor.Sound;
+using SurgeEngine.Code.Actor.States.BaseStates;
+using SurgeEngine.Code.Actor.States.SonicSubStates;
+using SurgeEngine.Code.Actor.System;
 using SurgeEngine.Code.Custom;
 using UnityEngine;
 
-namespace SurgeEngine.Code.ActorStates.SonicSpecific
+namespace SurgeEngine.Code.Actor.States.SonicSpecific
 {
     public class FStateSwing : FStateMove
     {
@@ -15,7 +15,7 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
         private bool _swingSound;
         private readonly SwingSound soundReference;
         
-        public FStateSwing(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        public FStateSwing(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
             soundReference = owner.sounds.GetComponent<SwingSound>();
         }

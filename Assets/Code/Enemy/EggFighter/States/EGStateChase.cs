@@ -1,4 +1,4 @@
-﻿using SurgeEngine.Code.ActorSystem;
+﻿using SurgeEngine.Code.Actor.System;
 using SurgeEngine.Code.StateMachine;
 using UnityEngine;
 
@@ -15,7 +15,7 @@ namespace SurgeEngine.Code.Enemy.EggFighter.States
         {
             base.OnTick(dt);
 
-            Actor context = ActorContext.Context;
+            ActorBase context = ActorContext.Context;
             
             Vector3 direction = context.transform.position - transform.position;
             direction.Normalize();

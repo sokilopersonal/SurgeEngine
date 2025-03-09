@@ -1,6 +1,6 @@
-﻿using SurgeEngine.Code.ActorSystem;
-using SurgeEngine.Code.CameraSystem.Pawns;
-using SurgeEngine.Code.CameraSystem.Pawns.Data;
+﻿using SurgeEngine.Code.Actor.CameraSystem.Pawns;
+using SurgeEngine.Code.Actor.CameraSystem.Pawns.Data;
+using SurgeEngine.Code.Actor.System;
 
 namespace SurgeEngine.Code.CommonObjects.CameraObjects
 {
@@ -21,13 +21,13 @@ namespace SurgeEngine.Code.CommonObjects.CameraObjects
 
         public override void SetPan()
         {
-            Actor context = ActorContext.Context;
+            ActorBase context = ActorContext.Context;
             context.camera.stateMachine.SetState<VerticalCameraPan>(allowSameState: true).SetData(data);
         }
         
         public override void RemovePan()
         {
-            Actor context = ActorContext.Context;
+            ActorBase context = ActorContext.Context;
             context.camera.stateMachine.SetState<RestoreCameraPawn>(allowSameState: true);
         }
     }

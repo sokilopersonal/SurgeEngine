@@ -1,11 +1,9 @@
-using System;
-using SurgeEngine.Code.ActorStates.SonicSpecific;
-using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.Actor.States.SonicSpecific;
+using SurgeEngine.Code.Actor.System;
 using SurgeEngine.Code.StateMachine;
 using UnityEngine;
-using Zenject;
 
-namespace SurgeEngine.Code.CameraSystem.Modifiers
+namespace SurgeEngine.Code.Actor.CameraSystem.Modifiers
 {
     public class DriftCameraModifier : BaseCameraModifier, ICameraFloatModifier
     {
@@ -13,7 +11,7 @@ namespace SurgeEngine.Code.CameraSystem.Modifiers
         
         public float Value { get; set; }
 
-        public override void Set(Actor actor)
+        public override void Set(ActorBase actor)
         {
             base.Set(actor);
             

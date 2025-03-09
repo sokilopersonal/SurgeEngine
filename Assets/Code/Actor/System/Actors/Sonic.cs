@@ -1,13 +1,12 @@
 ﻿using NaughtyAttributes;
-using SurgeEngine.Code.ActorStates;
-using SurgeEngine.Code.ActorStates.SonicSpecific;
-using SurgeEngine.Code.ActorStates.SonicSubStates;
+using SurgeEngine.Code.Actor.States.SonicSpecific;
+using SurgeEngine.Code.Actor.States.SonicSubStates;
 using SurgeEngine.Code.Config.SonicSpecific;
 using UnityEngine;
 
-namespace SurgeEngine.Code.ActorSystem.Actors
+namespace SurgeEngine.Code.Actor.System.Actors
 {
-    public class Sonic : Actor
+    public class Sonic : ActorBase
     {
         [Foldout("Boost")]
         [Expandable] public BoostConfig boostConfig;

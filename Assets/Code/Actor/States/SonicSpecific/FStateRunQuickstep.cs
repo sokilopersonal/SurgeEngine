@@ -1,13 +1,12 @@
-﻿using SurgeEngine.Code.ActorStates.BaseStates;
-using SurgeEngine.Code.ActorSystem;
-using SurgeEngine.Code.ActorSystem.Actors;
+﻿using SurgeEngine.Code.Actor.States.BaseStates;
+using SurgeEngine.Code.Actor.System;
 using SurgeEngine.Code.Config.SonicSpecific;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.StateMachine;
 using UnityEngine;
 using UnityEngine.Splines;
 
-namespace SurgeEngine.Code.ActorStates.SonicSpecific
+namespace SurgeEngine.Code.Actor.States.SonicSpecific
 {
     public class FStateRunQuickstep : FStateMove, IStateTimeout
     {
@@ -18,7 +17,7 @@ namespace SurgeEngine.Code.ActorStates.SonicSpecific
         
         private readonly QuickStepConfig _config;
         
-        public FStateRunQuickstep(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        public FStateRunQuickstep(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
             owner.TryGetConfig(out _config);
         }

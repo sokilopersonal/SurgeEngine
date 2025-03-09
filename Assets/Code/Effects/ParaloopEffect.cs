@@ -1,15 +1,14 @@
 using System;
 using UnityEngine;
-using SurgeEngine.Code.ActorSystem;
-using SurgeEngine.Code.ActorSoundEffects;
 using DG.Tweening;
+using SurgeEngine.Code.Actor.System;
 
 namespace SurgeEngine.Code.ActorEffects
 {
     public class ParaloopEffect : Effect
     {
         [SerializeField] private TrailRenderer trail1, trail2;
-        [HideInInspector] public Actor sonicContext;
+        [HideInInspector] public ActorBase sonicContext;
         [HideInInspector] public Vector3 startPoint;
         
         private bool toggled;

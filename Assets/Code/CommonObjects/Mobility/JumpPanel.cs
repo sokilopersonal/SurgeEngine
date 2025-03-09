@@ -1,6 +1,6 @@
-﻿using SurgeEngine.Code.ActorStates;
-using SurgeEngine.Code.ActorStates.SonicSubStates;
-using SurgeEngine.Code.ActorSystem;
+﻿using SurgeEngine.Code.Actor.States;
+using SurgeEngine.Code.Actor.States.SonicSubStates;
+using SurgeEngine.Code.Actor.System;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.CustomDebug;
 using SurgeEngine.Code.Tools;
@@ -21,7 +21,7 @@ namespace SurgeEngine.Code.CommonObjects
         {
             base.Contact(msg);
 
-            Actor context = ActorContext.Context;
+            ActorBase context = ActorContext.Context;
             if (impulse > 0)
             {
                 bool boosted = SonicTools.IsBoost();

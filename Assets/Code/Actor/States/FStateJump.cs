@@ -1,11 +1,9 @@
-﻿using SurgeEngine.Code.ActorStates.SonicSpecific;
-using SurgeEngine.Code.ActorSystem;
+﻿using SurgeEngine.Code.Actor.System;
 using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.Config;
-using SurgeEngine.Code.StateMachine;
 using UnityEngine;
 
-namespace SurgeEngine.Code.ActorStates
+namespace SurgeEngine.Code.Actor.States
 {
     public class FStateJump : FStateAir
     {
@@ -13,7 +11,7 @@ namespace SurgeEngine.Code.ActorStates
         private BaseActorConfig _config;
         protected float _maxAirTime;
 
-        public FStateJump(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        public FStateJump(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
             _maxAirTime = 0.8f;
             _config = Actor.config;

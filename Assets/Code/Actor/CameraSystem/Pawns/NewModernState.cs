@@ -1,9 +1,8 @@
-﻿using UnityEngine;
-using SurgeEngine.Code.ActorStates;
-using SurgeEngine.Code.ActorSystem;
-using SurgeEngine.Code.CameraSystem.Modifiers;
+﻿using SurgeEngine.Code.Actor.States;
+using SurgeEngine.Code.Actor.System;
+using UnityEngine;
 
-namespace SurgeEngine.Code.CameraSystem.Pawns
+namespace SurgeEngine.Code.Actor.CameraSystem.Pawns
 {
     public class NewModernState : CState
     {
@@ -38,7 +37,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
 
         private bool IsAuto => _actor.input.IsAutoCamera();
 
-        public NewModernState(Actor owner) : base(owner) { }
+        public NewModernState(ActorBase owner) : base(owner) { }
 
         public override void OnTick(float dt)
         {

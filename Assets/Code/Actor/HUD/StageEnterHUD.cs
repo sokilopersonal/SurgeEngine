@@ -1,12 +1,12 @@
-﻿using UnityEngine;
-using DG.Tweening;
+﻿using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
 using FMODUnity;
-using SurgeEngine.Code.ActorStates;
-using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.Actor.States;
+using SurgeEngine.Code.Actor.System;
+using UnityEngine;
 
-namespace SurgeEngine.Code.ActorHUD
+namespace SurgeEngine.Code.Actor.HUD
 {
     public class StageEnterHUD : MonoBehaviour
     {

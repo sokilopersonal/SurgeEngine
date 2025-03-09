@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections;
-using SurgeEngine.Code.ActorSystem;
-using SurgeEngine.Code.CameraSystem.Pawns;
-using SurgeEngine.Code.CameraSystem.Pawns.Data;
+using SurgeEngine.Code.Actor.CameraSystem.Pawns;
+using SurgeEngine.Code.Actor.CameraSystem.Pawns.Data;
+using SurgeEngine.Code.Actor.System;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.StateMachine;
 using UnityEngine;
 using UnityEngine.Splines;
 
-namespace SurgeEngine.Code.CameraSystem
+namespace SurgeEngine.Code.Actor.CameraSystem
 {
     [Serializable]
     public class CameraStateMachine : FStateMachine
@@ -166,7 +165,7 @@ namespace SurgeEngine.Code.CameraSystem
         
         public Vector3 GetDirection(KinematicsMode mode)
         {
-            Actor actor = ActorContext.Context;
+            ActorBase actor = ActorContext.Context;
             Vector3 camDir;
             if (mode is KinematicsMode.Free or KinematicsMode.Forward or KinematicsMode.Dash)
             {

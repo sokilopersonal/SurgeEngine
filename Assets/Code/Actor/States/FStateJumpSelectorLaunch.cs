@@ -1,14 +1,14 @@
-﻿using SurgeEngine.Code.ActorStates.BaseStates;
-using SurgeEngine.Code.ActorSystem;
+﻿using SurgeEngine.Code.Actor.States.BaseStates;
+using SurgeEngine.Code.Actor.System;
 using UnityEngine;
 
-namespace SurgeEngine.Code.ActorStates
+namespace SurgeEngine.Code.Actor.States
 {
     public class FStateJumpSelectorLaunch : FStateMove
     {
         private float _timer;
         
-        public FStateJumpSelectorLaunch(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        public FStateJumpSelectorLaunch(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
             
         }

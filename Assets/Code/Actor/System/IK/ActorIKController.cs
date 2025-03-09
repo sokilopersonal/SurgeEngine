@@ -1,7 +1,7 @@
 ﻿using SurgeEngine.Code.StateMachine.Components;
 using UnityEngine;
 
-namespace SurgeEngine.Code.ActorSystem.IK
+namespace SurgeEngine.Code.Actor.System.IK
 {
     public class ActorIKController : MonoBehaviour
     {

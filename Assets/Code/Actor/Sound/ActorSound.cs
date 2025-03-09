@@ -1,15 +1,15 @@
-﻿using SurgeEngine.Code.ActorSystem;
+﻿using SurgeEngine.Code.Actor.System;
 using SurgeEngine.Code.StateMachine;
 using UnityEngine;
 
-namespace SurgeEngine.Code.ActorSoundEffects
+namespace SurgeEngine.Code.Actor.Sound
 {
     public class ActorSound : MonoBehaviour
     {
-        protected Actor Actor;
+        protected ActorBase Actor;
         protected VoiceHandler Voice;
         
-        public virtual void Initialize(Actor actor)
+        public virtual void Initialize(ActorBase actor)
         {
             Actor = actor;
         }

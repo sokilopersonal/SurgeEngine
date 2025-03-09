@@ -1,12 +1,12 @@
 ﻿using FMOD.Studio;
 using FMODUnity;
-using SurgeEngine.Code.ActorStates;
-using SurgeEngine.Code.ActorStates.SonicSpecific;
-using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.Actor.States;
+using SurgeEngine.Code.Actor.States.SonicSpecific;
+using SurgeEngine.Code.Actor.System;
 using SurgeEngine.Code.StateMachine;
 using UnityEngine;
 
-namespace SurgeEngine.Code.ActorSoundEffects
+namespace SurgeEngine.Code.Actor.Sound
 {
     public class StepSound : ActorSound
     {
@@ -20,7 +20,7 @@ namespace SurgeEngine.Code.ActorSoundEffects
         
         private const float LandSoundActivationThreshold = -5;
 
-        public override void Initialize(Actor actor)
+        public override void Initialize(ActorBase actor)
         {
             base.Initialize(actor);
             

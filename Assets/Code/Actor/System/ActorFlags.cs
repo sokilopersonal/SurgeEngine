@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace SurgeEngine.Code.ActorSystem
+namespace SurgeEngine.Code.Actor.System
 {
     public class ActorFlags : MonoBehaviour
     {
-        public Actor actor { get; set; }
+        public ActorBase actor { get; set; }
 
         private HashSet<Flag> list;
         public FlagType flagType;

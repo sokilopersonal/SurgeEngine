@@ -1,12 +1,10 @@
-﻿using SurgeEngine.Code.ActorSystem;
-using SurgeEngine.Code.StateMachine;
-using UnityEngine;
+﻿using SurgeEngine.Code.Actor.System;
 
-namespace SurgeEngine.Code.ActorStates
+namespace SurgeEngine.Code.Actor.States
 {
     public interface IDamageableState
     {
-        void TakeDamage(Actor owner, Entity sender)
+        void TakeDamage(ActorBase owner, Entity sender)
         {
             owner.stateMachine.SetState<FStateDamage>();
         }

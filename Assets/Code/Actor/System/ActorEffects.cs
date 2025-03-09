@@ -1,13 +1,13 @@
 ﻿using System.Collections;
+using SurgeEngine.Code.Actor.States;
+using SurgeEngine.Code.Actor.States.SonicSpecific;
+using SurgeEngine.Code.Actor.States.SonicSubStates;
 using SurgeEngine.Code.ActorEffects;
-using SurgeEngine.Code.ActorStates;
-using SurgeEngine.Code.ActorStates.SonicSpecific;
-using SurgeEngine.Code.ActorStates.SonicSubStates;
 using SurgeEngine.Code.Shaders;
 using SurgeEngine.Code.StateMachine;
 using UnityEngine;
 
-namespace SurgeEngine.Code.ActorSystem
+namespace SurgeEngine.Code.Actor.System
 {
     public class ActorEffects : ActorComponent
     {

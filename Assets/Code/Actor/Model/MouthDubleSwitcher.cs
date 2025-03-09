@@ -1,14 +1,14 @@
-﻿using SurgeEngine.Code.ActorSystem;
+﻿using SurgeEngine.Code.Actor.System;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Misc
+namespace SurgeEngine.Code.Actor.Model
 {
     public class MouthDubleSwitcher : MonoBehaviour
     {
         [SerializeField] Transform mouthReference;
 
         private Transform _cameraTransform;
-        private Actor _actor;
+        private ActorBase _actor;
 
         private void Start()
         {

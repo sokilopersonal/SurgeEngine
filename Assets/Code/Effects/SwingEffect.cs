@@ -1,7 +1,5 @@
 using System;
 using UnityEngine;
-using SurgeEngine.Code.ActorSystem;
-using SurgeEngine.Code.ActorSoundEffects;
 using DG.Tweening;
 
 namespace SurgeEngine.Code.ActorEffects

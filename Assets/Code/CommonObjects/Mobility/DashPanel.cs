@@ -1,6 +1,5 @@
-﻿
-using SurgeEngine.Code.ActorStates;
-using SurgeEngine.Code.ActorSystem;
+﻿using SurgeEngine.Code.Actor.States;
+using SurgeEngine.Code.Actor.System;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.Misc;
 using UnityEngine;
@@ -18,7 +17,7 @@ namespace SurgeEngine.Code.CommonObjects
         {
             base.Contact(msg);
             
-            Actor context = ActorContext.Context;
+            ActorBase context = ActorContext.Context;
             Rigidbody body = context.kinematics.Rigidbody;
             
             if (center)

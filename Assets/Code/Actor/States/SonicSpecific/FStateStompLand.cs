@@ -1,17 +1,16 @@
-using SurgeEngine.Code.ActorStates.BaseStates;
-using SurgeEngine.Code.ActorStates.SonicSubStates;
-using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.Actor.States.BaseStates;
+using SurgeEngine.Code.Actor.System;
 using SurgeEngine.Code.Custom;
 using UnityEngine;
 
-namespace SurgeEngine.Code.ActorStates.SonicSpecific
+namespace SurgeEngine.Code.Actor.States.SonicSpecific
 {
     public class FStateStompLand : FStateMove
     {
         private float _timer;
         private const float WaitTime = 0.15f;
         
-        public FStateStompLand(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        public FStateStompLand(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
         }
 

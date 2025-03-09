@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using SurgeEngine.Code.StateMachine;
 using UnityEngine;
 
-namespace SurgeEngine.Code.ActorSystem
+namespace SurgeEngine.Code.Actor.System
 {
     public abstract class Entity : MonoBehaviour
     {

@@ -1,6 +1,6 @@
 ﻿using FMODUnity;
-using SurgeEngine.Code.ActorStates.SonicSubStates;
-using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.Actor.States.SonicSubStates;
+using SurgeEngine.Code.Actor.System;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.Tools;
 using UnityEngine;
@@ -16,7 +16,7 @@ namespace SurgeEngine.Code.CommonObjects
         
         [SerializeField] private EventReference ringSound;
 
-        private Actor _actor => ActorContext.Context;
+        private ActorBase _actor => ActorContext.Context;
         private bool _magneted;
         private Vector3 _initialPosition;
         private float _factor;

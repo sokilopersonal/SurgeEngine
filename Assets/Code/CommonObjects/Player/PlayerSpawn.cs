@@ -1,6 +1,5 @@
 ﻿using System.Collections;
-using SurgeEngine.Code.ActorStates;
-using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.Actor.States;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;

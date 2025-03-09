@@ -1,4 +1,4 @@
-﻿using SurgeEngine.Code.ActorSystem;
+﻿using SurgeEngine.Code.Actor.System;
 using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.Enemy.EggFighter.States;
 using SurgeEngine.Code.StateMachine;
@@ -61,7 +61,7 @@ namespace SurgeEngine.Code.Enemy.EggFighter
 
         public void TakeDamage(Entity sender, float damage)
         {
-            Actor context = ActorContext.Context;
+            ActorBase context = ActorContext.Context;
             Vector3 force = context.kinematics.Rigidbody.linearVelocity * 1.25f;
             force += Vector3.up * (force.magnitude * 0.15f);
             Debug.DrawRay(context.transform.position, force, Color.red, 999f);

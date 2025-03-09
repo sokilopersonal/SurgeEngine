@@ -1,11 +1,11 @@
-﻿using SurgeEngine.Code.ActorSystem;
+﻿using SurgeEngine.Code.Actor.System;
 using UnityEngine;
 
-namespace SurgeEngine.Code.ActorStates
+namespace SurgeEngine.Code.Actor.States
 {
     public class FStateGrindJump : FStateJump
     {
-        public FStateGrindJump(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        public FStateGrindJump(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
             _maxAirTime = 0.3f;
         }

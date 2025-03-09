@@ -1,8 +1,8 @@
 ﻿using DG.Tweening;
 using FMOD.Studio;
 using FMODUnity;
-using SurgeEngine.Code.ActorStates;
-using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.Actor.States;
+using SurgeEngine.Code.Actor.System;
 using SurgeEngine.Code.StateMachine;
 using UnityEngine;
 using STOP_MODE = FMOD.Studio.STOP_MODE;
@@ -89,7 +89,7 @@ namespace SurgeEngine.Code.CommonObjects
         {
             base.Contact(msg);
             
-            Actor context = ActorContext.Context;
+            ActorBase context = ActorContext.Context;
             context.stateMachine.SetState<FStateUpreel>(0.1f)?.SetAttach(attachPoint);
             context.stateMachine.OnStateAssign += OnStateAssign;
 
@@ -101,7 +101,7 @@ namespace SurgeEngine.Code.CommonObjects
             _eventInstance.start();
         }
 
-        private void Cancel(Actor ctx)
+        private void Cancel(ActorBase ctx)
         {
             _isPlayerAttached = false;
             _attachTimer = 0;

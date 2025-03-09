@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using NaughtyAttributes;
-using SurgeEngine.Code.ActorStates;
-using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.Actor.States;
+using SurgeEngine.Code.Actor.System;
 using UnityEngine;
 using UnityEngine.VFX;
 
@@ -15,7 +15,7 @@ namespace SurgeEngine.Code.ActorEffects
 
         public void PlayEffect()
         {
-            Actor context = ActorContext.Context;
+            ActorBase context = ActorContext.Context;
 
             string surface = context.stateMachine.GetState<FStateGround>().GetSurfaceTag();
             VisualEffect stepInstance = Instantiate(step, feet.position + Vector3.up * 0.25f, Quaternion.identity);

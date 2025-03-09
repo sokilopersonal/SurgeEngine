@@ -1,4 +1,4 @@
-﻿using SurgeEngine.Code.ActorSystem;
+﻿using SurgeEngine.Code.Actor.System;
 using SurgeEngine.Code.StateMachine;
 using UnityEngine;
 
@@ -18,7 +18,7 @@ namespace SurgeEngine.Code.Enemy.AeroCannon.States
         
         protected bool IsInSight(out Transform target)
         {
-            Actor context = ActorContext.Context;
+            ActorBase context = ActorContext.Context;
             float viewDistance = config.viewDistance;
             LayerMask mask = config.mask;
 

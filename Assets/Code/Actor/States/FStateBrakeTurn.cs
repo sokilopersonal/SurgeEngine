@@ -1,14 +1,15 @@
-﻿using SurgeEngine.Code.ActorStates.BaseStates;
-using SurgeEngine.Code.ActorSystem;
+﻿using SurgeEngine.Code.Actor.States.BaseStates;
+using SurgeEngine.Code.Actor.System;
 using UnityEngine;
-namespace SurgeEngine.Code.ActorStates
+
+namespace SurgeEngine.Code.Actor.States
 {
     public class FStateBrakeTurn : FStateMove, IDamageableState
     {
         private float _timer;
         private Quaternion _rigidbodyRotation;
         
-        public FStateBrakeTurn(Actor owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        public FStateBrakeTurn(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
             
         }
