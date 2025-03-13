@@ -39,6 +39,11 @@ namespace SurgeEngine.Code.Tools
             Debug.Log("Initialized UserGraphics");
         }
 
+        public void SetTextureQuality(int value)
+        {
+            QualitySettings.globalTextureMipmapLimit = (int)Mathf.Lerp(3, 0, value / 3f); // Inverse value
+        }
+
         public void SetSunShadowsQuality(int value)
         {
             var data = _sun.GetComponent<HDAdditionalLightData>();
@@ -125,24 +130,28 @@ namespace SurgeEngine.Code.Tools
 
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
+                SetTextureQuality(0);
                 SetSunShadowsQuality(-1);
                 SetAdditionalShadowsQuality(-1);
             }
             
             if (Input.GetKeyDown(KeyCode.Alpha2))
             {
+                SetTextureQuality(1);
                 SetSunShadowsQuality(0);
                 SetAdditionalShadowsQuality(0);
             }
             
             if (Input.GetKeyDown(KeyCode.Alpha3))
             {
+                SetTextureQuality(2);
                 SetSunShadowsQuality(1);
                 SetAdditionalShadowsQuality(1);
             }
             
             if (Input.GetKeyDown(KeyCode.Alpha4))
             {
+                SetTextureQuality(3);
                 SetSunShadowsQuality(2);
                 SetAdditionalShadowsQuality(2);
             }
@@ -166,7 +175,8 @@ namespace SurgeEngine.Code.Tools
                 AdditionalShadowsQuality = _additionalLightsData.All(light => light.GetComponent<Light>().shadows == LightShadows.Soft) ? _sunData.shadowResolution.level : -1,
                 BloomQuality = _profile.TryGet(out Bloom bloom) ? bloom.quality.value : -1,
                 AoQuality = _profile.TryGet(out ScreenSpaceAmbientOcclusion ssao) ? ssao.quality.value : -1,
-                MotionBlurQuality = _profile.TryGet(out MotionBlur motionBlur) ? motionBlur.quality.value : -1
+                MotionBlurQuality = _profile.TryGet(out MotionBlur motionBlur) ? motionBlur.quality.value : -1,
+                TextureQuality = (int)Mathf.Lerp(3, 0, QualitySettings.globalTextureMipmapLimit)
             };
             
             var json = JsonUtility.ToJson(data);
@@ -176,14 +186,18 @@ namespace SurgeEngine.Code.Tools
         
         public void Load()
         {
-            var json = PlayerPrefs.GetString(Key);
-            var data = JsonUtility.FromJson<GraphicsData>(json);
+            if (PlayerPrefs.HasKey(Key))
+            {
+                var json = PlayerPrefs.GetString(Key);
+                var data = JsonUtility.FromJson<GraphicsData>(json);
             
-            SetSunShadowsQuality(data.SunShadowsQuality);
-            SetAdditionalShadowsQuality(data.AdditionalShadowsQuality);
-            SetBloomQuality(data.BloomQuality);
-            SetAmbientOcclusionQuality(data.AoQuality);
-            SetMotionBlurQuality(data.MotionBlurQuality);
+                SetSunShadowsQuality(data.SunShadowsQuality);
+                SetAdditionalShadowsQuality(data.AdditionalShadowsQuality);
+                SetBloomQuality(data.BloomQuality);
+                SetAmbientOcclusionQuality(data.AoQuality);
+                SetMotionBlurQuality(data.MotionBlurQuality);
+                SetTextureQuality(data.TextureQuality);
+            }
         }
     }
 
@@ -194,5 +208,6 @@ namespace SurgeEngine.Code.Tools
         public int BloomQuality;
         public int AoQuality;
         public int MotionBlurQuality;
+        public int TextureQuality;
     }
 }
