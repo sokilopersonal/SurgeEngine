@@ -1,150 +1,198 @@
-﻿using System.Linq;
-using SurgeEngine.Code.Config.Graphics;
+﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.HighDefinition;
+using Zenject;
 
 namespace SurgeEngine.Code.Tools
 {
-    public class UserGraphics : MonoBehaviour
+    public class UserGraphics : ITickable
     {
-        [SerializeField] private Light _directionalLight;
-        [SerializeField] private VolumeProfile _globalVolumeProfile;
-        
-        private HDRenderPipelineAsset _pipelineAsset => (HDRenderPipelineAsset)GraphicsSettings.currentRenderPipeline;
-        private HDAdditionalCameraData _cameraData;
-        
-        private FrameSettings _frameSettings;
+        private const string Key = "GraphicsData";
+        private readonly VolumeProfile _profile;
 
-        private static UserGraphics _instance;
-        public static UserGraphics Instance => _instance;
+        private Light _sun;
+        private HDAdditionalLightData _sunData;
+        private readonly List<Light> _additionalLights;
+        private readonly List<HDAdditionalLightData> _additionalLightsData;
 
-        public QualityData data;
-        
-        private const string UserGraphicsKey = "UserGraphics";
-
-        private void Awake()
+        public UserGraphics(VolumeProfile profile)
         {
-            _instance = this;
-
-            var lights = FindObjectsByType<Light>(FindObjectsInactive.Include, FindObjectsSortMode.InstanceID).ToList();
-            _directionalLight = lights.Find((x) => x.type == LightType.Directional);
-
-            var profile = Instantiate(_pipelineAsset.volumeProfile);
-            _globalVolumeProfile = profile;
-                
-            _cameraData = Camera.main.GetComponent<HDAdditionalCameraData>();
-            _cameraData.customRenderingSettings = true;
-
-            _frameSettings = _cameraData.renderingPathCustomFrameSettings;
+            _profile = profile;
+            _additionalLights = new List<Light>();
+            _additionalLightsData = new List<HDAdditionalLightData>();
             
-            Load();
+            var lights = Object.FindObjectsByType<Light>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+            foreach (var light in lights)
+            {
+                if (light.type == LightType.Directional)
+                {
+                    SetSun(light);
+                }
+                else
+                { 
+                    AddAdditionalLight(light);
+                }
+            }
+            
+            Debug.Log("Initialized UserGraphics");
         }
 
-        private void Update()
+        public void SetSunShadowsQuality(int value)
         {
-            _cameraData.renderingPathCustomFrameSettings = _frameSettings;
+            var data = _sun.GetComponent<HDAdditionalLightData>();
+            if (value == -1)
+            {
+                data.EnableShadows(false);
+            }
+            else
+            {
+                data.EnableShadows(true);
+                data.shadowResolution.level = value;
+            }
+        }
+        
+        public void SetAdditionalShadowsQuality(int value)
+        {
+            foreach (var data in _additionalLights.Select(light => light.GetComponent<HDAdditionalLightData>()))
+            {
+                if (value == -1)
+                {
+                    data.EnableShadows(false);
+                }
+                else
+                {
+                    data.EnableShadows(true);
+                    data.shadowResolution.level = value;
+                }
+            }
         }
 
-        public void SetDirectionalLightQuality(int resolution)
+        public void SetBloomQuality(int value)
         {
-            HDAdditionalLightData lightData = _directionalLight.GetComponent<HDAdditionalLightData>();
-            lightData.SetShadowResolutionOverride(false);
-            lightData.SetShadowResolutionLevel(resolution);
-            
-            data.shadowsQuality = resolution;
-            Save();
+            if (_profile.TryGet(out Bloom bloom))
+            {
+                bloom.quality.value = value;
+            }
+        }
+        
+        public void SetAmbientOcclusionQuality(int value)
+        {
+            if (_profile.TryGet(out ScreenSpaceAmbientOcclusion ssao))
+            {
+                ssao.quality.value = value;
+            }
         }
 
-        public void SetPCSS(bool value)
-        {
-            RenderPipelineSettings pcssData = _pipelineAsset.currentPlatformRenderPipelineSettings;
-            pcssData.hdShadowInitParams.directionalShadowFilteringQuality = value ? HDShadowFilteringQuality.High : HDShadowFilteringQuality.Medium;
-            
-            _pipelineAsset.currentPlatformRenderPipelineSettings = pcssData;
-            
-            data.pcssShadows = value;
-            Save();
-        }
-        
-        public void SetBloom(bool bloomBarValue)
-        {
-            _frameSettings.SetEnabled(FrameSettingsField.Bloom, bloomBarValue);
-            
-            data.bloom = bloomBarValue;
-            
-            Save();
-        }
-        
-        public void SetMotionBlur(bool value)
-        {
-            _frameSettings.SetEnabled(FrameSettingsField.MotionBlur, value);
-            
-            data.motionBlur = value;
-            
-            Save();
-        }
-        
         public void SetMotionBlurQuality(int value)
         {
-            _globalVolumeProfile.TryGet(out MotionBlur motionBlur);
-            motionBlur.quality.value = Mathf.Min(value, 2);
-            
-            data.motionBlurQuality = value;
-            
-            Save();
+            if (_profile.TryGet(out MotionBlur motionBlur))
+            {
+                motionBlur.quality.value = value;
+            }
         }
-        
-        public void SetSSR(bool value)
+
+        private void SetSun(Light sun)
         {
-            _frameSettings.SetEnabled(FrameSettingsField.SSR, value);
-            
-            data.ssr = value;
-            
-            Save();
+            if (sun.type == LightType.Directional)
+            {
+                _sun = sun;
+                _sunData = sun.GetComponent<HDAdditionalLightData>();
+            }
+            else
+            {
+                Debug.LogError("This is not a directional light (sun).");
+            }
         }
-        
-        public void SetSSRQuality(int value)
+
+        private void AddAdditionalLight(Light light)
         {
-            _globalVolumeProfile.TryGet(out ScreenSpaceReflection ssr);
-            ssr.quality.value = Mathf.Min(value, 2);
-            
-            data.ssrQuality = value;
-            
-            Save();
+            if (light.type != LightType.Directional)
+            {
+                _additionalLights.Add(light);
+                _additionalLightsData.Add(light.GetComponent<HDAdditionalLightData>());
+            }
+            else
+            {
+                Debug.LogError("This is not a additional light.");
+            }
         }
-        
-        public void SetAA(int value)
+
+        public void Tick()
         {
-            _cameraData.antialiasing = (HDAdditionalCameraData.AntialiasingMode)value;
-            _frameSettings.SetEnabled(FrameSettingsField.Antialiasing, value != 0);
+            // Test
+
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                SetSunShadowsQuality(-1);
+                SetAdditionalShadowsQuality(-1);
+            }
             
-            data.antiAliasing = value;
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                SetSunShadowsQuality(0);
+                SetAdditionalShadowsQuality(0);
+            }
             
-            Save();
+            if (Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                SetSunShadowsQuality(1);
+                SetAdditionalShadowsQuality(1);
+            }
+            
+            if (Input.GetKeyDown(KeyCode.Alpha4))
+            {
+                SetSunShadowsQuality(2);
+                SetAdditionalShadowsQuality(2);
+            }
+
+            if (Input.GetKeyDown(KeyCode.Alpha9))
+            {
+                Save();
+            }
+            
+            if (Input.GetKeyDown(KeyCode.Alpha0))
+            {
+                Load();
+            }
         }
-        
+
         public void Save()
         {
-            string json = JsonUtility.ToJson(data);
-            PlayerPrefs.SetString(UserGraphicsKey, json);
+            var data = new GraphicsData
+            {
+                SunShadowsQuality = _sunData.GetComponent<Light>().shadows == LightShadows.Soft ? _sunData.shadowResolution.level : -1,
+                AdditionalShadowsQuality = _additionalLightsData.All(light => light.GetComponent<Light>().shadows == LightShadows.Soft) ? _sunData.shadowResolution.level : -1,
+                BloomQuality = _profile.TryGet(out Bloom bloom) ? bloom.quality.value : -1,
+                AoQuality = _profile.TryGet(out ScreenSpaceAmbientOcclusion ssao) ? ssao.quality.value : -1,
+                MotionBlurQuality = _profile.TryGet(out MotionBlur motionBlur) ? motionBlur.quality.value : -1
+            };
+            
+            var json = JsonUtility.ToJson(data);
+            Debug.Log(json);
+            PlayerPrefs.SetString(Key, json);
         }
         
         public void Load()
         {
-            if (PlayerPrefs.HasKey(UserGraphicsKey))
-            {
-                string json = PlayerPrefs.GetString(UserGraphicsKey);
-                data = JsonUtility.FromJson<QualityData>(json);
-                
-                SetDirectionalLightQuality(data.shadowsQuality);
-                SetPCSS(data.pcssShadows);
-                SetBloom(data.bloom);
-                SetMotionBlur(data.motionBlur);
-                SetMotionBlurQuality(data.motionBlurQuality);
-                SetSSR(data.ssr);
-                SetSSRQuality(data.ssrQuality);
-            }
+            var json = PlayerPrefs.GetString(Key);
+            var data = JsonUtility.FromJson<GraphicsData>(json);
+            
+            SetSunShadowsQuality(data.SunShadowsQuality);
+            SetAdditionalShadowsQuality(data.AdditionalShadowsQuality);
+            SetBloomQuality(data.BloomQuality);
+            SetAmbientOcclusionQuality(data.AoQuality);
+            SetMotionBlurQuality(data.MotionBlurQuality);
         }
+    }
+
+    public class GraphicsData
+    {
+        public int SunShadowsQuality;
+        public int AdditionalShadowsQuality;
+        public int BloomQuality;
+        public int AoQuality;
+        public int MotionBlurQuality;
     }
 }
