@@ -25,7 +25,7 @@ namespace SurgeEngine.Code.UI
 
         protected override void InsertIntroAnimations()
         {
-            AnimationSequence.Append(Group.DOFade(1f, 0.2f).From(0));
+            AnimationSequence.Join(Group.DOFade(1f, 0.2f).From(0));
             AnimationSequence.Join(parent.DOAnchorPosY(_endY, duration).SetEase(Ease.OutCubic).From(new Vector2(0, 0)));
             AnimationSequence.Join(secondBox.DOSizeDelta(new Vector2(_startWidth, _endHeight), duration).SetEase(Ease.OutCubic).From(new Vector2(_startWidth, 10)));
             AnimationSequence.Join(firstBox.DOSizeDelta(new Vector2(_startWidth, _endHeight), duration).SetEase(Ease.OutCubic).SetDelay(0.1f).From(new Vector2(_startWidth, 10)));
@@ -33,7 +33,7 @@ namespace SurgeEngine.Code.UI
 
         protected override void InsertOutroAnimations()
         {
-            AnimationSequence.Append(Group.DOFade(0f, 0.2f).From(1));
+            AnimationSequence.Join(Group.DOFade(0f, 0.2f).From(1));
             AnimationSequence.Join(parent.DOAnchorPosY(0, duration).SetEase(Ease.OutCubic).From(new Vector2(0, _endY)));
             AnimationSequence.Join(secondBox.DOSizeDelta(new Vector2(_startWidth, 10), duration).SetEase(Ease.OutCubic).From(new Vector2(_startWidth, _endHeight)));
             AnimationSequence.Join(firstBox.DOSizeDelta(new Vector2(_startWidth, 10), duration).SetEase(Ease.OutCubic).SetDelay(0.1f).From(new Vector2(_startWidth, _endHeight)));

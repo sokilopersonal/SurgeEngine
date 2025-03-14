@@ -11,13 +11,15 @@ namespace SurgeEngine.Code.UI.Menus
     [RequireComponent(typeof(CanvasGroup))]
     public abstract class Page : MonoBehaviour
     {
-        protected CanvasGroup Group { get; private set; }
+        public CanvasGroup Group { get; private set; }
         [SerializeField] private Selectable selected;
         [SerializeField] protected float duration = 0.3f;
 
         protected Sequence AnimationSequence { get; private set; }
         
-        private void Awake()
+        public bool Active => Group.alpha > 0 && Group.interactable;
+
+        protected virtual void Awake()
         {
             Group = GetComponent<CanvasGroup>();
             

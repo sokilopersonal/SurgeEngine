@@ -173,7 +173,7 @@ namespace SurgeEngine.Code.UI
         
         private bool AllowToNavigate()
         {
-            return Mathf.Approximately(_parentGroup.alpha, 1);
+            return _parentGroup.alpha > 0 && _parentGroup.interactable;
         }
     }
 }

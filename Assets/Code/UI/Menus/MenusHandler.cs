@@ -28,9 +28,19 @@ namespace SurgeEngine.Code.UI
             }
         }
 
-        public async void OpenMenu<T>() where T : Page
+        public async void OpenMenu<T>(bool closePrevious = true) where T : Page
         {
             var menu = _menusDictionary[typeof(T)];
+
+            if (closePrevious)
+            {
+                foreach (var page in _menusDictionary.Values)
+                {
+                    page.Group.alpha = 0;
+                    page.Group.interactable = false;
+                    page.Group.blocksRaycasts = false;
+                }
+            }
             
             if (_currentPage != null)
             {
@@ -60,6 +70,17 @@ namespace SurgeEngine.Code.UI
             
             _currentPage = menu;
             await menu.Open();
+        }
+
+        public async void OpenMenu(Page page)
+        {
+            if (_currentPage != null)
+            {
+                await _currentPage.Close();
+            }
+            
+            _currentPage = page;
+            await page.Open();
         }
     }
 }
