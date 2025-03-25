@@ -29,7 +29,7 @@ namespace SurgeEngine.Code.Actor.States.SonicSpecific
             base.OnExit();
             
             FBoost boost = StateMachine.GetSubState<FBoost>();
-            boost.canAirBoost = false;
+            boost.CanAirBoost = false;
             boost.Active = false;
         }
 
@@ -38,7 +38,7 @@ namespace SurgeEngine.Code.Actor.States.SonicSpecific
             base.OnTick(dt);
             
             FBoost boost = StateMachine.GetSubState<FBoost>();
-            if (boost.canAirBoost)
+            if (boost.CanAirBoost)
             {
                 Vector3 force = _rigidbody.transform.forward * _config.airBoostSpeed;
 
