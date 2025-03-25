@@ -11,6 +11,7 @@ namespace SurgeEngine.Code.DI
         public override void InstallBindings()
         {
             Container.Bind<ActorStageHUD>().FromComponentInNewPrefab(hudPrefab).AsSingle().NonLazy();
+            Container.Bind<ActorHUDContext>().FromNew().AsSingle().NonLazy();
         }
     }
 }
