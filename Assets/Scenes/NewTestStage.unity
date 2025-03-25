@@ -3474,14 +3474,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1235974799}
     m_Modifications:
-    - target: {fileID: 429887859882323179, guid: a4be8a2f4d3bf334d80635828f72b451, type: 3}
-      propertyPath: speed
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 429887859882323179, guid: a4be8a2f4d3bf334d80635828f72b451, type: 3}
-      propertyPath: keepVelocity
-      value: 0.35
-      objectReference: {fileID: 0}
     - target: {fileID: 5957124819982976523, guid: d26830aafc8508a4d9c4f66a3ae0c7e8, type: 3}
       propertyPath: m_Name
       value: RainbowDashRing
@@ -3533,6 +3525,14 @@ PrefabInstance:
     - target: {fileID: 7174459843504873028, guid: d26830aafc8508a4d9c4f66a3ae0c7e8, type: 3}
       propertyPath: keepVelocity
       value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 429887859882323179, guid: a4be8a2f4d3bf334d80635828f72b451, type: 3}
+      propertyPath: speed
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 429887859882323179, guid: a4be8a2f4d3bf334d80635828f72b451, type: 3}
+      propertyPath: keepVelocity
+      value: 0.35
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3860,6 +3860,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1795766829083924932, guid: 17fe1b2335965bf458073bda81e475b5, type: 3}
+      propertyPath: data.startTransform
+      value: 
+      objectReference: {fileID: 1765335624}
     - target: {fileID: 3405328811069570354, guid: 17fe1b2335965bf458073bda81e475b5, type: 3}
       propertyPath: m_Name
       value: SceneContext

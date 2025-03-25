@@ -1,6 +1,8 @@
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 namespace SurgeEngine.Code.UI.Menus
 {
@@ -8,13 +10,29 @@ namespace SurgeEngine.Code.UI.Menus
     {
         [SerializeField] private RectTransform topGradient, bottomGradient;
         
-        [SerializeField] private RectTransform selectionBox;
+        [Header("Boxes")]
+        [SerializeField] private RectTransform topSelectionBox;
+        [SerializeField] private RectTransform barSelectionBox;
+        
+        [Header("Sub Pages")]
         [SerializeField] private RectTransform[] subPagesTexts;
         [SerializeField] private CanvasGroup[] subPages;
+        
+        [Header("Setting Bars")]
+        [SerializeField] private SettingBar[] bars;
+        
+        [Header("Description")]
+        [SerializeField] private TMP_Text descriptionText;
+        [SerializeField] private RawImage previewImage;
+        
+        [Header("Input")]
         [SerializeField] private InputActionReference sideInput;
 
         private Tween _selectionTween;
+        private Tween _barSelectionTween;
+        private Tween _subPageTween;
         private int _selected;
+        private int _lastSelected;
 
         private float _startHeightTop;
         private float _startHeightBottom;
@@ -33,19 +51,29 @@ namespace SurgeEngine.Code.UI.Menus
         {
             sideInput.action.Enable();
             sideInput.action.performed += OnSideInput;
+
+            foreach (var bar in bars)
+            {
+                bar.OnBarSelected += OnBarSelected;
+            }
         }
 
         private void OnDisable()
         {
             sideInput.action.performed -= OnSideInput;
             sideInput.action.Disable();
+            
+            foreach (var bar in bars)
+            {
+                bar.OnBarSelected -= OnBarSelected;
+            }
         }
 
         protected override void InsertIntroAnimations()
         {
             _selected = 0;
             _selectionTween?.Kill();
-            selectionBox.anchoredPosition = subPagesTexts[_selected].anchoredPosition;
+            topSelectionBox.anchoredPosition = subPagesTexts[_selected].anchoredPosition;
             FastSelectSubPage();
             
             AnimationSequence.Join(Group.DOFade(1, duration).From(0));
@@ -65,11 +93,21 @@ namespace SurgeEngine.Code.UI.Menus
             if (Active)
             {
                 _selected += (int)obj.ReadValue<Vector2>().x;
-                _selected = (int)Mathf.Repeat(_selected, subPagesTexts.Length);
-                _selectionTween?.Kill(true);
-                _selectionTween = selectionBox.DOAnchorPos(subPagesTexts[_selected].anchoredPosition, duration / 2).SetEase(Ease.OutCubic).SetUpdate(true);
+                _selected = Mathf.Clamp(_selected, 0, subPages.Length - 1);
                 
-                FastSelectSubPage();
+                if (_lastSelected == _selected) return;
+                
+                _subPageTween?.Kill(true);
+                _subPageTween = subPages[_lastSelected].DOFade(0, duration / 2).SetEase(Ease.OutCubic).SetUpdate(true);
+                
+                if (_selected == _lastSelected) return;
+                _lastSelected = _selected;
+                
+                _selectionTween?.Kill(true);
+                _selectionTween = topSelectionBox.DOAnchorPos(subPagesTexts[_selected].anchoredPosition, duration / 2).SetEase(Ease.OutCubic).SetUpdate(true);
+                
+                _subPageTween?.Kill(true);
+                _subPageTween = subPages[_selected].DOFade(1, duration / 2).SetEase(Ease.OutCubic).SetUpdate(true).OnComplete(FastSelectSubPage);
             }
         }
 
@@ -81,6 +119,15 @@ namespace SurgeEngine.Code.UI.Menus
                 subPages[i].interactable = _selected == i;
                 subPages[i].blocksRaycasts = _selected == i;
             }
+        }
+
+        private void OnBarSelected(SettingBar bar)
+        {
+            RectTransform rect = bar.transform as RectTransform;
+            _barSelectionTween?.Kill();
+            _barSelectionTween = barSelectionBox.DOAnchorPosY(rect.anchoredPosition.y, 0.1f).SetEase(Ease.OutCubic).SetUpdate(true);
+
+            descriptionText.text = bar.Description;
         }
     }
 }
