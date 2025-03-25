@@ -4,6 +4,7 @@ using SurgeEngine.Code.Actor.System;
 using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.Config;
 using SurgeEngine.Code.Config.SonicSpecific;
+using SurgeEngine.Code.Enemy;
 using SurgeEngine.Code.Misc;
 using SurgeEngine.Code.StateMachine;
 using UnityEngine;
@@ -41,8 +42,30 @@ namespace SurgeEngine.Code.Actor.States.SonicSubStates
             actor.input.BoostAction += BoostAction;
             actor.stateMachine.OnStateAssign += OnStateAssign;
 
-            ObjectEvents.OnObjectCollected += _ => BoostEnergy += 
-                _config.ringEnergyAddition;
+            ObjectEvents.OnObjectCollected += OnRingCollected;
+            ObjectEvents.OnEnemyDied += OnEnemyDied;
+        }
+        
+        ~FBoost()
+        {
+            actor.input.BoostAction -= BoostAction;
+            actor.stateMachine.OnStateAssign -= OnStateAssign;
+
+            ObjectEvents.OnObjectCollected -= OnRingCollected;
+            ObjectEvents.OnEnemyDied -= OnEnemyDied;
+        }
+
+        private void OnRingCollected(ContactBase obj)
+        {
+            if (obj is Ring)
+            {
+                BoostEnergy += _config.ringEnergyAddition;
+            }
+        }
+
+        private void OnEnemyDied(EnemyBase obj)
+        {
+            BoostEnergy += 10;
         }
 
         private void OnStateAssign(FState obj)
