@@ -27,6 +27,12 @@ namespace SurgeEngine.Code.DI
             Quaternion par = instance.transform.parent.rotation;
             instance.transform.parent.rotation = Quaternion.identity;
             instance.transform.rotation = par;
+
+            var startRenderer = data.StartTransform.GetComponentInChildren<Renderer>();
+            if (startRenderer)
+            {
+                startRenderer.enabled = false; // Disable model if exists after spawning
+            }
         }
     }
 }
