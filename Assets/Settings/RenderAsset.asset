@@ -82,7 +82,7 @@ MonoBehaviour:
     supportProbeVolumeScenarios: 0
     supportProbeVolumeScenarioBlending: 0
     probeVolumeBlendingMemoryBudget: 128
-    supportRayTracing: 0
+    supportRayTracing: 1
     supportVFXRayTracing: 0
     supportedRayTracingMode: 3
     lightLoopSettings:
@@ -117,8 +117,8 @@ MonoBehaviour:
     hdShadowInitParams:
       maxShadowRequests: 128
       directionalShadowsDepthBits: 32
-      punctualShadowFilteringQuality: 2
-      directionalShadowFilteringQuality: 2
+      punctualShadowFilteringQuality: 1
+      directionalShadowFilteringQuality: 1
       areaShadowFilteringQuality: 0
       punctualLightShadowAtlas:
         shadowAtlasResolution: 4096
@@ -129,10 +129,10 @@ MonoBehaviour:
         shadowAtlasDepthBits: 32
         useDynamicViewportRescale: 1
       cachedPunctualLightShadowAtlas: 2048
-      cachedAreaLightShadowAtlas: 1024
+      cachedAreaLightShadowAtlas: 2048
       allowDirectionalMixedCachedShadows: 1
       shadowResolutionDirectional:
-        m_Values: 0002000000040000180c000000100000
+        m_Values: 0002000000080000180c000000100000
         m_SchemaId:
           m_Id: With4Levels
       shadowResolutionPunctual:
@@ -140,7 +140,7 @@ MonoBehaviour:
         m_SchemaId:
           m_Id: With4Levels
       shadowResolutionArea:
-        m_Values: 80000000000100000002000000040000
+        m_Values: 00020000000400000006000000080000
         m_SchemaId:
           m_Id: With4Levels
       maxDirectionalShadowMapResolution: 4096
@@ -185,7 +185,7 @@ MonoBehaviour:
       dynResType: 1
       upsampleFilter: 5
       forceResolution: 1
-      forcedPercentage: 75
+      forcedPercentage: 50
       lowResTransparencyMinimumThreshold: 0
       rayTracingHalfResThreshold: 50
       lowResSSGIMinimumThreshold: 0
