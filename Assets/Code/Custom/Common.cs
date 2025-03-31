@@ -94,7 +94,7 @@ namespace SurgeEngine.Code.Custom
             ActorBase context = ActorContext.Context;
             ResetVelocity(type);
             
-            context.kinematics.Rigidbody.AddForce(impulse, ForceMode.Impulse);
+            context.kinematics.Rigidbody.linearVelocity = impulse;
             context.kinematics.Rigidbody.linearVelocity = Vector3.ClampMagnitude(context.kinematics.Rigidbody.linearVelocity, impulse.magnitude);
         }
 
