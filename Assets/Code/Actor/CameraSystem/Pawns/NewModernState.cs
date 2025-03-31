@@ -163,10 +163,17 @@ namespace SurgeEngine.Code.Actor.CameraSystem.Pawns
             {
                 modifier += f.Value;
             }
-
+            
             if (Mathf.Abs(x) > 0)
             {
-                _master.lookOffset.x = Mathf.Lerp(_master.lookOffset.x, x * 0.6f * curve.Evaluate(time) * modifier, Time.deltaTime * LateralOffsetLerpSpeed); 
+                float viewDot = Vector3.Dot(_stateMachine.transform.forward, -_master.Actor.transform.up);
+                viewDot = Mathf.Abs(viewDot);
+                _master.lookOffset.x = Mathf.Lerp(_master.lookOffset.x, x * 0.6f * curve.Evaluate(time) * modifier, Time.deltaTime * LateralOffsetLerpSpeed);
+
+                if (viewDot >= 0.9f)
+                {
+                    _master.lookOffset.x *= Mathf.Lerp(1f, 0f, viewDot);
+                }
             }
             else
             {
