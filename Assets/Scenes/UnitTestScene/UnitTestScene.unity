@@ -2091,7 +2091,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 5941
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 2.6552e-41, y: 2.524355e-29, z: 0, w: 8.3e-44}
+  m_BoundingSphereOverride: {x: 6.007e-42, y: 2.524355e-29, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
@@ -2286,7 +2286,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 6c90a28f176ebdf4086ff9db5da8645d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 60
+      value: 75
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6c90a28f176ebdf4086ff9db5da8645d, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2331,6 +2331,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 6c90a28f176ebdf4086ff9db5da8645d, type: 3}
       propertyPath: m_Name
       value: Uplift
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6c90a28f176ebdf4086ff9db5da8645d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2402,7 +2406,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &526268812
 Transform:
   m_ObjectHideFlags: 0
