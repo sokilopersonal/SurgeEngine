@@ -33,9 +33,16 @@ namespace SurgeEngine.Code.Actor.System.IK
 
             leftFoot.Start = leftFoot.target.localPosition;
             rightFoot.Start = rightFoot.target.localPosition;
-
-            leftFoot.ik.weight = 1;
-            rightFoot.ik.weight = 1;
+            leftFoot.ik.weight = 0;
+            rightFoot.ik.weight = 0;
+            leftFoot.constraint.weight = 1;
+            rightFoot.constraint.weight = 1;
+            
+            leftFoot.Origin = leftFoot.constraint.transform.position + Vector3.up * rayVerticalOffset;
+            rightFoot.Origin = rightFoot.constraint.transform.position + Vector3.up * rayVerticalOffset;
+            
+            SolveIK(leftFoot);
+            SolveIK(rightFoot);
         }
 
         private void Update()
@@ -57,8 +64,7 @@ namespace SurgeEngine.Code.Actor.System.IK
             if (Physics.Raycast(data.Origin, Vector3.down, out var hit, rayLength, cullingMask))
             {
                 data.ik.weight = _ikWeight;
-                var tarRot = Quaternion.FromToRotation(Vector3.up, hit.normal) * data.constraint.transform.rotation;
-                data.target.rotation = tarRot;
+                data.target.rotation = Quaternion.FromToRotation(Vector3.up, hit.normal) * data.constraint.transform.rotation;
                 var pos = hit.point;
                 pos.y += plantedOffset;
                 data.target.position = pos;
