@@ -215,8 +215,6 @@ namespace SurgeEngine.Code.Actor.System
             handling *= _config.turnCurve.Evaluate(_planarVelocity.magnitude / _config.topSpeed);
             _movementVector = Vector3.Slerp(_planarVelocity, newVelocity, handling * Time.fixedDeltaTime);
             
-            SlopePhysics();
-            
             Project();
         }
 
