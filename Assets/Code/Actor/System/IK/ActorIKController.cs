@@ -28,11 +28,14 @@ namespace SurgeEngine.Code.Actor.System.IK
         private void Start()
         {
             _stateAnimator = GetComponent<StateAnimator>();
-
+            
             _ikWeight = 1;
 
             leftFoot.Start = leftFoot.target.localPosition;
             rightFoot.Start = rightFoot.target.localPosition;
+
+            leftFoot.ik.weight = 1;
+            rightFoot.ik.weight = 1;
         }
 
         private void Update()

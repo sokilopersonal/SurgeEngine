@@ -156,7 +156,7 @@ namespace SurgeEngine.Code.Actor.System
             }
             
             _rigidbody.linearVelocity = _movementVector + vertical;
-            Snap(point, normal);
+            Snap(point, normal, true);
         }
         
         public void SplineCalculation()
@@ -364,19 +364,15 @@ namespace SurgeEngine.Code.Actor.System
         {
             if (!_canAttach) return;
 
-            if (!instant)
+            if (point != Vector3.zero && normal != Vector3.zero)
             {
-                if (point != Vector3.zero && normal != Vector3.zero)
+                if (instant) _rigidbody.position = point + normal;
+                else
                 {
                     Quaternion slopeRotation = Quaternion.FromToRotation(transform.up, normal) * _rigidbody.rotation;
                     Vector3 goal = point + normal;
-                    _rigidbody.position = Vector3.Lerp(_rigidbody.position, goal, 
-                        Time.fixedDeltaTime * (Mathf.Abs(Quaternion.Dot(_rigidbody.rotation, slopeRotation) + 1f) / 2f * _rigidbody.linearVelocity.magnitude + 15f));
+                    _rigidbody.position = Vector3.Lerp(_rigidbody.position, goal, Time.fixedDeltaTime * (Mathf.Abs(Quaternion.Dot(_rigidbody.rotation, slopeRotation) + 1f) / 2f * _rigidbody.linearVelocity.magnitude + 10f));
                 }
-            }
-            else
-            {
-                _rigidbody.position = point + normal;
             }
         }
 
