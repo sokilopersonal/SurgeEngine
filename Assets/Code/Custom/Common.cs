@@ -151,6 +151,20 @@ namespace SurgeEngine.Code.Custom
             return hit;
         }
 
+        public static bool CheckForGroundWithDirection(out RaycastHit result, Vector3 direction,
+            float castDistance = 0f)
+        {
+            ActorBase context = ActorContext.Context;
+            Vector3 origin = context.transform.position;
+            
+            if (castDistance == 0) castDistance = context.config.castDistance;
+            
+            Ray ray = new Ray(origin, direction);
+            LayerMask castMask = context.config.castLayer;
+            bool hit = Physics.Raycast(ray, out result, castDistance, castMask, QueryTriggerInteraction.Ignore);
+            return hit;
+        }
+
         public static bool CheckForRail(out RaycastHit result, out Rail rail)
         {
             ActorBase context = ActorContext.Context;
