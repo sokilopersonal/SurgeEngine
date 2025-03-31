@@ -139,10 +139,9 @@ namespace SurgeEngine.Code.Custom
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
             Ray ray = new Ray(origin, direction);
+            if (castDistance == 0) castDistance = context.config.castDistance;
             
             Debug.DrawLine(origin, origin + direction * castDistance, Color.red);
-            
-            if (castDistance == 0) castDistance = context.config.castDistance;
             LayerMask castMask = context.config.castLayer;
 
             bool hit = Physics.Raycast(ray, out result,

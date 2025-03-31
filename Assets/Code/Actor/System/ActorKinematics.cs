@@ -363,14 +363,15 @@ namespace SurgeEngine.Code.Actor.System
         public void Snap(Vector3 point, Vector3 normal, bool instant = false)
         {
             if (!_canAttach) return;
-
+            
+            Vector3 goal = point + normal;
+            
             if (point != Vector3.zero && normal != Vector3.zero)
             {
                 if (instant) _rigidbody.position = point + normal;
                 else
                 {
                     Quaternion slopeRotation = Quaternion.FromToRotation(transform.up, normal) * _rigidbody.rotation;
-                    Vector3 goal = point + normal;
                     _rigidbody.position = Vector3.Lerp(_rigidbody.position, goal, Time.fixedDeltaTime * (Mathf.Abs(Quaternion.Dot(_rigidbody.rotation, slopeRotation) + 1f) / 2f * _rigidbody.linearVelocity.magnitude + 10f));
                 }
             }
