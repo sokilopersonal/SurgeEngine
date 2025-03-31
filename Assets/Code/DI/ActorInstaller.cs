@@ -12,7 +12,9 @@ namespace SurgeEngine.Code.DI
 
         public override void InstallBindings()
         {
-            var instanceObject = Instantiate(actorPrefab, data.startTransform.position, data.startTransform.rotation);
+            data.StartTransform = GameObject.FindGameObjectWithTag("SpawnPoint").transform;
+            
+            var instanceObject = Instantiate(actorPrefab, data.StartTransform.position, data.StartTransform.rotation);
             var instance = instanceObject.GetComponentInChildren<ActorBase>();
             
             Container.Bind<ActorBase>().FromInstance(instance).AsSingle().NonLazy();
@@ -25,6 +27,12 @@ namespace SurgeEngine.Code.DI
             Quaternion par = instance.transform.parent.rotation;
             instance.transform.parent.rotation = Quaternion.identity;
             instance.transform.rotation = par;
+
+            var startRenderer = data.StartTransform.GetComponentInChildren<Renderer>();
+            if (startRenderer)
+            {
+                startRenderer.enabled = false; // Disable model if exists after spawning
+            }
         }
     }
 }

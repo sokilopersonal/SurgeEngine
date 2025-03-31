@@ -95,7 +95,7 @@ namespace SurgeEngine.Code.Actor.States
             if (!Actor.flags.HasFlag(FlagType.OutOfControl))
             {
                 FBoost boost = StateMachine.GetSubState<FBoost>();
-                if (Input.BoostPressed && boost.CanBoost() && boost.canAirBoost)
+                if (Input.BoostPressed && boost.CanBoost() && boost.CanAirBoost)
                 {
                     StateMachine.SetState<FStateAirBoost>();
                 }

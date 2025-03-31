@@ -4,6 +4,7 @@ using SurgeEngine.Code.Actor.System;
 using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.Config;
 using SurgeEngine.Code.Config.SonicSpecific;
+using SurgeEngine.Code.Enemy;
 using SurgeEngine.Code.Misc;
 using SurgeEngine.Code.StateMachine;
 using UnityEngine;
@@ -19,9 +20,8 @@ namespace SurgeEngine.Code.Actor.States.SonicSubStates
             private set => _boostEnergy = Mathf.Clamp(value, 0, 100);
         }
         
-        public bool canAirBoost;
-        
-        public bool restoringTopSpeed;
+        public bool CanAirBoost ;
+        public bool RestoringTopSpeed;
 
         private float _boostEnergy;
         private IBoostHandler _boostHandler;
@@ -30,10 +30,11 @@ namespace SurgeEngine.Code.Actor.States.SonicSubStates
         private readonly BoostConfig _config;
 
         private float _boostCancelTimer;
+        private const float EnemyEnergyAddition = 10;
 
         public FBoost(ActorBase owner) : base(owner)
         {
-            canAirBoost = true;
+            CanAirBoost = true;
             BoostEnergy = 100;
 
             owner.TryGetConfig(out _config);
@@ -41,8 +42,30 @@ namespace SurgeEngine.Code.Actor.States.SonicSubStates
             actor.input.BoostAction += BoostAction;
             actor.stateMachine.OnStateAssign += OnStateAssign;
 
-            ObjectEvents.OnObjectCollected += _ => BoostEnergy += 
-                _config.ringEnergyAddition;
+            ObjectEvents.OnObjectCollected += OnRingCollected;
+            ObjectEvents.OnEnemyDied += OnEnemyDied;
+        }
+        
+        ~FBoost()
+        {
+            actor.input.BoostAction -= BoostAction;
+            actor.stateMachine.OnStateAssign -= OnStateAssign;
+
+            ObjectEvents.OnObjectCollected -= OnRingCollected;
+            ObjectEvents.OnEnemyDied -= OnEnemyDied;
+        }
+
+        private void OnRingCollected(ContactBase obj)
+        {
+            if (obj is Ring)
+            {
+                BoostEnergy += _config.ringEnergyAddition;
+            }
+        }
+
+        private void OnEnemyDied(EnemyBase obj)
+        {
+            BoostEnergy += EnemyEnergyAddition;
         }
 
         private void OnStateAssign(FState obj)
@@ -58,12 +81,12 @@ namespace SurgeEngine.Code.Actor.States.SonicSubStates
             
             if (obj is FStateGround)
             {
-                canAirBoost = true;
+                CanAirBoost = true;
             }
 
             if (obj is FStateAir)
             {
-                if (canAirBoost)
+                if (CanAirBoost)
                 {
                     _boostCancelTimer = 0;
                 }
@@ -135,7 +158,7 @@ namespace SurgeEngine.Code.Actor.States.SonicSubStates
 
         private void BoostAction(InputAction.CallbackContext obj)
         {
-            if (actor.stateMachine.CurrentState is FStateAir && !canAirBoost) return;
+            if (actor.stateMachine.CurrentState is FStateAir && !CanAirBoost) return;
             if (actor.stateMachine.CurrentState is FStateStomp) return;
             if (actor.stateMachine.CurrentState is FStateSlide) return;
             
@@ -157,7 +180,7 @@ namespace SurgeEngine.Code.Actor.States.SonicSubStates
                     }
                     
                     body.linearVelocity = body.transform.forward * startSpeed;
-                    restoringTopSpeed = true;
+                    RestoringTopSpeed = true;
                 }
                 
                 BoostEnergy -= _config.startDrain;
@@ -180,7 +203,7 @@ namespace SurgeEngine.Code.Actor.States.SonicSubStates
                 float maxSpeed = config.maxSpeed * _config.maxSpeedMultiplier;
                 if (speed < maxSpeed) body.AddForce(body.linearVelocity.normalized * (_config.acceleration * dt), ForceMode.Impulse);
             }
-            else if (restoringTopSpeed)
+            else if (RestoringTopSpeed)
             {
                 float normalMaxSpeed = actor.config.topSpeed;
                 if (speed > normalMaxSpeed)
@@ -193,7 +216,7 @@ namespace SurgeEngine.Code.Actor.States.SonicSubStates
                 }
                 else if (speed * 0.99f < normalMaxSpeed)
                 {
-                    restoringTopSpeed = false;
+                    RestoringTopSpeed = false;
                 }
             }
         }

@@ -72,7 +72,8 @@ namespace SurgeEngine.Code.Actor.States
     [Serializable]
     public class StartData
     {
-        public Transform startTransform;
+        public Transform StartTransform { get; set; }
+        
         public StartType startType = StartType.Standing;
         public float speed;
         public float time;
