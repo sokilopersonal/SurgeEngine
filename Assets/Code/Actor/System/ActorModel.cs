@@ -1,4 +1,5 @@
-﻿using SurgeEngine.Code.Actor.States;
+﻿using System;
+using SurgeEngine.Code.Actor.States;
 using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.StateMachine;
 using UnityEngine;
@@ -15,6 +16,7 @@ namespace SurgeEngine.Code.Actor.System
         
         [SerializeField] private float horizontalRotationSpeed = 14f;
         [SerializeField] private float verticalRotationSpeed = 7.5f;
+        [SerializeField] private float flipAngle = 360f;
         
         private Vector3 _modelForwardRotationVelocity;
         private Vector3 _modelUpRotationVelocity;
@@ -28,12 +30,25 @@ namespace SurgeEngine.Code.Actor.System
         private Vector3 _forwardVector;
         private Vector3 _upVector;
 
+        private bool _isFlipping;
+        private float _flipTimer;
+
         private void Start()
         {
             _collisionStartHeight = collision.height;
             _collisionStartRadius = collision.radius;
             
             root.rotation = Actor.transform.rotation;
+        }
+
+        private void OnEnable()
+        {
+            Actor.stateMachine.OnStateAssign += OnStateAssign;
+        }
+        
+        private void OnDisable()
+        {
+            Actor.stateMachine.OnStateAssign -= OnStateAssign;
         }
 
         private void Update()
@@ -83,6 +98,24 @@ namespace SurgeEngine.Code.Actor.System
                 _upRestoreTimer = 0f;
                 _upRestoring = false;
             }
+
+            if (_isFlipping)
+            {
+                if (_airRestoring)
+                {
+                    _isFlipping = false;
+                    _flipTimer = 0;
+                }
+                
+                Flip();
+                
+                _flipTimer -= Time.deltaTime;
+                if (_flipTimer <= 0)
+                {
+                    _isFlipping = false;
+                    _flipTimer = 0;
+                }
+            }
             
             Vector3.OrthoNormalize(ref _upVector, ref _forwardVector);
             root.localRotation = Quaternion.LookRotation(_forwardVector, _upVector);
@@ -102,17 +135,11 @@ namespace SurgeEngine.Code.Actor.System
                 Quaternion targetRotation = Quaternion.LookRotation(Actor.transform.forward, normal);
                 Actor.kinematics.Rigidbody.rotation = targetRotation;
             }
-
-            if (Actor.stateMachine.IsExact<FStateIdle>())
-            {
-                Quaternion targetRotation = Quaternion.LookRotation(Actor.transform.forward, normal);
-                Actor.kinematics.Rigidbody.rotation = targetRotation;
-            }
         }
-        
+
         public void RotateBody(Vector3 vector, Vector3 normal, bool project = false)
         {
-            if (_airRestoring) return;
+            if (_airRestoring || _isFlipping) return;
             
             if (project) vector = Vector3.ProjectOnPlane(vector, normal);
             if (vector.sqrMagnitude > 0.01f)
@@ -125,14 +152,14 @@ namespace SurgeEngine.Code.Actor.System
                 Quaternion targetRotation = Quaternion.LookRotation(Actor.transform.forward, normal);
                 Actor.kinematics.Rigidbody.rotation = targetRotation;
             }
-
-            if (Actor.stateMachine.IsExact<FStateIdle>())
-            {
-                Quaternion targetRotation = Quaternion.LookRotation(Actor.transform.forward, normal);
-                Actor.kinematics.Rigidbody.rotation = targetRotation;
-            }
         }
-        
+
+        private void Flip()
+        {
+            Quaternion flipRotation = Quaternion.AngleAxis(flipAngle * Time.deltaTime, Vector3.left);
+            Actor.kinematics.Rigidbody.rotation *= flipRotation;
+        }
+
         public void VelocityRotation(bool transformRotation = false)
         {
             Vector3 vel = Actor.kinematics.Velocity.normalized;
@@ -157,6 +184,22 @@ namespace SurgeEngine.Code.Actor.System
             if (!transformRotation) root.rotation = Actor.kinematics.Rigidbody.rotation;
         }
 
+        private void OnStateAssign(FState obj)
+        {
+            if (obj is FStateAir)
+            {
+                if (Actor.kinematics.Angle >= 90 && Actor.kinematics.Velocity.y > 3f)
+                {
+                    _isFlipping = true;
+                    _flipTimer = 0.8f;
+                }
+            }
+            else
+            {
+                _isFlipping = false;
+                _flipTimer = 0;
+            }
+        }
 
         /// <summary>
         /// Sets the collision parameters for the actor
