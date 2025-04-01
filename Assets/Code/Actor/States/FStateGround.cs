@@ -97,7 +97,7 @@ namespace SurgeEngine.Code.Actor.States
                 
                 if (Input.BHeld)
                 {
-                    if (readyForSlide && !readyForDrift && StateMachine.PreviousState is not FStateCrawl)
+                    if (readyForSlide && !readyForDrift)
                     {
                         StateMachine.SetState<FStateSlide>();
                     }
