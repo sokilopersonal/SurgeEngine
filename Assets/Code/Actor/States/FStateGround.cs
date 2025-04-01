@@ -58,14 +58,14 @@ namespace SurgeEngine.Code.Actor.States
                 float dot = Stats.moveDot;
                 float abs = Mathf.Abs(dot);
             
-                bool readyForDrift = Kinematics.HorizontalSpeed > 5f && abs < 0.4f && !Mathf.Approximately(dot, 0f);
-                bool readyForSlide = Kinematics.HorizontalSpeed > minSpeed;
+                bool readyForDrift = Kinematics.Speed > 5f && abs < 0.4f && !Mathf.Approximately(dot, 0f);
+                bool readyForSlide = Kinematics.Speed > minSpeed;
 
                 if (_quickstepConfig && StateMachine.Exists<FStateRunQuickstep>())
                 {
                     if (Input.LeftBumperPressed)
                     {
-                        if (Kinematics.HorizontalSpeed >= _quickstepConfig.minSpeed)
+                        if (Kinematics.Speed >= _quickstepConfig.minSpeed)
                         {
                             var qs = StateMachine.GetState<FStateRunQuickstep>();
                             qs.SetDirection(QuickstepDirection.Left);
@@ -80,7 +80,7 @@ namespace SurgeEngine.Code.Actor.States
                     }
                     else if (Input.RightBumperPressed)
                     {
-                        if (Kinematics.HorizontalSpeed >= _quickstepConfig.minSpeed)
+                        if (Kinematics.Speed >= _quickstepConfig.minSpeed)
                         {
                             var qs = StateMachine.GetState<FStateRunQuickstep>();
                             qs.SetDirection(QuickstepDirection.Right);

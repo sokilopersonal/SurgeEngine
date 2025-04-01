@@ -60,7 +60,9 @@ namespace SurgeEngine.Code.Actor.States.SonicSpecific
                         StateMachine.SetState<FStateSit>();
                     }
                     else
+                    {
                         StateMachine.SetState<FStateIdle>();
+                    }
                 }
             }
 
@@ -107,12 +109,12 @@ namespace SurgeEngine.Code.Actor.States.SonicSpecific
             {
                 Kinematics.Point = hit.point;
                 Kinematics.Normal = hit.normal;
+                Kinematics.Snap(hit.point, hit.normal, true);
 
                 Kinematics.WriteMovementVector(_rigidbody.linearVelocity);
                 _rigidbody.linearVelocity = Vector3.MoveTowards(_rigidbody.linearVelocity, Vector3.zero, _config.deceleration * dt);
                 _rigidbody.linearVelocity = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, hit.normal);
-                Model.RotateBody(hit.normal, true);
-                Kinematics.Snap(hit.point, hit.normal, true);
+                Model.RotateBody(hit.normal);
                 Kinematics.SlopePhysics();
             }
             else

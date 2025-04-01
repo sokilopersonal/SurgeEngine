@@ -66,7 +66,6 @@ namespace SurgeEngine.Code.StateMachine
                 }
 
                 currentStateName = CurrentState?.GetType().Name;
-                
                 _inactiveDelay = inactiveDelay;
                 
                 return CurrentState as T;
