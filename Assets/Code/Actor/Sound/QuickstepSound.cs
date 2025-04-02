@@ -1,0 +1,22 @@
+using FMODUnity;
+using SurgeEngine.Code.Actor.States.SonicSpecific;
+using SurgeEngine.Code.StateMachine;
+using UnityEngine;
+
+namespace SurgeEngine.Code.Actor.Sound
+{
+    public class QuickstepSound : ActorSound
+    {
+        [SerializeField] private EventReference quickstepSound;
+        [SerializeField] private EventReference quickstepVoice;
+
+        protected override void SoundState(FState obj)
+        {
+            if (obj is FStateRunQuickstep or FStateQuickstep)
+            {
+                RuntimeManager.PlayOneShot(quickstepSound);
+                Voice.Play(quickstepVoice);
+            }
+        }
+    }
+}

@@ -1,4 +1,4 @@
-﻿using SurgeEngine.Code.ActorSystem;
+﻿using SurgeEngine.Code.Actor.System;
 using SurgeEngine.Code.StateMachine;
 using UnityEngine;
 
@@ -27,7 +27,7 @@ namespace SurgeEngine.Code.Enemy.EggFighter.States
 
             if (eggFighter.patrolTime == 0) return;
 
-            Actor context = ActorContext.Context;
+            ActorBase context = ActorContext.Context;
             if (Vector3.Distance(context.transform.position, transform.position) < eggFighter.findDistance)
             {
                 eggFighter.stateMachine.SetState<EGStateChase>();

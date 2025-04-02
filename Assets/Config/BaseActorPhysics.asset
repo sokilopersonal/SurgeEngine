@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1f37b37c23e94746a87aa4ac3191046, type: 3}
   m_Name: BaseActorPhysics
   m_EditorClassIdentifier: 
-  castDistance: 1.15
+  castDistance: 1.25
   castDistanceCurve:
     serializedVersion: 2
     m_Curve:
@@ -47,6 +47,7 @@ MonoBehaviour:
   maxSpeed: 40
   minParaloopSpeed: 28
   maxVerticalSpeed: 80
+  airControl: 0.4
   accelerationRate: 12
   accelerationCurve:
     serializedVersion: 2
@@ -72,8 +73,9 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  minDeaccelerationRate: 18
-  maxDeaccelerationRate: 15
+  minDecelerationRate: 18
+  maxDecelerationRate: 15
+  airDecelerationRate: 24
   minSkiddingRate: 46
   maxSkiddingRate: 75
   skiddingThreshold: -0.55
@@ -114,7 +116,7 @@ MonoBehaviour:
   slopeDeslopeAngle: 75
   slopeMinForceSpeed: 10
   slopeInactiveDuration: 0.15
-  slopeUphillForce: 2
-  slopeDownhillForce: 4
+  slopeUphillForce: 19
+  slopeDownhillForce: 24
   slopeMinAngle: 5
   slopeMinSpeed: 10

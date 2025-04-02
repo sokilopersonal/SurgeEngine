@@ -1,5 +1,6 @@
 ﻿using System;
-using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.Actor.System;
+using SurgeEngine.Code.Custom;
 using UnityEngine;
 
 namespace SurgeEngine.Code.CommonObjects
@@ -12,7 +13,7 @@ namespace SurgeEngine.Code.CommonObjects
 
         public virtual void Contact(Collider msg)
         {
-            Actor context = ActorContext.Context;
+            ActorBase context = ActorContext.Context;
             context.stats.lastContactObject = this;
             
             OnContact?.Invoke(this);

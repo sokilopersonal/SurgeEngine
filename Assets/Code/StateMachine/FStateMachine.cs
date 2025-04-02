@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.StateMachine
 {
-    [Serializable]
     public class FStateMachine
     {
         public FState CurrentState { get; private set; }
@@ -67,7 +66,6 @@ namespace SurgeEngine.Code.StateMachine
                 }
 
                 currentStateName = CurrentState?.GetType().Name;
-                
                 _inactiveDelay = inactiveDelay;
                 
                 return CurrentState as T;

@@ -1,15 +1,15 @@
-﻿using SurgeEngine.Code.ActorSystem;
-using SurgeEngine.Code.CameraSystem.Pawns.Data;
+﻿using SurgeEngine.Code.Actor.CameraSystem.Pawns.Data;
+using SurgeEngine.Code.Actor.System;
 using UnityEngine;
 
-namespace SurgeEngine.Code.CameraSystem.Pawns
+namespace SurgeEngine.Code.Actor.CameraSystem.Pawns
 {
     public class VerticalCameraPan : NewModernState
     {
         private VerticalPanData _vData;
         private LastCameraData _lastData;
         
-        public VerticalCameraPan(Actor owner) : base(owner)
+        public VerticalCameraPan(ActorBase owner) : base(owner)
         {
             
         }

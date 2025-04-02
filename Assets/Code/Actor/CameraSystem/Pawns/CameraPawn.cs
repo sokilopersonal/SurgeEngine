@@ -1,8 +1,8 @@
-﻿using SurgeEngine.Code.ActorSystem;
-using SurgeEngine.Code.CameraSystem.Pawns.Data;
+﻿using SurgeEngine.Code.Actor.CameraSystem.Pawns.Data;
+using SurgeEngine.Code.Actor.System;
 using UnityEngine;
 
-namespace SurgeEngine.Code.CameraSystem.Pawns
+namespace SurgeEngine.Code.Actor.CameraSystem.Pawns
 {
     public abstract class CameraPawn : CState
     {
@@ -10,7 +10,7 @@ namespace SurgeEngine.Code.CameraSystem.Pawns
         protected Quaternion _lastRotation;
         protected float _lastFOV;
 
-        protected CameraPawn(Actor owner) : base(owner)
+        protected CameraPawn(ActorBase owner) : base(owner)
         {
             
         }

@@ -82,7 +82,7 @@ MonoBehaviour:
     supportProbeVolumeScenarios: 0
     supportProbeVolumeScenarioBlending: 0
     probeVolumeBlendingMemoryBudget: 128
-    supportRayTracing: 0
+    supportRayTracing: 1
     supportVFXRayTracing: 0
     supportedRayTracingMode: 3
     lightLoopSettings:
@@ -105,9 +105,9 @@ MonoBehaviour:
         serializedVersion: 2
         m_Bits: 0
       supportFabricConvolution: 0
-      maxDirectionalLightsOnScreen: 16
-      maxPunctualLightsOnScreen: 512
-      maxAreaLightsOnScreen: 64
+      maxDirectionalLightsOnScreen: 2
+      maxPunctualLightsOnScreen: 64
+      maxAreaLightsOnScreen: 32
       maxCubeReflectionOnScreen: 32
       maxPlanarReflectionOnScreen: 8
       maxDecalsOnScreen: 512
@@ -129,18 +129,18 @@ MonoBehaviour:
         shadowAtlasDepthBits: 32
         useDynamicViewportRescale: 1
       cachedPunctualLightShadowAtlas: 2048
-      cachedAreaLightShadowAtlas: 1024
+      cachedAreaLightShadowAtlas: 2048
       allowDirectionalMixedCachedShadows: 1
       shadowResolutionDirectional:
-        m_Values: 0004000000080000180c000000100000
+        m_Values: 0002000000080000180c000000100000
         m_SchemaId:
           m_Id: With4Levels
       shadowResolutionPunctual:
-        m_Values: 00010000000200000004000000080000
+        m_Values: 00020000000200000004000000080000
         m_SchemaId:
           m_Id: With4Levels
       shadowResolutionArea:
-        m_Values: 80000000000100000002000000040000
+        m_Values: 00020000000400000006000000080000
         m_SchemaId:
           m_Id: With4Levels
       maxDirectionalShadowMapResolution: 4096
@@ -165,14 +165,14 @@ MonoBehaviour:
     dynamicResolutionSettings:
       enabled: 0
       useMipBias: 0
-      advancedUpscalersByPriority: 02
-      DLSSPerfQualitySetting: 0
+      advancedUpscalersByPriority: 0002
+      DLSSPerfQualitySetting: 2
       DLSSInjectionPoint: 0
       TAAUInjectionPoint: 0
       STPInjectionPoint: 0
       defaultInjectionPoint: 0
       DLSSUseOptimalSettings: 1
-      DLSSSharpness: 0.909
+      DLSSSharpness: 0
       FSR2EnableSharpness: 0
       FSR2Sharpness: 0
       FSR2UseOptimalSettings: 0
@@ -184,8 +184,8 @@ MonoBehaviour:
       minPercentage: 100
       dynResType: 1
       upsampleFilter: 5
-      forceResolution: 1
-      forcedPercentage: 75
+      forceResolution: 0
+      forcedPercentage: 66
       lowResTransparencyMinimumThreshold: 0
       rayTracingHalfResThreshold: 50
       lowResSSGIMinimumThreshold: 0
@@ -338,7 +338,7 @@ MonoBehaviour:
   availableMaterialQualityLevels: -1
   m_DefaultMaterialQualityLevel: 4
   diffusionProfileSettings: {fileID: 0}
-  m_VolumeProfile: {fileID: 11400000, guid: 3649688d8f3c3204e9f8ba3d2433d706, type: 2}
+  m_VolumeProfile: {fileID: 0}
   virtualTexturingSettings:
     streamingCpuCacheSizeInMegaBytes: 256
     streamingMipPreloadTexturesPerFrame: 0

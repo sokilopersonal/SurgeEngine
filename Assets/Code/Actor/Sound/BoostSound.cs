@@ -1,0 +1,55 @@
+﻿using FMOD.Studio;
+using FMODUnity;
+using SurgeEngine.Code.Actor.States.SonicSubStates;
+using SurgeEngine.Code.Actor.System;
+using SurgeEngine.Code.StateMachine;
+using UnityEngine;
+using STOP_MODE = FMOD.Studio.STOP_MODE;
+
+namespace SurgeEngine.Code.Actor.Sound
+{
+    public class BoostSound : ActorSound
+    {
+        [SerializeField] private EventReference boostSound;
+        [SerializeField] private EventReference boostLoopSound;
+        [SerializeField] private EventReference boostVoiceSound;
+        [SerializeField] private BoostAudioDistortion boostAudioDistortion;
+        
+        private EventInstance _boostSoundInstance;
+        private EventInstance _boostLoopInstance;
+        private EventInstance _boostVoiceInstance;
+        
+        private float _lastBoostVoiceTime;
+
+        public override void Initialize(ActorBase actor)
+        {
+            base.Initialize(actor);
+            
+            _boostSoundInstance = RuntimeManager.CreateInstance(boostSound);
+            _boostLoopInstance = RuntimeManager.CreateInstance(boostLoopSound);
+            _boostVoiceInstance = RuntimeManager.CreateInstance(boostVoiceSound);
+            
+            Actor.stateMachine.GetSubState<FBoost>().OnActiveChanged += OnBoostActivate;
+        }
+
+        private void OnBoostActivate(FSubState arg1, bool arg2)
+        {
+            if (arg2)
+            {
+                _boostSoundInstance.start();
+                _boostLoopInstance.start();
+
+                Voice.Play(_boostVoiceInstance);
+                
+                boostAudioDistortion.Toggle();
+            }
+            else
+            {
+                _boostSoundInstance.stop(STOP_MODE.ALLOWFADEOUT);
+                _boostLoopInstance.stop(STOP_MODE.ALLOWFADEOUT);
+                
+                boostAudioDistortion.Toggle();
+            }
+        }
+    }
+}

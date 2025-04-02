@@ -1,17 +1,17 @@
-﻿using SurgeEngine.Code.ActorSystem;
+﻿using SurgeEngine.Code.Actor.System;
 using SurgeEngine.Code.StateMachine;
 
-namespace SurgeEngine.Code.CameraSystem.Pawns
+namespace SurgeEngine.Code.Actor.CameraSystem.Pawns
 {
     public class CState : FState
     {
-        protected readonly Actor _actor;
+        protected readonly ActorBase _actor;
         protected readonly ActorCamera _master;
         protected readonly CameraStateMachine _stateMachine;
 
         protected object _data;
 
-        public CState(Actor owner)
+        public CState(ActorBase owner)
         {
             _actor = owner;
 

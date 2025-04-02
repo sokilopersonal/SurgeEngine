@@ -1,4 +1,4 @@
-﻿using SurgeEngine.Code.ActorSystem;
+﻿using SurgeEngine.Code.Actor.System;
 using UnityEngine;
 
 namespace SurgeEngine.Code.StateMachine
@@ -45,7 +45,7 @@ namespace SurgeEngine.Code.StateMachine
                     
                     _idleIndex = Random.Range(0, idleAnims.Length);
                     
-                    ActorContext.Context.animation.TransitionToState(idleAnims[_idleIndex], 0.2f);
+                    ActorContext.Context.animation.StateAnimator.TransitionToState(idleAnims[_idleIndex], 0.2f);
                 }
             }
         }

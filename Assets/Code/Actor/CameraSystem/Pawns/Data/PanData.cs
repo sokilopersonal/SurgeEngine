@@ -1,8 +1,8 @@
 ﻿using System;
-using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.Actor.System;
 using UnityEngine;
 
-namespace SurgeEngine.Code.CameraSystem.Pawns.Data
+namespace SurgeEngine.Code.Actor.CameraSystem.Pawns.Data
 {
     [Serializable]
     public class PanData

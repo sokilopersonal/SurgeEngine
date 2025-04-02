@@ -1,14 +1,14 @@
-﻿using SurgeEngine.Code.ActorSystem;
-using SurgeEngine.Code.CameraSystem.Pawns.Data;
+﻿using SurgeEngine.Code.Actor.CameraSystem.Pawns.Data;
+using SurgeEngine.Code.Actor.System;
 using UnityEngine;
 
-namespace SurgeEngine.Code.CameraSystem.Pawns
+namespace SurgeEngine.Code.Actor.CameraSystem.Pawns
 {
     public class FixedCameraPan : CState
     {
         private FixPanData _fData;
         
-        public FixedCameraPan(Actor owner) : base(owner)
+        public FixedCameraPan(ActorBase owner) : base(owner)
         {
             
         }

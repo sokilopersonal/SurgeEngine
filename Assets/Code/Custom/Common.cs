@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections;
 using Cysharp.Threading.Tasks;
-using SurgeEngine.Code.ActorStates;
-using SurgeEngine.Code.ActorStates.SonicSpecific;
-using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.Actor.States.SonicSpecific;
+using SurgeEngine.Code.Actor.System;
 using SurgeEngine.Code.CommonObjects;
 using UnityEngine;
 
@@ -32,7 +31,7 @@ namespace SurgeEngine.Code.Custom
         /// <param name="waitTime">Maximum timer value.</param>
         /// <param name="autoReset">True,  if you prefer the timer to reset automatically.</param>
         /// <returns>True, when the timer value is 0</returns>
-        public static bool TickTimer(ref float waitTimer, float waitTime, bool autoReset = true) 
+        public static bool TickTimer(ref float waitTimer, float waitTime, bool autoReset = true, bool unscaled = false) 
         {
             if (waitTimer == 0) 
             {
@@ -41,7 +40,7 @@ namespace SurgeEngine.Code.Custom
                 return true;
             }
 
-            waitTimer -= Time.deltaTime;
+            waitTimer -= unscaled ? Time.unscaledDeltaTime : Time.deltaTime;
             waitTimer = Mathf.Clamp(waitTimer, 0, waitTime);
             return false;
         }
@@ -77,7 +76,7 @@ namespace SurgeEngine.Code.Custom
 
         public static void ResetVelocity(ResetVelocityType type)
         {
-            Actor context = ActorContext.Context;
+            ActorBase context = ActorContext.Context;
 
             if (context.kinematics.Rigidbody.isKinematic) return;
             
@@ -92,22 +91,22 @@ namespace SurgeEngine.Code.Custom
         
         public static void ApplyImpulse(Vector3 impulse, ResetVelocityType type = ResetVelocityType.Both)
         {
-            Actor context = ActorContext.Context;
+            ActorBase context = ActorContext.Context;
             ResetVelocity(type);
             
-            context.kinematics.Rigidbody.AddForce(impulse, ForceMode.Impulse);
+            context.kinematics.Rigidbody.linearVelocity = impulse;
             context.kinematics.Rigidbody.linearVelocity = Vector3.ClampMagnitude(context.kinematics.Rigidbody.linearVelocity, impulse.magnitude);
         }
 
         public static void ApplyGravity(float yGravity, float dt)
         {
-            Actor context = ActorContext.Context;
+            ActorBase context = ActorContext.Context;
             if (!context.kinematics.Rigidbody.isKinematic) context.kinematics.Rigidbody.linearVelocity += Vector3.down * (yGravity * dt);
         }
 
         public static bool CheckForGround(out RaycastHit result, CheckGroundType type = CheckGroundType.Normal, float castDistance = 0f)
         {
-            Actor context = ActorContext.Context;
+            ActorBase context = ActorContext.Context;
             Vector3 origin;
             Vector3 direction;
             switch (type)
@@ -140,10 +139,9 @@ namespace SurgeEngine.Code.Custom
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
             Ray ray = new Ray(origin, direction);
+            if (castDistance == 0) castDistance = context.config.castDistance;
             
             Debug.DrawLine(origin, origin + direction * castDistance, Color.red);
-            
-            if (castDistance == 0) castDistance = context.config.castDistance;
             LayerMask castMask = context.config.castLayer;
 
             bool hit = Physics.Raycast(ray, out result,
@@ -152,9 +150,23 @@ namespace SurgeEngine.Code.Custom
             return hit;
         }
 
+        public static bool CheckForGroundWithDirection(out RaycastHit result, Vector3 direction,
+            float castDistance = 0f)
+        {
+            ActorBase context = ActorContext.Context;
+            Vector3 origin = context.transform.position;
+            
+            if (castDistance == 0) castDistance = context.config.castDistance;
+            
+            Ray ray = new Ray(origin, direction);
+            LayerMask castMask = context.config.castLayer;
+            bool hit = Physics.Raycast(ray, out result, castDistance, castMask, QueryTriggerInteraction.Ignore);
+            return hit;
+        }
+
         public static bool CheckForRail(out RaycastHit result, out Rail rail)
         {
-            Actor context = ActorContext.Context;
+            ActorBase context = ActorContext.Context;
             Vector3 origin = context.transform.position;
             Vector3 direction = -context.transform.up;
 

@@ -82,8 +82,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   impulse: 25
   pitch: 55
-  outOfControl: 1
-  isDelux: 1
+  outOfControl: 0.5
+  isDelux: 0
   startPoint: {fileID: 2476150941025625182}
 --- !u!114 &4180008215581436072
 MonoBehaviour:
@@ -200,13 +200,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6488928987850888918}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.99171627, z: 0.12844788, w: 0}
+  m_LocalRotation: {x: 0, y: 0.9914449, z: 0.13052624, w: 0}
   m_LocalPosition: {x: 0, y: 0.375, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4329672422156967065}
-  m_LocalEulerAnglesHint: {x: -14.76, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: -15, y: 180, z: 0}
 --- !u!65 &6594853635283909936
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -226,8 +226,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.1155565, y: 0.081656985, z: 1.7021844}
-  m_Center: {x: 0, y: -0.00000062345913, z: -0.066081956}
+  m_Size: {x: 1, y: 0.06648108, z: 1.7021844}
+  m_Center: {x: 0.0000000073133304, y: 0.026663072, z: -0.06608194}
 --- !u!114 &2756254855882674629
 MonoBehaviour:
   m_ObjectHideFlags: 0

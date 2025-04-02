@@ -1,15 +1,15 @@
-﻿using SurgeEngine.Code.ActorSystem;
-using SurgeEngine.Code.CameraSystem.Pawns.Data;
+﻿using SurgeEngine.Code.Actor.CameraSystem.Pawns.Data;
+using SurgeEngine.Code.Actor.System;
 using UnityEngine;
 
-namespace SurgeEngine.Code.CameraSystem.Pawns
+namespace SurgeEngine.Code.Actor.CameraSystem.Pawns
 {
     public class CameraPan : CameraPawn
     {
         private PanData _panData;
         private LastCameraData _lastData;
         
-        public CameraPan(Actor owner) : base(owner)
+        public CameraPan(ActorBase owner) : base(owner)
         {
             
         }

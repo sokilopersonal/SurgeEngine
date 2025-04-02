@@ -1,5 +1,5 @@
-﻿using SurgeEngine.Code.ActorSystem;
-using SurgeEngine.Code.ActorSystem.Actors;
+﻿using SurgeEngine.Code.Actor.System;
+using SurgeEngine.Code.Actor.System.Actors;
 using UnityEngine.InputSystem;
 
 namespace SurgeEngine.Code.Inputs

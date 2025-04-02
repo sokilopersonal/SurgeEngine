@@ -1,5 +1,5 @@
-﻿using SurgeEngine.Code.ActorHUD;
-using SurgeEngine.Code.ActorSystem;
+﻿using SurgeEngine.Code.Actor.HUD;
+using SurgeEngine.Code.Actor.System;
 using UnityEngine;
 
 namespace SurgeEngine.Code.Context
@@ -9,18 +9,18 @@ namespace SurgeEngine.Code.Context
     {
         private static SceneContext _instance = null;
         
-        [SerializeField] private Actor actor;
+        [SerializeField] private ActorBase actor;
         [SerializeField] private ActorStageHUD actorHud;
         
-        public static Actor Actor => _instance.actor;
+        public static ActorBase Actor => _instance.actor;
         public static ActorStageHUD ActorHud => _instance.actorHud;
 
         private void Awake()
         {
             _instance = this;
             
-            _ = new ActorContext(Actor);
-            _ = new ActorHUDContext(ActorHud);
+            //_ = new ActorContext(Actor);
+            //_ = new ActorHUDContext(ActorHud);
         }
     }
 }

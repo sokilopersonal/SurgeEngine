@@ -166,33 +166,41 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sonic
       objectReference: {fileID: 0}
-    - target: {fileID: 2154888648449008299, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
-      propertyPath: target
-      value: 
-      objectReference: {fileID: 9205114434148401849}
+    - target: {fileID: 1232248046546053147, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
+      propertyPath: rayYOffset
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1232248046546053147, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
+      propertyPath: positionTime
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1232248046546053147, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
+      propertyPath: plantedYOffset
+      value: 0.15
+      objectReference: {fileID: 0}
     - target: {fileID: 2248048767635427180, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
-      propertyPath: m_Enabled
+      propertyPath: ikAllowedAnimations.Array.size
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2248048767635427180, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
+      propertyPath: 'ikAllowedAnimations.Array.data[6]'
+      value: Landing
+      objectReference: {fileID: 0}
+    - target: {fileID: 5690011651896208872, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
+      propertyPath: m_UpdateWhenOffscreen
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 3919129401711663017, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
-      propertyPath: quickstepConfig
-      value: 
-      objectReference: {fileID: 11400000, guid: c647c84618c165449a31b694d78eba22, type: 2}
-    - target: {fileID: 3919129401711663017, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
-      propertyPath: damageKickConfig
-      value: 
-      objectReference: {fileID: 11400000, guid: 0d35e45a1e8c5774a86dd443e1656b72, type: 2}
-    - target: {fileID: 3919129401711663017, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
-      propertyPath: damageLayer.m_Bits
-      value: 4096
+    - target: {fileID: 6023830480336772076, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
+      propertyPath: rayYOffset
+      value: 0.1
       objectReference: {fileID: 0}
-    - target: {fileID: 7656225337495430993, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
-      propertyPath: m_RenderingPathCustomFrameSettings.bitDatas.data1
-      value: 5770028683099981
+    - target: {fileID: 6023830480336772076, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
+      propertyPath: positionTime
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7656225337495430993, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
-      propertyPath: renderingPathCustomFrameSettingsOverrideMask.mask.data1
-      value: 492758267625472
+    - target: {fileID: 6023830480336772076, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
+      propertyPath: plantedYOffset
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 8308832228826993834, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -253,11 +261,6 @@ MonoBehaviour:
 --- !u!4 &6635409787500332797 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8308832228826993834, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
-  m_PrefabInstance: {fileID: 3412410101680001623}
-  m_PrefabAsset: {fileID: 0}
---- !u!54 &9205114434148401849 stripped
-Rigidbody:
-  m_CorrespondingSourceObject: {fileID: 5828909329531261166, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
   m_PrefabInstance: {fileID: 3412410101680001623}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4796116154019138228

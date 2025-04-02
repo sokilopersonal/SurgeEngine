@@ -1,14 +1,14 @@
-﻿using SurgeEngine.Code.ActorSystem;
+﻿using SurgeEngine.Code.Actor.System;
 using UnityEngine;
 
-namespace SurgeEngine.Code.CameraSystem.Pawns
+namespace SurgeEngine.Code.Actor.CameraSystem.Pawns
 {
     public class RestoreCameraPawn : NewModernState
     {
         private Vector3 _direction;
         private LastCameraData _lastData;
         
-        public RestoreCameraPawn(Actor owner) : base(owner)
+        public RestoreCameraPawn(ActorBase owner) : base(owner)
         {
             
         }

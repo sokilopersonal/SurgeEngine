@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using SurgeEngine.Code.ActorSystem;
+using SurgeEngine.Code.Actor.System;
 using UnityEngine;
 
 namespace SurgeEngine.Code.Shaders
