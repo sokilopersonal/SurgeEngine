@@ -23,7 +23,7 @@ namespace SurgeEngine.Code.Actor.States
 
             if (Actor.kinematics.Angle >= 90 && Actor.kinematics.Velocity.y > 3f)
             {
-                Actor.flags.AddFlag(new Flag(FlagType.OutOfControl, null, true, 0.65f));
+                Actor.flags.AddFlag(new Flag(FlagType.OutOfControl, null, true, 0.5f));
             }
             
             AirTime = 0f;
@@ -71,7 +71,7 @@ namespace SurgeEngine.Code.Actor.States
         public override void OnFixedTick(float dt)
         {
             base.OnFixedTick(dt);
-
+            
             if (!Common.CheckForGround(out _))
             {
                 Kinematics.Normal = Vector3.up;

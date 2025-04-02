@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 801403881147322373}
   - component: {fileID: 210917008977521166}
   - component: {fileID: 547380582086652083}
+  - component: {fileID: 3773510168618562478}
   m_Layer: 5
   m_Name: Position
   m_TagString: Untagged
@@ -34,9 +35,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 340, y: 200}
-  m_SizeDelta: {x: 656.5293, y: 163.1822}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 150}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0, y: 1}
 --- !u!222 &210917008977521166
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -82,8 +83,8 @@ MonoBehaviour:
 
     New Text'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 6c646bb399593ee40aeb1088cbd6125e, type: 2}
-  m_sharedMaterial: {fileID: 8748737836323268189, guid: 6c646bb399593ee40aeb1088cbd6125e, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 36c877779ac30ac4782df2439cdc46a6, type: 2}
+  m_sharedMaterial: {fileID: -4544095607448854805, guid: 36c877779ac30ac4782df2439cdc46a6, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -107,8 +108,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 28
-  m_fontSizeBase: 28
+  m_fontSize: 34
+  m_fontSizeBase: 34
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -117,9 +118,9 @@ MonoBehaviour:
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
-  m_characterSpacing: 5
+  m_characterSpacing: 0
   m_wordSpacing: 0
-  m_lineSpacing: 0
+  m_lineSpacing: -80
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
@@ -151,6 +152,20 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &3773510168618562478
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2061784078297737895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 2
+  m_VerticalFit: 2
 --- !u!1 &4200805958389027054
 GameObject:
   m_ObjectHideFlags: 0
@@ -267,3 +282,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   holder: {fileID: 547380582086652083}
+  windowToggleReference: {fileID: 8789010004436827076, guid: aa82a2cdd5263bc4a8583ac6684fc349, type: 3}
