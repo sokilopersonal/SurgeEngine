@@ -10,7 +10,7 @@ namespace SurgeEngine.Code.Actor.States
 {
     public class FStateAir : FStateMove, IBoostHandler, IDamageableState
     {
-        protected float _airTime;
+        protected float AirTime;
 
         public FStateAir(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
@@ -21,8 +21,12 @@ namespace SurgeEngine.Code.Actor.States
         {
             base.OnEnter();
 
-            _airTime = 0f;
+            if (Actor.kinematics.Angle >= 90 && Actor.kinematics.Velocity.y > 3f)
+            {
+                Actor.flags.AddFlag(new Flag(FlagType.OutOfControl, null, true, 0.65f));
+            }
             
+            AirTime = 0f;
             Kinematics.Normal = Vector3.up;
         }
 
@@ -84,7 +88,7 @@ namespace SurgeEngine.Code.Actor.States
             {
                 if (Kinematics.GetAttachState())
                 {
-                    if (Kinematics.HorizontalSpeed > 5f) StateMachine.SetState<FStateGround>();
+                    if (Kinematics.Speed > 5f) StateMachine.SetState<FStateGround>();
                     else StateMachine.SetState<FStateIdle>();
                 }
             }
@@ -102,11 +106,11 @@ namespace SurgeEngine.Code.Actor.States
             }
         }
 
-        protected float GetAirTime() => _airTime;
+        protected float GetAirTime() => AirTime;
 
         private void CalculateAirTime(float dt)
         {
-            _airTime += dt;
+            AirTime += dt;
         }
     }
 }
