@@ -32,6 +32,9 @@ namespace SurgeEngine.Code.Actor.System
 
         private bool _isFlipping;
         private float _flipTimer;
+        private float _timer;
+        
+        public const float AirRotationResetTime = 2f;
 
         private void Start()
         {
@@ -116,11 +119,13 @@ namespace SurgeEngine.Code.Actor.System
                     _flipTimer = 0;
                 }
             }
+
+            Common.TickTimer(ref _timer, AirRotationResetTime, false);
             
             Vector3.OrthoNormalize(ref _upVector, ref _forwardVector);
             root.localRotation = Quaternion.LookRotation(_forwardVector, _upVector);
         }
-
+        
         public void RotateBody(Vector3 normal)
         {
             Vector3 vel = Actor.kinematics.Velocity;
@@ -143,7 +148,7 @@ namespace SurgeEngine.Code.Actor.System
             if (vector.sqrMagnitude > 0.01f)
             {
                 Quaternion targetRotation = Quaternion.LookRotation(vector, normal);
-                Actor.kinematics.Rigidbody.rotation = targetRotation;
+                Actor.kinematics.Rigidbody.rotation = Quaternion.Slerp(targetRotation, Actor.kinematics.Rigidbody.rotation, Mathf.Clamp01(_timer));
             }
             else
             {
@@ -190,6 +195,7 @@ namespace SurgeEngine.Code.Actor.System
                 {
                     _isFlipping = true;
                     _flipTimer = 0.75f;
+                    _timer = AirRotationResetTime;
                 }
             }
             else
