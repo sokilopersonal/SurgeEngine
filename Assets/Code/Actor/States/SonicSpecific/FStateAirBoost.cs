@@ -44,6 +44,7 @@ namespace SurgeEngine.Code.Actor.States.SonicSpecific
                 Vector3 force = direction * _config.airBoostSpeed;
 
                 _rigidbody.linearVelocity = force;
+                Model.RotateBody(Vector3.up);
             }
             
             if (Common.TickTimer(ref _timer, 0.3f))
