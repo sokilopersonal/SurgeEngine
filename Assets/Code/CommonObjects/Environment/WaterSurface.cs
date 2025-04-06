@@ -43,7 +43,7 @@ namespace SurgeEngine.Code.CommonObjects.Environment
         {
             if (_surfaceRigidbody)
             {
-                Vector3 velocity = _surfaceRigidbody.linearVelocity;
+                Vector3 velocity = new Vector3(_surfaceRigidbody.linearVelocity.x, 0, _surfaceRigidbody.linearVelocity.z);
                 float speed = velocity.magnitude;
                 float delta = _surfaceRigidbody.transform.position.y - _contactPoint.y;
 
@@ -55,7 +55,7 @@ namespace SurgeEngine.Code.CommonObjects.Environment
                     _currentRunSplash.Play(true);
                     Vector3 runSplashPosition = _surfaceRigidbody.position;
                     runSplashPosition += _surfaceRigidbody.transform.forward;
-                    runSplashPosition -= _surfaceRigidbody.transform.up * 0.25f;
+                    runSplashPosition -= _surfaceRigidbody.transform.up * 0.75f;
                     Quaternion runSplashRotation = _surfaceRigidbody.rotation;
                     runSplashRotation *= Quaternion.Euler(-90f, 0f, 0f);
                     _currentRunSplash.transform.SetPositionAndRotation(runSplashPosition, runSplashRotation);
