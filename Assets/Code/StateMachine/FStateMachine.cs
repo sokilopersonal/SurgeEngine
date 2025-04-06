@@ -100,6 +100,16 @@ namespace SurgeEngine.Code.StateMachine
             return PreviousState != null && PreviousState.GetType() == type;
         }
 
+        public bool Has<T>() where T : FState
+        {
+            if (_states.TryGetValue(typeof(T), out FState state))
+            {
+                return state != null;
+            }
+            
+            return false;
+        }
+
         public bool IsPreviousState<TState>() where TState : FState
         {
             return PreviousState is TState;

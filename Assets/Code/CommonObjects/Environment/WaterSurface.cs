@@ -1,5 +1,7 @@
+using SurgeEngine.Code.Actor.States.SonicSpecific;
 using SurgeEngine.Code.Actor.System;
 using SurgeEngine.Code.CommonObjects.Interfaces;
+using SurgeEngine.Code.Effects;
 using UnityEngine;
 
 namespace SurgeEngine.Code.CommonObjects.Environment
@@ -8,6 +10,7 @@ namespace SurgeEngine.Code.CommonObjects.Environment
     {
         [SerializeField] private float minimumSpeed = 20f;
         
+        private ActorBase _surfaceActor;
         private Rigidbody _surfaceRigidbody;
         private Collider _collider;
         private Transform _camera;
@@ -40,6 +43,14 @@ namespace SurgeEngine.Code.CommonObjects.Environment
                 
                 _collider.isTrigger = !isRunning;
 
+                if (_surfaceActor.stateMachine.Has<FStateStomp>())
+                {
+                    if (_surfaceActor.stateMachine.IsExact<FStateStomp>())
+                    {
+                        _collider.isTrigger = true;
+                    }
+                }
+
                 if (speed > 17f)
                 {
                     Vector3 counterForce;
@@ -63,24 +74,27 @@ namespace SurgeEngine.Code.CommonObjects.Environment
 
         public void OnContact(Collider msg)
         {
-            ActorBase actor = msg.transform.root.GetComponentInChildren<ActorBase>();
-            
-            _surfaceRigidbody = actor.kinematics.Rigidbody;
+            _surfaceActor = msg.transform.root.GetComponentInChildren<ActorBase>(); ;
+            _surfaceRigidbody = _surfaceActor.kinematics.Rigidbody;
             _contactPoint = msg.ClosestPoint(_surfaceRigidbody.transform.position);
+
+            Vector3 splashPoint = _contactPoint;
+            splashPoint.y -= 0.75f;
+            ParticlesContainer.Spawn("WaterSplash", splashPoint);
             
-            actor.flags.AddFlag(new Flag(FlagType.OnWater, null, false));
+            _surfaceActor.flags.AddFlag(new Flag(FlagType.OnWater, null, false));
         }
 
         private void OnTriggerExit(Collider other)
         {
             if (_surfaceRigidbody)
             {
-                ActorBase actor = other.transform.root.GetComponentInChildren<ActorBase>();
-                actor.flags.RemoveFlag(FlagType.OnWater);
-                
                 if (_surfaceRigidbody.gameObject == other.transform.parent.gameObject)
                 {
+                    _surfaceActor.flags.RemoveFlag(FlagType.OnWater);
+                    
                     _surfaceRigidbody = null;
+                    _surfaceActor = null;
                 }
             }
         }
