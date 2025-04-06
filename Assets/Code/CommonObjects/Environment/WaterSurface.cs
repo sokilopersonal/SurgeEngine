@@ -1,3 +1,5 @@
+using System;
+using FMODUnity;
 using SurgeEngine.Code.Actor.States.SonicSpecific;
 using SurgeEngine.Code.Actor.System;
 using SurgeEngine.Code.CommonObjects.Interfaces;
@@ -19,23 +21,57 @@ namespace SurgeEngine.Code.CommonObjects.Environment
         [SerializeField] private ParticleSystem runSplash;
         private ParticleSystem _currentRunSplash;
         
+        
         private ActorBase _surfaceActor;
         private Rigidbody _surfaceRigidbody;
         private Collider _collider;
         private Transform _camera;
         private Vector3 _contactPoint;
+        
+        private EventReference _splashSound;
+        private const string SplashEventPath = "event:/CommonObjects/WaterSplash";
+
+        private static bool IsCameraUnderwater;
 
         private void Awake()
         {
             _collider = GetComponent<Collider>();
             _collider.isTrigger = true;
             
+            IsCameraUnderwater = false;
+            
             _camera = Camera.main.transform;
+            
+            _splashSound = RuntimeManager.PathToEventReference(SplashEventPath);
             
             gameObject.layer = LayerMask.NameToLayer("WaterCollision");
             if (!gameObject.name.Contains("@Water"))
             {
                 gameObject.name += "@Water"; // Add water tag
+            }
+        }
+
+        private void Update()
+        {
+            if (_surfaceRigidbody)
+            {
+                if (_collider.bounds.Contains(_camera.transform.position))
+                {
+                    RuntimeManager.StudioSystem.setParameterByName("Underwater", 1);
+                    IsCameraUnderwater = true;
+                }
+                else
+                {
+                    RuntimeManager.StudioSystem.setParameterByName("Underwater", 0);
+                    IsCameraUnderwater = false;
+                }
+            }
+            else
+            {
+                if (!IsCameraUnderwater)
+                {
+                    RuntimeManager.StudioSystem.setParameterByName("Underwater", 0);
+                }
             }
         }
 
@@ -47,7 +83,7 @@ namespace SurgeEngine.Code.CommonObjects.Environment
                 float speed = velocity.magnitude;
                 float delta = _surfaceRigidbody.transform.position.y - _contactPoint.y;
 
-                bool isUnderwater = delta <= -1f;
+                bool isUnderwater = delta <= -0.5f;
                 bool isRunning = speed > minimumSpeed;
                 
                 if (isRunning && !isUnderwater && _currentRunSplash)
@@ -106,6 +142,8 @@ namespace SurgeEngine.Code.CommonObjects.Environment
             _surfaceActor = msg.transform.root.GetComponentInChildren<ActorBase>(); ;
             _surfaceRigidbody = _surfaceActor.kinematics.Rigidbody;
             _contactPoint = msg.ClosestPoint(_surfaceRigidbody.transform.position);
+            
+            RuntimeManager.PlayOneShot(_splashSound, _contactPoint);
 
             Vector3 splashPoint = _contactPoint;
             splashPoint.y -= 0.75f;
@@ -126,6 +164,8 @@ namespace SurgeEngine.Code.CommonObjects.Environment
                     Vector3 splashPoint = _surfaceRigidbody.position;
                     splashPoint.y -= 0.75f;
                     SpawnSplash(splashPoint);
+                    
+                    RuntimeManager.PlayOneShot(_splashSound, _surfaceRigidbody.position);
                     
                     _surfaceActor.flags.RemoveFlag(FlagType.OnWater);
                     
