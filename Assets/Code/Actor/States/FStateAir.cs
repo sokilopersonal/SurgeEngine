@@ -76,9 +76,9 @@ namespace SurgeEngine.Code.Actor.States
             {
                 Kinematics.Normal = Vector3.up;
                 
-                Actor.kinematics.BasePhysics(Vector3.zero, Vector3.up, MovementType.Air);
+                Kinematics.BasePhysics(Vector3.zero, Vector3.up, MovementType.Air);
                 
-                Vector3 vel = Actor.kinematics.Velocity;
+                Vector3 vel = Kinematics.Velocity;
                 vel.y = 0;
                 Model.RotateBody(vel, Vector3.up);
                 
