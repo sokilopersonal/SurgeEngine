@@ -82,7 +82,13 @@ namespace SurgeEngine.Code.Actor.States
                 vel.y = 0;
                 Model.RotateBody(vel, Vector3.up);
                 
-                Common.ApplyGravity(Stats.gravity, Time.fixedDeltaTime);
+                float gravity = Stats.gravity;
+                if (Actor.flags.HasFlag(FlagType.OnWater))
+                {
+                    gravity /= 4f;
+                }
+                
+                Common.ApplyGravity(gravity, Time.fixedDeltaTime);
             }
             else
             {
