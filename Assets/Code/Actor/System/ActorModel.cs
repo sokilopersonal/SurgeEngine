@@ -32,6 +32,9 @@ namespace SurgeEngine.Code.Actor.System
 
         private bool _isFlipping;
         private float _flipTimer;
+        private float _timer;
+        
+        public const float AirRotationResetTime = 2f;
 
         private void Start()
         {
@@ -58,7 +61,7 @@ namespace SurgeEngine.Code.Actor.System
             FState prev = Actor.stateMachine.PreviousState;
             _forwardVector = Vector3.Slerp(root.forward, Actor.transform.forward, Time.deltaTime * horizontalRotationSpeed);
             _upVector = Vector3.Slerp(root.up, Actor.transform.up, Time.deltaTime * verticalRotationSpeed
-                * Mathf.Lerp(1f, 2f, Actor.kinematics.HorizontalSpeed / Actor.config.topSpeed));
+                * Mathf.Lerp(1f, 2f, Actor.kinematics.Speed / Actor.config.topSpeed));
 
             if (prev is FStateSpecialJump)
             {
@@ -116,15 +119,16 @@ namespace SurgeEngine.Code.Actor.System
                     _flipTimer = 0;
                 }
             }
+
+            Common.TickTimer(ref _timer, AirRotationResetTime, false);
             
             Vector3.OrthoNormalize(ref _upVector, ref _forwardVector);
             root.localRotation = Quaternion.LookRotation(_forwardVector, _upVector);
         }
-
-        public void RotateBody(Vector3 normal, bool project = false)
+        
+        public void RotateBody(Vector3 normal)
         {
             Vector3 vel = Actor.kinematics.Velocity;
-            if (project) vel = Vector3.ProjectOnPlane(vel, normal);
             if (vel.sqrMagnitude > 0.01f)
             {
                 Quaternion targetRotation = Quaternion.LookRotation(vel, normal);
@@ -137,15 +141,14 @@ namespace SurgeEngine.Code.Actor.System
             }
         }
 
-        public void RotateBody(Vector3 vector, Vector3 normal, bool project = false)
+        public void RotateBody(Vector3 vector, Vector3 normal)
         {
             if (_airRestoring || _isFlipping) return;
             
-            if (project) vector = Vector3.ProjectOnPlane(vector, normal);
             if (vector.sqrMagnitude > 0.01f)
             {
                 Quaternion targetRotation = Quaternion.LookRotation(vector, normal);
-                Actor.kinematics.Rigidbody.rotation = targetRotation;
+                Actor.kinematics.Rigidbody.rotation = Quaternion.Slerp(targetRotation, Actor.kinematics.Rigidbody.rotation, Mathf.Clamp01(_timer));
             }
             else
             {
@@ -191,7 +194,8 @@ namespace SurgeEngine.Code.Actor.System
                 if (Actor.kinematics.Angle >= 90 && Actor.kinematics.Velocity.y > 3f)
                 {
                     _isFlipping = true;
-                    _flipTimer = 0.8f;
+                    _flipTimer = 0.75f;
+                    _timer = AirRotationResetTime;
                 }
             }
             else

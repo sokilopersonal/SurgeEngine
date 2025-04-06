@@ -10,7 +10,7 @@ namespace SurgeEngine.Code.Actor.States
 {
     public class FStateAir : FStateMove, IBoostHandler, IDamageableState
     {
-        protected float _airTime;
+        protected float AirTime;
 
         public FStateAir(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
@@ -21,8 +21,12 @@ namespace SurgeEngine.Code.Actor.States
         {
             base.OnEnter();
 
-            _airTime = 0f;
+            if (Actor.kinematics.Angle >= 90 && Actor.kinematics.Velocity.y > 3f)
+            {
+                Actor.flags.AddFlag(new Flag(FlagType.OutOfControl, null, true, 0.5f));
+            }
             
+            AirTime = 0f;
             Kinematics.Normal = Vector3.up;
         }
 
@@ -67,24 +71,30 @@ namespace SurgeEngine.Code.Actor.States
         public override void OnFixedTick(float dt)
         {
             base.OnFixedTick(dt);
-
+            
             if (!Common.CheckForGround(out _))
             {
                 Kinematics.Normal = Vector3.up;
                 
-                Actor.kinematics.BasePhysics(Vector3.zero, Vector3.up, MovementType.Air);
+                Kinematics.BasePhysics(Vector3.zero, Vector3.up, MovementType.Air);
                 
-                Vector3 vel = Actor.kinematics.Velocity;
+                Vector3 vel = Kinematics.Velocity;
                 vel.y = 0;
                 Model.RotateBody(vel, Vector3.up);
                 
-                Common.ApplyGravity(Stats.gravity, Time.fixedDeltaTime);
+                float gravity = Stats.gravity;
+                if (Actor.flags.HasFlag(FlagType.OnWater))
+                {
+                    gravity /= 4f;
+                }
+                
+                Common.ApplyGravity(gravity, Time.fixedDeltaTime);
             }
             else
             {
                 if (Kinematics.GetAttachState())
                 {
-                    if (Kinematics.HorizontalSpeed > 5f) StateMachine.SetState<FStateGround>();
+                    if (Kinematics.Speed > 5f) StateMachine.SetState<FStateGround>();
                     else StateMachine.SetState<FStateIdle>();
                 }
             }
@@ -102,11 +112,11 @@ namespace SurgeEngine.Code.Actor.States
             }
         }
 
-        protected float GetAirTime() => _airTime;
+        protected float GetAirTime() => AirTime;
 
         private void CalculateAirTime(float dt)
         {
-            _airTime += dt;
+            AirTime += dt;
         }
     }
 }
