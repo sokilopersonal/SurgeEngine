@@ -1,6 +1,7 @@
 using SurgeEngine.Code.Actor.States.SonicSpecific;
 using SurgeEngine.Code.Actor.System;
 using SurgeEngine.Code.CommonObjects.Interfaces;
+using SurgeEngine.Code.Custom;
 using SurgeEngine.Code.Effects;
 using UnityEngine;
 
@@ -8,7 +9,15 @@ namespace SurgeEngine.Code.CommonObjects.Environment
 {
     public class WaterSurface : MonoBehaviour, IPlayerContactable
     {
+        [Header("Water")]
         [SerializeField] private float minimumSpeed = 20f;
+        [SerializeField, Range(0, 1f)] private float resistance = 0.7f;
+        [SerializeField, Range(0, 1f)] private float underwaterResistance = 0.45f;
+
+        [Header("Particles")] 
+        [SerializeField] private ParticleSystem splash;
+        [SerializeField] private ParticleSystem runSplash;
+        private ParticleSystem _currentRunSplash;
         
         private ActorBase _surfaceActor;
         private Rigidbody _surfaceRigidbody;
@@ -24,6 +33,10 @@ namespace SurgeEngine.Code.CommonObjects.Environment
             _camera = Camera.main.transform;
             
             gameObject.layer = LayerMask.NameToLayer("WaterCollision");
+            if (!gameObject.name.Contains("@Water"))
+            {
+                gameObject.name += "@Water"; // Add water tag
+            }
         }
 
         private void FixedUpdate()
@@ -36,6 +49,22 @@ namespace SurgeEngine.Code.CommonObjects.Environment
 
                 bool isUnderwater = delta <= -1f;
                 bool isRunning = speed > minimumSpeed;
+                
+                if (isRunning && !isUnderwater && _currentRunSplash)
+                {
+                    _currentRunSplash.Play(true);
+                    Vector3 runSplashPosition = _surfaceRigidbody.position;
+                    runSplashPosition += _surfaceRigidbody.transform.forward;
+                    runSplashPosition -= _surfaceRigidbody.transform.up * 0.25f;
+                    Quaternion runSplashRotation = _surfaceRigidbody.rotation;
+                    runSplashRotation *= Quaternion.Euler(-90f, 0f, 0f);
+                    _currentRunSplash.transform.SetPositionAndRotation(runSplashPosition, runSplashRotation);
+                }
+                else
+                {
+                    _currentRunSplash.Stop(true);
+                }
+                
                 if (isRunning && isUnderwater)
                 {
                     isRunning = false;
@@ -56,11 +85,11 @@ namespace SurgeEngine.Code.CommonObjects.Environment
                     Vector3 counterForce;
                     if (isUnderwater)
                     {
-                        counterForce = new Vector3(velocity.normalized.x, Mathf.Clamp(velocity.normalized.y, float.NegativeInfinity, 0f), velocity.normalized.z) * (speed * 0.55f * Time.fixedDeltaTime);
+                        counterForce = new Vector3(velocity.normalized.x, Mathf.Clamp(velocity.normalized.y, float.NegativeInfinity, 0f), velocity.normalized.z) * (speed * underwaterResistance * Time.fixedDeltaTime);
                     }
                     else
                     {
-                        counterForce = velocity.normalized * (speed * 0.75f * Time.fixedDeltaTime);
+                        counterForce = velocity.normalized * (speed * resistance * Time.fixedDeltaTime);
                     }
 
                     _surfaceRigidbody.linearVelocity -= counterForce;
@@ -80,8 +109,11 @@ namespace SurgeEngine.Code.CommonObjects.Environment
 
             Vector3 splashPoint = _contactPoint;
             splashPoint.y -= 0.75f;
-            ParticlesContainer.Spawn("WaterSplash", splashPoint);
-            
+            SpawnSplash(splashPoint);
+
+            DestroyRunSplash();
+            _currentRunSplash = Instantiate(runSplash);
+
             _surfaceActor.flags.AddFlag(new Flag(FlagType.OnWater, null, false));
         }
 
@@ -91,12 +123,33 @@ namespace SurgeEngine.Code.CommonObjects.Environment
             {
                 if (_surfaceRigidbody.gameObject == other.transform.parent.gameObject)
                 {
+                    Vector3 splashPoint = _surfaceRigidbody.position;
+                    splashPoint.y -= 0.75f;
+                    SpawnSplash(splashPoint);
+                    
                     _surfaceActor.flags.RemoveFlag(FlagType.OnWater);
                     
                     _surfaceRigidbody = null;
                     _surfaceActor = null;
+
+                    DestroyRunSplash();
                 }
             }
+        }
+
+        private void DestroyRunSplash()
+        {
+            if (_currentRunSplash)
+            {
+                _currentRunSplash.Stop(true);
+                Destroy(_currentRunSplash.gameObject, 1f);
+            }
+        }
+
+        private void SpawnSplash(Vector3 splashPoint)
+        {
+            var instance = Instantiate(splash, splashPoint, splash.transform.rotation);
+            Destroy(instance.gameObject, 2f);
         }
 
         private void OnDrawGizmos()
