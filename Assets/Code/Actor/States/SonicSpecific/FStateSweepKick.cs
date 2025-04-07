@@ -43,11 +43,14 @@ namespace SurgeEngine.Code.Actor.States.SonicSpecific
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
-
+            bool ceiling = Common.CheckForCeiling(out RaycastHit data);
             timer += dt;
             if (timer > 0.85f && Kinematics.Speed > 1f)
             {
-                StateMachine.SetState<FStateGround>();
+                if (!ceiling)
+                    StateMachine.SetState<FStateGround>();
+                else
+                    StateMachine.SetState<FStateCrawl>();
             }
             if (timer > 1f && Kinematics.Speed < 1f)
             {
@@ -57,7 +60,10 @@ namespace SurgeEngine.Code.Actor.States.SonicSpecific
                 }
                 else
                 {
-                    StateMachine.SetState<FStateIdle>();
+                    if (!ceiling)
+                        StateMachine.SetState<FStateIdle>();
+                    else
+                        StateMachine.SetState<FStateSit>();
                 }
             }
         }

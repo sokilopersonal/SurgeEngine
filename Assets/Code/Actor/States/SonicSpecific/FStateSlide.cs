@@ -47,11 +47,14 @@ namespace SurgeEngine.Code.Actor.States.SonicSpecific
             if (Input.BReleased)
                 _released = true;
 
+            bool ceiling = Common.CheckForCeiling(out RaycastHit data);
+
             if (Kinematics.Speed < _config.minSpeed || _released)
             {
                 if (Kinematics.Speed > _config.minSpeed)
                 {
-                    StateMachine.SetState<FStateGround>();
+                    if (!ceiling)
+                        StateMachine.SetState<FStateGround>();
                 }
                 else
                 {
@@ -61,12 +64,15 @@ namespace SurgeEngine.Code.Actor.States.SonicSpecific
                     }
                     else
                     {
-                        StateMachine.SetState<FStateIdle>();
+                        if (!ceiling)
+                            StateMachine.SetState<FStateIdle>();
+                        else
+                            StateMachine.SetState<FStateSit>();
                     }
                 }
             }
 
-            if (_quickstepConfig)
+            if (_quickstepConfig && !ceiling)
             {
                 if (Input.LeftBumperPressed)
                 {

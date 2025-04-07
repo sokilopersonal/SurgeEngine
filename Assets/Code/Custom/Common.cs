@@ -150,6 +150,14 @@ namespace SurgeEngine.Code.Custom
             return hit;
         }
 
+        public static bool CheckForCeiling(out RaycastHit result)
+        {
+            ActorBase context = ActorContext.Context;
+            Debug.DrawLine(context.transform.position - (context.transform.up * 0.5f), context.transform.position + (context.transform.up * context.config.castDistance * 0.5f), Color.blue);
+            bool hit = Physics.Raycast(context.transform.position - (context.transform.up * 0.5f), context.transform.up, out result, context.config.castDistance * 0.5f, context.config.castLayer, QueryTriggerInteraction.Ignore);
+            return hit;
+        }
+
         public static bool CheckForGroundWithDirection(out RaycastHit result, Vector3 direction,
             float castDistance = 0f)
         {

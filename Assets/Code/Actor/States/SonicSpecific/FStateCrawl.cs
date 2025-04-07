@@ -42,8 +42,7 @@ namespace SurgeEngine.Code.Actor.States.SonicSpecific
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
-
-            if (!Input.BHeld)
+            if (!Input.BHeld && !Common.CheckForCeiling(out RaycastHit data))
             {
                 if (Input.moveVector.magnitude > 0.1f)
                 {
