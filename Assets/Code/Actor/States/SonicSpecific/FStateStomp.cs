@@ -54,7 +54,7 @@ namespace SurgeEngine.Code.Actor.States.SonicSpecific
                 Kinematics.Point = point;
                 Kinematics.Normal = normal;
 
-                float speed = Kinematics.HorizontalSpeed;
+                float speed = Kinematics.Speed;
                 float angle = Vector3.Angle(hit.normal, Vector3.up);
                 if (angle >= 20 && Input.BHeld)
                 {
