@@ -190,6 +190,11 @@ namespace SurgeEngine.Code.CommonObjects.Environment
             Destroy(instance.gameObject, 2f);
         }
 
+        private void OnDestroy()
+        {
+            RuntimeManager.StudioSystem.setParameterByName("Underwater", 0);
+        }
+
         private void OnDrawGizmos()
         {
             if (_surfaceRigidbody)
