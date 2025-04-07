@@ -28,7 +28,16 @@ namespace SurgeEngine.Code.Actor.System
         }
 
         public float Speed => _speed;
-        public float HorizontalSpeed => _rigidbody.GetHorizontalMagnitude();
+        public float HorizontalSpeed
+        {
+            get
+            {
+                Vector3 vel = _rigidbody.linearVelocity;
+                Vector3 projected = Vector3.ProjectOnPlane(vel, Normal);
+                return projected.magnitude;
+            }
+        }
+
         public float Angle => _angle;
         public Vector3 Point { get; set; }
         public Vector3 Normal { get; set; }
