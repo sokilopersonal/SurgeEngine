@@ -115,6 +115,14 @@ namespace SurgeEngine.Code.CommonObjects.Environment
                         counterForce = velocity.normalized * (speed * resistance * Time.fixedDeltaTime);
                     }
 
+                    if (_surfaceActor.stateMachine.Has<FStateDrift>())
+                    {
+                        if (_surfaceActor.stateMachine.IsExact<FStateDrift>())
+                        {
+                            counterForce = Vector3.zero;
+                        }
+                    }
+                    
                     _surfaceRigidbody.linearVelocity -= counterForce;
                 }
             }
