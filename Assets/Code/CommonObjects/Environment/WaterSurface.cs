@@ -21,25 +21,21 @@ namespace SurgeEngine.Code.CommonObjects.Environment
         [SerializeField] private ParticleSystem runSplash;
         private ParticleSystem _currentRunSplash;
         
-        
         private ActorBase _surfaceActor;
         private Rigidbody _surfaceRigidbody;
         private Collider _collider;
         private Transform _camera;
         private Vector3 _contactPoint;
+        private bool _isUnderwater;
+        private bool _isRunning;
         
         private EventReference _splashSound;
         private const string SplashEventPath = "event:/CommonObjects/WaterSplash";
-
-        private static bool IsCameraUnderwater;
 
         private void Awake()
         {
             _collider = GetComponent<Collider>();
             _collider.isTrigger = true;
-            
-            IsCameraUnderwater = false;
-            
             _camera = Camera.main.transform;
             
             _splashSound = RuntimeManager.PathToEventReference(SplashEventPath);
@@ -55,20 +51,11 @@ namespace SurgeEngine.Code.CommonObjects.Environment
         {
             if (_surfaceRigidbody)
             {
-                if (_collider.bounds.Contains(_camera.transform.position))
+                if (_isUnderwater)
                 {
                     RuntimeManager.StudioSystem.setParameterByName("Underwater", 1);
-                    IsCameraUnderwater = true;
                 }
                 else
-                {
-                    RuntimeManager.StudioSystem.setParameterByName("Underwater", 0);
-                    IsCameraUnderwater = false;
-                }
-            }
-            else
-            {
-                if (!IsCameraUnderwater)
                 {
                     RuntimeManager.StudioSystem.setParameterByName("Underwater", 0);
                 }
@@ -83,10 +70,10 @@ namespace SurgeEngine.Code.CommonObjects.Environment
                 float speed = velocity.magnitude;
                 float delta = _surfaceRigidbody.transform.position.y - _contactPoint.y;
 
-                bool isUnderwater = delta <= -0.5f;
-                bool isRunning = speed > minimumSpeed;
+                _isUnderwater = delta <= -0.5f;
+                _isRunning = speed > minimumSpeed;
                 
-                if (isRunning && !isUnderwater && _currentRunSplash)
+                if (_isRunning && !_isUnderwater && _currentRunSplash)
                 {
                     _currentRunSplash.Play(true);
                     Vector3 runSplashPosition = _surfaceRigidbody.position;
@@ -101,12 +88,12 @@ namespace SurgeEngine.Code.CommonObjects.Environment
                     _currentRunSplash.Stop(true);
                 }
                 
-                if (isRunning && isUnderwater)
+                if (_isRunning && _isUnderwater)
                 {
-                    isRunning = false;
+                    _isRunning = false;
                 }
                 
-                _collider.isTrigger = !isRunning;
+                _collider.isTrigger = !_isRunning;
 
                 if (_surfaceActor.stateMachine.Has<FStateStomp>())
                 {
@@ -119,7 +106,7 @@ namespace SurgeEngine.Code.CommonObjects.Environment
                 if (speed > 17f)
                 {
                     Vector3 counterForce;
-                    if (isUnderwater)
+                    if (_isUnderwater)
                     {
                         counterForce = new Vector3(velocity.normalized.x, Mathf.Clamp(velocity.normalized.y, float.NegativeInfinity, 0f), velocity.normalized.z) * (speed * underwaterResistance * Time.fixedDeltaTime);
                     }
@@ -133,6 +120,9 @@ namespace SurgeEngine.Code.CommonObjects.Environment
             }
             else
             {
+                _isRunning = false;
+                _isUnderwater = false;
+                
                 _collider.isTrigger = true;
             }
         }
