@@ -11,7 +11,7 @@ namespace SurgeEngine.Code.Actor.States.SonicSpecific
 {
     public class FStateCrawl : FStateMove, IStateTimeout
     {
-        private string _surfaceTag;
+        private GroundTag _surfaceTag;
 
         private readonly CrawlConfig _crawlConfig;
         private readonly QuickStepConfig _quickstepConfig;
@@ -134,7 +134,7 @@ namespace SurgeEngine.Code.Actor.States.SonicSpecific
             }
         }
 
-        public string GetSurfaceTag() => _surfaceTag;
+        public GroundTag GetSurfaceTag() => _surfaceTag;
         public float Timeout { get; set; }
     }
 }

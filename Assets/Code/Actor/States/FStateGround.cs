@@ -15,7 +15,7 @@ namespace SurgeEngine.Code.Actor.States
 {
     public sealed class FStateGround : FStateMove, IBoostHandler, IDamageableState
     {
-        private string _surfaceTag;
+        private GroundTag _surfaceTag;
         
         private readonly QuickStepConfig _quickstepConfig;
         private readonly SlideConfig _slideConfig;
@@ -177,6 +177,13 @@ namespace SurgeEngine.Code.Actor.States
             }
         }
 
-        public string GetSurfaceTag() => _surfaceTag;
+        public GroundTag GetSurfaceTag() => _surfaceTag;
+    }
+
+    public enum GroundTag
+    {
+        Grass,
+        Concrete,
+        Water
     }
 }

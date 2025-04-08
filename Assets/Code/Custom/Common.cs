@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using Cysharp.Threading.Tasks;
+using SurgeEngine.Code.Actor.States;
 using SurgeEngine.Code.Actor.States.SonicSpecific;
 using SurgeEngine.Code.Actor.System;
 using SurgeEngine.Code.CommonObjects;
@@ -45,13 +46,14 @@ namespace SurgeEngine.Code.Custom
             return false;
         }
         
-        public static string GetGroundTag(this GameObject gameObject)
+        public static GroundTag GetGroundTag(this GameObject gameObject)
         {
             string input = gameObject.name;
             int index = input.IndexOf('@');
             string result = index == -1 ? "Concrete" : input.Substring(index + 1);
+            GroundTag tag = (GroundTag)Enum.Parse(typeof(GroundTag), result);
             
-            return result;
+            return tag;
         }
 
         public static bool InDelayTime(float last, float delay)
