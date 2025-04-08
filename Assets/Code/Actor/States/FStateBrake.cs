@@ -42,6 +42,7 @@ namespace SurgeEngine.Code.Actor.States
                 Kinematics.Project();
                 
                 Model.RotateBody(normal);
+                Kinematics.SlopePhysics();
 
                 if (_rigidbody.linearVelocity.magnitude < 0.2f)
                 {

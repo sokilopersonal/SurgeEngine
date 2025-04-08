@@ -34,7 +34,7 @@ namespace SurgeEngine.Code.Effects
         {
             ActorBase context = ActorContext.Context;
 
-            if (context.stateMachine.IsExact<FStateGround>())
+            if (context.stateMachine.CurrentState is FStateGround or FStateBrake)
             {
                 if (smokeParticleSystem.isStopped)
                 {
