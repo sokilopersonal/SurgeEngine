@@ -60,10 +60,13 @@ namespace SurgeEngine.Code.Actor.States
             
             if (Common.CheckForGround(out RaycastHit hit))
             {
+                Kinematics.Point = hit.point;
                 Kinematics.Normal = Vector3.up;
                 
                 Model.RotateBody(Kinematics.Normal);
-                Kinematics.Snap(hit.point, Kinematics.Normal, true);
+                Kinematics.Snap(Kinematics.Point, Kinematics.Normal, true);
+                
+                Kinematics.SlopePhysics();
             }
             else
             {

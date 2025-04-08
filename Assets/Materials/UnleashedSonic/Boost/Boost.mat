@@ -21,10 +21,11 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Boost
-  m_Shader: {fileID: -6465566751694194690, guid: 0332098c52c85b548bff97b73d212046, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 4614a9c13ea325f40a75352f05b070eb, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
+  - _ENABLE_FOG_ON_TRANSPARENT
   - _SURFACE_TYPE_TRANSPARENT
   m_InvalidKeywords:
   - _ALPHABLEND_ON
@@ -158,7 +159,7 @@ Material:
     m_Floats:
     - _AddPrecomputedVelocity: 0
     - _AlbedoAffectEmissive: 0
-    - _Alpha: 0.2
+    - _Alpha: 1
     - _AlphaClip: 0
     - _AlphaCutoff: 0.194
     - _AlphaCutoffEnable: 0
@@ -224,16 +225,16 @@ Material:
     - _DstBlend: 10
     - _DstBlend2: 10
     - _EmissionEnabled: 1
-    - _EmissionMult: 4
+    - _EmissionMult: 6
     - _EmissiveExposureWeight: 1
     - _EmissiveIntensity: 1000
     - _EmissiveIntensityUnit: 0
     - _EnableBlendModePreserveSpecularLighting: 0
-    - _EnableFogOnTransparent: 0
+    - _EnableFogOnTransparent: 1
     - _EnvironmentReflections: 1
     - _ExcludeFromTUAndAA: 0
     - _FROM_SPECULAR: 0
-    - _FadeDistance: -32
+    - _FadeDistance: 0
     - _Fade_Distance: 1
     - _Fade_Intensity: 1
     - _Fade_Power: 0.06

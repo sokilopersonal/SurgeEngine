@@ -1,27 +1,47 @@
 ﻿using System.Collections.Generic;
-using NaughtyAttributes;
 using SurgeEngine.Code.Actor.States;
 using SurgeEngine.Code.Actor.System;
 using UnityEngine;
-using UnityEngine.VFX;
 
-namespace SurgeEngine.Code.ActorEffects
+namespace SurgeEngine.Code.Effects
 {
     public class Step : MonoBehaviour
     {
-        [SerializeField, InfoBox("Steps spawn point")] private Transform feet;
-        
-        [SerializeField] private VisualEffect step;
+        [SerializeField] private ParticleSystem smokeParticleSystem;
+        [SerializeField] private Texture2D grassSmoke;
+        [SerializeField] private Texture2D ironSmoke;
+        [SerializeField] private Texture2D waterSmoke;
 
-        public void PlayEffect()
+        private Dictionary<GroundTag, Texture2D> _smokes;
+        private Renderer _renderer;
+        
+        private static readonly int baseMap = Shader.PropertyToID("_BaseMap");
+
+        private void Awake()
+        {
+            _smokes = new Dictionary<GroundTag, Texture2D>()
+            {
+                [GroundTag.Grass] = grassSmoke,
+                [GroundTag.Concrete] = ironSmoke,
+                [GroundTag.Water] = waterSmoke,
+            };
+
+            _renderer = smokeParticleSystem.GetComponent<Renderer>();
+        }
+
+        private void Update()
         {
             ActorBase context = ActorContext.Context;
 
-            string surface = context.stateMachine.GetState<FStateGround>().GetSurfaceTag();
-            VisualEffect stepInstance = Instantiate(step, feet.position + Vector3.up * 0.25f, Quaternion.identity);
-            stepInstance.Play();
-            
-            Destroy(stepInstance.gameObject, stepInstance.GetFloat("Lifetime"));
+            if (context.stateMachine.IsExact<FStateGround>())
+            {
+                smokeParticleSystem.Play();
+                _renderer.material.SetTexture(baseMap, _smokes[context.stateMachine.GetState<FStateGround>().GetSurfaceTag()]);
+            }
+            else
+            {
+                smokeParticleSystem.Stop();
+            }
         }
     }
 }

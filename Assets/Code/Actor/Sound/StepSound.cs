@@ -40,7 +40,7 @@ namespace SurgeEngine.Code.Actor.Sound
             if (_stepSoundInstance.isValid() && Actor.stateMachine.CurrentState is FStateGround)
             {
                 RuntimeManager.AttachInstanceToGameObject(_stepSoundInstance, transform);
-                _stepSoundInstance.setParameterByNameWithLabel("GroundTag", Actor.stateMachine.GetState<FStateGround>().GetSurfaceTag());
+                _stepSoundInstance.setParameterByNameWithLabel("GroundTag", Actor.stateMachine.GetState<FStateGround>().GetSurfaceTag().ToString());
                 _stepSoundInstance.start();
             }
             if (_crawlSoundInstance.isValid() && Actor.stateMachine.CurrentState is FStateCrawl)
