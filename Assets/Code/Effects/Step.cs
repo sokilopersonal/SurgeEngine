@@ -8,14 +8,14 @@ namespace SurgeEngine.Code.Effects
     public class Step : MonoBehaviour
     {
         [SerializeField] private ParticleSystem smokeParticleSystem;
+        [SerializeField] private Material smokeMaterial;
         [SerializeField] private Texture2D grassSmoke;
         [SerializeField] private Texture2D ironSmoke;
         [SerializeField] private Texture2D waterSmoke;
 
         private Dictionary<GroundTag, Texture2D> _smokes;
-        private Renderer _renderer;
         
-        private static readonly int baseMap = Shader.PropertyToID("_BaseMap");
+        private static readonly int baseMap = Shader.PropertyToID("_MainTex");
 
         private void Awake()
         {
@@ -25,8 +25,9 @@ namespace SurgeEngine.Code.Effects
                 [GroundTag.Concrete] = ironSmoke,
                 [GroundTag.Water] = waterSmoke,
             };
-
-            _renderer = smokeParticleSystem.GetComponent<Renderer>();
+            
+            smokeMaterial = Instantiate(smokeMaterial);
+            smokeParticleSystem.GetComponent<ParticleSystemRenderer>().material = smokeMaterial;
         }
 
         private void Update()
@@ -35,8 +36,12 @@ namespace SurgeEngine.Code.Effects
 
             if (context.stateMachine.IsExact<FStateGround>())
             {
-                smokeParticleSystem.Play();
-                _renderer.material.SetTexture(baseMap, _smokes[context.stateMachine.GetState<FStateGround>().GetSurfaceTag()]);
+                if (smokeParticleSystem.isStopped)
+                {
+                    smokeParticleSystem.Play();
+                }
+                
+                smokeMaterial.SetTexture(baseMap, _smokes[context.stateMachine.GetState<FStateGround>().GetSurfaceTag()]);
             }
             else
             {
