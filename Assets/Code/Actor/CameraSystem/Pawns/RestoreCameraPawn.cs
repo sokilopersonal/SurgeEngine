@@ -33,7 +33,7 @@ namespace SurgeEngine.Code.Actor.CameraSystem.Pawns
             
             base.OnTick(dt);
             
-            _stateMachine.camera.fieldOfView = Mathf.Lerp(_lastData.fov, _stateMachine.fov, _stateMachine.interpolatedBlendFactor);
+            _stateMachine.fov = Mathf.Lerp(_lastData.fov, _stateMachine.fov, _stateMachine.interpolatedBlendFactor);
             if (_stateMachine.blendFactor >= 1f)
             {
                 _stateMachine.SetState<NewModernState>();

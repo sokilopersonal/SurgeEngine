@@ -223,7 +223,7 @@ namespace SurgeEngine.Code.Actor.CameraSystem
             {
                 position = position,
                 rotation = rotation,
-                fov = camera.fieldOfView,
+                fov = fov,
                 distance = distance,
                 yOffset = yOffset
             };
@@ -236,7 +236,7 @@ namespace SurgeEngine.Code.Actor.CameraSystem
             {
                 position = position - center,
                 rotation = rotation,
-                fov = camera.fieldOfView,
+                fov = fov,
                 distance = distance,
                 yOffset = yOffset
             };
