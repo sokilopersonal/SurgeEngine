@@ -1,4 +1,5 @@
-﻿using SurgeEngine.Code.Actor.States.BaseStates;
+﻿using System;
+using SurgeEngine.Code.Actor.States.BaseStates;
 using SurgeEngine.Code.Actor.States.SonicSpecific;
 using SurgeEngine.Code.Actor.States.SonicSubStates;
 using SurgeEngine.Code.Actor.System;
@@ -16,6 +17,8 @@ namespace SurgeEngine.Code.Actor.States
     public sealed class FStateGround : FStateMove, IBoostHandler, IDamageableState
     {
         private GroundTag _surfaceTag;
+        
+        public event Action<GroundTag> OnSurfaceTagChanged;
         
         private readonly QuickStepConfig _quickstepConfig;
         private readonly SlideConfig _slideConfig;
@@ -144,7 +147,7 @@ namespace SurgeEngine.Code.Actor.States
                 Model.RotateBody(Kinematics.Normal);
                 Kinematics.SlopePhysics();
                 
-                _surfaceTag = data.transform.gameObject.GetGroundTag();
+                UpdateSurfaceTag(data.transform.gameObject.GetGroundTag());
             }
             else
             {
@@ -155,6 +158,15 @@ namespace SurgeEngine.Code.Actor.States
             {
                 Kinematics.Point = verticalHit.point;
                 Kinematics.Normal = verticalHit.normal;
+            }
+        }
+        
+        private void UpdateSurfaceTag(GroundTag newTag)
+        {
+            if (_surfaceTag != newTag)
+            {
+                _surfaceTag = newTag;
+                OnSurfaceTagChanged?.Invoke(newTag);
             }
         }
 

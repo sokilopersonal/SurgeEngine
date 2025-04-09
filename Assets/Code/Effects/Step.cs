@@ -1,52 +1,17 @@
-﻿using System.Collections.Generic;
-using SurgeEngine.Code.Actor.States;
-using SurgeEngine.Code.Actor.System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace SurgeEngine.Code.Effects
 {
     public class Step : MonoBehaviour
     {
-        [SerializeField] private ParticleSystem smokeParticleSystem;
-        [SerializeField] private Material smokeMaterial;
-        [SerializeField] private Texture2D grassSmoke;
-        [SerializeField] private Texture2D ironSmoke;
-        [SerializeField] private Texture2D waterSmoke;
-
-        private Dictionary<GroundTag, Texture2D> _smokes;
+        [SerializeField] private ParticleSystem smokeGrass;
+        [SerializeField] private ParticleSystem smokeWater;
+        [SerializeField] private ParticleSystem smokeIron;
+        [SerializeField] private ParticleSystem smokeWood;
         
-        private static readonly int baseMap = Shader.PropertyToID("_MainTex");
-
-        private void Awake()
-        {
-            _smokes = new Dictionary<GroundTag, Texture2D>()
-            {
-                [GroundTag.Grass] = grassSmoke,
-                [GroundTag.Concrete] = ironSmoke,
-                [GroundTag.Water] = waterSmoke,
-            };
-            
-            smokeMaterial = Instantiate(smokeMaterial);
-            smokeParticleSystem.GetComponent<ParticleSystemRenderer>().material = smokeMaterial;
-        }
-
-        private void Update()
-        {
-            ActorBase context = ActorContext.Context;
-
-            if (context.stateMachine.CurrentState is FStateGround or FStateBrake)
-            {
-                if (smokeParticleSystem.isStopped)
-                {
-                    smokeParticleSystem.Play();
-                }
-                
-                smokeMaterial.SetTexture(baseMap, _smokes[context.stateMachine.GetState<FStateGround>().GetSurfaceTag()]);
-            }
-            else
-            {
-                smokeParticleSystem.Stop();
-            }
-        }
+        public ParticleSystem SmokeGrass => smokeGrass;
+        public ParticleSystem SmokeWater => smokeWater;
+        public ParticleSystem SmokeIron => smokeIron;
+        public ParticleSystem SmokeWood => smokeWood;
     }
 }
