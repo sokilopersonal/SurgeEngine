@@ -13,6 +13,8 @@ namespace SurgeEngine.Code.Actor.States.SonicSpecific
     {
         private readonly SlideConfig _config;
         private readonly QuickStepConfig _quickstepConfig;
+
+        private bool _released;
         
         public FStateSlide(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
@@ -26,6 +28,7 @@ namespace SurgeEngine.Code.Actor.States.SonicSpecific
 
             Timeout = 0.25f;
             StateMachine.GetSubState<FBoost>().Active = false;
+            _released = false;
             
             Model.SetLowerCollision();
         }
@@ -41,22 +44,35 @@ namespace SurgeEngine.Code.Actor.States.SonicSpecific
         {
             base.OnTick(dt);
 
-            if (Stats.currentSpeed < _config.minSpeed || !Input.BHeld)
+            if (Input.BReleased)
+                _released = true;
+
+            bool ceiling = Common.CheckForCeiling(out RaycastHit data);
+
+            if (Kinematics.Speed < _config.minSpeed || _released)
             {
-                if (Stats.currentSpeed > _config.minSpeed)
+                if (Kinematics.Speed > _config.minSpeed)
                 {
-                    StateMachine.SetState<FStateGround>();
+                    if (!ceiling)
+                        StateMachine.SetState<FStateGround>();
                 }
                 else
                 {
-                    if (Input.BHeld)
+                    if (!_released)
+                    {
                         StateMachine.SetState<FStateSit>();
+                    }
                     else
-                        StateMachine.SetState<FStateIdle>();
+                    {
+                        if (!ceiling)
+                            StateMachine.SetState<FStateIdle>();
+                        else
+                            StateMachine.SetState<FStateSit>();
+                    }
                 }
             }
 
-            if (_quickstepConfig)
+            if (_quickstepConfig && !ceiling)
             {
                 if (Input.LeftBumperPressed)
                 {
@@ -97,14 +113,15 @@ namespace SurgeEngine.Code.Actor.States.SonicSpecific
             
             if (Common.CheckForGround(out RaycastHit hit))
             {
-                Vector3 point = hit.point;
-                Vector3 normal = hit.normal;
-                Kinematics.Normal = normal;
+                Kinematics.Point = hit.point;
+                Kinematics.Normal = hit.normal;
+                Kinematics.Snap(hit.point, hit.normal, true);
 
                 Kinematics.WriteMovementVector(_rigidbody.linearVelocity);
                 _rigidbody.linearVelocity = Vector3.MoveTowards(_rigidbody.linearVelocity, Vector3.zero, _config.deceleration * dt);
-                Model.RotateBody(normal, true);
-                Kinematics.Snap(point, normal);
+                _rigidbody.linearVelocity = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, hit.normal);
+                Model.RotateBody(hit.normal);
+                Kinematics.SlopePhysics();
             }
             else
             {

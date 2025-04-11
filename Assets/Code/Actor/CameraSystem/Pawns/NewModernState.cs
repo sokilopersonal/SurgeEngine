@@ -1,4 +1,5 @@
-﻿using SurgeEngine.Code.Actor.States;
+﻿using SurgeEngine.Code.Actor.CameraSystem.Modifiers;
+using SurgeEngine.Code.Actor.States;
 using SurgeEngine.Code.Actor.System;
 using UnityEngine;
 
@@ -48,7 +49,21 @@ namespace SurgeEngine.Code.Actor.CameraSystem.Pawns
 
         private void ModernSetup()
         {
-            Vector3 actorPosition = CalculateTarget(out Vector3 targetPosition, _stateMachine.distance * _stateMachine.boostDistance);
+            float distance = 1;
+            if (_stateMachine.master.GetModifier(out BoostDistanceCameraModifier boostDistance))
+            {
+                distance = boostDistance.Value;
+            }
+
+            float fov = 1;
+            if (_stateMachine.master.GetModifier(out BoostViewCameraModifier boostView))
+            {
+                fov = boostView.Value;
+            }
+
+            _stateMachine.fov = _stateMachine.baseFov * fov;
+            
+            Vector3 actorPosition = CalculateTarget(out Vector3 targetPosition, _stateMachine.distance * distance);
             ZLag();
             YLag();
             LateralOffset();
@@ -159,14 +174,24 @@ namespace SurgeEngine.Code.Actor.CameraSystem.Pawns
             AnimationCurve curve = _master.LateralOffsetSpeedCurve;
             float modifier = 0;
 
-            foreach (var f in _master.FloatModifiers)
+            if (_stateMachine.master.GetModifier(out DriftCameraModifier driftCameraModifier))
             {
-                modifier += f.Value;
+                modifier += driftCameraModifier.Value;
             }
-
+            
             if (Mathf.Abs(x) > 0)
             {
-                _master.lookOffset.x = Mathf.Lerp(_master.lookOffset.x, x * 0.6f * curve.Evaluate(time) * modifier, Time.deltaTime * LateralOffsetLerpSpeed); 
+                float viewDot = Vector3.Dot(_stateMachine.transform.forward, -_master.Actor.transform.up);
+                viewDot = Mathf.Abs(viewDot);
+
+                if (viewDot >= 0.9f)
+                {
+                    _master.lookOffset.x = Mathf.Lerp(_master.lookOffset.x, 0, Time.deltaTime * LateralOffsetResetSpeed * 4);
+                }
+                else
+                {
+                    _master.lookOffset.x = Mathf.Lerp(_master.lookOffset.x, x * 0.6f * curve.Evaluate(time) * modifier, Time.deltaTime * LateralOffsetLerpSpeed);
+                }
             }
             else
             {

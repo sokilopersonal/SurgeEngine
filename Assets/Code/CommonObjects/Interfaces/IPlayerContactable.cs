@@ -1,7 +1,9 @@
-﻿namespace SurgeEngine.Code.CommonObjects
+﻿using UnityEngine;
+
+namespace SurgeEngine.Code.CommonObjects.Interfaces
 {
     public interface IPlayerContactable
     {
-        void OnContact();
+        void OnContact(Collider msg);
     }
 }

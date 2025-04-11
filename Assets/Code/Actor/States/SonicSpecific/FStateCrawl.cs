@@ -11,7 +11,7 @@ namespace SurgeEngine.Code.Actor.States.SonicSpecific
 {
     public class FStateCrawl : FStateMove, IStateTimeout
     {
-        private string _surfaceTag;
+        private GroundTag _surfaceTag;
 
         private readonly CrawlConfig _crawlConfig;
         private readonly QuickStepConfig _quickstepConfig;
@@ -42,8 +42,7 @@ namespace SurgeEngine.Code.Actor.States.SonicSpecific
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
-
-            if (!Input.BHeld)
+            if (!Input.BHeld && !Common.CheckForCeiling(out RaycastHit data))
             {
                 if (Input.moveVector.magnitude > 0.1f)
                 {
@@ -135,7 +134,7 @@ namespace SurgeEngine.Code.Actor.States.SonicSpecific
             }
         }
 
-        public string GetSurfaceTag() => _surfaceTag;
+        public GroundTag GetSurfaceTag() => _surfaceTag;
         public float Timeout { get; set; }
     }
 }

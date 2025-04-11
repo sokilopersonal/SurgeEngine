@@ -1,4 +1,5 @@
 ﻿using SurgeEngine.Code.CommonObjects;
+using SurgeEngine.Code.CommonObjects.Interfaces;
 using UnityEngine;
 
 namespace SurgeEngine.Code.Actor.System
@@ -19,8 +20,9 @@ namespace SurgeEngine.Code.Actor.System
                 other.transform.parent.TryGetComponent(out playerContactable);
             }
 
-            contactable?.Contact(other);
-            playerContactable?.OnContact();
+            var col = GetComponent<Collider>();
+            contactable?.Contact(col);
+            playerContactable?.OnContact(col);
         }
     }
 }

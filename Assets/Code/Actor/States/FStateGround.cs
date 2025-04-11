@@ -1,4 +1,5 @@
-﻿using SurgeEngine.Code.Actor.States.BaseStates;
+﻿using System;
+using SurgeEngine.Code.Actor.States.BaseStates;
 using SurgeEngine.Code.Actor.States.SonicSpecific;
 using SurgeEngine.Code.Actor.States.SonicSubStates;
 using SurgeEngine.Code.Actor.System;
@@ -15,7 +16,9 @@ namespace SurgeEngine.Code.Actor.States
 {
     public sealed class FStateGround : FStateMove, IBoostHandler, IDamageableState
     {
-        private string _surfaceTag;
+        private GroundTag _surfaceTag;
+        
+        public event Action<GroundTag> OnSurfaceTagChanged;
         
         private readonly QuickStepConfig _quickstepConfig;
         private readonly SlideConfig _slideConfig;
@@ -58,14 +61,14 @@ namespace SurgeEngine.Code.Actor.States
                 float dot = Stats.moveDot;
                 float abs = Mathf.Abs(dot);
             
-                bool readyForDrift = Kinematics.HorizontalSpeed > 5f && abs < 0.4f && !Mathf.Approximately(dot, 0f);
-                bool readyForSlide = Kinematics.HorizontalSpeed > minSpeed;
+                bool readyForDrift = Kinematics.Speed > 5f && abs < 0.4f && !Mathf.Approximately(dot, 0f);
+                bool readyForSlide = Kinematics.Speed > minSpeed;
 
                 if (_quickstepConfig && StateMachine.Exists<FStateRunQuickstep>())
                 {
                     if (Input.LeftBumperPressed)
                     {
-                        if (Kinematics.HorizontalSpeed >= _quickstepConfig.minSpeed)
+                        if (Kinematics.Speed >= _quickstepConfig.minSpeed)
                         {
                             var qs = StateMachine.GetState<FStateRunQuickstep>();
                             qs.SetDirection(QuickstepDirection.Left);
@@ -80,7 +83,7 @@ namespace SurgeEngine.Code.Actor.States
                     }
                     else if (Input.RightBumperPressed)
                     {
-                        if (Kinematics.HorizontalSpeed >= _quickstepConfig.minSpeed)
+                        if (Kinematics.Speed >= _quickstepConfig.minSpeed)
                         {
                             var qs = StateMachine.GetState<FStateRunQuickstep>();
                             qs.SetDirection(QuickstepDirection.Right);
@@ -97,7 +100,7 @@ namespace SurgeEngine.Code.Actor.States
                 
                 if (Input.BHeld)
                 {
-                    if (readyForSlide && !readyForDrift && StateMachine.PreviousState is not FStateCrawl)
+                    if (readyForSlide && !readyForDrift)
                     {
                         StateMachine.SetState<FStateSlide>();
                     }
@@ -131,7 +134,7 @@ namespace SurgeEngine.Code.Actor.States
             float distance = config.castDistance * config.castDistanceCurve
                 .Evaluate(Kinematics.HorizontalSpeed / config.topSpeed);
             bool checkForPredictedGround =
-                Kinematics.CheckForPredictedGround(Kinematics.Velocity, Kinematics.Normal, Time.deltaTime, distance, 6);
+                Kinematics.CheckForPredictedGround(Kinematics.Velocity, Kinematics.Normal, Time.fixedDeltaTime, distance, 8);
             if (Common.CheckForGround(out RaycastHit data, castDistance: distance) && checkForPredictedGround)
             {
                 Kinematics.Point = data.point;
@@ -140,14 +143,30 @@ namespace SurgeEngine.Code.Actor.States
                 Vector3 stored = Vector3.ClampMagnitude(_rigidbody.linearVelocity, config.maxSpeed);
                 _rigidbody.linearVelocity = Quaternion.FromToRotation(_rigidbody.transform.up, prevNormal) * stored;
 
-                Actor.kinematics.BasePhysics(Kinematics.Point, Kinematics.Normal);
+                Kinematics.BasePhysics(Kinematics.Point, Kinematics.Normal);
                 Model.RotateBody(Kinematics.Normal);
+                Kinematics.SlopePhysics();
                 
-                _surfaceTag = data.transform.gameObject.GetGroundTag();
+                UpdateSurfaceTag(data.transform.gameObject.GetGroundTag());
             }
             else
             {
                 StateMachine.SetState<FStateAir>();
+            }
+
+            if (Common.CheckForGroundWithDirection(out RaycastHit verticalHit, _rigidbody.transform.up) && Kinematics.Angle >= 90)
+            {
+                Kinematics.Point = verticalHit.point;
+                Kinematics.Normal = verticalHit.normal;
+            }
+        }
+        
+        private void UpdateSurfaceTag(GroundTag newTag)
+        {
+            if (_surfaceTag != newTag)
+            {
+                _surfaceTag = newTag;
+                OnSurfaceTagChanged?.Invoke(newTag);
             }
         }
 
@@ -170,6 +189,13 @@ namespace SurgeEngine.Code.Actor.States
             }
         }
 
-        public string GetSurfaceTag() => _surfaceTag;
+        public GroundTag GetSurfaceTag() => _surfaceTag;
+    }
+
+    public enum GroundTag
+    {
+        Grass,
+        Concrete,
+        Water
     }
 }

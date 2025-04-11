@@ -1,5 +1,6 @@
 ﻿using SurgeEngine.Code.Actor.States.BaseStates;
 using SurgeEngine.Code.Actor.System;
+using SurgeEngine.Code.Custom;
 using UnityEngine;
 
 namespace SurgeEngine.Code.Actor.States
@@ -26,18 +27,29 @@ namespace SurgeEngine.Code.Actor.States
         {
             base.OnTick(dt);
 
-            float duration = 0.3f;
-
-            if (_timer < duration)
+            if (Common.CheckForGround(out var result))
             {
-                _timer += dt;
+                Kinematics.Point = result.point;
+                Kinematics.Normal = result.normal;
                 
-                _rigidbody.rotation = Quaternion.Lerp(_rigidbodyRotation, _rigidbodyRotation * Quaternion.Euler(0f, 180f, 0f), _timer / duration);
-                Model.root.rotation = _rigidbody.rotation;
+                Kinematics.Snap(result.point, result.normal, true);
+                
+                float duration = 0.3f;
+                if (_timer < duration)
+                {
+                    _timer += dt;
+                
+                    _rigidbody.rotation *= Quaternion.AngleAxis(600f * dt, Vector3.up);
+                    Model.root.rotation = _rigidbody.rotation;
+                }
+                else
+                {
+                    StateMachine.SetState<FStateIdle>();
+                }
             }
             else
             {
-                StateMachine.SetState<FStateIdle>();
+                StateMachine.SetState<FStateAir>();
             }
         }
     }

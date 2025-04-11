@@ -20,7 +20,7 @@ namespace SurgeEngine.Code.CommonObjects
         public override void Contact(Collider msg)
         {
             base.Contact(msg);
-
+            
             ActorBase context = ActorContext.Context;
             if (impulse > 0)
             {

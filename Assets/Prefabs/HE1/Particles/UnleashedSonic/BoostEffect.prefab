@@ -1,0 +1,171 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &918901109560652366
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4894437833673752107}
+  - component: {fileID: 2206598721490635182}
+  - component: {fileID: 6844501969905408469}
+  - component: {fileID: 7741686655999222853}
+  m_Layer: 0
+  m_Name: BoostEffect
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4894437833673752107
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 918901109560652366}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.45, z: 0.6000004}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 5750262787220026215}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2206598721490635182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 918901109560652366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 156d571a0b9d48a599ee79b3b0e786a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  particle: {fileID: 4458879813106305239}
+  stopDelay: 0.225
+--- !u!114 &6844501969905408469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 918901109560652366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f83caeb357c0472c9f8aa8d52dbec099, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  distortionMaterial: {fileID: 2100000, guid: 98c33dd0dc64c734dad3e15148f2b798, type: 2}
+  volume: {fileID: 7741686655999222853}
+  easing: 5
+  duration: 0.75
+--- !u!114 &7741686655999222853
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 918901109560652366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26d6499a6bd256e47b859377446493a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IsGlobal: 0
+  fadeRadius: 0
+  priority: 0
+  customPasses:
+  - rid: 6283096624082190434
+  injectionPoint: 2
+  m_TargetCamera: {fileID: 0}
+  useTargetCamera: 1
+  references:
+    version: 2
+    RefIds:
+    - rid: 6283096624082190434
+      type: {class: FullScreenCustomPass, ns: UnityEngine.Rendering.HighDefinition, asm: Unity.RenderPipelines.HighDefinition.Runtime}
+      data:
+        m_Name: Custom Pass
+        enabled: 1
+        targetColorBuffer: 0
+        targetDepthBuffer: 0
+        clearFlags: 0
+        passFoldout: 0
+        m_Version: 0
+        fullscreenPassMaterial: {fileID: 2100000, guid: 98c33dd0dc64c734dad3e15148f2b798, type: 2}
+        materialPassIndex: 0
+        materialPassName: DrawProcedural
+        fetchColorBuffer: 0
+--- !u!1001 &467279867701909058
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 4894437833673752107}
+    m_Modifications:
+    - target: {fileID: 4179773313753101029, guid: 6423323f6df30394f969ac1642f1f7c5, type: 3}
+      propertyPath: m_Name
+      value: BoostParticleSystem
+      objectReference: {fileID: 0}
+    - target: {fileID: 5310048635725407525, guid: 6423323f6df30394f969ac1642f1f7c5, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5310048635725407525, guid: 6423323f6df30394f969ac1642f1f7c5, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.45
+      objectReference: {fileID: 0}
+    - target: {fileID: 5310048635725407525, guid: 6423323f6df30394f969ac1642f1f7c5, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 5310048635725407525, guid: 6423323f6df30394f969ac1642f1f7c5, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5310048635725407525, guid: 6423323f6df30394f969ac1642f1f7c5, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5310048635725407525, guid: 6423323f6df30394f969ac1642f1f7c5, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5310048635725407525, guid: 6423323f6df30394f969ac1642f1f7c5, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5310048635725407525, guid: 6423323f6df30394f969ac1642f1f7c5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5310048635725407525, guid: 6423323f6df30394f969ac1642f1f7c5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5310048635725407525, guid: 6423323f6df30394f969ac1642f1f7c5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 6423323f6df30394f969ac1642f1f7c5, type: 3}
+--- !u!198 &4458879813106305239 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 4295592920285503125, guid: 6423323f6df30394f969ac1642f1f7c5, type: 3}
+  m_PrefabInstance: {fileID: 467279867701909058}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &5750262787220026215 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5310048635725407525, guid: 6423323f6df30394f969ac1642f1f7c5, type: 3}
+  m_PrefabInstance: {fileID: 467279867701909058}
+  m_PrefabAsset: {fileID: 0}

@@ -35,11 +35,14 @@ namespace SurgeEngine.Code.Actor.States
                 Kinematics.Normal = normal;
                 
                 Kinematics.Snap(hit.point, normal);
-                Kinematics.Project();
                 
-                float f = Mathf.Lerp(_config.maxSkiddingRate, _config.minSkiddingRate, Kinematics.HorizontalSpeed / _config.topSpeed);
+                float f = Mathf.Lerp(_config.maxSkiddingRate, _config.minSkiddingRate, Kinematics.Speed / _config.topSpeed);
                 _rigidbody.linearVelocity = Vector3.MoveTowards(_rigidbody.linearVelocity, Vector3.zero,
                     Time.fixedDeltaTime * f);
+                Kinematics.Project();
+                
+                Model.RotateBody(normal);
+                Kinematics.SlopePhysics();
 
                 if (_rigidbody.linearVelocity.magnitude < 0.2f)
                 {

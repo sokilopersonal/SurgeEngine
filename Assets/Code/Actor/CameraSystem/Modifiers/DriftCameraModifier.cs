@@ -7,15 +7,12 @@ namespace SurgeEngine.Code.Actor.CameraSystem.Modifiers
 {
     public class DriftCameraModifier : BaseCameraModifier, ICameraFloatModifier
     {
-        [SerializeField] private float multiplier;
-        
         public float Value { get; set; }
 
         public override void Set(ActorBase actor)
         {
             base.Set(actor);
             
-            actor.camera.AddFloatModifier(this);
             actor.stateMachine.OnStateAssign += OnDrift;
         }
 

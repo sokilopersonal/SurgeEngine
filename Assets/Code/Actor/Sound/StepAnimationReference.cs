@@ -1,4 +1,5 @@
 ﻿using SurgeEngine.Code.ActorEffects;
+using SurgeEngine.Code.Effects;
 using UnityEngine;
 
 namespace SurgeEngine.Code.Actor.Sound
@@ -11,7 +12,6 @@ namespace SurgeEngine.Code.Actor.Sound
 
         public void Play()
         {
-            stepEffect.PlayEffect();
             stepSound.PlaySound();
         }
     }

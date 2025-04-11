@@ -30,12 +30,14 @@ namespace SurgeEngine.Code.Actor.States.SonicSpecific
         {
             base.OnTick(dt);
 
-            if (!Input.BHeld)
+            bool ceiling = Common.CheckForCeiling(out RaycastHit data);
+
+            if (!Input.BHeld && !ceiling)
             {
                 StateMachine.SetState<FStateIdle>();
             }
 
-            if (Input.JumpPressed)
+            if (Input.JumpPressed && !ceiling)
             {
                 StateMachine.SetState<FStateJump>(0.1f);
             }
@@ -45,13 +47,13 @@ namespace SurgeEngine.Code.Actor.States.SonicSpecific
                 StateMachine.SetState<FStateCrawl>();
             }
 
-            if (Input.LeftBumperPressed)
+            if (Input.LeftBumperPressed && !ceiling)
             {
                 var qs = StateMachine.GetState<FStateQuickstep>();
                 qs.SetDirection(QuickstepDirection.Left);
                 StateMachine.SetState<FStateQuickstep>();
             }
-            else if (Input.RightBumperPressed)
+            else if (Input.RightBumperPressed && !ceiling)
             {
                 var qs = StateMachine.GetState<FStateQuickstep>();
                 qs.SetDirection(QuickstepDirection.Right);

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using SurgeEngine.Code.Actor.CameraSystem.Modifiers;
@@ -46,21 +47,14 @@ namespace SurgeEngine.Code.Actor.CameraSystem
         [Header("Lateral Offset")]
         [SerializeField] private AnimationCurve lateralOffsetSpeedCurve;
         public AnimationCurve LateralOffsetSpeedCurve => lateralOffsetSpeedCurve;
-
-        [Header("Boost Blend")] 
-        public AnimationCurve boostBlendCurve;
-        public AnimationCurve boostBlendFovCurve;
-        public AnimationCurve boostDeblendCurve;
-        public float boostBlendTime = 4f;
-        public float boostDeblendTime = 1f;
-        public float boostBlendFactor { get; private set; }
-        private Coroutine _boostBlendCoroutine;
         
         [Header("Collision")]
         public LayerMask collisionMask;
         public float collisionRadius = 0.2f;
-        
-        public List<ICameraFloatModifier> FloatModifiers { get; } = new List<ICameraFloatModifier>();
+
+        [Header("Modifiers")] 
+        [SerializeField] private List<BaseCameraModifier> baseCameraModifiers;
+        private readonly Dictionary<Type, BaseCameraModifier> _modifiersDictionary = new();
         
         private Camera _camera;
         private Transform _cameraTransform;
@@ -72,6 +66,17 @@ namespace SurgeEngine.Code.Actor.CameraSystem
             
             _camera = Camera.main;
             _cameraTransform = _camera.transform;
+        }
+
+        internal override void Set(ActorBase actor)
+        {
+            base.Set(actor);
+            
+            foreach (var modifier in baseCameraModifiers)
+            {
+                modifier.Set(Actor);
+                _modifiersDictionary.Add(modifier.GetType(), modifier);
+            }
         }
 
         public void Start()
@@ -86,19 +91,6 @@ namespace SurgeEngine.Code.Actor.CameraSystem
 
             stateMachine.SetState<NewModernState>();
             stateMachine.SetDirection(Actor.transform.forward);
-            
-            Actor.stateMachine.GetSubState<FBoost>().OnActiveChanged += (state, value) => 
-            {
-                if (_boostBlendCoroutine != null)
-                    StopCoroutine(_boostBlendCoroutine);
-                
-                _boostBlendCoroutine = StartCoroutine(OnBoostActivate(state, value));
-            };
-
-            foreach (var modifier in GetComponentsInChildren<BaseCameraModifier>())
-            {
-                modifier.Set(Actor);
-            }
         }
 
         private void Update()
@@ -115,41 +107,6 @@ namespace SurgeEngine.Code.Actor.CameraSystem
         {
             stateMachine.LateTick(Time.deltaTime);
         }
-
-        private IEnumerator OnBoostActivate(FSubState sub, bool active)
-        {
-            if (sub is FBoost)
-            {
-                float t = 0;
-                float blendTime = active ? boostBlendTime : boostDeblendTime;
-                float lastBlendFactor = boostBlendFactor;
-                float lastDistance = stateMachine.boostDistance;
-                float baseFov = stateMachine.baseFov;
-                float lastFov = _camera.fieldOfView;
-                while (t < 1f)
-                {
-                    t += Time.deltaTime / blendTime;
-
-                    if (active)
-                    {
-                        boostBlendFactor = t;
-                        stateMachine.boostDistance = boostBlendCurve.Evaluate(t);
-                        stateMachine.fov = baseFov * boostBlendFovCurve.Evaluate(t);
-                    }
-                    else
-                    {
-                        boostBlendFactor = Mathf.Lerp(lastBlendFactor, 0f, boostDeblendCurve.Evaluate(t));
-                        stateMachine.boostDistance = Mathf.Lerp(lastDistance, 1f, boostDeblendCurve.Evaluate(t));
-                        stateMachine.fov = Mathf.Lerp(lastFov, baseFov, boostDeblendCurve.Evaluate(t));
-                    }
-                    
-                    yield return null;
-                }
-            }
-        }
-        
-        public void AddFloatModifier(ICameraFloatModifier modifier) => FloatModifiers.Add(modifier);
-        public void RemoveFloatModifier(ICameraFloatModifier modifier) => FloatModifiers.Remove(modifier);
         
         public Camera GetCamera()
         {
@@ -157,5 +114,18 @@ namespace SurgeEngine.Code.Actor.CameraSystem
         }
 
         public Transform GetCameraTransform() => _cameraTransform;
+        
+        public T GetModifier<T>() where T : BaseCameraModifier => _modifiersDictionary[typeof(T)] as T;
+        public T GetModifier<T>(out T modifier) where T : BaseCameraModifier
+        {
+            if (_modifiersDictionary.TryGetValue(typeof(T), out var value))
+            {
+                modifier = value as T;
+                return modifier;
+            }
+            
+            modifier = null;
+            return null;
+        }
     }
 }

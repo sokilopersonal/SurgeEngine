@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using Cysharp.Threading.Tasks;
+using SurgeEngine.Code.Actor.States;
 using SurgeEngine.Code.Actor.States.SonicSpecific;
 using SurgeEngine.Code.Actor.System;
 using SurgeEngine.Code.CommonObjects;
@@ -45,13 +46,14 @@ namespace SurgeEngine.Code.Custom
             return false;
         }
         
-        public static string GetGroundTag(this GameObject gameObject)
+        public static GroundTag GetGroundTag(this GameObject gameObject)
         {
             string input = gameObject.name;
             int index = input.IndexOf('@');
             string result = index == -1 ? "Concrete" : input.Substring(index + 1);
+            GroundTag tag = (GroundTag)Enum.Parse(typeof(GroundTag), result);
             
-            return result;
+            return tag;
         }
 
         public static bool InDelayTime(float last, float delay)
@@ -94,7 +96,7 @@ namespace SurgeEngine.Code.Custom
             ActorBase context = ActorContext.Context;
             ResetVelocity(type);
             
-            context.kinematics.Rigidbody.AddForce(impulse, ForceMode.Impulse);
+            context.kinematics.Rigidbody.linearVelocity = impulse;
             context.kinematics.Rigidbody.linearVelocity = Vector3.ClampMagnitude(context.kinematics.Rigidbody.linearVelocity, impulse.magnitude);
         }
 
@@ -139,15 +141,36 @@ namespace SurgeEngine.Code.Custom
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
             Ray ray = new Ray(origin, direction);
+            if (castDistance == 0) castDistance = context.config.castDistance;
             
             Debug.DrawLine(origin, origin + direction * castDistance, Color.red);
-            
-            if (castDistance == 0) castDistance = context.config.castDistance;
             LayerMask castMask = context.config.castLayer;
 
             bool hit = Physics.Raycast(ray, out result,
                 castDistance, castMask, QueryTriggerInteraction.Ignore);
             
+            return hit;
+        }
+
+        public static bool CheckForCeiling(out RaycastHit result)
+        {
+            ActorBase context = ActorContext.Context;
+            Debug.DrawLine(context.transform.position - (context.transform.up * 0.5f), context.transform.position + (context.transform.up * context.config.castDistance * 0.5f), Color.blue);
+            bool hit = Physics.Raycast(context.transform.position - (context.transform.up * 0.5f), context.transform.up, out result, context.config.castDistance * 0.5f, context.config.castLayer, QueryTriggerInteraction.Ignore);
+            return hit;
+        }
+
+        public static bool CheckForGroundWithDirection(out RaycastHit result, Vector3 direction,
+            float castDistance = 0f)
+        {
+            ActorBase context = ActorContext.Context;
+            Vector3 origin = context.transform.position;
+            
+            if (castDistance == 0) castDistance = context.config.castDistance;
+            
+            Ray ray = new Ray(origin, direction);
+            LayerMask castMask = context.config.castLayer;
+            bool hit = Physics.Raycast(ray, out result, castDistance, castMask, QueryTriggerInteraction.Ignore);
             return hit;
         }
 

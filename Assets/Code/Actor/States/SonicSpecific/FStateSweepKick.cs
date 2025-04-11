@@ -43,13 +43,16 @@ namespace SurgeEngine.Code.Actor.States.SonicSpecific
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
-
+            bool ceiling = Common.CheckForCeiling(out RaycastHit data);
             timer += dt;
-            if (timer > 0.85f && _rigidbody.linearVelocity.magnitude > 1f)
+            if (timer > 0.85f && Kinematics.Speed > 1f)
             {
-                StateMachine.SetState<FStateGround>();
+                if (!ceiling)
+                    StateMachine.SetState<FStateGround>();
+                else
+                    StateMachine.SetState<FStateCrawl>();
             }
-            if (timer > 1f && _rigidbody.linearVelocity.magnitude < 1f)
+            if (timer > 1f && Kinematics.Speed < 1f)
             {
                 if (Input.BHeld)
                 {
@@ -57,7 +60,10 @@ namespace SurgeEngine.Code.Actor.States.SonicSpecific
                 }
                 else
                 {
-                    StateMachine.SetState<FStateIdle>();
+                    if (!ceiling)
+                        StateMachine.SetState<FStateIdle>();
+                    else
+                        StateMachine.SetState<FStateSit>();
                 }
             }
         }
@@ -69,11 +75,12 @@ namespace SurgeEngine.Code.Actor.States.SonicSpecific
             if (Common.CheckForGround(out RaycastHit hit, CheckGroundType.Normal, Actor.config.castDistance))
             {
                 Vector3 point = hit.point;
-                Vector3 normal = Vector3.up;
+                Vector3 normal = hit.normal; // loco put vector3.up here??
                 Kinematics.Normal = normal;
 
                 Kinematics.WriteMovementVector(_rigidbody.linearVelocity);
                 _rigidbody.linearVelocity = Vector3.MoveTowards(_rigidbody.linearVelocity, Vector3.zero, _config.deceleration * dt);
+                _rigidbody.linearVelocity = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, normal);
                 Model.RotateBody(normal);
                 Kinematics.Snap(point, normal, true);
             }

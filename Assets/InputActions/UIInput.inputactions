@@ -105,13 +105,13 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Side",
-                    "type": "Value",
-                    "id": "ab81c96a-9a7a-44bd-90c4-cc65988e6cd1",
-                    "expectedControlType": "Vector2",
+                    "name": "DebugWindow",
+                    "type": "Button",
+                    "id": "9d004193-0900-4b6f-9807-7410d33cc03a",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": true
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -556,70 +556,15 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "Keyboard",
-                    "id": "7444d4f8-93c1-4d93-b8c9-c61e394dd3a0",
-                    "path": "2DVector",
+                    "name": "",
+                    "id": "b7726157-6805-49da-9bbe-2e40abefb9eb",
+                    "path": "<Keyboard>/f2",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Side",
-                    "isComposite": true,
+                    "action": "DebugWindow",
+                    "isComposite": false,
                     "isPartOfComposite": false
-                },
-                {
-                    "name": "left",
-                    "id": "dc4b83d9-a3db-4ec1-8498-5b0980a83b62",
-                    "path": "<Keyboard>/q",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Side",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "right",
-                    "id": "4804a4fb-f3f3-408d-b708-a32155a86b4e",
-                    "path": "<Keyboard>/e",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Side",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "Gamepad",
-                    "id": "f5d3cde6-3eb6-4e26-a002-69a12204f4fd",
-                    "path": "2DVector",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Side",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "left",
-                    "id": "794c2423-4138-4cd2-a6fc-a32cfc657b28",
-                    "path": "<Gamepad>/leftShoulder",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Side",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "right",
-                    "id": "e1f40f76-f567-42aa-b726-1ed300c9563a",
-                    "path": "<Gamepad>/rightShoulder",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Side",
-                    "isComposite": false,
-                    "isPartOfComposite": true
                 }
             ]
         }

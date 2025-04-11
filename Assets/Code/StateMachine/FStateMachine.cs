@@ -66,7 +66,6 @@ namespace SurgeEngine.Code.StateMachine
                 }
 
                 currentStateName = CurrentState?.GetType().Name;
-                
                 _inactiveDelay = inactiveDelay;
                 
                 return CurrentState as T;
@@ -99,6 +98,16 @@ namespace SurgeEngine.Code.StateMachine
         {
             Type type = typeof(T);
             return PreviousState != null && PreviousState.GetType() == type;
+        }
+
+        public bool Has<T>() where T : FState
+        {
+            if (_states.TryGetValue(typeof(T), out FState state))
+            {
+                return state != null;
+            }
+            
+            return false;
         }
 
         public bool IsPreviousState<TState>() where TState : FState

@@ -28,7 +28,16 @@ namespace SurgeEngine.Code.Actor.System
         }
 
         public float Speed => _speed;
-        public float HorizontalSpeed => _rigidbody.GetHorizontalMagnitude();
+        public float HorizontalSpeed
+        {
+            get
+            {
+                Vector3 vel = _rigidbody.linearVelocity;
+                Vector3 projected = Vector3.ProjectOnPlane(vel, Normal);
+                return projected.magnitude;
+            }
+        }
+
         public float Angle => _angle;
         public Vector3 Point { get; set; }
         public Vector3 Normal { get; set; }
@@ -215,8 +224,6 @@ namespace SurgeEngine.Code.Actor.System
             handling *= _config.turnCurve.Evaluate(_planarVelocity.magnitude / _config.topSpeed);
             _movementVector = Vector3.Slerp(_planarVelocity, newVelocity, handling * Time.fixedDeltaTime);
             
-            SlopePhysics();
-            
             Project();
         }
 
@@ -363,14 +370,15 @@ namespace SurgeEngine.Code.Actor.System
         public void Snap(Vector3 point, Vector3 normal, bool instant = false)
         {
             if (!_canAttach) return;
-
+            
+            Vector3 goal = point + normal;
+            
             if (point != Vector3.zero && normal != Vector3.zero)
             {
                 if (instant) _rigidbody.position = point + normal;
                 else
                 {
                     Quaternion slopeRotation = Quaternion.FromToRotation(transform.up, normal) * _rigidbody.rotation;
-                    Vector3 goal = point + normal;
                     _rigidbody.position = Vector3.Lerp(_rigidbody.position, goal, Time.fixedDeltaTime * (Mathf.Abs(Quaternion.Dot(_rigidbody.rotation, slopeRotation) + 1f) / 2f * _rigidbody.linearVelocity.magnitude + 10f));
                 }
             }

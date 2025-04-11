@@ -13,7 +13,7 @@ namespace SurgeEngine.Code.Actor.States.SonicSpecific
     {
         private float _timer;
 
-        private bool released = false;
+        private bool _released;
         private readonly StompConfig _config;
 
         public FStateStomp(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
@@ -26,7 +26,7 @@ namespace SurgeEngine.Code.Actor.States.SonicSpecific
             base.OnEnter();
             
             StateMachine.GetSubState<FBoost>().Active = false;
-            released = false;
+            _released = false;
             _rigidbody.linearVelocity = new Vector3(_rigidbody.linearVelocity.x, 0f, _rigidbody.linearVelocity.z);
             
             Kinematics.Normal = Vector3.up;
@@ -45,16 +45,24 @@ namespace SurgeEngine.Code.Actor.States.SonicSpecific
             base.OnTick(dt);
 
             if (Input.BReleased)
-                released = true;
+                _released = true;
             
             if (Common.CheckForGround(out RaycastHit hit))
             {
                 Vector3 point = hit.point;
                 Vector3 normal = hit.normal;
+                Kinematics.Point = point;
+                Kinematics.Normal = normal;
 
                 float speed = Kinematics.HorizontalSpeed;
-
-                if (speed > _config.slideSpeed && !released)
+                float angle = Vector3.Angle(hit.normal, Vector3.up);
+                if (angle >= 20 && Input.BHeld)
+                {
+                    StateMachine.SetState<FStateSlide>();
+                    return;
+                }
+                
+                if (speed > _config.slideSpeed && !_released)
                 {
                     StateMachine.SetState<FStateSlide>();
                 }
@@ -73,7 +81,7 @@ namespace SurgeEngine.Code.Actor.States.SonicSpecific
                 new Vector3(1.1f, 2f, 1.1f), HurtBoxTarget.Enemy | HurtBoxTarget.Breakable);
 
             Vector3 vel = _rigidbody.linearVelocity;
-            float horizontalSpeedMultiplier = released ? 0f : _config.curve.Evaluate(_timer);
+            float horizontalSpeedMultiplier = _released ? 0f : _config.curve.Evaluate(_timer);
             Vector3 smoothedXZVelocity = new Vector3(vel.x * horizontalSpeedMultiplier, vel.y, vel.z * horizontalSpeedMultiplier);
             
             float stompSpeed = _config.speed;
@@ -87,19 +95,6 @@ namespace SurgeEngine.Code.Actor.States.SonicSpecific
 
             _rigidbody.linearVelocity = vel;
             _timer += dt;
-
-            if (Common.CheckForGround(out RaycastHit hit))
-            {
-                Vector3 point = hit.point;
-                Vector3 normal = hit.normal;
-
-                float speed = Kinematics.HorizontalSpeed;
-
-                if (speed < _config.slideSpeed && !released)
-                    Common.ResetVelocity(ResetVelocityType.Both);
-
-                Kinematics.Snap(point, normal, true);
-            }
         }
     }
 }

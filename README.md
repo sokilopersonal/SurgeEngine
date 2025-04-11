@@ -16,3 +16,6 @@ You can help this project by fixing bugs or adding new features and adding these
 1. Clone/Download the repository
 2. Add the project to the Unity Hub
 3. Download required Unity version and open the project
+
+## Knows issues
+- Transparent particles don't render underwater if "Use Scene Color" is enabled in water material

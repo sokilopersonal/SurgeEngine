@@ -2,6 +2,7 @@
 using SurgeEngine.Code.Actor.States.SonicSpecific;
 using SurgeEngine.Code.Actor.System;
 using SurgeEngine.Code.Custom;
+using SurgeEngine.Code.Effects;
 using UnityEngine;
 
 namespace SurgeEngine.Code.CommonObjects
@@ -113,11 +114,8 @@ namespace SurgeEngine.Code.CommonObjects
             base.Contact(msg);
             
             _initialPoint = msg.ClosestPoint(transform.position);
-            ParticleSystem wave = Instantiate(this.wave);
-            wave.transform.position = _initialPoint;
-            wave.Play();
-            
-            Destroy(wave.gameObject, wave.main.duration);
+            ParticlesContainer.Spawn("WaterSplash", _initialPoint);
+            Debug.DrawRay(transform.position, Vector3.up * 5, Color.red, 10f);
             
             _isActorOnSurface = true;
         }
@@ -128,9 +126,7 @@ namespace SurgeEngine.Code.CommonObjects
             
             if (context.gameObject == other.transform.parent.gameObject)
             {
-                ParticleSystem wave = Instantiate(this.wave);
-                wave.transform.position = other.ClosestPoint(transform.position);;
-                wave.Play();
+                ParticlesContainer.Spawn("WaterSplash", other.ClosestPoint(transform.position));
                 
                 context.flags.RemoveFlag(FlagType.OnWater);
                 context.stats.gravity = context.stats.startGravity;
