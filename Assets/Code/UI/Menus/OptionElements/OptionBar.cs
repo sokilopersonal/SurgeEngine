@@ -16,6 +16,7 @@ namespace SurgeEngine.Code.UI.Menus.OptionElements
         [Header("States")]
         [SerializeField] private string[] states;
         [SerializeField] private TMP_Text stateText;
+        public string[] States => states;
 
         [Header("Start Index")] 
         [SerializeField, Min(0)] private int startIndex;
@@ -58,7 +59,7 @@ namespace SurgeEngine.Code.UI.Menus.OptionElements
 
             if (Application.isPlaying)
             {
-                OnBarMove += AddIndex;
+                OnBarMove += AddIndexByMove;
             }
         }
 
@@ -68,7 +69,7 @@ namespace SurgeEngine.Code.UI.Menus.OptionElements
 
             if (Application.isPlaying)
             {
-                OnBarMove -= AddIndex;
+                OnBarMove -= AddIndexByMove;
             }
         }
 
@@ -77,7 +78,7 @@ namespace SurgeEngine.Code.UI.Menus.OptionElements
             
         }
 
-        private void AddIndex(MoveDirection obj)
+        private void AddIndexByMove(MoveDirection obj)
         {
             switch (obj)
             {
@@ -101,6 +102,16 @@ namespace SurgeEngine.Code.UI.Menus.OptionElements
             OnIndexChanged?.Invoke(index);
             
             UpdateText(Index);
+        }
+
+        public void AddIndex()
+        {
+            AddIndexByMove(MoveDirection.Right);
+        }
+        
+        public void RemoveIndex()
+        {
+            AddIndexByMove(MoveDirection.Left);
         }
 
         public void UpdateText(int index)
