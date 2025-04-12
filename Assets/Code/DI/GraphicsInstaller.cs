@@ -11,10 +11,7 @@ namespace SurgeEngine.Code.DI
 
         public override void InstallBindings()
         {
-            var volume = Container.InstantiatePrefabForComponent<Volume>(volumePrefab);
-            DontDestroyOnLoad(volume.gameObject);
-
-            Container.BindInterfacesAndSelfTo<UserGraphics>().FromNew().AsSingle().WithArguments(volume.profile).NonLazy();
+            Container.BindInterfacesAndSelfTo<UserGraphics>().FromNew().AsSingle().WithArguments(volumePrefab).NonLazy();
         }
     }
 }

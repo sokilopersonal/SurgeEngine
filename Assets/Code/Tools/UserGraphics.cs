@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -11,13 +12,18 @@ namespace SurgeEngine.Code.Tools
 {
     public class UserGraphics : ITickable
     {
-        private const string Key = "GraphicsData";
-        private readonly VolumeProfile _profile;
+        private const string FileName = "GraphicsSettings.json";
+        private readonly VolumeProfile _volume;
 
         private Light _sun;
         private HDAdditionalLightData _sunData;
         private readonly List<Light> _additionalLights;
         private readonly List<HDAdditionalLightData> _additionalLightsData;
+
+        private readonly GraphicsData _data;
+        
+        private const int MaxTextureQuality = 3;
+        private const int MaxRefractionQuality = 2;
 
         private readonly string[] _refractionQualityKeywords =
         {
@@ -26,11 +32,25 @@ namespace SurgeEngine.Code.Tools
             "_REFRACTIONQUALITY_LOW"
         };
 
-        public UserGraphics(VolumeProfile profile)
+        public UserGraphics(Volume volumePrefab)
         {
-            _profile = profile;
+            var volumeInstance = Object.Instantiate(volumePrefab);
+            Object.DontDestroyOnLoad(volumeInstance.gameObject);
+            _volume = volumeInstance.profile;
+            
             _additionalLights = new List<Light>();
             _additionalLightsData = new List<HDAdditionalLightData>();
+            
+            FindLights();
+
+            _data = Load();
+            Apply();
+        }
+
+        private void FindLights()
+        {
+            _additionalLights.Clear();
+            _additionalLightsData.Clear();
             
             var lights = Object.FindObjectsByType<Light>(FindObjectsInactive.Include, FindObjectsSortMode.None);
             foreach (var light in lights)
@@ -44,72 +64,41 @@ namespace SurgeEngine.Code.Tools
                     AddAdditionalLight(light);
                 }
             }
-            
-            Debug.Log("Initialized UserGraphics");
         }
 
-        public void SetTextureQuality(int value)
+        public void SetTextureQuality(TextureQuality value)
         {
-            QualitySettings.globalTextureMipmapLimit = (int)Mathf.Lerp(3, 0, value / 3f); // Inverse value
+            _data.textureQuality = value;
         }
 
-        public void SetSunShadowsQuality(int value)
+        public void SetSunShadowsQuality(ShadowsQuality value)
         {
-            var data = _sun.GetComponent<HDAdditionalLightData>();
-            if (value == -1)
-            {
-                data.EnableShadows(false);
-            }
-            else
-            {
-                data.EnableShadows(true);
-                data.shadowResolution.level = value;
-            }
+            _data.sunShadowsQuality = value;
         }
         
-        public void SetAdditionalShadowsQuality(int value)
+        public void SetAdditionalShadowsQuality(ShadowsQuality value)
         {
-            foreach (var data in _additionalLights.Select(light => light.GetComponent<HDAdditionalLightData>()))
-            {
-                if (value == -1)
-                {
-                    data.EnableShadows(false);
-                }
-                else
-                {
-                    data.EnableShadows(true);
-                    data.shadowResolution.level = value;
-                }
-            }
+            _data.additionalShadowsQuality = value;
         }
 
-        public void SetBloomQuality(int value)
+        public void SetBloomQuality(BloomQuality value)
         {
-            if (_profile.TryGet(out Bloom bloom))
-            {
-                bloom.quality.value = value;
-            }
+            _data.bloomQuality = value;
         }
         
-        public void SetAmbientOcclusionQuality(int value)
+        public void SetAmbientOcclusionQuality(AmbientOcclusionQuality value)
         {
-            if (_profile.TryGet(out ScreenSpaceAmbientOcclusion ssao))
-            {
-                ssao.quality.value = value;
-            }
+            _data.aoQuality = value;
         }
 
-        public void SetMotionBlurQuality(int value)
+        public void SetMotionBlurQuality(MotionBlurQuality value)
         {
-            if (_profile.TryGet(out MotionBlur motionBlur))
-            {
-                motionBlur.quality.value = value;
-            }
+            _data.motionBlurQuality = value;
         }
 
         public void SetRefractionQuality(RefractionQuality level)
         {
-            SetKeyword(_refractionQualityKeywords, (int)level);
+            _data.refractionQuality = level;
         }
 
         private void SetSun(Light sun)
@@ -140,81 +129,7 @@ namespace SurgeEngine.Code.Tools
 
         public void Tick()
         {
-            // Test
-
-            if (Input.GetKeyDown(KeyCode.Alpha1))
-            {
-                SetTextureQuality(0);
-                SetSunShadowsQuality(-1);
-                SetAdditionalShadowsQuality(-1);
-                SetRefractionQuality(RefractionQuality.Low);
-            }
             
-            if (Input.GetKeyDown(KeyCode.Alpha2))
-            {
-                SetTextureQuality(1);
-                SetSunShadowsQuality(0);
-                SetAdditionalShadowsQuality(0);
-                SetRefractionQuality(RefractionQuality.Medium);
-            }
-            
-            if (Input.GetKeyDown(KeyCode.Alpha3))
-            {
-                SetTextureQuality(2);
-                SetSunShadowsQuality(1);
-                SetAdditionalShadowsQuality(1);
-                SetRefractionQuality(RefractionQuality.Native);
-            }
-            
-            if (Input.GetKeyDown(KeyCode.Alpha4))
-            {
-                SetTextureQuality(3);
-                SetSunShadowsQuality(2);
-                SetAdditionalShadowsQuality(2);
-            }
-
-            if (Input.GetKeyDown(KeyCode.Alpha9))
-            {
-                Save();
-            }
-            
-            if (Input.GetKeyDown(KeyCode.Alpha0))
-            {
-                Load();
-            }
-        }
-
-        public void Save()
-        {
-            var data = new GraphicsData
-            {
-                SunShadowsQuality = _sunData.GetComponent<Light>().shadows == LightShadows.Soft ? _sunData.shadowResolution.level : -1,
-                AdditionalShadowsQuality = _additionalLightsData.All(light => light.GetComponent<Light>().shadows == LightShadows.Soft) ? _sunData.shadowResolution.level : -1,
-                BloomQuality = _profile.TryGet(out Bloom bloom) ? bloom.quality.value : -1,
-                AoQuality = _profile.TryGet(out ScreenSpaceAmbientOcclusion ssao) ? ssao.quality.value : -1,
-                MotionBlurQuality = _profile.TryGet(out MotionBlur motionBlur) ? motionBlur.quality.value : -1,
-                TextureQuality = (int)Mathf.Lerp(3, 0, QualitySettings.globalTextureMipmapLimit)
-            };
-            
-            var json = JsonUtility.ToJson(data);
-            Debug.Log(json);
-            PlayerPrefs.SetString(Key, json);
-        }
-        
-        public void Load()
-        {
-            if (PlayerPrefs.HasKey(Key))
-            {
-                var json = PlayerPrefs.GetString(Key);
-                var data = JsonUtility.FromJson<GraphicsData>(json);
-            
-                SetSunShadowsQuality(data.SunShadowsQuality);
-                SetAdditionalShadowsQuality(data.AdditionalShadowsQuality);
-                SetBloomQuality(data.BloomQuality);
-                SetAmbientOcclusionQuality(data.AoQuality);
-                SetMotionBlurQuality(data.MotionBlurQuality);
-                SetTextureQuality(data.TextureQuality);
-            }
         }
 
         private static void SetKeyword(string[] keys, int value)
@@ -227,22 +142,155 @@ namespace SurgeEngine.Code.Tools
             
             Shader.EnableKeyword(key);
         }
+
+        public void Apply()
+        {
+            // Texture quality
+            QualitySettings.globalTextureMipmapLimit = MaxTextureQuality - (int)_data.textureQuality;
+            
+            // Sun Shadows
+            if (_sun != null) 
+            {
+                var data = _sun.GetComponent<HDAdditionalLightData>();
+                data.EnableShadows(true);
+                data.shadowResolution.level = (int)_data.sunShadowsQuality;
+            }
+            
+            // Additional Shadows
+            foreach (var data in _additionalLights.Select(light => light.GetComponent<HDAdditionalLightData>()))
+            {
+                data.EnableShadows(true);
+                data.shadowResolution.level = (int)_data.additionalShadowsQuality;
+            }
+            
+            // Bloom Quality
+            if (_volume.TryGet(out Bloom bloom))
+            {
+                if (_data.bloomQuality == BloomQuality.Off)
+                    bloom.active = false;
+                else
+                {
+                    bloom.active = true;
+                    bloom.quality.value = (int)_data.bloomQuality - 1;
+                }
+            }
+            
+            // GTAO Quality
+            if (_volume.TryGet(out ScreenSpaceAmbientOcclusion ssao))
+            {
+                if (_data.aoQuality == AmbientOcclusionQuality.Off)
+                    ssao.active = false;
+                else
+                {
+                    ssao.active = true;
+                    ssao.quality.value = (int)_data.aoQuality - 1;
+                }
+            }
+            
+            // Motion Blur Quality
+            if (_volume.TryGet(out MotionBlur motionBlur))
+            {
+                if (_data.motionBlurQuality == MotionBlurQuality.Off)
+                    motionBlur.active = false;
+                else
+                {
+                    motionBlur.active = true;
+                    motionBlur.quality.value = (int)_data.motionBlurQuality - 1;
+                }
+            }
+            
+            // Refraction Quality
+            SetKeyword(_refractionQualityKeywords, MaxRefractionQuality - (int)_data.refractionQuality);
+        }
+
+        public void Save()
+        {
+            if (_data != null)
+            {
+                var path = GetDataPath();
+                _data.textureQuality = (TextureQuality)(MaxTextureQuality - QualitySettings.globalTextureMipmapLimit);
+                _data.sunShadowsQuality = (ShadowsQuality)_sunData.shadowResolution.level;
+                if (_additionalLightsData.Count > 0) _data.additionalShadowsQuality = (ShadowsQuality)_additionalLightsData[0].shadowResolution.level;
+                _data.bloomQuality = _volume.TryGet(out Bloom bloom) ? bloom.active ? (BloomQuality)bloom.quality.value + 1 : BloomQuality.Off : BloomQuality.High;
+                _data.aoQuality = _volume.TryGet(out ScreenSpaceAmbientOcclusion ssao) ? ssao.active ? (AmbientOcclusionQuality)ssao.quality.value + 1 : AmbientOcclusionQuality.Off : AmbientOcclusionQuality.High;
+                _data.motionBlurQuality = _volume.TryGet(out MotionBlur motionBlur) ? motionBlur.active ? (MotionBlurQuality)motionBlur.quality.value + 1 : MotionBlurQuality.Off : MotionBlurQuality.High;
+                _data.refractionQuality = (RefractionQuality)MaxRefractionQuality - Array.FindIndex(_refractionQualityKeywords, Shader.IsKeywordEnabled);
+            
+                File.WriteAllText(path, JsonUtility.ToJson(_data));
+            }
+        }
+        
+        public GraphicsData Load()
+        {
+            if (File.Exists(GetDataPath()))
+            {
+                return JsonUtility.FromJson<GraphicsData>(File.ReadAllText(GetDataPath()));
+            }
+
+            return new GraphicsData();
+        }
+        
+        public GraphicsData GetGraphicsData() => _data;
+
+        private string GetDataPath() => Application.persistentDataPath + FileName;
     }
 
+    [Serializable]
     public class GraphicsData
     {
-        public int SunShadowsQuality;
-        public int AdditionalShadowsQuality;
-        public int BloomQuality;
-        public int AoQuality;
-        public int MotionBlurQuality;
-        public int TextureQuality;
+        public ShadowsQuality sunShadowsQuality = ShadowsQuality.High;
+        public ShadowsQuality additionalShadowsQuality = ShadowsQuality.High;
+        public BloomQuality bloomQuality = BloomQuality.High;
+        public AmbientOcclusionQuality aoQuality = AmbientOcclusionQuality.High;
+        public MotionBlurQuality motionBlurQuality = MotionBlurQuality.High;
+        public TextureQuality textureQuality = TextureQuality.High;
+        public RefractionQuality refractionQuality = RefractionQuality.Native;
     }
     
+    public enum TextureQuality
+    {
+        Low = 0,
+        Medium = 1,
+        High = 2,
+        VeryHigh = 3,
+    }
+
+    public enum ShadowsQuality
+    {
+        Low = 0,
+        Medium = 1,
+        High = 2,
+        VeryHigh = 3,
+    }
+
+    public enum BloomQuality
+    {
+        Off = 0,
+        Low = 1,
+        Medium = 2,
+        High = 3
+    }
+
+    public enum AmbientOcclusionQuality
+    {
+        Off = 0,
+        Low = 1,
+        Medium = 2,
+        High = 3
+    }
+
+    public enum MotionBlurQuality
+    {
+        Off = 0,
+        Low = 1,
+        Medium = 2,
+        High = 3
+    }
+
     public enum RefractionQuality
     {
-        Native,
-        Medium,
-        Low
+        Low = 0,
+        Medium = 1,
+        Native = 2,
     }
 }
