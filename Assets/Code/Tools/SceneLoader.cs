@@ -69,10 +69,5 @@ namespace SurgeEngine.Code.Tools
             Instance.screen.SetActive(false);
             Instance._isLoading = false;
         }
-
-        private void OnDestroy()
-        {
-            Instance = null;
-        }
     }
 }

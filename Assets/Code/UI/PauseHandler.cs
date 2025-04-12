@@ -118,7 +118,7 @@ namespace SurgeEngine.Code.UI
 
         public void QuitAction()
         {
-            SceneLoader.LoadScene("Scene1");
+            //SceneLoader.LoadScene("Scene1");
         }
     }
 
