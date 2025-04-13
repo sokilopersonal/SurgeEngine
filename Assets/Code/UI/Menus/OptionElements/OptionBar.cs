@@ -28,6 +28,8 @@ namespace SurgeEngine.Code.UI.Menus.OptionElements
         [Header("Selection")]
         [SerializeField] private CanvasGroup selectionGroup;
         private Tween _selectionTween;
+        private RectTransform _rectTransform;
+        private AutoScroll _autoScroll;
 
         public int Index { get; protected set; }
         private bool IsSelected
@@ -49,8 +51,12 @@ namespace SurgeEngine.Code.UI.Menus.OptionElements
         protected override void Awake()
         {
             base.Awake();
+            
+            _rectTransform = GetComponent<RectTransform>();
+            _autoScroll = GetComponentInParent<AutoScroll>();
 
             selectionGroup.alpha = 0f;
+            SetIndex(startIndex);
         }
 
         protected override void OnEnable()
@@ -123,6 +129,8 @@ namespace SurgeEngine.Code.UI.Menus.OptionElements
         {
             base.OnMove(eventData);
             
+            _autoScroll.ScrollTo(_rectTransform);
+            
             if (IsSelected)
             {
                 OnBarMove?.Invoke(eventData.moveDir);
@@ -134,6 +142,7 @@ namespace SurgeEngine.Code.UI.Menus.OptionElements
             base.OnSelect(eventData);
             
             OnBarSelected?.Invoke(this);
+            _autoScroll.ScrollTo(null);
 
             _selectionTween?.Kill(true);
             _selectionTween = selectionGroup.DOFade(1f, 0.25f).SetUpdate(true).SetEase(Ease.OutCubic);

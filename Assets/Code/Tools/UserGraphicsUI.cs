@@ -15,6 +15,7 @@ namespace SurgeEngine.Code.Tools
         [SerializeField] private OptionBar aoBar;
         [SerializeField] private OptionBar motionBlurBar;
         [SerializeField] private OptionBar refractionQualityBar;
+        [SerializeField] private OptionBar ssrQualityBar;
         
         [Inject] private UserGraphics _graphics;
 
@@ -29,6 +30,7 @@ namespace SurgeEngine.Code.Tools
             aoBar.OnIndexChanged += index => _graphics.SetAmbientOcclusionQuality((AmbientOcclusionQuality)index);
             motionBlurBar.OnIndexChanged += index => _graphics.SetMotionBlurQuality((MotionBlurQuality)index);
             refractionQualityBar.OnIndexChanged += index => _graphics.SetRefractionQuality((RefractionQuality)index);
+            ssrQualityBar.OnIndexChanged += index => _graphics.SetScreenSpaceReflectionsQuality((ScreenSpaceReflectionQuality)index);
             
             textureQualityBar.SetIndex((int)data.textureQuality);
             sunShadowsQualityBar.SetIndex((int)data.sunShadowsQuality);
@@ -37,6 +39,7 @@ namespace SurgeEngine.Code.Tools
             aoBar.SetIndex((int)data.aoQuality);
             motionBlurBar.SetIndex((int)data.motionBlurQuality);
             refractionQualityBar.SetIndex((int)data.refractionQuality);
+            ssrQualityBar.SetIndex((int)data.screenSpaceReflectionQuality);
         }
 
         public void Save()

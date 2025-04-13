@@ -24,6 +24,7 @@ namespace SurgeEngine.Code.Tools
         
         private const int MaxTextureQuality = 3;
         private const int MaxRefractionQuality = 2;
+        private const int MaxMaterialQuality = 3;
 
         private readonly string[] _refractionQualityKeywords =
         {
@@ -31,12 +32,30 @@ namespace SurgeEngine.Code.Tools
             "_REFRACTIONQUALITY_MEDIUM", 
             "_REFRACTIONQUALITY_LOW"
         };
-
-        public UserGraphics(Volume volumePrefab)
+        
+        private readonly string[] _materialQualityKeywords =
         {
-            var volumeInstance = Object.Instantiate(volumePrefab);
-            Object.DontDestroyOnLoad(volumeInstance.gameObject);
-            _volume = volumeInstance.profile;
+            "_MATERIAL_QUALITY_HIGH",
+            "_MATERIAL_QUALITY_MEDIUM", 
+            "_MATERIAL_QUALITY_LOW"
+        };
+
+        public UserGraphics(VolumeProfile profile)
+        {
+            _volume = profile;
+
+            if (!_volume.TryGet(out ScreenSpaceReflection _))
+            {
+                _volume.Add<ScreenSpaceReflection>();
+            }
+            if (!_volume.TryGet(out Bloom _))
+            {
+                _volume.Add<Bloom>();
+            }
+            if (!_volume.TryGet(out ScreenSpaceAmbientOcclusion _))
+            {
+                _volume.Add<ScreenSpaceAmbientOcclusion>();
+            }
             
             _additionalLights = new List<Light>();
             _additionalLightsData = new List<HDAdditionalLightData>();
@@ -99,6 +118,16 @@ namespace SurgeEngine.Code.Tools
         public void SetRefractionQuality(RefractionQuality level)
         {
             _data.refractionQuality = level;
+        }
+
+        public void SetScreenSpaceReflectionsQuality(ScreenSpaceReflectionQuality level)
+        {
+            _data.screenSpaceReflectionQuality = level;
+        }
+        
+        public void SetAntiAliasing(AntiAliasingQuality level)
+        {
+            _data.antiAliasingQuality = level;
         }
 
         private void SetSun(Light sun)
@@ -199,8 +228,24 @@ namespace SurgeEngine.Code.Tools
                 }
             }
             
+            // SSR Quality
+            if (_volume.TryGet(out ScreenSpaceReflection ssr))
+            {
+                if (_data.screenSpaceReflectionQuality == ScreenSpaceReflectionQuality.Off)
+                    ssr.active = false;
+                else
+                {
+                    ssr.active = true;
+                    ssr.quality.value = (int)_data.screenSpaceReflectionQuality - 1;
+                }
+            }
+            
             // Refraction Quality
             SetKeyword(_refractionQualityKeywords, MaxRefractionQuality - (int)_data.refractionQuality);
+            
+            // Anti-Aliasing Quality
+            // var hdCameraData = Camera.main.GetComponent<HDAdditionalCameraData>();
+            // hdCameraData.TAAQuality = (HDAdditionalCameraData.TAAQualityLevel)_data.antiAliasingQuality;
         }
 
         public void Save()
@@ -211,10 +256,12 @@ namespace SurgeEngine.Code.Tools
                 _data.textureQuality = (TextureQuality)(MaxTextureQuality - QualitySettings.globalTextureMipmapLimit);
                 _data.sunShadowsQuality = (ShadowsQuality)_sunData.shadowResolution.level;
                 if (_additionalLightsData.Count > 0) _data.additionalShadowsQuality = (ShadowsQuality)_additionalLightsData[0].shadowResolution.level;
-                _data.bloomQuality = _volume.TryGet(out Bloom bloom) ? bloom.active ? (BloomQuality)bloom.quality.value + 1 : BloomQuality.Off : BloomQuality.High;
-                _data.aoQuality = _volume.TryGet(out ScreenSpaceAmbientOcclusion ssao) ? ssao.active ? (AmbientOcclusionQuality)ssao.quality.value + 1 : AmbientOcclusionQuality.Off : AmbientOcclusionQuality.High;
-                _data.motionBlurQuality = _volume.TryGet(out MotionBlur motionBlur) ? motionBlur.active ? (MotionBlurQuality)motionBlur.quality.value + 1 : MotionBlurQuality.Off : MotionBlurQuality.High;
+                _data.bloomQuality = _volume.TryGet(out Bloom bloom) ? bloom.active ? (BloomQuality)bloom.quality.value + 1 : BloomQuality.Off : BloomQuality.Medium;
+                _data.aoQuality = _volume.TryGet(out ScreenSpaceAmbientOcclusion ssao) ? ssao.active ? (AmbientOcclusionQuality)ssao.quality.value + 1 : AmbientOcclusionQuality.Off : AmbientOcclusionQuality.Medium;
+                _data.motionBlurQuality = _volume.TryGet(out MotionBlur motionBlur) ? motionBlur.active ? (MotionBlurQuality)motionBlur.quality.value + 1 : MotionBlurQuality.Off : MotionBlurQuality.Medium;
                 _data.refractionQuality = (RefractionQuality)MaxRefractionQuality - Array.FindIndex(_refractionQualityKeywords, Shader.IsKeywordEnabled);
+                _data.screenSpaceReflectionQuality = _volume.TryGet(out ScreenSpaceReflection ssr) ? ssr.active ? (ScreenSpaceReflectionQuality)ssr.quality.value + 1 : ScreenSpaceReflectionQuality.Off : ScreenSpaceReflectionQuality.High;
+                _data.antiAliasingQuality = (AntiAliasingQuality)Camera.main.GetComponent<HDAdditionalCameraData>().TAAQuality;
             
                 File.WriteAllText(path, JsonUtility.ToJson(_data));
             }
@@ -245,6 +292,8 @@ namespace SurgeEngine.Code.Tools
         public MotionBlurQuality motionBlurQuality = MotionBlurQuality.High;
         public TextureQuality textureQuality = TextureQuality.High;
         public RefractionQuality refractionQuality = RefractionQuality.Native;
+        public ScreenSpaceReflectionQuality screenSpaceReflectionQuality = ScreenSpaceReflectionQuality.Medium;
+        public AntiAliasingQuality antiAliasingQuality = AntiAliasingQuality.Low;
     }
     
     public enum TextureQuality
@@ -292,5 +341,28 @@ namespace SurgeEngine.Code.Tools
         Low = 0,
         Medium = 1,
         Native = 2,
+    }
+    
+    public enum ScreenSpaceReflectionQuality
+    {
+        Off = 0,
+        Low = 1,
+        Medium = 2,
+        High = 3,
+    }
+
+    public enum MaterialQuality
+    {
+        Low = 0,
+        Medium = 1,
+        High = 2
+    }
+
+    public enum AntiAliasingQuality
+    {
+        Low = 0,
+        Medium = 1,
+        High = 2,
+        VeryHigh = 3
     }
 }
