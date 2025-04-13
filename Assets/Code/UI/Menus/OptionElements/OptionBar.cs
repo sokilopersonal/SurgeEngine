@@ -56,7 +56,6 @@ namespace SurgeEngine.Code.UI.Menus.OptionElements
             _autoScroll = GetComponentInParent<AutoScroll>();
 
             selectionGroup.alpha = 0f;
-            SetIndex(startIndex);
         }
 
         protected override void OnEnable()

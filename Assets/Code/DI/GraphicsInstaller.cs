@@ -7,11 +7,11 @@ namespace SurgeEngine.Code.DI
 {
     public class GraphicsInstaller : MonoInstaller
     {
-        [SerializeField] private VolumeProfile volumeProfile;
+        [SerializeField] private Volume volumePrefab;
 
         public override void InstallBindings()
         {
-            Container.BindInterfacesAndSelfTo<UserGraphics>().FromNew().AsSingle().WithArguments(volumeProfile).NonLazy();
+            Container.BindInterfacesAndSelfTo<UserGraphics>().FromNew().AsSingle().WithArguments(volumePrefab).NonLazy();
         }
     }
 }

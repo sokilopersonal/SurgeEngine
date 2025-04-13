@@ -40,9 +40,11 @@ namespace SurgeEngine.Code.Tools
             "_MATERIAL_QUALITY_LOW"
         };
 
-        public UserGraphics(VolumeProfile profile)
+        public UserGraphics(Volume profile)
         {
-            _volume = profile;
+            var instance = Object.Instantiate(profile);
+            _volume = instance.profile;
+            Object.DontDestroyOnLoad(instance.gameObject);
 
             if (!_volume.TryGet(out ScreenSpaceReflection _))
             {
@@ -196,10 +198,10 @@ namespace SurgeEngine.Code.Tools
             if (_volume.TryGet(out Bloom bloom))
             {
                 if (_data.bloomQuality == BloomQuality.Off)
-                    bloom.active = false;
+                    bloom.intensity.value = 0;
                 else
                 {
-                    bloom.active = true;
+                    bloom.intensity.value = bloom.intensity.max;
                     bloom.quality.value = (int)_data.bloomQuality - 1;
                 }
             }
@@ -208,10 +210,10 @@ namespace SurgeEngine.Code.Tools
             if (_volume.TryGet(out ScreenSpaceAmbientOcclusion ssao))
             {
                 if (_data.aoQuality == AmbientOcclusionQuality.Off)
-                    ssao.active = false;
+                    ssao.intensity.value = 0;
                 else
                 {
-                    ssao.active = true;
+                    ssao.intensity.value = 1;
                     ssao.quality.value = (int)_data.aoQuality - 1;
                 }
             }
@@ -220,10 +222,10 @@ namespace SurgeEngine.Code.Tools
             if (_volume.TryGet(out MotionBlur motionBlur))
             {
                 if (_data.motionBlurQuality == MotionBlurQuality.Off)
-                    motionBlur.active = false;
+                    motionBlur.intensity.value = 0;
                 else
                 {
-                    motionBlur.active = true;
+                    motionBlur.intensity.value = 1;
                     motionBlur.quality.value = (int)_data.motionBlurQuality - 1;
                 }
             }
@@ -232,10 +234,14 @@ namespace SurgeEngine.Code.Tools
             if (_volume.TryGet(out ScreenSpaceReflection ssr))
             {
                 if (_data.screenSpaceReflectionQuality == ScreenSpaceReflectionQuality.Off)
-                    ssr.active = false;
+                {
+                    ssr.enabled.value = false;
+                    ssr.enabledTransparent.value = false;
+                }
                 else
                 {
-                    ssr.active = true;
+                    ssr.enabled.value = true;
+                    ssr.enabledTransparent.value = true;
                     ssr.quality.value = (int)_data.screenSpaceReflectionQuality - 1;
                 }
             }
