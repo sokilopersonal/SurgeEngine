@@ -56,6 +56,16 @@ namespace SurgeEngine.Code.UI.Menus
             
             await AnimationSequence.AsyncWaitForCompletion();
         }
+        
+        public void OpenInternal()
+        {
+            _ = Open();
+        }
+        
+        public void CloseInternal()
+        {
+            _ = Close();
+        }
 
         protected abstract void InsertIntroAnimations();
         protected abstract void InsertOutroAnimations();

@@ -10,7 +10,6 @@ namespace SurgeEngine.Code.DI
 
         public override void InstallBindings()
         {
-            Debug.Log("INSTALLED SCENE LOADER BLA BLA BLA");
             Container.Bind<SceneLoader>().FromComponentInNewPrefab(prefab).AsSingle().NonLazy();
         }
     }
