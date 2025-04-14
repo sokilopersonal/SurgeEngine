@@ -122,11 +122,6 @@ namespace SurgeEngine.Code.UI.Menus.OptionElements
         public void UpdateText(int index)
         {
             stateText.text = states[index];
-
-            if (name == "Master Volume")
-            {
-                Debug.Log(states[index]);
-            }
         }
 
         public override void OnMove(AxisEventData eventData)

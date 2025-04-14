@@ -29,7 +29,7 @@ namespace SurgeEngine.Code.Tools
 
         private void OnDataApplied(GraphicsData obj)
         {
-            _data.TAAQuality = (HDAdditionalCameraData.TAAQualityLevel)obj.antiAliasingQuality;
+            //_data.TAAQuality = (HDAdditionalCameraData.TAAQualityLevel)obj.antiAliasingQuality;
         }
     }
 }

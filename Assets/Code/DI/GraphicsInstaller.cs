@@ -1,17 +1,19 @@
 using SurgeEngine.Code.Tools;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.SceneManagement;
 using Zenject;
 
 namespace SurgeEngine.Code.DI
 {
     public class GraphicsInstaller : MonoInstaller
     {
-        [SerializeField] private Volume volumePrefab;
+        [SerializeField] private VolumeProfile volumeProfile;
 
         public override void InstallBindings()
         {
-            Container.BindInterfacesAndSelfTo<UserGraphics>().FromNew().AsSingle().WithArguments(volumePrefab).NonLazy();
+            SceneManager.LoadScene("AdditiveGraphics", LoadSceneMode.Additive);
+            Container.BindInterfacesAndSelfTo<UserGraphics>().FromNew().AsSingle().WithArguments(volumeProfile).NonLazy();
         }
     }
 }
