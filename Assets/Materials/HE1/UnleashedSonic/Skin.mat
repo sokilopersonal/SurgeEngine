@@ -30,6 +30,8 @@ Material:
   - _DISABLE_SSR
   - _DISABLE_SSR_TRANSPARENT
   - _DOUBLESIDED_ON
+  - _MATERIAL_FEATURE_SUBSURFACE_SCATTERING
+  - _MATERIAL_FEATURE_TRANSMISSION
   m_InvalidKeywords:
   - _NORMALMAP_TANGENT_SPACE
   m_LightmapFlags: 4
@@ -267,7 +269,7 @@ Material:
     - _IridescenceThickness: 1
     - _LightmapSampleBlend: 1
     - _LinkDetailsWithBase: 1
-    - _MaterialID: 1
+    - _MaterialID: 0
     - _MaterialTypeMask: 2
     - _Metallic: 0
     - _MetallicRemapMax: 1
@@ -302,10 +304,10 @@ Material:
     - _SpecularAAThreshold: 0.2
     - _SpecularOcclusionMode: 1
     - _SrcBlend: 1
-    - _StencilRef: 0
+    - _StencilRef: 4
     - _StencilRefDepth: 0
     - _StencilRefDistortionVec: 4
-    - _StencilRefGBuffer: 2
+    - _StencilRefGBuffer: 6
     - _StencilRefMV: 32
     - _StencilWriteMask: 6
     - _StencilWriteMaskDepth: 9
@@ -321,7 +323,7 @@ Material:
     - _TransmissionEnable: 1
     - _TransmissionMask: 1
     - _TransmissionProfile: 2.8566177
-    - _TransmissionThickness: 0.3
+    - _TransmissionThickness: 0.225
     - _TransparentBackfaceEnable: 0
     - _TransparentCullMode: 2
     - _TransparentDepthPostpassEnable: 0
