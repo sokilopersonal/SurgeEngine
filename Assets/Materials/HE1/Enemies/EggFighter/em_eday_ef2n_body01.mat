@@ -248,8 +248,8 @@ Material:
     - _EmissionIntensity: 1
     - _EmissionMaskIntensity: 0.5
     - _EmissionPowerFalloff: 0
-    - _EmissionPowerReflection: 0.5
-    - _EmissionPowerSpecular: 0.25
+    - _EmissionPowerReflection: 0.25
+    - _EmissionPowerSpecular: 0.5
     - _EmissiveColorMode: 1
     - _EmissiveExposureWeight: 1
     - _EmissiveIntensity: 1
@@ -283,7 +283,7 @@ Material:
     - _LinkDetailsWithBase: 1
     - _MaterialID: 1
     - _MaterialTypeMask: 18
-    - _Metallic: 0.25
+    - _Metallic: 1
     - _MetallicRemapMax: 1
     - _MetallicRemapMin: 0
     - _Mode: 0
@@ -301,7 +301,7 @@ Material:
     - _PPDPrimitiveWidth: 1
     - _Parallax: 0.02
     - _PerPixelSorting: 0
-    - _PowPower: 0.75
+    - _PowPower: 1
     - _RayTracing: 0
     - _ReceivesSSR: 0
     - _ReceivesSSRTransparent: 0
@@ -343,6 +343,8 @@ Material:
     - _Thickness: 1
     - _TransmissionEnable: 1
     - _TransmissionMask: 1
+    - _TransmissionProfile: 0
+    - _TransmissionThickness: 0.5
     - _TransparentBackfaceEnable: 0
     - _TransparentCullMode: 2
     - _TransparentDepthPostpassEnable: 0
@@ -388,6 +390,7 @@ Material:
     - _SSSProfile_Asset: {r: 0, g: 0, b: 0, a: 0}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
     - _ThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
+    - _TransmissionProfile_Asset: {r: 0, g: 0, b: 0, a: 0}
     - _TransmittanceColor: {r: 1, g: 1, b: 1, a: 1}
     - _UVDetailsMappingMask: {r: 1, g: 0, b: 0, a: 0}
     - _UVMappingMask: {r: 1, g: 0, b: 0, a: 0}
