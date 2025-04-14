@@ -26,6 +26,9 @@ namespace SurgeEngine.Code.Tools
         private const int MaxRefractionQuality = 2;
         private const int MaxMaterialQuality = 3;
 
+        public event Action<GraphicsData> OnDataLoaded;
+        public event Action<GraphicsData> OnDataApplied;
+
         private readonly string[] _refractionQualityKeywords =
         {
             "_REFRACTIONQUALITY_NATIVE",
@@ -248,10 +251,6 @@ namespace SurgeEngine.Code.Tools
             
             // Refraction Quality
             SetKeyword(_refractionQualityKeywords, MaxRefractionQuality - (int)_data.refractionQuality);
-            
-            // Anti-Aliasing Quality
-            // var hdCameraData = Camera.main.GetComponent<HDAdditionalCameraData>();
-            // hdCameraData.TAAQuality = (HDAdditionalCameraData.TAAQualityLevel)_data.antiAliasingQuality;
         }
 
         public void Save()
@@ -262,14 +261,22 @@ namespace SurgeEngine.Code.Tools
                 _data.textureQuality = (TextureQuality)(MaxTextureQuality - QualitySettings.globalTextureMipmapLimit);
                 _data.sunShadowsQuality = (ShadowsQuality)_sunData.shadowResolution.level;
                 if (_additionalLightsData.Count > 0) _data.additionalShadowsQuality = (ShadowsQuality)_additionalLightsData[0].shadowResolution.level;
-                _data.bloomQuality = _volume.TryGet(out Bloom bloom) ? bloom.active ? (BloomQuality)bloom.quality.value + 1 : BloomQuality.Off : BloomQuality.Medium;
-                _data.aoQuality = _volume.TryGet(out ScreenSpaceAmbientOcclusion ssao) ? ssao.active ? (AmbientOcclusionQuality)ssao.quality.value + 1 : AmbientOcclusionQuality.Off : AmbientOcclusionQuality.Medium;
-                _data.motionBlurQuality = _volume.TryGet(out MotionBlur motionBlur) ? motionBlur.active ? (MotionBlurQuality)motionBlur.quality.value + 1 : MotionBlurQuality.Off : MotionBlurQuality.Medium;
+                _data.bloomQuality = _volume.TryGet(out Bloom bloom) ? bloom.intensity.value > 0 ? (BloomQuality)bloom.quality.value + 1 : BloomQuality.Off : BloomQuality.Medium;
+                _data.aoQuality = _volume.TryGet(out ScreenSpaceAmbientOcclusion ssao) ? ssao.intensity.value > 0 ? (AmbientOcclusionQuality)ssao.quality.value + 1 : AmbientOcclusionQuality.Off : AmbientOcclusionQuality.Medium;
+                _data.motionBlurQuality = _volume.TryGet(out MotionBlur motionBlur) ? motionBlur.intensity.value > 0 ? (MotionBlurQuality)motionBlur.quality.value + 1 : MotionBlurQuality.Off : MotionBlurQuality.Medium;
                 _data.refractionQuality = (RefractionQuality)MaxRefractionQuality - Array.FindIndex(_refractionQualityKeywords, Shader.IsKeywordEnabled);
-                _data.screenSpaceReflectionQuality = _volume.TryGet(out ScreenSpaceReflection ssr) ? ssr.active ? (ScreenSpaceReflectionQuality)ssr.quality.value + 1 : ScreenSpaceReflectionQuality.Off : ScreenSpaceReflectionQuality.High;
-                _data.antiAliasingQuality = (AntiAliasingQuality)Camera.main.GetComponent<HDAdditionalCameraData>().TAAQuality;
+                _data.screenSpaceReflectionQuality = _volume.TryGet(out ScreenSpaceReflection ssr) ? ssr.enabled.value ? (ScreenSpaceReflectionQuality)ssr.quality.value + 1 : ScreenSpaceReflectionQuality.Off : ScreenSpaceReflectionQuality.High;
+
+                OnDataApplied?.Invoke(_data);
+                
+                var cameraData = Camera.main.GetComponent<HDAdditionalCameraData>();
+                if (cameraData)
+                {
+                    _data.antiAliasingQuality = (AntiAliasingQuality)cameraData.TAAQuality;
+                }
             
-                File.WriteAllText(path, JsonUtility.ToJson(_data));
+                File.WriteAllText(path, JsonUtility.ToJson(_data, true));
+                
             }
         }
         
@@ -277,7 +284,9 @@ namespace SurgeEngine.Code.Tools
         {
             if (File.Exists(GetDataPath()))
             {
-                return JsonUtility.FromJson<GraphicsData>(File.ReadAllText(GetDataPath()));
+                var data = JsonUtility.FromJson<GraphicsData>(File.ReadAllText(GetDataPath()));
+                OnDataLoaded?.Invoke(data);
+                return data;
             }
 
             return new GraphicsData();
@@ -285,7 +294,7 @@ namespace SurgeEngine.Code.Tools
         
         public GraphicsData GetGraphicsData() => _data;
 
-        private string GetDataPath() => Application.persistentDataPath + FileName;
+        private string GetDataPath() => Application.persistentDataPath + "/" + FileName;
     }
 
     [Serializable]
@@ -299,7 +308,7 @@ namespace SurgeEngine.Code.Tools
         public TextureQuality textureQuality = TextureQuality.High;
         public RefractionQuality refractionQuality = RefractionQuality.Native;
         public ScreenSpaceReflectionQuality screenSpaceReflectionQuality = ScreenSpaceReflectionQuality.Medium;
-        public AntiAliasingQuality antiAliasingQuality = AntiAliasingQuality.Low;
+        public AntiAliasingQuality antiAliasingQuality = AntiAliasingQuality.High;
     }
     
     public enum TextureQuality
@@ -368,7 +377,6 @@ namespace SurgeEngine.Code.Tools
     {
         Low = 0,
         Medium = 1,
-        High = 2,
-        VeryHigh = 3
+        High = 2
     }
 }
