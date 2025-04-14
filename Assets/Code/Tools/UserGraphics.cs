@@ -276,7 +276,6 @@ namespace SurgeEngine.Code.Tools
                 }
             
                 File.WriteAllText(path, JsonUtility.ToJson(_data, true));
-                
             }
         }
         

@@ -36,9 +36,9 @@ namespace SurgeEngine.Code.UI
             {
                 foreach (var page in _menusDictionary.Values)
                 {
-                    page.Group.alpha = 0;
-                    page.Group.interactable = false;
-                    page.Group.blocksRaycasts = false;
+                    // page.Group.alpha = 0;
+                    // page.Group.interactable = false;
+                    // page.Group.blocksRaycasts = false;
                 }
             }
             

@@ -9,7 +9,7 @@ namespace SurgeEngine.Code.UI.Menus
 
         protected override void InsertIntroAnimations()
         {
-            AnimationSequence.Join(Group.DOFade(1f, duration)).SetEase(easing);
+            AnimationSequence.Join(Group.DOFade(1f, duration).From(0)).SetEase(easing);
         }
 
         protected override void InsertOutroAnimations()
