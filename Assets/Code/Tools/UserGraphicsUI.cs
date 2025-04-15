@@ -50,10 +50,41 @@ namespace SurgeEngine.Code.Tools
             ssrQualityBar.SetIndex((int)data.screenSpaceReflectionQuality);
             antiAliasingQualityBar.SetIndex((int)data.antiAliasingQuality);
             subSurfaceScatteringQualityBar.SetIndex((int)data.subSurfaceScatteringQuality);
+            
+            textureQualityBar.OnIndexChanged += _ => _graphics.Apply();
+            sunShadowsQualityBar.OnIndexChanged += _ => _graphics.Apply();
+            punctualShadowsQualityBar.OnIndexChanged += _ => _graphics.Apply();
+            contactShadowsQualityBar.OnIndexChanged += _ => _graphics.Apply();
+            bloomBar.OnIndexChanged += _ => _graphics.Apply();
+            aoBar.OnIndexChanged += _ => _graphics.Apply();
+            motionBlurBar.OnIndexChanged += _ => _graphics.Apply();
+            refractionQualityBar.OnIndexChanged += _ => _graphics.Apply();
+            ssrQualityBar.OnIndexChanged += _ => _graphics.Apply();
+            antiAliasingQualityBar.OnIndexChanged += _ => _graphics.Apply();
+            subSurfaceScatteringQualityBar.OnIndexChanged += _ => _graphics.Apply();
         }
 
         public void Save()
         {
+            _graphics.Save();
+        }
+
+        public void Revert()
+        {
+            var data = _graphics.Load();
+            
+            textureQualityBar.SetIndex((int)data.textureQuality);
+            sunShadowsQualityBar.SetIndex((int)data.sunShadowsQuality);
+            punctualShadowsQualityBar.SetIndex((int)data.additionalShadowsQuality);
+            contactShadowsQualityBar.SetIndex((int)data.contactShadowsQuality);
+            bloomBar.SetIndex((int)data.bloomQuality);
+            aoBar.SetIndex((int)data.aoQuality);
+            motionBlurBar.SetIndex((int)data.motionBlurQuality);
+            refractionQualityBar.SetIndex((int)data.refractionQuality);
+            ssrQualityBar.SetIndex((int)data.screenSpaceReflectionQuality);
+            antiAliasingQualityBar.SetIndex((int)data.antiAliasingQuality);
+            subSurfaceScatteringQualityBar.SetIndex((int)data.subSurfaceScatteringQuality);
+            
             _graphics.Apply();
             _graphics.Save();
         }

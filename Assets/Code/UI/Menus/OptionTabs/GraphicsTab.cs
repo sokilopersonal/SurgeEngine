@@ -3,16 +3,31 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.UI.Menus.OptionTabs
 {
-    public class GraphicsTab : Page
+    public class GraphicsTab : Tab
     {
+        [SerializeField] private CanvasGroup background; // We need to hide the background when tab is active
+
+        private float _startBackgroundAlpha;
+
+        protected override void Awake()
+        {
+            base.Awake();
+            
+            _startBackgroundAlpha = background.alpha;
+        }
+
         protected override void InsertIntroAnimations()
         {
-            AnimationSequence.Join(Group.DOFade(1f, duration).From(0));
+            base.InsertIntroAnimations();
+            
+            AnimationSequence.Join(background.DOFade(0f, duration).From(_startBackgroundAlpha));
         }
 
         protected override void InsertOutroAnimations()
         {
-            AnimationSequence.Join(Group.DOFade(0f, duration));
+            base.InsertOutroAnimations();
+            
+            AnimationSequence.Join(background.DOFade(_startBackgroundAlpha, duration));
         }
     }
 }

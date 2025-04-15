@@ -3,16 +3,16 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.UI.Menus.OptionTabs
 {
-    public class AudioTab : Tab
+    public class Tab : Page
     {
         protected override void InsertIntroAnimations()
         {
-            base.InsertIntroAnimations();
+            AnimationSequence.Join(Group.DOFade(1f, duration).From(0));
         }
 
         protected override void InsertOutroAnimations()
         {
-            base.InsertOutroAnimations();
+            AnimationSequence.Join(Group.DOFade(0f, duration));
         }
     }
 }
