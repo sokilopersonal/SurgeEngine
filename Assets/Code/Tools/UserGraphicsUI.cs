@@ -10,6 +10,7 @@ namespace SurgeEngine.Code.Tools
         [SerializeField] private OptionBar textureQualityBar;
         [SerializeField] private OptionBar sunShadowsQualityBar;
         [SerializeField] private OptionBar punctualShadowsQualityBar;
+        [SerializeField] private OptionBar contactShadowsQualityBar;
         [SerializeField] private OptionBar pcssBar;
         [SerializeField] private OptionBar bloomBar;
         [SerializeField] private OptionBar aoBar;
@@ -27,6 +28,8 @@ namespace SurgeEngine.Code.Tools
             textureQualityBar.OnIndexChanged += index => _graphics.SetTextureQuality((TextureQuality)index);
             sunShadowsQualityBar.OnIndexChanged += index => _graphics.SetSunShadowsQuality((ShadowsQuality)index);
             punctualShadowsQualityBar.OnIndexChanged += index => _graphics.SetAdditionalShadowsQuality((ShadowsQuality)index);
+            contactShadowsQualityBar.OnIndexChanged +=
+                index => _graphics.SetContactShadows((ContactShadowsQuality)index);
             bloomBar.OnIndexChanged += index => _graphics.SetBloomQuality((BloomQuality)index);
             aoBar.OnIndexChanged += index => _graphics.SetAmbientOcclusionQuality((AmbientOcclusionQuality)index);
             motionBlurBar.OnIndexChanged += index => _graphics.SetMotionBlurQuality((MotionBlurQuality)index);
@@ -37,6 +40,7 @@ namespace SurgeEngine.Code.Tools
             textureQualityBar.SetIndex((int)data.textureQuality);
             sunShadowsQualityBar.SetIndex((int)data.sunShadowsQuality);
             punctualShadowsQualityBar.SetIndex((int)data.additionalShadowsQuality);
+            contactShadowsQualityBar.SetIndex((int)data.contactShadowsQuality);
             bloomBar.SetIndex((int)data.bloomQuality);
             aoBar.SetIndex((int)data.aoQuality);
             motionBlurBar.SetIndex((int)data.motionBlurQuality);

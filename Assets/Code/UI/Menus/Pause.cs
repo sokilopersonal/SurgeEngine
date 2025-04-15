@@ -19,7 +19,7 @@ namespace SurgeEngine.Code.UI
         private void Start()
         {
             _startWidth = 500f;
-            _endY = 175f;
+            _endY = 150f;
             _endHeight = 660f;
         }
 

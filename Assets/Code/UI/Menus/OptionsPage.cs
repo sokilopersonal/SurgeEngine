@@ -14,7 +14,7 @@ namespace SurgeEngine.Code.UI.Menus
         private void Start()
         {
             _startWidth = 550f;
-            _endY = 175f;
+            _endY = 125f;
             _endHeight = 750f;
         }
 

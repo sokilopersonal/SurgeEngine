@@ -1,5 +1,54 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8263137367403428067
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56b145d2b9ee1ac4f846968484e7485a, type: 3}
+  m_Name: ContactShadows
+  m_EditorClassIdentifier: 
+  active: 1
+  quality:
+    m_OverrideState: 0
+    m_Value: 2
+  enable:
+    m_OverrideState: 1
+    m_Value: 1
+  length:
+    m_OverrideState: 0
+    m_Value: 0.15
+  opacity:
+    m_OverrideState: 0
+    m_Value: 1
+  distanceScaleFactor:
+    m_OverrideState: 0
+    m_Value: 0.5
+  maxDistance:
+    m_OverrideState: 0
+    m_Value: 50
+  minDistance:
+    m_OverrideState: 0
+    m_Value: 0
+  fadeDistance:
+    m_OverrideState: 0
+    m_Value: 5
+  fadeInDistance:
+    m_OverrideState: 0
+    m_Value: 0
+  rayBias:
+    m_OverrideState: 0
+    m_Value: 0.2
+  thicknessScale:
+    m_OverrideState: 0
+    m_Value: 0.15
+  m_SampleCount:
+    m_OverrideState: 0
+    m_Value: 16
 --- !u!114 &-2081913548374624388
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -61,7 +110,7 @@ MonoBehaviour:
   active: 1
   quality:
     m_OverrideState: 1
-    m_Value: 2
+    m_Value: 0
   rayTracing:
     m_OverrideState: 1
     m_Value: 0
@@ -102,31 +151,31 @@ MonoBehaviour:
     m_Value: 1
   m_StepCount:
     m_OverrideState: 1
-    m_Value: 2
+    m_Value: 8
   m_FullResolution:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 1
   m_MaximumRadiusInPixels:
     m_OverrideState: 1
-    m_Value: 24
+    m_Value: 40
   m_BilateralUpsample:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 1
   m_DirectionCount:
     m_OverrideState: 1
     m_Value: 2
   m_RayLength:
     m_OverrideState: 1
-    m_Value: 0.5
+    m_Value: 20
   m_SampleCount:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 8
   m_Denoise:
     m_OverrideState: 1
     m_Value: 1
   m_DenoiserRadius:
     m_OverrideState: 1
-    m_Value: 0.25
+    m_Value: 0.65
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -144,6 +193,7 @@ MonoBehaviour:
   - {fileID: 7705459864720019741}
   - {fileID: -736629253712424314}
   - {fileID: 4586086942392342780}
+  - {fileID: -8263137367403428067}
 --- !u!114 &4586086942392342780
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -159,7 +209,7 @@ MonoBehaviour:
   active: 1
   quality:
     m_OverrideState: 0
-    m_Value: 2
+    m_Value: 0
   enabled:
     m_OverrideState: 1
     m_Value: 1
@@ -213,7 +263,7 @@ MonoBehaviour:
     m_Value: 0
   m_RayMaxIterations:
     m_OverrideState: 0
-    m_Value: 16
+    m_Value: 64
   rayMiss:
     m_OverrideState: 0
     m_Value: 3
@@ -276,7 +326,7 @@ MonoBehaviour:
   active: 1
   quality:
     m_OverrideState: 0
-    m_Value: 2
+    m_Value: 0
   intensity:
     m_OverrideState: 1
     m_Value: 1

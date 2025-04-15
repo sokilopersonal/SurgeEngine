@@ -266,13 +266,14 @@ namespace SurgeEngine.Code.Tools
             // Contact Shadows Quality
             if (_volume.TryGet(out ContactShadows contactShadows))
             {
+                contactShadows.enable.overrideState = true;
                 if (_data.contactShadowsQuality == ContactShadowsQuality.Off)
                 {
-                    _hdCameraData.renderingPathCustomFrameSettings.SetEnabled(FrameSettingsField.ContactShadows, false);
+                    contactShadows.enable.value = false;
                 }
                 else
                 {
-                    _hdCameraData.renderingPathCustomFrameSettings.SetEnabled(FrameSettingsField.ContactShadows, true);
+                    contactShadows.enable.value = true;
                     contactShadows.quality.value = (int)_data.contactShadowsQuality - 1;
                 }
             }
