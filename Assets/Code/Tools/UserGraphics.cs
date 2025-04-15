@@ -305,7 +305,7 @@ namespace SurgeEngine.Code.Tools
                 _data.refractionQuality = (RefractionQuality)MaxRefractionQuality - Array.FindIndex(_refractionQualityKeywords, Shader.IsKeywordEnabled);
                 _data.screenSpaceReflectionQuality = _volume.TryGet(out ScreenSpaceReflection ssr) ? _hdCameraData.renderingPathCustomFrameSettings.IsEnabled(FrameSettingsField.SSR) ? (ScreenSpaceReflectionQuality)ssr.quality.value + 1 : ScreenSpaceReflectionQuality.Off : ScreenSpaceReflectionQuality.High;
                 _data.antiAliasingQuality = (AntiAliasingQuality)_hdCameraData.TAAQuality;
-                _data.contactShadowsQuality = _volume.TryGet(out ContactShadows cs) ? _hdCameraData.renderingPathCustomFrameSettings.IsEnabled(FrameSettingsField.ContactShadows) ? (ContactShadowsQuality)cs.quality.value + 1 : ContactShadowsQuality.Off : ContactShadowsQuality.Medium;
+                _data.contactShadowsQuality = _volume.TryGet(out ContactShadows cs) ? cs.enable.value ? (ContactShadowsQuality)cs.quality.value + 1 : ContactShadowsQuality.Off : ContactShadowsQuality.Medium;
                 
                 OnDataApplied?.Invoke(_data);
             
