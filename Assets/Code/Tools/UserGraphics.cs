@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using SurgeEngine.Code.CommonObjects.Lighting;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.HighDefinition;
@@ -14,10 +16,7 @@ namespace SurgeEngine.Code.Tools
         private const string FileName = "GraphicsSettings.json";
         private readonly VolumeProfile _volume;
 
-        private Light _sun;
-        private HDAdditionalLightData _sunData;
-        private readonly List<Light> _additionalLights;
-        private readonly List<HDAdditionalLightData> _additionalLightsData;
+        private readonly List<LightDefiner> _lightsData;
 
         private readonly GraphicsData _data;
         private HDAdditionalCameraData _hdCameraData;
@@ -59,8 +58,7 @@ namespace SurgeEngine.Code.Tools
                 _volume.Add<ScreenSpaceAmbientOcclusion>();
             }
             
-            _additionalLights = new List<Light>();
-            _additionalLightsData = new List<HDAdditionalLightData>();
+            _lightsData = new List<LightDefiner>();
 
             _data = Load();
         }
@@ -73,21 +71,7 @@ namespace SurgeEngine.Code.Tools
 
         private void FindLights()
         {
-            _additionalLights.Clear();
-            _additionalLightsData.Clear();
             
-            var lights = Object.FindObjectsByType<Light>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-            foreach (var light in lights)
-            {
-                if (light.type == LightType.Directional)
-                {
-                    SetSun(light);
-                }
-                else
-                { 
-                    AddAdditionalLight(light);
-                }
-            }
         }
 
         public void SetTextureQuality(TextureQuality value)
@@ -145,30 +129,14 @@ namespace SurgeEngine.Code.Tools
             _data.subSurfaceScatteringQuality = level;
         }
 
-        private void SetSun(Light sun)
+        public void AddLight(LightDefiner data)
         {
-            if (sun.type == LightType.Directional)
-            {
-                _sun = sun;
-                _sunData = sun.GetComponent<HDAdditionalLightData>();
-            }
-            else
-            {
-                Debug.LogError("This is not a directional light (sun).");
-            }
+            _lightsData.Add(data);
         }
-
-        private void AddAdditionalLight(Light light)
+        
+        public void RemoveLight(LightDefiner data)
         {
-            if (light.type != LightType.Directional)
-            {
-                _additionalLights.Add(light);
-                _additionalLightsData.Add(light.GetComponent<HDAdditionalLightData>());
-            }
-            else
-            {
-                Debug.LogError("This is not a additional light.");
-            }
+            _lightsData.Remove(data);
         }
 
         public void Tick()
@@ -199,18 +167,25 @@ namespace SurgeEngine.Code.Tools
             QualitySettings.globalTextureMipmapLimit = MaxTextureQuality - (int)_data.textureQuality;
             
             // Sun Shadows
-            if (_sun != null) 
+            foreach (var light in _lightsData)
             {
-                var data = _sun.GetComponent<HDAdditionalLightData>();
-                data.EnableShadows(true);
-                data.shadowResolution.level = (int)_data.sunShadowsQuality;
+                if (light.Component.type == LightType.Directional)
+                {
+                    var data = light.Data;
+                    data.shadowResolution.level = (int)_data.sunShadowsQuality;
+                }
             }
             
             // Additional Shadows
-            foreach (var data in _additionalLights)
+            foreach (var light in _lightsData)
             {
-                //var lightData = data.GetComponent<HDAdditionalLightData>();
-                //lightData.shadowResolution.level = (int)_data.additionalShadowsQuality;
+                if (light.Component.type == LightType.Directional)
+                {
+                    return;
+                }
+                
+                var data = light.Data;
+                data.shadowResolution.level = (int)_data.additionalShadowsQuality;
             }
             
             // Bloom Quality
@@ -313,8 +288,23 @@ namespace SurgeEngine.Code.Tools
             {
                 var path = GetDataPath();
                 _data.textureQuality = (TextureQuality)(MaxTextureQuality - QualitySettings.globalTextureMipmapLimit);
-                _data.sunShadowsQuality = (ShadowsQuality)_sunData.shadowResolution.level;
-                if (_additionalLightsData.Count > 0) _data.additionalShadowsQuality = (ShadowsQuality)_additionalLightsData[0].shadowResolution.level;
+
+                if (_lightsData.Count > 0)
+                {
+                    var sun = _lightsData.Find(x => x.Component.type == LightType.Directional);
+                    if (sun)
+                    {
+                        _data.sunShadowsQuality = (ShadowsQuality)sun.Data.shadowResolution.level;
+                    }
+                    
+                    var additionalLight = _lightsData.Find(x => x.Component.type != LightType.Directional);
+                    if (additionalLight)
+                    {
+                        _data.additionalShadowsQuality = (ShadowsQuality)sun.Data.shadowResolution.level;
+                        Debug.Log(additionalLight.transform.name);
+                    }
+                }
+                
                 _data.bloomQuality = _volume.TryGet(out Bloom bloom) ? _hdCameraData.renderingPathCustomFrameSettings.IsEnabled(FrameSettingsField.Bloom) ? (BloomQuality)bloom.quality.value + 1 : BloomQuality.Off : BloomQuality.Medium;
                 _data.aoQuality = _volume.TryGet(out ScreenSpaceAmbientOcclusion ssao) ? _hdCameraData.renderingPathCustomFrameSettings.IsEnabled(FrameSettingsField.SSAO) ? (AmbientOcclusionQuality)ssao.quality.value + 1 : AmbientOcclusionQuality.Off : AmbientOcclusionQuality.Medium;
                 _data.motionBlurQuality = _volume.TryGet(out MotionBlur motionBlur) ? _hdCameraData.renderingPathCustomFrameSettings.IsEnabled(FrameSettingsField.MotionBlur) ? (MotionBlurQuality)motionBlur.quality.value + 1 : MotionBlurQuality.Off : MotionBlurQuality.Medium;

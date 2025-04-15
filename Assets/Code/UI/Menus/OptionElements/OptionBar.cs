@@ -31,7 +31,13 @@ namespace SurgeEngine.Code.UI.Menus.OptionElements
         private RectTransform _rectTransform;
         private AutoScroll _autoScroll;
 
-        public int Index { get; protected set; }
+        public int Index
+        {
+            get => _index;
+            protected set => _index = Mathf.Clamp(value, 0, states.Length - 1);
+        }
+        private int _index;
+        
         private bool IsSelected
         {
             get
@@ -94,8 +100,7 @@ namespace SurgeEngine.Code.UI.Menus.OptionElements
                     Index++;
                     break;
             }
-            
-            Index = Mathf.Clamp(Index, 0, states.Length - 1);
+
             OnIndexChanged?.Invoke(Index);
             
             UpdateText(Index);
