@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24f077503be6ae942a1e1245dbd53ea9, type: 3}
   m_Name: Bloom
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   quality:
     m_OverrideState: 0
     m_Value: 2
@@ -21,7 +21,7 @@ MonoBehaviour:
     m_Value: 1.25
   intensity:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 1
   scatter:
     m_OverrideState: 1
     m_Value: 0.6
@@ -61,7 +61,7 @@ MonoBehaviour:
   active: 1
   quality:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 2
   rayTracing:
     m_OverrideState: 1
     m_Value: 0
@@ -75,13 +75,13 @@ MonoBehaviour:
     m_OverrideState: 1
     m_Value: 1.25
   spatialBilateralAggressiveness:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 1
   temporalAccumulation:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 1
   ghostingReduction:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 1
   blurSharpness:
     m_OverrideState: 1
@@ -102,13 +102,13 @@ MonoBehaviour:
     m_Value: 1
   m_StepCount:
     m_OverrideState: 1
-    m_Value: 4
+    m_Value: 2
   m_FullResolution:
     m_OverrideState: 1
     m_Value: 0
   m_MaximumRadiusInPixels:
     m_OverrideState: 1
-    m_Value: 32
+    m_Value: 24
   m_BilateralUpsample:
     m_OverrideState: 1
     m_Value: 0
@@ -117,16 +117,16 @@ MonoBehaviour:
     m_Value: 2
   m_RayLength:
     m_OverrideState: 1
-    m_Value: 3
+    m_Value: 0.5
   m_SampleCount:
     m_OverrideState: 1
-    m_Value: 2
+    m_Value: 1
   m_Denoise:
     m_OverrideState: 1
     m_Value: 1
   m_DenoiserRadius:
     m_OverrideState: 1
-    m_Value: 0.5
+    m_Value: 0.25
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -159,7 +159,7 @@ MonoBehaviour:
   active: 1
   quality:
     m_OverrideState: 0
-    m_Value: 0
+    m_Value: 2
   enabled:
     m_OverrideState: 1
     m_Value: 1

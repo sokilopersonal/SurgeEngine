@@ -138,6 +138,11 @@ namespace SurgeEngine.Code.Tools
             _data.antiAliasingQuality = level;
         }
 
+        public void SetContactShadows(ContactShadowsQuality level)
+        {
+            _data.contactShadowsQuality = level;
+        }
+
         private void SetSun(Light sun)
         {
             if (sun.type == LightType.Directional)
@@ -258,6 +263,20 @@ namespace SurgeEngine.Code.Tools
                 }
             }
             
+            // Contact Shadows Quality
+            if (_volume.TryGet(out ContactShadows contactShadows))
+            {
+                if (_data.contactShadowsQuality == ContactShadowsQuality.Off)
+                {
+                    _hdCameraData.renderingPathCustomFrameSettings.SetEnabled(FrameSettingsField.ContactShadows, false);
+                }
+                else
+                {
+                    _hdCameraData.renderingPathCustomFrameSettings.SetEnabled(FrameSettingsField.ContactShadows, true);
+                    contactShadows.quality.value = (int)_data.contactShadowsQuality - 1;
+                }
+            }
+            
             // Refraction Quality
             SetKeyword(_refractionQualityKeywords, MaxRefractionQuality - (int)_data.refractionQuality);
             
@@ -285,6 +304,7 @@ namespace SurgeEngine.Code.Tools
                 _data.refractionQuality = (RefractionQuality)MaxRefractionQuality - Array.FindIndex(_refractionQualityKeywords, Shader.IsKeywordEnabled);
                 _data.screenSpaceReflectionQuality = _volume.TryGet(out ScreenSpaceReflection ssr) ? _hdCameraData.renderingPathCustomFrameSettings.IsEnabled(FrameSettingsField.SSR) ? (ScreenSpaceReflectionQuality)ssr.quality.value + 1 : ScreenSpaceReflectionQuality.Off : ScreenSpaceReflectionQuality.High;
                 _data.antiAliasingQuality = (AntiAliasingQuality)_hdCameraData.TAAQuality;
+                _data.contactShadowsQuality = _volume.TryGet(out ContactShadows cs) ? _hdCameraData.renderingPathCustomFrameSettings.IsEnabled(FrameSettingsField.ContactShadows) ? (ContactShadowsQuality)cs.quality.value + 1 : ContactShadowsQuality.Off : ContactShadowsQuality.Medium;
                 
                 OnDataApplied?.Invoke(_data);
             
@@ -321,6 +341,7 @@ namespace SurgeEngine.Code.Tools
         public RefractionQuality refractionQuality = RefractionQuality.Native;
         public ScreenSpaceReflectionQuality screenSpaceReflectionQuality = ScreenSpaceReflectionQuality.Medium;
         public AntiAliasingQuality antiAliasingQuality = AntiAliasingQuality.High;
+        public ContactShadowsQuality contactShadowsQuality = ContactShadowsQuality.Medium;
     }
     
     public enum TextureQuality
@@ -390,5 +411,13 @@ namespace SurgeEngine.Code.Tools
         Low = 0,
         Medium = 1,
         High = 2
+    }
+
+    public enum ContactShadowsQuality
+    {
+        Off = 0,
+        Low = 1,
+        Medium = 2,
+        High = 3
     }
 }
