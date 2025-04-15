@@ -140,6 +140,11 @@ namespace SurgeEngine.Code.Tools
             _data.contactShadowsQuality = level;
         }
 
+        public void SetSubSurfaceScattering(SubSurfaceScatteringQuality level)
+        {
+            _data.subSurfaceScatteringQuality = level;
+        }
+
         private void SetSun(Light sun)
         {
             if (sun.type == LightType.Directional)
@@ -263,16 +268,28 @@ namespace SurgeEngine.Code.Tools
             // Contact Shadows Quality
             if (_volume.TryGet(out ContactShadows contactShadows))
             {
-                contactShadows.enable.overrideState = true;
                 if (_data.contactShadowsQuality == ContactShadowsQuality.Off)
                 {
-                    contactShadows.enable.value = false;
+                    _hdCameraData.renderingPathCustomFrameSettings.SetEnabled(FrameSettingsField.ContactShadows, false);
+                    _hdCameraData.renderingPathCustomFrameSettings.SetEnabled(FrameSettingsField.ContactShadowsAsync, false);
                 }
                 else
                 {
-                    contactShadows.enable.value = true;
+                    _hdCameraData.renderingPathCustomFrameSettings.SetEnabled(FrameSettingsField.ContactShadows, true);
+                    _hdCameraData.renderingPathCustomFrameSettings.SetEnabled(FrameSettingsField.ContactShadowsAsync, true);
                     contactShadows.quality.value = (int)_data.contactShadowsQuality - 1;
                 }
+            }
+
+            if (_data.subSurfaceScatteringQuality == SubSurfaceScatteringQuality.Off)
+            {
+                _hdCameraData.renderingPathCustomFrameSettings.SetEnabled(FrameSettingsField.Transmission, false);
+                _hdCameraData.renderingPathCustomFrameSettings.SetEnabled(FrameSettingsField.SubsurfaceScattering, false);
+            }
+            else
+            {
+                _hdCameraData.renderingPathCustomFrameSettings.SetEnabled(FrameSettingsField.Transmission, true);
+                _hdCameraData.renderingPathCustomFrameSettings.SetEnabled(FrameSettingsField.SubsurfaceScattering, true);
             }
             
             // Refraction Quality
@@ -302,7 +319,9 @@ namespace SurgeEngine.Code.Tools
                 _data.refractionQuality = (RefractionQuality)MaxRefractionQuality - Array.FindIndex(_refractionQualityKeywords, Shader.IsKeywordEnabled);
                 _data.screenSpaceReflectionQuality = _volume.TryGet(out ScreenSpaceReflection ssr) ? _hdCameraData.renderingPathCustomFrameSettings.IsEnabled(FrameSettingsField.SSR) ? (ScreenSpaceReflectionQuality)ssr.quality.value + 1 : ScreenSpaceReflectionQuality.Off : ScreenSpaceReflectionQuality.High;
                 _data.antiAliasingQuality = (AntiAliasingQuality)_hdCameraData.TAAQuality;
-                _data.contactShadowsQuality = _volume.TryGet(out ContactShadows cs) ? cs.enable.value ? (ContactShadowsQuality)cs.quality.value + 1 : ContactShadowsQuality.Off : ContactShadowsQuality.Medium;
+                _data.contactShadowsQuality = _volume.TryGet(out ContactShadows cs) ? _hdCameraData.renderingPathCustomFrameSettings.IsEnabled(FrameSettingsField.ContactShadows) ? (ContactShadowsQuality)cs.quality.value + 1 : ContactShadowsQuality.Off : ContactShadowsQuality.Medium;
+                _data.subSurfaceScatteringQuality = _hdCameraData.renderingPathCustomFrameSettings.IsEnabled(FrameSettingsField.Transmission) 
+                                                    && _hdCameraData.renderingPathCustomFrameSettings.IsEnabled(FrameSettingsField.SubsurfaceScattering) ? SubSurfaceScatteringQuality.On : SubSurfaceScatteringQuality.Off;
                 
                 OnDataApplied?.Invoke(_data);
             
@@ -340,6 +359,7 @@ namespace SurgeEngine.Code.Tools
         public ScreenSpaceReflectionQuality screenSpaceReflectionQuality = ScreenSpaceReflectionQuality.Medium;
         public AntiAliasingQuality antiAliasingQuality = AntiAliasingQuality.High;
         public ContactShadowsQuality contactShadowsQuality = ContactShadowsQuality.Medium;
+        public SubSurfaceScatteringQuality subSurfaceScatteringQuality = SubSurfaceScatteringQuality.On;
     }
     
     public enum TextureQuality
@@ -417,5 +437,11 @@ namespace SurgeEngine.Code.Tools
         Low = 1,
         Medium = 2,
         High = 3
+    }
+
+    public enum SubSurfaceScatteringQuality
+    {
+        Off = 0,
+        On = 1
     }
 }
