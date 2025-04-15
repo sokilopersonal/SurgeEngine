@@ -2436,7 +2436,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7432962546345267598
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2453,12 +2453,13 @@ RectTransform:
   - {fileID: 8676595407228736355}
   - {fileID: 6381229012009296279}
   - {fileID: 1838949796271572538}
+  - {fileID: 8521004666339315791}
   m_Father: {fileID: 7437726976546821187}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 90}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0, y: -315}
+  m_SizeDelta: {x: 1050, y: 90}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &7703873535368557095
 MonoBehaviour:
@@ -3089,7 +3090,7 @@ MonoBehaviour:
   startIndex: 0
   optionName: Punctual Shadows Quality
   optionDescription: Shadows quality of additional lights such as point, spot and
-    area lights. If PCSS is enabled, this will be overridden to Very High.
+    area lights.
   selectionGroup: {fileID: 4089582319257987726}
 --- !u!1 &1988022696522601802
 GameObject:
@@ -17739,8 +17740,7 @@ MonoBehaviour:
   stateText: {fileID: 4922149054726717129}
   startIndex: 0
   optionName: Sun Shadows Quality
-  optionDescription: "Quality of the shadows from the sun. If PCSS is enabled, this
-    will be overridden to Very High.\r"
+  optionDescription: "Quality of the shadows from the sun.\r"
   selectionGroup: {fileID: 7530968497521708103}
 --- !u!1 &5470339890503509632
 GameObject:
@@ -19595,7 +19595,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6713004277397065793}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -19604,12 +19604,12 @@ RectTransform:
   - {fileID: 5109429175120608397}
   - {fileID: 2380705308056276203}
   - {fileID: 3527356256088662290}
-  m_Father: {fileID: 7437726976546821187}
+  m_Father: {fileID: 7432962546345267598}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 90}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0, y: 105.00003}
+  m_SizeDelta: {x: 1050, y: 90}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &2028879600065798371
 MonoBehaviour:
@@ -31355,9 +31355,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3731283954076668010, guid: cdbf08eaadd86b54fb662df47af5ec2b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7511289273859504151}
-    - targetCorrespondingSourceObject: {fileID: 3731283954076668010, guid: cdbf08eaadd86b54fb662df47af5ec2b, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 8521004666339315791}
     - targetCorrespondingSourceObject: {fileID: 3731283954076668010, guid: cdbf08eaadd86b54fb662df47af5ec2b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7432962546345267598}
