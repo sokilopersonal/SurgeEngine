@@ -59,7 +59,6 @@ MonoBehaviour:
   components:
   - {fileID: -5485771276445389716}
   - {fileID: 3328597732035772239}
-  - {fileID: 8259387270190645824}
   - {fileID: 148131186152467594}
 --- !u!114 &148131186152467594
 MonoBehaviour:
@@ -279,31 +278,3 @@ MonoBehaviour:
   directionalLightsOnly:
     m_OverrideState: 1
     m_Value: 1
---- !u!114 &8259387270190645824
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b8bcdf71d7fafa419fca1ed162f5fc9, type: 3}
-  m_Name: ColorAdjustments
-  m_EditorClassIdentifier: 
-  active: 1
-  postExposure:
-    m_OverrideState: 0
-    m_Value: -0.25
-  contrast:
-    m_OverrideState: 1
-    m_Value: 5
-  colorFilter:
-    m_OverrideState: 0
-    m_Value: {r: 1, g: 1, b: 1, a: 1}
-  hueShift:
-    m_OverrideState: 0
-    m_Value: 0
-  saturation:
-    m_OverrideState: 0
-    m_Value: 0

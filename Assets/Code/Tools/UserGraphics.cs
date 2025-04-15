@@ -257,10 +257,12 @@ namespace SurgeEngine.Code.Tools
                 if (_data.screenSpaceReflectionQuality == ScreenSpaceReflectionQuality.Off)
                 {
                     _hdCameraData.renderingPathCustomFrameSettings.SetEnabled(FrameSettingsField.SSR, false);
+                    _hdCameraData.renderingPathCustomFrameSettings.SetEnabled(FrameSettingsField.SSRAsync, false);
                 }
                 else
                 {
                     _hdCameraData.renderingPathCustomFrameSettings.SetEnabled(FrameSettingsField.SSR, true);
+                    _hdCameraData.renderingPathCustomFrameSettings.SetEnabled(FrameSettingsField.SSRAsync, true);
                     ssr.quality.value = (int)_data.screenSpaceReflectionQuality - 1;
                 }
             }
