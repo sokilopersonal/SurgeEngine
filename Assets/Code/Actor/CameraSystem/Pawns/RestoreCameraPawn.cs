@@ -56,7 +56,7 @@ namespace SurgeEngine.Code.Actor.CameraSystem.Pawns
 
         protected override void AutoLook(float multiplier)
         {
-            _stateMachine.xAutoLook = 0f;
+            base.AutoLook(multiplier * _stateMachine.blendFactor);
         }
     }
 }
