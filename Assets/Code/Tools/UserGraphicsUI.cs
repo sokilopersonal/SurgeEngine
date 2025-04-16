@@ -71,22 +71,23 @@ namespace SurgeEngine.Code.Tools
 
         public void Revert()
         {
-            var data = _graphics.Load();
-            
-            textureQualityBar.SetIndex((int)data.textureQuality);
-            sunShadowsQualityBar.SetIndex((int)data.sunShadowsQuality);
-            punctualShadowsQualityBar.SetIndex((int)data.additionalShadowsQuality);
-            contactShadowsQualityBar.SetIndex((int)data.contactShadowsQuality);
-            bloomBar.SetIndex((int)data.bloomQuality);
-            aoBar.SetIndex((int)data.aoQuality);
-            motionBlurBar.SetIndex((int)data.motionBlurQuality);
-            refractionQualityBar.SetIndex((int)data.refractionQuality);
-            ssrQualityBar.SetIndex((int)data.screenSpaceReflectionQuality);
-            antiAliasingQualityBar.SetIndex((int)data.antiAliasingQuality);
-            subSurfaceScatteringQualityBar.SetIndex((int)data.subSurfaceScatteringQuality);
-            
-            _graphics.Apply();
-            _graphics.Save();
+            _graphics.Load<GraphicsData>(data =>
+            {
+                textureQualityBar.SetIndex((int)data.textureQuality);
+                sunShadowsQualityBar.SetIndex((int)data.sunShadowsQuality);
+                punctualShadowsQualityBar.SetIndex((int)data.additionalShadowsQuality);
+                contactShadowsQualityBar.SetIndex((int)data.contactShadowsQuality);
+                bloomBar.SetIndex((int)data.bloomQuality);
+                aoBar.SetIndex((int)data.aoQuality);
+                motionBlurBar.SetIndex((int)data.motionBlurQuality);
+                refractionQualityBar.SetIndex((int)data.refractionQuality);
+                ssrQualityBar.SetIndex((int)data.screenSpaceReflectionQuality);
+                antiAliasingQualityBar.SetIndex((int)data.antiAliasingQuality);
+                subSurfaceScatteringQualityBar.SetIndex((int)data.subSurfaceScatteringQuality);
+                
+                _graphics.Apply();
+                _graphics.Save();
+            });
         }
     }
 }

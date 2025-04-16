@@ -15,15 +15,16 @@ namespace SurgeEngine.Code.Tools
 
         private void Awake()
         {
-            var volumeData = _volumeManager.Load();
+            _volumeManager.Load<VolumeData>(volumeData =>
+            {
+                masterVolumeBar.OnIndexChanged += index => VolumeManager.SetMasterVolume(index);
+                musicVolumeBar.OnIndexChanged += index => VolumeManager.SetMusicVolume(index);
+                sfxVolumeBar.OnIndexChanged += index => VolumeManager.SetSFXVolume(index);
             
-            masterVolumeBar.OnIndexChanged += index => VolumeManager.SetMasterVolume(index);
-            musicVolumeBar.OnIndexChanged += index => VolumeManager.SetMusicVolume(index);
-            sfxVolumeBar.OnIndexChanged += index => VolumeManager.SetSFXVolume(index);
-            
-            masterVolumeBar.SetIndex(Mathf.FloorToInt(volumeData.MasterVolume * 10));
-            musicVolumeBar.SetIndex(Mathf.FloorToInt(volumeData.MusicVolume * 10));
-            sfxVolumeBar.SetIndex(Mathf.FloorToInt(volumeData.SfxVolume * 10));
+                masterVolumeBar.SetIndex(Mathf.FloorToInt(volumeData.MasterVolume * 10));
+                musicVolumeBar.SetIndex(Mathf.FloorToInt(volumeData.MusicVolume * 10));
+                sfxVolumeBar.SetIndex(Mathf.FloorToInt(volumeData.SfxVolume * 10));
+            });
         }
 
         public void Save()

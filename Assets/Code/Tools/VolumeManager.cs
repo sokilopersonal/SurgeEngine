@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Tools
 {
-    public class VolumeManager
+    public class VolumeManager : IStorageService
     {
         private const string FileName = "VolumeData.json";
         
@@ -13,11 +13,11 @@ namespace SurgeEngine.Code.Tools
         private const string MusicVolumeKey = "MusicVolume";
         private const string SFXVolumeKey = "SFXVolume";
         
-        private readonly VolumeData _data;
+        private VolumeData _data;
 
         public VolumeManager()
         {
-            _data = Load();
+            Load<VolumeData>(data => _data = data);
             
             SetMasterVolume(_data.MasterVolume);
             SetMusicVolume(_data.MusicVolume);
@@ -39,7 +39,7 @@ namespace SurgeEngine.Code.Tools
             RuntimeManager.StudioSystem.setParameterByName(SFXVolumeKey, value / 10f);
         }
 
-        public void Save()
+        public void Save(Action<bool> callback = null)
         {
             if (_data != null)
             {
@@ -50,20 +50,23 @@ namespace SurgeEngine.Code.Tools
                 
                 File.WriteAllText(path, JsonUtility.ToJson(_data, true));
             }
+            else
+            {
+                _data = new VolumeData();
+                Save(callback);
+            }
         }
 
-        public VolumeData Load()
+        public void Load<T>(Action<T> callback = null)
         {
             if (File.Exists(GetDataPath()))
             {
-                var data = JsonUtility.FromJson<VolumeData>(File.ReadAllText(GetDataPath()));
-                return data;
+                var data = JsonUtility.FromJson<T>(File.ReadAllText(GetDataPath()));
+                callback?.Invoke(data);
             }
-
-            return new VolumeData();
         }
-        
-        private string GetDataPath() => Application.persistentDataPath + "/" + FileName;
+
+        public string GetDataPath() => Path.Combine(Application.persistentDataPath, FileName);
     }
 
     [Serializable]

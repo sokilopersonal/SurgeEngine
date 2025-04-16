@@ -26,6 +26,8 @@ namespace SurgeEngine.Code.UI
         private Sequence _pauseFadeTween;
         private InputAction _pauseAction;
         private InputDevice _device;
+
+        [Inject] private GameSettings _gameSettings;
         
         private void Awake()
         {
@@ -112,6 +114,20 @@ namespace SurgeEngine.Code.UI
                 isPaused ? 0f : 1f, isPaused ? 0f : 0.25f));
             _pauseFadeTween.SetLink(gameObject);
             _pauseFadeTween.SetUpdate(true);
+        }
+
+        private void OnApplicationFocus(bool hasFocus)
+        {
+            if (!hasFocus)
+            {
+                if (!_gameSettings.GetRunInBackground())
+                {
+                    if (!MenusHandler.Instance.IsAnyMenuOpened())
+                    {
+                        SetPause(true);
+                    }
+                }
+            }
         }
 
         public void RestartAction()

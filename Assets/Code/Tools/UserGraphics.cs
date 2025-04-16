@@ -1,44 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using SurgeEngine.Code.CommonObjects.Lighting;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.HighDefinition;
 using Zenject;
-using Object = UnityEngine.Object;
 
 namespace SurgeEngine.Code.Tools
 {
-    public class UserGraphics : IInitializable, ITickable
+    public class UserGraphics : IInitializable, IStorageService
     {
         private const string FileName = "GraphicsSettings.json";
         private readonly VolumeProfile _volume;
 
         private readonly List<LightDefiner> _lightsData;
 
-        private readonly GraphicsData _data;
+        private GraphicsData _data;
         private HDAdditionalCameraData _hdCameraData;
         
         private const int MaxTextureQuality = 3;
         private const int MaxRefractionQuality = 2;
-
-        public event Action<GraphicsData> OnDataLoaded;
-        public event Action<GraphicsData> OnDataApplied;
-
+        
         private readonly string[] _refractionQualityKeywords =
         {
             "_REFRACTIONQUALITY_NATIVE",
             "_REFRACTIONQUALITY_MEDIUM", 
             "_REFRACTIONQUALITY_LOW"
-        };
-        
-        private readonly string[] _materialQualityKeywords =
-        {
-            "_MATERIAL_QUALITY_HIGH",
-            "_MATERIAL_QUALITY_MEDIUM", 
-            "_MATERIAL_QUALITY_LOW"
         };
 
         public UserGraphics(VolumeProfile profile)
@@ -59,8 +47,7 @@ namespace SurgeEngine.Code.Tools
             }
             
             _lightsData = new List<LightDefiner>();
-
-            _data = Load();
+            Load<GraphicsData>(data => _data = data);
         }
         
         public void Initialize()
@@ -137,11 +124,6 @@ namespace SurgeEngine.Code.Tools
         public void RemoveLight(LightDefiner data)
         {
             _lightsData.Remove(data);
-        }
-
-        public void Tick()
-        {
-            
         }
 
         private static void SetKeyword(string[] keys, int value)
@@ -282,7 +264,7 @@ namespace SurgeEngine.Code.Tools
             }
         }
 
-        public void Save()
+        public void Save(Action<bool> callback = null)
         {
             if (_data != null)
             {
@@ -314,27 +296,29 @@ namespace SurgeEngine.Code.Tools
                 _data.subSurfaceScatteringQuality = _hdCameraData.renderingPathCustomFrameSettings.IsEnabled(FrameSettingsField.Transmission) 
                                                     && _hdCameraData.renderingPathCustomFrameSettings.IsEnabled(FrameSettingsField.SubsurfaceScattering) ? SubSurfaceScatteringQuality.On : SubSurfaceScatteringQuality.Off;
                 
-                OnDataApplied?.Invoke(_data);
-            
                 File.WriteAllText(path, JsonUtility.ToJson(_data, true));
+            
+                callback?.Invoke(true);
+            }
+            else
+            {
+                _data = new GraphicsData();
+                Save(callback);
             }
         }
-        
-        public GraphicsData Load()
+
+        public void Load<T>(Action<T> callback = null)
         {
             if (File.Exists(GetDataPath()))
             {
-                var data = JsonUtility.FromJson<GraphicsData>(File.ReadAllText(GetDataPath()));
-                OnDataLoaded?.Invoke(data);
-                return data;
+                var data = JsonUtility.FromJson<T>(File.ReadAllText(GetDataPath()));
+                callback?.Invoke(data);
             }
-
-            return new GraphicsData();
         }
-        
+
         public GraphicsData GetGraphicsData() => _data;
 
-        private string GetDataPath() => Application.persistentDataPath + "/" + FileName;
+        public string GetDataPath() => Path.Combine(Application.persistentDataPath, FileName);
     }
 
     [Serializable]
