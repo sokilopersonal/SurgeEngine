@@ -12,6 +12,8 @@ namespace SurgeEngine.Code.CommonObjects.HUD
         private Vector3 _startPosition;
         private Quaternion _startRotation;
         private Vector3 _startScale;
+
+        private float _distance;
         
         private Camera _camera => ActorContext.Context.camera.GetCamera();
 
@@ -27,7 +29,8 @@ namespace SurgeEngine.Code.CommonObjects.HUD
             _startScale *= Mathf.LerpUnclamped(1f, Random.Range(1.2f, 1.4f), t);
             _startPosition += Vector3.up * (Random.Range(-0.12f, 0.12f) * t);
             _startPosition += Vector3.right * (Random.Range(-0.12f, 0.12f) * t);
-            _startPosition += Vector3.forward * (Random.Range(0.3f, 0.55f) * t);
+            _distance = Vector3.Distance(_camera.transform.TransformPoint(_startPosition), _camera.transform.position) / 2;
+            _startPosition += Vector3.back * (_distance * (Random.Range(0.1f, 0.2f) * t));
         }
 
         private void Update()
@@ -52,8 +55,7 @@ namespace SurgeEngine.Code.CommonObjects.HUD
 
             Vector3 rect = rectTransform.position;
             Vector3 screenPos = rect;
-            const float distance = 2f;
-            screenPos.z = distance;
+            screenPos.z = _distance;
 
             Camera cam = _camera;
             float ndcX = screenPos.x / cam.pixelWidth * 2 - 1;
@@ -67,7 +69,7 @@ namespace SurgeEngine.Code.CommonObjects.HUD
             Vector3 worldNear = worldNearH / worldNearH.w;
 
             Vector3 dir = (worldNear - cam.transform.position).normalized;
-            Vector3 worldPos = cam.transform.position + dir * distance;
+            Vector3 worldPos = cam.transform.position + dir * _distance;
 
             float easedFactor = Easings.Get(Easing.InCubic, Mathf.Clamp01(_factor));
             var context = ActorContext.Context;
@@ -80,8 +82,8 @@ namespace SurgeEngine.Code.CommonObjects.HUD
             transform.localRotation = Quaternion.Lerp(_startRotation, Quaternion.LookRotation(cameraForward, Vector3.up), Easings.Get(Easing.OutCubic, _factor *
                 Mathf.Lerp(1f, Random.Range(1.25f, 1.5f), speedT)));
 
-            const float maxScale = 0.004f;
-            Vector3 targetScale = Vector3.one * (maxScale * _camera.fieldOfView);
+            const float maxScale = 0.003f;
+            Vector3 targetScale = Vector3.one * (maxScale * _distance * _camera.fieldOfView);
             transform.localScale = Vector3.Lerp(_startScale, targetScale, easedFactor);
         }
     }
