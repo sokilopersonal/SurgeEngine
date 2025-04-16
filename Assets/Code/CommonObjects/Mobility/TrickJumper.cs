@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using FMODUnity;
 using SurgeEngine.Code.Actor.HUD;
@@ -74,13 +75,18 @@ namespace SurgeEngine.Code.CommonObjects
             }
         }
         
-        public override async void Contact(Collider msg)
+        public override void Contact(Collider msg)
         {
             base.Contact(msg);
 
+            StartCoroutine(TrickContact());
+        }
+
+        private IEnumerator TrickContact()
+        {
             ActorBase context = ActorContext.Context;
 
-            if (context.stateMachine.CurrentState is FStateSpecialJump) return;
+            if (context.stateMachine.CurrentState is FStateSpecialJump) yield break;
             if (firstSpeed > 0)
             {
                 context.stateMachine.GetSubState<FBoost>().Active = false;
@@ -99,10 +105,24 @@ namespace SurgeEngine.Code.CommonObjects
                 
                 context.flags.AddFlag(new Flag(FlagType.OutOfControl, null, false));
                 
-                await Common.ChangeTimeScaleOverTime(TargetTimeScale, TimeScaleDuration);
+                yield return SetTime(TargetTimeScale, TimeScaleDuration);
                 
                 CreateQTEUI();
             }
+        }
+
+        private IEnumerator SetTime(float target, float duration)
+        {
+            float startScale = Time.timeScale;
+            float elapsed = 0f;
+            while (elapsed < duration)
+            {
+                Time.timeScale = Mathf.Lerp(startScale, target, elapsed / duration);
+                elapsed += Time.unscaledDeltaTime;
+                yield return null;
+            }
+            
+            Time.timeScale = target;
         }
 
         private void CreateQTEUI()
@@ -207,6 +227,11 @@ namespace SurgeEngine.Code.CommonObjects
 
         private void OnResultReceived(QTEResult result)
         {
+            StartCoroutine(OnResultReceivedRoutine(result));
+        }
+
+        private IEnumerator OnResultReceivedRoutine(QTEResult result)
+        {
             _qteSequences.Clear();
             _buttonId = 0;
             _sequenceId = 0;
@@ -222,7 +247,7 @@ namespace SurgeEngine.Code.CommonObjects
                 Common.ResetVelocity(ResetVelocityType.Both);
                 Vector3 arcPeak = Trajectory.GetArcPosition(startPoint.position,
                     Common.GetCross(transform, firstPitch, true), firstSpeed);
-                body.position = arcPeak; // should snap Sonic to the arc point
+                yield return MoveRigidbodyToArc(body, arcPeak); // should snap Sonic to the arc point
                 context.animation.StateAnimator.TransitionToState($"Trick {Random.Range(1, 8)}", 0.2f).Then(() => context.animation.StateAnimator.TransitionToState(AnimatorParams.AirCycle, 0.2f));
                 
                 Vector3 impulse = Common.GetImpulseWithPitch(Vector3.Cross(-startPoint.right, Vector3.up), startPoint.right, secondPitch, secondSpeed);
@@ -243,9 +268,25 @@ namespace SurgeEngine.Code.CommonObjects
             context.stats.planarVelocity = body.linearVelocity;
             
             context.stateMachine.SetState<FStateAir>();
-            _ = Common.ChangeTimeScaleOverTime(1, 0.1f);
-
             context.input.OnButtonPressed -= OnButtonPressed;
+            
+            yield return SetTime(1f, 0.1f);
+        }
+
+        private IEnumerator MoveRigidbodyToArc(Rigidbody body, Vector3 arcPeak)
+        {
+            body.isKinematic = true;
+            Vector3 saved = body.position;
+            float elapsed = 0f;
+            while (elapsed < 1f)
+            {
+                body.position = Vector3.Lerp(saved, arcPeak, elapsed);
+                elapsed += Time.unscaledDeltaTime / 0.05f;
+                yield return null;
+            }
+            
+            body.position = arcPeak;
+            body.isKinematic = false;
         }
 
         public float GetTimer()

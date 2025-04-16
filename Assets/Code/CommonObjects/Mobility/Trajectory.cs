@@ -50,7 +50,7 @@ namespace SurgeEngine.Code.CommonObjects
                     break;
                 }
                 
-                if (positions[i + 1].y - 1f > highestY)
+                if (positions[i + 1].y > highestY)
                 {
                     highestY = positions[i + 1].y;
                     peakPosition = positions[i + 1];
