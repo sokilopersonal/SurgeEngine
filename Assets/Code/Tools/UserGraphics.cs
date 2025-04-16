@@ -181,7 +181,7 @@ namespace SurgeEngine.Code.Tools
             {
                 if (light.Component.type == LightType.Directional)
                 {
-                    return;
+                    continue;
                 }
                 
                 var data = light.Data;
@@ -301,7 +301,6 @@ namespace SurgeEngine.Code.Tools
                     if (additionalLight)
                     {
                         _data.additionalShadowsQuality = (ShadowsQuality)sun.Data.shadowResolution.level;
-                        Debug.Log(additionalLight.transform.name);
                     }
                 }
                 
