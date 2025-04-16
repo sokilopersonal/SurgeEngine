@@ -2,6 +2,7 @@
 using SurgeEngine.Code.Actor.States.SonicSubStates;
 using SurgeEngine.Code.Actor.System;
 using SurgeEngine.Code.CommonObjects;
+using SurgeEngine.Code.CommonObjects.HUD;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -138,8 +139,7 @@ namespace SurgeEngine.Code.Actor.HUD
             if (obj is Ring)
             {
                 RingHUD ringHUDInstance = Instantiate(ringHUDPrefab, obj.transform.position, obj.transform.rotation);
-                float time = 0.425f;
-                ringHUDInstance.Initialize(time);
+                ringHUDInstance.Initialize();
             }
         }
         

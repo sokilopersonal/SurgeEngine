@@ -11,6 +11,9 @@ namespace SurgeEngine.Code.Custom
         InCubic,
         OutCubic,
         InCirc,
+        InQuint,
+        InQuart,
+        InExpo,
         Gens
     }
     
@@ -34,6 +37,12 @@ namespace SurgeEngine.Code.Custom
                     return 1f - Mathf.Pow(1f - t, 3f);
                 case Easing.InCirc:
                     return 1 - Mathf.Sqrt(1 - Mathf.Pow(t, 2));
+                case Easing.InQuint:
+                    return t * t * t * t * t;
+                case Easing.InQuart:
+                    return t * t * t * t;
+                case Easing.InExpo:
+                    return Mathf.Pow(2, 10 * (t - 1));
                 case Easing.Gens:
                     return 0.5f - Mathf.Cos(Mathf.PI * t) / 2;
             }
