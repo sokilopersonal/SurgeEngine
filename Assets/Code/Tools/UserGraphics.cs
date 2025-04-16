@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.IO;
 using SurgeEngine.Code.CommonObjects.Lighting;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.HighDefinition;
+using UnityEngine.SceneManagement;
 using Zenject;
 
 namespace SurgeEngine.Code.Tools
 {
-    public class UserGraphics : IInitializable, IStorageService
+    public class UserGraphics : IInitializable, IStorageService, ILateDisposable
     {
         private const string FileName = "GraphicsSettings.json";
         private readonly VolumeProfile _volume;
@@ -48,17 +50,22 @@ namespace SurgeEngine.Code.Tools
             
             _lightsData = new List<LightDefiner>();
             Load<GraphicsData>(data => _data = data);
+            
+            SceneManager.sceneLoaded += OnSceneLoaded;
         }
         
         public void Initialize()
         {
-            FindLights();
-            Apply();
         }
 
-        private void FindLights()
+        public void LateDispose()
         {
-            
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+        }
+
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            Apply();
         }
 
         public void SetTextureQuality(TextureQuality value)
@@ -70,7 +77,7 @@ namespace SurgeEngine.Code.Tools
         {
             _data.sunShadowsQuality = value;
         }
-        
+
         public void SetAdditionalShadowsQuality(ShadowsQuality value)
         {
             _data.additionalShadowsQuality = value;
@@ -80,7 +87,7 @@ namespace SurgeEngine.Code.Tools
         {
             _data.bloomQuality = value;
         }
-        
+
         public void SetAmbientOcclusionQuality(AmbientOcclusionQuality value)
         {
             _data.aoQuality = value;
@@ -100,7 +107,7 @@ namespace SurgeEngine.Code.Tools
         {
             _data.screenSpaceReflectionQuality = level;
         }
-        
+
         public void SetAntiAliasing(AntiAliasingQuality level)
         {
             _data.antiAliasingQuality = level;
@@ -120,7 +127,7 @@ namespace SurgeEngine.Code.Tools
         {
             _lightsData.Add(data);
         }
-        
+
         public void RemoveLight(LightDefiner data)
         {
             _lightsData.Remove(data);
@@ -262,6 +269,8 @@ namespace SurgeEngine.Code.Tools
             {
                 Debug.LogWarning("[UserGraphics] HDCameraData doesn't exists.");
             }
+
+            Debug.Log($"[UserGraphics] Applied graphics options");
         }
 
         public void Save(Action<bool> callback = null)

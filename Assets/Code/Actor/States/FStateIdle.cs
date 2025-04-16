@@ -63,7 +63,7 @@ namespace SurgeEngine.Code.Actor.States
                 Kinematics.Point = hit.point;
                 Kinematics.Normal = Vector3.up;
                 
-                Model.RotateBody(Kinematics.Normal);
+                Kinematics.Project();
                 Kinematics.Snap(Kinematics.Point, Kinematics.Normal, true);
                 
                 Kinematics.SlopePhysics();
