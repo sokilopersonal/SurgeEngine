@@ -65,6 +65,9 @@ namespace SurgeEngine.Code.UI
                 SpecialJumpType.TrickJumper) return;
             
             if (!CanPause) return;
+
+            if (MenusHandler.Instance.IsAnyMenuOpened())
+                return;
             
             Active = !Active;
             OnPauseChanged?.Invoke(Active);

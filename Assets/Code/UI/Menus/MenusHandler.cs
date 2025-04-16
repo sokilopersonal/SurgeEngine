@@ -82,5 +82,20 @@ namespace SurgeEngine.Code.UI
             _currentPage = page;
             await page.Open();
         }
+
+        public bool IsAnyMenuOpened()
+        {
+            return _currentPage != null;
+        }
+        
+        public bool IsOpened<T>() where T : Page
+        {
+            if (_currentPage)
+            {
+                return _currentPage.GetType() == typeof(T);
+            }
+            
+            return false;
+        }
     }
 }
