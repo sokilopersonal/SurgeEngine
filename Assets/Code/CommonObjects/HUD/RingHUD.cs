@@ -61,25 +61,9 @@ namespace SurgeEngine.Code.CommonObjects.HUD
         
         private void Align()
         {
-            var rectTransform = ActorHUDContext.Context.ringCounter.rectTransform;
-
-            Vector3 rect = rectTransform.position;
-            Vector3 screenPos = rect;
-            screenPos.z = _distance;
-
-            Camera cam = _camera;
-            float ndcX = screenPos.x / cam.pixelWidth * 2 - 1;
-            float ndcY = screenPos.y / cam.pixelHeight * 2 - 1;
-
-            Vector4 ndcNear = new Vector4(ndcX, ndcY, -1f, 1f);
-            Matrix4x4 invProjectionMatrix = cam.projectionMatrix.inverse;
-            Matrix4x4 cameraToWorldMatrix = cam.cameraToWorldMatrix;
-
-            Vector4 worldNearH = cameraToWorldMatrix * invProjectionMatrix * ndcNear;
-            Vector3 worldNear = worldNearH / worldNearH.w;
-
-            Vector3 dir = (worldNear - cam.transform.position).normalized;
-            Vector3 worldPos = cam.transform.position + dir * _distance;
+            Vector3 worldPos =
+                MatrixHelper.GetMatrixRectTransformPosition(ActorHUDContext.Context.ringCounter.rectTransform, _camera,
+                    _distance);
 
             float easedFactor = easingCurve.Evaluate(_factor);
             var context = ActorContext.Context;
@@ -88,7 +72,7 @@ namespace SurgeEngine.Code.CommonObjects.HUD
             Vector3 targetLocalPos = transform.parent.InverseTransformPoint(worldPos);
             transform.localPosition = Vector3.Lerp(_startPosition, targetLocalPos, easedFactor);
             
-            Vector3 cameraForward = cameraToWorldMatrix.inverse.MultiplyVector(_camera.transform.right);
+            Vector3 cameraForward = _camera.cameraToWorldMatrix.inverse.MultiplyVector(_camera.transform.right);
             transform.localRotation = Quaternion.Lerp(_startRotation, Quaternion.LookRotation(cameraForward, Vector3.up), Easings.Get(Easing.OutCubic, _factor *
                 Mathf.Lerp(1f, Random.Range(1.25f, 1.5f), speedT)));
 
