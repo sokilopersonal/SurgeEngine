@@ -39,12 +39,9 @@ namespace SurgeEngine.Code.Actor.System.IK
             
             leftFoot.Origin = leftFoot.constraint.transform.position + Vector3.up * rayVerticalOffset;
             rightFoot.Origin = rightFoot.constraint.transform.position + Vector3.up * rayVerticalOffset;
-            
-            SolveIK(leftFoot);
-            SolveIK(rightFoot);
         }
 
-        private void Update()
+        private void LateUpdate()
         {
             float value = _stateAnimator.IsIKAllowed() ? 1 : 0;
             _ikWeight = Mathf.Lerp(_ikWeight, value, Time.deltaTime * weightSpeed);
