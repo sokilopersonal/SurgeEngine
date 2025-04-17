@@ -36,7 +36,7 @@ namespace SurgeEngine.Code.CommonObjects.HUD
             const float distanceThreshold = 6f;
             if (_distance <= distanceThreshold)
             {
-                _startPosition += Vector3.forward * (Random.Range(-0.15f, 0.25f) * t);
+                _startPosition += Vector3.forward * (Random.Range(0.3f, 0.4f) * t);
             }
             else
             {
