@@ -65,7 +65,10 @@ namespace SurgeEngine.Code.Tools
 
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
-            Apply();
+            if (mode != LoadSceneMode.Additive)
+            {
+                Apply();
+            }
         }
 
         public void SetTextureQuality(TextureQuality value)
