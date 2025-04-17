@@ -28,7 +28,7 @@ namespace SurgeEngine.Code.CommonObjects.HUD
 
             var context = ActorContext.Context;
             float t = context.kinematics.Speed / context.config.topSpeed;
-            _startScale *= Mathf.Lerp(1f, Random.Range(1.1f, 1.4f), t);
+            _startScale *= Mathf.Lerp(1f, Random.Range(1.2f, 1.6f), t);
             _startPosition += Vector3.up * (Random.Range(-0.175f, 0.175f) * t);
             _startPosition += Vector3.right * (Random.Range(-0.175f, 0.175f) * t);
             _distance = Vector3.Distance(_camera.transform.TransformPoint(_startPosition), _camera.transform.position) / 2;
@@ -48,7 +48,7 @@ namespace SurgeEngine.Code.CommonObjects.HUD
         {
             Align();
             
-            _factor += Time.deltaTime / 0.365f;
+            _factor += Time.deltaTime / 0.375f;
             if (_factor >= 1f)
             {
                 ActorStageHUD context = ActorHUDContext.Context;
