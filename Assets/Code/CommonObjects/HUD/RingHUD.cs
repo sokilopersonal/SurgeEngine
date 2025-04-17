@@ -7,6 +7,8 @@ namespace SurgeEngine.Code.CommonObjects.HUD
 {
     public class RingHUD : MonoBehaviour
     {
+        [SerializeField] private AnimationCurve easingCurve;
+        
         private float _factor;
 
         private Vector3 _startPosition;
@@ -26,7 +28,7 @@ namespace SurgeEngine.Code.CommonObjects.HUD
 
             var context = ActorContext.Context;
             float t = context.kinematics.Speed / context.config.topSpeed;
-            _startScale *= Mathf.Lerp(1f, Random.Range(1f, 1.35f), t);
+            _startScale *= Mathf.Lerp(1f, Random.Range(1.1f, 1.4f), t);
             _startPosition += Vector3.up * (Random.Range(-0.175f, 0.175f) * t);
             _startPosition += Vector3.right * (Random.Range(-0.175f, 0.175f) * t);
             _distance = Vector3.Distance(_camera.transform.TransformPoint(_startPosition), _camera.transform.position) / 2;
@@ -34,20 +36,19 @@ namespace SurgeEngine.Code.CommonObjects.HUD
             const float distanceThreshold = 6f;
             if (_distance <= distanceThreshold)
             {
-                _startPosition += Vector3.forward * (Random.Range(-0.15f, 0.5f) * t);
+                _startPosition += Vector3.forward * (Random.Range(-0.15f, 0.25f) * t);
             }
             else
             {
-                _startPosition += Vector3.back * (_distance * (Random.Range(0.3f, 0.75f) * t));
+                _startPosition += Vector3.back * (_distance * (Random.Range(0.3f, 0.6f) * t));
             }
         }
 
         private void Update()
         {
-            _factor += Time.deltaTime / 0.4f;
-            
             Align();
             
+            _factor += Time.deltaTime / 0.365f;
             if (_factor >= 1f)
             {
                 ActorStageHUD context = ActorHUDContext.Context;
@@ -80,7 +81,7 @@ namespace SurgeEngine.Code.CommonObjects.HUD
             Vector3 dir = (worldNear - cam.transform.position).normalized;
             Vector3 worldPos = cam.transform.position + dir * _distance;
 
-            float easedFactor = Easings.Get(Easing.InCubic, Mathf.Clamp01(_factor));
+            float easedFactor = easingCurve.Evaluate(_factor);
             var context = ActorContext.Context;
             float speedT = context.kinematics.Speed / context.config.topSpeed;
             
