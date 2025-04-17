@@ -26,16 +26,25 @@ namespace SurgeEngine.Code.CommonObjects.HUD
 
             var context = ActorContext.Context;
             float t = context.kinematics.Speed / context.config.topSpeed;
-            _startScale *= Mathf.LerpUnclamped(1f, Random.Range(1.2f, 1.4f), t);
-            _startPosition += Vector3.up * (Random.Range(-0.12f, 0.12f) * t);
-            _startPosition += Vector3.right * (Random.Range(-0.12f, 0.12f) * t);
+            _startScale *= Mathf.Lerp(1f, Random.Range(1f, 1.35f), t);
+            _startPosition += Vector3.up * (Random.Range(-0.175f, 0.175f) * t);
+            _startPosition += Vector3.right * (Random.Range(-0.175f, 0.175f) * t);
             _distance = Vector3.Distance(_camera.transform.TransformPoint(_startPosition), _camera.transform.position) / 2;
-            _startPosition += Vector3.back * (_distance * (Random.Range(0.1f, 0.2f) * t));
+            
+            const float distanceThreshold = 6f;
+            if (_distance <= distanceThreshold)
+            {
+                _startPosition += Vector3.forward * (Random.Range(-0.15f, 0.5f) * t);
+            }
+            else
+            {
+                _startPosition += Vector3.back * (_distance * (Random.Range(0.3f, 0.75f) * t));
+            }
         }
 
         private void Update()
         {
-            _factor += Time.deltaTime / 0.38f;
+            _factor += Time.deltaTime / 0.4f;
             
             Align();
             

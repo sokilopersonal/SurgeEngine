@@ -510,6 +510,7 @@ Material:
     - _DistortionSrcBlend: 1
     - _DistortionVectorBias: -1
     - _DistortionVectorScale: 2
+    - _DitherSize: 1
     - _DoubleSidedEnable: 0
     - _DoubleSidedGIMode: 0
     - _DoubleSidedNormalMode: 1
@@ -517,8 +518,10 @@ Material:
     - _DstBlend2: 0
     - _EMISSION_WEIGHT: 1
     - _EmissionIntensity: 1
+    - _EmissionMaskIntensity: 1
+    - _EmissionPowerFalloff: 0
     - _EmissionPowerReflection: 1
-    - _EmissionPowerSpecular: 0.2
+    - _EmissionPowerSpecular: 0.5
     - _EmissiveColorMode: 1
     - _EmissiveExposureWeight: 1
     - _EmissiveIntensity: 10000
@@ -665,6 +668,9 @@ Material:
     - _RimLightEnable: 1
     - _RimLightPower: 16
     - _RimLightShine: 240
+    - _SampleColorMultiplier: 2.5
+    - _SampleMax: 0.75
+    - _SampleMin: 0.3
     - _Smoothness: 1
     - _Smoothness0: 0.5
     - _Smoothness1: 0.5
@@ -731,6 +737,8 @@ Material:
     - _TransmissionMask1: 1
     - _TransmissionMask2: 1
     - _TransmissionMask3: 1
+    - _TransmissionProfile: 0
+    - _TransmissionThickness: 0.5
     - _TransparentBackfaceEnable: 0
     - _TransparentCullMode: 2
     - _TransparentDepthPostpassEnable: 0
@@ -769,7 +777,7 @@ Material:
     - _ZTestTransparent: 4
     - _ZWrite: 1
     m_Colors:
-    - _AlbedoColor: {r: 0.4245283, g: 0.20216574, b: 0, a: 1}
+    - _AlbedoColor: {r: 0.4509804, g: 0.18092094, b: 0, a: 1}
     - _BASE_COLOR: {r: 1, g: 0.7535237, b: 0, a: 1}
     - _BaseColor: {r: 1, g: 0.9258024, b: 0.43867922, a: 1}
     - _BaseColor0: {r: 1, g: 1, b: 1, a: 1}
@@ -789,6 +797,7 @@ Material:
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _EMISSION_COLOR: {r: 0, g: 0, b: 0, a: 1}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
+    - _EmissionMaskColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissiveColor: {r: 1, g: 1, b: 1, a: 0}
     - _EmissiveColorLDR: {r: 1, g: 0.41141325, b: 0, a: 1}
     - _FalloffColor: {r: 1, g: 0.8339342, b: 0, a: 1}
@@ -796,7 +805,7 @@ Material:
     - _InvPrimScale: {r: 1, g: 1, b: 0, a: 0}
     - _IridescenceThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
     - _REFLECTIONS_COLOR: {r: 1, g: 1, b: 1, a: 1}
-    - _ReflectionColor: {r: 1, g: 0.8682593, b: 0.4764151, a: 1}
+    - _ReflectionColor: {r: 1, g: 0.8743312, b: 0.504717, a: 1}
     - _RimLightColor: {r: 1023.99994, g: 637.7245, b: 0, a: 0}
     - _Specular: {r: 0.0625, g: 0.0625, b: 0.0625, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
@@ -806,6 +815,7 @@ Material:
     - _ThicknessRemap1: {r: 0, g: 1, b: 0, a: 0}
     - _ThicknessRemap2: {r: 0, g: 1, b: 0, a: 0}
     - _ThicknessRemap3: {r: 0, g: 1, b: 0, a: 0}
+    - _TransmissionProfile_Asset: {r: 0, g: 0, b: 0, a: 0}
     - _TransmittanceColor: {r: 1, g: 1, b: 1, a: 1}
     - _UVDetailsMappingMask: {r: 1, g: 0, b: 0, a: 0}
     - _UVDetailsMappingMask0: {r: 1, g: 0, b: 0, a: 0}
