@@ -24,9 +24,9 @@ namespace SurgeEngine.Code.Shaders
     
         struct CapsuleData
         {
-            public Vector4 positionStart; // xyz: position, w: radius
-            public Vector4 positionEnd;   // xyz: position, w: unused
-            public Vector4 color;         // rgb: color, a: intensity
+            public Vector4 positionStart;
+            public Vector4 positionEnd;
+            public Vector4 color;
         }
     
         protected override void Setup(ScriptableRenderContext renderContext, CommandBuffer cmd)
@@ -42,11 +42,9 @@ namespace SurgeEngine.Code.Shaders
         
             if (capsuleColliders.Count == 0)
                 return;
-            
-            // Update and upload capsule data
+
             UpdateCapsuleData();
-        
-            // Set shader parameters
+
             capsuleShadowMaterial.SetBuffer("_CapsuleBuffer", capsuleBuffer);
             capsuleShadowMaterial.SetInt("_CapsuleCount", capsuleColliders.Count);
             capsuleShadowMaterial.SetFloat("_ShadowIntensity", shadowIntensity);
@@ -57,15 +55,13 @@ namespace SurgeEngine.Code.Shaders
             capsuleShadowMaterial.SetFloat("_FadeDistance", fadeDistance);
             capsuleShadowMaterial.SetFloat("_OverlapBlend", shadowBlend);
             capsuleShadowMaterial.SetVector("_LightDirection", -RenderSettings.sun.transform.forward);
-        
-            // Render capsule shadows
+
             CoreUtils.SetRenderTarget(ctx.cmd, ctx.cameraColorBuffer, ctx.cameraDepthBuffer);
             CoreUtils.DrawFullScreen(ctx.cmd, capsuleShadowMaterial, shaderPassId: 0);
         }
     
         private void UpdateCapsuleData()
         {
-            // Resize buffer if needed
             if (capsuleBuffer == null || capsuleBuffer.count != capsuleColliders.Count)
             {
                 if (capsuleBuffer != null)
@@ -74,14 +70,12 @@ namespace SurgeEngine.Code.Shaders
                 if (capsuleColliders.Count > 0)
                     capsuleBuffer = new ComputeBuffer(capsuleColliders.Count, System.Runtime.InteropServices.Marshal.SizeOf(typeof(CapsuleData)));
             }
-        
-            // No capsules found
+
             if (capsuleColliders.Count == 0)
                 return;
             
             capsuleDataList.Clear();
-        
-            // Update capsule data
+
             foreach (var capsule in capsuleColliders)
             {
                 if (!capsule.gameObject.activeSelf)
@@ -92,12 +86,11 @@ namespace SurgeEngine.Code.Shaders
                 float radius = capsule.radius;
             
                 Vector3 direction = Vector3.up;
-                if (capsule.direction == 0) // X-axis
+                if (capsule.direction == 0)
                     direction = capsule.transform.right;
-                else if (capsule.direction == 1) // Y-axis
+                else if (capsule.direction == 1)
                     direction = capsule.transform.up;
-                else if (capsule.direction == 2) // Z-axis
-                    direction = capsule.transform.forward;
+                else if (capsule.direction == 2) direction = capsule.transform.forward;
                 
                 direction = direction.normalized * (height * 0.5f - radius);
                 
@@ -107,12 +100,11 @@ namespace SurgeEngine.Code.Shaders
                 CapsuleData data = new CapsuleData();
                 data.positionStart = new Vector4(start.x, start.y, start.z, radius);
                 data.positionEnd = new Vector4(end.x, end.y, end.z, 0);
-                data.color = new Vector4(0, 0, 0, 1); // Black shadow with full intensity
-            
+                data.color = new Vector4(0, 0, 0, 1);
+
                 capsuleDataList.Add(data);
             }
-        
-            // Upload data to GPU
+
             capsuleBuffer.SetData(capsuleDataList);
         }
     

@@ -24,6 +24,9 @@ Shader "Hidden/CapsuleShadow"
     float _FadeDistance;
     float _OverlapBlend;
     float3 _LightDirection;
+
+    TEXTURE2D(_ScreenSpaceShadowTexture);
+    SAMPLER(sampler_ScreenSpaceShadowTexture);
     
     struct Attributes
     {
@@ -47,8 +50,7 @@ Shader "Hidden/CapsuleShadow"
         output.texcoord = GetFullScreenTriangleTexCoord(input.vertexID);
         return output;
     }
-    
-    // Distance from point to line segment
+
     float DistanceToSegment(float3 p, float3 a, float3 b)
     {
         float3 pa = p - a;
@@ -57,27 +59,22 @@ Shader "Hidden/CapsuleShadow"
         return length(pa - ba * t);
     }
     
-    // Calculate shadow from a capsule at a specific world position
     float4 CalculateCapsuleShadow(float3 worldPos, CapsuleData capsule)
     {
         float3 start = capsule.positionStart.xyz;
         float3 end = capsule.positionEnd.xyz;
         float radius = capsule.positionStart.w;
         
-        // Calculate light direction
         float3 lightDir = normalize(_LightDirection);
         
-        // Calculate distance from point to capsule line segment
         float3 capsuleMid = (start + end) * 0.5;
         float distToMid = distance(worldPos, capsuleMid);
         float maxShadowDistance = _FadeDistance;
         float distanceFade = 1.0 - smoothstep(0, maxShadowDistance, distToMid);
-        
-        // Early exit if too far
+
         if (distanceFade <= 0.0)
             return float4(0, 0, 0, 0);
         
-        // Calculate light plane projection
         float planeDistance = dot(worldPos, lightDir);
         float startDist = dot(start, lightDir) - planeDistance;
         float endDist = dot(end, lightDir) - planeDistance;
@@ -85,38 +82,28 @@ Shader "Hidden/CapsuleShadow"
         float3 startProj = start - startDist * lightDir;
         float3 endProj = end - endDist * lightDir;
         
-        // Calculate distance from world position to projected capsule segment
         float dist = DistanceToSegment(worldPos, startProj, endProj);
         
-        // Calculate shadow radius
         float avgDist = (abs(startDist) + abs(endDist)) * 0.5;
         float shadowRadius = radius * (1.0 + avgDist * 0.1);
         
-        // Shadow intensity based on distance from capsule segment
         float shadowDist = dist - shadowRadius;
         
-        // PCSS-style soft shadows
         float penumbraSize = radius * _PenumbraSize; 
         float occluderDist = avgDist;
         float softness = min(penumbraSize * occluderDist, _MaxSoftness);
         
-        // Apply softness to shadow edge
         float shadow = 1.0 - smoothstep(0, softness + 0.001, shadowDist);
         
-        // Fade shadow based on distance to avoid sharp cutoffs
         float fadeDistance = _BlendDistance + softness;
         shadow *= 1.0 - smoothstep(0, fadeDistance, shadowDist);
-        
-        // Apply distance fade
         shadow *= distanceFade;
         
-        // Apply shadow color and intensity
         return float4(capsule.color.rgb, shadow * capsule.color.a * _ShadowIntensity);
     }
     
     float4 CombineShadows(float4 finalColor, float4 newShadow)
     {
-        // Multiplicative blending for shadow layers
         float alpha = newShadow.a;
         finalColor.rgb = lerp(finalColor.rgb, finalColor.rgb * (1.0 - alpha), alpha);
         return finalColor;
@@ -125,20 +112,18 @@ Shader "Hidden/CapsuleShadow"
     float4 Fragment(Varyings input) : SV_Target
     {
         UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
-        
-        // Get screen UV and depth
+
         float2 uv = input.texcoord;
         float depth = LoadCameraDepth(input.positionCS.xy);
-        
-        // Skip skybox - return white (no darkening) for skybox pixels
         if (depth == UNITY_RAW_FAR_CLIP_VALUE)
             return float4(1, 1, 1, 1);
-            
-        // Calculate world position from depth
+
+        float shadowMask = SAMPLE_TEXTURE2D(_ScreenSpaceShadowTexture, sampler_ScreenSpaceShadowTexture, uv).r;
+        if (shadowMask > 0.25)
+            return float4(1, 1, 1, 1);
+        
         float3 camRelPos = ComputeWorldSpacePosition(uv, depth, UNITY_MATRIX_I_VP);
         float3 worldPos = camRelPos + _WorldSpaceCameraPos;
-        
-        // Start with white (no shadow)
         float4 finalColor = float4(1, 1, 1, 1);
         
         float combinedA = 0;
@@ -165,7 +150,7 @@ Shader "Hidden/CapsuleShadow"
             
             ZWrite Off
             ZTest Always
-            Blend DstColor Zero // Multiplicative blend
+            Blend DstColor Zero
             Cull Off
             
             HLSLPROGRAM

@@ -5609,14 +5609,14 @@ MonoBehaviour:
   fadeRadius: 0
   priority: 0
   customPasses:
-  - rid: 5493905974620323950
+  - rid: 5493905974620323956
   injectionPoint: 1
   m_TargetCamera: {fileID: 0}
   useTargetCamera: 0
   references:
     version: 2
     RefIds:
-    - rid: 5493905974620323950
+    - rid: 5493905974620323956
       type: {class: CapsuleShadowPass, ns: SurgeEngine.Code.Shaders, asm: Assembly-CSharp}
       data:
         m_Name: Capsule Shadows
@@ -5626,12 +5626,12 @@ MonoBehaviour:
         clearFlags: 0
         passFoldout: 0
         m_Version: 0
-        shadowIntensity: 0.45
+        shadowIntensity: 0.3
         shadowBias: 0
-        maxSoftness: 20
-        penumbraSize: 5
+        maxSoftness: 0.75
+        penumbraSize: 8
         blendDistance: 3
-        fadeDistance: 3
+        fadeDistance: 4
         shadowBlend: 0
         capsuleColliders:
         - {fileID: 1121760982931339446}
@@ -5642,11 +5642,9 @@ MonoBehaviour:
         - {fileID: 3332264223605065992}
         - {fileID: 3922796320066818652}
         - {fileID: 9177136698959402699}
-        - {fileID: 587262292185114924}
         - {fileID: 9094808846899059736}
         - {fileID: 3926214688289704917}
         - {fileID: 6736675933539411259}
-        - {fileID: 116114275984341447}
         - {fileID: 6419097276740660880}
 --- !u!1 &427450063543688433
 GameObject:
@@ -10792,7 +10790,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7548802017190245701}
-  - component: {fileID: 116114275984341447}
   m_Layer: 17
   m_Name: Foot_R
   m_TagString: Untagged
@@ -10816,29 +10813,6 @@ Transform:
   - {fileID: 1717166403257572444}
   m_Father: {fileID: 8794248496538358734}
   m_LocalEulerAnglesHint: {x: 4.366771, y: -0.012410461, z: -8.644194}
---- !u!136 &116114275984341447
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 693857044561334300}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.05
-  m_Height: 0.2
-  m_Direction: 0
-  m_Center: {x: -0.025, y: 0, z: 0}
 --- !u!1 &731784659125427817
 GameObject:
   m_ObjectHideFlags: 0
@@ -16111,10 +16085,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.07
-  m_Height: 0.175
+  m_Radius: 0.075
+  m_Height: 0.2
   m_Direction: 0
-  m_Center: {x: -0.11, y: 0, z: 0}
+  m_Center: {x: -0.1, y: 0, z: 0}
 --- !u!1 &1559403866463961155
 GameObject:
   m_ObjectHideFlags: 0
@@ -21097,9 +21071,9 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.15
-  m_Height: 0.3
+  m_Height: 0.35
   m_Direction: 0
-  m_Center: {x: -0.2, y: 0, z: 0}
+  m_Center: {x: -0.15, y: 0, z: 0}
 --- !u!1 &1831863662039696467
 GameObject:
   m_ObjectHideFlags: 0
@@ -32176,10 +32150,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.075
-  m_Height: 0.325
+  m_Radius: 0.065
+  m_Height: 0.25
   m_Direction: 0
-  m_Center: {x: 0, y: 0, z: -0.05}
+  m_Center: {x: 0.01, y: 0, z: -0.05}
 --- !u!1 &3108631646418364063
 GameObject:
   m_ObjectHideFlags: 0
@@ -42596,7 +42570,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6711769566602421822}
-  - component: {fileID: 587262292185114924}
   m_Layer: 17
   m_Name: Foot_L
   m_TagString: Untagged
@@ -42620,29 +42593,6 @@ Transform:
   - {fileID: 6165980843319346930}
   m_Father: {fileID: 5057230971093330078}
   m_LocalEulerAnglesHint: {x: 3.1541615, y: -31.201487, z: 11.849}
---- !u!136 &587262292185114924
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3950906920962699101}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.05
-  m_Height: 0.2
-  m_Direction: 0
-  m_Center: {x: -0.025, y: 0, z: 0}
 --- !u!1 &3999411662334716339
 GameObject:
   m_ObjectHideFlags: 0
@@ -58610,10 +58560,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.03
-  m_Height: 0.2
+  m_Radius: 0.04
+  m_Height: 0.25
   m_Direction: 0
-  m_Center: {x: -0.05, y: 0, z: 0}
+  m_Center: {x: -0.08, y: 0, z: 0}
 --- !u!1 &4835957629098472949
 GameObject:
   m_ObjectHideFlags: 0
@@ -58700,9 +58650,9 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.03
-  m_Height: 0.13
+  m_Height: 0.15
   m_Direction: 0
-  m_Center: {x: -0.03, y: 0, z: 0}
+  m_Center: {x: -0.04, y: 0, z: 0}
 --- !u!1 &4915407764680393134
 GameObject:
   m_ObjectHideFlags: 0
@@ -58757,9 +58707,9 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.03
-  m_Height: 0.175
+  m_Height: 0.15
   m_Direction: 0
-  m_Center: {x: -0.05, y: 0, z: 0}
+  m_Center: {x: -0.04, y: 0, z: 0}
 --- !u!1 &4937854726204849083
 GameObject:
   m_ObjectHideFlags: 0
@@ -59458,10 +59408,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.03
-  m_Height: 0.2
+  m_Radius: 0.04
+  m_Height: 0.25
   m_Direction: 0
-  m_Center: {x: -0.05, y: 0, z: 0}
+  m_Center: {x: -0.08, y: 0, z: 0}
 --- !u!1 &6291318269140029607
 GameObject:
   m_ObjectHideFlags: 0
@@ -71193,10 +71143,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.075
-  m_Height: 0.325
+  m_Radius: 0.065
+  m_Height: 0.25
   m_Direction: 0
-  m_Center: {x: 0, y: 0, z: -0.05}
+  m_Center: {x: 0.01, y: 0, z: -0.05}
 --- !u!1 &8935367142424411650
 GameObject:
   m_ObjectHideFlags: 0
