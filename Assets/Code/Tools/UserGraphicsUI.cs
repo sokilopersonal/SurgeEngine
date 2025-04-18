@@ -14,6 +14,7 @@ namespace SurgeEngine.Code.Tools
         [SerializeField] private OptionBar pcssBar;
         [SerializeField] private OptionBar bloomBar;
         [SerializeField] private OptionBar aoBar;
+        [SerializeField] private OptionBar capsuleShadowsBar;
         [SerializeField] private OptionBar motionBlurBar;
         [SerializeField] private OptionBar refractionQualityBar;
         [SerializeField] private OptionBar ssrQualityBar;
@@ -33,6 +34,7 @@ namespace SurgeEngine.Code.Tools
                 index => _graphics.SetContactShadows((ContactShadowsQuality)index);
             bloomBar.OnIndexChanged += index => _graphics.SetBloomQuality((BloomQuality)index);
             aoBar.OnIndexChanged += index => _graphics.SetAmbientOcclusionQuality((AmbientOcclusionQuality)index);
+            capsuleShadowsBar.OnIndexChanged += index => _graphics.SetCapsuleShadows(index != 0);
             motionBlurBar.OnIndexChanged += index => _graphics.SetMotionBlurQuality((MotionBlurQuality)index);
             refractionQualityBar.OnIndexChanged += index => _graphics.SetRefractionQuality((RefractionQuality)index);
             ssrQualityBar.OnIndexChanged += index => _graphics.SetScreenSpaceReflectionsQuality((ScreenSpaceReflectionQuality)index);
@@ -45,6 +47,7 @@ namespace SurgeEngine.Code.Tools
             contactShadowsQualityBar.SetIndex((int)data.contactShadowsQuality);
             bloomBar.SetIndex((int)data.bloomQuality);
             aoBar.SetIndex((int)data.aoQuality);
+            capsuleShadowsBar.SetIndex(data.capsuleShadows ? 1 : 0);
             motionBlurBar.SetIndex((int)data.motionBlurQuality);
             refractionQualityBar.SetIndex((int)data.refractionQuality);
             ssrQualityBar.SetIndex((int)data.screenSpaceReflectionQuality);
@@ -57,6 +60,7 @@ namespace SurgeEngine.Code.Tools
             contactShadowsQualityBar.OnIndexChanged += _ => _graphics.Apply();
             bloomBar.OnIndexChanged += _ => _graphics.Apply();
             aoBar.OnIndexChanged += _ => _graphics.Apply();
+            capsuleShadowsBar.OnIndexChanged += _ => _graphics.Apply();
             motionBlurBar.OnIndexChanged += _ => _graphics.Apply();
             refractionQualityBar.OnIndexChanged += _ => _graphics.Apply();
             ssrQualityBar.OnIndexChanged += _ => _graphics.Apply();
@@ -84,6 +88,7 @@ namespace SurgeEngine.Code.Tools
                 ssrQualityBar.SetIndex((int)data.screenSpaceReflectionQuality);
                 antiAliasingQualityBar.SetIndex((int)data.antiAliasingQuality);
                 subSurfaceScatteringQualityBar.SetIndex((int)data.subSurfaceScatteringQuality);
+                capsuleShadowsBar.SetIndex(data.capsuleShadows ? 1 : 0);
                 
                 _graphics.Apply();
                 _graphics.Save();

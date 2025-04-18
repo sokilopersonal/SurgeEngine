@@ -9,11 +9,11 @@ namespace SurgeEngine.Code.Shaders
     public class CapsuleShadowPass : CustomPass
     {
         [Range(0, 1)] public float shadowIntensity = 1.0f;
-        [Range(0, 1)] public float shadowBias = 1.0f;
-        [Range(0.02f, 20f)] public float maxSoftness = 0.05f;
-        [Range(0, 10)] public float penumbraSize = 0.05f;
+        [Range(0, 25)] public float shadowFalloff = 1.0f;
+        [Range(0.01f, 5f)] public float maxSoftness = 0.05f;
+        [Range(0, 20)] public float penumbraSize = 0.05f;
         [Range(1, 10)] public float blendDistance = 0.2f;
-        [Range(0.1f, 75)] public float fadeDistance = 0.2f;
+        [Range(0.1f, 25)] public float fadeDistance = 0.2f;
         [Range(0, 1)] public float shadowBlend;
         
         public List<CapsuleCollider> capsuleColliders = new List<CapsuleCollider>();
@@ -48,7 +48,7 @@ namespace SurgeEngine.Code.Shaders
             capsuleShadowMaterial.SetBuffer("_CapsuleBuffer", capsuleBuffer);
             capsuleShadowMaterial.SetInt("_CapsuleCount", capsuleColliders.Count);
             capsuleShadowMaterial.SetFloat("_ShadowIntensity", shadowIntensity);
-            capsuleShadowMaterial.SetFloat("_ShadowBias", shadowBias);
+            capsuleShadowMaterial.SetFloat("_ShadowFalloff", shadowFalloff);
             capsuleShadowMaterial.SetFloat("_MaxSoftness", maxSoftness);
             capsuleShadowMaterial.SetFloat("_PenumbraSize", penumbraSize);
             capsuleShadowMaterial.SetFloat("_BlendDistance", blendDistance);

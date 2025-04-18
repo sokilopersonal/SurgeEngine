@@ -5610,7 +5610,7 @@ MonoBehaviour:
   priority: 0
   customPasses:
   - rid: 5493905974620323956
-  injectionPoint: 1
+  injectionPoint: 3
   m_TargetCamera: {fileID: 0}
   useTargetCamera: 0
   references:
@@ -5626,10 +5626,10 @@ MonoBehaviour:
         clearFlags: 0
         passFoldout: 0
         m_Version: 0
-        shadowIntensity: 0.3
-        shadowBias: 0
-        maxSoftness: 0.75
-        penumbraSize: 8
+        shadowIntensity: 0.5
+        shadowFalloff: 10
+        maxSoftness: 1
+        penumbraSize: 14
         blendDistance: 3
         fadeDistance: 4
         shadowBlend: 0

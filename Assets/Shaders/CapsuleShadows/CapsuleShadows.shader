@@ -1,9 +1,9 @@
-
 Shader "Hidden/CapsuleShadow"
 {
     HLSLINCLUDE
     #pragma target 5.0
-    #pragma only_renderers d3d11 d3d12 vulkan switch
+
+    #pragma shader_feature _CAPSULE_SHADOWS_ON
     
     #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
     #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
@@ -24,9 +24,8 @@ Shader "Hidden/CapsuleShadow"
     float _FadeDistance;
     float _OverlapBlend;
     float3 _LightDirection;
-
-    TEXTURE2D(_ScreenSpaceShadowTexture);
-    SAMPLER(sampler_ScreenSpaceShadowTexture);
+    float _ShadowFalloff;
+    float _CapsuleShadowsEnabled; // 1.0 for enabled, 0.0 for disabled
     
     struct Attributes
     {
@@ -99,6 +98,8 @@ Shader "Hidden/CapsuleShadow"
         shadow *= 1.0 - smoothstep(0, fadeDistance, shadowDist);
         shadow *= distanceFade;
         
+        shadow *= pow(distanceFade, _ShadowFalloff);
+        
         return float4(capsule.color.rgb, shadow * capsule.color.a * _ShadowIntensity);
     }
     
@@ -112,14 +113,14 @@ Shader "Hidden/CapsuleShadow"
     float4 Fragment(Varyings input) : SV_Target
     {
         UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
+        
+        #if !defined(_CAPSULE_SHADOWS_ON)
+            return float4(1, 1, 1, 1);
+        #endif
 
         float2 uv = input.texcoord;
         float depth = LoadCameraDepth(input.positionCS.xy);
         if (depth == UNITY_RAW_FAR_CLIP_VALUE)
-            return float4(1, 1, 1, 1);
-
-        float shadowMask = SAMPLE_TEXTURE2D(_ScreenSpaceShadowTexture, sampler_ScreenSpaceShadowTexture, uv).r;
-        if (shadowMask > 0.25)
             return float4(1, 1, 1, 1);
         
         float3 camRelPos = ComputeWorldSpacePosition(uv, depth, UNITY_MATRIX_I_VP);
@@ -156,6 +157,7 @@ Shader "Hidden/CapsuleShadow"
             HLSLPROGRAM
             #pragma vertex Vert
             #pragma fragment Fragment
+
             ENDHLSL
         }
     }

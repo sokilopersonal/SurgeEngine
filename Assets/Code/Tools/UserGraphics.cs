@@ -26,9 +26,15 @@ namespace SurgeEngine.Code.Tools
         
         private readonly string[] _refractionQualityKeywords =
         {
-            "_REFRACTIONQUALITY_NATIVE",
+            "_REFRACTIONQUALITY_LOW",
             "_REFRACTIONQUALITY_MEDIUM", 
-            "_REFRACTIONQUALITY_LOW"
+            "_REFRACTIONQUALITY_NATIVE",
+        };
+        
+        private readonly string[] _capsuleShadowsKeywords =
+        {
+            "_CAPSULESHADOWS_OFF",
+            "_CAPSULESHADOWS_ON"
         };
 
         public UserGraphics(VolumeProfile profile)
@@ -124,6 +130,11 @@ namespace SurgeEngine.Code.Tools
         public void SetSubSurfaceScattering(SubSurfaceScatteringQuality level)
         {
             _data.subSurfaceScatteringQuality = level;
+        }
+
+        public void SetCapsuleShadows(bool value)
+        {
+            _data.capsuleShadows = value;
         }
 
         public void AddLight(LightDefiner data)
@@ -273,6 +284,15 @@ namespace SurgeEngine.Code.Tools
                 Debug.LogWarning("[UserGraphics] HDCameraData doesn't exists.");
             }
 
+            if (_data.capsuleShadows)
+            {
+                Shader.EnableKeyword("_CAPSULE_SHADOWS_ON");
+            }
+            else
+            {
+                Shader.DisableKeyword("_CAPSULE_SHADOWS_ON");
+            }
+
             Debug.Log($"[UserGraphics] Applied graphics options");
         }
 
@@ -347,6 +367,7 @@ namespace SurgeEngine.Code.Tools
         public AntiAliasingQuality antiAliasingQuality = AntiAliasingQuality.High;
         public ContactShadowsQuality contactShadowsQuality = ContactShadowsQuality.Medium;
         public SubSurfaceScatteringQuality subSurfaceScatteringQuality = SubSurfaceScatteringQuality.On;
+        public bool capsuleShadows = true;
     }
     
     public enum TextureQuality
