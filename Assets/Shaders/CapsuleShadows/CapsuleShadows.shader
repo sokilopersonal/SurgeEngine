@@ -1,12 +1,22 @@
 Shader "Hidden/CapsuleShadow"
 {
     HLSLINCLUDE
-    #pragma target 5.0
+    #pragma target 4.5
+    #pragma only_renderers d3d11 playstation xboxone xboxseries vulkan metal switch
+
+    #pragma multi_compile_fragment PUNCTUAL_SHADOW_LOW PUNCTUAL_SHADOW_MEDIUM PUNCTUAL_SHADOW_HIGH
+    #pragma multi_compile_fragment DIRECTIONAL_SHADOW_LOW DIRECTIONAL_SHADOW_MEDIUM DIRECTIONAL_SHADOW_HIGH
+    #pragma multi_compile_fragment AREA_SHADOW_MEDIUM AREA_SHADOW_HIGH
 
     #pragma shader_feature _CAPSULE_SHADOWS_ON
     
     #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
+    #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/CommonLighting.hlsl"
+    #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Builtin/BuiltinData.hlsl"
     #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
+    #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/NormalBuffer.hlsl"
+    #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Lighting/LightLoop/HDShadow.hlsl"
+    #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Lighting/LightLoop/LightLoopDef.hlsl"
     
     struct CapsuleData
     {
@@ -117,7 +127,7 @@ Shader "Hidden/CapsuleShadow"
         #if !defined(_CAPSULE_SHADOWS_ON)
             return float4(1, 1, 1, 1);
         #endif
-
+        
         float2 uv = input.texcoord;
         float depth = LoadCameraDepth(input.positionCS.xy);
         if (depth == UNITY_RAW_FAR_CLIP_VALUE)
@@ -126,6 +136,18 @@ Shader "Hidden/CapsuleShadow"
         float3 camRelPos = ComputeWorldSpacePosition(uv, depth, UNITY_MATRIX_I_VP);
         float3 worldPos = camRelPos + _WorldSpaceCameraPos;
         float4 finalColor = float4(1, 1, 1, 1);
+
+        PositionInputs posInput = GetPositionInput(input.positionCS.xy, _ScreenSize.zw, depth, UNITY_MATRIX_I_VP, UNITY_MATRIX_V);
+        ApplyCameraRelativeXR(posInput.positionWS);
+        LightLoopContext context;
+        context.shadowContext = InitShadowContext();
+        DirectionalLightData light = _DirectionalLightDatas[_DirectionalShadowIndex];
+        float3 L = -light.forward;
+        
+        NormalData normalData;
+        DecodeFromNormalBuffer(posInput.positionSS.xy, normalData);
+        float3 normalWS = normalData.normalWS;
+        float shadowValue = GetDirectionalShadowAttenuation(context.shadowContext, posInput.positionSS.xy, posInput.positionWS, normalWS, light.shadowIndex, L);
         
         float combinedA = 0;
         for (int i = 0; i < _CapsuleCount; i++)
@@ -136,6 +158,13 @@ Shader "Hidden/CapsuleShadow"
             combinedA   = lerp(mx, sum, _OverlapBlend);
         }
         finalColor.rgb *= 1 - combinedA;
+
+        float threshold = 0.25;
+        if (shadowValue > threshold)
+        {
+            float fade = saturate((shadowValue - threshold) * 2.0);
+            return lerp(finalColor, float4(1, 1, 1, 1), fade);
+        }
         
         return finalColor;
     }
