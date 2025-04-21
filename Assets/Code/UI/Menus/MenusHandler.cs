@@ -59,6 +59,10 @@ namespace SurgeEngine.Code.UI
             await menu.Close();
         }
 
+        /// <summary>
+        /// Opens a page by name. Will close previous page and wait for it.
+        /// </summary>
+        /// <param name="page">Page name (type name)</param>
         public async void OpenMenu(string page)
         {
             var menu = _menusDictionaryString[page];
@@ -71,7 +75,11 @@ namespace SurgeEngine.Code.UI
             _currentPage = menu;
             await menu.Open();
         }
-
+        
+        /// <summary>
+        /// Opens a page. Will close previous page and wait for it.
+        /// </summary>
+        /// <param name="page">Page reference to open</param>
         public async void OpenMenu(Page page)
         {
             if (_currentPage != null)
@@ -81,6 +89,22 @@ namespace SurgeEngine.Code.UI
             
             _currentPage = page;
             await page.Open();
+        }
+
+        /// <summary>
+        /// Opens a page. Will close previous page and wait for waitTime before opening the new page
+        /// </summary>
+        /// <param name="page">Page reference to open</param>
+        /// <param name="waitTime">Time to wait before opening</param>
+        public async void OpenMenu(Page page, float waitTime)
+        {
+            if (_currentPage != null)
+            {
+                await _currentPage.Close(waitTime);
+            }
+            
+            _currentPage = page;
+            await page.Open(waitTime);
         }
 
         public bool IsAnyMenuOpened()

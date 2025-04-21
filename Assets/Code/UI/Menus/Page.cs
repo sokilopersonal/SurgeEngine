@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
@@ -55,6 +56,35 @@ namespace SurgeEngine.Code.UI.Menus
             InsertOutroAnimations();
             
             await AnimationSequence.AsyncWaitForCompletion();
+        }
+
+        public async UniTask Open(float waitTime)
+        {
+            var current = EventSystem.current;
+            if (selected != null) current.SetSelectedGameObject(selected.gameObject);
+
+            Group.interactable = true;
+            Group.blocksRaycasts = true;
+            
+            AnimationSequence?.Kill(true);
+            AnimationSequence = DOTween.Sequence();
+            AnimationSequence.SetUpdate(true);
+            InsertIntroAnimations();
+
+            await UniTask.Delay(TimeSpan.FromSeconds(waitTime), DelayType.UnscaledDeltaTime);
+        }
+        
+        public async UniTask Close(float waitTime)
+        {
+            Group.interactable = false;
+            Group.blocksRaycasts = false;
+            
+            AnimationSequence?.Kill(true);
+            AnimationSequence = DOTween.Sequence();
+            AnimationSequence.SetUpdate(true);
+            InsertOutroAnimations();
+
+            await UniTask.Delay(TimeSpan.FromSeconds(waitTime), DelayType.UnscaledDeltaTime);
         }
         
         public void OpenInternal()
