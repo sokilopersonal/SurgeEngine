@@ -139,7 +139,7 @@ namespace SurgeEngine.Code.CommonObjects
             _playerInside = true;
             _launching = false;
             
-            _actor.transform.position = transform.position + Vector3.up * 0.5f;
+            _actor.PutIn(transform.position + Vector3.up * 0.5f);
             
             Quaternion rot = Quaternion.LookRotation(transform.forward, Vector3.up);
             _actor.transform.rotation = rot;

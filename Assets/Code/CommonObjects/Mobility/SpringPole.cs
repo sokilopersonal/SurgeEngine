@@ -25,9 +25,7 @@ namespace SurgeEngine.Code.CommonObjects
             base.Contact(msg);
 
             ActorBase context = ActorContext.Context;
-
             float vertSpeed = Mathf.Abs(context.kinematics.Velocity.y);
-
             float pointDistance = Mathf.Clamp01(Vector3.Distance(new Vector3(context.transform.position.x, point.position.y, context.transform.position.z), point.position) * 0.5f);
 
             if (vertSpeed > 25f)

@@ -31,7 +31,7 @@ namespace SurgeEngine.Code.CommonObjects
 
                 context.stateMachine.GetSubState<FBoost>().Active = false;
 
-                context.transform.position = startPoint.position ;
+                context.PutIn(startPoint.position);
                 context.transform.forward = Vector3.Cross(-startPoint.right, Vector3.up);
                 
                 Common.ApplyImpulse(Common.GetImpulseWithPitch(Vector3.Cross(-startPoint.right, Vector3.up), startPoint.right, pitch, impulse));

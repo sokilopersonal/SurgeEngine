@@ -22,9 +22,6 @@ namespace SurgeEngine.Code.Actor.CameraSystem
         public float distance;
         public float yOffset;
         
-        public float boostDistance;
-        public float boostFov;
-        
         public float xAutoLook;
         public float yAutoLook;
         
@@ -40,6 +37,8 @@ namespace SurgeEngine.Code.Actor.CameraSystem
         public Quaternion rotation;
         public Vector3 lookOffset;
         public Vector3 actorPosition;
+        
+        public Vector3 LateOffset { get; private set; }
 
         public Vector3 direction;
         public Vector3 freeDirection;
@@ -65,9 +64,7 @@ namespace SurgeEngine.Code.Actor.CameraSystem
             startYOffset = master.yOffset;
             distance = startDistance;
             yOffset = startYOffset;
-
-            boostDistance = 1f;
-            boostFov = 1f;
+            
             fov = baseFov;
         }
 
@@ -93,6 +90,7 @@ namespace SurgeEngine.Code.Actor.CameraSystem
                 lookOffset = Vector3.zero;
             }
 
+            LateOffset = Vector3.Lerp(LateOffset, Vector3.zero, 4f * dt);
             actorPosition = GetActorPosition();
             
             var kinematics = ActorContext.Context.kinematics;
@@ -122,7 +120,7 @@ namespace SurgeEngine.Code.Actor.CameraSystem
 
         private Vector3 GetActorPosition()
         {
-            Vector3 basePosition = master.Actor.transform.position + Vector3.up * yOffset + Vector3.up * yLag;
+            Vector3 basePosition = master.Actor.transform.position + LateOffset + Vector3.up * yOffset + Vector3.up * yLag;
             var kinematics = ActorContext.Context.kinematics;
             var path = kinematics.GetPath();
             KinematicsMode mode = kinematics.mode;
@@ -211,6 +209,11 @@ namespace SurgeEngine.Code.Actor.CameraSystem
             y = !resetY ? dir.eulerAngles.x : 0f;
         }
         
+        public void SetLateOffset(Vector3 offset)
+        {
+            LateOffset = offset;
+        }
+
         public void ResetBlendFactor()
         {
             blendFactor = 0f;

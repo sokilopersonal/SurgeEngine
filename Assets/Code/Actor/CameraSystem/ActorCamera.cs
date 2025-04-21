@@ -1,11 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using SurgeEngine.Code.Actor.CameraSystem.Modifiers;
 using SurgeEngine.Code.Actor.CameraSystem.Pawns;
-using SurgeEngine.Code.Actor.States.SonicSubStates;
 using SurgeEngine.Code.Actor.System;
-using SurgeEngine.Code.StateMachine;
 using UnityEngine;
 
 namespace SurgeEngine.Code.Actor.CameraSystem
@@ -18,12 +15,10 @@ namespace SurgeEngine.Code.Actor.CameraSystem
         public float sensitivity = 0.5f;
         public float maxSensitivitySpeed = 1f;
         public float minSensitivitySpeed = 0.5f;
-        public float smoothTime = 0.085f;
-        
+
         [Header("Target")] 
         public float distance = 2.9f;
         public float yOffset = 0.1f;
-        public Vector3 positionOffset;
         public Vector3 lookOffset;
 
         [Header("Auto Look")] 

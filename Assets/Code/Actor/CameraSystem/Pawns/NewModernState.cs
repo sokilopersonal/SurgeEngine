@@ -81,7 +81,13 @@ namespace SurgeEngine.Code.Actor.CameraSystem.Pawns
         private Vector3 HandleCameraCollision(Vector3 actorPosition, Vector3 targetPosition, float originalDistance)
         {
             Vector3 cameraDirection = (targetPosition - actorPosition).normalized;
-            float actualDistance = originalDistance * _stateMachine.boostDistance;
+            
+            float distance = 1;
+            if (_stateMachine.master.GetModifier(out BoostDistanceCameraModifier boostDistance))
+            {
+                distance = boostDistance.Value;
+            }
+            float actualDistance = originalDistance * distance;
 
             if (Physics.SphereCast(actorPosition, _master.collisionRadius, cameraDirection, out RaycastHit hit, actualDistance, _master.collisionMask))
             {

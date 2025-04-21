@@ -18,7 +18,7 @@ namespace SurgeEngine.Code.CommonObjects
 
             ActorBase context = ActorContext.Context;
 
-            context.transform.position = grip.position;
+            context.PutIn(grip.position);
 
             context.effects.swingTrail.trail2D = trail2D;
 

@@ -92,7 +92,7 @@ namespace SurgeEngine.Code.CommonObjects
                 context.stateMachine.GetSubState<FBoost>().Active = false;
                 Common.ResetVelocity(ResetVelocityType.Both);
                 
-                context.transform.position = startPoint.position;
+                context.PutIn(startPoint.position);
                 context.transform.forward = Vector3.Cross(-startPoint.right, Vector3.up);
                 context.model.transform.forward = Vector3.Cross(-startPoint.right, Vector3.up);
                 

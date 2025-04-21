@@ -25,12 +25,12 @@ namespace SurgeEngine.Code.CommonObjects
             if (center)
             {
                 Vector3 target = transform.position + transform.up * yOffset;
-                context.transform.position = target;
+                context.PutIn(target);
             }
             else
             {
                 Vector3 target = transform.up * yOffset;
-                context.transform.position += target;
+                context.AddIn(target);
             }
             if (cancelBoost) context.stateMachine.GetSubState<FBoost>().Active = false;
             

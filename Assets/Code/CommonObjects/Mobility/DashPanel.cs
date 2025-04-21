@@ -22,8 +22,9 @@ namespace SurgeEngine.Code.CommonObjects
             
             if (center)
             {
-                body.linearVelocity = Vector3.zero;
-                body.position = transform.position + transform.up * 0.5f;
+                Vector3 target = transform.position + transform.up * 0.25f;
+                context.camera.stateMachine.SetLateOffset(context.transform.position - target - transform.up * 0.75f); // We need to use this and not just context.PutIn because the late offset is not calculated properly
+                context.transform.position = target;
             }
             
             context.animation.StateAnimator.TransitionToState(AnimatorParams.RunCycle);

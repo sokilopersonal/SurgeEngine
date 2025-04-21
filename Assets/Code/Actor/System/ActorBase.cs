@@ -89,6 +89,17 @@ namespace SurgeEngine.Code.Actor.System
             }
         }
 
+        public void PutIn(Vector3 position)
+        {
+            camera.stateMachine.SetLateOffset(transform.position - position);
+            transform.position = position;
+        }
+
+        public void AddIn(Vector3 position)
+        {
+            transform.position += position;
+        }
+
         protected virtual void InitializeConfigs()
         {
             AddConfig(config);
