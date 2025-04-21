@@ -53,7 +53,6 @@ namespace SurgeEngine.Code.Actor.System
         public Action<InputAction.CallbackContext> BumperAction;
 
         private bool _lockCamera;
-        private Rect _screenRect;
         private InputDevice _device;
 
         private Dictionary<string, string> _translatedDeviceNames;
@@ -66,7 +65,6 @@ namespace SurgeEngine.Code.Actor.System
         private void Awake()
         {
             playerInput ??= GetComponent<PlayerInput>();
-            _screenRect = new Rect(0, 0, Screen.width, Screen.height);
             
             _translatedDeviceNames = new Dictionary<string, string>()
             {
@@ -154,8 +152,18 @@ namespace SurgeEngine.Code.Actor.System
                     }
                 }
             }
-            
-            CameraLock(!_screenRect.Contains(playerInput.actions["MousePosition"].ReadValue<Vector2>()));
+
+#if UNITY_EDITOR
+            if (Keyboard.current.escapeKey.wasPressedThisFrame)
+            {
+                CameraLock(true);
+            }
+
+            if (Mouse.current.leftButton.wasPressedThisFrame)
+            {
+                CameraLock(false);
+            }
+#endif
 
             if (_lockCamera)
             {
