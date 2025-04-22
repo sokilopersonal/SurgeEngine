@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using Newtonsoft.Json;
 using SurgeEngine.Code.CommonObjects.Lighting;
 using UnityEngine;
 using UnityEngine.Events;
@@ -328,7 +329,7 @@ namespace SurgeEngine.Code.Tools
                 _data.subSurfaceScatteringQuality = _hdCameraData.renderingPathCustomFrameSettings.IsEnabled(FrameSettingsField.Transmission) 
                                                     && _hdCameraData.renderingPathCustomFrameSettings.IsEnabled(FrameSettingsField.SubsurfaceScattering) ? SubSurfaceScatteringQuality.On : SubSurfaceScatteringQuality.Off;
                 
-                File.WriteAllText(path, JsonUtility.ToJson(_data, true));
+                File.WriteAllText(path, JsonConvert.SerializeObject(_data, Formatting.Indented));
             
                 callback?.Invoke(true);
             }
@@ -343,7 +344,7 @@ namespace SurgeEngine.Code.Tools
         {
             if (File.Exists(GetDataPath()))
             {
-                var data = JsonUtility.FromJson<T>(File.ReadAllText(GetDataPath()));
+                var data = JsonConvert.DeserializeObject<T>(File.ReadAllText(GetDataPath()));
                 callback?.Invoke(data);
             }
         }
