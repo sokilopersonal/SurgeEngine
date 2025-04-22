@@ -3,7 +3,7 @@ using UnityEditor;
 using UnityEngine;
 using System.Collections.Generic;
 using System.IO;
-using Unity.Plastic.Newtonsoft.Json;
+using Newtonsoft.Json;
 
 namespace SurgeEngine.Editor
 {
@@ -223,7 +223,7 @@ namespace SurgeEngine.Editor
             {
                 string json = File.ReadAllText(SaveFilePath);
                 var jsonList = JsonConvert.DeserializeObject<List<PrefabData>>(json);
-
+                
                 foreach (var data in jsonList)
                 {
                     GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(data.path);
