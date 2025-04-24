@@ -75,7 +75,7 @@ namespace SurgeEngine.Code.Tools
 
         public void Revert()
         {
-            _graphics.Load<GraphicsData>(data =>
+            _graphics.Load(data =>
             {
                 textureQualityBar.SetIndex((int)data.textureQuality);
                 sunShadowsQualityBar.SetIndex((int)data.sunShadowsQuality);

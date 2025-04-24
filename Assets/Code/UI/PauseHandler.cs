@@ -120,7 +120,7 @@ namespace SurgeEngine.Code.UI
         {
             if (!hasFocus)
             {
-                if (!_gameSettings.GetRunInBackground())
+                if (!_gameSettings.RunInBackground)
                 {
                     if (!MenusHandler.Instance.IsAnyMenuOpened())
                     {

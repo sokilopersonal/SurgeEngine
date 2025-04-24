@@ -13,9 +13,9 @@ namespace SurgeEngine.Code.Tools
         
         private void Awake()
         {
-            _game.Load<GameData>(data =>
+            _game.Load(data =>
             {
-                runInBackgroundBar.OnIndexChanged += index => _game.SetRunInBackground(index == 1);
+                runInBackgroundBar.OnIndexChanged += index => _game.RunInBackground = index == 1;
                 runInBackgroundBar.SetIndex(data.runInBackground ? 1 : 0);
             });
         }

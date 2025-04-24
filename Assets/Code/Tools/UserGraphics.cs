@@ -12,14 +12,12 @@ using Zenject;
 
 namespace SurgeEngine.Code.Tools
 {
-    public class UserGraphics : IInitializable, IStorageService, ILateDisposable
+    public class UserGraphics : JsonStorageService<GraphicsData>, IInitializable, ILateDisposable
     {
-        private const string FileName = "GraphicsSettings.json";
         private readonly VolumeProfile _volume;
 
         private readonly List<LightDefiner> _lightsData;
-
-        private GraphicsData _data;
+        
         private HDAdditionalCameraData _hdCameraData;
         
         private const int MaxTextureQuality = 3;
@@ -56,7 +54,6 @@ namespace SurgeEngine.Code.Tools
             }
             
             _lightsData = new List<LightDefiner>();
-            Load<GraphicsData>(data => _data = data);
             
             SceneManager.sceneLoaded += OnSceneLoaded;
         }
@@ -80,62 +77,62 @@ namespace SurgeEngine.Code.Tools
 
         public void SetTextureQuality(TextureQuality value)
         {
-            _data.textureQuality = value;
+            Data.textureQuality = value;
         }
 
         public void SetSunShadowsQuality(ShadowsQuality value)
         {
-            _data.sunShadowsQuality = value;
+            Data.sunShadowsQuality = value;
         }
 
         public void SetAdditionalShadowsQuality(ShadowsQuality value)
         {
-            _data.additionalShadowsQuality = value;
+            Data.additionalShadowsQuality = value;
         }
 
         public void SetBloomQuality(BloomQuality value)
         {
-            _data.bloomQuality = value;
+            Data.bloomQuality = value;
         }
 
         public void SetAmbientOcclusionQuality(AmbientOcclusionQuality value)
         {
-            _data.aoQuality = value;
+            Data.aoQuality = value;
         }
 
         public void SetMotionBlurQuality(MotionBlurQuality value)
         {
-            _data.motionBlurQuality = value;
+            Data.motionBlurQuality = value;
         }
 
         public void SetRefractionQuality(RefractionQuality level)
         {
-            _data.refractionQuality = level;
+            Data.refractionQuality = level;
         }
 
         public void SetScreenSpaceReflectionsQuality(ScreenSpaceReflectionQuality level)
         {
-            _data.screenSpaceReflectionQuality = level;
+            Data.screenSpaceReflectionQuality = level;
         }
 
         public void SetAntiAliasing(AntiAliasingQuality level)
         {
-            _data.antiAliasingQuality = level;
+            Data.antiAliasingQuality = level;
         }
 
         public void SetContactShadows(ContactShadowsQuality level)
         {
-            _data.contactShadowsQuality = level;
+            Data.contactShadowsQuality = level;
         }
 
         public void SetSubSurfaceScattering(SubSurfaceScatteringQuality level)
         {
-            _data.subSurfaceScatteringQuality = level;
+            Data.subSurfaceScatteringQuality = level;
         }
 
         public void SetCapsuleShadows(bool value)
         {
-            _data.capsuleShadows = value;
+            Data.capsuleShadows = value;
         }
 
         public void AddLight(LightDefiner data)
@@ -168,7 +165,7 @@ namespace SurgeEngine.Code.Tools
             }
             
             // Texture quality
-            QualitySettings.globalTextureMipmapLimit = MaxTextureQuality - (int)_data.textureQuality;
+            QualitySettings.globalTextureMipmapLimit = MaxTextureQuality - (int)Data.textureQuality;
             
             // Sun Shadows
             foreach (var light in _lightsData)
@@ -176,7 +173,7 @@ namespace SurgeEngine.Code.Tools
                 if (light.Component.type == LightType.Directional)
                 {
                     var data = light.Data;
-                    data.shadowResolution.level = (int)_data.sunShadowsQuality;
+                    data.shadowResolution.level = (int)Data.sunShadowsQuality;
                 }
             }
             
@@ -189,51 +186,51 @@ namespace SurgeEngine.Code.Tools
                 }
                 
                 var data = light.Data;
-                data.shadowResolution.level = (int)_data.additionalShadowsQuality;
+                data.shadowResolution.level = (int)Data.additionalShadowsQuality;
             }
             
             // Bloom Quality
             if (_volume.TryGet(out Bloom bloom))
             {
-                if (_data.bloomQuality == BloomQuality.Off)
+                if (Data.bloomQuality == BloomQuality.Off)
                     _hdCameraData.renderingPathCustomFrameSettings.SetEnabled(FrameSettingsField.Bloom, false);
                 else
                 {
                     _hdCameraData.renderingPathCustomFrameSettings.SetEnabled(FrameSettingsField.Bloom, true);
-                    bloom.quality.value = (int)_data.bloomQuality - 1;
+                    bloom.quality.value = (int)Data.bloomQuality - 1;
                 }
             }
             
             // GTAO Quality
             if (_volume.TryGet(out ScreenSpaceAmbientOcclusion ssao))
             {
-                if (_data.aoQuality == AmbientOcclusionQuality.Off)
+                if (Data.aoQuality == AmbientOcclusionQuality.Off)
                 {
                     _hdCameraData.renderingPathCustomFrameSettings.SetEnabled(FrameSettingsField.SSAO, false);
                 }
                 else
                 {
                     _hdCameraData.renderingPathCustomFrameSettings.SetEnabled(FrameSettingsField.SSAO, true);
-                    ssao.quality.value = (int)_data.aoQuality - 1;
+                    ssao.quality.value = (int)Data.aoQuality - 1;
                 }
             }
             
             // Motion Blur Quality
             if (_volume.TryGet(out MotionBlur motionBlur))
             {
-                if (_data.motionBlurQuality == MotionBlurQuality.Off)
+                if (Data.motionBlurQuality == MotionBlurQuality.Off)
                     _hdCameraData.renderingPathCustomFrameSettings.SetEnabled(FrameSettingsField.MotionBlur, false);
                 else
                 {
                     _hdCameraData.renderingPathCustomFrameSettings.SetEnabled(FrameSettingsField.MotionBlur, true);
-                    motionBlur.quality.value = (int)_data.motionBlurQuality - 1;
+                    motionBlur.quality.value = (int)Data.motionBlurQuality - 1;
                 }
             }
             
             // SSR Quality
             if (_volume.TryGet(out ScreenSpaceReflection ssr))
             {
-                if (_data.screenSpaceReflectionQuality == ScreenSpaceReflectionQuality.Off)
+                if (Data.screenSpaceReflectionQuality == ScreenSpaceReflectionQuality.Off)
                 {
                     _hdCameraData.renderingPathCustomFrameSettings.SetEnabled(FrameSettingsField.SSR, false);
                     _hdCameraData.renderingPathCustomFrameSettings.SetEnabled(FrameSettingsField.SSRAsync, false);
@@ -242,14 +239,14 @@ namespace SurgeEngine.Code.Tools
                 {
                     _hdCameraData.renderingPathCustomFrameSettings.SetEnabled(FrameSettingsField.SSR, true);
                     _hdCameraData.renderingPathCustomFrameSettings.SetEnabled(FrameSettingsField.SSRAsync, true);
-                    ssr.quality.value = (int)_data.screenSpaceReflectionQuality - 1;
+                    ssr.quality.value = (int)Data.screenSpaceReflectionQuality - 1;
                 }
             }
             
             // Contact Shadows Quality
             if (_volume.TryGet(out ContactShadows contactShadows))
             {
-                if (_data.contactShadowsQuality == ContactShadowsQuality.Off)
+                if (Data.contactShadowsQuality == ContactShadowsQuality.Off)
                 {
                     _hdCameraData.renderingPathCustomFrameSettings.SetEnabled(FrameSettingsField.ContactShadows, false);
                     _hdCameraData.renderingPathCustomFrameSettings.SetEnabled(FrameSettingsField.ContactShadowsAsync, false);
@@ -258,11 +255,11 @@ namespace SurgeEngine.Code.Tools
                 {
                     _hdCameraData.renderingPathCustomFrameSettings.SetEnabled(FrameSettingsField.ContactShadows, true);
                     _hdCameraData.renderingPathCustomFrameSettings.SetEnabled(FrameSettingsField.ContactShadowsAsync, true);
-                    contactShadows.quality.value = (int)_data.contactShadowsQuality - 1;
+                    contactShadows.quality.value = (int)Data.contactShadowsQuality - 1;
                 }
             }
 
-            if (_data.subSurfaceScatteringQuality == SubSurfaceScatteringQuality.Off)
+            if (Data.subSurfaceScatteringQuality == SubSurfaceScatteringQuality.Off)
             {
                 _hdCameraData.renderingPathCustomFrameSettings.SetEnabled(FrameSettingsField.Transmission, false);
                 _hdCameraData.renderingPathCustomFrameSettings.SetEnabled(FrameSettingsField.SubsurfaceScattering, false);
@@ -274,18 +271,18 @@ namespace SurgeEngine.Code.Tools
             }
             
             // Refraction Quality
-            SetKeyword(_refractionQualityKeywords, MaxRefractionQuality - (int)_data.refractionQuality);
+            SetKeyword(_refractionQualityKeywords, (int)Data.refractionQuality);
             
             if (_hdCameraData)
             {
-                _hdCameraData.TAAQuality = (HDAdditionalCameraData.TAAQualityLevel)_data.antiAliasingQuality;
+                _hdCameraData.TAAQuality = (HDAdditionalCameraData.TAAQualityLevel)Data.antiAliasingQuality;
             }
             else
             {
                 Debug.LogWarning("[UserGraphics] HDCameraData doesn't exists.");
             }
 
-            if (_data.capsuleShadows)
+            if (Data.capsuleShadows)
             {
                 Shader.EnableKeyword("_CAPSULE_SHADOWS_ON");
             }
@@ -297,61 +294,7 @@ namespace SurgeEngine.Code.Tools
             Debug.Log($"[UserGraphics] Applied graphics options");
         }
 
-        public void Save(Action<bool> callback = null)
-        {
-            if (_data != null)
-            {
-                var path = GetDataPath();
-                _data.textureQuality = (TextureQuality)(MaxTextureQuality - QualitySettings.globalTextureMipmapLimit);
-
-                if (_lightsData.Count > 0)
-                {
-                    var sun = _lightsData.Find(x => x.Component.type == LightType.Directional);
-                    if (sun)
-                    {
-                        _data.sunShadowsQuality = (ShadowsQuality)sun.Data.shadowResolution.level;
-                    }
-                    
-                    var additionalLight = _lightsData.Find(x => x.Component.type != LightType.Directional);
-                    if (additionalLight)
-                    {
-                        _data.additionalShadowsQuality = (ShadowsQuality)sun.Data.shadowResolution.level;
-                    }
-                }
-                
-                _data.bloomQuality = _volume.TryGet(out Bloom bloom) ? _hdCameraData.renderingPathCustomFrameSettings.IsEnabled(FrameSettingsField.Bloom) ? (BloomQuality)bloom.quality.value + 1 : BloomQuality.Off : BloomQuality.Medium;
-                _data.aoQuality = _volume.TryGet(out ScreenSpaceAmbientOcclusion ssao) ? _hdCameraData.renderingPathCustomFrameSettings.IsEnabled(FrameSettingsField.SSAO) ? (AmbientOcclusionQuality)ssao.quality.value + 1 : AmbientOcclusionQuality.Off : AmbientOcclusionQuality.Medium;
-                _data.motionBlurQuality = _volume.TryGet(out MotionBlur motionBlur) ? _hdCameraData.renderingPathCustomFrameSettings.IsEnabled(FrameSettingsField.MotionBlur) ? (MotionBlurQuality)motionBlur.quality.value + 1 : MotionBlurQuality.Off : MotionBlurQuality.Medium;
-                _data.refractionQuality = (RefractionQuality)MaxRefractionQuality - Array.FindIndex(_refractionQualityKeywords, Shader.IsKeywordEnabled);
-                _data.screenSpaceReflectionQuality = _volume.TryGet(out ScreenSpaceReflection ssr) ? _hdCameraData.renderingPathCustomFrameSettings.IsEnabled(FrameSettingsField.SSR) ? (ScreenSpaceReflectionQuality)ssr.quality.value + 1 : ScreenSpaceReflectionQuality.Off : ScreenSpaceReflectionQuality.High;
-                _data.antiAliasingQuality = (AntiAliasingQuality)_hdCameraData.TAAQuality;
-                _data.contactShadowsQuality = _volume.TryGet(out ContactShadows cs) ? _hdCameraData.renderingPathCustomFrameSettings.IsEnabled(FrameSettingsField.ContactShadows) ? (ContactShadowsQuality)cs.quality.value + 1 : ContactShadowsQuality.Off : ContactShadowsQuality.Medium;
-                _data.subSurfaceScatteringQuality = _hdCameraData.renderingPathCustomFrameSettings.IsEnabled(FrameSettingsField.Transmission) 
-                                                    && _hdCameraData.renderingPathCustomFrameSettings.IsEnabled(FrameSettingsField.SubsurfaceScattering) ? SubSurfaceScatteringQuality.On : SubSurfaceScatteringQuality.Off;
-                
-                File.WriteAllText(path, JsonConvert.SerializeObject(_data, Formatting.Indented));
-            
-                callback?.Invoke(true);
-            }
-            else
-            {
-                _data = new GraphicsData();
-                Save(callback);
-            }
-        }
-
-        public void Load<T>(Action<T> callback = null)
-        {
-            if (File.Exists(GetDataPath()))
-            {
-                var data = JsonConvert.DeserializeObject<T>(File.ReadAllText(GetDataPath()));
-                callback?.Invoke(data);
-            }
-        }
-
-        public GraphicsData GetGraphicsData() => _data;
-
-        public string GetDataPath() => Path.Combine(Application.persistentDataPath, FileName);
+        public GraphicsData GetGraphicsData() => Data;
     }
 
     [Serializable]
