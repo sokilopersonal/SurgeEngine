@@ -14,7 +14,6 @@ namespace SurgeEngine.Code.Tools
         [SerializeField] private OptionBar pcssBar;
         [SerializeField] private OptionBar bloomBar;
         [SerializeField] private OptionBar aoBar;
-        [SerializeField] private OptionBar capsuleShadowsBar;
         [SerializeField] private OptionBar motionBlurBar;
         [SerializeField] private OptionBar refractionQualityBar;
         [SerializeField] private OptionBar ssrQualityBar;
@@ -26,46 +25,30 @@ namespace SurgeEngine.Code.Tools
         private void Awake()
         {
             var data = _graphics.GetGraphicsData();
-            
-            textureQualityBar.OnIndexChanged += index => _graphics.SetTextureQuality((TextureQuality)index);
-            sunShadowsQualityBar.OnIndexChanged += index => _graphics.SetSunShadowsQuality((ShadowsQuality)index);
-            punctualShadowsQualityBar.OnIndexChanged += index => _graphics.SetAdditionalShadowsQuality((ShadowsQuality)index);
-            contactShadowsQualityBar.OnIndexChanged +=
-                index => _graphics.SetContactShadows((ContactShadowsQuality)index);
-            bloomBar.OnIndexChanged += index => _graphics.SetBloomQuality((BloomQuality)index);
-            aoBar.OnIndexChanged += index => _graphics.SetAmbientOcclusionQuality((AmbientOcclusionQuality)index);
-            capsuleShadowsBar.OnIndexChanged += index => _graphics.SetCapsuleShadows(index != 0);
-            motionBlurBar.OnIndexChanged += index => _graphics.SetMotionBlurQuality((MotionBlurQuality)index);
-            refractionQualityBar.OnIndexChanged += index => _graphics.SetRefractionQuality((RefractionQuality)index);
-            ssrQualityBar.OnIndexChanged += index => _graphics.SetScreenSpaceReflectionsQuality((ScreenSpaceReflectionQuality)index);
-            antiAliasingQualityBar.OnIndexChanged += index => _graphics.SetAntiAliasing((AntiAliasingQuality)index);
-            subSurfaceScatteringQualityBar.OnIndexChanged += index => _graphics.SetSubSurfaceScattering((SubSurfaceScatteringQuality)index);
-            
-            textureQualityBar.SetIndex((int)data.textureQuality);
-            sunShadowsQualityBar.SetIndex((int)data.sunShadowsQuality);
-            punctualShadowsQualityBar.SetIndex((int)data.additionalShadowsQuality);
-            contactShadowsQualityBar.SetIndex((int)data.contactShadowsQuality);
-            bloomBar.SetIndex((int)data.bloomQuality);
-            aoBar.SetIndex((int)data.aoQuality);
-            capsuleShadowsBar.SetIndex(data.capsuleShadows ? 1 : 0);
-            motionBlurBar.SetIndex((int)data.motionBlurQuality);
-            refractionQualityBar.SetIndex((int)data.refractionQuality);
-            ssrQualityBar.SetIndex((int)data.screenSpaceReflectionQuality);
-            antiAliasingQualityBar.SetIndex((int)data.antiAliasingQuality);
-            subSurfaceScatteringQualityBar.SetIndex((int)data.subSurfaceScatteringQuality);
-            
-            textureQualityBar.OnIndexChanged += _ => _graphics.Apply();
-            sunShadowsQualityBar.OnIndexChanged += _ => _graphics.Apply();
-            punctualShadowsQualityBar.OnIndexChanged += _ => _graphics.Apply();
-            contactShadowsQualityBar.OnIndexChanged += _ => _graphics.Apply();
-            bloomBar.OnIndexChanged += _ => _graphics.Apply();
-            aoBar.OnIndexChanged += _ => _graphics.Apply();
-            capsuleShadowsBar.OnIndexChanged += _ => _graphics.Apply();
-            motionBlurBar.OnIndexChanged += _ => _graphics.Apply();
-            refractionQualityBar.OnIndexChanged += _ => _graphics.Apply();
-            ssrQualityBar.OnIndexChanged += _ => _graphics.Apply();
-            antiAliasingQualityBar.OnIndexChanged += _ => _graphics.Apply();
-            subSurfaceScatteringQualityBar.OnIndexChanged += _ => _graphics.Apply();
+            var bindings = new (OptionBar bar, Action<int> set, int current)[]
+            {
+                (textureQualityBar, i => _graphics.SetTextureQuality((TextureQuality)i), (int)data.textureQuality),
+                (sunShadowsQualityBar, i => _graphics.SetSunShadowsQuality((ShadowsQuality)i), (int)data.sunShadowsQuality),
+                (punctualShadowsQualityBar, i => _graphics.SetAdditionalShadowsQuality((ShadowsQuality)i), (int)data.additionalShadowsQuality),
+                (contactShadowsQualityBar, i => _graphics.SetContactShadows((ContactShadowsQuality)i), (int)data.contactShadowsQuality),
+                (bloomBar, i => _graphics.SetBloomQuality((BloomQuality)i), (int)data.bloomQuality),
+                (aoBar, i => _graphics.SetAmbientOcclusionQuality((AmbientOcclusionQuality)i), (int)data.aoQuality),
+                (motionBlurBar, i => _graphics.SetMotionBlurQuality((MotionBlurQuality)i), (int)data.motionBlurQuality),
+                (refractionQualityBar, i => _graphics.SetRefractionQuality((RefractionQuality)i), (int)data.refractionQuality),
+                (ssrQualityBar, i => _graphics.SetScreenSpaceReflectionsQuality((ScreenSpaceReflectionQuality)i), (int)data.screenSpaceReflectionQuality),
+                (antiAliasingQualityBar, i => _graphics.SetAntiAliasing((AntiAliasingQuality)i), (int)data.antiAliasingQuality),
+                (subSurfaceScatteringQualityBar, i => _graphics.SetSubSurfaceScattering((SubSurfaceScatteringQuality)i), (int)data.subSurfaceScatteringQuality),
+            };
+
+            foreach (var (bar, set, current) in bindings)
+            {
+                bar.SetIndex(current);
+                bar.OnIndexChanged += i => {
+                    set(i);
+                    _graphics.Apply();
+                };
+            }
+
         }
 
         public void Save()
@@ -88,7 +71,6 @@ namespace SurgeEngine.Code.Tools
                 ssrQualityBar.SetIndex((int)data.screenSpaceReflectionQuality);
                 antiAliasingQualityBar.SetIndex((int)data.antiAliasingQuality);
                 subSurfaceScatteringQualityBar.SetIndex((int)data.subSurfaceScatteringQuality);
-                capsuleShadowsBar.SetIndex(data.capsuleShadows ? 1 : 0);
                 
                 _graphics.Apply();
                 _graphics.Save();
