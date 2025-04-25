@@ -24,7 +24,7 @@ namespace SurgeEngine.Code.Actor.System
         public SwingEffect swingTrail;
 
         [Header("Boost")]
-        [SerializeField] private Effect boostAura;
+        public Effect boostAura;
         [SerializeField] private BoostDistortion boostDistortion;
 
         [Header("Spinball")] 

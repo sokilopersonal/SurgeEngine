@@ -76,6 +76,7 @@ namespace SurgeEngine.Code.Actor.System.Actors
         public override void Load(Vector3 loadPosition, Quaternion loadRotation)
         {
             stateMachine.GetSubState<FBoost>().Active = false;
+            effects.boostAura.Clear();
             
             base.Load(loadPosition, loadRotation);
         }

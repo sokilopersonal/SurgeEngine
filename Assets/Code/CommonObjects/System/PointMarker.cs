@@ -8,11 +8,12 @@ namespace SurgeEngine.Code.CommonObjects.System
     [RequireComponent(typeof(BoxCollider))]
     public class PointMarker : ContactBase
     {
+        [SerializeField, Min(0)] private int id;
         [SerializeField, Range(0.5f, 5f)] private float length = 2f;
         public float Length => length;
+        public int ID => id;
 
         private EventReference _soundEvent;
-
         private List<IPointMarkerLoader> _loaders = new List<IPointMarkerLoader>();
 
         private bool _triggered;
@@ -30,6 +31,13 @@ namespace SurgeEngine.Code.CommonObjects.System
 
         public override void Contact(Collider msg)
         {
+            var currentMarker = Stage.Instance.CurrentPointMarker;
+            if (currentMarker != null && ID < currentMarker.ID)
+            {
+                Debug.LogWarning("[PointMarker] Point Marker skipped.");
+                return;
+            }
+            
             if (!_triggered)
             {
                 base.Contact(msg);
