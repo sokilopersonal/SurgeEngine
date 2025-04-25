@@ -62,8 +62,8 @@ namespace SurgeEngine.Code.CommonObjects.System
 
         private void ContactAnimation(ContactBase obj)
         {
-            leftAnimator.CrossFadeInFixedTime(Forward, 0.1f, 0);
-            rightAnimator.CrossFadeInFixedTime(Forward, 0.1f, 0);
+            leftAnimator.CrossFadeInFixedTime(Forward, 0.25f, 0);
+            rightAnimator.CrossFadeInFixedTime(Forward, 0.25f, 0);
         }
     }
 }
