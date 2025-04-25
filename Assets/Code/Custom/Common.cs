@@ -5,6 +5,7 @@ using SurgeEngine.Code.Actor.States;
 using SurgeEngine.Code.Actor.States.SonicSpecific;
 using SurgeEngine.Code.Actor.System;
 using SurgeEngine.Code.CommonObjects;
+using SurgeEngine.Code.CommonObjects.System;
 using UnityEngine;
 
 namespace SurgeEngine.Code.Custom

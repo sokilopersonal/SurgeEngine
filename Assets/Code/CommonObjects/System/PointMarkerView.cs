@@ -8,11 +8,12 @@ namespace SurgeEngine.Code.CommonObjects.System
         [SerializeField] private Transform left, right, line;
         [SerializeField] private BoxCollider _boxCollider;
 
-        [SerializeField] private Animator leftAnimator, rightAnimator;
+        [SerializeField] private Animator leftAnimator, rightAnimator, lineAnimator;
         
         private PointMarker _pointMarker;
         
         private static readonly int Forward = Animator.StringToHash("Forward");
+        private static readonly int FadeOut = Animator.StringToHash("LineFadeOut");
 
         private void Awake()
         {
@@ -64,6 +65,7 @@ namespace SurgeEngine.Code.CommonObjects.System
         {
             leftAnimator.CrossFadeInFixedTime(Forward, 0.25f, 0);
             rightAnimator.CrossFadeInFixedTime(Forward, 0.25f, 0);
+            lineAnimator.Play(FadeOut, 0);
         }
     }
 }

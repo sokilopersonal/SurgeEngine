@@ -3,6 +3,7 @@ using SurgeEngine.Code.Actor.States.SonicSubStates;
 using SurgeEngine.Code.Actor.System;
 using SurgeEngine.Code.CommonObjects;
 using SurgeEngine.Code.CommonObjects.HUD;
+using SurgeEngine.Code.CommonObjects.System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;

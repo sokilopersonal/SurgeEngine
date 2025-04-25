@@ -16,6 +16,8 @@ namespace SurgeEngine.Code.CommonObjects
             ActorBase context = ActorContext.Context;
             context.stats.lastContactObject = this;
             
+            ObjectEvents.OnObjectCollected?.Invoke(this);
+            
             OnContact?.Invoke(this);
         }
         

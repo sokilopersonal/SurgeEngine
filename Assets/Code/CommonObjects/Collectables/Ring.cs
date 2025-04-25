@@ -74,7 +74,6 @@ namespace SurgeEngine.Code.CommonObjects
             
             RuntimeManager.PlayOneShot(ringSound);
 
-            ObjectEvents.OnObjectCollected?.Invoke(this);
             Common.AddScore(10);
             var p = Instantiate(particle, transform.position, Quaternion.identity);
             Destroy(p.gameObject, 1f);

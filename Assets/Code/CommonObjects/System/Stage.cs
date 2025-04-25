@@ -1,17 +1,19 @@
 ﻿using SurgeEngine.Code.Actor.States;
 using SurgeEngine.Code.Actor.System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
-namespace SurgeEngine.Code.CommonObjects
+namespace SurgeEngine.Code.CommonObjects.System
 {
     public class Stage : MonoBehaviour
     {
         private static Stage _instance;
-        
         public static Stage Instance => _instance;
 
         public StageData data;
+        
+        public PointMarker CurrentPointMarker { get; private set; }
 
         private void Awake()
         {
@@ -28,6 +30,16 @@ namespace SurgeEngine.Code.CommonObjects
             if (!ActorContext.Context.stateMachine.IsExact<FStateStart>())
             {
                 data.Time += Time.deltaTime;
+            }
+
+            if (CurrentPointMarker != null)
+            {
+                // Testing stuff
+
+                if (Keyboard.current.f7Key.wasPressedThisFrame)
+                {
+                    CurrentPointMarker.Load();
+                }
             }
         }
 
@@ -46,6 +58,11 @@ namespace SurgeEngine.Code.CommonObjects
             if (obj is Ring)
             {
                 data.RingCount += 1;
+            }
+
+            if (obj is PointMarker marker)
+            {
+                CurrentPointMarker = marker;
             }
         }
     }

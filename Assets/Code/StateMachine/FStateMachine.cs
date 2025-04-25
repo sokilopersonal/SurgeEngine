@@ -10,10 +10,10 @@ namespace SurgeEngine.Code.StateMachine
         public FState PreviousState { get; private set; }
         public string currentStateName;
         
-        private Dictionary<Type, FState> _states = new Dictionary<Type, FState>();
-        private Dictionary<Type, FSubState> _subStates = new Dictionary<Type, FSubState>();
-        private List<FSubState> _subStatesList = new List<FSubState>();
-        private List<IStateTimeout> _stateTimeouts = new List<IStateTimeout>();
+        private readonly Dictionary<Type, FState> _states = new Dictionary<Type, FState>();
+        private readonly Dictionary<Type, FSubState> _subStates = new Dictionary<Type, FSubState>();
+        private readonly List<FSubState> _subStatesList = new List<FSubState>();
+        private readonly List<IStateTimeout> _stateTimeouts = new List<IStateTimeout>();
         
         public event Action<FState> OnStateAssign;
         
@@ -99,17 +99,7 @@ namespace SurgeEngine.Code.StateMachine
             Type type = typeof(T);
             return PreviousState != null && PreviousState.GetType() == type;
         }
-
-        public bool Has<T>() where T : FState
-        {
-            if (_states.TryGetValue(typeof(T), out FState state))
-            {
-                return state != null;
-            }
-            
-            return false;
-        }
-
+        
         public bool IsPreviousState<TState>() where TState : FState
         {
             return PreviousState is TState;

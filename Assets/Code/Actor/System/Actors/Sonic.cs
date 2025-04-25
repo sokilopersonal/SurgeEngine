@@ -72,5 +72,12 @@ namespace SurgeEngine.Code.Actor.System.Actors
             stateMachine.AddSubState(new FBoost(this));
             stateMachine.AddSubState(new FSweepKick(this));
         }
+
+        public override void Load(Vector3 loadPosition, Quaternion loadRotation)
+        {
+            stateMachine.GetSubState<FBoost>().Active = false;
+            
+            base.Load(loadPosition, loadRotation);
+        }
     }
 }

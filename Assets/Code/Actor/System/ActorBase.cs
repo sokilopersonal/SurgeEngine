@@ -1,14 +1,17 @@
-﻿using NaughtyAttributes;
+﻿using System;
+using NaughtyAttributes;
 using SurgeEngine.Code.Actor.CameraSystem;
 using SurgeEngine.Code.Actor.States;
 using SurgeEngine.Code.Actor.States.SonicSpecific;
 using SurgeEngine.Code.CommonObjects;
+using SurgeEngine.Code.CommonObjects.System;
 using SurgeEngine.Code.Config;
 using UnityEngine;
+using Zenject;
 
 namespace SurgeEngine.Code.Actor.System
 {
-    public class ActorBase : Entity, IDamageable
+    public class ActorBase : Entity, IDamageable, IPointMarkerLoader
     {
         [Foldout("Components")] public ActorInput input;
         [Foldout("Components")] public ActorStats stats;
@@ -26,7 +29,7 @@ namespace SurgeEngine.Code.Actor.System
         
         private StartData _startData;
         private Rigidbody _rigidbody;
-
+        
         protected override void Awake()
         {
             base.Awake();
@@ -113,6 +116,18 @@ namespace SurgeEngine.Code.Actor.System
                 dmgState.TakeDamage(this, sender);
                 flags.AddFlag(new Flag(FlagType.Invincible, null, true, damageKickConfig.invincibleTime));
             }
+        }
+
+        public virtual void Load(Vector3 loadPosition, Quaternion loadRotation)
+        {
+            _rigidbody.isKinematic = true;
+            _rigidbody.position = loadPosition;
+            _rigidbody.rotation = loadRotation;
+            if (model) model.root.rotation = loadRotation;
+            if (animation) animation.StateAnimator.TransitionToState("Idle", 0f);
+            _rigidbody.isKinematic = false;
+            
+            stateMachine.SetState<FStateIdle>();
         }
 
         public StartData GetStartData() => _startData;

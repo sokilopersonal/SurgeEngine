@@ -95,7 +95,7 @@ namespace SurgeEngine.Code.CommonObjects.Environment
                 
                 _collider.isTrigger = !_isRunning;
 
-                if (_surfaceActor.stateMachine.Has<FStateStomp>())
+                if (_surfaceActor.stateMachine.Exists<FStateStomp>())
                 {
                     if (_surfaceActor.stateMachine.IsExact<FStateStomp>())
                     {
@@ -115,7 +115,7 @@ namespace SurgeEngine.Code.CommonObjects.Environment
                         counterForce = velocity.normalized * (speed * resistance * Time.fixedDeltaTime);
                     }
 
-                    if (_surfaceActor.stateMachine.Has<FStateDrift>())
+                    if (_surfaceActor.stateMachine.Exists<FStateDrift>())
                     {
                         if (_surfaceActor.stateMachine.IsExact<FStateDrift>())
                         {
