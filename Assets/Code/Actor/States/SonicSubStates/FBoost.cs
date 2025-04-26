@@ -16,8 +16,8 @@ namespace SurgeEngine.Code.Actor.States.SonicSubStates
     {
         public float BoostEnergy
         {
-            get => _boostEnergy;
-            private set => _boostEnergy = Mathf.Clamp(value, 0, 100);
+            get => _boostEnergy; 
+            set => _boostEnergy = Mathf.Clamp(value, 0, 100);
         }
         
         public bool CanAirBoost ;
