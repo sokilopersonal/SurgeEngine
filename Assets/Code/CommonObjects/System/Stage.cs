@@ -39,6 +39,8 @@ namespace SurgeEngine.Code.CommonObjects.System
                 if (Keyboard.current.f7Key.wasPressedThisFrame)
                 {
                     CurrentPointMarker.Load();
+
+                    data.Score = 0;
                 }
             }
         }

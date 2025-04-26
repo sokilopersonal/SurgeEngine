@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace SurgeEngine.Code.UI.Menus.OptionElements
 {
-    public class OptionBar : Selectable
+    public class OptionBar : Selectable, IScrollHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
     {
         public event Action<MoveDirection> OnBarMove;
         public event Action<OptionBar> OnBarSelected;
@@ -30,6 +30,8 @@ namespace SurgeEngine.Code.UI.Menus.OptionElements
         private Tween _selectionTween;
         private RectTransform _rectTransform;
         private AutoScroll _autoScroll;
+        
+        private ScrollRect _parentScrollRect;
 
         public int Index
         {
@@ -60,6 +62,12 @@ namespace SurgeEngine.Code.UI.Menus.OptionElements
             
             _rectTransform = GetComponent<RectTransform>();
             _autoScroll = GetComponentInParent<AutoScroll>();
+
+            var parentScroll = GetComponentInParent<ScrollRect>();
+            if (parentScroll != null)
+            {
+                _parentScrollRect = parentScroll;
+            }
 
             selectionGroup.alpha = 0f;
         }
@@ -158,6 +166,38 @@ namespace SurgeEngine.Code.UI.Menus.OptionElements
 
             _selectionTween?.Kill(true);
             _selectionTween = selectionGroup.DOFade(0f, 0.25f).SetUpdate(true).SetEase(Ease.OutCubic);
+        }
+
+        public void OnScroll(PointerEventData eventData)
+        {
+            if (_parentScrollRect != null)
+            {
+                _parentScrollRect.OnScroll(eventData);
+            }
+        }
+
+        public void OnBeginDrag(PointerEventData eventData)
+        {
+            if (_parentScrollRect != null)
+            {
+                _parentScrollRect.OnBeginDrag(eventData);
+            }
+        }
+
+        public void OnDrag(PointerEventData eventData)
+        {
+            if (_parentScrollRect != null)
+            {
+                _parentScrollRect.OnDrag(eventData);
+            }
+        }
+
+        public void OnEndDrag(PointerEventData eventData)
+        {
+            if (_parentScrollRect != null)
+            {
+                _parentScrollRect.OnEndDrag(eventData);
+            }
         }
     }
 }

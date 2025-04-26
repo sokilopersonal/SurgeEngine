@@ -1,5 +1,6 @@
 ﻿using FMODUnity;
 using SurgeEngine.Code.CommonObjects;
+using SurgeEngine.Code.CommonObjects.System;
 using SurgeEngine.Code.StateMachine;
 using UnityEngine;
 
@@ -41,6 +42,7 @@ namespace SurgeEngine.Code.Enemy
             RuntimeManager.PlayOneShot(explosionReference, explosionPoint.position);
             
             ObjectEvents.OnEnemyDied?.Invoke(enemyBase);
+            Stage.Instance.data.AddScore(300);
             
             Destroy(enemyBase.gameObject);
         }
