@@ -43,6 +43,7 @@ namespace SurgeEngine.Code.Actor.CameraSystem.Pawns
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
+            
             LookAxis();
             ModernSetup();
         }

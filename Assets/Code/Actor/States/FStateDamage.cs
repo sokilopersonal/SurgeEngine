@@ -7,10 +7,19 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Actor.States
 {
+    public enum DamageState
+    {
+        Alive,
+        Dead
+    }
+    
     public class FStateDamage : FStateMove
     {
         private readonly DamageKickConfig _config;
         private float _timer;
+
+        private DamageState _state;
+        public DamageState State => _state;
 
         public FStateDamage(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
@@ -36,14 +45,29 @@ namespace SurgeEngine.Code.Actor.States
             
             if (Common.CheckForGround(out var hit))
             {
+                Kinematics.Point = hit.point;
+                Kinematics.Normal = hit.normal;
+                
                 Kinematics.Snap(hit.point, hit.normal, true);
+                Kinematics.Project();
                 _rigidbody.linearVelocity = new Vector3(_rigidbody.linearVelocity.x, 0, _rigidbody.linearVelocity.z);
                 
                 if (Common.TickTimer(ref _timer, 0.6f, false))
                 {
-                    StateMachine.SetState<FStateDamageLand>();
+                    if (_state == DamageState.Alive)
+                    {
+                        StateMachine.SetState<FStateDamageLand>();
+                    }
+                    else
+                    {
+                        _rigidbody.linearVelocity = Vector3.zero;
+                    }
                 }
+                
+                Model.RotateBody(-_rigidbody.GetHorizontalVelocity(), hit.normal);
             }
         }
+        
+        public void SetState(DamageState state) => _state = state;
     }
 }

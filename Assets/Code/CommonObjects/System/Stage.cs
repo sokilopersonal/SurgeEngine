@@ -1,8 +1,12 @@
-﻿using SurgeEngine.Code.Actor.States;
+﻿using System.Collections;
+using SurgeEngine.Code.Actor.States;
 using SurgeEngine.Code.Actor.System;
+using SurgeEngine.Code.Tools;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using Zenject;
+using NotImplementedException = System.NotImplementedException;
 
 namespace SurgeEngine.Code.CommonObjects.System
 {
@@ -14,6 +18,8 @@ namespace SurgeEngine.Code.CommonObjects.System
         public StageData data;
         
         public PointMarker CurrentPointMarker { get; private set; }
+
+        [Inject] private ActorBase _actor;
 
         private void Awake()
         {
@@ -27,36 +33,50 @@ namespace SurgeEngine.Code.CommonObjects.System
 
         private void Update()
         {
-            if (!ActorContext.Context.stateMachine.IsExact<FStateStart>())
+            if (!_actor.stateMachine.IsExact<FStateStart>())
             {
                 data.Time += Time.deltaTime;
             }
 
-            if (CurrentPointMarker != null)
+            // Testing stuff
+            if (Keyboard.current.f7Key.wasPressedThisFrame)
             {
-                // Testing stuff
-                if (Keyboard.current.f7Key.wasPressedThisFrame)
-                {
-                    LoadCurrentPointMarker();
-                }
+                LoadCurrentPointMarker();
             }
-        }
-
-        private void LoadCurrentPointMarker()
-        {
-            CurrentPointMarker.Load();
-
-            data.Score = 0;
         }
 
         private void OnEnable()
         {
             ObjectEvents.OnObjectCollected += OnObjectCollected;
+            
+            _actor.OnDied += OnActorDied;
         }
-        
+
         private void OnDisable()
         {
             ObjectEvents.OnObjectCollected -= OnObjectCollected;
+            
+            _actor.OnDied -= OnActorDied;
+        }
+
+        private void OnActorDied(ActorBase obj)
+        {
+            StartCoroutine(LoadCurrentPointMarker());
+        }
+
+        private IEnumerator LoadCurrentPointMarker()
+        {
+            if (CurrentPointMarker != null)
+            {
+                yield return new WaitForSeconds(2f);
+                CurrentPointMarker.Load();
+                data.Score = 0;
+            }
+            else
+            {
+                yield return new WaitForSeconds(1.75f);
+                SceneLoader.LoadScene(SceneManager.GetActiveScene().name);
+            }
         }
 
         private void OnObjectCollected(ContactBase obj)

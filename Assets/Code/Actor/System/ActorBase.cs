@@ -26,6 +26,8 @@ namespace SurgeEngine.Code.Actor.System
         [Foldout("Base Physics")]
         public BaseActorConfig config;
         public DamageKickConfig damageKickConfig;
+
+        public event Action<ActorBase> OnDied; 
         
         private StartData _startData;
         private Rigidbody _rigidbody;
@@ -76,6 +78,7 @@ namespace SurgeEngine.Code.Actor.System
             stateMachine.AddState(new FStateDamage(this, _rigidbody));
             stateMachine.AddState(new FStateDamageLand(this, _rigidbody));
             stateMachine.AddState(new FStateUpreel(this, _rigidbody));
+            stateMachine.AddState(new FStateDead(this));
         }
 
         public void SetStart(StartData data)
@@ -115,6 +118,18 @@ namespace SurgeEngine.Code.Actor.System
             {
                 dmgState.TakeDamage(this, sender);
                 flags.AddFlag(new Flag(FlagType.Invincible, null, true, damageKickConfig.invincibleTime));
+                
+                // Imagine it's over
+                if (Stage.Instance.data.RingCount <= 0)
+                {
+                    var damageState = stateMachine.GetState<FStateDamage>();
+                    damageState.SetState(DamageState.Dead);
+
+                    if (damageState.State == DamageState.Dead)
+                    {
+                        OnDied?.Invoke(this);
+                    }
+                }
             }
         }
 
@@ -128,7 +143,7 @@ namespace SurgeEngine.Code.Actor.System
             if (flags) flags.AddFlag(new Flag(FlagType.OutOfControl, null, true, 0.5f));
             _rigidbody.isKinematic = false;
             
-            stateMachine.SetState<FStateIdle>();
+            stateMachine.SetState<FStateIdle>(ignoreInactiveDelay: true);
         }
 
         public StartData GetStartData() => _startData;

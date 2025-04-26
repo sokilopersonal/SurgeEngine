@@ -6,7 +6,7 @@ namespace SurgeEngine.Code.Actor.States
     {
         void TakeDamage(ActorBase owner, Entity sender)
         {
-            owner.stateMachine.SetState<FStateDamage>();
+            owner.stateMachine.SetState<FStateDamage>().SetState(DamageState.Alive);
         }
     }
 }
