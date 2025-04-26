@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace SurgeEngine.Code.Enemy
 {
@@ -12,35 +11,45 @@ namespace SurgeEngine.Code.Enemy
         [HideInInspector]
         public Rigidbody rb;
 
-        private Collider col;
-        private bool active = false;
+        private Collider _col;
+        private bool _active;
+        
         private void Awake()
         {
-            col = GetComponent<Collider>();
+            _col = GetComponent<Collider>();
             rb = GetComponent<Rigidbody>();
-            SetActive(active);
+            SetActive(_active);
         }
-        public void SetActive(bool _set)
+        
+        public void SetActive(bool set)
         {
-            active = _set;
-            col.enabled = active;
-            rb.isKinematic = !active;
+            _active = set;
+            _col.enabled = _active;
+            rb.isKinematic = !_active;
         }
+        
         public void AddForce(Vector3 force, ForceMode mode)
         {
-            if (!active)
+            if (!_active)
                 return;
             rb.AddForce(force, mode);
         }
+        
         public void OnCollisionEnter(Collision collision)
         {
-            if (active && ragdoll != null && ragdoll.timer > ragdoll.minimumLifeTime && ragdoll.collideLayers == (ragdoll.collideLayers | (1 << collision.gameObject.layer)))
+            if (_active && ragdoll != null && ragdoll.timer > ragdoll.minimumLifeTime && ragdoll.collideLayers == (ragdoll.collideLayers | (1 << collision.gameObject.layer)))
                 ragdoll.Explode();
         }
+        
         public void OnCollisionStay(Collision collision)
         {
-            if (active && ragdoll != null && ragdoll.timer > ragdoll.minimumLifeTime && ragdoll.collideLayers == (ragdoll.collideLayers | (1 << collision.gameObject.layer)))
+            if (_active && ragdoll != null && ragdoll.timer > ragdoll.minimumLifeTime && ragdoll.collideLayers == (ragdoll.collideLayers | (1 << collision.gameObject.layer)))
                 ragdoll.Explode();
+        }
+
+        public void ResetVelocity()
+        {
+            rb.linearVelocity = Vector3.zero;
         }
     }
 }

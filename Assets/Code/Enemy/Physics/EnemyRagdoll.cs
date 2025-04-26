@@ -1,16 +1,18 @@
 using FMODUnity;
 using System.Collections.Generic;
+using SurgeEngine.Code.CommonObjects.System;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace SurgeEngine.Code.Enemy
 {
-    public class EnemyRagdoll : MonoBehaviour
+    public class EnemyRagdoll : MonoBehaviour, IPointMarkerLoader
     {
         [Header("Collision")] 
         [SerializeField] private SkinnedMeshRenderer meshRenderer;
         [SerializeField] private List<Collider> disableWhenRagdoll;
         [SerializeField] private UnityEvent onRagdoll;
+        [SerializeField] private UnityEvent onPointMarkerLoad;
         [SerializeField] private List<EnemyRagdollLimb> limbs;
         [SerializeField] private float limbMassScale = 1f;
         public LayerMask collideLayers;
@@ -18,8 +20,8 @@ namespace SurgeEngine.Code.Enemy
         [HideInInspector]
         public float timer;
 
-        private bool hit;
-        private bool ragdoll;
+        private bool _hit;
+        private bool _isInRagdoll;
 
         [Header("Lifetime")]
         public float minimumLifeTime = 0.25f;
@@ -40,10 +42,10 @@ namespace SurgeEngine.Code.Enemy
 
         public void Ragdoll(Vector3 force = new Vector3(), ForceMode mode = ForceMode.VelocityChange)
         {
-            if (ragdoll)
+            if (_isInRagdoll)
                 return;
 
-            ragdoll = true;
+            _isInRagdoll = true;
             meshRenderer.updateWhenOffscreen = true;
 
             foreach (Collider disableCol in disableWhenRagdoll)
@@ -62,7 +64,7 @@ namespace SurgeEngine.Code.Enemy
 
         private void Update()
         {
-            if (!ragdoll)
+            if (!_isInRagdoll)
                 return;
             
             timer += Time.deltaTime;
@@ -73,12 +75,31 @@ namespace SurgeEngine.Code.Enemy
 
         public void Explode()
         {
-            if (hit)
+            if (_hit)
                 return;
 
-            hit = true;
+            _hit = true;
             
             _eggFighter.View.Destroy();
+        }
+
+        public void Load(Vector3 loadPosition, Quaternion loadRotation)
+        {
+            _isInRagdoll = false;
+            _hit = false;
+            timer = 0;
+
+            foreach (var limb in limbs)
+            {
+                limb.SetActive(false);
+            }
+            
+            foreach (Collider disableCol in disableWhenRagdoll)
+            {
+                disableCol.enabled = true;
+            }
+            
+            onPointMarkerLoad.Invoke();
         }
     }
 }

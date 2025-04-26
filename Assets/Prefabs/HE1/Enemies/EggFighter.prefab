@@ -48,8 +48,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   view: {fileID: 1331910105712177873}
   animation: {fileID: 8187130217706908636}
-  stateMachine:
-    currentStateName: 
   animationReference: {fileID: 7560760262493947178}
   ragdollPrefab: {fileID: 4729933678536235600}
   findDistance: 0
@@ -395,6 +393,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 720597540709991440}
+  allowIK: 0
+  ikAllowedAnimations: []
 --- !u!114 &1331910105712177873
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1200,6 +1200,21 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
+        m_CallState: 2
+  onPointMarkerLoad:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 659115237076083278}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
         m_CallState: 2
   limbs:
   - {fileID: 3724144754802272356}

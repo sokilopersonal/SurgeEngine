@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Enemy
 {
-    public class EnemyView : MonoBehaviour, IEnemyComponent
+    public class EnemyView : MonoBehaviour, IEnemyComponent, IPointMarkerLoader
     {
         public EnemyBase enemyBase { get; set; }
         
@@ -44,7 +44,12 @@ namespace SurgeEngine.Code.Enemy
             ObjectEvents.OnEnemyDied?.Invoke(enemyBase);
             Stage.Instance.data.AddScore(300);
             
-            Destroy(enemyBase.gameObject);
+            transform.parent.gameObject.SetActive(false);
+        }
+
+        public virtual void Load(Vector3 loadPosition, Quaternion loadRotation)
+        {
+            transform.parent.gameObject.SetActive(true);
         }
     }
 }

@@ -1,12 +1,12 @@
 ﻿using SurgeEngine.Code.Actor.System;
 using SurgeEngine.Code.CommonObjects;
+using SurgeEngine.Code.CommonObjects.System;
 using SurgeEngine.Code.Enemy.EggFighter.States;
-using SurgeEngine.Code.StateMachine;
 using UnityEngine;
 
 namespace SurgeEngine.Code.Enemy.EggFighter
 {
-    public class EggFighter : EnemyBase, IDamageable
+    public class EggFighter : EnemyBase, IDamageable, IPointMarkerLoader
     {
         public EGView View => view as EGView;
         public EGAnimationReference animationReference;
@@ -35,9 +35,15 @@ namespace SurgeEngine.Code.Enemy.EggFighter
         [HideInInspector] public Rigidbody rb;
         private int ragdollLayer = 69;
 
+        private Vector3 _startPosition;
+        private Quaternion _startRotation;
+
         protected override void Awake()
         {
             base.Awake();
+            
+            _startPosition = transform.position;
+            _startRotation = transform.rotation;
 
             ragdollLayer = LayerMask.NameToLayer("EnemyRagdoll");
 
@@ -75,6 +81,12 @@ namespace SurgeEngine.Code.Enemy.EggFighter
                 Rigidbody rb = other.transform.GetComponent<Rigidbody>();
                 stateMachine.SetState<EGStateDead>(0f, true, true).ApplyKnockback(rb.linearVelocity, ragdollPrefab);
             }
+        }
+
+        public void Load(Vector3 loadPosition, Quaternion loadRotation)
+        {
+            transform.position = _startPosition;
+            transform.rotation = _startRotation;
         }
     }
 }
