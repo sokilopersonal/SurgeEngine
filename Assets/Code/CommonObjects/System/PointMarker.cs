@@ -1,7 +1,10 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using FMODUnity;
+using SurgeEngine.Code.UI;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace SurgeEngine.Code.CommonObjects.System
 {
@@ -18,11 +21,14 @@ namespace SurgeEngine.Code.CommonObjects.System
 
         private bool _triggered;
 
+        private PointMarkerLoadingScreen _loadCanvas;
+
         protected override void Awake()
         {
             base.Awake();
 
             _soundEvent = RuntimeManager.PathToEventReference("event:/CommonObjects/PointMarker");
+            _loadCanvas = Addressables.LoadAssetAsync<GameObject>("PointMarkerCanvas").WaitForCompletion().GetComponent<PointMarkerLoadingScreen>();
 
             _loaders = FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include, FindObjectsSortMode.None)
                 .OfType<IPointMarkerLoader>()
@@ -48,10 +54,20 @@ namespace SurgeEngine.Code.CommonObjects.System
 
         public void Load()
         {
+            StartCoroutine(LoadRoutine());
+        }
+
+        private IEnumerator LoadRoutine()
+        {
+            var canvas = Instantiate(_loadCanvas);
+            yield return canvas.Play();
+            
             foreach (var loader in _loaders)
             {
                 loader.Load(transform.position + transform.up, transform.rotation);
             }
+
+            yield return canvas.Hide();
         }
         
         public void AddLoader(IPointMarkerLoader loader) => _loaders.Add(loader);

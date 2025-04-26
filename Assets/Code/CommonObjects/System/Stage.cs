@@ -35,14 +35,18 @@ namespace SurgeEngine.Code.CommonObjects.System
             if (CurrentPointMarker != null)
             {
                 // Testing stuff
-
                 if (Keyboard.current.f7Key.wasPressedThisFrame)
                 {
-                    CurrentPointMarker.Load();
-
-                    data.Score = 0;
+                    LoadCurrentPointMarker();
                 }
             }
+        }
+
+        private void LoadCurrentPointMarker()
+        {
+            CurrentPointMarker.Load();
+
+            data.Score = 0;
         }
 
         private void OnEnable()

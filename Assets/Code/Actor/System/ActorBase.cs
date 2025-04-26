@@ -125,6 +125,7 @@ namespace SurgeEngine.Code.Actor.System
             _rigidbody.rotation = loadRotation;
             if (model) model.root.rotation = loadRotation;
             if (animation) animation.StateAnimator.TransitionToState("Idle", 0f);
+            if (flags) flags.AddFlag(new Flag(FlagType.OutOfControl, null, true, 0.5f));
             _rigidbody.isKinematic = false;
             
             stateMachine.SetState<FStateIdle>();
