@@ -38,9 +38,7 @@ namespace SurgeEngine.Code.Gameplay.Enemy.Base
             }
             
             RuntimeManager.PlayOneShot(explosionReference, explosionPoint.position);
-            
             ObjectEvents.OnEnemyDied?.Invoke(enemyBase);
-            Stage.Instance.data.AddScore(300);
             
             transform.parent.gameObject.SetActive(false);
         }
