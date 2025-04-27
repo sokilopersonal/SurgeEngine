@@ -1,9 +1,9 @@
-﻿using SurgeEngine.Code.Actor.System;
-using SurgeEngine.Code.CommonObjects;
-using SurgeEngine.Code.Config;
+﻿using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine.Code.Gameplay.CommonObjects;
+using SurgeEngine.Code.Infrastructure.Config;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Actor.States
+namespace SurgeEngine.Code.Core.Actor.States
 {
     public class FStateJump : FStateAir
     {

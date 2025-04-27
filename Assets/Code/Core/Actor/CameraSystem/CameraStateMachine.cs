@@ -1,13 +1,13 @@
 ﻿using System;
-using SurgeEngine.Code.Actor.CameraSystem.Pawns;
-using SurgeEngine.Code.Actor.CameraSystem.Pawns.Data;
-using SurgeEngine.Code.Actor.System;
-using SurgeEngine.Code.Custom;
-using SurgeEngine.Code.StateMachine;
+using SurgeEngine.Code.Core.Actor.CameraSystem.Pawns;
+using SurgeEngine.Code.Core.Actor.CameraSystem.Pawns.Data;
+using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine.Code.Core.StateMachine;
+using SurgeEngine.Code.Infrastructure.Custom;
 using UnityEngine;
 using UnityEngine.Splines;
 
-namespace SurgeEngine.Code.Actor.CameraSystem
+namespace SurgeEngine.Code.Core.Actor.CameraSystem
 {
     [Serializable]
     public class CameraStateMachine : FStateMachine

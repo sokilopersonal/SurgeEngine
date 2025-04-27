@@ -1,11 +1,11 @@
 ﻿using System;
-using SurgeEngine.Code.Actor.States.BaseStates;
-using SurgeEngine.Code.Actor.System;
-using SurgeEngine.Code.CommonObjects;
-using SurgeEngine.Code.Custom;
+using SurgeEngine.Code.Core.Actor.States.BaseStates;
+using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine.Code.Gameplay.CommonObjects.Mobility;
+using SurgeEngine.Code.Infrastructure.Custom;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Actor.States
+namespace SurgeEngine.Code.Core.Actor.States
 {
     public class FStateSpecialJump : FStateMove
     {

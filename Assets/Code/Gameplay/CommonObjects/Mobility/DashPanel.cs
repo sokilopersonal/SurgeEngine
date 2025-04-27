@@ -1,11 +1,11 @@
-﻿using SurgeEngine.Code.Actor.States;
-using SurgeEngine.Code.Actor.System;
-using SurgeEngine.Code.Custom;
-using SurgeEngine.Code.Misc;
+﻿using SurgeEngine.Code.Core.Actor.States;
+using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine.Code.Gameplay.Inputs;
+using SurgeEngine.Code.Infrastructure.Custom;
 using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
 
-namespace SurgeEngine.Code.CommonObjects
+namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
 {
     public class DashPanel : ContactBase
     {

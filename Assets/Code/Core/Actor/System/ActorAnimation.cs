@@ -1,12 +1,13 @@
 ﻿using System.Collections;
-using SurgeEngine.Code.Actor.States;
-using SurgeEngine.Code.Actor.States.SonicSpecific;
-using SurgeEngine.Code.StateMachine;
-using SurgeEngine.Code.StateMachine.Components;
+using SurgeEngine.Code.Core.Actor.States;
+using SurgeEngine.Code.Core.Actor.States.SonicSpecific;
+using SurgeEngine.Code.Core.StateMachine;
+using SurgeEngine.Code.Core.StateMachine.Base;
+using SurgeEngine.Code.Core.StateMachine.Components;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace SurgeEngine.Code.Actor.System
+namespace SurgeEngine.Code.Core.Actor.System
 {
     public class ActorAnimation : ActorComponent
     {
@@ -57,7 +58,7 @@ namespace SurgeEngine.Code.Actor.System
 
         private void ChangeStateAnimation(FState obj)
         {
-            StateAnimator.StopWork();
+            StateAnimator.StopAllCoroutines();
             
             FStateMachine machine = Actor.stateMachine;
             FState prev = machine.PreviousState;

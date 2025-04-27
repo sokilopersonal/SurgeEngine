@@ -1,14 +1,14 @@
 ﻿using System.Collections;
-using SurgeEngine.Code.Actor.States;
-using SurgeEngine.Code.Actor.System;
-using SurgeEngine.Code.Tools;
+using SurgeEngine.Code.Core.Actor.States;
+using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine.Code.Gameplay.CommonObjects.Collectables;
+using SurgeEngine.Code.Infrastructure.Tools.Managers;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using Zenject;
-using NotImplementedException = System.NotImplementedException;
 
-namespace SurgeEngine.Code.CommonObjects.System
+namespace SurgeEngine.Code.Gameplay.CommonObjects.System
 {
     public class Stage : MonoBehaviour
     {

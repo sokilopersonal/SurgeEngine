@@ -1,9 +1,10 @@
 ﻿using System;
 using DG.Tweening;
-using SurgeEngine.Code.Actor.States;
-using SurgeEngine.Code.Actor.System;
-using SurgeEngine.Code.Custom;
-using SurgeEngine.Code.Tools;
+using SurgeEngine.Code.Core.Actor.States;
+using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine.Code.Infrastructure.Custom;
+using SurgeEngine.Code.Infrastructure.Tools.Managers;
+using SurgeEngine.Code.UI.Menus;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;

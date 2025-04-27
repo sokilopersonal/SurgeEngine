@@ -1,10 +1,12 @@
-﻿using SurgeEngine.Code.Actor.System;
-using SurgeEngine.Code.CommonObjects;
-using SurgeEngine.Code.CommonObjects.System;
-using SurgeEngine.Code.Enemy.EggFighter.States;
+﻿using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine.Code.Gameplay.CommonObjects.Interfaces;
+using SurgeEngine.Code.Gameplay.CommonObjects.System;
+using SurgeEngine.Code.Gameplay.Enemy.Base;
+using SurgeEngine.Code.Gameplay.Enemy.EggFighter.States;
+using SurgeEngine.Code.Gameplay.Enemy.Physics;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Enemy.EggFighter
+namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter
 {
     public class EggFighter : EnemyBase, IDamageable, IPointMarkerLoader
     {

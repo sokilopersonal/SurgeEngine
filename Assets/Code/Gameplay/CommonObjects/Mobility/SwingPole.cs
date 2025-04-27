@@ -1,9 +1,9 @@
-using SurgeEngine.Code.Actor.States.SonicSpecific;
-using SurgeEngine.Code.Actor.System;
-using SurgeEngine.Code.CustomDebug;
+using SurgeEngine.Code.Core.Actor.States.SonicSpecific;
+using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine.Code.Infrastructure.Custom.Drawers;
 using UnityEngine;
 
-namespace SurgeEngine.Code.CommonObjects
+namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
 {
     public class SwingPole : ContactBase
     {

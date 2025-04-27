@@ -1,12 +1,7 @@
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-using Cysharp.Threading.Tasks;
 using DG.Tweening;
-using SurgeEngine.Code.UI.Menus;
 using UnityEngine;
 
-namespace SurgeEngine.Code.UI
+namespace SurgeEngine.Code.UI.Menus
 {
     public class Pause : Page
     {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace SurgeEngine.Code.CommonObjects
+namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
 {
     public class MovingObject : MonoBehaviour
     {

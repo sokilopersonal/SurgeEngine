@@ -1,11 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using SurgeEngine.Code.UI.Menus;
 using UnityEngine;
 
-namespace SurgeEngine.Code.UI
+namespace SurgeEngine.Code.UI.Menus
 {
     public class MenusHandler : MonoBehaviour
     {

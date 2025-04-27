@@ -1,10 +1,9 @@
-using FMODUnity;
 using System.Collections.Generic;
-using SurgeEngine.Code.CommonObjects.System;
+using SurgeEngine.Code.Gameplay.CommonObjects.System;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace SurgeEngine.Code.Enemy
+namespace SurgeEngine.Code.Gameplay.Enemy.Physics
 {
     public class EnemyRagdoll : MonoBehaviour, IPointMarkerLoader
     {

@@ -1,4 +1,4 @@
-using SurgeEngine.Code.CommonObjects.Lighting;
+using SurgeEngine.Code.Gameplay.CommonObjects.Lighting;
 using UnityEditor;
 using UnityEngine;
 

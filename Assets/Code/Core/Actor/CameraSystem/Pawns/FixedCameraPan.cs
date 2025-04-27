@@ -1,8 +1,8 @@
-﻿using SurgeEngine.Code.Actor.CameraSystem.Pawns.Data;
-using SurgeEngine.Code.Actor.System;
+﻿using SurgeEngine.Code.Core.Actor.CameraSystem.Pawns.Data;
+using SurgeEngine.Code.Core.Actor.System;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Actor.CameraSystem.Pawns
+namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
 {
     public class FixedCameraPan : CState
     {

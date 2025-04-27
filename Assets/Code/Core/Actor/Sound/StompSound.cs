@@ -1,14 +1,14 @@
 ﻿using FMOD.Studio;
 using FMODUnity;
-using SurgeEngine.Code.Actor.States;
-using SurgeEngine.Code.Actor.States.SonicSpecific;
-using SurgeEngine.Code.Actor.System;
-using SurgeEngine.Code.Custom;
-using SurgeEngine.Code.StateMachine;
+using SurgeEngine.Code.Core.Actor.States;
+using SurgeEngine.Code.Core.Actor.States.SonicSpecific;
+using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine.Code.Core.StateMachine.Base;
+using SurgeEngine.Code.Infrastructure.Custom;
 using UnityEngine;
 using STOP_MODE = FMOD.Studio.STOP_MODE;
 
-namespace SurgeEngine.Code.Actor.Sound
+namespace SurgeEngine.Code.Core.Actor.Sound
 {
     public class StompSound : ActorSound
     {

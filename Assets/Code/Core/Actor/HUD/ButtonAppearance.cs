@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace SurgeEngine.Code.Actor.HUD
+namespace SurgeEngine.Code.Core.Actor.HUD
 {
     public class ButtonAppearance : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {

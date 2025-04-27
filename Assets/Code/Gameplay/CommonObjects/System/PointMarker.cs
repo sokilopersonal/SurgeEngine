@@ -6,7 +6,7 @@ using SurgeEngine.Code.UI;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
-namespace SurgeEngine.Code.CommonObjects.System
+namespace SurgeEngine.Code.Gameplay.CommonObjects.System
 {
     [RequireComponent(typeof(BoxCollider))]
     public class PointMarker : ContactBase

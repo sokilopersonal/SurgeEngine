@@ -1,7 +1,7 @@
-﻿using SurgeEngine.Code.Actor.System;
+﻿using SurgeEngine.Code.Core.Actor.System;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Actor.Model
+namespace SurgeEngine.Code.Core.Actor.Model
 {
     public class MouthDubleSwitcher : MonoBehaviour
     {

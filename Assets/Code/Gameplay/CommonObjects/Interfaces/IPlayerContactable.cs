@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace SurgeEngine.Code.CommonObjects.Interfaces
+namespace SurgeEngine.Code.Gameplay.CommonObjects.Interfaces
 {
     public interface IPlayerContactable
     {

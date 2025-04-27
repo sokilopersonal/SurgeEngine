@@ -1,16 +1,17 @@
-﻿using SurgeEngine.Code.Actor.States.BaseStates;
-using SurgeEngine.Code.Actor.States.SonicSpecific;
-using SurgeEngine.Code.Actor.System;
-using SurgeEngine.Code.CommonObjects;
-using SurgeEngine.Code.Config;
-using SurgeEngine.Code.Config.SonicSpecific;
-using SurgeEngine.Code.Enemy;
-using SurgeEngine.Code.Misc;
-using SurgeEngine.Code.StateMachine;
+﻿using SurgeEngine.Code.Core.Actor.States.BaseStates;
+using SurgeEngine.Code.Core.Actor.States.SonicSpecific;
+using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine.Code.Core.StateMachine.Base;
+using SurgeEngine.Code.Gameplay.CommonObjects;
+using SurgeEngine.Code.Gameplay.CommonObjects.Collectables;
+using SurgeEngine.Code.Gameplay.Enemy.Base;
+using SurgeEngine.Code.Gameplay.Inputs;
+using SurgeEngine.Code.Infrastructure.Config;
+using SurgeEngine.Code.Infrastructure.Config.SonicSpecific;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace SurgeEngine.Code.Actor.States.SonicSubStates
+namespace SurgeEngine.Code.Core.Actor.States.SonicSubStates
 {
     public class FBoost : FActorSubState
     {

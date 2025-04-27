@@ -1,12 +1,10 @@
-using System;
 using System.Collections;
-using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Zenject;
 
-namespace SurgeEngine.Code.Tools
+namespace SurgeEngine.Code.Infrastructure.Tools.Managers
 {
     public class SceneLoader : MonoBehaviour
     {

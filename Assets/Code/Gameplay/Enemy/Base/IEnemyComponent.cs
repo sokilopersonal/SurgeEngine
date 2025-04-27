@@ -1,4 +1,4 @@
-﻿namespace SurgeEngine.Code.Enemy
+﻿namespace SurgeEngine.Code.Gameplay.Enemy.Base
 {
     public interface IEnemyComponent
     {

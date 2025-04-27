@@ -1,9 +1,8 @@
-using SurgeEngine.Code.Actor.Sound;
-using SurgeEngine.Code.Actor.System;
-using SurgeEngine.Code.ActorEffects;
+using SurgeEngine.Code.Core.Actor.Sound;
+using SurgeEngine.Code.Core.Actor.System;
 using UnityEngine;
 
-namespace SurgeEngine.Code.CommonObjects
+namespace SurgeEngine.Code.Gameplay.CommonObjects.Environment
 {
     public class ParaloopVolume : ContactBase
     {

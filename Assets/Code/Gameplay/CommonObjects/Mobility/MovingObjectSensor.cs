@@ -1,7 +1,6 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace SurgeEngine.Code.CommonObjects
+namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
 {
     public class MovingObjectSensor : MonoBehaviour
     {

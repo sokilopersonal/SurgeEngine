@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace SurgeEngine.Code.Custom
+namespace SurgeEngine.Code.Infrastructure.Custom.Extensions
 {
     public static class AnimatorExtensions
     {

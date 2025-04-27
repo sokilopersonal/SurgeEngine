@@ -1,8 +1,8 @@
-﻿using SurgeEngine.Code.Actor.System;
+﻿using SurgeEngine.Code.Core.Actor.System;
 using UnityEngine;
 using UnityEngine.Splines;
 
-namespace SurgeEngine.Code.CommonObjects
+namespace SurgeEngine.Code.Gameplay.CommonObjects.ChangeModes
 {
     public class ChangeModeDash : ContactBase
     {

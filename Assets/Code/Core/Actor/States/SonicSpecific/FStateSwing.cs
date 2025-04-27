@@ -1,11 +1,11 @@
-using SurgeEngine.Code.Actor.Sound;
-using SurgeEngine.Code.Actor.States.BaseStates;
-using SurgeEngine.Code.Actor.States.SonicSubStates;
-using SurgeEngine.Code.Actor.System;
-using SurgeEngine.Code.Custom;
+using SurgeEngine.Code.Core.Actor.Sound;
+using SurgeEngine.Code.Core.Actor.States.BaseStates;
+using SurgeEngine.Code.Core.Actor.States.SonicSubStates;
+using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine.Code.Infrastructure.Custom;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Actor.States.SonicSpecific
+namespace SurgeEngine.Code.Core.Actor.States.SonicSpecific
 {
     public class FStateSwing : FStateMove
     {
@@ -49,7 +49,7 @@ namespace SurgeEngine.Code.Actor.States.SonicSpecific
         {
             base.OnTick(dt);
 
-            _rotationAngle = Actor.animation.StateAnimator.animator.GetCurrentAnimatorStateInfo(0).normalizedTime % 1;
+            _rotationAngle = Actor.animation.StateAnimator.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime % 1;
 
             if (_rotationAngle > 0.9f && !_swingSound)
             {

@@ -1,12 +1,12 @@
-using SurgeEngine.Code.Actor.States.BaseStates;
-using SurgeEngine.Code.Actor.System;
-using SurgeEngine.Code.Config.SonicSpecific;
-using SurgeEngine.Code.Custom;
-using SurgeEngine.Code.StateMachine;
+using SurgeEngine.Code.Core.Actor.States.BaseStates;
+using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine.Code.Core.StateMachine.Interfaces;
+using SurgeEngine.Code.Infrastructure.Config.SonicSpecific;
+using SurgeEngine.Code.Infrastructure.Custom;
 using UnityEngine;
 using UnityEngine.Splines;
 
-namespace SurgeEngine.Code.Actor.States.SonicSpecific
+namespace SurgeEngine.Code.Core.Actor.States.SonicSpecific
 {
     public class FStateQuickstep : FStateMove, IStateTimeout
     {

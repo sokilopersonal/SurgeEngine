@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using SurgeEngine.Code.StateMachine;
+using SurgeEngine.Code.Core.StateMachine;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Actor.System
+namespace SurgeEngine.Code.Core.Actor.System
 {
     public abstract class Entity : MonoBehaviour
     {

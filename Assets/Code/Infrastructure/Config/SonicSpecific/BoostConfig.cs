@@ -1,7 +1,7 @@
 ﻿using NaughtyAttributes;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Config.SonicSpecific
+namespace SurgeEngine.Code.Infrastructure.Config.SonicSpecific
 {
     [CreateAssetMenu(fileName = "BoostConfig", menuName = "SurgeEngine/Configs/Sonic/Boost", order = 0)]
     public class BoostConfig : ScriptableObject

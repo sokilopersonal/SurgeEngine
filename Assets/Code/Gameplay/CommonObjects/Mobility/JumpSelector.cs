@@ -1,14 +1,13 @@
-﻿
-using System;
+﻿using System;
 using DG.Tweening;
-using SurgeEngine.Code.Actor.States;
-using SurgeEngine.Code.Actor.System;
-using SurgeEngine.Code.CustomDebug;
+using SurgeEngine.Code.Core.Actor.States;
+using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine.Code.Infrastructure.Custom.Drawers;
 using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
 using Vector3 = UnityEngine.Vector3;
 
-namespace SurgeEngine.Code.CommonObjects
+namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
 {
     [SelectionBase]
     public class JumpSelector : ContactBase

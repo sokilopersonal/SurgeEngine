@@ -1,8 +1,9 @@
 ﻿using FMODUnity;
-using SurgeEngine.Code.Enemy.EggFighter.States;
+using SurgeEngine.Code.Gameplay.Enemy.Base;
+using SurgeEngine.Code.Gameplay.Enemy.EggFighter.States;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Enemy.EggFighter
+namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter
 {
     public class EGView : EnemyView
     {
@@ -22,7 +23,7 @@ namespace SurgeEngine.Code.Enemy.EggFighter
             base.Load(loadPosition, loadRotation);
 
             eggFighter.stateMachine.SetState<EGStateIdle>();
-            eggFighter.animation.animator.enabled = true;
+            eggFighter.animation.Animator.enabled = true;
         }
     }
 }

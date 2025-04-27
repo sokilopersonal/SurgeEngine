@@ -1,7 +1,7 @@
 ﻿using NaughtyAttributes;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Config.SonicSpecific
+namespace SurgeEngine.Code.Infrastructure.Config.SonicSpecific
 {
     [CreateAssetMenu(fileName = "HomingConfig", menuName = "SurgeEngine/Configs/Sonic/Homing", order = 0)]
     public class HomingConfig : ScriptableObject

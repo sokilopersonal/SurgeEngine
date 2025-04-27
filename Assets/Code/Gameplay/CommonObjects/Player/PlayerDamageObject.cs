@@ -1,8 +1,7 @@
-﻿using System;
-using SurgeEngine.Code.Actor.System;
+﻿using SurgeEngine.Code.Core.Actor.System;
 using UnityEngine;
 
-namespace SurgeEngine.Code.CommonObjects
+namespace SurgeEngine.Code.Gameplay.CommonObjects.Player
 {
     public class PlayerDamageObject : Entity
     {

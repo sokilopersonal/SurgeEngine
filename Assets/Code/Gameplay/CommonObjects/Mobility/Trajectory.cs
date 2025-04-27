@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace SurgeEngine.Code.CommonObjects
+namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
 {
     public static class Trajectory
     {
@@ -26,7 +26,7 @@ namespace SurgeEngine.Code.CommonObjects
 
         public static void CalculateTrick(Vector3 startPosition, Vector3 direction, float impulse, float timeStep, int trajectoryPoints, out Vector3[] positions, out Vector3[] velocities)
         {
-            Vector3 gravity = Physics.gravity;
+            Vector3 gravity = UnityEngine.Physics.gravity;
 
             Calculate(startPosition, direction, impulse, timeStep, trajectoryPoints, gravity, out positions, out velocities);
         }
@@ -36,7 +36,7 @@ namespace SurgeEngine.Code.CommonObjects
             int trajectoryPoints = 240;
             float timeStep = 0.1f;
             int layerMask = 1 << LayerMask.NameToLayer("Default");
-            Vector3 gravity = Physics.gravity.y * Vector3.up;
+            Vector3 gravity = UnityEngine.Physics.gravity.y * Vector3.up;
             
             Calculate(startPosition, direction, impulse, timeStep, trajectoryPoints, gravity, out Vector3[] positions, out Vector3[] velocities);
 
@@ -45,7 +45,7 @@ namespace SurgeEngine.Code.CommonObjects
 
             for (int i = 0; i < positions.Length - 1; i++)
             {
-                if (Physics.Linecast(positions[i], positions[i + 1], out _, layerMask, QueryTriggerInteraction.Ignore))
+                if (UnityEngine.Physics.Linecast(positions[i], positions[i + 1], out _, layerMask, QueryTriggerInteraction.Ignore))
                 {
                     break;
                 }

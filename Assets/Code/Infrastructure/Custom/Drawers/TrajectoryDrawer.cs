@@ -1,7 +1,7 @@
-﻿using SurgeEngine.Code.CommonObjects;
+﻿using SurgeEngine.Code.Gameplay.CommonObjects.Mobility;
 using UnityEngine;
 
-namespace SurgeEngine.Code.CustomDebug
+namespace SurgeEngine.Code.Infrastructure.Custom.Drawers
 {
     public static class TrajectoryDrawer
     {

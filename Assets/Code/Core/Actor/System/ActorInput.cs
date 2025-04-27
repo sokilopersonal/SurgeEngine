@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using SurgeEngine.Code.CommonObjects;
+using SurgeEngine.Code.Gameplay.CommonObjects.Mobility;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
 
-namespace SurgeEngine.Code.Actor.System
+namespace SurgeEngine.Code.Core.Actor.System
 {
     public class ActorInput : ActorComponent
     {

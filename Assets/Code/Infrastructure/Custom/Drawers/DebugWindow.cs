@@ -1,10 +1,9 @@
-﻿using System;
-using SurgeEngine.Code.Actor.System;
+﻿using SurgeEngine.Code.Core.Actor.System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace SurgeEngine.Code.CustomDebug
+namespace SurgeEngine.Code.Infrastructure.Custom.Drawers
 {
     public class DebugWindow : MonoBehaviour
     {

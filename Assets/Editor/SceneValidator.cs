@@ -1,5 +1,4 @@
-﻿using SurgeEngine.Code.CommonObjects;
-using SurgeEngine.Code.CommonObjects.System;
+﻿using SurgeEngine.Code.Gameplay.CommonObjects.System;
 using UnityEditor;
 using UnityEngine;
 using Zenject;

@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace SurgeEngine.Code.Misc
+namespace SurgeEngine.Code.Gameplay.Inputs
 {
     public class Rumble
     {

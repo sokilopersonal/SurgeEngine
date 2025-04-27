@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections;
 using Cysharp.Threading.Tasks;
-using SurgeEngine.Code.Actor.States;
-using SurgeEngine.Code.Actor.States.SonicSpecific;
-using SurgeEngine.Code.Actor.System;
-using SurgeEngine.Code.CommonObjects;
-using SurgeEngine.Code.CommonObjects.System;
+using SurgeEngine.Code.Core.Actor.States;
+using SurgeEngine.Code.Core.Actor.States.SonicSpecific;
+using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine.Code.Gameplay.CommonObjects.Mobility;
+using SurgeEngine.Code.Gameplay.CommonObjects.System;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Custom
+namespace SurgeEngine.Code.Infrastructure.Custom
 {
     public static class Common
     {

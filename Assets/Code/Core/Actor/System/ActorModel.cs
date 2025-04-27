@@ -1,10 +1,9 @@
-﻿using System;
-using SurgeEngine.Code.Actor.States;
-using SurgeEngine.Code.Custom;
-using SurgeEngine.Code.StateMachine;
+﻿using SurgeEngine.Code.Core.Actor.States;
+using SurgeEngine.Code.Core.StateMachine.Base;
+using SurgeEngine.Code.Infrastructure.Custom;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Actor.System
+namespace SurgeEngine.Code.Core.Actor.System
 {
     public class ActorModel : ActorComponent
     {

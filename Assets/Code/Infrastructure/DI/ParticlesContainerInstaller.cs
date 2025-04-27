@@ -1,8 +1,8 @@
-using SurgeEngine.Code.Effects;
+using SurgeEngine.Code.Gameplay.Effects;
 using UnityEngine;
 using Zenject;
 
-namespace SurgeEngine.Code.DI
+namespace SurgeEngine.Code.Infrastructure.DI
 {
     public class ParticlesContainerInstaller : MonoInstaller
     {

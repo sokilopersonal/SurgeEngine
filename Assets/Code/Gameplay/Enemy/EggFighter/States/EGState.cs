@@ -1,6 +1,6 @@
-﻿using SurgeEngine.Code.StateMachine;
+﻿using SurgeEngine.Code.Gameplay.Enemy.Base;
 
-namespace SurgeEngine.Code.Enemy.EggFighter.States
+namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter.States
 {
     public class EGState : FEState
     {

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace SurgeEngine.Code.Enemy.AeroCannon
+namespace SurgeEngine.Code.Gameplay.Enemy.AeroCannon
 {
     [CreateAssetMenu(fileName = "AeroCannonConfig", menuName = "SurgeEngine/Configs/Enemy/AeroCannon", order = 0)]
     public class AeroCannonConfig : ScriptableObject

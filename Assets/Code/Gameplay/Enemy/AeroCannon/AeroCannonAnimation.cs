@@ -1,9 +1,6 @@
-﻿using SurgeEngine.Code.Enemy.AeroCannon.States;
-using SurgeEngine.Code.StateMachine;
-using SurgeEngine.Code.StateMachine.Components;
-using UnityEngine;
+﻿using SurgeEngine.Code.Core.StateMachine.Components;
 
-namespace SurgeEngine.Code.Enemy.AeroCannon
+namespace SurgeEngine.Code.Gameplay.Enemy.AeroCannon
 {
     public class AeroCannonAnimation : StateAnimator
     {

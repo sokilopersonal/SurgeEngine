@@ -1,8 +1,6 @@
-using SurgeEngine.Code.CommonObjects;
-using UnityEngine;
 using Zenject;
 
-namespace SurgeEngine.Code.DI
+namespace SurgeEngine.Code.Infrastructure.DI
 {
     public class ActorStartInstaller : MonoInstaller
     {

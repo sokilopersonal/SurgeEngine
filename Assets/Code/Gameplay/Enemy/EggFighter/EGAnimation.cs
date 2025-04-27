@@ -1,8 +1,7 @@
-﻿using SurgeEngine.Code.Enemy.EggFighter.States;
-using SurgeEngine.Code.StateMachine;
-using SurgeEngine.Code.StateMachine.Components;
+﻿using SurgeEngine.Code.Core.StateMachine.Components;
+using SurgeEngine.Code.Gameplay.Enemy.Base;
 
-namespace SurgeEngine.Code.Enemy
+namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter
 {
     public class EGAnimation : StateAnimator, IEnemyComponent
     {

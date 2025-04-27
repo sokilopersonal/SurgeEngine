@@ -1,6 +1,6 @@
-﻿using SurgeEngine.Code.Actor.System;
+﻿using SurgeEngine.Code.Core.Actor.System;
 
-namespace SurgeEngine.Code.Actor.States
+namespace SurgeEngine.Code.Core.Actor.States
 {
     public interface IDamageableState
     {

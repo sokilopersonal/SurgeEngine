@@ -1,13 +1,10 @@
-using System;
 using FMODUnity;
-using SurgeEngine.Code.Actor.States.SonicSpecific;
-using SurgeEngine.Code.Actor.System;
-using SurgeEngine.Code.CommonObjects.Interfaces;
-using SurgeEngine.Code.Custom;
-using SurgeEngine.Code.Effects;
+using SurgeEngine.Code.Core.Actor.States.SonicSpecific;
+using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine.Code.Gameplay.CommonObjects.Interfaces;
 using UnityEngine;
 
-namespace SurgeEngine.Code.CommonObjects.Environment
+namespace SurgeEngine.Code.Gameplay.CommonObjects.Environment
 {
     public class WaterSurface : MonoBehaviour, IPlayerContactable
     {

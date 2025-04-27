@@ -1,7 +1,6 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace SurgeEngine.Code.Enemy.AeroCannon
+namespace SurgeEngine.Code.Gameplay.Enemy.AeroCannon
 {
     public class AeroCannonBullet : MonoBehaviour
     {
@@ -15,7 +14,7 @@ namespace SurgeEngine.Code.Enemy.AeroCannon
         {
             transform.Translate(_direction * (speed * Time.deltaTime), Space.World);
 
-            if (Physics.CheckSphere(transform.position, radius, mask))
+            if (UnityEngine.Physics.CheckSphere(transform.position, radius, mask))
             {
                 Destroy(gameObject);
             }

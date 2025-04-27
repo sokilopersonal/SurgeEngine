@@ -1,10 +1,10 @@
 ﻿using NaughtyAttributes;
-using SurgeEngine.Code.Actor.States.SonicSpecific;
-using SurgeEngine.Code.Actor.States.SonicSubStates;
-using SurgeEngine.Code.Config.SonicSpecific;
+using SurgeEngine.Code.Core.Actor.States.SonicSpecific;
+using SurgeEngine.Code.Core.Actor.States.SonicSubStates;
+using SurgeEngine.Code.Infrastructure.Config.SonicSpecific;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Actor.System.Actors
+namespace SurgeEngine.Code.Core.Actor.System.Actors
 {
     public class Sonic : ActorBase
     {

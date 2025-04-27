@@ -1,8 +1,8 @@
-using SurgeEngine.Code.Tools;
+using SurgeEngine.Code.Infrastructure.Tools.Managers;
 using UnityEngine;
 using Zenject;
 
-namespace SurgeEngine.Code.DI
+namespace SurgeEngine.Code.Infrastructure.DI
 {
     public class SceneLoaderInstaller : MonoInstaller
     {

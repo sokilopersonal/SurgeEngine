@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 
-namespace SurgeEngine.Code.CommonObjects.CameraObjects
+namespace SurgeEngine.Code.Gameplay.CommonObjects.CameraObjects
 {
     public class ChangePanOnContact : MonoBehaviour
     {

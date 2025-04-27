@@ -1,11 +1,11 @@
 ﻿using FMODUnity;
-using SurgeEngine.Code.Actor.States.SonicSpecific;
-using SurgeEngine.Code.Actor.System;
-using SurgeEngine.Code.Custom;
-using SurgeEngine.Code.Effects;
+using SurgeEngine.Code.Core.Actor.States.SonicSpecific;
+using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine.Code.Gameplay.Effects;
+using SurgeEngine.Code.Infrastructure.Custom.Extensions;
 using UnityEngine;
 
-namespace SurgeEngine.Code.CommonObjects
+namespace SurgeEngine.Code.Gameplay.CommonObjects.Environment
 {
     public class ObjWaterSurface : ContactBase
     {

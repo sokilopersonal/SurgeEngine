@@ -1,4 +1,4 @@
-using SurgeEngine.Code.CommonObjects.CameraObjects;
+using SurgeEngine.Code.Gameplay.CommonObjects.CameraObjects;
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.UIElements;

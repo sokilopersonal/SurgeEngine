@@ -1,9 +1,9 @@
+using DG.Tweening;
 using FMODUnity;
 using UnityEngine;
 using UnityEngine.Events;
-using DG.Tweening;
 
-namespace SurgeEngine.Code.CommonObjects
+namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
 {
     [SelectionBase]
     public class Switch : ContactBase

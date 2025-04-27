@@ -1,7 +1,7 @@
-﻿using SurgeEngine.Code.Actor.System;
+﻿using SurgeEngine.Code.Core.Actor.System;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Actor.States.BaseStates
+namespace SurgeEngine.Code.Core.Actor.States.BaseStates
 {
     public abstract class FStateMove : FActorState
     {

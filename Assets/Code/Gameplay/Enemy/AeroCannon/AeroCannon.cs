@@ -1,11 +1,10 @@
-﻿using System;
-using SurgeEngine.Code.Actor.System;
-using SurgeEngine.Code.CommonObjects;
-using SurgeEngine.Code.Enemy.AeroCannon.States;
-using SurgeEngine.Code.StateMachine;
+﻿using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine.Code.Gameplay.CommonObjects.Interfaces;
+using SurgeEngine.Code.Gameplay.Enemy.AeroCannon.States;
+using SurgeEngine.Code.Gameplay.Enemy.Base;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Enemy.AeroCannon
+namespace SurgeEngine.Code.Gameplay.Enemy.AeroCannon
 {
     public class AeroCannon : EnemyBase, IDamageable
     {

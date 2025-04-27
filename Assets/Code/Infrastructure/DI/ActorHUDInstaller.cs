@@ -1,8 +1,8 @@
-using SurgeEngine.Code.Actor.HUD;
+using SurgeEngine.Code.Core.Actor.HUD;
 using UnityEngine;
 using Zenject;
 
-namespace SurgeEngine.Code.DI
+namespace SurgeEngine.Code.Infrastructure.DI
 {
     public class ActorHUDInstaller : MonoInstaller
     {

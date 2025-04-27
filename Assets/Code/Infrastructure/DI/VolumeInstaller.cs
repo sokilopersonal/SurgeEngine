@@ -1,8 +1,7 @@
-using SurgeEngine.Code.Tools;
-using UnityEngine;
+using SurgeEngine.Code.Infrastructure.Tools.Managers;
 using Zenject;
 
-namespace SurgeEngine.Code.DI
+namespace SurgeEngine.Code.Infrastructure.DI
 {
     public class VolumeInstaller : MonoInstaller
     {

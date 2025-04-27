@@ -1,9 +1,9 @@
-using SurgeEngine.Code.Actor.States;
-using SurgeEngine.Code.Actor.System;
+using SurgeEngine.Code.Core.Actor.States;
+using SurgeEngine.Code.Core.Actor.System;
 using UnityEngine;
 using Zenject;
 
-namespace SurgeEngine.Code.DI
+namespace SurgeEngine.Code.Infrastructure.DI
 {
     public class ActorInstaller : MonoInstaller
     {

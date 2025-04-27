@@ -1,7 +1,7 @@
-﻿using UnityEngine;
-using DG.Tweening;
+﻿using DG.Tweening;
+using UnityEngine;
 
-namespace SurgeEngine.Code.ActorEffects
+namespace SurgeEngine.Code.Gameplay.Effects
 {
     public class Sliding : Effect
     {

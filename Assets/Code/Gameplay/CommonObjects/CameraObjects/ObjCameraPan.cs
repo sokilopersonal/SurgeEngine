@@ -1,8 +1,8 @@
-﻿using SurgeEngine.Code.Actor.CameraSystem.Pawns;
-using SurgeEngine.Code.Actor.CameraSystem.Pawns.Data;
-using SurgeEngine.Code.Actor.System;
+﻿using SurgeEngine.Code.Core.Actor.CameraSystem.Pawns;
+using SurgeEngine.Code.Core.Actor.CameraSystem.Pawns.Data;
+using SurgeEngine.Code.Core.Actor.System;
 
-namespace SurgeEngine.Code.CommonObjects.CameraObjects
+namespace SurgeEngine.Code.Gameplay.CommonObjects.CameraObjects
 {
     public class ObjCameraPan : ObjCameraBase
     {

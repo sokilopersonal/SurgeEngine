@@ -1,7 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-namespace SurgeEngine.Code.CommonObjects.CameraObjects
+namespace SurgeEngine.Code.Gameplay.CommonObjects.CameraObjects
 {
     public abstract class ObjCameraBase : MonoBehaviour
     {

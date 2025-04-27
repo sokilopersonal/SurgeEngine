@@ -1,7 +1,7 @@
-﻿using SurgeEngine.Code.Actor.States;
+﻿using SurgeEngine.Code.Core.Actor.States;
 using UnityEngine;
 
-namespace SurgeEngine.Code.CommonObjects
+namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
 {
     public class SpecialJumpData
     {

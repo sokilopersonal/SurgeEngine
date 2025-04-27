@@ -1,10 +1,9 @@
 ﻿using System;
-using SurgeEngine.Code.StateMachine.Components;
+using SurgeEngine.Code.Core.StateMachine.Components;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
-using UnityEngine.Serialization;
 
-namespace SurgeEngine.Code.Actor.System.IK
+namespace SurgeEngine.Code.Core.Actor.System.IK
 {
     public class ActorIKController : MonoBehaviour
     {
@@ -14,6 +13,7 @@ namespace SurgeEngine.Code.Actor.System.IK
         
         [Header("IK")]
         [SerializeField] private float weightSpeed = 14;
+        [SerializeField] private string[] allowedStates;
         
         [Header("Ray Settings")]
         [SerializeField] private float rayLength = 0.7f;
@@ -43,7 +43,7 @@ namespace SurgeEngine.Code.Actor.System.IK
 
         private void LateUpdate()
         {
-            float value = _stateAnimator.IsIKAllowed() ? 1 : 0;
+            float value = IsAllowed() ? 1 : 0;
             _ikWeight = Mathf.Lerp(_ikWeight, value, Time.deltaTime * weightSpeed);
             
             SolveIK(leftFoot);
@@ -75,6 +75,19 @@ namespace SurgeEngine.Code.Actor.System.IK
             }
             
             Debug.DrawRay(data.Origin, Vector3.down * rayLength, color);
+        }
+
+        private bool IsAllowed()
+        {
+            foreach (var allowedState in allowedStates)
+            {
+                if (_stateAnimator.GetCurrentAnimationState() == allowedState)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 

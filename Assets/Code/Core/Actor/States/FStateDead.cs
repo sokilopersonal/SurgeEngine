@@ -1,7 +1,7 @@
-using SurgeEngine.Code.Actor.States.BaseStates;
-using SurgeEngine.Code.Actor.System;
+using SurgeEngine.Code.Core.Actor.States.BaseStates;
+using SurgeEngine.Code.Core.Actor.System;
 
-namespace SurgeEngine.Code.Actor.States
+namespace SurgeEngine.Code.Core.Actor.States
 {
     public class FStateDead : FActorState
     {

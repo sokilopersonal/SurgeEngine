@@ -1,8 +1,8 @@
-﻿using SurgeEngine.Code.Actor.System;
-using SurgeEngine.Code.StateMachine;
+﻿using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine.Code.Gameplay.Enemy.Base;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Enemy.EggFighter.States
+namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter.States
 {
     public class EGStatePatrol : EGState
     {
@@ -67,7 +67,7 @@ namespace SurgeEngine.Code.Enemy.EggFighter.States
             }
 
             // If it see the wall then turn
-            if (Physics.SphereCast(transform.position + Vector3.up, 1.5f, transform.forward, out _, 1f, 1 << LayerMask.NameToLayer("Default")))
+            if (UnityEngine.Physics.SphereCast(transform.position + Vector3.up, 1.5f, transform.forward, out _, 1f, 1 << LayerMask.NameToLayer("Default")))
             {
                 eggFighter.stateMachine.SetState<EGStateTurn>();
             }

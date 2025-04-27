@@ -5254,14 +5254,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da6493e362584b0ab638b59ffe29f5f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 7194784858183372997}
-  allowIK: 1
-  ikAllowedAnimations:
-  - Idle
-  - sonic_idle_A
-  - sonic_idle_B
-  - sonic_idle_C
-  - sonic_idle_D
 --- !u!114 &919272589128347919
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5283,6 +5275,12 @@ MonoBehaviour:
     ik: {fileID: 4749130543066228063}
     target: {fileID: 8036042535924847598}
   weightSpeed: 16
+  allowedStates:
+  - Idle
+  - sonic_idle_A
+  - sonic_idle_B
+  - sonic_idle_C
+  - sonic_idle_D
   rayLength: 0.6
   rayVerticalOffset: 0.15
   plantedOffset: 0.15

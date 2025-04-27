@@ -1,8 +1,6 @@
-using System;
 using UnityEngine;
-using DG.Tweening;
 
-namespace SurgeEngine.Code.ActorEffects
+namespace SurgeEngine.Code.Gameplay.Effects
 {
     public class SwingEffect : Effect
     {

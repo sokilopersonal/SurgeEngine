@@ -1,10 +1,10 @@
-﻿using SurgeEngine.Code.Actor.States.BaseStates;
-using SurgeEngine.Code.Actor.States.SonicSpecific;
-using SurgeEngine.Code.Actor.System;
-using SurgeEngine.Code.Custom;
+﻿using SurgeEngine.Code.Core.Actor.States.BaseStates;
+using SurgeEngine.Code.Core.Actor.States.SonicSpecific;
+using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine.Code.Infrastructure.Custom;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Actor.States
+namespace SurgeEngine.Code.Core.Actor.States
 {
     public class FStateIdle : FStateMove, IDamageableState
     {

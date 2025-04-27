@@ -1,8 +1,8 @@
-﻿using SurgeEngine.Code.Actor.System;
-using SurgeEngine.Code.StateMachine;
+﻿using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine.Code.Gameplay.Enemy.Base;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Enemy.AeroCannon.States
+namespace SurgeEngine.Code.Gameplay.Enemy.AeroCannon.States
 {
     public class ACState : FEState
     {
@@ -24,7 +24,7 @@ namespace SurgeEngine.Code.Enemy.AeroCannon.States
 
             if (Vector3.Distance(context.transform.position, transform.position) < viewDistance)
             {
-                bool result = Physics.Linecast(transform.position, context.transform.position, mask);
+                bool result = UnityEngine.Physics.Linecast(transform.position, context.transform.position, mask);
                 if (!result) // Make sure we see the player
                 {
                     target = context.transform;

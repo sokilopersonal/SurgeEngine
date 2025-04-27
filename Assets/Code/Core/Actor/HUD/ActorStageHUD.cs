@@ -1,14 +1,15 @@
 ﻿using System;
-using SurgeEngine.Code.Actor.States.SonicSubStates;
-using SurgeEngine.Code.Actor.System;
-using SurgeEngine.Code.CommonObjects;
-using SurgeEngine.Code.CommonObjects.HUD;
-using SurgeEngine.Code.CommonObjects.System;
+using SurgeEngine.Code.Core.Actor.States.SonicSubStates;
+using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine.Code.Gameplay.CommonObjects;
+using SurgeEngine.Code.Gameplay.CommonObjects.Collectables;
+using SurgeEngine.Code.Gameplay.CommonObjects.HUD;
+using SurgeEngine.Code.Gameplay.CommonObjects.System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace SurgeEngine.Code.Actor.HUD
+namespace SurgeEngine.Code.Core.Actor.HUD
 {
     public class ActorStageHUD : MonoBehaviour
     {

@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-namespace SurgeEngine.Code.ActorEffects
+namespace SurgeEngine.Code.Gameplay.Effects
 {
     public class Effect : MonoBehaviour
     {

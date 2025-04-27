@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using SurgeEngine.Code.Actor.Sound;
+using SurgeEngine.Code.Core.Actor.Sound;
 
-namespace SurgeEngine.Code.Actor.System
+namespace SurgeEngine.Code.Core.Actor.System
 {
     public class ActorSounds : ActorComponent
     {

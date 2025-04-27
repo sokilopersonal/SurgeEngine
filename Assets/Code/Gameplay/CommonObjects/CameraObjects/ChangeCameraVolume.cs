@@ -1,7 +1,7 @@
-﻿using SurgeEngine.Code.Actor.System;
+﻿using SurgeEngine.Code.Core.Actor.System;
 using UnityEngine;
 
-namespace SurgeEngine.Code.CommonObjects.CameraObjects
+namespace SurgeEngine.Code.Gameplay.CommonObjects.CameraObjects
 {
     public class ChangeCameraVolume : ContactBase
     {

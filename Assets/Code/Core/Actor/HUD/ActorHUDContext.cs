@@ -1,6 +1,6 @@
 ﻿using Zenject;
 
-namespace SurgeEngine.Code.Actor.HUD
+namespace SurgeEngine.Code.Core.Actor.HUD
 {
     public class ActorHUDContext
     {

@@ -1,4 +1,4 @@
-﻿namespace SurgeEngine.Code.Custom
+﻿namespace SurgeEngine.Code.Infrastructure.Custom
 {
     public static class Tags
     {

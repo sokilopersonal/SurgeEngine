@@ -1,7 +1,7 @@
 ﻿using System;
-using SurgeEngine.Code.Enemy;
+using SurgeEngine.Code.Gameplay.Enemy.Base;
 
-namespace SurgeEngine.Code.CommonObjects
+namespace SurgeEngine.Code.Gameplay.CommonObjects
 {
     public static class ObjectEvents
     {

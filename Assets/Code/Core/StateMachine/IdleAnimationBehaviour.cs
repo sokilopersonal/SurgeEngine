@@ -1,7 +1,7 @@
-﻿using SurgeEngine.Code.Actor.System;
+﻿using SurgeEngine.Code.Core.Actor.System;
 using UnityEngine;
 
-namespace SurgeEngine.Code.StateMachine
+namespace SurgeEngine.Code.Core.StateMachine
 {
     public class IdleAnimationBehaviour : StateMachineBehaviour
     {

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace SurgeEngine.Code.Config
+namespace SurgeEngine.Code.Infrastructure.Config
 {
     [CreateAssetMenu(fileName = "BaseActorConfig", menuName = "SurgeEngine/Configs/Physics/Base", order = 0)]
     public class BaseActorConfig : ScriptableObject

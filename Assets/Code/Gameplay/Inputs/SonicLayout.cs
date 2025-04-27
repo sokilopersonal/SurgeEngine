@@ -1,8 +1,8 @@
-﻿using SurgeEngine.Code.Actor.System;
-using SurgeEngine.Code.Actor.System.Actors;
+﻿using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine.Code.Core.Actor.System.Actors;
 using UnityEngine.InputSystem;
 
-namespace SurgeEngine.Code.Inputs
+namespace SurgeEngine.Code.Gameplay.Inputs
 {
     public static class SonicInputLayout
     {

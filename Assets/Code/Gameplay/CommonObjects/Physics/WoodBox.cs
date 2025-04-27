@@ -1,8 +1,9 @@
 ﻿using FMODUnity;
-using SurgeEngine.Code.Actor.System;
+using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine.Code.Gameplay.CommonObjects.Interfaces;
 using UnityEngine;
 
-namespace SurgeEngine.Code.CommonObjects
+namespace SurgeEngine.Code.Gameplay.CommonObjects.Physics
 {
     public class WoodBox : MonoBehaviour, IDamageable
     {

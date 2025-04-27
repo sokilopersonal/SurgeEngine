@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using Newtonsoft.Json;
-using SurgeEngine.Code.CommonObjects.Lighting;
+using SurgeEngine.Code.Gameplay.CommonObjects.Lighting;
+using SurgeEngine.Code.Infrastructure.Tools.Services;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.HighDefinition;
 using UnityEngine.SceneManagement;
 using Zenject;
 
-namespace SurgeEngine.Code.Tools
+namespace SurgeEngine.Code.Infrastructure.Tools.Managers
 {
     public class UserGraphics : JsonStorageService<GraphicsData>, IInitializable, ILateDisposable
     {

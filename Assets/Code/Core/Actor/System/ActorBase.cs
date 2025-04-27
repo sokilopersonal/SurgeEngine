@@ -1,15 +1,14 @@
 ﻿using System;
 using NaughtyAttributes;
-using SurgeEngine.Code.Actor.CameraSystem;
-using SurgeEngine.Code.Actor.States;
-using SurgeEngine.Code.Actor.States.SonicSpecific;
-using SurgeEngine.Code.CommonObjects;
-using SurgeEngine.Code.CommonObjects.System;
-using SurgeEngine.Code.Config;
+using SurgeEngine.Code.Core.Actor.CameraSystem;
+using SurgeEngine.Code.Core.Actor.States;
+using SurgeEngine.Code.Core.Actor.States.SonicSpecific;
+using SurgeEngine.Code.Gameplay.CommonObjects.Interfaces;
+using SurgeEngine.Code.Gameplay.CommonObjects.System;
+using SurgeEngine.Code.Infrastructure.Config;
 using UnityEngine;
-using Zenject;
 
-namespace SurgeEngine.Code.Actor.System
+namespace SurgeEngine.Code.Core.Actor.System
 {
     public class ActorBase : Entity, IDamageable, IPointMarkerLoader
     {

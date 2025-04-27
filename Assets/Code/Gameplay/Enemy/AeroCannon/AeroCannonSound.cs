@@ -1,11 +1,10 @@
 using FMOD.Studio;
 using FMODUnity;
-using SurgeEngine.Code.Enemy.AeroCannon.States;
-using SurgeEngine.Code.StateMachine;
-using SurgeEngine.Code.StateMachine.Components;
+using SurgeEngine.Code.Core.StateMachine.Base;
+using SurgeEngine.Code.Gameplay.Enemy.AeroCannon.States;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Enemy.AeroCannon.States
+namespace SurgeEngine.Code.Gameplay.Enemy.AeroCannon
 {
     public class AeroCannonSound : MonoBehaviour
     {

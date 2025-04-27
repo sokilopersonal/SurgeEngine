@@ -1,12 +1,12 @@
 ﻿using System.Collections;
-using SurgeEngine.Code.Actor.States;
-using SurgeEngine.Code.Actor.System;
-using SurgeEngine.Code.Custom;
+using SurgeEngine.Code.Core.Actor.States;
+using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine.Code.Infrastructure.Custom;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Splines;
 
-namespace SurgeEngine.Code.CommonObjects
+namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
 {
     public class Rail : MonoBehaviour
     {

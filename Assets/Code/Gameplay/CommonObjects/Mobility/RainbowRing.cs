@@ -1,8 +1,8 @@
 ﻿using NaughtyAttributes;
-using SurgeEngine.Code.Custom;
+using SurgeEngine.Code.Infrastructure.Custom;
 using UnityEngine;
 
-namespace SurgeEngine.Code.CommonObjects
+namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
 {
     public class RainbowRing : DashRing
     {

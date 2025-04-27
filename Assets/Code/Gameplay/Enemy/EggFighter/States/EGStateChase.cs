@@ -1,8 +1,8 @@
-﻿using SurgeEngine.Code.Actor.System;
-using SurgeEngine.Code.StateMachine;
+﻿using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine.Code.Gameplay.Enemy.Base;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Enemy.EggFighter.States
+namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter.States
 {
     public class EGStateChase : EGState
     {
@@ -32,7 +32,7 @@ namespace SurgeEngine.Code.Enemy.EggFighter.States
             }
             
             float verticalDiff = context.transform.position.y - transform.position.y;
-            bool obstacle = Physics.Linecast(transform.position, context.transform.position, 1 << LayerMask.NameToLayer("Default"));
+            bool obstacle = UnityEngine.Physics.Linecast(transform.position, context.transform.position, 1 << LayerMask.NameToLayer("Default"));
             if (distance > eggFighter.chaseMaxDistance || Mathf.Abs(verticalDiff) > 5f || obstacle)
             {
                 eggFighter.stateMachine.SetState<EGStateIdle>();

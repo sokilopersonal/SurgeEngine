@@ -1,8 +1,7 @@
-﻿using SurgeEngine.Code.ActorEffects;
-using SurgeEngine.Code.Effects;
+﻿using SurgeEngine.Code.Gameplay.Effects;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Actor.Sound
+namespace SurgeEngine.Code.Core.Actor.Sound
 {
     // Because StepSound class is not on the animator game object
     public class StepAnimationReference : MonoBehaviour

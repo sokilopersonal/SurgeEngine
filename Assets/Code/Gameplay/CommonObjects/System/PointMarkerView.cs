@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace SurgeEngine.Code.CommonObjects.System
+namespace SurgeEngine.Code.Gameplay.CommonObjects.System
 {
     [ExecuteInEditMode]
     public class PointMarkerView : MonoBehaviour

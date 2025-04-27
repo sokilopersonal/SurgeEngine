@@ -1,9 +1,8 @@
-﻿using System;
-using UnityEngine;
+﻿using System.Collections.Generic;
 using DG.Tweening;
-using System.Collections.Generic;
+using UnityEngine;
 
-namespace SurgeEngine.Code.CommonObjects
+namespace SurgeEngine.Code.Gameplay.CommonObjects.Physics
 {
     public class DestroyedPiece : MonoBehaviour
     {

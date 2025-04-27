@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace SurgeEngine.Code.Tools
+namespace SurgeEngine.Code.Infrastructure.Tools
 {
     /// <summary>
     /// Simple auto DontDestroyOnLoad

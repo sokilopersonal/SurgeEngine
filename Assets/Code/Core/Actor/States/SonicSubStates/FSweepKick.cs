@@ -1,10 +1,10 @@
-using SurgeEngine.Code.Actor.States.BaseStates;
-using SurgeEngine.Code.Actor.States.SonicSpecific;
-using SurgeEngine.Code.Actor.System;
-using SurgeEngine.Code.CommonObjects;
-using SurgeEngine.Code.Config.SonicSpecific;
+using SurgeEngine.Code.Core.Actor.States.BaseStates;
+using SurgeEngine.Code.Core.Actor.States.SonicSpecific;
+using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine.Code.Gameplay.CommonObjects.Mobility;
+using SurgeEngine.Code.Infrastructure.Config.SonicSpecific;
 
-namespace SurgeEngine.Code.Actor.States.SonicSubStates
+namespace SurgeEngine.Code.Core.Actor.States.SonicSubStates
 {
     public class FSweepKick : FActorSubState
     {

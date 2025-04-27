@@ -1,13 +1,13 @@
 ﻿using System;
-using SurgeEngine.Code.Actor.States;
-using SurgeEngine.Code.Actor.States.SonicSpecific;
-using SurgeEngine.Code.Config;
-using SurgeEngine.Code.Custom;
-using SurgeEngine.Code.Tools;
+using SurgeEngine.Code.Core.Actor.States;
+using SurgeEngine.Code.Core.Actor.States.SonicSpecific;
+using SurgeEngine.Code.Infrastructure.Config;
+using SurgeEngine.Code.Infrastructure.Custom;
+using SurgeEngine.Code.Infrastructure.Tools;
 using UnityEngine;
 using UnityEngine.Splines;
 
-namespace SurgeEngine.Code.Actor.System
+namespace SurgeEngine.Code.Core.Actor.System
 {
     public class ActorKinematics : ActorComponent
     {

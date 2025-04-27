@@ -1,7 +1,7 @@
-﻿using SurgeEngine.Code.Actor.System;
-using SurgeEngine.Code.StateMachine;
+﻿using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine.Code.Core.StateMachine.Base;
 
-namespace SurgeEngine.Code.Actor.States.BaseStates
+namespace SurgeEngine.Code.Core.Actor.States.BaseStates
 {
     public class FActorSubState : FSubState
     {

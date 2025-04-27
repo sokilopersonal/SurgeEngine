@@ -1,7 +1,8 @@
-﻿using SurgeEngine.Code.Custom;
+﻿using SurgeEngine.Code.Gameplay.Enemy.Base;
+using SurgeEngine.Code.Infrastructure.Custom;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Enemy.AeroCannon.States
+namespace SurgeEngine.Code.Gameplay.Enemy.AeroCannon.States
 {
     public class ACStatePrepare : ACState
     {

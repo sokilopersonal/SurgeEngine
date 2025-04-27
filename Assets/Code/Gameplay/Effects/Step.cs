@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace SurgeEngine.Code.Effects
+namespace SurgeEngine.Code.Gameplay.Effects
 {
     public class Step : MonoBehaviour
     {

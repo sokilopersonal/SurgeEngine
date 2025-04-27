@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace SurgeEngine.Code.Config.SonicSpecific
+namespace SurgeEngine.Code.Infrastructure.Config.SonicSpecific
 {
     [CreateAssetMenu(fileName = "CrawlConfig", menuName = "SurgeEngine/Configs/Sonic/Crawl", order = 0)]
     public class CrawlConfig : ScriptableObject

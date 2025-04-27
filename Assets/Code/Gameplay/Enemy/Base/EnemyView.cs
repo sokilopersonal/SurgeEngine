@@ -1,10 +1,10 @@
 ﻿using FMODUnity;
-using SurgeEngine.Code.CommonObjects;
-using SurgeEngine.Code.CommonObjects.System;
-using SurgeEngine.Code.StateMachine;
+using SurgeEngine.Code.Gameplay.CommonObjects;
+using SurgeEngine.Code.Gameplay.CommonObjects.Physics;
+using SurgeEngine.Code.Gameplay.CommonObjects.System;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Enemy
+namespace SurgeEngine.Code.Gameplay.Enemy.Base
 {
     public class EnemyView : MonoBehaviour, IEnemyComponent, IPointMarkerLoader
     {

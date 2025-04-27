@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using UnityEngine;
 using DG.Tweening;
 using FMODUnity;
+using UnityEngine;
 
-namespace SurgeEngine.Code.CommonObjects
+namespace SurgeEngine.Code.Gameplay.CommonObjects.Physics
 {
     [ExecuteAlways]
     public class ReappearBlock : MonoBehaviour

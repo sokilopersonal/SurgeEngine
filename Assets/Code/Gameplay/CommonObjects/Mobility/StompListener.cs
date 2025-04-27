@@ -1,8 +1,9 @@
-using SurgeEngine.Code.Actor.States.SonicSpecific;
-using SurgeEngine.Code.Actor.System;
+using SurgeEngine.Code.Core.Actor.States.SonicSpecific;
+using SurgeEngine.Code.Core.Actor.System;
 using UnityEngine;
 using UnityEngine.Events;
-namespace SurgeEngine.Code.CommonObjects
+
+namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
 {
     public class StompListener : ContactBase
     {

@@ -1,8 +1,9 @@
 ﻿using System;
-using SurgeEngine.Code.Actor.System;
+using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine.Code.Gameplay.CommonObjects.Interfaces;
 using UnityEngine;
 
-namespace SurgeEngine.Code.CommonObjects
+namespace SurgeEngine.Code.Gameplay.CommonObjects
 {
     /// <summary>
     /// A class for creating hurtboxes
@@ -18,7 +19,7 @@ namespace SurgeEngine.Code.CommonObjects
         public static bool CreateAttached(Entity sender, Transform transform, Vector3 size, HurtBoxTarget target)
         {
             int mask = GetMask(target);
-            var hits = Physics.OverlapBox(transform.position, size, transform.rotation, mask);
+            var hits = UnityEngine.Physics.OverlapBox(transform.position, size, transform.rotation, mask);
 
             foreach (var hit in hits)
             {
@@ -44,7 +45,7 @@ namespace SurgeEngine.Code.CommonObjects
         public static bool Create(Entity sender, Vector3 position, Quaternion rotation, Vector3 size, HurtBoxTarget target)
         {
             int mask = GetMask(target);
-            var hits = Physics.OverlapBox(position, size, rotation, mask);
+            var hits = UnityEngine.Physics.OverlapBox(position, size, rotation, mask);
             
             foreach (var hit in hits)
             {

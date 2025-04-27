@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace SurgeEngine.Code.Enemy
+namespace SurgeEngine.Code.Gameplay.Enemy.Physics
 {
     [RequireComponent(typeof(Collider), typeof(Rigidbody))]
     public class EnemyRagdollLimb : MonoBehaviour

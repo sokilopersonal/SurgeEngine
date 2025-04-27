@@ -1,7 +1,7 @@
-using SurgeEngine.Code.Actor.System;
+using SurgeEngine.Code.Core.Actor.System;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Actor.CameraSystem.Modifiers
+namespace SurgeEngine.Code.Core.Actor.CameraSystem.Modifiers
 {
     public abstract class BaseCameraModifier : MonoBehaviour
     {

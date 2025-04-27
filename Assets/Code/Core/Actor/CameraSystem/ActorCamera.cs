@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using SurgeEngine.Code.Actor.CameraSystem.Modifiers;
-using SurgeEngine.Code.Actor.CameraSystem.Pawns;
-using SurgeEngine.Code.Actor.System;
+using SurgeEngine.Code.Core.Actor.CameraSystem.Modifiers;
+using SurgeEngine.Code.Core.Actor.CameraSystem.Pawns;
+using SurgeEngine.Code.Core.Actor.System;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Actor.CameraSystem
+namespace SurgeEngine.Code.Core.Actor.CameraSystem
 {
     public class ActorCamera : ActorComponent
     {

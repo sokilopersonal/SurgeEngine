@@ -2,7 +2,7 @@
 using FMODUnity;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Actor.Sound
+namespace SurgeEngine.Code.Core.Actor.Sound
 {
     public class BoostAudioDistortion : MonoBehaviour
     {

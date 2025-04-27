@@ -3,7 +3,7 @@ using FMODUnity;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace SurgeEngine.Code.CommonObjects
+namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
 {
     [SelectionBase]
     public class StompSwitch : MonoBehaviour

@@ -1,9 +1,8 @@
 using System;
-using System.IO;
 using FMODUnity;
-using UnityEngine;
+using SurgeEngine.Code.Infrastructure.Tools.Services;
 
-namespace SurgeEngine.Code.Tools
+namespace SurgeEngine.Code.Infrastructure.Tools.Managers
 {
     public class VolumeManager : JsonStorageService<VolumeData>
     {

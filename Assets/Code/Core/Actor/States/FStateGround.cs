@@ -1,18 +1,18 @@
 ﻿using System;
-using SurgeEngine.Code.Actor.States.BaseStates;
-using SurgeEngine.Code.Actor.States.SonicSpecific;
-using SurgeEngine.Code.Actor.States.SonicSubStates;
-using SurgeEngine.Code.Actor.System;
-using SurgeEngine.Code.Config;
-using SurgeEngine.Code.Config.SonicSpecific;
-using SurgeEngine.Code.Custom;
-using SurgeEngine.Code.Inputs;
-using SurgeEngine.Code.Tools;
+using SurgeEngine.Code.Core.Actor.States.BaseStates;
+using SurgeEngine.Code.Core.Actor.States.SonicSpecific;
+using SurgeEngine.Code.Core.Actor.States.SonicSubStates;
+using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine.Code.Gameplay.Inputs;
+using SurgeEngine.Code.Infrastructure.Config;
+using SurgeEngine.Code.Infrastructure.Config.SonicSpecific;
+using SurgeEngine.Code.Infrastructure.Custom;
+using SurgeEngine.Code.Infrastructure.Tools;
 using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
 using Vector3 = UnityEngine.Vector3;
 
-namespace SurgeEngine.Code.Actor.States
+namespace SurgeEngine.Code.Core.Actor.States
 {
     public sealed class FStateGround : FStateMove, IBoostHandler, IDamageableState
     {

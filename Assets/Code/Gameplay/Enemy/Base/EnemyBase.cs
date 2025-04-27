@@ -1,9 +1,8 @@
-﻿using SurgeEngine.Code.Actor.System;
-using SurgeEngine.Code.StateMachine;
-using SurgeEngine.Code.StateMachine.Components;
+﻿using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine.Code.Core.StateMachine.Components;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Enemy
+namespace SurgeEngine.Code.Gameplay.Enemy.Base
 {
     [DefaultExecutionOrder(-9888)]
     public class EnemyBase : Entity

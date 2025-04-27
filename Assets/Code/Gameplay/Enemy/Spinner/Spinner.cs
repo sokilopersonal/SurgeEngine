@@ -1,7 +1,8 @@
-﻿using SurgeEngine.Code.Actor.System;
-using SurgeEngine.Code.CommonObjects;
+﻿using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine.Code.Gameplay.CommonObjects.Interfaces;
+using SurgeEngine.Code.Gameplay.Enemy.Base;
 
-namespace SurgeEngine.Code.Enemy.Spinner
+namespace SurgeEngine.Code.Gameplay.Enemy.Spinner
 {
     public class Spinner : EnemyBase, IDamageable
     {

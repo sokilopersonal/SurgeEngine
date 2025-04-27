@@ -1,10 +1,10 @@
-﻿using SurgeEngine.Code.Actor.System;
-using SurgeEngine.Code.Custom;
-using SurgeEngine.Code.CustomDebug;
-using SurgeEngine.Code.Tools;
+﻿using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine.Code.Infrastructure.Custom;
+using SurgeEngine.Code.Infrastructure.Custom.Drawers;
+using SurgeEngine.Code.Infrastructure.Tools;
 using UnityEngine;
 
-namespace SurgeEngine.Code.CommonObjects
+namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
 {
     /// <summary>
     /// Trigger for applying and clamping an impulse to the player

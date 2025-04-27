@@ -1,4 +1,4 @@
-﻿namespace SurgeEngine.Code.StateMachine
+﻿namespace SurgeEngine.Code.Core.StateMachine.Interfaces
 {
     /// <summary>
     /// Interface to add a delay to states. Set Timeout as the delay time when needed.

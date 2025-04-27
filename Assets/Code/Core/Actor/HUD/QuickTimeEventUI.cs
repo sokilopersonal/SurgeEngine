@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using SurgeEngine.Code.Actor.System;
-using SurgeEngine.Code.CommonObjects;
+using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine.Code.Gameplay.CommonObjects.Mobility;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-namespace SurgeEngine.Code.Actor.HUD
+namespace SurgeEngine.Code.Core.Actor.HUD
 {
     public class QuickTimeEventUI : MonoBehaviour
     {

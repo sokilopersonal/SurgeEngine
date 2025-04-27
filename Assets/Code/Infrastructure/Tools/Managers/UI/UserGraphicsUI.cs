@@ -3,7 +3,7 @@ using SurgeEngine.Code.UI.Menus.OptionElements;
 using UnityEngine;
 using Zenject;
 
-namespace SurgeEngine.Code.Tools
+namespace SurgeEngine.Code.Infrastructure.Tools.Managers.UI
 {
     public class UserGraphicsUI : MonoBehaviour
     {

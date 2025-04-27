@@ -1,9 +1,8 @@
 ﻿using System;
-using SurgeEngine.Code.Actor.System;
-using SurgeEngine.Code.Custom;
+using SurgeEngine.Code.Core.Actor.System;
 using UnityEngine;
 
-namespace SurgeEngine.Code.CommonObjects
+namespace SurgeEngine.Code.Gameplay.CommonObjects
 {
     [SelectionBase]
     public abstract class ContactBase : Entity
