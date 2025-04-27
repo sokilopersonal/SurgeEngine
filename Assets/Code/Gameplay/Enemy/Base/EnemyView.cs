@@ -6,10 +6,8 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Gameplay.Enemy.Base
 {
-    public class EnemyView : MonoBehaviour, IEnemyComponent, IPointMarkerLoader
+    public class EnemyView : EnemyComponent, IPointMarkerLoader
     {
-        public EnemyBase enemyBase { get; set; }
-        
         [Header("Destroy")]
         [SerializeField] private Transform explosionPoint;
         [SerializeField] private ParticleSystem explosionEffect;

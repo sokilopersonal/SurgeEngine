@@ -22,7 +22,7 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter.States
             _timer = 0;
             _patrolTimer = 0;
 
-            if (eggFighter.stateMachine.PreviousState is EGStateTurn)
+            if (eggFighter.StateMachine.PreviousState is EGStateTurn)
             {
                 _targetPoint = eggFighter.rb.position + transform.forward * eggFighter.patrolDistance;
             }
@@ -30,8 +30,6 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter.States
             {
                 _targetPoint = GetRandomPoint();
             }
-            
-            eggFighter.animationReference.OnStepWalk += OnStepWalk;
         }
 
         private void OnStepWalk()
@@ -57,19 +55,19 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter.States
             _patrolTimer += dt;
             if (_patrolTimer > eggFighter.patrolTime + 3.5f)
             {
-                eggFighter.stateMachine.SetState<EGStateIdle>(2f);
+                eggFighter.StateMachine.SetState<EGStateIdle>(2f);
             }
             
             ActorBase context = ActorContext.Context;
             if (Vector3.Distance(context.transform.position, transform.position) < eggFighter.findDistance)
             {
-                eggFighter.stateMachine.SetState<EGStateChase>();
+                eggFighter.StateMachine.SetState<EGStateChase>();
             }
 
             // If it see the wall then turn
             if (UnityEngine.Physics.SphereCast(transform.position + Vector3.up, 1.5f, transform.forward, out _, 1f, 1 << LayerMask.NameToLayer("Default")))
             {
-                eggFighter.stateMachine.SetState<EGStateTurn>();
+                eggFighter.StateMachine.SetState<EGStateTurn>();
             }
         }
         

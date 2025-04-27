@@ -8,7 +8,15 @@ namespace SurgeEngine.Code.Gameplay.Enemy.AeroCannon
 {
     public class AeroCannon : EnemyBase, IDamageable
     {
-        [SerializeField] private AeroCannonConfig config;
+        [SerializeField] private float viewDistance = 10;
+        [SerializeField] private LayerMask mask;
+        [SerializeField] private float idleTime = 1.5f;
+        [SerializeField] private float prepareTime = 1;
+        
+        public float ViewDistance => viewDistance;
+        public LayerMask Mask => mask;
+        public float IdleTime => idleTime;
+        public float PrepareTime => prepareTime;
         
         public Transform shootPoint;
         public AeroCannonBullet bulletPrefab;
@@ -17,18 +25,16 @@ namespace SurgeEngine.Code.Gameplay.Enemy.AeroCannon
         {
             base.Awake();
             
-            AddConfig(config);
+            StateMachine.AddState(new ACStateIdle(this));
+            StateMachine.AddState(new ACStatePrepare(this));
+            StateMachine.AddState(new ACStateShoot(this));
             
-            stateMachine.AddState(new ACStateIdle(this));
-            stateMachine.AddState(new ACStatePrepare(this));
-            stateMachine.AddState(new ACStateShoot(this));
-            
-            stateMachine.SetState<ACStateIdle>().SetStartRotation(transform.rotation);
+            StateMachine.SetState<ACStateIdle>().SetStartRotation(transform.rotation);
         }
 
         public void TakeDamage(Entity sender, float damage)
         {
-            view.Destroy();
+            OnDied?.Invoke();
         }
     }
 }

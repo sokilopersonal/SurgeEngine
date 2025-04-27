@@ -28,14 +28,14 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter.States
             float distance = Vector3.Distance(context.transform.position, transform.position);
             if (distance < 2.5f)
             {
-                eggFighter.stateMachine.SetState<EGStatePunch>();
+                eggFighter.StateMachine.SetState<EGStatePunch>();
             }
             
             float verticalDiff = context.transform.position.y - transform.position.y;
             bool obstacle = UnityEngine.Physics.Linecast(transform.position, context.transform.position, 1 << LayerMask.NameToLayer("Default"));
             if (distance > eggFighter.chaseMaxDistance || Mathf.Abs(verticalDiff) > 5f || obstacle)
             {
-                eggFighter.stateMachine.SetState<EGStateIdle>();
+                eggFighter.StateMachine.SetState<EGStateIdle>();
             }
         }
     }

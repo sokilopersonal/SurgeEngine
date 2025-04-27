@@ -1,4 +1,5 @@
-﻿using FMODUnity;
+﻿using System;
+using FMODUnity;
 using SurgeEngine.Code.Gameplay.Enemy.Base;
 using SurgeEngine.Code.Gameplay.Enemy.EggFighter.States;
 using UnityEngine;
@@ -8,10 +9,11 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter
     public class EGView : EnemyView
     {
         private EggFighter eggFighter => (EggFighter)enemyBase;
-        
-        private void OnEnable()
+
+        public override void Initialize(EnemyBase enemyBase)
         {
-            enemyBase.stateMachine.OnStateAssign += state =>
+            base.Initialize(enemyBase);
+            enemyBase.StateMachine.OnStateAssign += state =>
             {
                 if (state is EGStateDead)
                     RuntimeManager.PlayOneShot(metalHitReference, transform.position);
@@ -22,7 +24,7 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter
         {
             base.Load(loadPosition, loadRotation);
 
-            eggFighter.stateMachine.SetState<EGStateIdle>();
+            eggFighter.StateMachine.SetState<EGStateIdle>();
             eggFighter.animation.Animator.enabled = true;
         }
     }

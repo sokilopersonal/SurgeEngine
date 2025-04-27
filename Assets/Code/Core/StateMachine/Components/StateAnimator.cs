@@ -13,9 +13,6 @@ namespace SurgeEngine.Code.Core.StateMachine.Components
         private string _currentAnimation;
         private bool _isWaiting;
 
-        public Coroutine WaitCallbackCoroutine; 
-        public Coroutine WaitForAnimationCoroutine; 
-
         private void Awake()
         {
             _animator = GetComponent<Animator>();
@@ -95,11 +92,11 @@ namespace SurgeEngine.Code.Core.StateMachine.Components
 
         public void Then(Action callback) => OnAnimationFinish += callback;
         public void After(float time, Action callback) 
-            => _stateAnimator.WaitCallbackCoroutine = _stateAnimator.StartCoroutine(WaitCallback(time, callback));
+            => _stateAnimator.StartCoroutine(WaitCallback(time, callback));
 
         public void AfterThen(float time, Action callback)
         {
-            OnAnimationFinish += () => _stateAnimator.WaitCallbackCoroutine = _stateAnimator.StartCoroutine(WaitCallback(time, callback));
+            OnAnimationFinish += () => _stateAnimator.StartCoroutine(WaitCallback(time, callback));
         }
 
         private IEnumerator WaitCallback(float time, Action callback)

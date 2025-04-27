@@ -6,16 +6,16 @@ namespace SurgeEngine.Code.Gameplay.Enemy.AeroCannon
 {
     public class AeroCannonEffects : MonoBehaviour
     {
-        [SerializeField] AeroCannon enemy;
-        [SerializeField] ParticleSystem chargeParticle;
-        [SerializeField] ParticleSystem fireParticle;
+        [SerializeField] private AeroCannon enemy;
+        [SerializeField] private ParticleSystem chargeParticle;
+        [SerializeField] private ParticleSystem fireParticle;
 
         private void Start()
         {
-            enemy.stateMachine.OnStateAssign += OnStateAssign;
+            enemy.StateMachine.OnStateAssign += OnStateAssign;
         }
 
-        void OnStateAssign(FState obj)
+        private void OnStateAssign(FState obj)
         {
             if (obj is ACStatePrepare)
                 chargeParticle.Play(true);

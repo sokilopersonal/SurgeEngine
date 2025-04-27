@@ -8,12 +8,12 @@ namespace SurgeEngine.Code.Gameplay.Enemy.AeroCannon
 {
     public class AeroCannonSound : MonoBehaviour
     {
-        [SerializeField] AeroCannon enemy;
-        [SerializeField] EventReference chargeSound;
-        [SerializeField] EventReference fireSound;
+        [SerializeField] private AeroCannon enemy;
+        [SerializeField] private EventReference chargeSound;
+        [SerializeField] private EventReference fireSound;
 
-        EventInstance charge;
-        EventInstance fire;
+        private EventInstance charge;
+        private EventInstance fire;
 
         private void Start()
         {
@@ -23,7 +23,7 @@ namespace SurgeEngine.Code.Gameplay.Enemy.AeroCannon
             fire = RuntimeManager.CreateInstance(fireSound);
             fire.set3DAttributes(transform.To3DAttributes());
 
-            enemy.stateMachine.OnStateAssign += OnStateAssign;
+            enemy.StateMachine.OnStateAssign += OnStateAssign;
         }
 
         private void OnDestroy()
@@ -31,7 +31,7 @@ namespace SurgeEngine.Code.Gameplay.Enemy.AeroCannon
             charge.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
         }
 
-        void OnStateAssign(FState obj)
+        private void OnStateAssign(FState obj)
         {
             if (obj is ACStatePrepare)
                 charge.start();

@@ -35,7 +35,7 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter.States
             }
             else
             {
-                eggFighter.stateMachine.SetState<EGStateIdle>(0);
+                eggFighter.StateMachine.SetState<EGStateIdle>(0);
             }
         }
     }

@@ -16,13 +16,13 @@ namespace SurgeEngine.Code.Gameplay.Enemy.AeroCannon.States
         {
             base.OnEnter();
 
-            timer = config.idleTime;
+            timer = aeroCannon.IdleTime;
         }
 
         public override void OnTick(float dt)
         {
             bool inSight = IsInSight(out var target);
-            if (Common.TickTimer(ref timer, config.idleTime, false))
+            if (Common.TickTimer(ref timer, aeroCannon.IdleTime, false))
             {
                 if (inSight)
                 {

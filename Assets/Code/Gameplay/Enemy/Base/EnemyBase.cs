@@ -1,38 +1,56 @@
-﻿using SurgeEngine.Code.Core.Actor.System;
-using SurgeEngine.Code.Core.StateMachine.Components;
+﻿using System;
+using SurgeEngine.Code.Core.StateMachine;
+using SurgeEngine.Code.Gameplay.CommonObjects.System;
 using UnityEngine;
 
 namespace SurgeEngine.Code.Gameplay.Enemy.Base
 {
-    [DefaultExecutionOrder(-9888)]
-    public class EnemyBase : Entity
+    public class EnemyBase : MonoBehaviour
     {
         public EnemyView view;
-        public new StateAnimator animation;
+        public new EnemyAnimation animation;
 
-        protected override void Awake()
+        private FStateMachine _stateMachine;
+        public FStateMachine StateMachine => _stateMachine;
+
+        public Action OnDied;
+
+        protected virtual void Awake()
         {
-            base.Awake();
+            _stateMachine = new FStateMachine();
             
-            foreach (var component in new IEnemyComponent[] { view })
-            {
-                component?.SetOwner(this);
-            }
+            view?.Initialize(this);
+            animation?.Initialize(this);
         }
 
-        protected override void Update()
+        private void OnEnable()
         {
-            stateMachine.Tick(Time.deltaTime);
+            OnDied += AddScore;
+        }
+        
+        private void OnDisable()
+        {
+            OnDied -= AddScore;
         }
 
-        protected override void FixedUpdate()
+        private void Update()
         {
-            stateMachine.FixedTick(Time.fixedDeltaTime);
+            _stateMachine.Tick(Time.deltaTime);
         }
 
-        protected override void LateUpdate()
+        private void FixedUpdate()
         {
-            stateMachine.LateTick(Time.deltaTime);
+            _stateMachine.FixedTick(Time.fixedDeltaTime);
+        }
+
+        private void LateUpdate()
+        {
+            _stateMachine.LateTick(Time.deltaTime);
+        }
+
+        private void AddScore()
+        {
+            Stage.Instance.data.AddScore(300);
         }
     }
 }

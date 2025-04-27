@@ -52,14 +52,14 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter
             rb = GetComponent<Rigidbody>();
             rb.freezeRotation = true;
             
-            stateMachine.AddState(new EGStateIdle(this));
-            stateMachine.AddState(new EGStateChase(this));
-            stateMachine.AddState(new EGStatePatrol(this));
-            stateMachine.AddState(new EGStateTurn(this));
-            stateMachine.AddState(new EGStatePunch(this));
-            stateMachine.AddState(new EGStateDead(this));
+            StateMachine.AddState(new EGStateIdle(this));
+            StateMachine.AddState(new EGStateChase(this));
+            StateMachine.AddState(new EGStatePatrol(this));
+            StateMachine.AddState(new EGStateTurn(this));
+            StateMachine.AddState(new EGStatePunch(this));
+            StateMachine.AddState(new EGStateDead(this));
             
-            stateMachine.SetState<EGStateIdle>();
+            StateMachine.SetState<EGStateIdle>();
         }
 
         private void OnDrawGizmosSelected()
@@ -73,7 +73,9 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter
             Vector3 force = context.kinematics.Rigidbody.linearVelocity * 1.25f;
             force += Vector3.up * (force.magnitude * 0.15f);
             Debug.DrawRay(context.transform.position, force, Color.red, 999f);
-            stateMachine.SetState<EGStateDead>(0f, true, true).ApplyKnockback(force, ragdollPrefab);
+            StateMachine.SetState<EGStateDead>(0f, true, true).ApplyKnockback(force, ragdollPrefab);
+            
+            OnDied?.Invoke();
         }
 
         private void OnCollisionEnter(Collision other)
@@ -81,7 +83,7 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter
             if (other.gameObject.layer == ragdollLayer)
             {
                 Rigidbody rb = other.transform.GetComponent<Rigidbody>();
-                stateMachine.SetState<EGStateDead>(0f, true, true).ApplyKnockback(rb.linearVelocity, ragdollPrefab);
+                StateMachine.SetState<EGStateDead>(0f, true, true).ApplyKnockback(rb.linearVelocity, ragdollPrefab);
             }
         }
 

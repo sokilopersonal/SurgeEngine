@@ -30,7 +30,7 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter.States
             ActorBase context = ActorContext.Context;
             if (Vector3.Distance(context.transform.position, transform.position) < eggFighter.findDistance)
             {
-                eggFighter.stateMachine.SetState<EGStateChase>();
+                eggFighter.StateMachine.SetState<EGStateChase>();
             }
 
             if (_stayTimer < eggFighter.patrolTime)
@@ -53,7 +53,7 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter.States
                 //     eggFighter.stateMachine.SetState<EGStatePatrol>(0.2f).SetNewPatrolPoint(point);
                 // }
 
-                eggFighter.stateMachine.SetState<EGStatePatrol>();
+                eggFighter.StateMachine.SetState<EGStatePatrol>();
             }
         }
     }

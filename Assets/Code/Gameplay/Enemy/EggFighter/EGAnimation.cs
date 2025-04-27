@@ -1,45 +1,47 @@
-﻿using SurgeEngine.Code.Core.StateMachine.Components;
+﻿using SurgeEngine.Code.Core.StateMachine.Base;
+using SurgeEngine.Code.Core.StateMachine.Components;
 using SurgeEngine.Code.Gameplay.Enemy.Base;
+using SurgeEngine.Code.Gameplay.Enemy.EggFighter.States;
+using UnityEngine;
 
 namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter
 {
-    public class EGAnimation : StateAnimator, IEnemyComponent
+    [RequireComponent(typeof(StateAnimator))]
+    public class EGAnimation : EnemyAnimation
     {
-        public EnemyBase enemyBase { get; set; }
-
-        // protected override void ChangeStateAnimation(FState obj)
-        // {
-        //     base.StopWork(obj);
-        //
-        //     if (obj is EGStateIdle)
-        //     {
-        //         TransitionToState("Idle");
-        //     }
-        //     
-        //     if (obj is EGStatePatrol)
-        //     {
-        //         TransitionToState("Walk", 0.1f);
-        //     }
-        //     
-        //     if (obj is EGStateChase)
-        //     {
-        //         TransitionToState("Run");
-        //     }
-        //
-        //     if (obj is EGStatePunch)
-        //     {
-        //         TransitionToState("PunchCharge", 0.25f);
-        //     }
-        //
-        //     if (obj is EGStateTurn)
-        //     {
-        //         TransitionToState("Turn", 0f);
-        //     }
-        //
-        //     if (obj is EGStateDead)
-        //     {
-        //         TransitionToState("IdleDead", 0f);
-        //     }
-        // }
+        protected override void ChangeStateAnimation(FState obj)
+        {
+            base.ChangeStateAnimation(obj);
+            
+            if (obj is EGStateIdle)
+            {
+                _stateAnimator.TransitionToState("Idle");
+            }
+            
+            if (obj is EGStatePatrol)
+            {
+                _stateAnimator.TransitionToState("Walk", 0.1f);
+            }
+            
+            if (obj is EGStateChase)
+            {
+                _stateAnimator.TransitionToState("Run");
+            }
+        
+            if (obj is EGStatePunch)
+            {
+                _stateAnimator.TransitionToState("PunchCharge", 0.25f);
+            }
+        
+            if (obj is EGStateTurn)
+            {
+                _stateAnimator.TransitionToState("Turn", 0f);
+            }
+        
+            if (obj is EGStateDead)
+            {
+                _stateAnimator.TransitionToState("IdleDead", 0f);
+            }
+        }
     }
 }

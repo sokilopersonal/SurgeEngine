@@ -36,7 +36,7 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter.States
             
             if (_timer >= 1.85f)
             {
-                eggFighter.stateMachine.SetState<EGStatePatrol>(1f);
+                eggFighter.StateMachine.SetState<EGStatePatrol>(1f);
             }
         }
         

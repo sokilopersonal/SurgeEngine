@@ -6,14 +6,12 @@ namespace SurgeEngine.Code.Gameplay.Enemy.Base
 {
     public class FEState : FState
     {
-        protected EnemyBase enemy;
-        protected FStateMachine stateMachine;
-        protected Transform transform;
+        protected readonly FStateMachine stateMachine;
+        protected readonly Transform transform;
 
         public FEState(EnemyBase enemy)
         {
-            this.enemy = enemy;
-            stateMachine = enemy.stateMachine;
+            stateMachine = enemy.StateMachine;
             transform = enemy.transform;
         }
     }
