@@ -38,6 +38,9 @@ namespace SurgeEngine.Code.Core.Actor.System
         [Header("Grind")]
         public Effect grindEffect;
 
+        [Header("Damage")] 
+        [SerializeField] private DamageEffect damageEffect;
+
         [Header("Other")]
         public Effect jumpDeluxEffect;
         public ParaloopEffect paraloopEffect;
@@ -135,6 +138,11 @@ namespace SurgeEngine.Code.Core.Actor.System
                     _currentStep = ps;
                     _currentStep?.Play();
                 }
+            }
+
+            if (obj is FStateDamage)
+            {
+                damageEffect.Toggle(true);
             }
         }
 

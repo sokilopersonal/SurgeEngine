@@ -48,7 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   view: {fileID: 1331910105712177873}
   animation: {fileID: 4182645961781350785}
-  animationReference: {fileID: 7560760262493947178}
+  effects: {fileID: 2565871558992367779}
   ragdollPrefab: {fileID: 4729933678536235600}
   findDistance: 0
   chaseSpeed: 0
@@ -332,6 +332,7 @@ GameObject:
   - component: {fileID: 5913160398915718345}
   - component: {fileID: 5521076903748107578}
   - component: {fileID: 1331910105712177873}
+  - component: {fileID: 2565871558992367779}
   m_Layer: 12
   m_Name: Model
   m_TagString: Untagged
@@ -409,6 +410,19 @@ MonoBehaviour:
       Data3: -1591140736
       Data4: 1219544592
     Path: event:/Enemies/MetalDamage
+--- !u!114 &2565871558992367779
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6598288326902543729}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8c734e9615240a5a64b8a7a9649b779, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hitPrefab: {fileID: 8553914193835272593, guid: b0276e20ffdd8564cbea8d0f7e190ce5, type: 3}
 --- !u!1001 &993457488928395098
 PrefabInstance:
   m_ObjectHideFlags: 0

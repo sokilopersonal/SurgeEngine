@@ -15886,6 +15886,7 @@ Transform:
   - {fileID: 6744568326573401027}
   - {fileID: 8176853483164855293}
   - {fileID: 4363443507796336267}
+  - {fileID: 9219854855358772228}
   m_Father: {fileID: 4638284470361493281}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &289070888726962416
@@ -15909,6 +15910,7 @@ MonoBehaviour:
   stompEffect: {fileID: 8636502887884504151}
   slideEffect: {fileID: 5048219709978352688}
   grindEffect: {fileID: 5295992643565744341}
+  damageEffect: {fileID: 6274841486737520282}
   jumpDeluxEffect: {fileID: 8840932572874216934}
   paraloopEffect: {fileID: 8823258531851677657}
   sweepKickEffect: {fileID: 2417631742766802621}
@@ -59415,6 +59417,52 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   multiplier: 2.75
+--- !u!1 &6803501823219728855
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9219854855358772228}
+  - component: {fileID: 6274841486737520282}
+  m_Layer: 3
+  m_Name: Damage
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9219854855358772228
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6803501823219728855}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 377323914507647460}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6274841486737520282
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6803501823219728855}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 437991f9f1314295807429f44a3bd15f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  particle: {fileID: 8553914193835272593, guid: b0276e20ffdd8564cbea8d0f7e190ce5, type: 3}
+  stopDelay: 0
 --- !u!1 &6836648880002773107
 GameObject:
   m_ObjectHideFlags: 0

@@ -11,7 +11,7 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter
     public class EggFighter : EnemyBase, IDamageable, IPointMarkerLoader
     {
         public EGView View => view as EGView;
-        public EGAnimationReference animationReference;
+        public EggFighterEffects effects;
         public EnemyRagdoll ragdollPrefab;
 
         [Header("Idle")]
@@ -43,6 +43,8 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter
         protected override void Awake()
         {
             base.Awake();
+            
+            effects.Initialize(this);
             
             _startPosition = transform.position;
             _startRotation = transform.rotation;

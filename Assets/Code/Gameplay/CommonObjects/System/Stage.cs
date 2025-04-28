@@ -89,17 +89,12 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.System
     
     public class StageData
     {
-        public string StageName { get; private set; }
+        public string StageName { get; private set; } = SceneManager.GetActiveScene().name;
         public int RingCount { get; set; }
         public float Time { get; set; }
 
         public int Score { get; set; }
 
-        public StageData()
-        {
-            StageName = SceneManager.GetActiveScene().name;
-        }
-        
         public void AddScore(int value)
         {
             Score += value;
