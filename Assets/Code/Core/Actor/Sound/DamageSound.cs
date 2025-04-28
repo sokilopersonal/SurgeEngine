@@ -1,6 +1,5 @@
 using FMODUnity;
 using SurgeEngine.Code.Core.Actor.States;
-using SurgeEngine.Code.Core.Actor.System;
 using SurgeEngine.Code.Core.StateMachine.Base;
 using UnityEngine;
 
@@ -9,17 +8,17 @@ namespace SurgeEngine.Code.Core.Actor.Sound
     public class DamageSound : ActorSound
     {
         [SerializeField] private EventReference damageVoice;
-
-        public override void Initialize(ActorBase actor)
-        {
-            base.Initialize(actor);
-        }
+        [SerializeField] private EventReference deathSound;
 
         protected override void SoundState(FState obj)
         {
-            if (obj is FStateDamage)
+            if (obj is FStateDamage dmg)
             {
-                Voice.Play(damageVoice);
+                if (dmg.State == DamageState.Alive) Voice.Play(damageVoice, true);
+                else
+                {
+                    Voice.Play(deathSound, true);
+                }
             }
         }
     }

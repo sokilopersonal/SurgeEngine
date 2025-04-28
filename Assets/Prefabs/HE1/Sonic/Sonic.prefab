@@ -42456,6 +42456,7 @@ GameObject:
   - component: {fileID: 901914677090446478}
   - component: {fileID: 2889595739742054052}
   - component: {fileID: 8326745376011860981}
+  - component: {fileID: 5966617033050244144}
   m_Layer: 3
   m_Name: Audio
   m_TagString: Untagged
@@ -42600,6 +42601,13 @@ MonoBehaviour:
       Data3: -1356646783
       Data4: 616066077
     Path: event:/Sonic/DamageVoice
+  deathSound:
+    Guid:
+      Data1: -435707110
+      Data2: 1187149316
+      Data3: 735544252
+      Data4: -947659425
+    Path: event:/Sonic/DeathSound
 --- !u!114 &8603560060382622326
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42899,6 +42907,25 @@ MonoBehaviour:
       Data3: 1871911825
       Data4: -12591046
     Path: event:/Sonic/SweepkickVoice
+--- !u!114 &5966617033050244144
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3999411662334716339}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11266e8179e34ce1941e74162504f36a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ringSpreadEvent:
+    Guid:
+      Data1: 914989659
+      Data2: 1217771247
+      Data3: -1096726650
+      Data4: -1570101722
+    Path: event:/CommonObjects/RingSpread
 --- !u!1 &4092649988857466128
 GameObject:
   m_ObjectHideFlags: 0

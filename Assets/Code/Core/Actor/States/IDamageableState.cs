@@ -4,9 +4,9 @@ namespace SurgeEngine.Code.Core.Actor.States
 {
     public interface IDamageableState
     {
-        void TakeDamage(ActorBase owner, Entity sender)
+        void TakeDamage(ActorBase owner)
         {
-            owner.stateMachine.SetState<FStateDamage>().SetState(DamageState.Alive);
+            owner.stateMachine.SetState<FStateDamage>().SetState(owner.IsDead ? DamageState.Dead : DamageState.Alive);
         }
     }
 }

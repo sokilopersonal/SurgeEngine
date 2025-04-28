@@ -23,9 +23,9 @@ namespace SurgeEngine.Code.Core.Actor.Sound
             }
         }
 
-        public void Play(EventReference voice)
+        public void Play(EventReference voice, bool ignoreDelay = false)
         {
-            if (_canPlayVoice)
+            if (_canPlayVoice || ignoreDelay)
             {
                 RuntimeManager.PlayOneShot(voice);
                 
@@ -33,9 +33,9 @@ namespace SurgeEngine.Code.Core.Actor.Sound
             }
         }
 
-        public void Play(EventInstance voice)
+        public void Play(EventInstance voice, bool ignoreDelay = false)
         {
-            if (_canPlayVoice)
+            if (_canPlayVoice || ignoreDelay)
             {
                 voice.stop(STOP_MODE.IMMEDIATE);
                 voice.start();

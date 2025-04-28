@@ -7,6 +7,7 @@ using SurgeEngine.Code.Gameplay.CommonObjects.Interfaces;
 using SurgeEngine.Code.Gameplay.CommonObjects.System;
 using SurgeEngine.Code.Infrastructure.Config;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace SurgeEngine.Code.Core.Actor.System
 {
@@ -26,6 +27,7 @@ namespace SurgeEngine.Code.Core.Actor.System
         public BaseActorConfig config;
         public DamageKickConfig damageKickConfig;
 
+        public bool IsDead { get; private set; }
         public event Action<ActorBase> OnDied; 
         
         private StartData _startData;
@@ -115,8 +117,7 @@ namespace SurgeEngine.Code.Core.Actor.System
         {
             if (stateMachine.CurrentState is IDamageableState dmgState && !flags.HasFlag(FlagType.Invincible))
             {
-                dmgState.TakeDamage(this, sender);
-                flags.AddFlag(new Flag(FlagType.Invincible, null, true, damageKickConfig.invincibleTime));
+                IsDead = false;
                 
                 // Imagine it's over
                 if (Stage.Instance.data.RingCount <= 0)
@@ -124,11 +125,24 @@ namespace SurgeEngine.Code.Core.Actor.System
                     var damageState = stateMachine.GetState<FStateDamage>();
                     damageState.SetState(DamageState.Dead);
 
-                    if (damageState.State == DamageState.Dead)
-                    {
-                        OnDied?.Invoke(this);
-                    }
+                    OnDied?.Invoke(this);
+                    IsDead = true;
                 }
+                else
+                {
+                    // Lose rings
+                    const int min = 15;
+
+                    var data = Stage.Instance.data;
+                    var ringCount = data.RingCount;
+
+                    int value = Mathf.CeilToInt(Mathf.Max(min, ringCount * Random.Range(0.5f, 0.8f)));
+                    data.RingCount -= Mathf.Clamp(value, 0, ringCount);
+                    Stage.Instance.data = data;
+                }
+                
+                dmgState.TakeDamage(this);
+                if (!IsDead) flags.AddFlag(new Flag(FlagType.Invincible, null, true, damageKickConfig.invincibleTime));
             }
         }
 
@@ -141,6 +155,7 @@ namespace SurgeEngine.Code.Core.Actor.System
             if (animation) animation.StateAnimator.TransitionToState("Idle", 0f);
             if (flags) flags.AddFlag(new Flag(FlagType.OutOfControl, null, true, 0.5f));
             _rigidbody.isKinematic = false;
+            IsDead = false;
             
             stateMachine.SetState<FStateIdle>(ignoreInactiveDelay: true);
         }

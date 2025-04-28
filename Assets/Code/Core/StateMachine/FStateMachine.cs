@@ -67,8 +67,38 @@ namespace SurgeEngine.Code.Core.StateMachine
                     EnterState<T>(newState);
                 }
 
-                currentStateName = CurrentState?.GetType().Name;
                 _inactiveDelay = inactiveDelay;
+                
+                return CurrentState as T;
+            }
+            
+            return null;
+        }
+
+        public T SetStateWithParams<T>(params object[] args) where T : FState
+        {
+            Type type = typeof(T);
+            
+            if (CurrentState != null && CurrentState.GetType() == type)
+            {
+                return null;
+            }
+            
+            if (_states.TryGetValue(type, out FState newState))
+            {
+                if (newState is IStateTimeout timeout)
+                {
+                    if (Mathf.Approximately(timeout.Timeout, 0f))
+                    {
+                        newState.SetParams(args);
+                        EnterState<T>(newState);
+                    }
+                }
+                else
+                {
+                    newState.SetParams(args);
+                    EnterState<T>(newState);
+                }
                 
                 return CurrentState as T;
             }
@@ -81,6 +111,7 @@ namespace SurgeEngine.Code.Core.StateMachine
             CurrentState?.OnExit();
             PreviousState = CurrentState;
             CurrentState = newState;
+            currentStateName = CurrentState?.GetType().Name;
             OnStateAssign?.Invoke(CurrentState);
             CurrentState.OnEnter();
         }

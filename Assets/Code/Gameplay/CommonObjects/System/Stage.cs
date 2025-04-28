@@ -37,12 +37,6 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.System
             {
                 data.Time += Time.deltaTime;
             }
-
-            // Testing stuff
-            if (Keyboard.current.f7Key.wasPressedThisFrame)
-            {
-                LoadCurrentPointMarker();
-            }
         }
 
         private void OnEnable()

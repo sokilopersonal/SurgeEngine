@@ -7,5 +7,10 @@
         public virtual void OnTick(float dt) { }
         public virtual void OnFixedTick(float dt) { }
         public virtual void OnLateTick(float dt) { }
+
+        public virtual void SetParams(object[] args)
+        {
+            
+        }
     }
 }
