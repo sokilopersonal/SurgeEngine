@@ -1427,7 +1427,7 @@ MonoBehaviour:
   active: 1
   mode:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 4
   meteringMode:
     m_OverrideState: 1
     m_Value: 2
@@ -1439,10 +1439,10 @@ MonoBehaviour:
     m_Value: 15
   compensation:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 0.75
   limitMin:
     m_OverrideState: 1
-    m_Value: 14
+    m_Value: 13
   limitMax:
     m_OverrideState: 1
     m_Value: 15
@@ -1454,20 +1454,20 @@ MonoBehaviour:
       - serializedVersion: 3
         time: -10
         value: -10
-        inSlope: 0
-        outSlope: 1
+        inSlope: 0.45899394
+        outSlope: 0.45899394
         tangentMode: 0
         weightedMode: 0
         inWeight: 0
-        outWeight: 0
+        outWeight: 0.07492793
       - serializedVersion: 3
         time: 20
         value: 20
-        inSlope: 1
-        outSlope: 0
+        inSlope: 1.1383082
+        outSlope: 1.1383082
         tangentMode: 0
         weightedMode: 0
-        inWeight: 0
+        inWeight: 0.072046086
         outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
@@ -1529,10 +1529,10 @@ MonoBehaviour:
     m_Value: 1
   adaptationSpeedDarkToLight:
     m_OverrideState: 1
-    m_Value: 0.6
+    m_Value: 1
   adaptationSpeedLightToDark:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 2
   weightTextureMask:
     m_OverrideState: 1
     m_Value: {fileID: 0}
