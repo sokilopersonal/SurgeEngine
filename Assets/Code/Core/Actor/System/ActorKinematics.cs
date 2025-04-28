@@ -1,18 +1,21 @@
 ﻿using System;
 using SurgeEngine.Code.Core.Actor.States;
 using SurgeEngine.Code.Core.Actor.States.SonicSpecific;
+using SurgeEngine.Code.Core.StateMachine.Base;
 using SurgeEngine.Code.Infrastructure.Config;
 using SurgeEngine.Code.Infrastructure.Custom;
-using SurgeEngine.Code.Infrastructure.Tools;
 using UnityEngine;
 using UnityEngine.Splines;
 
 namespace SurgeEngine.Code.Core.Actor.System
 {
+    /// <summary>
+    /// Base actor class for a movement physics.
+    /// </summary>
     public class ActorKinematics : ActorComponent
     {
         public Rigidbody Rigidbody => _rigidbody;
-        [SerializeField, Range(25, 90)] public float maxAngleDifference = 75;
+        [SerializeField, Range(25, 90)] public float maxAngleDifference = 80;
         public KinematicsMode mode = KinematicsMode.Free;
 
         [Header("Snap Normal")] 
@@ -129,7 +132,7 @@ namespace SurgeEngine.Code.Core.Actor.System
                         float accelRateMod = _config.accelerationCurve.Evaluate(_planarVelocity.magnitude / _config.topSpeed);
                         if (_planarVelocity.magnitude < _config.topSpeed)
                             _planarVelocity += dir * (_config.accelerationRate * accelRateMod * Time.fixedDeltaTime);
-                        else if (!SonicTools.IsBoost())
+                        else if (CanReturnToBaseSpeed())
                             _planarVelocity = Vector3.MoveTowards(_planarVelocity, _planarVelocity.normalized * _config.topSpeed, 8f * Time.fixedDeltaTime);
                         
                         BaseGroundPhysics();
@@ -398,8 +401,8 @@ namespace SurgeEngine.Code.Core.Actor.System
 
         public void Deceleration(float min, float max)
         {
-            if (SonicTools.IsBoost()) return;
-            if (Actor.flags.HasFlag(FlagType.OutOfControl)) return;
+            if (!CanDecelerate())
+                return;
             
             float f = Mathf.Lerp(max, min, 
                 _movementVector.magnitude / _config.topSpeed);
@@ -408,21 +411,28 @@ namespace SurgeEngine.Code.Core.Actor.System
             else
             {
                 _movementVector = Vector3.zero;
-                switch (Actor.stateMachine.CurrentState)
-                {
-                    case FStateAir:
-                        break;
-                    case FStateCrawl:
-                        break;
-                    case FStateSweepKick:
-                        break;
-                    case FStateSit:
-                        break;
-                    default:
-                        Actor.stateMachine.SetState<FStateIdle>();
-                        break;
-                }
+                SetStateOnZeroSpeed(Actor.stateMachine.CurrentState);
             }
+        }
+
+        protected virtual void SetStateOnZeroSpeed(FState state)
+        {
+            switch (state)
+            {
+                default:
+                    Actor.stateMachine.SetState<FStateIdle>();
+                    break;
+            }
+        }
+
+        protected virtual bool CanReturnToBaseSpeed()
+        {
+            return false;
+        }
+
+        protected virtual bool CanDecelerate()
+        {
+            return !Actor.flags.HasFlag(FlagType.OutOfControl);
         }
         
         public void SetDetachTime(float t)

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3919129401711663017}
   - component: {fileID: 7099733658116403469}
   - component: {fileID: 1696099844310411520}
-  - component: {fileID: 3514203903129675520}
+  - component: {fileID: 3201943500692532830}
   - component: {fileID: 6497409939340660902}
   - component: {fileID: 5828909329531261166}
   m_Layer: 3
@@ -63,7 +63,7 @@ MonoBehaviour:
   effects: {fileID: 289070888726962416}
   model: {fileID: 6916054324571523613}
   flags: {fileID: 1696099844310411520}
-  kinematics: {fileID: 3514203903129675520}
+  kinematics: {fileID: 3201943500692532830}
   config: {fileID: 11400000, guid: 4943dea0e9db112488453fa3fc70581d, type: 2}
   damageKickConfig: {fileID: 11400000, guid: 0d35e45a1e8c5774a86dd443e1656b72, type: 2}
   boostConfig: {fileID: 11400000, guid: cefe272c9833c134599bdf98dc172d8f, type: 2}
@@ -141,7 +141,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   flagType: 0
---- !u!114 &3514203903129675520
+--- !u!114 &3201943500692532830
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -150,13 +150,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 100729958831981340}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da03e2aea0004e6a85744b21dbd938ca, type: 3}
+  m_Script: {fileID: 11500000, guid: 2ef35c3dd7c6433e93aa87b50c0a2a40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxAngleDifference: 85
+  maxAngleDifference: 80
   mode: 0
-  normalLerpSpeed: 10
-  normalSpeedThreshold: 7
+  normalLerpSpeed: 7
+  normalSpeedThreshold: 10
 --- !u!136 &6497409939340660902
 CapsuleCollider:
   m_ObjectHideFlags: 0
