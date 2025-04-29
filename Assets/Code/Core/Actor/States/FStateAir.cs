@@ -72,11 +72,12 @@ namespace SurgeEngine.Code.Core.Actor.States
         {
             base.OnFixedTick(dt);
             
-            if (!Common.CheckForGround(out _))
+            if (!Common.CheckForGround(out var hit))
             {
+                Kinematics.Point = hit.point;
                 Kinematics.Normal = Vector3.up;
                 
-                Kinematics.BasePhysics(Vector3.zero, Vector3.up, MovementType.Air);
+                Kinematics.BasePhysics(Vector3.up, MovementType.Air);
                 
                 Vector3 vel = Kinematics.Velocity;
                 vel.y = 0;

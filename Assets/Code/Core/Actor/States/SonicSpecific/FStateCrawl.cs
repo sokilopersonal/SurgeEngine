@@ -118,7 +118,8 @@ namespace SurgeEngine.Code.Core.Actor.States.SonicSpecific
                 Vector3 stored = Vector3.ClampMagnitude(_rigidbody.linearVelocity, _crawlConfig.maxSpeed);
                 _rigidbody.linearVelocity = Quaternion.FromToRotation(_rigidbody.transform.up, prevNormal) * stored;
 
-                Actor.kinematics.BasePhysics(Kinematics.Point, Kinematics.Normal);
+                Kinematics.BasePhysics(Kinematics.Normal);
+                Kinematics.Snap(Kinematics.Point, Kinematics.Normal, true);
                 Model.RotateBody(Kinematics.Normal);
 
                 _surfaceTag = data.transform.gameObject.GetGroundTag();

@@ -17,6 +17,15 @@ namespace SurgeEngine.Code.Core.StateMachine
         private readonly List<FSubState> _subStatesList = new List<FSubState>();
         private readonly List<IStateTimeout> _stateTimeouts = new List<IStateTimeout>();
         
+        /// <summary>
+        /// Called after the previous state ends and before the next state is set.
+        /// Use it when you have data that needs to be passed to a state and you need to retrieve it from an event.
+        /// </summary>
+        public event Action<FState> OnStateEarlyAssign;
+        
+        /// <summary>
+        /// Called after the previous state ends and after the next state is set.
+        /// </summary>
         public event Action<FState> OnStateAssign;
         
         private float _inactiveDelay = 0f;
@@ -59,12 +68,12 @@ namespace SurgeEngine.Code.Core.StateMachine
                 {
                     if (Mathf.Approximately(timeout.Timeout, 0f))
                     {
-                        EnterState<T>(newState);
+                        EnterState(newState);
                     }
                 }
                 else
                 {
-                    EnterState<T>(newState);
+                    EnterState(newState);
                 }
 
                 _inactiveDelay = inactiveDelay;
@@ -75,41 +84,11 @@ namespace SurgeEngine.Code.Core.StateMachine
             return null;
         }
 
-        public T SetStateWithParams<T>(params object[] args) where T : FState
-        {
-            Type type = typeof(T);
-            
-            if (CurrentState != null && CurrentState.GetType() == type)
-            {
-                return null;
-            }
-            
-            if (_states.TryGetValue(type, out FState newState))
-            {
-                if (newState is IStateTimeout timeout)
-                {
-                    if (Mathf.Approximately(timeout.Timeout, 0f))
-                    {
-                        newState.SetParams(args);
-                        EnterState<T>(newState);
-                    }
-                }
-                else
-                {
-                    newState.SetParams(args);
-                    EnterState<T>(newState);
-                }
-                
-                return CurrentState as T;
-            }
-            
-            return null;
-        }
-
-        private void EnterState<T>(FState newState) where T : FState
+        private void EnterState(FState newState)
         {
             CurrentState?.OnExit();
             PreviousState = CurrentState;
+            OnStateEarlyAssign?.Invoke(newState);
             CurrentState = newState;
             currentStateName = CurrentState?.GetType().Name;
             OnStateAssign?.Invoke(CurrentState);

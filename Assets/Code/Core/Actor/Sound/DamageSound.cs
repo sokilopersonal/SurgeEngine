@@ -10,7 +10,7 @@ namespace SurgeEngine.Code.Core.Actor.Sound
         [SerializeField] private EventReference damageVoice;
         [SerializeField] private EventReference deathSound;
 
-        protected override void SoundState(FState obj)
+        protected override void EarlySoundState(FState obj)
         {
             if (obj is FStateDamage dmg)
             {

@@ -1,6 +1,7 @@
 ﻿using SurgeEngine.Code.Core.Actor.System;
 using SurgeEngine.Code.Core.StateMachine.Base;
 using UnityEngine;
+using NotImplementedException = System.NotImplementedException;
 
 namespace SurgeEngine.Code.Core.Actor.Sound
 {
@@ -21,14 +22,20 @@ namespace SurgeEngine.Code.Core.Actor.Sound
 
         protected virtual void OnEnable()
         {
-            Actor.stateMachine.OnStateAssign += SoundState;
+            var stateMachine = Actor.stateMachine;
+            stateMachine.OnStateAssign += SoundState;
+            stateMachine.OnStateEarlyAssign += EarlySoundState;
         }
 
         protected virtual void OnDisable()
         {
-            Actor.stateMachine.OnStateAssign -= SoundState;
+            var stateMachine = Actor.stateMachine;
+            stateMachine.OnStateAssign -= SoundState;
+            stateMachine.OnStateEarlyAssign -= EarlySoundState;
         }
 
         protected virtual void SoundState(FState obj) { }
+
+        protected virtual void EarlySoundState(FState obj) { }
     }
 }

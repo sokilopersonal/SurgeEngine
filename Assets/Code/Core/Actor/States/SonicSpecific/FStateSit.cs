@@ -64,19 +64,14 @@ namespace SurgeEngine.Code.Core.Actor.States.SonicSpecific
         public override void OnFixedTick(float dt)
         {
             base.OnFixedTick(dt);
-
-            Vector3 prevNormal = Kinematics.Normal;
+            
             BaseActorConfig config = Actor.config;
             float distance = config.castDistance;
             if (Common.CheckForGround(out RaycastHit data, castDistance: distance))
             {
                 Kinematics.Point = data.point;
-                Kinematics.SlerpSnapNormal(data.normal);
+                Kinematics.Normal = data.normal;
 
-                Vector3 stored = Vector3.ClampMagnitude(_rigidbody.linearVelocity, config.maxSpeed);
-                _rigidbody.linearVelocity = Quaternion.FromToRotation(_rigidbody.transform.up, prevNormal) * stored;
-
-                Actor.kinematics.BasePhysics(Kinematics.Point, Kinematics.Normal);
                 Model.RotateBody(Kinematics.Normal);
             }
             else

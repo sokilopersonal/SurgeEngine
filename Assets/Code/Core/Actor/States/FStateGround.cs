@@ -143,7 +143,7 @@ namespace SurgeEngine.Code.Core.Actor.States
                 Vector3 stored = Vector3.ClampMagnitude(_rigidbody.linearVelocity, config.maxSpeed);
                 _rigidbody.linearVelocity = Quaternion.FromToRotation(_rigidbody.transform.up, prevNormal) * stored;
 
-                Kinematics.BasePhysics(Kinematics.Point, Kinematics.Normal);
+                Kinematics.BasePhysics(Kinematics.Normal);
                 Model.RotateBody(Kinematics.Normal);
                 Kinematics.SlopePhysics();
                 

@@ -1,6 +1,5 @@
 ﻿using System;
 using SurgeEngine.Code.Core.Actor.States;
-using SurgeEngine.Code.Core.Actor.States.SonicSpecific;
 using SurgeEngine.Code.Core.StateMachine.Base;
 using SurgeEngine.Code.Infrastructure.Config;
 using SurgeEngine.Code.Infrastructure.Custom;
@@ -113,7 +112,7 @@ namespace SurgeEngine.Code.Core.Actor.System
             SplineCalculation();
         }
 
-        public void BasePhysics(Vector3 point, Vector3 normal, MovementType movementType = MovementType.Ground)
+        public void BasePhysics(Vector3 normal, MovementType movementType = MovementType.Ground)
         {
             Vector3 vel = _rigidbody.linearVelocity;
             Vector3 dir = _inputDir;
@@ -168,7 +167,6 @@ namespace SurgeEngine.Code.Core.Actor.System
             }
             
             _rigidbody.linearVelocity = _movementVector + vertical;
-            Snap(point, normal, true);
         }
         
         public void SplineCalculation()
@@ -375,15 +373,11 @@ namespace SurgeEngine.Code.Core.Actor.System
             if (!_canAttach) return;
             
             Vector3 goal = point + normal;
-            
-            if (point != Vector3.zero && normal != Vector3.zero)
+            if (instant) _rigidbody.position = point + normal;
+            else
             {
-                if (instant) _rigidbody.position = point + normal;
-                else
-                {
-                    Quaternion slopeRotation = Quaternion.FromToRotation(transform.up, normal) * _rigidbody.rotation;
-                    _rigidbody.position = Vector3.Lerp(_rigidbody.position, goal, Time.fixedDeltaTime * (Mathf.Abs(Quaternion.Dot(_rigidbody.rotation, slopeRotation) + 1f) / 2f * _rigidbody.linearVelocity.magnitude + 10f));
-                }
+                Quaternion slopeRotation = Quaternion.FromToRotation(transform.up, normal) * _rigidbody.rotation;
+                _rigidbody.position = Vector3.Lerp(_rigidbody.position, goal, Time.fixedDeltaTime * (Mathf.Abs(Quaternion.Dot(_rigidbody.rotation, slopeRotation) + 1f) / 2f * _rigidbody.linearVelocity.magnitude + 10f));
             }
         }
 
@@ -419,6 +413,8 @@ namespace SurgeEngine.Code.Core.Actor.System
         {
             switch (state)
             {
+                case FStateAir:
+                    break;
                 default:
                     Actor.stateMachine.SetState<FStateIdle>();
                     break;
