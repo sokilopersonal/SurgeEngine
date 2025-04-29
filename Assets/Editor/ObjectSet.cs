@@ -12,15 +12,13 @@ namespace SurgeEngine.Editor
         [Serializable]
         public class PrefabData
         {
-            public string path;
+            public string guid;
             public string category;
-            public GameObject prefab;
-
-            public PrefabData(string path, string category, GameObject prefab)
+            [JsonIgnore] public GameObject prefab;
+            public PrefabData(string guid, string category)
             {
-                this.path = path;
+                this.guid = guid;
                 this.category = category;
-                this.prefab = prefab;
             }
         }
 
@@ -185,7 +183,7 @@ namespace SurgeEngine.Editor
                 if (prefab != null && !_prefabDataList.Exists(data => data.prefab == prefab))
                 {
                     string category = _categories[_selectedCategoryIndex];
-                    _prefabDataList.Add(new PrefabData(path, category, prefab));
+                    _prefabDataList.Add(new PrefabData(path, category) { prefab = prefab } );
                 }
             }
         }
@@ -200,38 +198,27 @@ namespace SurgeEngine.Editor
             var jsonList = new List<PrefabData>();
             foreach (var data in _prefabDataList)
             {
-                jsonList.Add(new PrefabData(data.path, data.category, null));
+                var path = AssetDatabase.GetAssetPath(data.prefab);
+                var guid = AssetDatabase.AssetPathToGUID(path);
+                jsonList.Add(new PrefabData(guid, data.category) { prefab = data.prefab });
             }
-
-            try
-            {
-                string json = JsonConvert.SerializeObject(jsonList, Formatting.Indented);
-                File.WriteAllText(SaveFilePath, json);
-                AssetDatabase.Refresh();
-            }
-            catch (Exception e)
-            {
-                Debug.LogError($"[Asset Manager] There's an exception: {e}");
-            }
+            var json = JsonConvert.SerializeObject(jsonList, Formatting.Indented);
+            File.WriteAllText(SaveFilePath, json);
+            AssetDatabase.Refresh();
         }
 
         private void LoadAssetsList()
         {
             _prefabDataList.Clear();
-
-            if (File.Exists(SaveFilePath))
+            if (!File.Exists(SaveFilePath)) return;
+            var json = File.ReadAllText(SaveFilePath);
+            var jsonList = JsonConvert.DeserializeObject<List<PrefabData>>(json);
+            foreach (var data in jsonList)
             {
-                string json = File.ReadAllText(SaveFilePath);
-                var jsonList = JsonConvert.DeserializeObject<List<PrefabData>>(json);
-                
-                foreach (var data in jsonList)
-                {
-                    GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(data.path);
-                    if (prefab != null)
-                    {
-                        _prefabDataList.Add(new PrefabData(data.path, data.category, prefab));
-                    }
-                }
+                var path = AssetDatabase.GUIDToAssetPath(data.guid);
+                var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+                if (prefab != null)
+                    _prefabDataList.Add(new PrefabData(data.guid, data.category) { prefab = prefab });
             }
         }
 
