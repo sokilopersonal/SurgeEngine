@@ -13,7 +13,7 @@ using Vector3 = UnityEngine.Vector3;
 
 namespace SurgeEngine.Code.Core.Actor.States.SonicSpecific
 {
-    public class FStateDrift : FStateMove, IBoostHandler, IStateTimeout
+    public class FStateDrift : FStateMove, IBoostHandler, IStateTimeout, IDamageableState
     {
         private float _driftXDirection;
         private float _ignoreTimer;

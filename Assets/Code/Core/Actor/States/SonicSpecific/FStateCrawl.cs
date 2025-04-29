@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.States.SonicSpecific
 {
-    public class FStateCrawl : FStateMove, IStateTimeout
+    public class FStateCrawl : FStateMove, IStateTimeout, IDamageableState
     {
         private GroundTag _surfaceTag;
 

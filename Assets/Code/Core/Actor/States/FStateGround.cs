@@ -144,6 +144,7 @@ namespace SurgeEngine.Code.Core.Actor.States
                 _rigidbody.linearVelocity = Quaternion.FromToRotation(_rigidbody.transform.up, prevNormal) * stored;
 
                 Kinematics.BasePhysics(Kinematics.Normal);
+                Kinematics.Snap(Kinematics.Point, Kinematics.Normal, true);
                 Model.RotateBody(Kinematics.Normal);
                 Kinematics.SlopePhysics();
                 
