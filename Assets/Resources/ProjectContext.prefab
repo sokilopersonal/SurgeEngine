@@ -35,6 +35,7 @@ Transform:
   - {fileID: 1234628373730313161}
   - {fileID: 6314706250711667347}
   - {fileID: 1685502747978189608}
+  - {fileID: 1151605042275112763}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5706019111742237867
@@ -56,6 +57,7 @@ MonoBehaviour:
   - {fileID: 4958888828165185093}
   - {fileID: 1284955615783587445}
   - {fileID: 4183716812281712538}
+  - {fileID: 431710819263407729}
   _installerPrefabs: []
   _findSiblingMonoInstallers: 0
   _parentNewObjectsUnderContext: 1
@@ -117,6 +119,50 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefab: {fileID: 7938317250777934993, guid: 8836679c7c7a23c41b409b6b4d6d8120, type: 3}
+--- !u!1 &4440645117110816965
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1151605042275112763}
+  - component: {fileID: 431710819263407729}
+  m_Layer: 0
+  m_Name: DiscordRPCInstaller
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1151605042275112763
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4440645117110816965}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4047975725346983901}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &431710819263407729
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4440645117110816965}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ab49e2e59994b449c32493895296f72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5665850515461469882
 GameObject:
   m_ObjectHideFlags: 0
