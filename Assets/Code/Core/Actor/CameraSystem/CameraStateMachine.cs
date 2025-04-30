@@ -49,7 +49,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
         public Camera camera;
         public Transform transform;
 
-        public object currentData;
+        public PanData currentData;
 
         public float blendFactor { get; private set; }
         public float interpolatedBlendFactor { get; private set; }

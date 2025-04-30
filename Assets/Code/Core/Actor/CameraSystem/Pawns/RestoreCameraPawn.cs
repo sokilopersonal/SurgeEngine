@@ -5,7 +5,6 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
 {
     public class RestoreCameraPawn : NewModernState
     {
-        private Vector3 _direction;
         private LastCameraData _lastData;
         
         public RestoreCameraPawn(ActorBase owner) : base(owner)
@@ -19,19 +18,12 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
             _lastData = _stateMachine.RememberRelativeLastData();
         }
 
-        public override void OnExit()
-        {
-            base.OnExit();
-            
-            _stateMachine.currentData = null;
-        }
-
         public override void OnTick(float dt)
         {
+            base.OnTick(dt);
+            
             _stateMachine.distance = Mathf.Lerp(_lastData.distance, _stateMachine.startDistance, _stateMachine.interpolatedBlendFactor);
             _stateMachine.yOffset = Mathf.Lerp(_lastData.yOffset, _stateMachine.startYOffset, _stateMachine.interpolatedBlendFactor);
-            
-            base.OnTick(dt);
             
             _stateMachine.fov = Mathf.Lerp(_lastData.fov, _stateMachine.fov, _stateMachine.interpolatedBlendFactor);
             if (_stateMachine.blendFactor >= 1f)

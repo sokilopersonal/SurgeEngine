@@ -1,11 +1,12 @@
 ﻿using SurgeEngine.Code.Core.Actor.CameraSystem.Modifiers;
+using SurgeEngine.Code.Core.Actor.CameraSystem.Pawns.Data;
 using SurgeEngine.Code.Core.Actor.States;
 using SurgeEngine.Code.Core.Actor.System;
 using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
 {
-    public class NewModernState : CState
+    public class NewModernState : CameraState<PanData>
     {
         private float _sensSpeedMod;
         private Vector3 _velocity;

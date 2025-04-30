@@ -1,17 +1,18 @@
-﻿using SurgeEngine.Code.Core.Actor.System;
+﻿using SurgeEngine.Code.Core.Actor.CameraSystem.Pawns.Data;
+using SurgeEngine.Code.Core.Actor.System;
 using SurgeEngine.Code.Core.StateMachine.Base;
 
 namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
 {
-    public class CState : FState
+    public class CameraState<T> : FState where T : PanData
     {
         protected readonly ActorBase _actor;
         protected readonly ActorCamera _master;
         protected readonly CameraStateMachine _stateMachine;
 
-        protected object _data;
+        protected T _panData;
 
-        public CState(ActorBase owner)
+        public CameraState(ActorBase owner)
         {
             _actor = owner;
 
@@ -19,9 +20,10 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
             _master = _stateMachine.master;
         }
         
-        public void SetData(object data)
+        public void SetData(PanData data)
         {
-            _data = data;
+            _panData = data as T;
+            _stateMachine.currentData = _panData;
         }
     }
 }

@@ -4,9 +4,8 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
 {
-    public class CameraPan : CameraPawn
+    public class CameraPan : CameraState<PanData>
     {
-        private PanData _panData;
         private LastCameraData _lastData;
         
         public CameraPan(ActorBase owner) : base(owner)
@@ -19,7 +18,6 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
             base.OnEnter();
 
             _lastData = _stateMachine.RememberLastData();
-            
             _stateMachine.ResetBlendFactor();
         }
 
@@ -34,7 +32,6 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
         {
             base.OnTick(dt);
 
-            _panData = (PanData)_data;
             _stateMachine.position = Vector3.Lerp(_lastData.position, _panData.position, _stateMachine.interpolatedBlendFactor);
             
             Quaternion rotation = Quaternion.LookRotation(_actor.transform.position + _stateMachine.transform.TransformDirection(_stateMachine.lookOffset) - _stateMachine.position, Vector3.up);

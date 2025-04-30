@@ -12,7 +12,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns.Data
         public float easeTimeExit = 1f;
         public float fov = 60f;
         public bool allowRotation = true;
-        public RestoreType restoreType = RestoreType.Player;
+        public RestoreType restoreType = RestoreType.Camera;
 
         public Vector3 RestoreDirection()
         {
@@ -32,7 +32,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns.Data
     [Serializable]
     public class FixPanData : PanData
     {
-        public Quaternion target;
+        [HideInInspector] public Quaternion target;
     }
 
     public enum RestoreType
