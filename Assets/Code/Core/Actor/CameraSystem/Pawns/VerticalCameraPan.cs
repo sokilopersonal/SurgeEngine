@@ -7,7 +7,6 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
     public class VerticalCameraPan : NewModernState
     {
         private VerticalPanData _vData => _panData as VerticalPanData;
-        private LastCameraData _lastData;
         
         public VerticalCameraPan(ActorBase owner) : base(owner)
         {
@@ -29,14 +28,15 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
 
         public override void OnTick(float dt)
         {
+            base.OnTick(dt);
+            
             _stateMachine.distance = Mathf.Lerp(_lastData.distance, _vData.distance, _stateMachine.interpolatedBlendFactor);
             _stateMachine.yOffset = Mathf.Lerp(_lastData.yOffset, _vData.yOffset, _stateMachine.interpolatedBlendFactor);
             
             _stateMachine.SetDirection(_vData.forward);
             
-            _stateMachine.camera.fieldOfView = Mathf.Lerp(_lastData.fov, _vData.fov, _stateMachine.interpolatedBlendFactor);
+            _stateMachine.fov = Mathf.Lerp(_lastData.fov, _vData.fov, _stateMachine.interpolatedBlendFactor);
             
-            base.OnTick(dt);
         }
 
         protected override void SetPosition(Vector3 targetPosition)

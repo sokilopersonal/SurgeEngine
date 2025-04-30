@@ -16,7 +16,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
             base.OnEnter();
             
             _stateMachine.ResetBlendFactor();
-            _stateMachine.RememberLastData();
+            _lastData = _stateMachine.RememberLastData();
         }
 
         public override void OnTick(float dt)

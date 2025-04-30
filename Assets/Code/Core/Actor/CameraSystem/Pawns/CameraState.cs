@@ -11,6 +11,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
         protected readonly CameraStateMachine _stateMachine;
 
         protected T _panData;
+        protected LastCameraData _lastData;
 
         public CameraState(ActorBase owner)
         {

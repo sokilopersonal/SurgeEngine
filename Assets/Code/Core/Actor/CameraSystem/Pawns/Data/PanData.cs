@@ -35,6 +35,13 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns.Data
         [HideInInspector] public Quaternion target;
     }
 
+    [Serializable]
+    public class NormalPanData : PanData
+    {
+        public float distance = 4f;
+        public float yOffset = 0.25f;
+    }
+
     public enum RestoreType
     {
         Player,

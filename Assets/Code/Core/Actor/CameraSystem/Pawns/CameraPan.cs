@@ -6,8 +6,6 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
 {
     public class CameraPan : CameraState<PanData>
     {
-        private LastCameraData _lastData;
-        
         public CameraPan(ActorBase owner) : base(owner)
         {
             
@@ -17,8 +15,8 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
         {
             base.OnEnter();
 
-            _lastData = _stateMachine.RememberLastData();
             _stateMachine.ResetBlendFactor();
+            _lastData = _stateMachine.RememberLastData();
         }
 
         public override void OnExit()

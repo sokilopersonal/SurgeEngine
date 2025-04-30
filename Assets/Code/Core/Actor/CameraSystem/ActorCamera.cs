@@ -82,6 +82,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
             stateMachine.AddState(new CameraPan(Actor));
             stateMachine.AddState(new VerticalCameraPan(Actor));
             stateMachine.AddState(new FixedCameraPan(Actor));
+            stateMachine.AddState(new NormalCameraPan(Actor));
             stateMachine.AddState(new RestoreCameraPawn(Actor));
 
             stateMachine.SetState<NewModernState>();

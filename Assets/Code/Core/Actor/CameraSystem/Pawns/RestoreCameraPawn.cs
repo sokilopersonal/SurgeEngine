@@ -5,8 +5,6 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
 {
     public class RestoreCameraPawn : NewModernState
     {
-        private LastCameraData _lastData;
-        
         public RestoreCameraPawn(ActorBase owner) : base(owner)
         {
             
