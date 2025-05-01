@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using SurgeEngine.Code.Core.Actor.System;
+using UnityEngine;
 
 namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
 {
@@ -11,9 +12,9 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             _rail = GetComponentInParent<Rail>();
         }
 
-        public override void Contact(Collider msg)
+        public override void Contact(Collider msg, ActorBase context)
         {
-            base.Contact(msg);
+            base.Contact(msg, context);
             
             _rail.AttachToRail();
         }

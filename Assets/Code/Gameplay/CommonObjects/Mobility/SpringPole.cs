@@ -20,11 +20,8 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             pole.localEulerAngles = new Vector3(-90, 0, 0);
         }
 
-        public override void Contact(Collider msg)
+        public override void Contact(Collider msg, ActorBase context)
         {
-            base.Contact(msg);
-
-            ActorBase context = ActorContext.Context;
             float vertSpeed = Mathf.Abs(context.kinematics.Velocity.y);
             float pointDistance = Mathf.Clamp01(Vector3.Distance(new Vector3(context.transform.position.x, point.position.y, context.transform.position.z), point.position) * 0.5f);
 

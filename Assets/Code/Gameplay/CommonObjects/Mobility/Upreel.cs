@@ -85,11 +85,10 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             }
         }
 
-        public override void Contact(Collider msg)
+        public override void Contact(Collider msg, ActorBase context)
         {
-            base.Contact(msg);
-            
-            ActorBase context = ActorContext.Context;
+            base.Contact(msg, context);
+
             context.stateMachine.SetState<FStateUpreel>(0.1f)?.SetAttach(attachPoint);
             context.stateMachine.OnStateAssign += OnStateAssign;
 

@@ -1,5 +1,6 @@
 using DG.Tweening;
 using FMODUnity;
+using SurgeEngine.Code.Core.Actor.System;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -37,9 +38,9 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             meshRenderer.sharedMaterials = mats;
         }
 
-        public override void Contact(Collider msg)
+        public override void Contact(Collider msg, ActorBase context)
         {
-            base.Contact(msg);
+            base.Contact(msg, context);
 
             if (toggleOnce && _hasBeenToggled)
                 return;

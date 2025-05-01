@@ -9,12 +9,10 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
     {
         public UnityEvent onContact;
         
-        public override void Contact(Collider msg)
+        public override void Contact(Collider msg, ActorBase context)
         {
-            base.Contact(msg);
-
-            ActorBase context = ActorContext.Context;
-
+            base.Contact(msg, context);
+            
             if (context.stateMachine.PreviousState is FStateStomp)
                 onContact.Invoke();
         }

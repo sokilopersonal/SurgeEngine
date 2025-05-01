@@ -63,14 +63,14 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Collectables
                 
                 if (_factor >= 1f)
                 {
-                    Contact(null);
+                    Contact(null, null);
                 }
             }
         }
 
-        public override void Contact(Collider msg)
+        public override void Contact(Collider msg, ActorBase context)
         {
-            base.Contact(msg);
+            base.Contact(msg, context);
             
             RuntimeManager.PlayOneShot(ringSound);
 

@@ -13,11 +13,10 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
         [SerializeField] private float outOfControl = 0.5f;
         [SerializeField] private bool center;
 
-        public override void Contact(Collider msg)
+        public override void Contact(Collider msg, ActorBase context)
         {
-            base.Contact(msg);
+            base.Contact(msg, context);
             
-            ActorBase context = ActorContext.Context;
             Rigidbody body = context.kinematics.Rigidbody;
             
             if (center)

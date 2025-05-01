@@ -18,11 +18,10 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
         [SerializeField, Min(0)] private float impulseOnBoost = 15f;
         [SerializeField] private float outOfControl = 0.5f;
 
-        public override void Contact(Collider msg)
+        public override void Contact(Collider msg, ActorBase context)
         {
-            base.Contact(msg);
+            base.Contact(msg, context);
             
-            ActorBase context = ActorContext.Context;
             float dot = Vector3.Dot(context.transform.forward, context.transform.forward);
             float impulse = SonicTools.IsBoost() ? impulseOnBoost : impulseOnNormal;
             Vector3 cross = Common.GetCross(transform, pitch);

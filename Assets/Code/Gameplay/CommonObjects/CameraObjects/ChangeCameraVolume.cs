@@ -19,9 +19,9 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.CameraObjects
             }
         }
 
-        public override void Contact(Collider msg)
+        public override void Contact(Collider msg, ActorBase context)
         {
-            base.Contact(msg);
+            base.Contact(msg, context);
             
             target.SetPan();
         }

@@ -10,9 +10,9 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.ChangeModes
         
         private BoxCollider _boxCollider;
 
-        public override void Contact(Collider msg)
+        public override void Contact(Collider msg, ActorBase context)
         {
-            base.Contact(msg);
+            base.Contact(msg, context);
             
             ActorBase actor = ActorContext.Context;
             ActorKinematics kinematics = actor.kinematics;

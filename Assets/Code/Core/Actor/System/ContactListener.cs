@@ -1,4 +1,5 @@
-﻿using SurgeEngine.Code.Gameplay.CommonObjects;
+﻿using System;
+using SurgeEngine.Code.Gameplay.CommonObjects;
 using SurgeEngine.Code.Gameplay.CommonObjects.Interfaces;
 using UnityEngine;
 
@@ -9,6 +10,13 @@ namespace SurgeEngine.Code.Core.Actor.System
     /// </summary>
     public class ContactListener : MonoBehaviour
     {
+        private ActorBase _actor;
+
+        private void Awake()
+        {
+            _actor = GetComponentInParent<ActorBase>();
+        }
+
         private void OnTriggerEnter(Collider other)
         {
             IPlayerContactable playerContactable = null;
@@ -21,7 +29,7 @@ namespace SurgeEngine.Code.Core.Actor.System
             }
 
             var col = GetComponent<Collider>();
-            contactable?.Contact(col);
+            contactable?.Contact(col, _actor);
             playerContactable?.OnContact(col);
         }
     }

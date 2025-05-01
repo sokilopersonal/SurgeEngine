@@ -109,9 +109,9 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Environment
             }
         }
 
-        public override void Contact(Collider msg)
+        public override void Contact(Collider msg, ActorBase context)
         {
-            base.Contact(msg);
+            base.Contact(msg, context);
             
             _initialPoint = msg.ClosestPoint(transform.position);
             ParticlesContainer.Spawn("WaterSplash", _initialPoint);

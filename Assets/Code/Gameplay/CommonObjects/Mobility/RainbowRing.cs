@@ -1,4 +1,5 @@
 ﻿using NaughtyAttributes;
+using SurgeEngine.Code.Core.Actor.System;
 using SurgeEngine.Code.Infrastructure.Custom;
 using UnityEngine;
 
@@ -11,9 +12,9 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
 
         private bool _triggered;
 
-        public override void Contact(Collider msg)
+        public override void Contact(Collider msg, ActorBase context)
         {
-            base.Contact(msg);
+            base.Contact(msg, context);
 
             int score = 1000;
             if (!allowDoubleScore)

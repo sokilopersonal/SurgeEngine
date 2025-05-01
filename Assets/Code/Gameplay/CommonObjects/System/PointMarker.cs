@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using FMODUnity;
+using SurgeEngine.Code.Core.Actor.System;
 using SurgeEngine.Code.UI;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -35,7 +36,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.System
                 .ToList();
         }
 
-        public override void Contact(Collider msg)
+        public override void Contact(Collider msg, ActorBase context)
         {
             var currentMarker = Stage.Instance.CurrentPointMarker;
             if (currentMarker != null && ID < currentMarker.ID)
@@ -46,7 +47,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.System
             
             if (!_triggered)
             {
-                base.Contact(msg);
+                base.Contact(msg, context);
                 RuntimeManager.PlayOneShot(_soundEvent, transform.position);
                 _triggered = true; // We can't active the same marker twice
             }

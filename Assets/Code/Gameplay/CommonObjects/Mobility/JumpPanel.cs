@@ -17,11 +17,10 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
         [SerializeField] private bool isDelux;
         [SerializeField] private Transform startPoint;
 
-        public override void Contact(Collider msg)
+        public override void Contact(Collider msg, ActorBase context)
         {
-            base.Contact(msg);
+            base.Contact(msg, context);
             
-            ActorBase context = ActorContext.Context;
             if (impulse > 0)
             {
                 bool boosted = SonicTools.IsBoost();

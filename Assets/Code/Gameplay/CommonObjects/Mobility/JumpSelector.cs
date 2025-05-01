@@ -127,7 +127,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             }
         }
 
-        public override void Contact(Collider msg)
+        public override void Contact(Collider msg, ActorBase context)
         {
             _actor.stateMachine.SetState<FStateJumpSelector>();
             OnJumpSelectorResult?.Invoke(JumpSelectorResultType.Start);

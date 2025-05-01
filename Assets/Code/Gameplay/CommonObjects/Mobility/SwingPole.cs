@@ -12,14 +12,11 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
         public Transform grip;
         public bool trail2D = false;
         
-        public override void Contact(Collider msg)
+        public override void Contact(Collider msg, ActorBase context)
         {
-            base.Contact(msg);
-
-            ActorBase context = ActorContext.Context;
-
+            base.Contact(msg, context);
+            
             context.PutIn(grip.position);
-
             context.effects.swingTrail.trail2D = trail2D;
 
             float lookDot = Vector3.Dot(context.transform.forward, transform.forward);
