@@ -13,10 +13,12 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects
         /// <summary>
         /// Creates an attached hurtbox around the transform with the given size
         /// </summary>
+        /// <param name="sender"></param>
         /// <param name="transform">Transform to create the hurtbox around</param>
         /// <param name="size">Size of the hurtbox</param>
+        /// <param name="target"></param>
         /// <returns>True, if it hits anything</returns>
-        public static bool CreateAttached(Entity sender, Transform transform, Vector3 size, HurtBoxTarget target)
+        public static bool CreateAttached(MonoBehaviour sender, Transform transform, Vector3 size, HurtBoxTarget target)
         {
             int mask = GetMask(target);
             var hits = UnityEngine.Physics.OverlapBox(transform.position, size, transform.rotation, mask);
@@ -38,11 +40,14 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects
         /// <summary>
         /// Creates an hurtbox at the given position and orientation with the given size
         /// </summary>
+        /// <param name="sender"></param>
         /// <param name="position">Box position</param>
         /// <param name="rotation">Box rotation</param>
         /// <param name="size">Box size</param>
+        /// <param name="target"></param>
         /// <returns>True, if it hits anything</returns>
-        public static bool Create(Entity sender, Vector3 position, Quaternion rotation, Vector3 size, HurtBoxTarget target)
+        public static bool Create(MonoBehaviour sender, Vector3 position, Quaternion rotation, Vector3 size,
+            HurtBoxTarget target)
         {
             int mask = GetMask(target);
             var hits = UnityEngine.Physics.OverlapBox(position, size, rotation, mask);

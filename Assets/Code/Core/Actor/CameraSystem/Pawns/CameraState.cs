@@ -20,7 +20,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
             _stateMachine = owner.camera.stateMachine;
             _master = _stateMachine.master;
         }
-        
+
         public void SetData(PanData data)
         {
             _panData = data as T;

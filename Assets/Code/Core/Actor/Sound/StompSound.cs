@@ -1,4 +1,5 @@
-﻿using FMOD.Studio;
+﻿using System;
+using FMOD.Studio;
 using FMODUnity;
 using SurgeEngine.Code.Core.Actor.States;
 using SurgeEngine.Code.Core.Actor.States.SonicSpecific;
@@ -22,6 +23,7 @@ namespace SurgeEngine.Code.Core.Actor.Sound
             base.Initialize(actor);
             
             _stompLoopInstance = RuntimeManager.CreateInstance(stompLoopSound);
+            RuntimeManager.AttachInstanceToGameObject(_stompLoopInstance, transform);
         }
 
         protected override void SoundState(FState obj)
@@ -39,6 +41,12 @@ namespace SurgeEngine.Code.Core.Actor.Sound
             {
                 RuntimeManager.PlayOneShot(stompLandSound);
             }
+        }
+
+        private void OnDestroy()
+        {
+            _stompLoopInstance.stop(STOP_MODE.IMMEDIATE);
+            _stompLoopInstance.release();
         }
     }
 }

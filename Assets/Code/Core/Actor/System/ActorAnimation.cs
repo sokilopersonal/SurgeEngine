@@ -24,12 +24,12 @@ namespace SurgeEngine.Code.Core.Actor.System
 
         private void OnEnable()
         {
-            Actor.stateMachine.OnStateAssign += ChangeStateAnimation;
+            Actor.stateMachine.OnStateEarlyAssign += ChangeStateAnimation;
         }
 
         private void OnDisable()
         {
-            Actor.stateMachine.OnStateAssign -= ChangeStateAnimation;
+            Actor.stateMachine.OnStateEarlyAssign -= ChangeStateAnimation;
         }
 
         private void Update()

@@ -50,9 +50,11 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
         public Transform transform;
 
         public PanData currentData;
-
+        
         public float blendFactor { get; private set; }
         public float interpolatedBlendFactor { get; private set; }
+
+        private bool _isPointMarkerLoaded;
 
         public CameraStateMachine(Camera camera, Transform transform, ActorCamera master)
         {
@@ -77,7 +79,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
         {
             if (currentData != null)
             {
-                PanData baseData = (PanData)currentData;
+                PanData baseData = currentData;
                 float easeTime = !IsExact<RestoreCameraPawn>() ? baseData.easeTimeEnter : baseData.easeTimeExit;
                 blendFactor += dt / easeTime;
                 blendFactor = Mathf.Clamp01(blendFactor);
@@ -209,16 +211,19 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
 
         public void SetDirection(Vector3 forward, bool resetY = false)
         {
-            Quaternion dir = Quaternion.LookRotation(forward, Vector3.up);
+            Quaternion dir = Quaternion.LookRotation(forward, Vector3.up).normalized;
             x = dir.eulerAngles.y;
             y = !resetY ? dir.eulerAngles.x : 0f;
+            
+            xAutoLook = 0f;
+            yAutoLook = 0f;
         }
         
         public void SetLateOffset(Vector3 offset)
         {
             LateOffset = offset;
         }
-
+        
         public void ResetBlendFactor()
         {
             blendFactor = 0f;

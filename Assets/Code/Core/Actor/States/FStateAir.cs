@@ -3,14 +3,17 @@ using SurgeEngine.Code.Core.Actor.States.SonicSpecific;
 using SurgeEngine.Code.Core.Actor.States.SonicSubStates;
 using SurgeEngine.Code.Core.Actor.System;
 using SurgeEngine.Code.Gameplay.CommonObjects;
+using SurgeEngine.Code.Gameplay.CommonObjects.System;
 using SurgeEngine.Code.Infrastructure.Custom;
 using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.States
 {
-    public class FStateAir : FStateMove, IBoostHandler, IDamageableState
+    public class FStateAir : FStateMove, IBoostHandler, IDamageableState, IPointMarkerLoader
     {
         protected float AirTime;
+
+        public bool IsFallDeath { get; set; }
 
         public FStateAir(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
@@ -20,7 +23,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         public override void OnEnter()
         {
             base.OnEnter();
-
+            
             if (Actor.kinematics.Angle >= 90 && Actor.kinematics.Velocity.y > 3f)
             {
                 Actor.flags.AddFlag(new Flag(FlagType.OutOfControl, null, true, 0.5f));
@@ -118,6 +121,11 @@ namespace SurgeEngine.Code.Core.Actor.States
         private void CalculateAirTime(float dt)
         {
             AirTime += dt;
+        }
+
+        public void Load(Vector3 loadPosition, Quaternion loadRotation)
+        {
+            IsFallDeath = false;
         }
     }
 }

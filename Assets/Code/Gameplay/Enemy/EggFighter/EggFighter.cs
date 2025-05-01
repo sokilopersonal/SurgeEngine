@@ -69,7 +69,7 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter
             Gizmos.DrawWireSphere(transform.position, patrolDistance);
         }
 
-        public void TakeDamage(Entity sender, float damage)
+        public void TakeDamage(MonoBehaviour sender, float damage)
         {
             ActorBase context = ActorContext.Context;
             Vector3 force = context.kinematics.Rigidbody.linearVelocity * 1.25f;

@@ -1,12 +1,15 @@
 ﻿using System;
 using NaughtyAttributes;
 using SurgeEngine.Code.Core.Actor.CameraSystem;
+using SurgeEngine.Code.Core.Actor.CameraSystem.Pawns;
 using SurgeEngine.Code.Core.Actor.States;
 using SurgeEngine.Code.Core.Actor.States.SonicSpecific;
 using SurgeEngine.Code.Gameplay.CommonObjects.Interfaces;
+using SurgeEngine.Code.Gameplay.CommonObjects.Player;
 using SurgeEngine.Code.Gameplay.CommonObjects.System;
 using SurgeEngine.Code.Infrastructure.Config;
 using UnityEngine;
+using Zenject;
 using Random = UnityEngine.Random;
 
 namespace SurgeEngine.Code.Core.Actor.System
@@ -27,7 +30,7 @@ namespace SurgeEngine.Code.Core.Actor.System
         public BaseActorConfig config;
         public DamageKickConfig damageKickConfig;
 
-        public bool IsDead { get; private set; }
+        public bool IsDead { get; set; }
         public event Action<ActorBase> OnDied; 
         
         private StartData _startData;
@@ -113,20 +116,19 @@ namespace SurgeEngine.Code.Core.Actor.System
             AddConfig(damageKickConfig);
         }
 
-        public void TakeDamage(Entity sender, float damage)
+        public void TakeDamage(MonoBehaviour sender, float damage)
         {
             if (stateMachine.CurrentState is IDamageableState dmgState && !flags.HasFlag(FlagType.Invincible))
             {
                 IsDead = false;
+                var damageState = stateMachine.GetState<FStateDamage>();
                 
                 // Imagine it's over
                 if (Stage.Instance.data.RingCount <= 0)
                 {
-                    var damageState = stateMachine.GetState<FStateDamage>();
-                    damageState.SetState(DamageState.Dead);
+                    damageState?.SetState(DamageState.Dead);
 
-                    OnDied?.Invoke(this);
-                    IsDead = true;
+                    OnDiedInvoke(this, true);
                 }
                 else
                 {
@@ -148,18 +150,30 @@ namespace SurgeEngine.Code.Core.Actor.System
 
         public virtual void Load(Vector3 loadPosition, Quaternion loadRotation)
         {
-            _rigidbody.isKinematic = true;
+            _rigidbody.linearVelocity = Vector3.zero;
             _rigidbody.position = loadPosition;
             _rigidbody.rotation = loadRotation;
             if (model) model.root.rotation = loadRotation;
             if (animation) animation.StateAnimator.TransitionToState("Idle", 0f);
             if (flags) flags.AddFlag(new Flag(FlagType.OutOfControl, null, true, 0.5f));
-            _rigidbody.isKinematic = false;
+            if (input) input.playerInput.enabled = true;
+            
             IsDead = false;
+
+            if (stateMachine.CurrentState is IPointMarkerLoader stateLoader)
+            {
+                stateLoader.Load(loadPosition, loadRotation);
+            }
             
             stateMachine.SetState<FStateIdle>(ignoreInactiveDelay: true);
         }
 
         public StartData GetStartData() => _startData;
+
+        public virtual void OnDiedInvoke(ActorBase obj, bool isMarkedForDeath)
+        {
+            IsDead = isMarkedForDeath;
+            OnDied?.Invoke(obj);
+        }
     }
 }

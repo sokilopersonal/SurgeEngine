@@ -1,4 +1,8 @@
-﻿using UnityEditor;
+﻿
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 using UnityEngine;
 
 namespace SurgeEngine.Code.Gameplay.CommonObjects.CameraObjects

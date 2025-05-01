@@ -67,7 +67,7 @@ namespace SurgeEngine.Code.UI
             if (context != null && context.stateMachine.IsExact<FStateSpecialJump>() && context.stateMachine.GetState<FStateSpecialJump>().data.type ==
                 SpecialJumpType.TrickJumper) return;
             
-            if (!CanPause) return;
+            if (!CanPause || context.IsDead) return;
 
             if (MenusHandler.Instance.IsAnyMenuOpened())
                 return;

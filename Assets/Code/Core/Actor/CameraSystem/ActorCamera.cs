@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using SurgeEngine.Code.Core.Actor.CameraSystem.Modifiers;
 using SurgeEngine.Code.Core.Actor.CameraSystem.Pawns;
 using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine.Code.Gameplay.CommonObjects.System;
 using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.CameraSystem
 {
-    public class ActorCamera : ActorComponent
+    public class ActorCamera : ActorComponent, IPointMarkerLoader
     {
         public CameraStateMachine stateMachine;
         
@@ -84,6 +85,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
             stateMachine.AddState(new FixedCameraPan(Actor));
             stateMachine.AddState(new NormalCameraPan(Actor));
             stateMachine.AddState(new RestoreCameraPawn(Actor));
+            stateMachine.AddState(new FallCameraState(Actor));
 
             stateMachine.SetState<NewModernState>();
             stateMachine.SetDirection(Actor.transform.forward);
@@ -122,6 +124,11 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
             
             modifier = null;
             return null;
+        }
+
+        public void Load(Vector3 loadPosition, Quaternion loadRotation)
+        {
+            stateMachine.SetState<NewModernState>();
         }
     }
 }
