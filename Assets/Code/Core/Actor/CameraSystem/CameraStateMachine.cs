@@ -66,6 +66,11 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
             yOffset = startYOffset;
             
             fov = baseFov;
+
+            OnStateEarlyAssign += _ =>
+            {
+                ResetBlendFactor();
+            };
         }
 
         public override void Tick(float dt)

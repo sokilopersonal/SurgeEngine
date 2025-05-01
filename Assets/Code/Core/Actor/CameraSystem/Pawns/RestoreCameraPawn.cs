@@ -12,7 +12,6 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
 
         public override void OnEnter()
         {
-            _stateMachine.ResetBlendFactor();
             _lastData = _stateMachine.RememberRelativeLastData();
         }
 
