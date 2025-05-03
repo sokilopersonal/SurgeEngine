@@ -15788,6 +15788,7 @@ GameObject:
   - component: {fileID: 5411425757632001927}
   - component: {fileID: 8946680503377371742}
   - component: {fileID: 7544180283731288948}
+  - component: {fileID: 6079865941280984588}
   m_Layer: 8
   m_Name: ContactCollision
   m_TagString: Untagged
@@ -15845,6 +15846,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49436c1c246242778059c8897fa1e668, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6079865941280984588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1259358529721517514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57b19b92b18e4eb780e4be46040d8272, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pushableLayers:
+    serializedVersion: 2
+    m_Bits: 131072
 --- !u!1 &1373249034369631524
 GameObject:
   m_ObjectHideFlags: 0
@@ -31313,6 +31329,13 @@ MonoBehaviour:
     sideOffset: {x: 0, y: 0, z: 0}
     camera: {fileID: 4273712975694131987}
     transform: {fileID: 4604916912254361020}
+    currentData:
+      position: {x: 0, y: 0, z: 0}
+      easeTimeEnter: 0.5
+      easeTimeExit: 1
+      fov: 60
+      allowRotation: 1
+      restoreType: 1
   sensitivity: 0.75
   maxSensitivitySpeed: 1
   minSensitivitySpeed: 0.75

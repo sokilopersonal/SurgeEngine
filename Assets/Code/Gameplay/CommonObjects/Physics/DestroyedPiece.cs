@@ -10,22 +10,6 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Physics
         
         [SerializeField] private Rigidbody[] rigidbodies;
         [SerializeField] private Renderer[] meshes;
-        
-        public void ApplyExplosionForce(float force, Vector3 position, float radius)
-        {
-            for (int i = 0; i < rigidbodies.Length; i++)
-            {
-                rigidbodies[i].AddExplosionForce(force, position, radius);
-            }
-        }
-
-        public void ApplyDirectionForce(Vector3 direction, float force)
-        {
-            for (int i = 0; i < rigidbodies.Length; i++)
-            {
-                rigidbodies[i].AddForce(direction * force, ForceMode.VelocityChange);
-            }
-        }
 
         private void Awake()
         {
@@ -52,7 +36,28 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Physics
                 }
             }
 
+            foreach (var piece in rigidbodies)
+            {
+                piece.gameObject.layer = LayerMask.NameToLayer("BrokenPiece");
+            }
+
             Destroy(gameObject, destroyTime + 0.25f);
+        }
+
+        public void ApplyExplosionForce(float force, Vector3 position, float radius)
+        {
+            for (int i = 0; i < rigidbodies.Length; i++)
+            {
+                rigidbodies[i].AddExplosionForce(force, position, radius);
+            }
+        }
+
+        public void ApplyDirectionForce(Vector3 direction, float force)
+        {
+            for (int i = 0; i < rigidbodies.Length; i++)
+            {
+                rigidbodies[i].AddForce(direction * force, ForceMode.VelocityChange);
+            }
         }
     }
 }
