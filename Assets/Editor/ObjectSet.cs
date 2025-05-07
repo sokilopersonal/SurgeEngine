@@ -50,7 +50,7 @@ namespace SurgeEngine.Editor
         private void OnGUI()
         {
             GUILayout.Label("Asset Manager", EditorStyles.boldLabel);
-            _categories = new[] { "All", "Common", "Enemies", "Ring Groups", "Cameras" };
+            _categories = new[] { "All", "Common", "Enemies", "Ring Groups", "Cameras", "System" };
     
             GUILayout.Label("Category");
             _selectedCategoryIndex = EditorGUILayout.Popup(_selectedCategoryIndex, _categories);

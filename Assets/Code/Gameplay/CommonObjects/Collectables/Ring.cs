@@ -63,7 +63,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Collectables
                 
                 if (_factor >= 1f)
                 {
-                    Contact(null, _actor);
+                    Collect();
                 }
             }
         }
@@ -71,7 +71,12 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Collectables
         public override void Contact(Collider msg, ActorBase context)
         {
             base.Contact(msg, context);
-            
+
+            Collect();
+        }
+
+        private void Collect()
+        {
             RuntimeManager.PlayOneShot(ringSound);
 
             Common.AddScore(10);

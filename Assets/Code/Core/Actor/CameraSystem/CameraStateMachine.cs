@@ -37,13 +37,18 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
         public Quaternion rotation;
         public Vector3 lookOffset;
         public Vector3 actorPosition;
-        
-        public Vector3 LateOffset { get; private set; }
 
-        public Vector3 direction;
-        public Vector3 freeDirection;
+        public Vector3 actualDirection;
+        public Vector3 defaultDirection;
         public Vector3 sideDirection;
         public Vector3 sideOffset;
+        
+        private Vector3 _sideOffsetVelocity;
+        public float sideBlendFactor;
+        public bool is2D;
+        
+        public Vector3 LateOffset { get; private set; }
+        
         private float _directionTransitionFactor;
         
         public Camera camera;
@@ -68,11 +73,16 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
             yOffset = startYOffset;
             
             fov = baseFov;
+            
+            defaultDirection = GetDirection();
+            actualDirection = defaultDirection;
 
             OnStateEarlyAssign += _ =>
             {
                 ResetBlendFactor();
             };
+            
+            master.Actor.kinematics.OnModeChange += mode => is2D = mode == KinematicsMode.Side;
         }
 
         public override void Tick(float dt)
@@ -98,25 +108,29 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
             }
 
             LateOffset = Vector3.Lerp(LateOffset, Vector3.zero, 4f * dt);
-            actorPosition = GetActorPosition();
+            actorPosition = GetActorPosition() + sideOffset;
             
-            var kinematics = ActorContext.Context.kinematics;
-            freeDirection = GetDirection(KinematicsMode.Free);
-            if (kinematics.GetPath() != null) sideDirection = GetDirection(KinematicsMode.Side);
-            direction = Vector3.Lerp(freeDirection, sideDirection, Easings.Get(Easing.Gens, _directionTransitionFactor));
-
-            KinematicsMode mode = kinematics.mode;
-            float factor = dt / 1.5f;
-            if (mode is KinematicsMode.Free or KinematicsMode.Forward or KinematicsMode.Dash)
+            defaultDirection = GetDirection();
+            if (master.Actor.kinematics.IsPathValid()) sideDirection = GetSideDirection();
+            actualDirection = Vector3.Lerp(defaultDirection, sideDirection, Easings.Get(Easing.Gens, sideBlendFactor));
+            
+            if (is2D)
             {
-                _directionTransitionFactor -= factor;
+                sideBlendFactor += dt;
             }
-            else if (mode is KinematicsMode.Side)
+            else
             {
-                _directionTransitionFactor += factor;
+                sideBlendFactor -= dt;
             }
             
-            _directionTransitionFactor = Mathf.Clamp01(_directionTransitionFactor);
+            sideBlendFactor = Mathf.Clamp01(sideBlendFactor);
+            
+            if (master.Actor.kinematics.IsPathValid()) sideOffset = 
+                Vector3.SmoothDamp(sideOffset, GetSideOffset(), ref _sideOffsetVelocity, 0.2f);
+            else
+            {
+                sideOffset = Vector3.SmoothDamp(sideOffset, Vector3.zero, ref _sideOffsetVelocity, 0.2f);
+            }
             
             base.Tick(dt);
             
@@ -129,84 +143,65 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
         {
             Vector3 basePosition = master.Actor.transform.position + LateOffset + Vector3.up * yOffset + Vector3.up * yLag;
             var kinematics = ActorContext.Context.kinematics;
-            var path = kinematics.GetPath();
-            KinematicsMode mode = kinematics.mode;
+            kinematics.GetPath();
 
-            if (mode is KinematicsMode.Free or KinematicsMode.Forward or KinematicsMode.Dash)
-            {
-                return basePosition;
-            }
-            else
-            {
-                SplineUtility.GetNearestPoint(path.Spline, 
-                    path.transform.InverseTransformPoint(basePosition),
-                    out _, 
-                    out var f, 
-                    12, 6);
-                
-                path.Evaluate(path.Spline, f, out var p, out var tg, out var up);
-                
-                SplineSample sample = new SplineSample
-                {
-                    pos = p,
-                    tg = ((Vector3)tg).normalized,
-                    up = up
-                };
-                
-                float dot = Vector3.Dot(sample.tg, kinematics.transform.forward);
-                Vector3 side = sample.tg;
-                side *= 1.3f;
-                
-                if (dot < 0)
-                {
-                    side *= -1;
-                }
-
-                sideOffset = Vector3.Lerp(sideOffset, side, 2.75f * Time.deltaTime);
-                
-                return basePosition + sideOffset;
-            }
+            return basePosition;
         }
         
-        public Vector3 GetDirection(KinematicsMode mode)
+        public Vector3 GetDirection()
         {
-            ActorBase actor = ActorContext.Context;
-            Vector3 camDir;
-            if (mode is KinematicsMode.Free or KinematicsMode.Forward or KinematicsMode.Dash)
+            var horizontal = Quaternion.AngleAxis(x, Vector3.up);
+            var vertical = Quaternion.AngleAxis(y, Vector3.right);
+            
+            return horizontal * vertical * Vector3.back;
+        }
+        
+        private Vector3 GetSideDirection()
+        {
+            var path = master.Actor.kinematics.GetPath();
+            var spline = path.Spline;
+            SplineUtility.GetNearestPoint(spline, path.transform.InverseTransformPoint(master.Actor.transform.position),
+                out _, out var f, 8, 4);
+
+            path.Evaluate(spline, f, out var p, out var tg, out var up);
+
+            var sample = new SplineSample
             {
-                var horizontal = Quaternion.AngleAxis(x, Vector3.up);
-                var vertical = Quaternion.AngleAxis(y, Vector3.right);
+                pos = p,
+                tg = ((Vector3)tg).normalized,
+                up = up
+            };
+            
+            Vector3 plane = Vector3.Cross(sample.tg, -Vector3.up);
+            return plane * 4f;
+        }
 
-                camDir = horizontal * vertical * Vector3.back;
-            }
-            else
+        private Vector3 GetSideOffset()
+        {
+            var path = master.Actor.kinematics.GetPath();
+            var spline = path.Spline;
+            SplineUtility.GetNearestPoint(spline, path.transform.InverseTransformPoint(actorPosition),
+                out _, out var f, 8, 4);
+            
+            path.Evaluate(spline, f, out var p, out var tg, out var up);
+
+            var sample = new SplineSample
             {
-                var path = actor.kinematics.GetPath();
-                SplineUtility.GetNearestPoint(path.Spline, 
-                    path.transform.InverseTransformPoint(actor.transform.position),
-                    out _, 
-                    out var f, 
-                    12, 6);
+                pos = p,
+                tg = ((Vector3)tg).normalized,
+                up = up
+            };
+            
+            Vector3 side = sample.tg;
+            float dot = Vector3.Dot(side, master.Actor.transform.forward);
+            side *= 1.3f;
 
-                path.Evaluate(path.Spline, f, out var p, out var tg, out var up);
-
-                SplineSample sample = new SplineSample
-                {
-                    pos = p,
-                    tg = ((Vector3)tg).normalized,
-                    up = up
-                };
-                
-                Vector3 plane = Vector3.Cross(sample.tg, -Vector3.up);
-                camDir = plane * 4f;
-                
-                Debug.DrawRay(actor.transform.position, camDir, Color.red);
-                
-                Vector3 localPos = path.transform.TransformPoint(p);
-                Debug.DrawRay(localPos, sample.tg, Color.green);
+            if (dot < 0)
+            {
+                side *= -1;
             }
             
-            return camDir;
+            return side;
         }
 
         public void SetDirection(Vector3 forward, bool resetY = false)

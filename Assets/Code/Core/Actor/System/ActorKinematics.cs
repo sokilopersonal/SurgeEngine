@@ -21,7 +21,7 @@ namespace SurgeEngine.Code.Core.Actor.System
         [SerializeField] private float normalLerpSpeed = 7f;
         [SerializeField] private float normalSpeedThreshold = 10f;
         
-        public event Action<KinematicsMode> OnModeChange; 
+        public event Action<KinematicsMode> OnModeChange;
 
         public float TurnRate
         {

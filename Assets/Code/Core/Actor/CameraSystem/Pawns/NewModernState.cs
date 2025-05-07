@@ -3,6 +3,7 @@ using SurgeEngine.Code.Core.Actor.CameraSystem.Pawns.Data;
 using SurgeEngine.Code.Core.Actor.States;
 using SurgeEngine.Code.Core.Actor.System;
 using UnityEngine;
+using UnityEngine.Splines;
 
 namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
 {
@@ -39,7 +40,9 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
 
         private bool IsAuto => _actor.input.IsAutoCamera();
 
-        public NewModernState(ActorBase owner) : base(owner) { }
+        public NewModernState(ActorBase owner) : base(owner)
+        {
+        }
 
         public override void OnTick(float dt)
         {
@@ -65,17 +68,17 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
 
             _stateMachine.fov = _stateMachine.baseFov * fov;
             
-            Vector3 actorPosition = CalculateTarget(out Vector3 targetPosition, _stateMachine.distance * distance);
+            Vector3 actorPosition = CalculateTarget(out Vector3 targetPosition, _stateMachine.actualDirection, _stateMachine.distance * distance);
             ZLag();
             YLag();
             LateralOffset();
             Setup(targetPosition, actorPosition);
         }
 
-        protected Vector3 CalculateTarget(out Vector3 targetPosition, float distance)
+        protected Vector3 CalculateTarget(out Vector3 targetPosition, Vector3 dir, float distance)
         {
             Vector3 actorPosition = _stateMachine.actorPosition;
-            Vector3 initialTargetPosition = actorPosition + _stateMachine.direction * (distance + _stateMachine.zLag);
+            Vector3 initialTargetPosition = actorPosition + dir * (distance + _stateMachine.zLag);
             targetPosition = HandleCameraCollision(actorPosition, initialTargetPosition, distance);
             return actorPosition;
         }
@@ -101,7 +104,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
 
         protected virtual void LookAxis()
         {
-            if (IsAuto && _actor.kinematics.mode != KinematicsMode.Side)
+            if (IsAuto && !_stateMachine.is2D)
             {
                 AutoLookDirection();
             }
@@ -167,7 +170,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
 
         protected virtual void AutoLook(float multiplier)
         {
-            float angle = GetAutoAngle() * Time.deltaTime;
+            float angle = GetAutoAngle() * (1 - _stateMachine.sideBlendFactor) * Time.deltaTime;
             float dot = Vector3.Dot(Vector3.Cross(_stateMachine.transform.right, Vector3.up), _actor.transform.forward);
             if (!Mathf.Approximately(dot, -1))
             {
