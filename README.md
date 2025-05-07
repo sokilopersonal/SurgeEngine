@@ -19,3 +19,6 @@ You can help this project by fixing bugs or adding new features and adding these
 
 ## Knows issues
 - Transparent particles don't render underwater if "Use Scene Color" is enabled in water material
+
+# License
+This project uses assets from SEGA games—specifically from the Sonic series. All such assets remain the property of SEGA and this project will never be sold.
