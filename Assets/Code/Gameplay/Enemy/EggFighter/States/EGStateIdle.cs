@@ -1,4 +1,5 @@
 ﻿using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine.Code.Gameplay.CommonObjects.Sensors;
 using SurgeEngine.Code.Gameplay.Enemy.Base;
 using UnityEngine;
 
@@ -25,35 +26,9 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter.States
             
             eggFighter.rb.linearVelocity = Vector3.zero;
 
-            if (eggFighter.patrolTime == 0) return;
-
-            ActorBase context = ActorContext.Context;
-            if (Vector3.Distance(context.transform.position, transform.position) < eggFighter.findDistance)
+            if (sensor.FindVisibleTargets(out _))
             {
-                eggFighter.StateMachine.SetState<EGStateChase>();
-            }
-
-            if (_stayTimer < eggFighter.patrolTime)
-            {
-                _stayTimer += Time.deltaTime;
-            }
-            else
-            {
-                // Vector3 point = eggFighter.stateMachine.GetState<EGStatePatrol>().GetRandomPoint();
-                // float angleDiff = transform.rotation.eulerAngles.y - Quaternion.LookRotation(point - transform.position).eulerAngles.y;
-                //
-                // angleDiff = 130;
-                //
-                // if (Mathf.Abs(angleDiff) >= 120)
-                // {
-                //     eggFighter.stateMachine.SetState<EGStateTurn>();
-                // }
-                // else
-                // {
-                //     eggFighter.stateMachine.SetState<EGStatePatrol>(0.2f).SetNewPatrolPoint(point);
-                // }
-
-                eggFighter.StateMachine.SetState<EGStatePatrol>();
+                stateMachine.SetState<EGStateChase>();
             }
         }
     }

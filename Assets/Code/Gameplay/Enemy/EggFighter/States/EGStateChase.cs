@@ -1,4 +1,5 @@
 ﻿using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine.Code.Gameplay.CommonObjects.Sensors;
 using SurgeEngine.Code.Gameplay.Enemy.Base;
 using UnityEngine;
 
@@ -14,28 +15,23 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter.States
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
-
-            ActorBase context = ActorContext.Context;
             
-            Vector3 direction = context.transform.position - transform.position;
-            direction.Normalize();
-            direction.y = 0f;
-            eggFighter.rb.linearVelocity = direction * eggFighter.chaseSpeed;
-            
-            Quaternion rotation = Quaternion.LookRotation(context.transform.position - transform.position, Vector3.up);
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, rotation.eulerAngles.y, 0), 24f * Time.deltaTime);
-
-            float distance = Vector3.Distance(context.transform.position, transform.position);
-            if (distance < 2.5f)
+            bool hasTarget = sensor.FindVisibleTargets(out var pos);
+            if (!hasTarget)
             {
-                eggFighter.StateMachine.SetState<EGStatePunch>();
+                Debug.DrawLine(transform.position, pos, Color.blue);
             }
             
-            float verticalDiff = context.transform.position.y - transform.position.y;
-            bool obstacle = UnityEngine.Physics.Linecast(transform.position, context.transform.position, 1 << LayerMask.NameToLayer("Default"));
-            if (distance > eggFighter.chaseMaxDistance || Mathf.Abs(verticalDiff) > 5f || obstacle)
+            Vector3 direction = (pos - transform.position).normalized;
+            direction = Vector3.ProjectOnPlane(direction, Vector3.up);
+            eggFighter.rb.linearVelocity = direction * eggFighter.chaseSpeed;
+                
+            Quaternion rotation = Quaternion.LookRotation(pos - transform.position, Vector3.up);
+            transform.rotation = Quaternion.Euler(0, rotation.eulerAngles.y, 0);
+
+            if (Vector3.Distance(pos, transform.position) < eggFighter.punchRadius)
             {
-                eggFighter.StateMachine.SetState<EGStateIdle>();
+                stateMachine.SetState<EGStatePunch>();
             }
         }
     }

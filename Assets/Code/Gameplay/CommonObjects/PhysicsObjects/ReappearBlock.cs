@@ -3,7 +3,7 @@ using DG.Tweening;
 using FMODUnity;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Gameplay.CommonObjects.Physics
+namespace SurgeEngine.Code.Gameplay.CommonObjects.PhysicsObjects
 {
     [ExecuteAlways]
     public class ReappearBlock : MonoBehaviour

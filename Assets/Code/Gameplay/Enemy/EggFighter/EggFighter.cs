@@ -1,5 +1,7 @@
 ﻿using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine.Code.Gameplay.CommonObjects.AnimationCallback;
 using SurgeEngine.Code.Gameplay.CommonObjects.Interfaces;
+using SurgeEngine.Code.Gameplay.CommonObjects.Sensors;
 using SurgeEngine.Code.Gameplay.CommonObjects.System;
 using SurgeEngine.Code.Gameplay.Enemy.Base;
 using SurgeEngine.Code.Gameplay.Enemy.EggFighter.States;
@@ -13,6 +15,9 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter
         public EGView View => view as EGView;
         public EggFighterEffects effects;
         public EnemyRagdoll ragdollPrefab;
+        
+        public VisionSensor Sensor { get; private set; }
+        [field: SerializeField] public AnimationEventCallback PunchAnimationCallback { get; private set; }
 
         [Header("Idle")]
         public float findDistance;
@@ -54,6 +59,8 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter
             rb = GetComponent<Rigidbody>();
             rb.freezeRotation = true;
             
+            Sensor = GetComponentInChildren<VisionSensor>();
+            
             StateMachine.AddState(new EGStateIdle(this));
             StateMachine.AddState(new EGStateChase(this));
             StateMachine.AddState(new EGStatePatrol(this));
@@ -62,11 +69,6 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter
             StateMachine.AddState(new EGStateDead(this));
             
             StateMachine.SetState<EGStateIdle>();
-        }
-
-        private void OnDrawGizmosSelected()
-        {
-            Gizmos.DrawWireSphere(transform.position, patrolDistance);
         }
 
         public void TakeDamage(MonoBehaviour sender, float damage)

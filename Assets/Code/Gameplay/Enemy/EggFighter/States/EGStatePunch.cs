@@ -1,4 +1,5 @@
-﻿using SurgeEngine.Code.Gameplay.Enemy.Base;
+﻿using SurgeEngine.Code.Gameplay.CommonObjects;
+using SurgeEngine.Code.Gameplay.Enemy.Base;
 using UnityEngine;
 
 namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter.States
@@ -15,12 +16,16 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter.States
         {
             base.OnEnter();
             
+            eggFighter.PunchAnimationCallback.OnAnimationEvent += Punch;
+            
             _stayTimer = 0f;
         }
 
         public override void OnExit()
         {
             base.OnExit();
+            
+            eggFighter.PunchAnimationCallback.OnAnimationEvent -= Punch;
         }
 
         public override void OnTick(float dt)
@@ -35,8 +40,15 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter.States
             }
             else
             {
-                eggFighter.StateMachine.SetState<EGStateIdle>(0);
+                eggFighter.StateMachine.SetState<EGStateIdle>(2f);
             }
+        }
+
+        private void Punch()
+        {
+            HurtBox.Create(eggFighter, eggFighter.transform.position, eggFighter.transform.rotation,
+                Vector3.one * 1.5f,
+                HurtBoxTarget.Player);
         }
     }
 }

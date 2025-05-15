@@ -1,5 +1,57 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1084412260819702319
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3908327369586405256}
+  - component: {fileID: 3797282852899736510}
+  m_Layer: 12
+  m_Name: Sensor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3908327369586405256
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1084412260819702319}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6468350259642137912}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3797282852899736510
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1084412260819702319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 567b9084d68c49f2b7024c77d492ee6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 15
+  angle: 120
+  targetMask:
+    serializedVersion: 2
+    m_Bits: 72
+  blockMask:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!1 &1134928124351879982
 GameObject:
   m_ObjectHideFlags: 0
@@ -32,6 +84,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5913160398915718345}
+  - {fileID: 3908327369586405256}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2043217692609733557
@@ -50,8 +103,9 @@ MonoBehaviour:
   animation: {fileID: 4182645961781350785}
   effects: {fileID: 2565871558992367779}
   ragdollPrefab: {fileID: 4729933678536235600}
+  <PunchAnimationCallback>k__BackingField: {fileID: 2689484472738572410}
   findDistance: 0
-  chaseSpeed: 0
+  chaseSpeed: 7
   chaseMaxDistance: 0
   punchRadius: 0
   patrolSpeedCurve:
@@ -1001,6 +1055,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c865f2d05ed80844281e86fa77f90dcb, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4437520408191522000}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c865f2d05ed80844281e86fa77f90dcb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2689484472738572410}
     - targetCorrespondingSourceObject: {fileID: 2408337500635186586, guid: c865f2d05ed80844281e86fa77f90dcb, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6848131475851162727}
@@ -1261,6 +1318,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: da6493e362584b0ab638b59ffe29f5f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2689484472738572410
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 74328650120065547}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c5c1cc6f6294351a5fabdbe3e6bcc6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &78170473134132998 stripped

@@ -1,6 +1,6 @@
 ﻿using FMODUnity;
 using SurgeEngine.Code.Gameplay.CommonObjects;
-using SurgeEngine.Code.Gameplay.CommonObjects.Physics;
+using SurgeEngine.Code.Gameplay.CommonObjects.PhysicsObjects;
 using SurgeEngine.Code.Gameplay.CommonObjects.System;
 using UnityEngine;
 
