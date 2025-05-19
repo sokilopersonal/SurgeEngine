@@ -18,9 +18,12 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.HUD
         private float _distance;
         
         private Camera _camera => ActorContext.Context.camera.GetCamera();
+        private ActorStageHUD _actorStageHUD;
 
-        public void Initialize()
+        public void Initialize(ActorStageHUD hud)
         {
+            _actorStageHUD = hud;
+            
             transform.SetParent(_camera.transform, true);
             _startPosition = transform.localPosition;
             _startRotation = transform.localRotation;
@@ -51,9 +54,8 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.HUD
             _factor += Time.deltaTime / 0.375f;
             if (_factor >= 1f)
             {
-                ActorStageHUD context = ActorHUDContext.Context;
-                context.ringCounterAnimator.Play("RingBump", 0);
-                context.ringBumpEffect.Play("RingBump", 0);
+                _actorStageHUD.RingCounterAnimator.Play("RingBump", 0);
+                _actorStageHUD.RingBumpAnimator.Play("RingBump", 0);
                 
                 Destroy(gameObject);
             }
@@ -62,7 +64,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.HUD
         private void Align()
         {
             Vector3 worldPos =
-                MatrixHelper.GetMatrixRectTransformPosition(ActorHUDContext.Context.ringCounter.rectTransform, _camera,
+                MatrixHelper.GetMatrixRectTransformPosition(_actorStageHUD.RingCounterRect.rectTransform, _camera,
                     _distance);
 
             float easedFactor = easingCurve.Evaluate(_factor);

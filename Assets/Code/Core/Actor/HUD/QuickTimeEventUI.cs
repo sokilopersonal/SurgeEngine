@@ -20,6 +20,7 @@ namespace SurgeEngine.Code.Core.Actor.HUD
         private List<QuickTimeEventUIButton> _buttons = new List<QuickTimeEventUIButton>();
 
         private TrickJumper _trickJumperObject;
+        private TrickJumperUI _trickJumperUI;
 
         private void Update()
         {
@@ -33,16 +34,17 @@ namespace SurgeEngine.Code.Core.Actor.HUD
             }
         }
 
-        public void SetTrickJumper(TrickJumper trickJumper)
+        public void SetTrickJumper(TrickJumper trickJumper, TrickJumperUI ui)
         {
             _trickJumperObject = trickJumper;
+            _trickJumperUI = ui;
             
             trickJumper.OnCorrectButton += OnCorrectButtonPressed;
         }
 
         private void OnCorrectButtonPressed()
         {
-            GameObject click = Instantiate(qteClick, ActorHUDContext.Context.transform);
+            GameObject click = Instantiate(qteClick, _trickJumperUI.transform);
             click.transform.position = _buttons[0].transform.position;
             Destroy(click, 0.65f);
             _buttons[0].Destroy();

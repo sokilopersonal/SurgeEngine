@@ -18,7 +18,12 @@ namespace SurgeEngine.Code.Core.Actor.States.SonicSubStates
         public float BoostEnergy
         {
             get => _boostEnergy; 
-            set => _boostEnergy = Mathf.Clamp(value, 0, 100);
+            set => _boostEnergy = Mathf.Clamp(value, 0, MaxBoostEnergy);
+        }
+
+        public float MaxBoostEnergy
+        {
+            get => _config.BoostCapacity;
         }
         
         public bool CanAirBoost ;
@@ -35,10 +40,10 @@ namespace SurgeEngine.Code.Core.Actor.States.SonicSubStates
 
         public FBoost(ActorBase owner) : base(owner)
         {
-            CanAirBoost = true;
-            BoostEnergy = 100;
-
             owner.TryGetConfig(out _config);
+            
+            CanAirBoost = true;
+            BoostEnergy = MaxBoostEnergy / 4;
             
             actor.input.BoostAction += BoostAction;
             actor.stateMachine.OnStateAssign += OnStateAssign;
@@ -60,7 +65,7 @@ namespace SurgeEngine.Code.Core.Actor.States.SonicSubStates
         {
             if (obj is Ring)
             {
-                BoostEnergy += _config.ringEnergyAddition;
+                BoostEnergy += _config.RingEnergyAddition;
             }
         }
 
@@ -111,7 +116,7 @@ namespace SurgeEngine.Code.Core.Actor.States.SonicSubStates
 
             if (state is FStateDrift)
             {
-                BoostEnergy += _config.driftEnergyAddition * dt;
+                BoostEnergy += _config.DriftEnergyAddition * dt;
             }
 
             if (Active)
@@ -120,7 +125,7 @@ namespace SurgeEngine.Code.Core.Actor.States.SonicSubStates
                 {
                     _boostCancelTimer += dt;
                 
-                    if (_boostCancelTimer >= _config.inAirTime)
+                    if (_boostCancelTimer >= _config.InAirTime)
                     {
                         Active = false;
                     }
@@ -132,14 +137,14 @@ namespace SurgeEngine.Code.Core.Actor.States.SonicSubStates
                 
                 if (BoostEnergy > 0)
                 {
-                    BoostEnergy -= _config.energyDrain * Time.deltaTime;
+                    BoostEnergy -= _config.EnergyDrain * Time.deltaTime;
                 }
                 else
                 {
                     Active = false;
                 }
                 
-                actor.kinematics.TurnRate *= _config.turnSpeedMultiplier;
+                actor.kinematics.TurnRate *= _config.TurnSpeedMultiplier;
             }
             
             BoostEnergy = Mathf.Clamp(BoostEnergy, 0, 100);
@@ -171,7 +176,7 @@ namespace SurgeEngine.Code.Core.Actor.States.SonicSubStates
             if (Active)
             {
                 Rigidbody body = actor.kinematics.Rigidbody;
-                float startSpeed = _config.startSpeed;
+                float startSpeed = _config.StartSpeed;
 
                 if (actor.kinematics.HorizontalSpeed < startSpeed)
                 {
@@ -184,7 +189,7 @@ namespace SurgeEngine.Code.Core.Actor.States.SonicSubStates
                     RestoringTopSpeed = true;
                 }
                 
-                BoostEnergy -= _config.startDrain;
+                BoostEnergy -= _config.StartDrain;
                 new Rumble().Vibrate(0.7f, 0.8f, 0.5f);
             }
         }
@@ -201,8 +206,8 @@ namespace SurgeEngine.Code.Core.Actor.States.SonicSubStates
             if (Active)
             {
                 if (actor.input.moveVector == Vector3.zero) actor.kinematics.SetInputDir(actor.transform.forward);
-                float maxSpeed = config.maxSpeed * _config.maxSpeedMultiplier;
-                if (speed < maxSpeed) body.AddForce(body.linearVelocity.normalized * (_config.acceleration * dt), ForceMode.Impulse);
+                float maxSpeed = config.maxSpeed * _config.MaxSpeedMultiplier;
+                if (speed < maxSpeed) body.AddForce(body.linearVelocity.normalized * (_config.Acceleration * dt), ForceMode.Impulse);
             }
             else if (RestoringTopSpeed)
             {

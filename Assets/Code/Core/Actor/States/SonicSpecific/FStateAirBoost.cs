@@ -41,7 +41,7 @@ namespace SurgeEngine.Code.Core.Actor.States.SonicSpecific
             if (boost.CanAirBoost)
             {
                 Vector3 direction = Vector3.Cross(_rigidbody.transform.right, Vector3.up);
-                Vector3 force = direction * _config.airBoostSpeed;
+                Vector3 force = direction * _config.AirBoostSpeed;
 
                 _rigidbody.linearVelocity = force;
                 Model.RotateBody(Vector3.up);

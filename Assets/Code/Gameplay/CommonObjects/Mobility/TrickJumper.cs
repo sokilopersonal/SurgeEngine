@@ -27,7 +27,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
         [SerializeField, Range(0, 5)] private int trickCount1 = 3;
         [SerializeField, Range(0, 5)] private int trickCount2;
         [SerializeField, Range(0, 5)] private int trickCount3;
-
+        
         [SerializeField] private EventReference qteHitSound;
         [SerializeField] private EventReference qteSuccessSound;
         [SerializeField] private EventReference qteSuccessVoiceSound;
@@ -40,13 +40,16 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
         [SerializeField] private Transform startPoint;
         
         public Action<QTEResult> OnQTEResultReceived;
-        public event Action OnCorrectButton; 
+        public event Action OnCorrectButton;
+        public event Action<QTESequence> OnNewSequenceStarted;
 
         private List<QTESequence> _qteSequences;
         private int _buttonId;
         private int _sequenceId;
         private QuickTimeEventUI _currentQTEUI;
         private float timer;
+        
+        public List<QTESequence> QTESequences => _qteSequences;
 
         protected override void Awake()
         {
@@ -78,8 +81,10 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
         public override void Contact(Collider msg, ActorBase context)
         {
             base.Contact(msg, context);
-
+            
             StartCoroutine(TrickContact());
+
+            ObjectEvents.OnTrickJumperTriggered?.Invoke(this);
         }
 
         private IEnumerator TrickContact()
@@ -107,7 +112,33 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
                 
                 yield return SetTime(TargetTimeScale, TimeScaleDuration);
                 
-                CreateQTEUI();
+                int[] trickCount = {
+                    trickCount1,
+                    trickCount2,
+                    trickCount3
+                };
+                float[] trickTime = {
+                    trickTime1,
+                    trickTime2,
+                    trickTime3,
+                };
+                
+                // Clear previous state
+                _buttonId = 0;
+                _sequenceId = 0;
+                _qteSequences.Clear();
+                
+                for (int i = 0; i < 3; i++)
+                {
+                    if (trickCount[i] <= 0 || trickTime[i] == 0.0f)
+                    {
+                        break;
+                    }
+
+                    CreateSequence(trickCount[i], trickTime[i]);
+                }
+                
+                ActorContext.Context.input.OnButtonPressed += OnButtonPressed;
             }
         }
 
@@ -123,37 +154,6 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             }
             
             Time.timeScale = target;
-        }
-
-        private void CreateQTEUI()
-        {
-            _currentQTEUI = Instantiate(ActorHUDContext.Context.GetQTEUI());
-            _currentQTEUI.SetTrickJumper(this);
-
-            int[] trickCount = {
-                trickCount1,
-                trickCount2,
-                trickCount3
-            };
-            float[] trickTime = {
-                trickTime1,
-                trickTime2,
-                trickTime3,
-            };
-                
-            for (int i = 0; i < 3; i++)
-            {
-                if (trickCount[i] <= 0 || trickTime[i] == 0.0f)
-                {
-                    break;
-                }
-
-                CreateSequence(trickCount[i], trickTime[i]);
-            }
-                
-            _currentQTEUI.CreateButtonIcon(_qteSequences[0]);
-                
-            ActorContext.Context.input.OnButtonPressed += OnButtonPressed;
         }
 
         private void CreateSequence(int count, float time)
@@ -173,6 +173,9 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             if (_qteSequences.Count == 1)
             {
                 timer = sequence.time;
+                
+                // Notify TrickJumperUI about the first sequence
+                OnNewSequenceStarted?.Invoke(sequence);
             }
         }
 
@@ -206,10 +209,9 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
                         {
                             _buttonId = 0;
                             timer = _qteSequences[_sequenceId].time;
-                            Destroy(_currentQTEUI.gameObject);
-                            _currentQTEUI = Instantiate(ActorHUDContext.Context.GetQTEUI());
-                            _currentQTEUI.SetTrickJumper(this);
-                            _currentQTEUI.CreateButtonIcon(_qteSequences[_sequenceId]);
+                            
+                            // Notify TrickJumperUI about the new sequence
+                            OnNewSequenceStarted?.Invoke(_qteSequences[_sequenceId]);
                         }
                     }
                     
@@ -235,7 +237,6 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             _qteSequences.Clear();
             _buttonId = 0;
             _sequenceId = 0;
-            if (_currentQTEUI) Destroy(_currentQTEUI.gameObject);
             
             ActorBase context = ActorContext.Context;
             Rigidbody body = context.kinematics.Rigidbody;

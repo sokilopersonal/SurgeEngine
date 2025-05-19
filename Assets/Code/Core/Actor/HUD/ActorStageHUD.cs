@@ -1,6 +1,5 @@
 ﻿using System;
 using Coffee.UIExtensions;
-using SurgeEngine.Code.Core.Actor.States.SonicSubStates;
 using SurgeEngine.Code.Core.Actor.System;
 using SurgeEngine.Code.Gameplay.CommonObjects;
 using SurgeEngine.Code.Gameplay.CommonObjects.Collectables;
@@ -9,135 +8,78 @@ using SurgeEngine.Code.Gameplay.CommonObjects.System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 namespace SurgeEngine.Code.Core.Actor.HUD
 {
     public class ActorStageHUD : MonoBehaviour
     {
-        [SerializeField] private RingHUD ringHUDPrefab;
+        private const string TimeFormat = "<mspace=0.7em>";
+        private const string ScoreFormat = "<mspace=1.0em>";
 
+        [Header("Stage")]
         [SerializeField] private TMP_Text timeBar;
         [SerializeField] private TMP_Text scoreBar;
-        
+
         [Header("Ring Counter")]
-        public Image ringCounter;
-        public Animator ringCounterAnimator;
-        public Animator ringBumpEffect;
-        public TMP_Text ringCountText;
+        [SerializeField] private Image ringCounter;
+        [SerializeField] private Animator ringCounterAnimator;
+        [SerializeField] private Animator ringBumpAnimator;
         [SerializeField] private UIParticle ringLossParticlesPrefab;
+        public Image RingCounterRect => ringCounter;
+        public Animator RingCounterAnimator => ringCounterAnimator;
+        public Animator RingBumpAnimator => ringBumpAnimator;
+
+        [Header("Ring HUD")]
+        [SerializeField] private RingHUD ringHUDPrefab;
+        [SerializeField] private TMP_Text ringCountText;
         
         [SerializeField] private HomingIcon homingIcon;
-        [SerializeField] private QuickTimeEventUI qteUI;
-        
-        [Header("Speedometer")]
-        [SerializeField] private Image speedometerFill;
 
-        [Header("Boost Bar")] 
-        [SerializeField] private Image boostBar;
-        [SerializeField] private Image boostFill;
-        [SerializeField] private Image boostFill2;
-        [SerializeField, Range(0, 100)] private float energy; 
-        [SerializeField] private float energyDivider; 
-        [SerializeField] private float boostBarYAspect;
-        [SerializeField] private BoostBarSize minBoostBarSize;
-        [SerializeField] private BoostBarSize maxBoostBarSize;
-        private float _extEnergy;
+        [Header("Boost Bar")]
+        [SerializeField] private BoostBarController boostBarController;
 
-        private ActorBase _actor;
-
-        private void Awake()
-        {
-            _actor = ActorContext.Context;
-        }
-
-        private void OnValidate()
-        {
-            float energy = this.energy / 100;
-            boostFill.materialForRendering.SetFloat("_BoostAmount", energy);
-            boostFill.materialForRendering.SetFloat("_SplitAmount", energyDivider);
-            boostFill2.fillAmount = energy + 0.01f;
-
-            if (Mathf.Approximately(energy, 0f))
-            {
-                boostFill2.fillAmount = 0;
-            }
-        }
+        [Inject] private ActorBase _actor;
 
         private void OnEnable()
         {
             ObjectEvents.OnObjectCollected += OnRingCollected;
-            
             _actor.OnRingLoss += OnRingLoss;
         }
 
         private void OnDisable()
         {
             ObjectEvents.OnObjectCollected -= OnRingCollected;
-            
             _actor.OnRingLoss -= OnRingLoss;
         }
 
         private void Update()
         {
-            RingCount();
-            BoostBar();
-            Speedometer();
-            HomingTarget();
-
-            StageData stageData = Stage.Instance.data;
-            float time = stageData.Time;
-
-            string mono = "<mspace=0.7em>";
-            string scoreMono = "<mspace=1.0em>";
-            
-            timeBar.text = $"{mono}{GetTimeInString(time)}";
-
-            int score = stageData.Score;
-            scoreBar.text = $"{scoreMono}{score:000000}";
+            UpdateRingCount();
+            boostBarController.UpdateBoostBar();
+            UpdateHomingTarget();
+            UpdateHUDText(Stage.Instance.data);
         }
 
-        private void RingCount()
+        private void UpdateRingCount()
         {
             ringCountText.text = $"{Stage.Instance.data.RingCount:000}";
         }
 
-        private void BoostBar()
+        private void UpdateHUDText(StageData stageData)
         {
-            FBoost boost = _actor.stateMachine.GetSubState<FBoost>();
-            
-            float energy = boost.BoostEnergy / 100;
-            boostFill.materialForRendering.SetFloat("_BoostAmount", energy);
-            boostFill.materialForRendering.SetFloat("_SplitAmount", energyDivider);
-            boostFill2.fillAmount = energy + 0.01f;
-
-            if (Mathf.Approximately(energy, 0f))
-            {
-                boostFill2.fillAmount = 0;
-            }
-            
-            float boostBarWidth = Mathf.Lerp(minBoostBarSize.width, maxBoostBarSize.width, 100 / 100);
-            boostBar.rectTransform.sizeDelta = new Vector2(boostBarWidth, boostBarYAspect);
+            timeBar.text = $"{TimeFormat}{GetTimeInString(stageData.Time)}";
+            scoreBar.text = $"{ScoreFormat}{stageData.Score:000000}";
         }
 
-        private void Speedometer()
-        {
-            // float speed = _actor.kinematics.HorizontalSpeed;
-            // float topSpeed = _actor.stats.moveParameters.topSpeed;
-            // float threshold = 2.25f;
-            // float roundedSpeed = Mathf.Round(speed / threshold) * threshold;
-            // speedometerFill.fillAmount = roundedSpeed / (topSpeed + topSpeed * 0.2f);
-        }
-
-        private void HomingTarget()
+        private void UpdateHomingTarget()
         {
             HomingTarget target = _actor.stats.homingTarget;
             if (target)
             {
                 homingIcon.gameObject.SetActive(true);
                 homingIcon.Activate();
-                Camera cam = _actor.camera.GetCamera();
-                Vector3 position = cam.WorldToScreenPoint(target.transform.position);
-                homingIcon.transform.position = position;
+                homingIcon.transform.position = _actor.camera.GetCamera().WorldToScreenPoint(target.transform.position);
             }
             else
             {
@@ -150,7 +92,7 @@ namespace SurgeEngine.Code.Core.Actor.HUD
             if (obj is Ring)
             {
                 RingHUD ringHUDInstance = Instantiate(ringHUDPrefab, obj.transform.position, obj.transform.rotation);
-                ringHUDInstance.Initialize();
+                ringHUDInstance.Initialize(this);
             }
         }
 
@@ -158,11 +100,6 @@ namespace SurgeEngine.Code.Core.Actor.HUD
         {
             var instance = Instantiate(ringLossParticlesPrefab, ringCounter.transform);
             Destroy(instance.gameObject, 2);
-        }
-
-        public QuickTimeEventUI GetQTEUI()
-        {
-            return qteUI;
         }
         
         private static string GetTimeInString(float time)
@@ -172,11 +109,5 @@ namespace SurgeEngine.Code.Core.Actor.HUD
             int minutes = Mathf.FloorToInt(time / 60);
             return $"{minutes:00}:{seconds:00}:{milliseconds:00}";
         }
-    }
-
-    [Serializable]
-    public struct BoostBarSize
-    {
-        public float width;
     }
 }

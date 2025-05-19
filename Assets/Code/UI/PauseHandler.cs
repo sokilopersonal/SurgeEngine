@@ -141,15 +141,4 @@ namespace SurgeEngine.Code.UI
             //SceneLoader.LoadScene("Scene1");
         }
     }
-
-    public class PauseContext
-    {
-        public static PauseHandler Context;
-
-        [Inject]
-        public void Init(PauseHandler pauseHandler)
-        {
-            Context = pauseHandler;
-        }
-    }
 }

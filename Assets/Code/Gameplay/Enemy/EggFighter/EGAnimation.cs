@@ -15,32 +15,32 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter
             
             if (obj is EGStateIdle)
             {
-                _stateAnimator.TransitionToState("Idle");
+                stateAnimator.TransitionToState("Idle");
             }
             
             if (obj is EGStatePatrol)
             {
-                _stateAnimator.TransitionToState("Walk", 0.1f);
+                stateAnimator.TransitionToState("Walk", 0.1f);
             }
             
             if (obj is EGStateChase)
             {
-                _stateAnimator.TransitionToState("Run");
+                stateAnimator.TransitionToState("Run");
             }
         
             if (obj is EGStatePunch)
             {
-                _stateAnimator.TransitionToState("PunchCharge", 0.25f);
+                stateAnimator.TransitionToState("PunchCharge", 0.25f);
             }
         
             if (obj is EGStateTurn)
             {
-                _stateAnimator.TransitionToState("Turn", 0f);
+                stateAnimator.TransitionToState("Turn", 0f);
             }
         
             if (obj is EGStateDead)
             {
-                _stateAnimator.TransitionToState("IdleDead", 0f);
+                stateAnimator.TransitionToState("IdleDead", 0f);
             }
         }
     }

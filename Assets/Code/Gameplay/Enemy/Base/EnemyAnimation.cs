@@ -3,20 +3,16 @@ using SurgeEngine.Code.Core.StateMachine.Base;
 using SurgeEngine.Code.Core.StateMachine.Components;
 using SurgeEngine.Code.Gameplay.Enemy.EggFighter.States;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace SurgeEngine.Code.Gameplay.Enemy.Base
 {
     [RequireComponent(typeof(StateAnimator))]
     public class EnemyAnimation : EnemyComponent
     {
-        protected StateAnimator _stateAnimator;
+        [SerializeField] protected StateAnimator stateAnimator;
         
-        public Animator Animator => _stateAnimator.Animator;
-
-        private void Awake()
-        {
-            _stateAnimator = GetComponent<StateAnimator>();
-        }
+        public Animator Animator => stateAnimator.Animator;
 
         public override void Initialize(EnemyBase enemyBase)
         {
@@ -26,7 +22,7 @@ namespace SurgeEngine.Code.Gameplay.Enemy.Base
 
         protected virtual void ChangeStateAnimation(FState obj)
         {
-            _stateAnimator.StopAllCoroutines();
+            stateAnimator.StopAllCoroutines();
         }
     }
 }

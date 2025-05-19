@@ -1,5 +1,7 @@
 ﻿using SurgeEngine.Code.Gameplay.CommonObjects.Mobility;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace SurgeEngine.Code.Infrastructure.Custom.Drawers
 {
@@ -15,8 +17,9 @@ namespace SurgeEngine.Code.Infrastructure.Custom.Drawers
             if (keepVelocity > 0f)
             {
                 Vector3 newStartPosition = startPosition + direction * keepVelocity * impulse;
-                Gizmos.color = Color.red;
-                Gizmos.DrawLine(startPosition, newStartPosition);
+                Handles.color = Color.red;
+                Handles.zTest = CompareFunction.LessEqual;
+                Handles.DrawLine(startPosition, newStartPosition);
                 startPosition = newStartPosition;
             }
             
@@ -27,17 +30,19 @@ namespace SurgeEngine.Code.Infrastructure.Custom.Drawers
 
                 if (Physics.Linecast(positions[i], positions[i + 1], out RaycastHit hit, layerMask, QueryTriggerInteraction.Ignore))
                 {
-                    Gizmos.color = drawColor;
-                    Gizmos.DrawLine(positions[i], hit.point);
+                    Handles.color = drawColor;
+                    Handles.zTest = CompareFunction.LessEqual;
+                    Handles.DrawLine(positions[i], hit.point);
 
-                    Gizmos.color = new Color(0.12f, 1f, 0f, 0.59f);
-                    Gizmos.DrawCube(hit.point, Vector3.one * 0.75f);
+                    Handles.color = new Color(0.12f, 1f, 0f, 0.59f);
+                    Handles.DrawWireCube(hit.point, Vector3.one * 0.75f);
                     
                     break;
                 }
 
-                Gizmos.color = drawColor;
-                Gizmos.DrawLine(positions[i], positions[i + 1]);
+                Handles.color = drawColor;
+                Handles.zTest = CompareFunction.LessEqual;
+                Handles.DrawLine(positions[i], positions[i + 1]);
             }
         }
 
@@ -53,11 +58,15 @@ namespace SurgeEngine.Code.Infrastructure.Custom.Drawers
             {
                 if (Physics.Linecast(positions[i], positions[i + 1], out RaycastHit hit, layerMask, QueryTriggerInteraction.Ignore))
                 {
-                    UnityEngine.Debug.DrawLine(positions[i], hit.point, color);
+                    Handles.color = color;
+                    Handles.zTest = CompareFunction.LessEqual;
+                    Handles.DrawLine(positions[i], hit.point);
                     break;
                 }
 
-                UnityEngine.Debug.DrawLine(positions[i], positions[i + 1], color);
+                Handles.color = color;
+                Handles.zTest = CompareFunction.LessEqual;
+                Handles.DrawLine(positions[i], positions[i + 1]);
             }
         }
     }

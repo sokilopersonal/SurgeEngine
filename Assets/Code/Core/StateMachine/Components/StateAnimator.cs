@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace SurgeEngine.Code.Core.StateMachine.Components
 {
     public class StateAnimator : MonoBehaviour
     {
-        private Animator _animator;
-        public Animator Animator => _animator;
+        [SerializeField] private Animator animator;
+        public Animator Animator => animator;
 
         private AnimationHandle _currentHandle;
         private string _currentAnimation;
@@ -15,7 +16,8 @@ namespace SurgeEngine.Code.Core.StateMachine.Components
 
         private void Awake()
         {
-            _animator = GetComponent<Animator>();
+            if (!animator)
+                animator = GetComponent<Animator>();
         }
 
         private void Update()
@@ -36,8 +38,11 @@ namespace SurgeEngine.Code.Core.StateMachine.Components
         public AnimationHandle TransitionToState(string state, float time = 0.25f)
         {
             _isWaiting = true;
-            _currentHandle = new AnimationHandle(this); 
-            if (_currentAnimation != state) _animator.CrossFadeInFixedTime(state, time, 0);
+            _currentHandle = new AnimationHandle(this);
+            if (_currentAnimation != state)
+            {
+                animator.CrossFadeInFixedTime(state, time, 0);
+            }
             _currentAnimation = state;
             return _currentHandle;
         }
