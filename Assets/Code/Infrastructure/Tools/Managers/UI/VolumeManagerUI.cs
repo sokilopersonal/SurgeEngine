@@ -20,9 +20,9 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers.UI
                 musicVolumeBar.OnIndexChanged += index => _volumeManager.SetMusicVolume(index);
                 sfxVolumeBar.OnIndexChanged += index => _volumeManager.SetSFXVolume(index);
             
-                masterVolumeBar.SetIndex(Mathf.FloorToInt(volumeData.MasterVolume * 10));
-                musicVolumeBar.SetIndex(Mathf.FloorToInt(volumeData.MusicVolume * 10));
-                sfxVolumeBar.SetIndex(Mathf.FloorToInt(volumeData.SfxVolume * 10));
+                masterVolumeBar.SetIndex(Mathf.FloorToInt(volumeData.MasterVolume * 100));
+                musicVolumeBar.SetIndex(Mathf.FloorToInt(volumeData.MusicVolume * 100));
+                sfxVolumeBar.SetIndex(Mathf.FloorToInt(volumeData.SfxVolume * 100));
             });
         }
 

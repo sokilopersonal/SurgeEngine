@@ -15,7 +15,7 @@ namespace SurgeEngine.Code.UI.Menus.OptionElements
 
         [Header("States")]
         [SerializeField] private string[] states;
-        [SerializeField] private TMP_Text stateText;
+        [SerializeField] protected TMP_Text stateText;
         public string[] States => states;
 
         [Header("Start Index")] 
@@ -36,7 +36,20 @@ namespace SurgeEngine.Code.UI.Menus.OptionElements
         public int Index
         {
             get => _index;
-            protected set => _index = Mathf.Clamp(value, 0, states.Length - 1);
+            protected set
+            {
+                if (states.Length > 0)
+                {
+                    _index = Mathf.Clamp(value, 0, states.Length - 1);
+                }
+                else
+                {
+                    _index = value;
+                }
+                OnIndexChanged?.Invoke(_index);
+            
+                UpdateText(_index);
+            }
         }
         private int _index;
         
@@ -44,12 +57,13 @@ namespace SurgeEngine.Code.UI.Menus.OptionElements
         {
             get
             {
-                if (EventSystem.current == null)
+                var current = EventSystem.current;
+                if (current == null)
                 {
                     return false;
                 }
                 
-                return EventSystem.current.currentSelectedGameObject == gameObject;
+                return current.currentSelectedGameObject == gameObject;
             }
         }
 
@@ -59,17 +73,20 @@ namespace SurgeEngine.Code.UI.Menus.OptionElements
         protected override void Awake()
         {
             base.Awake();
-            
-            _rectTransform = GetComponent<RectTransform>();
-            _autoScroll = GetComponentInParent<AutoScroll>();
 
-            var parentScroll = GetComponentInParent<ScrollRect>();
-            if (parentScroll != null)
+            if (Application.isPlaying)
             {
-                _parentScrollRect = parentScroll;
-            }
+                _rectTransform = GetComponent<RectTransform>();
+                _autoScroll = GetComponentInParent<AutoScroll>();
 
-            selectionGroup.alpha = 0f;
+                var parentScroll = GetComponentInParent<ScrollRect>();
+                if (parentScroll != null)
+                {
+                    _parentScrollRect = parentScroll;
+                }
+
+                selectionGroup.alpha = 0f;
+            }
         }
 
         protected override void OnEnable()
@@ -92,12 +109,7 @@ namespace SurgeEngine.Code.UI.Menus.OptionElements
             }
         }
 
-        private void Update()
-        {
-            
-        }
-
-        private void AddIndexByMove(MoveDirection obj)
+        protected virtual void AddIndexByMove(MoveDirection obj)
         {
             switch (obj)
             {
@@ -108,18 +120,11 @@ namespace SurgeEngine.Code.UI.Menus.OptionElements
                     Index++;
                     break;
             }
-
-            OnIndexChanged?.Invoke(Index);
-            
-            UpdateText(Index);
         }
 
-        public void SetIndex(int index)
+        public virtual void SetIndex(int index)
         {
             Index = index;
-            OnIndexChanged?.Invoke(index);
-            
-            UpdateText(Index);
         }
 
         public void AddIndex()
@@ -132,9 +137,12 @@ namespace SurgeEngine.Code.UI.Menus.OptionElements
             AddIndexByMove(MoveDirection.Left);
         }
 
-        public void UpdateText(int index)
+        public virtual void UpdateText(int index)
         {
-            stateText.text = states[index];
+            if (states.Length > 0 && index >= 0 && index < states.Length)
+            {
+                stateText.text = states[index];
+            }
         }
 
         public override void OnMove(AxisEventData eventData)

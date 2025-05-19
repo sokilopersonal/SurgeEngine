@@ -156,10 +156,14 @@ namespace SurgeEngine.Code.UI
             {
                 RuntimeManager.PlayOneShot(submitSound);
                 
-                SelectionBox selBox = eventData.selectedObject.GetComponentInChildren<SelectionBox>();
-                if (selBox != null)
+                var selectedObject = eventData.selectedObject;
+                if (selectedObject)
                 {
-                    selBox.Select();
+                    SelectionBox selBox = selectedObject.GetComponentInChildren<SelectionBox>();
+                    if (selBox != null)
+                    {
+                        selBox.Select();
+                    }
                 }
             }
         }

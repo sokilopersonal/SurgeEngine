@@ -157,7 +157,6 @@ namespace SurgeEngine.Code.Core.Actor.HUD
         private void OnRingLoss()
         {
             var instance = Instantiate(ringLossParticlesPrefab, ringCounter.transform);
-            Debug.Log("1");
             Destroy(instance.gameObject, 2);
         }
 
