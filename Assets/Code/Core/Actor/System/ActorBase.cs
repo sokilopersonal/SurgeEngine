@@ -31,7 +31,9 @@ namespace SurgeEngine.Code.Core.Actor.System
         public DamageKickConfig damageKickConfig;
 
         public bool IsDead { get; set; }
-        public event Action<ActorBase> OnDied; 
+        public event Action<ActorBase> OnDied;
+
+        public event Action OnRingLoss;
         
         private StartData _startData;
         private Rigidbody _rigidbody;
@@ -141,6 +143,8 @@ namespace SurgeEngine.Code.Core.Actor.System
                     int value = Mathf.CeilToInt(Mathf.Max(min, ringCount * Random.Range(0.5f, 0.8f)));
                     data.RingCount -= Mathf.Clamp(value, 0, ringCount);
                     Stage.Instance.data = data;
+                    
+                    OnRingLoss?.Invoke();
                 }
                 
                 dmgState.TakeDamage(this);

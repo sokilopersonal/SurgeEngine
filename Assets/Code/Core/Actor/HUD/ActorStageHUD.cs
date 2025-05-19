@@ -1,4 +1,5 @@
 ﻿using System;
+using Coffee.UIExtensions;
 using SurgeEngine.Code.Core.Actor.States.SonicSubStates;
 using SurgeEngine.Code.Core.Actor.System;
 using SurgeEngine.Code.Gameplay.CommonObjects;
@@ -23,6 +24,7 @@ namespace SurgeEngine.Code.Core.Actor.HUD
         public Animator ringCounterAnimator;
         public Animator ringBumpEffect;
         public TMP_Text ringCountText;
+        [SerializeField] private UIParticle ringLossParticlesPrefab;
         
         [SerializeField] private HomingIcon homingIcon;
         [SerializeField] private QuickTimeEventUI qteUI;
@@ -42,7 +44,12 @@ namespace SurgeEngine.Code.Core.Actor.HUD
         private float _extEnergy;
 
         private ActorBase _actor;
-        
+
+        private void Awake()
+        {
+            _actor = ActorContext.Context;
+        }
+
         private void OnValidate()
         {
             float energy = this.energy / 100;
@@ -59,17 +66,19 @@ namespace SurgeEngine.Code.Core.Actor.HUD
         private void OnEnable()
         {
             ObjectEvents.OnObjectCollected += OnRingCollected;
+            
+            _actor.OnRingLoss += OnRingLoss;
         }
 
         private void OnDisable()
         {
             ObjectEvents.OnObjectCollected -= OnRingCollected;
+            
+            _actor.OnRingLoss -= OnRingLoss;
         }
 
         private void Update()
         {
-            _actor = ActorContext.Context;
-            
             RingCount();
             BoostBar();
             Speedometer();
@@ -144,7 +153,14 @@ namespace SurgeEngine.Code.Core.Actor.HUD
                 ringHUDInstance.Initialize();
             }
         }
-        
+
+        private void OnRingLoss()
+        {
+            var instance = Instantiate(ringLossParticlesPrefab, ringCounter.transform);
+            Debug.Log("1");
+            Destroy(instance.gameObject, 2);
+        }
+
         public QuickTimeEventUI GetQTEUI()
         {
             return qteUI;
