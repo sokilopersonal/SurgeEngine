@@ -187,10 +187,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 100729958831981340}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -5254,6 +5254,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da6493e362584b0ab638b59ffe29f5f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 0}
 --- !u!114 &919272589128347919
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31133,7 +31134,7 @@ Camera:
   m_TargetEye: 3
   m_HDR: 0
   m_AllowMSAA: 0
-  m_AllowDynamicResolution: 1
+  m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
@@ -31159,7 +31160,7 @@ MonoBehaviour:
   volumeAnchorOverride: {fileID: 0}
   antialiasing: 2
   SMAAQuality: 2
-  dithering: 0
+  dithering: 1
   stopNaNs: 0
   taaSharpenStrength: 0
   TAAQuality: 2
@@ -31183,7 +31184,7 @@ MonoBehaviour:
   flipYMode: 0
   xrRendering: 1
   fullscreenPassthrough: 0
-  allowDynamicResolution: 1
+  allowDynamicResolution: 0
   customRenderingSettings: 1
   invertFaceCulling: 0
   probeLayerMask:
@@ -31323,10 +31324,12 @@ MonoBehaviour:
     rotation: {x: 0, y: 0, z: 0, w: 1}
     lookOffset: {x: 0, y: 0, z: 0}
     actorPosition: {x: 0, y: 0, z: 0}
-    direction: {x: 0, y: 0, z: 0}
-    freeDirection: {x: 0, y: 0, z: 0}
+    actualDirection: {x: 0, y: 0, z: 0}
+    defaultDirection: {x: 0, y: 0, z: 0}
     sideDirection: {x: 0, y: 0, z: 0}
     sideOffset: {x: 0, y: 0, z: 0}
+    sideBlendFactor: 0
+    is2D: 0
     camera: {fileID: 4273712975694131987}
     transform: {fileID: 4604916912254361020}
     currentData:
