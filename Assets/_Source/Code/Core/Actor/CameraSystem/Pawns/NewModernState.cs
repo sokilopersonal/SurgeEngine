@@ -29,7 +29,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
         private const float YLagVelocityFactor = -0.125f;
         private const float MinSpeedThreshold = 0.1f;
         private const float VelocityLerpSpeed = 8f;
-        private const float YAutoLookSmoothTime = 0.5f;
+        private const float YAutoLookSmoothTime = 0.25f;
         private const float AutoLookResetSpeed = 12f;
         private const float DefaultSensitivityResetSpeed = 6f;
         private const float MinPitch = -75f;
@@ -154,7 +154,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
             {
                 Vector3 vel = _actor.kinematics.Rigidbody.linearVelocity;
                 _velocity = Vector3.Lerp(_velocity, vel, Time.deltaTime * VelocityLerpSpeed);
-                float yAutoLook = Mathf.Clamp(-_velocity.y, _master.verticalMinAmplitude, _master.verticalMaxAmplitude);
+                float yAutoLook = Mathf.Clamp(-vel.y, _master.verticalMinAmplitude, _master.verticalMaxAmplitude);
                 _stateMachine.yAutoLook = yAutoLook + _master.verticalDefaultAmplitude;
                 _stateMachine.y = Mathf.SmoothDamp(_stateMachine.y, _stateMachine.yAutoLook, ref _yAutoLookVelocity, YAutoLookSmoothTime);
 
