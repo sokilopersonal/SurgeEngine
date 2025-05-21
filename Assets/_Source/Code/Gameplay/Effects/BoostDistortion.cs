@@ -29,9 +29,10 @@ namespace SurgeEngine.Code.Gameplay.Effects
 
         private void Update()
         {
+            const float start = -0.7f;
             if (_isPlaying)
             {
-                distortionMaterial.SetFloat(WaveTime, Mathf.Lerp(-0.4f, 1 * GetAspect(), Easings.Get(easing, _timer)));
+                distortionMaterial.SetFloat(WaveTime, Mathf.Lerp(start, 1 * GetAspect(), Easings.Get(easing, _timer)));
             
                 if (_timer < duration)
                 {
@@ -45,7 +46,7 @@ namespace SurgeEngine.Code.Gameplay.Effects
             }
             else
             {
-                distortionMaterial.SetFloat(WaveTime, -0.4f);
+                distortionMaterial.SetFloat(WaveTime, start);
             }
         }
 
