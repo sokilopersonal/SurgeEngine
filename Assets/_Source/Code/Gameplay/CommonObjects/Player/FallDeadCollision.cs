@@ -1,3 +1,4 @@
+using System;
 using SurgeEngine.Code.Core.Actor.CameraSystem.Pawns;
 using SurgeEngine.Code.Core.Actor.States;
 using SurgeEngine.Code.Core.Actor.System;
@@ -21,10 +22,8 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Player
             context.OnDiedInvoke(context, true);
         }
 
-        protected override void OnDrawGizmos()
+        private void OnDrawGizmosSelected()
         {
-            base.OnDrawGizmos();
-            
             if (_collider == null)
                 _collider = GetComponent<BoxCollider>();
             
