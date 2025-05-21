@@ -1,18 +1,20 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace SurgeEngine.Code.Core.StateMachine.Components
 {
     public class StateAnimator : MonoBehaviour
     {
-        [SerializeField] private Animator animator;
         public Animator Animator => animator;
+        [SerializeField] private Animator animator;
 
-        private AnimationHandle _currentHandle;
         private string _currentAnimation;
-        private bool _isWaiting;
+        public Coroutine AnimationDelayedCoroutine;
+        private Coroutine _animationWaitCoroutine;
+        private AnimationHandle _currentHandle;
+        
+        private Coroutine _coroutine;
 
         private void Awake()
         {
@@ -20,94 +22,130 @@ namespace SurgeEngine.Code.Core.StateMachine.Components
                 animator = GetComponent<Animator>();
         }
 
-        private void Update()
+        public void Stop()
         {
-            if (_currentHandle != null)
+            if (_coroutine != null)
+                StopCoroutine(_coroutine);
+            
+            if (AnimationDelayedCoroutine != null)
+                StopCoroutine(AnimationDelayedCoroutine);
+        }
+
+        public AnimationHandle TransitionToState(string stateName, float transitionTime = 0.25f)
+        {
+            if (_animationWaitCoroutine != null)
             {
-                if (_isWaiting)
-                {
-                    if (_currentHandle.WaitForAnimationEnd(_currentAnimation))
-                    {
-                        _isWaiting = false;
-                        _currentHandle.OnAnimationFinish?.Invoke();
-                    }
-                }
+                _currentHandle?.Cancel();
+                StopCoroutine(_animationWaitCoroutine);
+                _animationWaitCoroutine = null;
             }
-        }
 
-        public AnimationHandle TransitionToState(string state, float time = 0.25f)
-        {
-            _isWaiting = true;
-            _currentHandle = new AnimationHandle(this);
-            if (_currentAnimation != state)
+            if (_currentAnimation != stateName)
             {
-                animator.CrossFadeInFixedTime(state, time, 0);
+                animator.CrossFadeInFixedTime(stateName, transitionTime, 0);
+                _currentAnimation = stateName;
             }
-            _currentAnimation = state;
-            return _currentHandle;
+    
+            var transition = new AnimationHandle(this);
+            _currentHandle = transition;
+            _animationWaitCoroutine = StartCoroutine(WaitForAnimationEnd(stateName, transition));
+            return transition;
         }
 
-        public AnimationHandle TransitionToStateDelayed(string state, float delay, float time = 0.25f)
+        public AnimationHandle TransitionToStateDelayed(string stateName, float delay, float transitionTime = 0.25f)
         {
-            StartCoroutine(TransitionToStateDelayedCoroutine(state, delay, time));
-            return _currentHandle;
+            if (AnimationDelayedCoroutine != null)
+            {
+                StopCoroutine(AnimationDelayedCoroutine);
+                AnimationDelayedCoroutine = null;
+            }
+
+            var handle = new AnimationHandle(this);
+            AnimationDelayedCoroutine = StartCoroutine(DelayedTransitionCoroutine(stateName, delay, transitionTime, handle));
+            return handle;
         }
 
-        private IEnumerator TransitionToStateDelayedCoroutine(string state, float delay, float time = 0.25f)
+        private IEnumerator DelayedTransitionCoroutine(string stateName, float delay, float transitionTime, AnimationHandle handle)
         {
             yield return new WaitForSeconds(delay);
-            TransitionToState(state, time);
+            AnimationDelayedCoroutine = null;
+
+            if (handle.IsCanceled)
+                yield break;
+
+            var animationHandle = TransitionToState(stateName, transitionTime);
+            handle.LinkAnimationHandle(animationHandle);
+            animationHandle.Then(() => handle.InvokeEnd());
+        }
+
+        private IEnumerator WaitForAnimationEnd(string stateName, AnimationHandle handle)
+        {
+            var stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+            while (!stateInfo.IsName(stateName))
+            {
+                yield return null;
+                stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+            }
+            while (stateInfo.normalizedTime < 1f)
+            {
+                yield return null;
+                stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+            }
+            if (!handle.IsCanceled)
+                handle.InvokeEnd();
+            _animationWaitCoroutine = null;
+            _currentHandle = null;
         }
         
         public void SetCurrentAnimationState(string state) => _currentAnimation = state;
         public string GetCurrentAnimationState() => _currentAnimation;
-        public AnimationHandle GetCurrentAnimationHandle() => _currentHandle;
-        public void ResetCurrentAnimationState()
-        {
-            _isWaiting = false;
-            _currentAnimation = string.Empty;
-        }
+        public void ResetCurrentAnimationState() => _currentAnimation = string.Empty;
     }
-
+    
     public class AnimationHandle
     {
-        private readonly StateAnimator _stateAnimator;
-        public Action OnAnimationFinish;
-        
-        public AnimationHandle(StateAnimator stateAnimator)
+        private readonly StateAnimator _owner;
+        private AnimationHandle _linkedAnimationHandle;
+
+        public AnimationHandle(StateAnimator owner) => _owner = owner;
+
+        public event Action OnAnimationEnd;
+        public bool IsCanceled { get; private set; }
+
+        internal void LinkAnimationHandle(AnimationHandle animationHandle)
         {
-            _stateAnimator = stateAnimator;
-            OnAnimationFinish = null;
+            _linkedAnimationHandle = animationHandle;
         }
 
-        public bool WaitForAnimationEnd(string state)
+        public void Cancel()
         {
-            var stateInfo = _stateAnimator.Animator.GetCurrentAnimatorStateInfo(0);
-            if (!stateInfo.IsName(state))
+            IsCanceled = true;
+            if (_owner.AnimationDelayedCoroutine != null)
             {
-                return false;
+                _owner.StopCoroutine(_owner.AnimationDelayedCoroutine);
+                _owner.AnimationDelayedCoroutine = null;
             }
-            if (stateInfo.normalizedTime < 1f)
-            {
-                return false;
-            }
-            
-            return true;
+            _linkedAnimationHandle?.Cancel();
         }
 
-        public void Then(Action callback) => OnAnimationFinish += callback;
-        public void After(float time, Action callback) 
-            => _stateAnimator.StartCoroutine(WaitCallback(time, callback));
+        internal void InvokeEnd() => OnAnimationEnd?.Invoke();
 
-        public void AfterThen(float time, Action callback)
+        public void Then(Action action) => OnAnimationEnd += action;
+
+        public void After(float delay, Action action)
         {
-            OnAnimationFinish += () => _stateAnimator.StartCoroutine(WaitCallback(time, callback));
+            _owner.AnimationDelayedCoroutine = _owner.StartCoroutine(DelayedAction(delay, action));
         }
 
-        private IEnumerator WaitCallback(float time, Action callback)
+        public void AfterThen(float delay, Action action)
         {
-            yield return new WaitForSeconds(time);
-            callback?.Invoke();
+            OnAnimationEnd += () => _owner.AnimationDelayedCoroutine = _owner.StartCoroutine(DelayedAction(delay, action));
+        }
+
+        private IEnumerator DelayedAction(float delay, Action action)
+        {
+            yield return new WaitForSeconds(delay);
+            action?.Invoke();
         }
     }
 }

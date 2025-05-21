@@ -58,7 +58,7 @@ namespace SurgeEngine.Code.Core.Actor.System
 
         private void ChangeStateAnimation(FState obj)
         {
-            StateAnimator.StopAllCoroutines();
+            StateAnimator.Stop();
             
             FStateMachine machine = Actor.stateMachine;
             FState prev = machine.PreviousState;
@@ -130,7 +130,7 @@ namespace SurgeEngine.Code.Core.Actor.System
                         StateAnimator.TransitionToState("SlideToSit", 0f).After(0.175f, () => StateAnimator.TransitionToState(AnimatorParams.RunCycle, 0.2f));
                         return;
                     }
-            
+                    
                     if (machine.IsPrevExact<FStateSweepKick>())
                     {
                         StateAnimator.TransitionToState(AnimatorParams.RunCycle, 0.25f);
@@ -156,8 +156,14 @@ namespace SurgeEngine.Code.Core.Actor.System
                     StateAnimator.SetCurrentAnimationState(AnimatorParams.RunCycle);
                 }
             }
-            if (obj is FStateAir && prev is not FStateSpecialJump and not FStateAfterHoming and not FStateAirBoost and not FStateUpreel)
+            if (obj is FStateAir && prev is not FStateSpecialJump and not FStateAfterHoming and not FStateAirBoost)
             {
+                if (prev is FStateUpreel)
+                {
+                    StateAnimator.TransitionToState("PulleyExit", 0.1f).AfterThen(0.25f, () => StateAnimator.TransitionToState(AnimatorParams.AirCycle, 1f));
+                    return;
+                }
+                
                 StateAnimator.TransitionToState(AnimatorParams.AirCycle, prev switch
                 {
                     FStateGround => 0.2f,
@@ -188,7 +194,7 @@ namespace SurgeEngine.Code.Core.Actor.System
                         StateAnimator.TransitionToState("SitLoop", 0.1f);
                         break;
                     case FStateStompLand:
-                        //_stateAnimator.TransitionToStateDelayed("SitLoop", 0.1f, 0.673f);
+                        StateAnimator.TransitionToStateDelayed("SitLoop", 0.1f, 0.673f);
                         break;
                     default:
                         StateAnimator.TransitionToState("SitEnter", 0f).After(0.167f, () => StateAnimator.TransitionToState("SitLoop", 0f));
@@ -340,11 +346,6 @@ namespace SurgeEngine.Code.Core.Actor.System
             if (obj is FStateUpreel)
             {
                 StateAnimator.TransitionToState("UpreelStart", 0f).Then(() => StateAnimator.TransitionToState("PulleyLoop", 0.25f));
-            }
-
-            if (Actor.stateMachine.IsExact<FStateAir>() && prev is FStateUpreel)
-            {
-                StateAnimator.TransitionToState("PulleyExit", 0.1f).AfterThen(0.25f, () => StateAnimator.TransitionToState(AnimatorParams.AirCycle, 1f));
             }
         }
         
