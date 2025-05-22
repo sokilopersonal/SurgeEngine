@@ -1,7 +1,10 @@
 ﻿using SurgeEngine.Code.Gameplay.CommonObjects.Mobility;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace SurgeEngine.Code.Infrastructure.Custom.Drawers
 {
@@ -9,6 +12,7 @@ namespace SurgeEngine.Code.Infrastructure.Custom.Drawers
     {
         public static void DrawTrajectory(Vector3 startPosition, Vector3 direction, Color color, float impulse, float keepVelocity = 0f)
         {
+#if UNITY_EDITOR
             int trajectoryPoints = 32;
             float timeStep = 0.1f;
             Vector3 gravity = Physics.gravity.y * Vector3.up;
@@ -44,10 +48,12 @@ namespace SurgeEngine.Code.Infrastructure.Custom.Drawers
                 Handles.zTest = CompareFunction.LessEqual;
                 Handles.DrawLine(positions[i], positions[i + 1]);
             }
+#endif
         }
 
         public static void DrawTrickTrajectory(Vector3 startPosition, Vector3 direction, Color color, float impulse)
         {
+#if UNITY_EDITOR
             int trajectoryPoints = 240;
             float timeStep = 0.1f;
             int layerMask = 1 << LayerMask.NameToLayer("Default");
@@ -68,6 +74,7 @@ namespace SurgeEngine.Code.Infrastructure.Custom.Drawers
                 Handles.zTest = CompareFunction.LessEqual;
                 Handles.DrawLine(positions[i], positions[i + 1]);
             }
+#endif
         }
     }
 }
