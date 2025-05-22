@@ -65,19 +65,24 @@ namespace SurgeEngine.Code.Core.Actor.System
             
             if (obj is FStateIdle)
             {
-                if (prev is not FStateStart and not FStateDamageLand)
+                string[] idleAnims = 
+                {
+                    "sonic_idle_A",
+                    "sonic_idle_B",
+                    "sonic_idle_C",
+                    "sonic_idle_D",
+                    "sonic_idle_E_start",
+                };
+                    
+                int idleIndex = Random.Range(0, idleAnims.Length);
+                AnimationHandle idleHandle = null;
+                
+                if (prev is not FStateDamageLand)
                 {
                     switch (prev)
                     {
                         case FStateGround:
-                            if (Actor.kinematics.HorizontalSpeed >= 0.1f)
-                            {
-                                StateAnimator.TransitionToState("MoveStop", 0.1f).After(0.15f, () => StateAnimator.TransitionToState("Idle", 0.2f));
-                            }
-                            else
-                            {
-                                StateAnimator.TransitionToState("Idle", 0.1f);
-                            }
+                            idleHandle = StateAnimator.TransitionToState("Idle", 0.1f);
                             break;
                         case FStateAir:
                             StateAnimator.TransitionToState("Landing", 0f).After(0.4f, () => StateAnimator.TransitionToState("Idle", 1f));
@@ -85,20 +90,22 @@ namespace SurgeEngine.Code.Core.Actor.System
                         case FStateSit:
                             StateAnimator.TransitionToState("SitExit", 0f).After(0.167f, () => StateAnimator.TransitionToState("Idle", 0f));
                             break;
-                        case FStateStompLand: // TODO: Fix the fast transition
+                        case FStateStompLand:
                             StateAnimator.TransitionToStateDelayed("SitExit", 0.7f, 0.1f).Then(() =>
                             {
-                                StateAnimator.TransitionToState("Idle", 0f);
+                                idleHandle = StateAnimator.TransitionToState("Idle", 0f);
                             });
                             break;
                         case FStateSweepKick:
                             StateAnimator.TransitionToStateDelayed("SitExit", 0.25f, 0.1f).Then(() => StateAnimator.TransitionToState("Idle", 0f));
                             break;
                         case FStateBrakeTurn:
-                            StateAnimator.TransitionToState("Idle", 0.1f);
+                            idleHandle = StateAnimator.TransitionToState("Idle", 0.1f);
                             break;
                     }
                 }
+
+                idleHandle?.AfterThen(2f, () => StateAnimator.TransitionToState(idleAnims[idleIndex], 0.1f).Then(() => StateAnimator.TransitionToState("Idle", 0f)));
             }
             if (obj is FStateGround)
             {

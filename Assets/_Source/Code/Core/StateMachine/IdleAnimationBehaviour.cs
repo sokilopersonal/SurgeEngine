@@ -34,18 +34,7 @@ namespace SurgeEngine.Code.Core.StateMachine
                 {
                     _isIdle = true;
 
-                    string[] idleAnims = new[]
-                    {
-                        "sonic_idle_A",
-                        "sonic_idle_B",
-                        "sonic_idle_C",
-                        "sonic_idle_D",
-                        "sonic_idle_E_start",
-                    };
                     
-                    _idleIndex = Random.Range(0, idleAnims.Length);
-                    
-                    ActorContext.Context.animation.StateAnimator.TransitionToState(idleAnims[_idleIndex], 0.2f);
                 }
             }
         }
