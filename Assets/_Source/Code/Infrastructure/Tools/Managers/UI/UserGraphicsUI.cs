@@ -11,13 +11,11 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers.UI
         [SerializeField] private OptionBar sunShadowsQualityBar;
         [SerializeField] private OptionBar punctualShadowsQualityBar;
         [SerializeField] private OptionBar contactShadowsQualityBar;
-        [SerializeField] private OptionBar pcssBar;
         [SerializeField] private OptionBar bloomBar;
         [SerializeField] private OptionBar aoBar;
         [SerializeField] private OptionBar motionBlurBar;
         [SerializeField] private OptionBar refractionQualityBar;
         [SerializeField] private OptionBar ssrQualityBar;
-        [SerializeField] private OptionBar antiAliasingQualityBar;
         [SerializeField] private OptionBar subSurfaceScatteringQualityBar;
         
         [Inject] private UserGraphics _graphics;
@@ -36,7 +34,6 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers.UI
                 (motionBlurBar, i => _graphics.SetMotionBlurQuality((MotionBlurQuality)i), (int)data.motionBlurQuality),
                 (refractionQualityBar, i => _graphics.SetRefractionQuality((RefractionQuality)i), (int)data.refractionQuality),
                 (ssrQualityBar, i => _graphics.SetScreenSpaceReflectionsQuality((ScreenSpaceReflectionQuality)i), (int)data.screenSpaceReflectionQuality),
-                (antiAliasingQualityBar, i => _graphics.SetAntiAliasing((AntiAliasingQuality)i), (int)data.antiAliasingQuality),
                 (subSurfaceScatteringQualityBar, i => _graphics.SetSubSurfaceScattering((SubSurfaceScatteringQuality)i), (int)data.subSurfaceScatteringQuality),
             };
 
@@ -69,7 +66,6 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers.UI
                 motionBlurBar.SetIndex((int)data.motionBlurQuality);
                 refractionQualityBar.SetIndex((int)data.refractionQuality);
                 ssrQualityBar.SetIndex((int)data.screenSpaceReflectionQuality);
-                antiAliasingQualityBar.SetIndex((int)data.antiAliasingQuality);
                 subSurfaceScatteringQualityBar.SetIndex((int)data.subSurfaceScatteringQuality);
                 
                 _graphics.Apply();

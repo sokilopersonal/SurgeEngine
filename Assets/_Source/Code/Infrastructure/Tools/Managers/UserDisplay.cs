@@ -9,14 +9,10 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers
 {
     public class UserDisplay : JsonStorageService<UserDisplaySettings>, ILateDisposable
     {
-        public UpscalerChanger UpscalerChanger { get; }
-        
         private HDAdditionalCameraData _hdCameraData;
 
         public UserDisplay()
         {
-            UpscalerChanger = new UpscalerChanger();
-
             SceneManager.sceneLoaded += OnSceneLoaded;
         }
 
@@ -41,22 +37,47 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers
             if (camera != null)
             {
                 _hdCameraData = camera.GetComponent<HDAdditionalCameraData>();
-                _hdCameraData.customRenderingSettings = true;
-                
-                UpscalerChanger.SetCameraAndData(camera, _hdCameraData);
             }
         }
-
-        private void Apply()
+        
+        public void SetAntiAliasing(AntiAliasingQuality level)
         {
+            Data.antiAliasingQuality = level;
+        }
+
+        public void SetSharpness(float value)
+        {
+            Data.sharpness = Mathf.Clamp(value, 0, 2);
+        }
+
+        public void Apply()
+        {
+            _hdCameraData.TAAQuality = (HDAdditionalCameraData.TAAQualityLevel)Data.antiAliasingQuality;
+            switch (Data.antiAliasingQuality)
+            {
+                case AntiAliasingQuality.Low:
+                    _hdCameraData.taaSharpenMode = HDAdditionalCameraData.TAASharpenMode.LowQuality;
+                    break;
+                case AntiAliasingQuality.Medium or AntiAliasingQuality.High:
+                    _hdCameraData.taaSharpenMode = HDAdditionalCameraData.TAASharpenMode.PostSharpen;
+                    break;
+            }
             
+            _hdCameraData.taaSharpenStrength = Data.sharpness;
         }
     }
 
     [Serializable]
     public class UserDisplaySettings
     {
-        public Upscaler Upscaler;
-        public UpscalingMode UpscalerQuality;
+        public AntiAliasingQuality antiAliasingQuality = AntiAliasingQuality.High;
+        public float sharpness = 0.25f;
+    }
+    
+    public enum AntiAliasingQuality
+    {
+        Low = 0,
+        Medium = 1,
+        High = 2
     }
 }

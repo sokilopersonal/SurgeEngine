@@ -13,9 +13,9 @@ namespace SurgeEngine.Code.UI.Menus
 
         private void Start()
         {
-            _startWidth = 550f;
-            _endY = 125f;
-            _endHeight = 750f;
+            _startWidth = firstBox.sizeDelta.x;
+            _endY = parent.anchoredPosition.y;
+            _endHeight = firstBox.sizeDelta.y;
         }
 
         protected override void InsertIntroAnimations()

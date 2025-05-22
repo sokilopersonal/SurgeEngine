@@ -226,7 +226,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 0
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -255,6 +255,8 @@ MonoBehaviour:
   optionDescription: 
   selectionGroup: {fileID: 3528543384129163556}
   slider: {fileID: 8627503661784545907}
+  step: 10
+  sliderTextFormat: F2
 --- !u!222 &4421058364086597887
 CanvasRenderer:
   m_ObjectHideFlags: 0

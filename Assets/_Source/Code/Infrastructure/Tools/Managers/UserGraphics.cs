@@ -88,11 +88,6 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers
             Data.screenSpaceReflectionQuality = level;
         }
 
-        public void SetAntiAliasing(AntiAliasingQuality level)
-        {
-            Data.antiAliasingQuality = level;
-        }
-
         public void SetContactShadows(ContactShadowsQuality level)
         {
             Data.contactShadowsQuality = level;
@@ -234,15 +229,6 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers
             
             // Refraction Quality
             SetKeyword(_refractionQualityKeywords, (int)Data.refractionQuality);
-            
-            if (_hdCameraData)
-            {
-                _hdCameraData.TAAQuality = (HDAdditionalCameraData.TAAQualityLevel)Data.antiAliasingQuality;
-            }
-            else
-            {
-                Debug.LogWarning("[UserGraphics] HDCameraData doesn't exists.");
-            }
         }
 
         private void SetupCamera()
@@ -267,7 +253,6 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers
         public TextureQuality textureQuality = TextureQuality.High;
         public RefractionQuality refractionQuality = RefractionQuality.Native;
         public ScreenSpaceReflectionQuality screenSpaceReflectionQuality = ScreenSpaceReflectionQuality.Medium;
-        public AntiAliasingQuality antiAliasingQuality = AntiAliasingQuality.High;
         public ContactShadowsQuality contactShadowsQuality = ContactShadowsQuality.Medium;
         public SubSurfaceScatteringQuality subSurfaceScatteringQuality = SubSurfaceScatteringQuality.On;
     }
@@ -328,13 +313,6 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers
     }
 
     public enum MaterialQuality
-    {
-        Low = 0,
-        Medium = 1,
-        High = 2
-    }
-
-    public enum AntiAliasingQuality
     {
         Low = 0,
         Medium = 1,
