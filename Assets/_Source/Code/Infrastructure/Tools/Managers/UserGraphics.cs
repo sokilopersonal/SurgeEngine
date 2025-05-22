@@ -10,16 +10,13 @@ using Zenject;
 
 namespace SurgeEngine.Code.Infrastructure.Tools.Managers
 {
-    public class UserGraphics : JsonStorageService<GraphicsData>, IInitializable, ILateDisposable
+    public class UserGraphics : JsonStorageService<GraphicsData>, ILateDisposable
     {
         private readonly VolumeProfile _volume;
-
         private readonly List<LightDefiner> _lightsData;
-        
         private HDAdditionalCameraData _hdCameraData;
         
         private const int MaxTextureQuality = 3;
-        private const int MaxRefractionQuality = 2;
         
         private readonly string[] _refractionQualityKeywords =
         {
@@ -28,36 +25,12 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers
             "_REFRACTIONQUALITY_NATIVE",
         };
         
-        private readonly string[] _capsuleShadowsKeywords =
-        {
-            "_CAPSULESHADOWS_OFF",
-            "_CAPSULESHADOWS_ON"
-        };
-
         public UserGraphics(VolumeProfile profile)
         {
             _volume = profile;
-            
-            if (!_volume.TryGet(out ScreenSpaceReflection _))
-            {
-                _volume.Add<ScreenSpaceReflection>();
-            }
-            if (!_volume.TryGet(out Bloom _))
-            {
-                _volume.Add<Bloom>();
-            }
-            if (!_volume.TryGet(out ScreenSpaceAmbientOcclusion _))
-            {
-                _volume.Add<ScreenSpaceAmbientOcclusion>();
-            }
-            
             _lightsData = new List<LightDefiner>();
             
             SceneManager.sceneLoaded += OnSceneLoaded;
-        }
-        
-        public void Initialize()
-        {
         }
 
         public void LateDispose()
@@ -69,6 +42,8 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers
         {
             if (mode != LoadSceneMode.Additive)
             {
+                SetupCamera();
+                
                 Apply();
             }
         }
@@ -128,11 +103,6 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers
             Data.subSurfaceScatteringQuality = level;
         }
 
-        public void SetCapsuleShadows(bool value)
-        {
-            Data.capsuleShadows = value;
-        }
-
         public void AddLight(LightDefiner data)
         {
             _lightsData.Add(data);
@@ -156,12 +126,6 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers
 
         public void Apply()
         {
-            if (Camera.main != null)
-            {
-                _hdCameraData = Camera.main.GetComponent<HDAdditionalCameraData>();
-                _hdCameraData.customRenderingSettings = true;
-            }
-            
             // Texture quality
             QualitySettings.globalTextureMipmapLimit = MaxTextureQuality - (int)Data.textureQuality;
             
@@ -279,20 +243,17 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers
             {
                 Debug.LogWarning("[UserGraphics] HDCameraData doesn't exists.");
             }
-
-            if (Data.capsuleShadows)
-            {
-                Shader.EnableKeyword("_CAPSULE_SHADOWS_ON");
-            }
-            else
-            {
-                Shader.DisableKeyword("_CAPSULE_SHADOWS_ON");
-            }
-
-            Debug.Log($"[UserGraphics] Applied graphics options");
         }
 
-        public GraphicsData GetGraphicsData() => Data;
+        private void SetupCamera()
+        {
+            var camera = Camera.main;
+            if (camera != null)
+            {
+                _hdCameraData = camera.GetComponent<HDAdditionalCameraData>();
+                _hdCameraData.customRenderingSettings = true;
+            }
+        }
     }
 
     [Serializable]
@@ -309,7 +270,6 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers
         public AntiAliasingQuality antiAliasingQuality = AntiAliasingQuality.High;
         public ContactShadowsQuality contactShadowsQuality = ContactShadowsQuality.Medium;
         public SubSurfaceScatteringQuality subSurfaceScatteringQuality = SubSurfaceScatteringQuality.On;
-        public bool capsuleShadows = true;
     }
     
     public enum TextureQuality

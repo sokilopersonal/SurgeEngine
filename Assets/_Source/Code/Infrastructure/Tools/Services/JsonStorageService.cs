@@ -63,5 +63,7 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Services
         {
             return Path.Combine(Application.persistentDataPath, FileName);
         }
+        
+        public TData GetData() => Data;
     }
 }

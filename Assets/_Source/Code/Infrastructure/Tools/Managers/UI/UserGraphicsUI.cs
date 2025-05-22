@@ -24,7 +24,7 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers.UI
 
         private void Awake()
         {
-            var data = _graphics.GetGraphicsData();
+            var data = _graphics.GetData();
             var bindings = new (OptionBar bar, Action<int> set, int current)[]
             {
                 (textureQualityBar, i => _graphics.SetTextureQuality((TextureQuality)i), (int)data.textureQuality),
