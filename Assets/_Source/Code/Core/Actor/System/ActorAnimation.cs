@@ -224,11 +224,7 @@ namespace SurgeEngine.Code.Core.Actor.System
                 }
                 else
                 {
-                    if (prev is not FStateUpreel) StartCoroutine(PlayHop());
-                    else
-                    {
-                        StateAnimator.TransitionToState("PulleyJump", 0.2f).Then(() => StateAnimator.TransitionToState(AnimatorParams.AirCycle, 0.1f));
-                    }
+                    StartCoroutine(PlayHop());
                 }
             }
             else
