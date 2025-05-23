@@ -4,7 +4,7 @@ using Zenject;
 
 namespace SurgeEngine.Code.Infrastructure.Tools.Managers.UI
 {
-    public class VolumeManagerUI : MonoBehaviour
+    public class VolumeManagerUI : OptionUI
     {
         [SerializeField] private OptionBar masterVolumeBar;
         [SerializeField] private OptionBar musicVolumeBar;
@@ -12,8 +12,10 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers.UI
 
         [Inject] private VolumeManager _volumeManager;
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
+            
             _volumeManager.Load(volumeData =>
             {
                 masterVolumeBar.OnIndexChanged += index => _volumeManager.SetMasterVolume(index);
@@ -26,9 +28,23 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers.UI
             });
         }
 
-        public void Save()
+        public override void Save()
         {
             _volumeManager.Save();
+            
+            base.Save();
+        }
+
+        public override void Revert()
+        {
+            _volumeManager.Load(data =>
+            {
+                masterVolumeBar.SetIndex(Mathf.FloorToInt(data.MasterVolume * 100));
+                musicVolumeBar.SetIndex(Mathf.FloorToInt(data.MusicVolume * 100));
+                sfxVolumeBar.SetIndex(Mathf.FloorToInt(data.SfxVolume * 100));
+                
+                Save();
+            });
         }
     }
 }

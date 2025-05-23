@@ -5,8 +5,9 @@ using Zenject;
 
 namespace SurgeEngine.Code.Infrastructure.Tools.Managers.UI
 {
-    public class UserGraphicsUI : MonoBehaviour
+    public class UserGraphicsUI : OptionUI
     {
+        [Header("Bars")]
         [SerializeField] private OptionBar textureQualityBar;
         [SerializeField] private OptionBar sunShadowsQualityBar;
         [SerializeField] private OptionBar punctualShadowsQualityBar;
@@ -20,8 +21,10 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers.UI
         
         [Inject] private UserGraphics _graphics;
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
+            
             var data = _graphics.GetData();
             var bindings = new (OptionBar bar, Action<int> set, int current)[]
             {
@@ -45,15 +48,16 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers.UI
                     _graphics.Apply();
                 };
             }
-
         }
 
-        public void Save()
+        public override void Save()
         {
             _graphics.Save();
+            
+            base.Save();
         }
 
-        public void Revert()
+        public override void Revert()
         {
             _graphics.Load(data =>
             {
@@ -69,7 +73,7 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers.UI
                 subSurfaceScatteringQualityBar.SetIndex((int)data.subSurfaceScatteringQuality);
                 
                 _graphics.Apply();
-                _graphics.Save();
+                Save();
             });
         }
     }

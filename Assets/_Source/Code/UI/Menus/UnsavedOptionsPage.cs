@@ -1,20 +1,39 @@
-using System;
-using DG.Tweening;
+﻿using DG.Tweening;
+using SurgeEngine.Code.Infrastructure.Tools.Managers.UI;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UI;
 
 namespace SurgeEngine.Code.UI.Menus
 {
-    public class RestartPage : Page
+    public class UnsavedOptionsPage : Page
     {
-        [SerializeField] private RectTransform firstBox, secondBox;
+        [SerializeField] private RectTransform firstBox, secondBox, mask;
+        [SerializeField] private Button saveButton, revertButton;
+        private OptionUI optionUI;
 
         private float _startWidth;
         private float _startHeight;
+
+        protected override void Awake()
+        {
+            base.Awake();
+
+            optionUI = GetComponentInParent<OptionUI>();
+        }
 
         private void Start()
         {
             _startWidth = firstBox.sizeDelta.x;
             _startHeight = firstBox.sizeDelta.y;
+            
+            saveButton.onClick.AddListener(CloseUnsavedPage);
+            revertButton.onClick.AddListener(CloseUnsavedPage);
+            
+            saveButton.onClick.AddListener(() => MenusHandler.Instance.OpenMenu<OptionsPage>());
+            
+            saveButton.onClick.AddListener(optionUI.Save);
+            revertButton.onClick.AddListener(optionUI.Revert);
         }
 
         protected override void InsertIntroAnimations()
@@ -25,6 +44,7 @@ namespace SurgeEngine.Code.UI.Menus
             AnimationSequence.Join(Group.DOFade(1f, 0.2f).From(0));
             AnimationSequence.Join(SizeTween(secondBox, true));
             AnimationSequence.Join(SizeTween(firstBox, true).SetDelay(0.1f));
+            AnimationSequence.Join(SizeTween(mask, true).SetDelay(0.1f));
         }
 
         protected override void InsertOutroAnimations()
@@ -50,6 +70,11 @@ namespace SurgeEngine.Code.UI.Menus
             }
 
             return tween;
+        }
+
+        private void CloseUnsavedPage()
+        {
+            CloseInternal();
         }
     }
 }

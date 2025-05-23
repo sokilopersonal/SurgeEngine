@@ -14,11 +14,7 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers
         public bool RunInBackground
         {
             get => Data.runInBackground;
-            set
-            {
-                Data.runInBackground = value;
-                Save();
-            }
+            set => Data.runInBackground = value;
         }
     }
 }

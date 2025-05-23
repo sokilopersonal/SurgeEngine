@@ -1,19 +1,20 @@
-﻿using System;
-using SurgeEngine.Code.UI.Menus.OptionElements;
+﻿using SurgeEngine.Code.UI.Menus.OptionElements;
 using UnityEngine;
 using Zenject;
 
 namespace SurgeEngine.Code.Infrastructure.Tools.Managers.UI
 {
-    public class UserDisplayUI : MonoBehaviour
+    public class UserDisplayUI : OptionUI
     {
         [SerializeField] private OptionBar antiAliasingQualityBar;
         [SerializeField] private SliderOptionBar sharpnessSliderBar;
         
         [Inject] private UserDisplay _display;
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
+            
             antiAliasingQualityBar.OnIndexChanged += i => _display.SetAntiAliasing((AntiAliasingQuality)i);
             sharpnessSliderBar.OnSliderBarValueChanged += value => _display.SetSharpness(value);
 
@@ -25,12 +26,14 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers.UI
             sharpnessSliderBar.OnSliderBarValueChanged += _ => _display.Apply();
         }
 
-        public void Save()
+        public override void Save()
         {
             _display.Save();
+            
+            base.Save();
         }
 
-        public void Revert()
+        public override void Revert()
         {
             _display.Load(data =>
             {
