@@ -1,6 +1,9 @@
 ﻿using SurgeEngine.Code.Gameplay.CommonObjects.System;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.SceneManagement;
 using Zenject;
 
 namespace SurgeEngine.Editor
@@ -14,46 +17,57 @@ namespace SurgeEngine.Editor
                          " \nAre you sure you want to continue?";
             if (EditorUtility.DisplayDialog("Scene Validation", msg, "Yes", "No"))
             {
-                if (!Object.FindFirstObjectByType<Stage>())
+                if (!CheckSceneSetup())
                 {
-                    var stage = new GameObject("+ Stage").AddComponent<Stage>();
-                    Undo.RegisterCreatedObjectUndo(stage, "Add Stage");
-                }
+                    var currentScene = SceneManager.GetActiveScene();
+                    var additiveScene = EditorSceneManager.OpenScene("Assets/_Source/Scenes/Template/GameplayScene.unity", OpenSceneMode.Additive);
+                    
+                    foreach (var rootGameObject in currentScene.GetRootGameObjects()) Undo.RegisterFullObjectHierarchyUndo(rootGameObject, "Validate Scene");
 
-                if (!Object.FindFirstObjectByType<SceneContext>())
-                {
-                    var prefab = AssetDatabase.LoadAssetAtPath<SceneContext>("Assets/Prefabs/DI/SceneContext.prefab");
-                    var sceneContext = PrefabUtility.InstantiatePrefab(prefab, GameObject.Find("+ Stage").transform);
-                    Undo.RegisterCreatedObjectUndo(sceneContext, "Add SceneContext");
-                }
-
-                if (!GameObject.Find("- Volumes"))
-                {
-                    var volumes = new GameObject("- Volumes");
-                    Undo.RegisterCreatedObjectUndo(volumes, "Add Volumes folder");
-                }
-
-                if (!GameObject.Find("- SetData"))
-                {
-                    var setdata = new GameObject("- SetData")
+                    foreach (var rootObj in additiveScene.GetRootGameObjects())
                     {
-                        tag = "SetData"
-                    };
-                    Undo.RegisterCreatedObjectUndo(setdata, "Add SetData folder");
+                        SceneManager.MoveGameObjectToScene(rootObj, currentScene);
+                    }
+                    
+                    EditorSceneManager.CloseScene(additiveScene, true);
                 }
-
-                if (!GameObject.Find("- Geometry"))
+                else
                 {
-                    var geometry = new GameObject("- Geometry");
-                    Undo.RegisterCreatedObjectUndo(geometry, "Add Geometry folder");
-                }
-
-                if (!GameObject.Find("- Lighting"))
-                {
-                    var lighting = new GameObject("- Lighting");
-                    Undo.RegisterCreatedObjectUndo(lighting, "Add Lighting folder");
+                    EditorUtility.DisplayDialog("Scene Validation", "Scene is already validated. " +
+                                                                    "If you want to revalidate it: " +
+                                                                    "remove GameplaySceneContext, Volumes, SetData, Geometry and Lighting objects", "Ok");
                 }
             }
+        }
+
+        private static bool CheckSceneSetup()
+        {
+            if (Object.FindFirstObjectByType<SceneContext>())
+            {
+                return true;
+            }
+            
+            if (GameObject.Find("- Volumes"))
+            {
+                return true;
+            }
+            
+            if (GameObject.Find("- SetData"))
+            {
+                return true;
+            }
+            
+            if (GameObject.Find("- Geometry"))
+            {
+                return true;
+            }
+            
+            if (GameObject.Find("- Lighting"))
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }
