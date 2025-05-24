@@ -1262,33 +1262,33 @@ MonoBehaviour:
     m_Aspect: 0
   m_HasValidSHForNormalization: 1
   m_SHForNormalization:
-    'sh[ 0]': 6592.521
-    'sh[ 1]': -3604.8896
-    'sh[ 2]': 2853.8425
-    'sh[ 3]': 1653.1337
-    'sh[ 4]': -390.02667
-    'sh[ 5]': -963.508
-    'sh[ 6]': -66.95656
-    'sh[ 7]': 206.55943
-    'sh[ 8]': -0.76311386
-    'sh[ 9]': 6563.589
-    'sh[10]': -3003.5234
-    'sh[11]': 2620.0303
-    'sh[12]': 1565.6816
-    'sh[13]': -348.21057
-    'sh[14]': -859.366
-    'sh[15]': -68.70807
-    'sh[16]': 205.60985
-    'sh[17]': -39.476433
-    'sh[18]': 7542.0894
-    'sh[19]': -2098.0444
-    'sh[20]': 2512.5452
-    'sh[21]': 1664.9124
-    'sh[22]': -307.01984
-    'sh[23]': -764.68005
-    'sh[24]': -91.60272
-    'sh[25]': 247.32846
-    'sh[26]': -139.79501
+    'sh[ 0]': 3014.9065
+    'sh[ 1]': 362.1433
+    'sh[ 2]': 1682.3892
+    'sh[ 3]': 985.1002
+    'sh[ 4]': -75.95683
+    'sh[ 5]': 420.0992
+    'sh[ 6]': 306.41788
+    'sh[ 7]': 893.1811
+    'sh[ 8]': 367.01688
+    'sh[ 9]': 3165.219
+    'sh[10]': 608.2777
+    'sh[11]': 1451.836
+    'sh[12]': 947.23535
+    'sh[13]': -21.889479
+    'sh[14]': 374.55133
+    'sh[15]': 233.59605
+    'sh[16]': 815.1871
+    'sh[17]': 270.52225
+    'sh[18]': 4022.1636
+    'sh[19]': 1260.303
+    'sh[20]': 1233.7285
+    'sh[21]': 1031.3451
+    'sh[22]': 113.08327
+    'sh[23]': 337.10516
+    'sh[24]': 115.216415
+    'sh[25]': 758.9458
+    'sh[26]': 92.569435
   m_SHValidForCapturePosition: {x: -24, y: -4, z: -26}
   m_SHValidForSourcePosition: {x: -24, y: -4, z: -26}
   m_HDProbeVersion: 9
@@ -1596,7 +1596,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Profile: {fileID: 11400000, guid: 7917764307a28934daac0fe12ea6af22, type: 2}
   m_StaticLightingSkyUniqueID: 4
-  m_StaticLightingCloudsUniqueID: 0
+  m_StaticLightingCloudsUniqueID: 1
   m_StaticLightingVolumetricClouds: 0
   bounces: 1
 --- !u!4 &156542160
@@ -5150,13 +5150,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 486004865}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.42659983, y: 0.3394444, z: -0.17670347, w: 0.81949127}
+  m_LocalRotation: {x: 0.19996412, y: 0.3736123, z: -0.08282785, w: 0.90198}
   m_LocalPosition: {x: 0, y: 5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1916872134}
-  m_LocalEulerAnglesHint: {x: 55, y: 45, z: 0}
+  m_LocalEulerAnglesHint: {x: 25, y: 45, z: 0}
 --- !u!114 &486004867
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5252,7 +5252,7 @@ MonoBehaviour:
   environmentOcclusion: 0
   useWaterOcclusion: 0
   occlusionRadius: 0.2
-  sampleCount: 12
+  sampleCount: 8
   occlusionOffset: 0.05
   scale: 1
   allowOffScreen: 0
@@ -5440,7 +5440,7 @@ Light:
   serializedVersion: 11
   m_Type: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 100000
+  m_Intensity: 130000
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -5485,7 +5485,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6500
   m_UseColorTemperature: 1
-  m_BoundingSphereOverride: {x: 8.4375e-41, y: 2.524355e-29, z: 0, w: -1.3003388e-38}
+  m_BoundingSphereOverride: {x: 1.1676e-41, y: 2.524355e-29, z: 0, w: -5.51013e-40}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
@@ -13119,7 +13119,7 @@ MeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1116852605}
   m_Enabled: 1
-  m_CastShadows: 1
+  m_CastShadows: 2
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
@@ -21401,33 +21401,33 @@ MonoBehaviour:
     m_Aspect: 0
   m_HasValidSHForNormalization: 1
   m_SHForNormalization:
-    'sh[ 0]': 596.89557
-    'sh[ 1]': -77.55323
-    'sh[ 2]': -36.692635
-    'sh[ 3]': 428.62466
-    'sh[ 4]': -16.88093
-    'sh[ 5]': 18.047943
-    'sh[ 6]': -14.796668
-    'sh[ 7]': 15.007326
-    'sh[ 8]': 43.608536
-    'sh[ 9]': 600.4529
-    'sh[10]': -77.35934
-    'sh[11]': -35.33364
-    'sh[12]': 421.66718
-    'sh[13]': -17.368715
-    'sh[14]': 15.069291
-    'sh[15]': -13.760601
-    'sh[16]': 10.72026
-    'sh[17]': 40.68004
-    'sh[18]': 674.8878
-    'sh[19]': -82.56496
-    'sh[20]': -36.504013
-    'sh[21]': 459.86523
-    'sh[22]': -20.161156
-    'sh[23]': 10.253068
-    'sh[24]': -13.602722
-    'sh[25]': 3.0289195
-    'sh[26]': 40.13248
+    'sh[ 0]': 268.70163
+    'sh[ 1]': 39.56961
+    'sh[ 2]': 6.4414787
+    'sh[ 3]': 286.39362
+    'sh[ 4]': 17.88897
+    'sh[ 5]': 2.745043
+    'sh[ 6]': -11.198873
+    'sh[ 7]': 5.0564747
+    'sh[ 8]': 35.848217
+    'sh[ 9]': 272.73666
+    'sh[10]': 44.513115
+    'sh[11]': 4.7746305
+    'sh[12]': 286.24457
+    'sh[13]': 18.607843
+    'sh[14]': 2.6806624
+    'sh[15]': -11.359876
+    'sh[16]': 3.9573505
+    'sh[17]': 34.934967
+    'sh[18]': 317.23712
+    'sh[19]': 59.34404
+    'sh[20]': 1.9168983
+    'sh[21]': 322.42563
+    'sh[22]': 21.269985
+    'sh[23]': 2.9407494
+    'sh[24]': -13.111813
+    'sh[25]': 2.2378125
+    'sh[26]': 37.295334
   m_SHValidForCapturePosition: {x: -42.529755, y: -3.8931932, z: -25.015007}
   m_SHValidForSourcePosition: {x: -42.529755, y: -3.8931932, z: -25.015007}
   m_HDProbeVersion: 9
@@ -27117,33 +27117,33 @@ MonoBehaviour:
     m_Aspect: 0
   m_HasValidSHForNormalization: 1
   m_SHForNormalization:
-    'sh[ 0]': 39.35537
-    'sh[ 1]': 4.5597954
-    'sh[ 2]': -34.00572
-    'sh[ 3]': 28.94536
-    'sh[ 4]': 1.5383229
-    'sh[ 5]': -1.9837972
-    'sh[ 6]': 1.493838
-    'sh[ 7]': -12.003849
-    'sh[ 8]': 2.5431173
-    'sh[ 9]': 37.1698
-    'sh[10]': 4.3349752
-    'sh[11]': -32.158066
-    'sh[12]': 27.288412
-    'sh[13]': 1.4608463
-    'sh[14]': -1.887331
-    'sh[15]': 1.4192559
-    'sh[16]': -11.331914
-    'sh[17]': 2.3920865
-    'sh[18]': 35.041847
-    'sh[19]': 4.1163497
-    'sh[20]': -30.359512
-    'sh[21]': 25.674686
-    'sh[22]': 1.3854874
-    'sh[23]': -1.7935368
-    'sh[24]': 1.3467191
-    'sh[25]': -10.677643
-    'sh[26]': 2.244945
+    'sh[ 0]': 3.4028235e+38
+    'sh[ 1]': 0
+    'sh[ 2]': 0
+    'sh[ 3]': 0
+    'sh[ 4]': 0
+    'sh[ 5]': 0
+    'sh[ 6]': 0
+    'sh[ 7]': 0
+    'sh[ 8]': 0
+    'sh[ 9]': 3.4028235e+38
+    'sh[10]': 0
+    'sh[11]': 0
+    'sh[12]': 0
+    'sh[13]': 0
+    'sh[14]': 0
+    'sh[15]': 0
+    'sh[16]': 0
+    'sh[17]': 0
+    'sh[18]': 3.4028235e+38
+    'sh[19]': 0
+    'sh[20]': 0
+    'sh[21]': 0
+    'sh[22]': 0
+    'sh[23]': 0
+    'sh[24]': 0
+    'sh[25]': 0
+    'sh[26]': 0
   m_SHValidForCapturePosition: {x: -53, y: -4, z: -15.500002}
   m_SHValidForSourcePosition: {x: -53, y: -4, z: -19.500002}
   m_HDProbeVersion: 9
