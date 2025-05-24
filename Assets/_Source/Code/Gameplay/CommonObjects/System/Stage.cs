@@ -12,8 +12,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.System
 {
     public class Stage : MonoBehaviour
     {
-        private static Stage _instance;
-        public static Stage Instance => _instance;
+        public static Stage Instance { get; private set; }
 
         public StageData data;
         
@@ -21,10 +20,14 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.System
 
         [Inject] private ActorBase _actor;
 
+        [Inject]
+        private void Initialize(Stage stage)
+        {
+            Instance = stage;
+        }
+        
         private void Awake()
         {
-            _instance = this;
-            
             data = new StageData()
             {
                 RingCount = 0
