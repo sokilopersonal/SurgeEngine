@@ -7,6 +7,7 @@ using UnityEngine.Rendering;
 using UnityEngine.Rendering.HighDefinition;
 using UnityEngine.SceneManagement;
 using Zenject;
+using Object = UnityEngine.Object;
 
 namespace SurgeEngine.Code.Infrastructure.Tools.Managers
 {
@@ -25,9 +26,11 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers
             "_REFRACTIONQUALITY_NATIVE",
         };
         
-        public UserGraphics(VolumeProfile profile)
+        public UserGraphics(Volume volume)
         {
-            _volume = profile;
+            var instance = Object.Instantiate(volume);
+            Object.DontDestroyOnLoad(instance.gameObject);
+            _volume = volume.profile;
             _lightsData = new List<LightDefiner>();
             
             SceneManager.sceneLoaded += OnSceneLoaded;
