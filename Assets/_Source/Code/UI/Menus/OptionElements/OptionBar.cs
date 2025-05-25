@@ -7,10 +7,11 @@ using UnityEngine.UI;
 
 namespace SurgeEngine.Code.UI.Menus.OptionElements
 {
-    public class OptionBar : Selectable, IScrollHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
+    public class OptionBar : Selectable, ISubmitHandler, IScrollHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
     {
         public event Action<MoveDirection> OnBarMove;
         public event Action<OptionBar> OnBarSelected;
+        public event Action<OptionBar> OnBarSubmit;
         public event Action<int> OnIndexChanged; 
 
         [Header("States")]
@@ -30,8 +31,6 @@ namespace SurgeEngine.Code.UI.Menus.OptionElements
         private Tween _selectionTween;
         private RectTransform _rectTransform;
         private AutoScroll _autoScroll;
-        
-        private ScrollRect _parentScrollRect;
 
         public int Index
         {
@@ -74,19 +73,10 @@ namespace SurgeEngine.Code.UI.Menus.OptionElements
         {
             base.Awake();
 
-            if (Application.isPlaying)
-            {
-                _rectTransform = GetComponent<RectTransform>();
-                _autoScroll = GetComponentInParent<AutoScroll>();
+            _rectTransform = GetComponent<RectTransform>();
+            _autoScroll = GetComponentInParent<AutoScroll>();
 
-                var parentScroll = GetComponentInParent<ScrollRect>();
-                if (parentScroll != null)
-                {
-                    _parentScrollRect = parentScroll;
-                }
-
-                selectionGroup.alpha = 0f;
-            }
+            selectionGroup.alpha = 0f;
         }
 
         protected override void OnEnable()
@@ -149,7 +139,7 @@ namespace SurgeEngine.Code.UI.Menus.OptionElements
         {
             base.OnMove(eventData);
             
-            _autoScroll.ScrollTo(_rectTransform);
+            _autoScroll?.ScrollTo(_rectTransform);
             
             if (IsSelected)
             {
@@ -160,9 +150,9 @@ namespace SurgeEngine.Code.UI.Menus.OptionElements
         public override void OnSelect(BaseEventData eventData)
         {
             base.OnSelect(eventData);
-            
+
             OnBarSelected?.Invoke(this);
-            _autoScroll.ScrollTo(null);
+            _autoScroll?.ScrollTo(null);
 
             _selectionTween?.Kill(true);
             _selectionTween = selectionGroup.DOFade(1f, 0.25f).SetUpdate(true).SetEase(Ease.OutCubic);
@@ -175,37 +165,30 @@ namespace SurgeEngine.Code.UI.Menus.OptionElements
             _selectionTween?.Kill(true);
             _selectionTween = selectionGroup.DOFade(0f, 0.25f).SetUpdate(true).SetEase(Ease.OutCubic);
         }
+        
+        public void OnSubmit(BaseEventData eventData)
+        {
+            OnBarSubmit?.Invoke(this);
+        }
 
         public void OnScroll(PointerEventData eventData)
         {
-            if (_parentScrollRect != null)
-            {
-                _parentScrollRect.OnScroll(eventData);
-            }
+            _autoScroll.ScrollRect.OnScroll(eventData);
         }
 
         public void OnBeginDrag(PointerEventData eventData)
         {
-            if (_parentScrollRect != null)
-            {
-                _parentScrollRect.OnBeginDrag(eventData);
-            }
+            _autoScroll.ScrollRect.OnBeginDrag(eventData);
         }
 
         public void OnDrag(PointerEventData eventData)
         {
-            if (_parentScrollRect != null)
-            {
-                _parentScrollRect.OnDrag(eventData);
-            }
+            _autoScroll.ScrollRect.OnDrag(eventData);
         }
 
         public void OnEndDrag(PointerEventData eventData)
         {
-            if (_parentScrollRect != null)
-            {
-                _parentScrollRect.OnEndDrag(eventData);
-            }
+            _autoScroll.ScrollRect.OnEndDrag(eventData);
         }
     }
 }

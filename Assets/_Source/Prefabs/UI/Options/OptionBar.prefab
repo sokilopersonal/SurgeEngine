@@ -560,6 +560,7 @@ GameObject:
   - component: {fileID: 1323976465587856096}
   - component: {fileID: 4809953961185475083}
   - component: {fileID: 4022750919504503206}
+  - component: {fileID: 6613444880233182997}
   m_Layer: 5
   m_Name: OptionBar
   m_TagString: Untagged
@@ -588,7 +589,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 875, y: 100}
+  m_SizeDelta: {x: 875, y: 80}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1323976465587856096
 MonoBehaviour:
@@ -603,7 +604,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 0
+    m_Mode: 2
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -630,7 +631,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 4022750919504503206}
   states:
   - Low
   - Medium
@@ -678,6 +679,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &6613444880233182997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7820451558486510028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e773f85fb06c4b958df09119e4b1faf1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7891938400197788096
 GameObject:
   m_ObjectHideFlags: 0

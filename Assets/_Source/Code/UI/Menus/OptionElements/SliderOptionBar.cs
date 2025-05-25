@@ -20,7 +20,8 @@ namespace SurgeEngine.Code.UI.Menus.OptionElements
         {
             base.Awake();
             
-            slider ??= GetComponentInChildren<Slider>();
+            if (!slider)
+                slider = GetComponentInChildren<Slider>();
         }
 
         protected override void OnEnable()

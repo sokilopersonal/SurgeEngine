@@ -12,8 +12,11 @@ namespace SurgeEngine.Code.UI
 {
     public class MenuEventSystemHandler : MonoBehaviour
     {
+        public static MenuEventSystemHandler Instance { get; private set; }
+        
         [Header("References")]
         [SerializeField] private List<Selectable> selectables = new List<Selectable>();
+        public List<Selectable> Selectables => selectables;
         private CanvasGroup _parentGroup;
         
         [Header("Navigation Reference")]
@@ -27,6 +30,7 @@ namespace SurgeEngine.Code.UI
         protected void Awake()
         {
             _parentGroup = GetComponent<CanvasGroup>();
+            Instance = this;
             
             foreach (var sel in selectables)
             {
@@ -34,7 +38,7 @@ namespace SurgeEngine.Code.UI
             }
         }
 
-        protected virtual void AddTriggerListeners(Selectable selectable)
+        public virtual void AddTriggerListeners(Selectable selectable)
         {
             var trigger = selectable.gameObject.GetComponent<EventTrigger>();
             if (trigger == null)

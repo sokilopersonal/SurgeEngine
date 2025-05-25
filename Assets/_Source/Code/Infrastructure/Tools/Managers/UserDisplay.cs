@@ -1,4 +1,5 @@
 ﻿using System;
+using Newtonsoft.Json;
 using SurgeEngine.Code.Infrastructure.Tools.Services;
 using UnityEngine;
 using UnityEngine.Rendering.HighDefinition;
@@ -50,6 +51,17 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers
             Data.sharpness = Mathf.Clamp(value, 0, 2);
         }
 
+        public void SetResolution(Vector2 value)
+        {
+            Data.screenWidth = (int)value.x;
+            Data.screenHeight = (int)value.y;
+        }
+
+        public void SetFullscreen(bool value)
+        {
+            Data.fullscreen = value;
+        }
+
         public void Apply()
         {
             _hdCameraData.TAAQuality = (HDAdditionalCameraData.TAAQualityLevel)Data.antiAliasingQuality;
@@ -64,12 +76,17 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers
             }
             
             _hdCameraData.taaSharpenStrength = Data.sharpness;
+            
+            Screen.SetResolution(Data.screenWidth, Data.screenHeight, Data.fullscreen ? FullScreenMode.FullScreenWindow : FullScreenMode.Windowed);
         }
     }
 
     [Serializable]
     public class UserDisplaySettings
     {
+        public int screenWidth = 1920;
+        public int screenHeight = 1080;
+        public bool fullscreen = true;
         public AntiAliasingQuality antiAliasingQuality = AntiAliasingQuality.High;
         public float sharpness = 0.25f;
     }
