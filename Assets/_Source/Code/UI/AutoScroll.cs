@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using SurgeEngine.Code.UI.Extensions;
 using UnityEngine;
 using UnityEngine.UI;
 
