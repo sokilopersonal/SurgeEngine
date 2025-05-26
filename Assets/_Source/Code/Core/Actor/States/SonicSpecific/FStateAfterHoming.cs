@@ -19,7 +19,7 @@ namespace SurgeEngine.Code.Core.Actor.States.SonicSpecific
         {
             base.OnEnter();
             
-            Common.ResetVelocity(ResetVelocityType.Both);
+            Kinematics.ResetVelocity();
             Kinematics.Rigidbody.linearVelocity += Vector3.up * _config.afterForce;
             
             Actor.transform.localRotation = Quaternion.Euler(0f, Actor.model.transform.localRotation.eulerAngles.y, 0f);

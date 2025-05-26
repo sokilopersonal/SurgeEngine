@@ -95,14 +95,14 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             if (firstSpeed > 0)
             {
                 context.stateMachine.GetSubState<FBoost>().Active = false;
-                Common.ResetVelocity(ResetVelocityType.Both);
+                context.kinematics.ResetVelocity();
                 
                 context.PutIn(startPoint.position);
                 context.transform.forward = Vector3.Cross(-startPoint.right, Vector3.up);
                 context.model.transform.forward = Vector3.Cross(-startPoint.right, Vector3.up);
                 
                 Vector3 impulse = Common.GetImpulseWithPitch(Vector3.Cross(-startPoint.right, Vector3.up), startPoint.right, firstPitch, firstSpeed);
-                Common.ApplyImpulse(impulse);
+                context.kinematics.Rigidbody.linearVelocity = impulse;
                 
                 context.stateMachine.GetState<FStateSpecialJump>().SetSpecialData(new SpecialJumpData(SpecialJumpType.TrickJumper));
                 FStateSpecialJump specialJump = context.stateMachine.SetState<FStateSpecialJump>(0.2f, true, true);
@@ -245,14 +245,14 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
                 context.flags.RemoveFlag(FlagType.OutOfControl);
                 context.flags.AddFlag(new Flag(FlagType.OutOfControl, null, true, secondOutOfControl));
 
-                Common.ResetVelocity(ResetVelocityType.Both);
+                context.kinematics.ResetVelocity();
                 Vector3 arcPeak = Trajectory.GetArcPosition(startPoint.position,
                     Common.GetCross(transform, firstPitch, true), firstSpeed);
                 yield return MoveRigidbodyToArc(body, arcPeak); // should snap Sonic to the arc point
                 context.animation.StateAnimator.TransitionToState($"Trick {Random.Range(1, 8)}", 0.2f).Then(() => context.animation.StateAnimator.TransitionToState(AnimatorParams.AirCycle, 0.2f));
                 
                 Vector3 impulse = Common.GetImpulseWithPitch(Vector3.Cross(-startPoint.right, Vector3.up), startPoint.right, secondPitch, secondSpeed);
-                Common.ApplyImpulse(impulse);
+                context.kinematics.Rigidbody.linearVelocity = impulse;
             }
             else
             {

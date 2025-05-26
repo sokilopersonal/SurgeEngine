@@ -228,6 +228,14 @@ namespace SurgeEngine.Code.Core.Actor.System
             Project();
         }
 
+        private void BaseAirPhysics()
+        {
+            float handling = _turnRate;
+            handling *= _config.airControl;
+            _movementVector = Vector3.Lerp(_planarVelocity, _inputDir.normalized * _planarVelocity.magnitude, 
+                handling * Time.fixedDeltaTime);
+        }
+
         public void SlopePhysics()
         {
             SlopePrediction();
@@ -253,7 +261,7 @@ namespace SurgeEngine.Code.Core.Actor.System
         }
 
         #region BIG CODE
-        
+
         private void SlopePrediction()
         {
             float lowerValue = 0.43f;
@@ -284,7 +292,7 @@ namespace SurgeEngine.Code.Core.Actor.System
                 }
             }
         }
-        
+
         private void HighSpeedFix()
         {
             Vector3 predictedPosition = _rigidbody.position;
@@ -322,7 +330,7 @@ namespace SurgeEngine.Code.Core.Actor.System
                 _rigidbody.position = Vector3.MoveTowards(_rigidbody.position, predictedPosition, Time.fixedDeltaTime);
             }
         }
-        
+
         public bool CheckForPredictedGround(Vector3 velocity, Vector3 normal, float deltaTime, float distance, int steps)
         {
             bool willBeGrounded = false;
@@ -349,6 +357,82 @@ namespace SurgeEngine.Code.Core.Actor.System
 
         #endregion
 
+        public void ResetVelocity()
+        {
+            if (Rigidbody.isKinematic) 
+                return;
+            
+            Rigidbody.linearVelocity = Vector3.zero;
+        }
+        
+        public void ApplyGravity(float yGravity)
+        {
+            if (!Rigidbody.isKinematic) Rigidbody.linearVelocity += Vector3.down * (yGravity * Time.fixedDeltaTime);
+        }
+        
+        public bool CheckForGround(out RaycastHit result, CheckGroundType type = CheckGroundType.Normal, float castDistance = 0f)
+        {
+            Vector3 origin;
+            Vector3 direction;
+            switch (type)
+            {
+                case CheckGroundType.Normal:
+                    origin = Actor.transform.position;
+                    direction = -Actor.kinematics.Normal;
+                    break;
+                case CheckGroundType.DefaultDown:
+                    origin = Actor.transform.position;
+                    direction = -Actor.transform.up;
+                    break;
+                case CheckGroundType.Predict:
+                    origin = Actor.transform.position;
+                    direction = Actor.kinematics.Rigidbody.linearVelocity.normalized;
+                    break;
+                case CheckGroundType.PredictJump:
+                    origin = Actor.transform.position - Actor.transform.up * 0.5f;
+                    direction = Actor.kinematics.Rigidbody.linearVelocity.normalized;
+                    break;
+                case CheckGroundType.PredictOnRail:
+                    origin = Actor.transform.position + Actor.transform.forward;
+                    direction = -Actor.kinematics.Normal;
+                    break;
+                case CheckGroundType.PredictEdge:
+                    origin = Actor.transform.position + Vector3.ClampMagnitude(PlanarVelocity * 0.075f, 1f);
+                    direction = -Actor.kinematics.Normal;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(type), type, null);
+            }
+            
+            Ray ray = new Ray(origin, direction);
+            if (castDistance == 0) castDistance = _config.castDistance;
+            LayerMask castMask = Actor.config.castLayer;
+
+            bool hit = Physics.Raycast(ray, out result,
+                castDistance, castMask, QueryTriggerInteraction.Ignore);
+            
+            return hit;
+        }
+        
+        public bool CheckForGroundWithDirection(out RaycastHit result, Vector3 direction,
+            float castDistance = 0f)
+        {
+            Vector3 origin = Actor.transform.position;
+            
+            if (castDistance == 0) castDistance = Actor.config.castDistance;
+            
+            Ray ray = new Ray(origin, direction);
+            LayerMask castMask = Actor.config.castLayer;
+            bool hit = Physics.Raycast(ray, out result, castDistance, castMask, QueryTriggerInteraction.Ignore);
+            return hit;
+        }
+        
+        public bool CheckForCeiling(out RaycastHit result)
+        {
+            bool hit = Physics.Raycast(Actor.transform.position - Actor.transform.up * 0.5f, Actor.transform.up, out result, Actor.config.castDistance * 0.5f, Actor.config.castLayer, QueryTriggerInteraction.Ignore);
+            return hit;
+        }
+        
         public void Project(Vector3 normal = default)
         {
             if (normal == default)
@@ -358,14 +442,6 @@ namespace SurgeEngine.Code.Core.Actor.System
             }
             
             _rigidbody.linearVelocity = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, normal);
-        }
-
-        private void BaseAirPhysics()
-        {
-            float handling = _turnRate;
-            handling *= _config.airControl;
-            _movementVector = Vector3.Lerp(_planarVelocity, _inputDir.normalized * _planarVelocity.magnitude, 
-                handling * Time.fixedDeltaTime);
         }
 
         public void Snap(Vector3 point, Vector3 normal, bool instant = false)
@@ -444,7 +520,6 @@ namespace SurgeEngine.Code.Core.Actor.System
             _inputDir = dir;
         }
 
-        public void ModifyTurnRate(float modifier) => _turnRate *= modifier;
         public void WriteMovementVector(Vector3 vector)
         {
             _movementVector = vector;

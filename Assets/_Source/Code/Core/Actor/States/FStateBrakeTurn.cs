@@ -27,7 +27,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         {
             base.OnTick(dt);
 
-            if (Common.CheckForGround(out var result))
+            if (Kinematics.CheckForGround(out var result))
             {
                 Kinematics.Point = result.point;
                 Kinematics.Normal = result.normal;

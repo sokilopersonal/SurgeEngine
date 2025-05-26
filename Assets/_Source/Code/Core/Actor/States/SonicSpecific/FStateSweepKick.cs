@@ -26,7 +26,7 @@ namespace SurgeEngine.Code.Core.Actor.States.SonicSpecific
             timer = 0f;
 
             if (_rigidbody.linearVelocity.magnitude < 1f)
-                Common.ResetVelocity(ResetVelocityType.Both);
+                Kinematics.ResetVelocity();
 
             StateMachine.GetSubState<FBoost>().Active = false;
 
@@ -43,7 +43,7 @@ namespace SurgeEngine.Code.Core.Actor.States.SonicSpecific
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
-            bool ceiling = Common.CheckForCeiling(out RaycastHit data);
+            bool ceiling = Kinematics.CheckForCeiling(out RaycastHit data);
             timer += dt;
             if (timer > 0.85f && Kinematics.Speed > 1f)
             {
@@ -72,17 +72,16 @@ namespace SurgeEngine.Code.Core.Actor.States.SonicSpecific
         {
             base.OnFixedTick(dt);
 
-            if (Common.CheckForGround(out RaycastHit hit, CheckGroundType.Normal, Actor.config.castDistance))
+            if (Kinematics.CheckForGround(out RaycastHit hit))
             {
-                Vector3 point = hit.point;
-                Vector3 normal = hit.normal; // loco put vector3.up here??
-                Kinematics.Normal = normal;
-
-                Kinematics.WriteMovementVector(_rigidbody.linearVelocity);
+                Kinematics.Point = hit.point;
+                Kinematics.SlerpSnapNormal(hit.normal);
+                
                 _rigidbody.linearVelocity = Vector3.MoveTowards(_rigidbody.linearVelocity, Vector3.zero, _config.deceleration * dt);
-                _rigidbody.linearVelocity = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, normal);
-                Model.RotateBody(normal);
-                Kinematics.Snap(point, normal, true);
+                _rigidbody.linearVelocity = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, Kinematics.Normal);
+                Model.RotateBody(hit.normal);
+                
+                Kinematics.Snap(Kinematics.Point, Kinematics.Normal, true);
             }
             else
             {

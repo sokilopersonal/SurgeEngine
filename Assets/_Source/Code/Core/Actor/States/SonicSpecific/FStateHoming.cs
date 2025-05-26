@@ -33,8 +33,6 @@ namespace SurgeEngine.Code.Core.Actor.States.SonicSpecific
 
             BaseActorConfig config = Actor.config;
             Model.SetCollisionParam(config.jumpCollisionHeight, config.jumpCollisionCenter, config.jumpCollisionRadius);
-
-            Common.ResetVelocity(ResetVelocityType.Both);
         }
 
         public override void OnExit()
@@ -70,7 +68,7 @@ namespace SurgeEngine.Code.Core.Actor.States.SonicSpecific
             }
             else
             {
-                if (Common.CheckForGround(out _, CheckGroundType.PredictJump))
+                if (Kinematics.CheckForGround(out _, CheckGroundType.PredictJump))
                 {
                     //StateMachine.SetState<FStateAir>();
                 }

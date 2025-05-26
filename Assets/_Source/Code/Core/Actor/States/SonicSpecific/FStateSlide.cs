@@ -47,7 +47,7 @@ namespace SurgeEngine.Code.Core.Actor.States.SonicSpecific
             if (Input.BReleased)
                 _released = true;
 
-            bool ceiling = Common.CheckForCeiling(out RaycastHit data);
+            bool ceiling = Kinematics.CheckForCeiling(out RaycastHit data);
 
             if (Kinematics.Speed < _config.minSpeed || _released)
             {
@@ -111,7 +111,7 @@ namespace SurgeEngine.Code.Core.Actor.States.SonicSpecific
         {
             base.OnFixedTick(dt);
             
-            if (Common.CheckForGround(out RaycastHit hit))
+            if (Kinematics.CheckForGround(out RaycastHit hit))
             {
                 Kinematics.Point = hit.point;
                 Kinematics.Normal = hit.normal;

@@ -32,8 +32,10 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
 
                 context.PutIn(startPoint.position);
                 context.transform.forward = Vector3.Cross(-startPoint.right, Vector3.up);
-                
-                Common.ApplyImpulse(Common.GetImpulseWithPitch(Vector3.Cross(-startPoint.right, Vector3.up), startPoint.right, pitch, impulse));
+
+                context.kinematics.Rigidbody.linearVelocity =
+                    Common.GetImpulseWithPitch(Vector3.Cross(-startPoint.right, Vector3.up), startPoint.right, pitch,
+                        impulse);
                 
                 FStateSpecialJump specialJump = context.stateMachine.SetState<FStateSpecialJump>(0.2f, true, true);
                 specialJump.SetSpecialData(new SpecialJumpData(SpecialJumpType.JumpBoard));

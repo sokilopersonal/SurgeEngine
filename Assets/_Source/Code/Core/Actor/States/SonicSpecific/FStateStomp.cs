@@ -71,7 +71,7 @@ namespace SurgeEngine.Code.Core.Actor.States.SonicSpecific
             _rigidbody.linearVelocity = vel;
             _timer += dt;
             
-            if (Common.CheckForGround(out RaycastHit hit))
+            if (Kinematics.CheckForGround(out RaycastHit hit))
             {
                 Vector3 point = hit.point;
                 Vector3 normal = hit.normal;

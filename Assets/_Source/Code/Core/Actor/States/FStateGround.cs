@@ -135,7 +135,7 @@ namespace SurgeEngine.Code.Core.Actor.States
                 .Evaluate(Kinematics.HorizontalSpeed / config.topSpeed);
             bool checkForPredictedGround =
                 Kinematics.CheckForPredictedGround(Kinematics.Velocity, Kinematics.Normal, Time.fixedDeltaTime, distance, 8);
-            if (Common.CheckForGround(out RaycastHit data, castDistance: distance) && checkForPredictedGround)
+            if (Kinematics.CheckForGround(out RaycastHit data, castDistance: distance) && checkForPredictedGround)
             {
                 Kinematics.Point = data.point;
                 Kinematics.SlerpSnapNormal(data.normal);
@@ -155,7 +155,7 @@ namespace SurgeEngine.Code.Core.Actor.States
                 StateMachine.SetState<FStateAir>();
             }
 
-            if (Common.CheckForGroundWithDirection(out RaycastHit verticalHit, _rigidbody.transform.up) && Kinematics.Angle >= 90)
+            if (Kinematics.CheckForGroundWithDirection(out RaycastHit verticalHit, _rigidbody.transform.up) && Kinematics.Angle >= 90)
             {
                 Kinematics.Point = verticalHit.point;
                 Kinematics.Normal = verticalHit.normal;

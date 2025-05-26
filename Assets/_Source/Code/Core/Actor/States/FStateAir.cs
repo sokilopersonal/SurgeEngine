@@ -75,7 +75,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         {
             base.OnFixedTick(dt);
             
-            if (!Common.CheckForGround(out var hit))
+            if (!Kinematics.CheckForGround(out var hit))
             {
                 Kinematics.Point = hit.point;
                 Kinematics.Normal = Vector3.up;
@@ -92,7 +92,7 @@ namespace SurgeEngine.Code.Core.Actor.States
                     gravity /= 4f;
                 }
                 
-                Common.ApplyGravity(gravity, Time.fixedDeltaTime);
+                Kinematics.ApplyGravity(gravity);
             }
             else
             {

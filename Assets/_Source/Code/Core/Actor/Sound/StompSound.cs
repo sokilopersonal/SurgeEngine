@@ -1,11 +1,8 @@
-﻿using System;
-using FMOD.Studio;
+﻿using FMOD.Studio;
 using FMODUnity;
-using SurgeEngine.Code.Core.Actor.States;
 using SurgeEngine.Code.Core.Actor.States.SonicSpecific;
 using SurgeEngine.Code.Core.Actor.System;
 using SurgeEngine.Code.Core.StateMachine.Base;
-using SurgeEngine.Code.Infrastructure.Custom;
 using UnityEngine;
 using STOP_MODE = FMOD.Studio.STOP_MODE;
 
@@ -37,7 +34,7 @@ namespace SurgeEngine.Code.Core.Actor.Sound
                 _stompLoopInstance.stop(STOP_MODE.IMMEDIATE);
             }
 
-            if (obj is FStateGround or FStateSpecialJump or FStateStompLand or FStateSlide && Actor.stateMachine.PreviousState is FStateStomp && Common.CheckForGround(out RaycastHit hit))
+            if (Actor.stateMachine.PreviousState is FStateStomp && Actor.kinematics.CheckForGround(out _, castDistance: 1f))
             {
                 RuntimeManager.PlayOneShot(stompLandSound);
             }

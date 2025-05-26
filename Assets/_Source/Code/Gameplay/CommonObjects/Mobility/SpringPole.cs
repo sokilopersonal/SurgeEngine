@@ -41,7 +41,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
 
             float finalSpeed = Mathf.Lerp(speed, speed * 0.5f, pointDistance);
 
-            Common.ApplyImpulse(transform.up * finalSpeed);
+            context.kinematics.Rigidbody.linearVelocity = transform.up * finalSpeed;
         }
 
         protected override void OnDrawGizmos()

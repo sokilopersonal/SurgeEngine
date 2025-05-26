@@ -116,7 +116,7 @@ namespace SurgeEngine.Code.Core.Actor.States.SonicSpecific
         {
             base.OnFixedTick(dt);
 
-            if (!Common.CheckForGround(out _))
+            if (!Kinematics.CheckForGround(out _))
             {
                 Actor.stateMachine.SetState<FStateAir>();
             }

@@ -45,7 +45,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             specialJump.PlaySpecialAnimation(0);
             specialJump.SetKeepVelocity(keepVelocity);
 
-            Common.ApplyImpulse(transform.up * speed);
+            context.kinematics.Rigidbody.linearVelocity = transform.up * speed;
             Rigidbody body = context.kinematics.Rigidbody;
             body.linearVelocity = Vector3.ClampMagnitude(body.linearVelocity, speed);
             context.flags.AddFlag(new Flag(FlagType.OutOfControl, 

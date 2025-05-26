@@ -16,7 +16,7 @@ namespace SurgeEngine.Code.Core.Actor.States.SonicSpecific
         {
             base.OnEnter();
             
-            Common.ResetVelocity(ResetVelocityType.Both);
+            Kinematics.ResetVelocity();
             Model.SetLowerCollision();
         }
 
@@ -30,7 +30,7 @@ namespace SurgeEngine.Code.Core.Actor.States.SonicSpecific
         {
             base.OnTick(dt);
 
-            bool ceiling = Common.CheckForCeiling(out RaycastHit data);
+            bool ceiling = Kinematics.CheckForCeiling(out RaycastHit data);
 
             if (!Input.BHeld && !ceiling)
             {
@@ -65,14 +65,12 @@ namespace SurgeEngine.Code.Core.Actor.States.SonicSpecific
         {
             base.OnFixedTick(dt);
             
-            BaseActorConfig config = Actor.config;
-            float distance = config.castDistance;
-            if (Common.CheckForGround(out RaycastHit data, castDistance: distance))
+            if (Kinematics.CheckForGroundWithDirection(out RaycastHit data, Vector3.down))
             {
                 Kinematics.Point = data.point;
-                Kinematics.Normal = data.normal;
-
-                Model.RotateBody(Kinematics.Normal);
+                Kinematics.Normal = Vector3.up;
+                
+                Kinematics.Snap(Kinematics.Point, Vector3.up, true);
             }
             else
             {

@@ -24,7 +24,7 @@ namespace SurgeEngine.Code.Core.Actor.States.SonicSpecific
         {
             base.OnEnter();
 
-            Common.ResetVelocity(ResetVelocityType.Both);
+            Kinematics.ResetVelocity();
             StateMachine.GetSubState<FBoost>().Active = false;
 
             Actor.effects.swingTrail.trail.Clear();

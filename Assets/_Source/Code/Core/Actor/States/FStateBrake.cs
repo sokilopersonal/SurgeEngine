@@ -29,7 +29,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         {
             base.OnFixedTick(dt);
 
-            if (Common.CheckForGround(out var hit))
+            if (Kinematics.CheckForGround(out var hit))
             {
                 Vector3 normal = hit.normal;
                 Kinematics.Normal = normal;

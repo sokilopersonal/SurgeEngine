@@ -32,7 +32,7 @@ namespace SurgeEngine.Code.Core.Actor.States
             base.OnEnter();
 
             StateMachine.GetSubState<FBoost>().Active = false;
-            Common.ResetVelocity(ResetVelocityType.Both);
+            Kinematics.ResetVelocity();
             _timer = 0.4f;
             
             _rigidbody.AddForce(-Actor.transform.forward * _config.directionalForce, ForceMode.VelocityChange);
@@ -42,9 +42,9 @@ namespace SurgeEngine.Code.Core.Actor.States
         {
             base.OnFixedTick(dt);
 
-            Common.ApplyGravity(-Physics.gravity.y, dt);
+            Kinematics.ApplyGravity(-Physics.gravity.y);
             
-            if (Common.CheckForGround(out var hit))
+            if (Kinematics.CheckForGround(out var hit))
             {
                 Kinematics.Point = hit.point;
                 Kinematics.Normal = hit.normal;

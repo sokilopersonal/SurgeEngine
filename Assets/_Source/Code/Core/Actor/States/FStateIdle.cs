@@ -16,7 +16,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         {
             base.OnTick(dt);
             
-            Common.ResetVelocity(ResetVelocityType.Both);
+            Kinematics.ResetVelocity();
 
             if (Input.moveVector.magnitude > 0.2f)
             {
@@ -58,12 +58,17 @@ namespace SurgeEngine.Code.Core.Actor.States
         {
             base.OnFixedTick(dt);
             
-            if (Common.CheckForGround(out RaycastHit hit))
+            if (Kinematics.CheckForGroundWithDirection(out RaycastHit hit, Vector3.down))
             {
                 Kinematics.Point = hit.point;
                 Kinematics.Normal = Vector3.up;
                 
-                Kinematics.Project();
+                Vector3 forward = Vector3.Cross(Actor.transform.right, Vector3.up);
+                Actor.transform.rotation = Quaternion.LookRotation(forward);
+                Model.root.rotation = Quaternion.LookRotation(forward);
+                
+                Debug.DrawRay(Kinematics.Point, hit.normal, Color.magenta);
+                
                 Kinematics.Snap(Kinematics.Point, Kinematics.Normal, true);
                 
                 Kinematics.SlopePhysics();

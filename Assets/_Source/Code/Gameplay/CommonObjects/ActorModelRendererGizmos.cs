@@ -1,7 +1,7 @@
 ﻿using NaughtyAttributes;
 using UnityEngine;
 
-namespace SurgeEngine._Source.Code.Gameplay.CommonObjects
+namespace SurgeEngine.Code.Gameplay.CommonObjects
 {
     [ExecuteInEditMode]
     public class ActorModelRenderer : MonoBehaviour

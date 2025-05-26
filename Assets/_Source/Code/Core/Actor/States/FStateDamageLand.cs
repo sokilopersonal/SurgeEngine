@@ -23,9 +23,9 @@ namespace SurgeEngine.Code.Core.Actor.States
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
-            Common.ResetVelocity(ResetVelocityType.Both);
+            Kinematics.ResetVelocity();
             
-            if (Common.CheckForGround(out var hit))
+            if (Kinematics.CheckForGround(out var hit))
             {
                 Kinematics.Snap(hit.point, hit.normal, true);
             }

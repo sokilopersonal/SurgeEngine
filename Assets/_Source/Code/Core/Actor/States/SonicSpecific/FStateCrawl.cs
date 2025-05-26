@@ -42,7 +42,7 @@ namespace SurgeEngine.Code.Core.Actor.States.SonicSpecific
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
-            if (!Input.BHeld && !Common.CheckForCeiling(out RaycastHit data))
+            if (!Input.BHeld && !Kinematics.CheckForCeiling(out RaycastHit data))
             {
                 if (Input.moveVector.magnitude > 0.1f)
                 {
@@ -110,10 +110,10 @@ namespace SurgeEngine.Code.Core.Actor.States.SonicSpecific
             BaseActorConfig config = Actor.config;
             float distance = config.castDistance * config.castDistanceCurve
                 .Evaluate(Kinematics.HorizontalSpeed / _crawlConfig.topSpeed);
-            if (Common.CheckForGround(out RaycastHit data, castDistance: distance))
+            if (Kinematics.CheckForGround(out RaycastHit data, castDistance: distance))
             {
                 Kinematics.Point = data.point;
-                Kinematics.Normal = Vector3.up;
+                Kinematics.SlerpSnapNormal(data.normal);
 
                 Vector3 stored = Vector3.ClampMagnitude(_rigidbody.linearVelocity, _crawlConfig.maxSpeed);
                 _rigidbody.linearVelocity = Quaternion.FromToRotation(_rigidbody.transform.up, prevNormal) * stored;

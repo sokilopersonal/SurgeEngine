@@ -43,7 +43,7 @@ namespace SurgeEngine.Code.Core.Actor.States
             
             if (Mathf.Approximately(_jumpTimer, 0))
             {
-                if (Common.CheckForGround(out _, CheckGroundType.Predict))
+                if (Kinematics.CheckForGround(out _, CheckGroundType.Predict))
                 {
                     StateMachine.SetState<FStateGround>();
                 }
@@ -65,10 +65,10 @@ namespace SurgeEngine.Code.Core.Actor.States
             switch (data.type)
             {
                 case SpecialJumpType.JumpBoard:
-                    Common.ApplyGravity(Stats.gravity, dt);
+                    Kinematics.ApplyGravity(Stats.gravity);
                     break;
                 case SpecialJumpType.TrickJumper:
-                    Common.ApplyGravity(Stats.gravity, dt);
+                    Kinematics.ApplyGravity(Stats.gravity);
                     break;
                 case SpecialJumpType.Spring:
                     Model.SetRestoreUp(data.transform.up);
@@ -79,7 +79,7 @@ namespace SurgeEngine.Code.Core.Actor.States
                     Model.VelocityRotation();
                     break;
                 case SpecialJumpType.JumpSelector:
-                    Common.ApplyGravity(Stats.gravity, dt);
+                    Kinematics.ApplyGravity(Stats.gravity);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

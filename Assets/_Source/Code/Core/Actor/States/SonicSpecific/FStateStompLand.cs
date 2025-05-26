@@ -24,7 +24,7 @@ namespace SurgeEngine.Code.Core.Actor.States.SonicSpecific
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
-            bool ceiling = Common.CheckForCeiling(out RaycastHit data);
+            bool ceiling = Kinematics.CheckForCeiling(out RaycastHit data);
             if (Common.TickTimer(ref _timer, WaitTime))
             {
                 if (Input.BHeld)
