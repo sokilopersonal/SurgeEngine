@@ -110,28 +110,24 @@ namespace SurgeEngine.Code.Core.Actor.States.SonicSpecific
             BaseActorConfig config = Actor.config;
             float distance = config.castDistance * config.castDistanceCurve
                 .Evaluate(Kinematics.HorizontalSpeed / _crawlConfig.topSpeed);
-            if (Kinematics.CheckForGround(out RaycastHit data, castDistance: distance))
+            if (Kinematics.CheckForGroundWithDirection(out RaycastHit data, Vector3.down, distance))
             {
                 Kinematics.Point = data.point;
-                Kinematics.SlerpSnapNormal(data.normal);
+                Kinematics.Normal = Vector3.up;
 
                 Vector3 stored = Vector3.ClampMagnitude(_rigidbody.linearVelocity, _crawlConfig.maxSpeed);
                 _rigidbody.linearVelocity = Quaternion.FromToRotation(_rigidbody.transform.up, prevNormal) * stored;
 
-                Kinematics.BasePhysics(Kinematics.Normal);
-                Kinematics.Snap(Kinematics.Point, Kinematics.Normal, true);
-                Model.RotateBody(Kinematics.Normal);
+                Kinematics.BasePhysics(data.normal);
+                
+                Kinematics.Snap(Kinematics.Point, Vector3.up, true);
+                Model.RotateBody(Vector3.up);
 
                 _surfaceTag = data.transform.gameObject.GetGroundTag();
             }
             else
             {
                 StateMachine.SetState<FStateAir>();
-            }
-
-            if (Vector3.Angle(data.normal, Vector3.up) > 15)
-            {
-                StateMachine.SetState<FStateGround>();
             }
         }
 

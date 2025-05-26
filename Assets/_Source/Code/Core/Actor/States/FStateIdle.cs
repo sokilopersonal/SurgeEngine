@@ -58,7 +58,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         {
             base.OnFixedTick(dt);
             
-            if (Kinematics.CheckForGroundWithDirection(out RaycastHit hit, Vector3.down))
+            if (Kinematics.CheckForGroundWithDirection(out RaycastHit hit, Vector3.down, 2f))
             {
                 Kinematics.Point = hit.point;
                 Kinematics.Normal = Vector3.up;

@@ -79,7 +79,7 @@ namespace SurgeEngine.Code.Core.Actor.States.SonicSpecific
                 
                 _rigidbody.linearVelocity = Vector3.MoveTowards(_rigidbody.linearVelocity, Vector3.zero, _config.deceleration * dt);
                 _rigidbody.linearVelocity = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, Kinematics.Normal);
-                Model.RotateBody(hit.normal);
+                Model.RotateBody(Kinematics.Normal);
                 
                 Kinematics.Snap(Kinematics.Point, Kinematics.Normal, true);
             }

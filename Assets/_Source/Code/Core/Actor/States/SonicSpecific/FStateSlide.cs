@@ -11,6 +11,8 @@ namespace SurgeEngine.Code.Core.Actor.States.SonicSpecific
 {
     public class FStateSlide : FStateMove, IStateTimeout, IDamageableState
     {
+        public float Timeout { get; set; }
+        
         private readonly SlideConfig _config;
         private readonly QuickStepConfig _quickstepConfig;
 
@@ -47,8 +49,7 @@ namespace SurgeEngine.Code.Core.Actor.States.SonicSpecific
             if (Input.BReleased)
                 _released = true;
 
-            bool ceiling = Kinematics.CheckForCeiling(out RaycastHit data);
-
+            bool ceiling = Kinematics.CheckForCeiling(out _);
             if (Kinematics.Speed < _config.minSpeed || _released)
             {
                 if (Kinematics.Speed > _config.minSpeed)
@@ -111,16 +112,19 @@ namespace SurgeEngine.Code.Core.Actor.States.SonicSpecific
         {
             base.OnFixedTick(dt);
             
-            if (Kinematics.CheckForGround(out RaycastHit hit))
+            var config = Actor.config;
+            float distance = config.castDistance *
+                             config.castDistanceCurve.Evaluate(Kinematics.Speed / config.topSpeed);
+            if (Kinematics.CheckForGround(out RaycastHit hit, castDistance: distance))
             {
                 Kinematics.Point = hit.point;
                 Kinematics.Normal = hit.normal;
                 Kinematics.Snap(hit.point, hit.normal, true);
-
-                Kinematics.WriteMovementVector(_rigidbody.linearVelocity);
+                
                 _rigidbody.linearVelocity = Vector3.MoveTowards(_rigidbody.linearVelocity, Vector3.zero, _config.deceleration * dt);
                 _rigidbody.linearVelocity = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, hit.normal);
                 Model.RotateBody(hit.normal);
+                
                 Kinematics.SlopePhysics();
             }
             else
@@ -132,7 +136,5 @@ namespace SurgeEngine.Code.Core.Actor.States.SonicSpecific
                 Actor.transform.position + new Vector3(0f, 0.25f, 0.25f),
                 Actor.transform.rotation, new Vector3(0.5f, 0.5f, 0.75f), HurtBoxTarget.Enemy | HurtBoxTarget.Breakable);
         }
-        
-        public float Timeout { get; set; }
     }
 }

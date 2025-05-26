@@ -63,6 +63,7 @@ namespace SurgeEngine.Code.Core.Actor.States.SonicSpecific
                 _timer += dt / _config.maxTime;
                 if (_timer >= 1f)
                 {
+                    Debug.Log("Stuck");
                     StateMachine.SetState<FStateAir>();
                 }
             }
@@ -81,6 +82,7 @@ namespace SurgeEngine.Code.Core.Actor.States.SonicSpecific
                 _timer += dt / _config.jumpDashTime;
                 if (_timer >= 1f)
                 {
+                    Debug.Log("Over time");
                     StateMachine.SetState<FStateAir>();
                 }
             }
