@@ -59,8 +59,8 @@ MonoBehaviour:
   stats: {fileID: 7099733658116403469}
   sounds: {fileID: 8348964648566409893}
   camera: {fileID: 249638428982365570}
-  animation: {fileID: 8309013420478706678}
-  effects: {fileID: 289070888726962416}
+  animation: {fileID: 7180063613898469974}
+  effects: {fileID: 3679809459229990554}
   model: {fileID: 6916054324571523613}
   flags: {fileID: 1696099844310411520}
   kinematics: {fileID: 3201943500692532830}
@@ -187,10 +187,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 100729958831981340}
-  serializedVersion: 5
+  serializedVersion: 4
   m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
+  m_Drag: 0
+  m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -5119,12 +5119,12 @@ GameObject:
   - component: {fileID: 13745219932106310}
   - component: {fileID: 7194784858183372997}
   - component: {fileID: 9042933283176802719}
+  - component: {fileID: 7180063613898469974}
+  - component: {fileID: 4489472361400553381}
+  - component: {fileID: 919272589128347919}
   - component: {fileID: 420970829371151369}
   - component: {fileID: 1569309938121577590}
   - component: {fileID: 4999302565617241035}
-  - component: {fileID: 8309013420478706678}
-  - component: {fileID: 4489472361400553381}
-  - component: {fileID: 919272589128347919}
   m_Layer: 0
   m_Name: UnleashedSonic_IK
   m_TagString: Untagged
@@ -5191,7 +5191,7 @@ MonoBehaviour:
   - m_Rig: {fileID: 2465764687397225506}
     m_Active: 1
   m_Effectors: []
---- !u!114 &420970829371151369
+--- !u!114 &7180063613898469974
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5200,46 +5200,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 148834884957308453}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eec49319e63f4301aef2e48905f58b00, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  stepEffect: {fileID: 0}
-  stepSound: {fileID: 4778545105552515917}
---- !u!114 &1569309938121577590
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 148834884957308453}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00a597ae1ed078f44a0abf8e0a4eba50, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &4999302565617241035
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 148834884957308453}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc859899c76c48229ac4470c12ab1e15, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mouthReference: {fileID: 6645284270683270860}
---- !u!114 &8309013420478706678
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 148834884957308453}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ae28f8edff08479cb311cefb339a5a6e, type: 3}
+  m_Script: {fileID: 11500000, guid: ff4194eda44d424cb055055c21985c9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &4489472361400553381
@@ -5288,6 +5249,45 @@ MonoBehaviour:
   cullingMask:
     serializedVersion: 2
     m_Bits: 1
+--- !u!114 &420970829371151369
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 148834884957308453}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec49319e63f4301aef2e48905f58b00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stepEffect: {fileID: 0}
+  stepSound: {fileID: 4778545105552515917}
+--- !u!114 &1569309938121577590
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 148834884957308453}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00a597ae1ed078f44a0abf8e0a4eba50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4999302565617241035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 148834884957308453}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc859899c76c48229ac4470c12ab1e15, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mouthReference: {fileID: 6645284270683270860}
 --- !u!1 &172326168808283029
 GameObject:
   m_ObjectHideFlags: 0
@@ -15871,7 +15871,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 377323914507647460}
-  - component: {fileID: 289070888726962416}
+  - component: {fileID: 3679809459229990554}
   m_Layer: 3
   m_Name: Effects
   m_TagString: Untagged
@@ -15906,7 +15906,7 @@ Transform:
   - {fileID: 9219854855358772228}
   m_Father: {fileID: 4638284470361493281}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &289070888726962416
+--- !u!114 &3679809459229990554
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -15915,21 +15915,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 1373249034369631524}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d70eb2cf0d094f8999806dc62fb476af, type: 3}
+  m_Script: {fileID: 11500000, guid: e9303742b38e4209ad781f876172fd3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   step: {fileID: 2772024662099277936}
-  trailRenderer: {fileID: 2154888648449008299}
+  grindEffect: {fileID: 5295992643565744341}
+  damageEffect: {fileID: 6274841486737520282}
   swingTrail: {fileID: 2784087477685412802}
+  jumpDeluxEffect: {fileID: 8840932572874216934}
+  paraloopEffect: {fileID: 8823258531851677657}
+  trailRenderer: {fileID: 2154888648449008299}
   boostAura: {fileID: 3691162915645841751}
   boostDistortion: {fileID: 8312029191663120684}
   spinball: {fileID: 1135278485146894530}
   stompEffect: {fileID: 8636502887884504151}
   slideEffect: {fileID: 5048219709978352688}
-  grindEffect: {fileID: 5295992643565744341}
-  damageEffect: {fileID: 6274841486737520282}
-  jumpDeluxEffect: {fileID: 8840932572874216934}
-  paraloopEffect: {fileID: 8823258531851677657}
   sweepKickEffect: {fileID: 2417631742766802621}
 --- !u!1 &1466337196377165951
 GameObject:

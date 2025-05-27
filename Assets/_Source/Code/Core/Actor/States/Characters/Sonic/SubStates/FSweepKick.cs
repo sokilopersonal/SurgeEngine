@@ -1,10 +1,9 @@
 using SurgeEngine.Code.Core.Actor.States.BaseStates;
-using SurgeEngine.Code.Core.Actor.States.SonicSpecific;
 using SurgeEngine.Code.Core.Actor.System;
 using SurgeEngine.Code.Gameplay.CommonObjects.Mobility;
 using SurgeEngine.Code.Infrastructure.Config.SonicSpecific;
 
-namespace SurgeEngine.Code.Core.Actor.States.SonicSubStates
+namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates
 {
     public class FSweepKick : FActorSubState
     {
@@ -13,14 +12,14 @@ namespace SurgeEngine.Code.Core.Actor.States.SonicSubStates
         public FSweepKick(ActorBase owner) : base(owner)
         {
             owner.TryGetConfig(out _config);
-            actor.input.OnButtonPressed += ButtonPressed;
+            Actor.input.OnButtonPressed += ButtonPressed;
         }
 
         private void ButtonPressed(ButtonType button)
         {
-            if (button != ButtonType.B || !_config.eligibleAnimationStates.Contains(actor.animation.StateAnimator.GetCurrentAnimationState()))
+            if (button != ButtonType.B || !_config.eligibleAnimationStates.Contains(Actor.animation.StateAnimator.GetCurrentAnimationState()))
                 return;
-            actor.stateMachine.SetState<FStateSweepKick>();
+            Actor.stateMachine.SetState<FStateSweepKick>();
         }
     }
 }

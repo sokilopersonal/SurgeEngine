@@ -1,11 +1,10 @@
 using SurgeEngine.Code.Core.Actor.Sound;
 using SurgeEngine.Code.Core.Actor.States.BaseStates;
-using SurgeEngine.Code.Core.Actor.States.SonicSubStates;
+using SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates;
 using SurgeEngine.Code.Core.Actor.System;
-using SurgeEngine.Code.Infrastructure.Custom;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Core.Actor.States.SonicSpecific
+namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
 {
     public class FStateSwing : FStateMove
     {
@@ -26,18 +25,14 @@ namespace SurgeEngine.Code.Core.Actor.States.SonicSpecific
 
             Kinematics.ResetVelocity();
             StateMachine.GetSubState<FBoost>().Active = false;
-
-            Actor.effects.swingTrail.trail.Clear();
-            Actor.effects.swingTrail.Toggle(true);
         }
 
         public override void OnExit()
         {
             base.OnExit();
-            Actor.effects.swingTrail.Toggle(false);
         }
 
-        void Jump()
+        private void Jump()
         {
             bool angleCorrect = _rotationAngle > 0.1f && _rotationAngle < 0.35f;
 

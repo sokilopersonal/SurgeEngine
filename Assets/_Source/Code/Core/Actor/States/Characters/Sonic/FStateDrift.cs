@@ -1,17 +1,16 @@
 ﻿using SurgeEngine.Code.Core.Actor.States.BaseStates;
-using SurgeEngine.Code.Core.Actor.States.SonicSubStates;
+using SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates;
 using SurgeEngine.Code.Core.Actor.System;
 using SurgeEngine.Code.Core.StateMachine.Interfaces;
 using SurgeEngine.Code.Gameplay.CommonObjects;
 using SurgeEngine.Code.Gameplay.Inputs;
 using SurgeEngine.Code.Infrastructure.Config.SonicSpecific;
-using SurgeEngine.Code.Infrastructure.Custom;
 using SurgeEngine.Code.Infrastructure.Tools;
 using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
 using Vector3 = UnityEngine.Vector3;
 
-namespace SurgeEngine.Code.Core.Actor.States.SonicSpecific
+namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
 {
     public class FStateDrift : FStateMove, IBoostHandler, IStateTimeout, IDamageableState
     {

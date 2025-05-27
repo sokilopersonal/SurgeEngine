@@ -5,11 +5,11 @@ namespace SurgeEngine.Code.Core.Actor.States.BaseStates
 {
     public class FActorSubState : FSubState
     {
-        protected ActorBase actor { get; private set; }
+        protected ActorBase Actor { get; private set; }
 
         public FActorSubState(ActorBase owner)
         {
-            actor = owner;
+            Actor = owner;
         }
     }
 }

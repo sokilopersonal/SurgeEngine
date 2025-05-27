@@ -1,7 +1,7 @@
 using SurgeEngine.Code.Core.Actor.System;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Core.Actor.States.SonicSpecific
+namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
 {
     public class FStateSwingJump : FStateAir
     {

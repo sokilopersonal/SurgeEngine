@@ -1,5 +1,5 @@
 using FMODUnity;
-using SurgeEngine.Code.Core.Actor.States.SonicSpecific;
+using SurgeEngine.Code.Core.Actor.States.Characters.Sonic;
 using SurgeEngine.Code.Core.StateMachine.Base;
 using UnityEngine;
 
@@ -8,9 +8,7 @@ namespace SurgeEngine.Code.Core.Actor.Sound
     public class SwingSound : ActorSound
     {
         [SerializeField] private EventReference catchSound;
-
         [SerializeField] private EventReference swingSound;
-
         [SerializeField] private EventReference jumpSound;
 
         public void Swing()

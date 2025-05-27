@@ -1,5 +1,5 @@
 ﻿using SurgeEngine.Code.Core.Actor.System;
-using SurgeEngine.Code.Core.Actor.System.Actors;
+using SurgeEngine.Code.Core.Actor.System.Characters.Sonic;
 using UnityEngine.InputSystem;
 
 namespace SurgeEngine.Code.Gameplay.Inputs

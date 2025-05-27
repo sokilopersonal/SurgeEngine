@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using NaughtyAttributes;
 using SurgeEngine.Code.Core.Actor.CameraSystem;
 using SurgeEngine.Code.Core.Actor.CameraSystem.Pawns;
 using SurgeEngine.Code.Core.Actor.States;
-using SurgeEngine.Code.Core.Actor.States.SonicSpecific;
+using SurgeEngine.Code.Core.Actor.States.Characters.Sonic;
 using SurgeEngine.Code.Gameplay.CommonObjects.Interfaces;
 using SurgeEngine.Code.Gameplay.CommonObjects.Player;
 using SurgeEngine.Code.Gameplay.CommonObjects.System;

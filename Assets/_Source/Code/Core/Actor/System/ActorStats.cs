@@ -1,6 +1,6 @@
 ﻿using System;
 using SurgeEngine.Code.Core.Actor.States;
-using SurgeEngine.Code.Core.Actor.States.SonicSpecific;
+using SurgeEngine.Code.Core.Actor.States.Characters.Sonic;
 using SurgeEngine.Code.Core.StateMachine.Base;
 using SurgeEngine.Code.Gameplay.CommonObjects;
 using SurgeEngine.Code.Infrastructure.Custom;

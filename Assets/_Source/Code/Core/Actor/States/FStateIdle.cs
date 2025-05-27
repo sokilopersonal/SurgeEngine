@@ -1,5 +1,5 @@
 ﻿using SurgeEngine.Code.Core.Actor.States.BaseStates;
-using SurgeEngine.Code.Core.Actor.States.SonicSpecific;
+using SurgeEngine.Code.Core.Actor.States.Characters.Sonic;
 using SurgeEngine.Code.Core.Actor.System;
 using SurgeEngine.Code.Infrastructure.Custom;
 using UnityEngine;

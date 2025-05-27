@@ -1,4 +1,4 @@
-using SurgeEngine.Code.Core.Actor.States.SonicSpecific;
+using SurgeEngine.Code.Core.Actor.States.Characters.Sonic;
 using SurgeEngine.Code.Core.Actor.System;
 using SurgeEngine.Code.Infrastructure.Custom.Drawers;
 using UnityEngine;
@@ -7,17 +7,17 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
 {
     public class SwingPole : ContactBase
     {
-        public float shotVelSuccess;
-        public float shotVelFail;
-        public Transform grip;
-        public bool trail2D = false;
+        [SerializeField] float shotVelSuccess;
+        [SerializeField] float shotVelFail;
+        [SerializeField] Transform grip;
+        [SerializeField] bool trail2D;
         
         public override void Contact(Collider msg, ActorBase context)
         {
             base.Contact(msg, context);
             
             context.PutIn(grip.position);
-            context.effects.swingTrail.trail2D = trail2D;
+            context.effects.SwingTrail.trail2D = trail2D;
 
             float lookDot = Vector3.Dot(context.transform.forward, transform.forward);
             float lookAngle = Vector3.Angle(context.transform.forward, transform.forward);

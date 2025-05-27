@@ -1,5 +1,4 @@
 ﻿using SurgeEngine.Code.Core.Actor.States.BaseStates;
-using SurgeEngine.Code.Core.Actor.States.SonicSpecific;
 using SurgeEngine.Code.Core.Actor.System;
 using SurgeEngine.Code.Core.StateMachine.Base;
 using SurgeEngine.Code.Gameplay.CommonObjects;
@@ -11,7 +10,7 @@ using SurgeEngine.Code.Infrastructure.Config.SonicSpecific;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace SurgeEngine.Code.Core.Actor.States.SonicSubStates
+namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates
 {
     public class FBoost : FActorSubState
     {
@@ -21,11 +20,8 @@ namespace SurgeEngine.Code.Core.Actor.States.SonicSubStates
             set => _boostEnergy = Mathf.Clamp(value, 0, MaxBoostEnergy);
         }
 
-        public float MaxBoostEnergy
-        {
-            get => _config.BoostCapacity;
-        }
-        
+        public float MaxBoostEnergy => _config.BoostCapacity;
+
         public bool CanAirBoost ;
         public bool RestoringTopSpeed;
 
@@ -45,8 +41,8 @@ namespace SurgeEngine.Code.Core.Actor.States.SonicSubStates
             CanAirBoost = true;
             BoostEnergy = MaxBoostEnergy / 4;
             
-            actor.input.BoostAction += BoostAction;
-            actor.stateMachine.OnStateAssign += OnStateAssign;
+            Actor.input.BoostAction += BoostAction;
+            Actor.stateMachine.OnStateAssign += OnStateAssign;
 
             ObjectEvents.OnObjectCollected += OnRingCollected;
             ObjectEvents.OnEnemyDied += OnEnemyDied;
@@ -54,8 +50,8 @@ namespace SurgeEngine.Code.Core.Actor.States.SonicSubStates
         
         ~FBoost()
         {
-            actor.input.BoostAction -= BoostAction;
-            actor.stateMachine.OnStateAssign -= OnStateAssign;
+            Actor.input.BoostAction -= BoostAction;
+            Actor.stateMachine.OnStateAssign -= OnStateAssign;
 
             ObjectEvents.OnObjectCollected -= OnRingCollected;
             ObjectEvents.OnEnemyDied -= OnEnemyDied;
@@ -101,7 +97,7 @@ namespace SurgeEngine.Code.Core.Actor.States.SonicSubStates
             if (obj is FStateGrind)
             {
                 if (_cancelBoostCoroutine != null)
-                    actor.StopCoroutine(_cancelBoostCoroutine);
+                    Actor.StopCoroutine(_cancelBoostCoroutine);
             }
         }
 
@@ -111,8 +107,8 @@ namespace SurgeEngine.Code.Core.Actor.States.SonicSubStates
             
             _boostHandler?.BoostHandle();
 
-            FState state = actor.stateMachine.CurrentState;
-            FState prev = actor.stateMachine.PreviousState;
+            FState state = Actor.stateMachine.CurrentState;
+            FState prev = Actor.stateMachine.PreviousState;
 
             if (state is FStateDrift)
             {
@@ -144,7 +140,7 @@ namespace SurgeEngine.Code.Core.Actor.States.SonicSubStates
                     Active = false;
                 }
                 
-                actor.kinematics.TurnRate *= _config.TurnSpeedMultiplier;
+                Actor.kinematics.TurnRate *= _config.TurnSpeedMultiplier;
             }
             
             BoostEnergy = Mathf.Clamp(BoostEnergy, 0, 100);
@@ -155,34 +151,34 @@ namespace SurgeEngine.Code.Core.Actor.States.SonicSubStates
             base.OnFixedTick(dt);
             
             if (Active)
-                HurtBox.Create(actor, 
-                    actor.transform.position + new Vector3(0f, 0.6f, -0.1f),
-                    actor.transform.rotation, new Vector3(0.75f, 1f, 1.15f), HurtBoxTarget.Enemy | HurtBoxTarget.Breakable);
+                HurtBox.Create(Actor, 
+                    Actor.transform.position + new Vector3(0f, 0.6f, -0.1f),
+                    Actor.transform.rotation, new Vector3(0.75f, 1f, 1.15f), HurtBoxTarget.Enemy | HurtBoxTarget.Breakable);
         }
 
         public bool CanBoost() => BoostEnergy > 0 && _boostHandler != null;
 
         private void BoostAction(InputAction.CallbackContext obj)
         {
-            if (actor.stateMachine.CurrentState is FStateAir && !CanAirBoost) return;
-            if (actor.stateMachine.CurrentState is FStateStomp) return;
-            if (actor.stateMachine.CurrentState is FStateSlide) return;
+            if (Actor.stateMachine.CurrentState is FStateAir && !CanAirBoost) return;
+            if (Actor.stateMachine.CurrentState is FStateStomp) return;
+            if (Actor.stateMachine.CurrentState is FStateSlide) return;
             
             if (CanBoost())
             {
-                Active = obj.started && !actor.flags.HasFlag(FlagType.OutOfControl);
+                Active = obj.started && !Actor.flags.HasFlag(FlagType.OutOfControl);
             }
             
             if (Active)
             {
-                Rigidbody body = actor.kinematics.Rigidbody;
+                Rigidbody body = Actor.kinematics.Rigidbody;
                 float startSpeed = _config.StartSpeed;
 
-                if (actor.kinematics.HorizontalSpeed < startSpeed)
+                if (Actor.kinematics.HorizontalSpeed < startSpeed)
                 {
-                    if (actor.stateMachine.CurrentState is FStateIdle)
+                    if (Actor.stateMachine.CurrentState is FStateIdle)
                     {
-                        actor.stateMachine.SetState<FStateGround>();
+                        Actor.stateMachine.SetState<FStateGround>();
                     }
                     
                     body.linearVelocity = body.transform.forward * startSpeed;
@@ -199,31 +195,15 @@ namespace SurgeEngine.Code.Core.Actor.States.SonicSubStates
         public void BaseGroundBoost()
         {
             float dt = Time.deltaTime;
-            BaseActorConfig config = actor.config;
-            Rigidbody body = actor.kinematics.Rigidbody;
-            float speed = actor.kinematics.HorizontalSpeed;
+            BaseActorConfig config = Actor.config;
+            Rigidbody body = Actor.kinematics.Rigidbody;
+            float speed = Actor.kinematics.HorizontalSpeed;
             
             if (Active)
             {
-                if (actor.input.moveVector == Vector3.zero) actor.kinematics.SetInputDir(actor.transform.forward);
+                if (Actor.input.moveVector == Vector3.zero) Actor.kinematics.SetInputDir(Actor.transform.forward);
                 float maxSpeed = config.maxSpeed * _config.MaxSpeedMultiplier;
                 if (speed < maxSpeed) body.AddForce(body.linearVelocity.normalized * (_config.Acceleration * dt), ForceMode.Impulse);
-            }
-            else if (RestoringTopSpeed)
-            {
-                float normalMaxSpeed = actor.config.topSpeed;
-                if (speed > normalMaxSpeed)
-                {
-                    body.linearVelocity = Vector3.MoveTowards(
-                        body.linearVelocity, 
-                        body.transform.forward * normalMaxSpeed, 
-                        dt * 16
-                    );
-                }
-                else if (speed * 0.99f < normalMaxSpeed)
-                {
-                    RestoringTopSpeed = false;
-                }
             }
         }
     }

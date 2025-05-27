@@ -1,10 +1,11 @@
 ﻿using NaughtyAttributes;
-using SurgeEngine.Code.Core.Actor.States.SonicSpecific;
-using SurgeEngine.Code.Core.Actor.States.SonicSubStates;
+using SurgeEngine.Code.Core.Actor.States;
+using SurgeEngine.Code.Core.Actor.States.Characters.Sonic;
+using SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates;
 using SurgeEngine.Code.Infrastructure.Config.SonicSpecific;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Core.Actor.System.Actors
+namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
 {
     public class Sonic : ActorBase
     {
@@ -32,11 +33,6 @@ namespace SurgeEngine.Code.Core.Actor.System.Actors
         [Foldout("SweepKick")]
         [Expandable] public SweepConfig sweepKickConfig;
 
-        protected override void Awake()
-        {
-            base.Awake();
-        }
-
         protected override void InitializeConfigs()
         {
             base.InitializeConfigs();
@@ -56,7 +52,7 @@ namespace SurgeEngine.Code.Core.Actor.System.Actors
             base.AddStates();
             
             Rigidbody body = GetComponent<Rigidbody>();
-            
+
             stateMachine.AddState(new FStateAirBoost(this, body));
             stateMachine.AddState(new FStateStomp(this, body));
             stateMachine.AddState(new FStateStompLand(this, body));
@@ -78,7 +74,7 @@ namespace SurgeEngine.Code.Core.Actor.System.Actors
             var boost = stateMachine.GetSubState<FBoost>();
             boost.Active = false;
             boost.BoostEnergy = 0;
-            effects.boostAura.Clear();
+            (effects as SonicEffects)?.BoostAura.Clear();
             
             base.Load(loadPosition, loadRotation);
         }

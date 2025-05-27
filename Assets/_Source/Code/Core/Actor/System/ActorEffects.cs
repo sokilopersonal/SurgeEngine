@@ -1,11 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using SurgeEngine.Code.Core.Actor.States;
-using SurgeEngine.Code.Core.Actor.States.SonicSpecific;
-using SurgeEngine.Code.Core.Actor.States.SonicSubStates;
+using SurgeEngine.Code.Core.Actor.States.Characters.Sonic;
 using SurgeEngine.Code.Core.StateMachine.Base;
 using SurgeEngine.Code.Gameplay.Effects;
-using SurgeEngine.Code.Shaders;
 using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.System
@@ -18,23 +15,6 @@ namespace SurgeEngine.Code.Core.Actor.System
         private ParticleSystem _currentStep;
         private bool _isGrounded;
         
-        [Header("Trail")]
-        [SerializeField] private VolumeTrailRenderer trailRenderer;
-        public SwingEffect swingTrail;
-
-        [Header("Boost")]
-        public Effect boostAura;
-        [SerializeField] private BoostDistortion boostDistortion;
-
-        [Header("Spinball")] 
-        public Effect spinball;
-
-        [Header("Stomping")]
-        public StompEffect stompEffect;
-
-        [Header("Sliding")]
-        public Effect slideEffect;
-        
         [Header("Grind")]
         public Effect grindEffect;
 
@@ -42,18 +22,14 @@ namespace SurgeEngine.Code.Core.Actor.System
         [SerializeField] private DamageEffect damageEffect;
 
         [Header("Other")]
-        public Effect jumpDeluxEffect;
-        public ParaloopEffect paraloopEffect;
-        public Effect sweepKickEffect;
+        [SerializeField] private SwingEffect swingTrail;
+        [SerializeField] private Effect jumpDeluxEffect;
+        [SerializeField] private ParaloopEffect paraloopEffect;
+        public SwingEffect SwingTrail => swingTrail;
+        public Effect JumpDeluxEffect => jumpDeluxEffect;
 
-        private void Awake()
+        protected virtual void Awake()
         {
-            boostAura.Toggle(false);
-            spinball.Toggle(false);
-            stompEffect.Toggle(false);
-            slideEffect.Toggle(false);
-            grindEffect.Toggle(false);
-
             _stepMap = new Dictionary<GroundTag, ParticleSystem>
             {
                 { GroundTag.Grass, step.SmokeGrass },
@@ -62,67 +38,31 @@ namespace SurgeEngine.Code.Core.Actor.System
             };
         }
 
-        public void CreateLocus(float time = 0.6f) => trailRenderer.Emit(time);
-        public void DestroyLocus(bool instant = false) => trailRenderer.Clear(instant);
-
-        private void OnBoostActivate(FSubState obj, bool value)
+        protected virtual void OnEnable()
         {
-            if (obj is not FBoost) return;
-            boostAura.Toggle(value);
-            var viewport = Actor.camera.GetCamera().WorldToViewportPoint(Actor.transform.position);
-            viewport.y *= 0.8f;
-            if (value) boostDistortion.Play(viewport);
+            Actor.stateMachine.GetState<FStateGround>().OnSurfaceTagChanged += OnSurfaceTagChanged;
+            Actor.stateMachine.OnStateAssign += OnStateAssign;
         }
 
-        IEnumerator PlayJumpball()
+        protected virtual void OnDisable()
         {
-            yield return new WaitForSeconds(0.117f);
-            if (Actor.stateMachine.CurrentState is FStateJump && Actor.input.JumpHeld)
-                spinball.Toggle(true);
+            Actor.stateMachine.GetState<FStateGround>().OnSurfaceTagChanged -= OnSurfaceTagChanged;
+            Actor.stateMachine.OnStateAssign -= OnStateAssign;
         }
 
-        private void OnStateAssign(FState obj)
+        protected virtual void OnStateAssign(FState obj)
         {
-            FState prev = Actor.stateMachine.PreviousState;
-
-            // jump visuals
-            if (obj is FStateJump && prev is not FStateUpreel)
+            if (obj is FStateSwing)
             {
-                if (prev is FStateJump)
-                    spinball.Toggle(true);
-                else
-                    StartCoroutine(PlayJumpball());
+                swingTrail.trail.Clear();
+                swingTrail.Toggle(true);
             }
             else
             {
-                StopCoroutine(PlayJumpball());
-                spinball.Toggle(false);
+                swingTrail.Toggle(false);
             }
-
+            
             grindEffect.Toggle(obj is FStateGrind or FStateGrindSquat);
-
-            if ((obj is FStateGround or FStateStompLand) && prev is FStateStomp)
-                stompEffect.Land();
-
-            stompEffect.Toggle(obj is FStateStomp);
-            slideEffect.Toggle(obj is FStateSlide);
-
-            if (obj is FStateSweepKick)
-            {
-                sweepKickEffect.Clear();
-                sweepKickEffect.Toggle(true);
-            }
-            else if (prev is FStateSweepKick && (obj is FStateGround or FStateIdle or FStateSit))
-            {
-                sweepKickEffect.Toggle(false);
-            }
-            else if (prev is FStateSweepKick)
-            {
-                sweepKickEffect.Clear();
-            }
-
-            if (obj is FStateHoming or FStateStomp or FStateSwingJump)
-                CreateLocus();
             
             bool nowGrounded = obj is FStateGround or FStateCrawl or FStateBrake;
             if (_isGrounded != nowGrounded)
@@ -170,20 +110,6 @@ namespace SurgeEngine.Code.Core.Actor.System
             paraloopEffect.startPoint = Actor.kinematics.Rigidbody.position;
             paraloopEffect.sonicContext = Actor;
             paraloopEffect.Toggle(true);
-        }
-
-        private void OnEnable()
-        {
-            Actor.stateMachine.GetSubState<FBoost>().OnActiveChanged += OnBoostActivate;
-            Actor.stateMachine.GetState<FStateGround>().OnSurfaceTagChanged += OnSurfaceTagChanged;
-            Actor.stateMachine.OnStateAssign += OnStateAssign;
-        }
-
-        private void OnDisable()
-        {
-            Actor.stateMachine.GetSubState<FBoost>().OnActiveChanged -= OnBoostActivate;
-            Actor.stateMachine.GetState<FStateGround>().OnSurfaceTagChanged -= OnSurfaceTagChanged;
-            Actor.stateMachine.OnStateAssign -= OnStateAssign;
         }
     }
 }

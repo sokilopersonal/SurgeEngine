@@ -1,5 +1,5 @@
 ﻿using SurgeEngine.Code.Core.Actor.States;
-using SurgeEngine.Code.Core.Actor.States.SonicSubStates;
+using SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates;
 using SurgeEngine.Code.Core.Actor.System;
 using SurgeEngine.Code.Infrastructure.Custom;
 using SurgeEngine.Code.Infrastructure.Custom.Drawers;
@@ -26,7 +26,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
                 bool boosted = SonicTools.IsBoost();
 
                 if (boosted)
-                    context.effects.jumpDeluxEffect.Toggle(true);
+                    context.effects.JumpDeluxEffect.Toggle(true);
 
                 context.stateMachine.GetSubState<FBoost>().Active = false;
 

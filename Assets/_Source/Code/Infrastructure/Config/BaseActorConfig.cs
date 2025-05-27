@@ -47,6 +47,7 @@ namespace SurgeEngine.Code.Infrastructure.Config
         public float jumpCollisionHeight = 0.6f;
         public float jumpCollisionCenter = 0.2f;
         public float jumpCollisionRadius = 0.5f;
+        public float jumpMaxAirTime = 0.65f;
 
         [Header("Slope")]
         public float slopeDeslopeForce = 10;

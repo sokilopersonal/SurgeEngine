@@ -3,7 +3,7 @@ using SurgeEngine.Code.Core.Actor.System;
 using SurgeEngine.Code.Infrastructure.Custom;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Core.Actor.States.SonicSpecific
+namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
 {
     public class FStateStompLand : FStateMove
     {

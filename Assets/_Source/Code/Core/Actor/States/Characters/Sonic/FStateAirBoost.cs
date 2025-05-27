@@ -1,11 +1,11 @@
 ﻿using SurgeEngine.Code.Core.Actor.States.BaseStates;
-using SurgeEngine.Code.Core.Actor.States.SonicSubStates;
+using SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates;
 using SurgeEngine.Code.Core.Actor.System;
 using SurgeEngine.Code.Infrastructure.Config.SonicSpecific;
 using SurgeEngine.Code.Infrastructure.Custom;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Core.Actor.States.SonicSpecific
+namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
 {
     public class FStateAirBoost : FStateMove
     {

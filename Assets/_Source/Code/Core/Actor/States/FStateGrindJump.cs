@@ -6,8 +6,6 @@ namespace SurgeEngine.Code.Core.Actor.States
     public class FStateGrindJump : FStateJump
     {
         public FStateGrindJump(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
-        {
-            _maxAirTime = 0.3f;
-        }
+        { }
     }
 }

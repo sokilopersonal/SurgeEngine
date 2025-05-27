@@ -1,8 +1,8 @@
-using SurgeEngine.Code.Core.Actor.States.SonicSpecific;
-using SurgeEngine.Code.Core.Actor.States.SonicSubStates;
+using SurgeEngine.Code.Core.Actor.States.Characters.Sonic;
+using SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates;
 using SurgeEngine.Code.Core.StateMachine.Base;
 
-namespace SurgeEngine.Code.Core.Actor.System.Actors
+namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
 {
     public class SonicKinematics : ActorKinematics
     {
