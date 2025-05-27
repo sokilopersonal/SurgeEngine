@@ -34,10 +34,8 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
 
         private void Jump()
         {
-            bool angleCorrect = _rotationAngle > 0.1f && _rotationAngle < 0.35f;
-
-            StateMachine.SetState<FStateSwingJump>();
-            StateMachine.GetState<FStateSwingJump>().Launch(angleCorrect);
+            bool angleCorrect = _rotationAngle is > 0.1f and < 0.35f;
+            StateMachine.SetState<FStateSwingJump>().Launch(angleCorrect);
         }
 
         public override void OnTick(float dt)
