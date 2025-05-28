@@ -5,7 +5,7 @@ using UnityEngine.Splines;
 
 namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility.Rails
 {
-    [RequireComponent(typeof(MeshCollider))]
+    [RequireComponent(typeof(MeshCollider), typeof(SplineContainer), typeof(SplineExtrude))]
     public class Rail : MonoBehaviour
     {
         [SerializeField] private SplineContainer container;
@@ -17,13 +17,18 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility.Rails
 
         private void Awake()
         {
+            if (!container)
+                container = GetComponent<SplineContainer>();
+            
             HomingTarget = Instantiate(homingTargetPrefab, transform, false);
             HomingTarget.OnTargetReached.AddListener(AttachToRail);
+            
+            gameObject.layer = LayerMask.NameToLayer("Rail");
         }
 
         private void OnCollisionEnter(Collision other)
         {
-            if (other.gameObject.TryGetComponent(out ActorBase _))
+            if (other.gameObject.TryGetComponent(out ActorBase actor) && !actor.stateMachine.GetState<FStateGrind>().IsRailCooldown())
             {
                 AttachToRail();
             }

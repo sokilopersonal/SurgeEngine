@@ -132,7 +132,7 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
                 StateAnimator.TransitionToState(AnimatorParams.AirCycle, prev switch
                 {
                     FStateGround => 0.2f,
-                    FStateGrindJump => 0.5f,
+                    FStateGrindJump => 0.1f,
                     FStateJump or FStateHoming => 0f,
                     _ => 0.2f
                 });

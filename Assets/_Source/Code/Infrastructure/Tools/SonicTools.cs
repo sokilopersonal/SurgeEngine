@@ -58,7 +58,7 @@ namespace SurgeEngine.Code.Infrastructure.Tools
                         up = spline.EvaluateUpVector(f)
                     };
                     
-                    Vector3 endTargetPos = sample.pos + sample.up * (rail.Radius + 0.35f);
+                    Vector3 endTargetPos = sample.pos + sample.up * (rail.Radius + 0.5f);
                     Vector3 endWorldPos = rail.transform.TransformPoint(endTargetPos);
                     railTarget.transform.position = Vector3.Lerp(railTarget.transform.position, endWorldPos, 32 * Time.fixedDeltaTime);
                     

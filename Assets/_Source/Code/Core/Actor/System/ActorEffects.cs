@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using SurgeEngine.Code.Core.Actor.States;
 using SurgeEngine.Code.Core.Actor.States.Characters.Sonic;
 using SurgeEngine.Code.Core.StateMachine.Base;
@@ -36,6 +37,8 @@ namespace SurgeEngine.Code.Core.Actor.System
                 { GroundTag.Water, step.SmokeWater },
                 { GroundTag.Concrete, step.SmokeIron },
             };
+            
+            
         }
 
         protected virtual void OnEnable()

@@ -17,10 +17,11 @@ namespace SurgeEngine.Code.Core.Actor.States
         private Rail _rail;
         private SplineSample _sample;
         private Vector3 _prevTg;
+        private bool _isForward;
+        private float _timer;
+
 
         protected float _grindGravityPower;
-
-        private float _timer;
         
         public FStateGrind(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
@@ -31,7 +32,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         {
             base.OnEnter();
 
-            _timer = 0.1f;
+            _timer = 0.25f;
 
             _rigidbody.linearVelocity = Vector3.ClampMagnitude(_rigidbody.linearVelocity, Actor.config.topSpeed);
         }
@@ -83,9 +84,9 @@ namespace SurgeEngine.Code.Core.Actor.States
                 Kinematics.Project(_sample.up);
                 Kinematics.Project(upSplinePlane);
                 
-                float sign = Mathf.Sign(Vector3.Dot(Actor.transform.forward, _sample.tg));
-                bool forward = Mathf.Approximately(sign, 1);
-                Vector3 direction = forward ? _sample.tg : -_sample.tg;
+                float sign = Mathf.Sign(Vector3.Dot(_rigidbody.transform.forward, _sample.tg));
+                _isForward = Mathf.Approximately(sign, 1);
+                Vector3 direction = _isForward ? _sample.tg : -_sample.tg;
                 _rigidbody.rotation = Quaternion.LookRotation(direction, _sample.up);
                 
                 _prevTg = _sample.tg;
@@ -107,18 +108,19 @@ namespace SurgeEngine.Code.Core.Actor.States
                 _rigidbody.AddForce(slopeForce * Time.fixedDeltaTime, ForceMode.Impulse);
                 
                 _rigidbody.position = sLat + pVer;
+                
+                Kinematics.Normal = _sample.up;
 
                 if (!_rail.Container.Spline.Closed)
                 {
-                    if (_timer > 0) return;
+                    if (IsRailCooldown()) return;
+
+                    const float THRESHOLD = 0.0005f;
+                    bool outOfTime = 1 - f < THRESHOLD || f < THRESHOLD;
                     
-                    float tolerance = 0.01f;
-                    bool atStart = f <= tolerance;
-                    bool atEnd = f >= 1.0f - tolerance;
-    
-                    if (atStart || atEnd)
+                    if (outOfTime)
                     {
-                        _rigidbody.position += _rigidbody.transform.forward * 0.25f;
+                        _rigidbody.position += _rigidbody.transform.forward * 0.3f;
                         StateMachine.SetState<FStateAir>();
                     }
                 }
@@ -129,6 +131,8 @@ namespace SurgeEngine.Code.Core.Actor.States
         {
             _rail = rail;
         }
+        
+        public bool IsRailCooldown() => _timer > 0;
 
         public void BoostHandle()
         {

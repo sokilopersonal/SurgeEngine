@@ -71027,6 +71027,18 @@ PrefabInstance:
       value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 4937381615365551098, guid: cd1b15790df60f545814b74f0e7a6383, type: 3}
+      propertyPath: emitterVelocityMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4937381615365551098, guid: cd1b15790df60f545814b74f0e7a6383, type: 3}
+      propertyPath: InheritVelocityModule.m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4937381615365551098, guid: cd1b15790df60f545814b74f0e7a6383, type: 3}
+      propertyPath: InheritVelocityModule.enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4937381615365551098, guid: cd1b15790df60f545814b74f0e7a6383, type: 3}
       propertyPath: InitialModule.startSize.scalar
       value: 0.02
       objectReference: {fileID: 0}
@@ -71045,6 +71057,10 @@ PrefabInstance:
     - target: {fileID: 4937381615365551098, guid: cd1b15790df60f545814b74f0e7a6383, type: 3}
       propertyPath: InitialModule.startLifetime.scalar
       value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 4937381615365551098, guid: cd1b15790df60f545814b74f0e7a6383, type: 3}
+      propertyPath: InheritVelocityModule.m_Curve.scalar
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4937381615365551098, guid: cd1b15790df60f545814b74f0e7a6383, type: 3}
       propertyPath: InitialModule.gravityModifier.scalar

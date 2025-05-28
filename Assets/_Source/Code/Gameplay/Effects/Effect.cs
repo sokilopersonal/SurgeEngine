@@ -6,6 +6,7 @@ namespace SurgeEngine.Code.Gameplay.Effects
     public class Effect : MonoBehaviour
     {
         [SerializeField] protected ParticleSystem particle;
+        public ParticleSystem Particle => particle;
         [SerializeField] protected float stopDelay;
         
         private Coroutine _coroutine;
