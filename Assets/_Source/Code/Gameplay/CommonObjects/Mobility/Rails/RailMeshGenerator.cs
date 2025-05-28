@@ -12,6 +12,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility.Rails
         [SerializeField, Range(0.1f, 5f)] private float railHeight = 0.2f;
         [SerializeField, Range(32, 256)] private int splineResolution = 32;
         [SerializeField, Range(2, 6)] private int crossSectionSegments = 4;
+        [SerializeField] private bool generateEndCaps = true;
         [SerializeField] private Material material;
 
         private SplineContainer _container;
@@ -111,8 +112,14 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility.Rails
             float splineLength = spline.GetLength();
 
             int verticesPerSection = (crossSectionSegments * 4);
-            int totalVertices = verticesPerSection * (splineResolution + 1);
-            int totalTriangles = 6 * crossSectionSegments * 4 * splineResolution;
+            int railVertices = verticesPerSection * (splineResolution + 1);
+
+            int endCapVertices = generateEndCaps ? (verticesPerSection * 2 + 2) : 0;
+            int totalVertices = railVertices + endCapVertices;
+            
+            int railTriangles = 6 * crossSectionSegments * 4 * splineResolution;
+            int endCapTriangles = generateEndCaps ? (verticesPerSection * 2 * 3) : 0;
+            int totalTriangles = railTriangles + endCapTriangles;
 
             _vertices = new Vector3[totalVertices];
             _normals = new Vector3[totalVertices];
@@ -171,6 +178,11 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility.Rails
                 }
             }
 
+            if (generateEndCaps)
+            {
+                GenerateEndCaps(spline, boxShape, railVertices);
+            }
+
             int triangleIndex = 0;
             for (int i = 0; i < splineResolution; i++)
             {
@@ -191,6 +203,11 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility.Rails
                 }
             }
 
+            if (generateEndCaps)
+            {
+                GenerateEndCapTriangles(triangleIndex, railVertices, crossSectionSegments);
+            }
+
             _mesh.Clear();
             _mesh.vertices = _vertices;
             _mesh.triangles = _triangles;
@@ -201,6 +218,87 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility.Rails
             _meshFilter.mesh = _mesh;
 
             UpdateCollider();
+        }
+
+        private void GenerateEndCaps(Spline spline, Vector3[] boxShape, int railVertexOffset)
+        {
+            int verticesPerSection = boxShape.Length;
+
+            Vector3 startPos = spline.EvaluatePosition(0f);
+            Vector3 startTangent = spline.EvaluateTangent(0f);
+            Vector3 startUp = spline.EvaluateUpVector(0f);
+            Quaternion startRotation = Quaternion.LookRotation(startTangent, startUp);
+
+            int startCenterIndex = railVertexOffset;
+            _vertices[startCenterIndex] = startPos;
+            _normals[startCenterIndex] = -startTangent;
+            _uvs[startCenterIndex] = new Vector2(0.5f, 0.5f);
+
+            for (int i = 0; i < verticesPerSection; i++)
+            {
+                int vertexIndex = railVertexOffset + 1 + i;
+                Vector3 offset = startRotation * boxShape[i];
+                _vertices[vertexIndex] = startPos + offset;
+                _normals[vertexIndex] = -startTangent;
+
+                Vector2 localPos = new Vector2(boxShape[i].x, boxShape[i].y);
+                _uvs[vertexIndex] = new Vector2(
+                    (localPos.y / (railHeight / 2f) + 1f) * 0.5f,
+                    (localPos.x / (railWidth / 2f) + 1f) * 0.5f
+                );
+            }
+
+            Vector3 endPos = spline.EvaluatePosition(1f);
+            Vector3 endTangent = spline.EvaluateTangent(1f);
+            Vector3 endUp = spline.EvaluateUpVector(1f);
+            Quaternion endRotation = Quaternion.LookRotation(endTangent, endUp);
+
+            int endCenterIndex = railVertexOffset + 1 + verticesPerSection;
+            _vertices[endCenterIndex] = endPos;
+            _normals[endCenterIndex] = endTangent;
+            _uvs[endCenterIndex] = new Vector2(0.5f, 0.5f);
+
+            for (int i = 0; i < verticesPerSection; i++)
+            {
+                int vertexIndex = railVertexOffset + 2 + verticesPerSection + i;
+                Vector3 offset = endRotation * boxShape[i];
+                _vertices[vertexIndex] = endPos + offset;
+                _normals[vertexIndex] = endTangent;
+
+                Vector2 localPos = new Vector2(boxShape[i].x, boxShape[i].y);
+                _uvs[vertexIndex] = new Vector2(
+                    (-localPos.y / (railHeight / 2f) + 1f) * 0.5f,
+                    (localPos.x / (railWidth / 2f) + 1f) * 0.5f
+                );
+            }
+        }
+
+        private void GenerateEndCapTriangles(int startTriangleIndex, int railVertexOffset, int crossSectionSegments)
+        {
+            int verticesPerSection = crossSectionSegments * 4;
+            int triangleIndex = startTriangleIndex;
+
+            int startCenterIndex = railVertexOffset;
+            for (int i = 0; i < verticesPerSection; i++)
+            {
+                int current = railVertexOffset + 1 + i;
+                int next = railVertexOffset + 1 + (i + 1) % verticesPerSection;
+
+                _triangles[triangleIndex++] = startCenterIndex;
+                _triangles[triangleIndex++] = current;
+                _triangles[triangleIndex++] = next;
+            }
+
+            int endCenterIndex = railVertexOffset + 1 + verticesPerSection;
+            for (int i = 0; i < verticesPerSection; i++)
+            {
+                int current = railVertexOffset + 2 + verticesPerSection + i;
+                int next = railVertexOffset + 2 + verticesPerSection + (i + 1) % verticesPerSection;
+
+                _triangles[triangleIndex++] = endCenterIndex;
+                _triangles[triangleIndex++] = next;
+                _triangles[triangleIndex++] = current;
+            }
         }
         
         private bool CheckIfMeshGenerated() => Application.isPlaying && !_meshGenerated;
