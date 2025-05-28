@@ -82,7 +82,10 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
                 ResetBlendFactor();
             };
             
-            master.Actor.kinematics.OnModeChange += mode => is2D = mode == KinematicsMode.Side;
+            master.Actor.kinematics.OnModeChange += mode =>
+            {
+                is2D = mode == KinematicsMode.Side;
+            };
         }
 
         public override void Tick(float dt)
@@ -128,7 +131,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
             
             sideBlendFactor = Mathf.Clamp01(sideBlendFactor);
             
-            if (master.Actor.kinematics.IsPathValid()) sideOffset = 
+            if (master.Actor.kinematics.IsPathValid() && is2D) sideOffset = 
                 Vector3.SmoothDamp(sideOffset, GetSideOffset(), ref _sideOffsetVelocity, 0.2f);
             else
             {
@@ -145,8 +148,6 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
         private Vector3 GetActorPosition()
         {
             Vector3 basePosition = master.Actor.transform.position + LateOffset + Vector3.up * yOffset + Vector3.up * yLag;
-            var kinematics = ActorContext.Context.kinematics;
-            kinematics.GetPath();
 
             return basePosition;
         }

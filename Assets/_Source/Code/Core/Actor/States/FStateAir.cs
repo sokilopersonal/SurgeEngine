@@ -1,4 +1,5 @@
-﻿using SurgeEngine.Code.Core.Actor.States.BaseStates;
+﻿using System;
+using SurgeEngine.Code.Core.Actor.States.BaseStates;
 using SurgeEngine.Code.Core.Actor.States.Characters.Sonic;
 using SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates;
 using SurgeEngine.Code.Core.Actor.System;
@@ -23,7 +24,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         {
             base.OnEnter();
             
-            if (Actor.kinematics.Angle >= 90 && Actor.kinematics.Velocity.y > 3f)
+            if (Mathf.Abs(Kinematics.Angle - 90) < 0.05f && Actor.kinematics.Velocity.y > 3f)
             {
                 Actor.flags.AddFlag(new Flag(FlagType.OutOfControl, null, true, 0.5f));
             }

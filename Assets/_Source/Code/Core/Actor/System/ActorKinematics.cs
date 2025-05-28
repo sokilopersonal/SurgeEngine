@@ -51,12 +51,8 @@ namespace SurgeEngine.Code.Core.Actor.System
             set => _movementVector = value;
         }
         
-        public Vector3 PlanarVelocity
-        {
-            get => _planarVelocity;
-            set => _planarVelocity = value;
-        }
-        
+        public Vector3 PlanarVelocity => _planarVelocity;
+
         public bool Skidding => _skidding;
         public float MoveDot => _moveDot;
 
@@ -66,9 +62,7 @@ namespace SurgeEngine.Code.Core.Actor.System
         private Vector3 _movementVector;
         private Vector3 _planarVelocity;
 
-        private SplineContainer _path;
-        private SplineContainer _rail;
-        private Vector3 _prevTg;
+        private SplineData _splineData;
 
         private float _speed;
         private float _moveDot;
@@ -80,7 +74,7 @@ namespace SurgeEngine.Code.Core.Actor.System
 
         private BaseActorConfig _config;
 
-        public void Start()
+        public void Awake()
         {
             _rigidbody = GetComponent<Rigidbody>();
             Normal = Vector3.up;
@@ -90,26 +84,32 @@ namespace SurgeEngine.Code.Core.Actor.System
 
         private void Update()
         {
-            _cameraTransform = Actor.camera.GetCameraTransform();
-            
-            Vector3 transformedInput = Quaternion.FromToRotation(_cameraTransform.up, Normal) *
-                                       (_cameraTransform.rotation * Actor.input.moveVector);
-            transformedInput = Vector3.ProjectOnPlane(transformedInput, Normal);
-            _inputDir = transformedInput.normalized * Actor.input.moveVector.magnitude;
-            
-            _moveDot = Vector3.Dot(Actor.kinematics.GetInputDir().normalized, _rigidbody.linearVelocity.normalized);
-            
-            _skidding = _moveDot < _config.skiddingThreshold;
-            _speed = _rigidbody.linearVelocity.magnitude;
-            
+            CalculateInputDirection();
+            CalculateMovementStats();
             CalculateDetachState();
-            
-            _angle = Vector3.Angle(Normal, Vector3.up);
         }
 
         private void FixedUpdate()
         {
             SplineCalculation();
+        }
+
+        private void CalculateInputDirection()
+        {
+            _cameraTransform = Actor.camera.GetCameraTransform();
+
+            Vector3 transformedInput = Quaternion.FromToRotation(_cameraTransform.up, Normal) *
+                                       (_cameraTransform.rotation * Actor.input.moveVector);
+            transformedInput = Vector3.ProjectOnPlane(transformedInput, Normal);
+            _inputDir = transformedInput.normalized * Actor.input.moveVector.magnitude;
+        }
+
+        private void CalculateMovementStats()
+        {
+            _moveDot = Vector3.Dot(Actor.kinematics.GetInputDir().normalized, _rigidbody.linearVelocity.normalized);
+            _skidding = _moveDot < _config.skiddingThreshold;
+            _speed = _rigidbody.linearVelocity.magnitude;
+            _angle = Vector3.Angle(Normal, Vector3.up);
         }
 
         public void BasePhysics(Vector3 normal, MovementType movementType = MovementType.Ground)
@@ -168,52 +168,29 @@ namespace SurgeEngine.Code.Core.Actor.System
             
             _rigidbody.linearVelocity = _movementVector + vertical;
         }
-        
-        public void SplineCalculation()
+
+        private void SplineCalculation()
         {
-            // TODO: Move all spline data to a data class
-            if (_path != null && mode == KinematicsMode.Forward || mode == KinematicsMode.Side)
+            if (_splineData != null && mode == KinematicsMode.Forward || mode == KinematicsMode.Side)
             {
-                var spline = _path.Spline;
-                Vector3 localPos = _path.transform.InverseTransformPoint(_rigidbody.position);
-                SplineUtility.GetNearestPoint(spline, localPos, out var p, out var f);
+                _splineData.EvaluateWorld(out var pos, out var tg, out var up, out var right);
+                Project(right);
+                
+                _inputDir = Vector3.ProjectOnPlane(_inputDir, right);
 
-                SplineSample sample = new SplineSample
+                Vector3 endPos = pos;
+                endPos += up;
+                endPos.y = _rigidbody.position.y;
+                
+                _rigidbody.position = Vector3.MoveTowards(_rigidbody.position, endPos, Mathf.Min(Speed / 64f, 1) * 16f * Time.fixedDeltaTime);
+                _splineData.Time += Vector3.Dot(Velocity, Vector3.ProjectOnPlane(tg, Normal)) * Time.fixedDeltaTime;
+
+                float distance = Vector3.Distance(_rigidbody.position, pos);
+                if (distance > 5f)
                 {
-                    pos = _path.EvaluatePosition(f),
-                    tg = ((Vector3)_path.EvaluateTangent(f)).normalized,
-                    up = _path.EvaluateUpVector(f)
-                };
-                
-                if (_prevTg == Vector3.zero) _prevTg = sample.tg;
-                
-                Vector3 splinePlane = Vector3.Cross(sample.tg, sample.up);
-                Vector3 upSplinePlane = Vector3.Cross(sample.tg, Vector3.up);
-                
-                _inputDir = Vector3.ProjectOnPlane(_inputDir, splinePlane);
-                
-                _rigidbody.linearVelocity = Quaternion.FromToRotation(Vector3.ProjectOnPlane(_prevTg, Vector3.up).normalized, 
-                    Vector3.ProjectOnPlane(sample.tg, Vector3.up)) * _rigidbody.linearVelocity;
-                _rigidbody.linearVelocity = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, upSplinePlane);
-                _prevTg = sample.tg;
-
-                Vector3 newPos = sample.pos;
-                
-                SurgeMath.SplitPlanarVector(_rigidbody.position, 
-                    sample.ProjectOnUp(sample.tg).normalized, 
-                    out var pLat, 
-                    out var pVer);
-                
-                SurgeMath.SplitPlanarVector(newPos, sample.ProjectOnUp(sample.tg).normalized, 
-                    out var sLat,
-                    out var sVer);
-
-                var targetY = _rigidbody.position.y;
-                
-                pLat = Vector3.MoveTowards(pLat, sLat, Mathf.Min(Speed / 64f, 1) * 16f * Time.fixedDeltaTime);
-                pLat.y = targetY;
-                
-                _rigidbody.position = pLat + pVer;
+                    Debug.Log("Too far away from the point. Resetting path.");
+                    SetPath(null);
+                }
             }
         }
 
@@ -549,24 +526,26 @@ namespace SurgeEngine.Code.Core.Actor.System
         
         public void SetPath(SplineContainer path, KinematicsMode desiredMode = KinematicsMode.Free)
         {
+            Vector3 pos = Rigidbody.position - Rigidbody.transform.up * 0.5f;
+            _splineData = path != null ? new SplineData(path, pos) : null;
+            
             mode = desiredMode;
-            _path = path;
-            OnModeChange?.Invoke(mode);
-
             if (path == null)
             {
                 mode = KinematicsMode.Free;
             }
+            
+            OnModeChange?.Invoke(mode);
         }
         
         public bool IsPathValid()
         {
-            return _path != null;
+            return _splineData != null;
         }
 
         public SplineContainer GetPath()
         {
-            return _path;
+            return _splineData.Container;
         }
     }
 
@@ -575,6 +554,7 @@ namespace SurgeEngine.Code.Core.Actor.System
         public float Time { get; set; }
         public float Length { get; private set; }
         public float NormalizedTime => Time / Length;
+        public SplineContainer Container => _container;
 
         private readonly SplineContainer _container;
 
@@ -607,8 +587,8 @@ namespace SurgeEngine.Code.Core.Actor.System
         public void EvaluateWorld(out Vector3 position, out Vector3 tangent, out Vector3 up, out Vector3 right)
         {
             var transform = _container.transform;
-            
-            float normalizedTime = Time / Length;
+
+            float normalizedTime = Mathf.Clamp01(Mathf.Max(0.001f, Time / Length));
             var spline = _container.Spline;
 
             spline.Evaluate(normalizedTime, 

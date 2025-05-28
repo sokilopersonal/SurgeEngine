@@ -30,7 +30,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         {
             base.OnEnter();
 
-            SetCooldown(0.25f);
+            //SetCooldown(0.1f);
             _rigidbody.linearVelocity = Vector3.ClampMagnitude(_rigidbody.linearVelocity, Actor.config.topSpeed);
         }
 
@@ -79,6 +79,8 @@ namespace SurgeEngine.Code.Core.Actor.States
                 
                 Vector3 targetTangent = _isForward ? tg : -tg;
                 _rigidbody.rotation = Quaternion.LookRotation(targetTangent, targetUp);
+                
+                Kinematics.Normal = targetUp;
                 
                 _data.Time += Vector3.Dot(_rigidbody.linearVelocity, tg) * dt;
 

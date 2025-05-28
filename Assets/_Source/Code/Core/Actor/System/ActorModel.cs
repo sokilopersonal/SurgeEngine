@@ -190,7 +190,7 @@ namespace SurgeEngine.Code.Core.Actor.System
         {
             if (obj is FStateAir)
             {
-                if (Actor.kinematics.Angle >= 90 && Actor.kinematics.Velocity.y > 3f)
+                if (Mathf.Abs(Actor.kinematics.Angle - 90) < 0.05f && Actor.kinematics.Velocity.y > 3f)
                 {
                     _isFlipping = true;
                     _flipTimer = 0.75f;
