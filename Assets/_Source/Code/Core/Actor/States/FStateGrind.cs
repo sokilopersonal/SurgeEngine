@@ -2,15 +2,15 @@
 using SurgeEngine.Code.Core.Actor.States.Characters.Sonic;
 using SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates;
 using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine.Code.Core.Actor.System.Characters.Sonic;
 using SurgeEngine.Code.Gameplay.CommonObjects.Mobility;
-using SurgeEngine.Code.Infrastructure.Config.SonicSpecific;
 using SurgeEngine.Code.Infrastructure.Custom;
 using UnityEngine;
 using UnityEngine.Splines;
 
 namespace SurgeEngine.Code.Core.Actor.States
 {
-    public class FStateGrind : FStateMove, IBoostHandler, IDamageableState
+    public class FStateGrind : FStateMove, IBoostHandler
     {
         private Rail _rail;
         private Vector3 _prevTg;
@@ -30,11 +30,9 @@ namespace SurgeEngine.Code.Core.Actor.States
 
             _timer = 0.1f;
 
-            Actor.TryGetConfig(out HomingConfig homingConfig);
-
             if (StateMachine.PreviousState is FStateHoming)
             {
-                _rigidbody.linearVelocity = _rigidbody.transform.forward * homingConfig.speed;
+                _rigidbody.linearVelocity = _rigidbody.transform.forward * (Actor as Sonic).homingConfig.speed;
             }
         }
 
@@ -45,6 +43,7 @@ namespace SurgeEngine.Code.Core.Actor.States
             if (Input.JumpPressed)
             {
                 StateMachine.SetState<FStateGrindJump>();
+                _rigidbody.position += _rigidbody.transform.up * 0.05f;
             }
 
             if (this is not FStateGrindSquat)
@@ -65,25 +64,23 @@ namespace SurgeEngine.Code.Core.Actor.States
             
             if (_rail != null)
             {
-                var spline = _rail.container.Spline;
-                Vector3 pos = _rigidbody.position - Actor.transform.up * _rail.radius;
+                var spline = _rail.Container.Spline;
+                Vector3 pos = _rigidbody.position - Actor.transform.up * _rail.Radius;
                 Vector3 localPos = _rail.transform.InverseTransformPoint(pos);
-                SplineUtility.GetNearestPoint(spline, localPos, out var p, out var f, 12, 8);
-                f *= spline.GetLength();
+                SplineUtility.GetNearestPoint(spline, localPos, out var p, out var f);
 
                 SplineSample sample = new SplineSample
                 {
-                    pos = _rail.container.EvaluatePosition(f / spline.GetLength()),
-                    tg = ((Vector3)spline.EvaluateTangent(f / spline.GetLength())).normalized,
-                    up = spline.EvaluateUpVector(f / spline.GetLength())
+                    pos = _rail.Container.EvaluatePosition(f),
+                    tg = ((Vector3)spline.EvaluateTangent(f)).normalized,
+                    up = spline.EvaluateUpVector(f)
                 };
                 
                 if (_prevTg == Vector3.zero) _prevTg = sample.tg;
                 
-                Debug.DrawRay(pos, sample.up);
-                Vector3 upSplinePlane = Vector3.Cross(sample.tg, Vector3.up);
+                Vector3 upSplinePlane = Vector3.Cross(sample.tg, sample.up);
                 
-                Kinematics.Project();
+                Kinematics.Project(sample.up);
                 Kinematics.Project(upSplinePlane);
                 
                 float sign = Mathf.Sign(Vector3.Dot(Actor.transform.forward, sample.tg));
@@ -94,31 +91,31 @@ namespace SurgeEngine.Code.Core.Actor.States
                 _prevTg = sample.tg;
 
                 Vector3 newPos = sample.pos;
-                newPos += sample.up * _rail.radius;
+                newPos += sample.up * (1 + _rail.Radius);
 
+                Vector3 planeNormal = Vector3.ProjectOnPlane(sample.tg, sample.up);
                 SurgeMath.SplitPlanarVector(_rigidbody.position, 
-                    sample.ProjectOnUp(sample.tg).normalized, 
-                    out var pLat, 
+                    planeNormal, 
+                    out _, 
                     out var pVer);
                 
-                SurgeMath.SplitPlanarVector(newPos, sample.ProjectOnUp(sample.tg).normalized, 
+                SurgeMath.SplitPlanarVector(newPos, planeNormal, 
                     out var sLat,
-                    out var sVer);
+                    out _);
                 
-                pLat = sLat;
-                
-                Vector3 slopeForce = Vector3.ProjectOnPlane(Vector3.down, Actor.transform.up) * _grindGravityPower;
+                Vector3 slopeForce = Vector3.ProjectOnPlane(Vector3.down, sample.up) * _grindGravityPower;
                 _rigidbody.AddForce(slopeForce * Time.fixedDeltaTime, ForceMode.Impulse);
                 
-                Kinematics.SlopePhysics();
-                _rigidbody.position = pLat + pVer;
+                _rigidbody.position = sLat + pVer;
 
-                if (!_rail.container.Spline.Closed)
+                if (!_rail.Container.Spline.Closed)
                 {
-                    float f1 = f / spline.GetLength();
-                    if (1f - f1 < 0.005f || f1 < 0.005f)
+                    Ray ray = new Ray(pos, -sample.up);
+                    float dist = 1.5f;
+                    Debug.DrawRay(ray.origin, ray.direction * dist, Color.red);
+                    if (!Physics.SphereCast(ray, 0.25f, dist, 1 << _rail.gameObject.layer))
                     {
-                        _rail.End();
+                        _rigidbody.position += _rigidbody.transform.forward * 0.25f;
                         StateMachine.SetState<FStateAir>();
                     }
                 }

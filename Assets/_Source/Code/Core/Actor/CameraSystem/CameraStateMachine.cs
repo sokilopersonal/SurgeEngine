@@ -111,7 +111,10 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
             actorPosition = GetActorPosition() + sideOffset;
             
             defaultDirection = GetDirection();
-            if (master.Actor.kinematics.IsPathValid()) sideDirection = GetSideDirection();
+            if (master.Actor.kinematics.IsPathValid())
+            {
+                sideDirection = GetSideDirection();
+            }
             actualDirection = Vector3.Lerp(defaultDirection, sideDirection, Easings.Get(Easing.Gens, sideBlendFactor));
             
             if (is2D)
@@ -160,8 +163,9 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
         {
             var path = master.Actor.kinematics.GetPath();
             var spline = path.Spline;
-            SplineUtility.GetNearestPoint(spline, path.transform.InverseTransformPoint(master.Actor.transform.position),
-                out _, out var f, 8, 4);
+            Vector3 pos = master.Actor.kinematics.Rigidbody.position - master.Actor.transform.up;
+            Vector3 localPos = path.transform.InverseTransformPoint(pos);
+            SplineUtility.GetNearestPoint(spline, localPos, out _, out var f);
 
             path.Evaluate(spline, f, out var p, out var tg, out var up);
 
@@ -173,7 +177,8 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
             };
             
             Vector3 plane = Vector3.Cross(sample.tg, -Vector3.up);
-            return plane * 4f;
+            plane = Vector3.ProjectOnPlane(plane, Vector3.up).normalized;
+            return plane * 3.5f;
         }
 
         private Vector3 GetSideOffset()
@@ -181,7 +186,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
             var path = master.Actor.kinematics.GetPath();
             var spline = path.Spline;
             SplineUtility.GetNearestPoint(spline, path.transform.InverseTransformPoint(actorPosition),
-                out _, out var f, 8, 4);
+                out _, out var f);
             
             path.Evaluate(spline, f, out var p, out var tg, out var up);
 
@@ -192,9 +197,11 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
                 up = up
             };
             
+            sample.tg = Vector3.ProjectOnPlane(sample.tg, Vector3.up).normalized;
+            
             Vector3 side = sample.tg;
             float dot = Vector3.Dot(side, master.Actor.transform.forward);
-            side *= 1.3f;
+            side *= 1f;
 
             if (dot < 0)
             {

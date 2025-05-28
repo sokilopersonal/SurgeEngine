@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using SurgeEngine.Code.Core.Actor.CameraSystem;
 using SurgeEngine.Code.Gameplay.CommonObjects.Lighting;
 using SurgeEngine.Code.Infrastructure.Tools.Services;
 using UnityEngine;
@@ -45,8 +46,6 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers
         {
             if (mode != LoadSceneMode.Additive)
             {
-                SetupCamera();
-                
                 Apply();
             }
         }
@@ -124,18 +123,14 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers
 
         public void Apply()
         {
+            SetupCamera();
+            
             // Texture quality
             QualitySettings.globalTextureMipmapLimit = MaxTextureQuality - (int)Data.textureQuality;
             
             // Sun Shadows
-            foreach (var light in _lightsData)
-            {
-                if (light.Component.type == LightType.Directional)
-                {
-                    var data = light.Data;
-                    data.shadowResolution.level = (int)Data.sunShadowsQuality;
-                }
-            }
+            var sunData = RenderSettings.sun.GetComponent<HDAdditionalLightData>();
+            sunData.shadowResolution.level = (int)Data.sunShadowsQuality;
             
             // Additional Shadows
             foreach (var light in _lightsData)

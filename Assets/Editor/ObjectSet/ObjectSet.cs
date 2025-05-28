@@ -23,13 +23,15 @@ namespace SurgeEngine.Editor
         }
 
         private readonly List<PrefabData> _prefabDataList = new List<PrefabData>();
-        private float _normalOffset = 0.1f;
         private Vector2 _scrollPosition;
-        private const string SaveFilePath = "Assets/Editor/SelectedPrefabs.json";
+        private const string SaveFilePath = "Assets/Editor/ObjectSet/SelectedPrefabs.json";
         private string[] _categories;
-        private int _selectedCategoryIndex = 0;
         private GameObject _currentPrefabInstance;
         private bool _isPlacingPrefab;
+        
+        private int _selectedCategoryIndex = 0;
+        private float _normalOffset = 0.1f;
+        private bool _alwaysDrawPrefabName;
         
         [MenuItem("Surge Engine/Asset Manager")]
         private static void ShowWindow()
@@ -43,32 +45,84 @@ namespace SurgeEngine.Editor
         {
             _selectedCategoryIndex = EditorPrefs.GetInt("AssetManagerCategoryIndex", 0);
             _normalOffset = EditorPrefs.GetFloat("AssetManagerNormalOffset", 0.1f);
+            _alwaysDrawPrefabName = EditorPrefs.GetBool("AssetManagerAlwaysDrawPrefabName", false);
             
             LoadAssetsList();
         }
 
         private void OnGUI()
         {
-            GUILayout.Label("Asset Manager", EditorStyles.boldLabel);
+            EditorGUILayout.Space(15);
+            var boxStyle = new GUIStyle("box")
+            {
+                normal = { background = Texture2D.grayTexture }
+            };
+            EditorGUILayout.BeginVertical(boxStyle);
+            GUIStyle titleStyle = new GUIStyle(EditorStyles.boldLabel)
+            {
+                alignment = TextAnchor.MiddleCenter,
+                fontSize = 16
+            };
+            EditorGUILayout.LabelField("Asset Manager", titleStyle);
+            EditorGUILayout.EndVertical();
+            EditorGUILayout.Space(4);
+            
+            EditorGUILayout.HelpBox("How to use: " +
+                                    "\n1. Choose category" +
+                                    "\n2. Click on the object icon" +
+                                    "\n3. Move your mouse to where you want place the object" +
+                                    "\n4. Press LMB or Esc to place/cancel", MessageType.None);
+
+            EditorGUILayout.BeginVertical(new GUIStyle("box")); // SETTINGS
+            
+            var settingsStyle = new GUIStyle(EditorStyles.boldLabel)
+            {
+                alignment = TextAnchor.MiddleCenter,
+                fontSize = 16,
+                padding = new RectOffset(0, 0, 0, -10)
+            };
+            EditorGUILayout.LabelField("Settings", settingsStyle);
+            EditorGUILayout.Space(10);
+            
             _categories = new[] { "All", "Common", "Enemies", "Ring Groups", "Cameras", "System", "Thorns" };
-    
-            GUILayout.Label("Category");
-            _selectedCategoryIndex = EditorGUILayout.Popup(_selectedCategoryIndex, _categories);
+            _selectedCategoryIndex = EditorGUILayout.Popup("Category", _selectedCategoryIndex, _categories);
+            _normalOffset = EditorGUILayout.Slider("Normal Offset", _normalOffset, 0, 0.5f);
+
+            var alwaysDrawRect = EditorGUILayout.BeginVertical();
+            var content = new GUIContent("Always Draw Prefab Name ");
+            EditorGUILayout.LabelField(content);
+            
+            Vector2 labelSize = EditorStyles.label.CalcSize(content);
+            alwaysDrawRect.x += labelSize.x + 10;
+            _alwaysDrawPrefabName = EditorGUI.Toggle(alwaysDrawRect, _alwaysDrawPrefabName);
+
+            EditorGUILayout.EndVertical();
             
             EditorPrefs.SetInt("AssetManagerCategoryIndex", _selectedCategoryIndex);
-
-            _normalOffset = EditorGUILayout.Slider("Normal Offset", _normalOffset, 0, 0.5f);
             EditorPrefs.SetFloat("AssetManagerNormalOffset", _normalOffset);
-    
-            if (GUILayout.Button("Add Prefab"))
+            EditorPrefs.SetBool("AssetManagerAlwaysDrawPrefabName", _alwaysDrawPrefabName);
+            
+            EditorGUILayout.EndVertical(); // SETTINGS END
+            EditorGUILayout.Space(5);
+            
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+            if (GUILayout.Button("Add Prefab", GUILayout.Width(150)))
             {
                 SelectPrefab();
             }
+            if (GUILayout.Button("Save List", GUILayout.Width(150)))
+            {
+                SaveAssetsList();
+            }
+            GUILayout.FlexibleSpace();
+            EditorGUILayout.EndHorizontal();
 
-            GUILayout.Space(10);
-            _scrollPosition = GUILayout.BeginScrollView(_scrollPosition);
-    
-            int itemsPerRow = Mathf.Max(1, (int)(position.width / 110));
+            EditorGUILayout.Space(10);
+            EditorGUILayout.LabelField("Prefabs", EditorStyles.boldLabel);
+
+            _scrollPosition = EditorGUILayout.BeginScrollView(_scrollPosition);
+            int itemsPerRow = Mathf.Max(1, (int)(position.width / 100));
             int drawnCount = 0;
             EditorGUILayout.BeginHorizontal();
             foreach (var prefabData in _prefabDataList)
@@ -89,12 +143,7 @@ namespace SurgeEngine.Editor
                 }
             }
             EditorGUILayout.EndHorizontal();
-            GUILayout.EndScrollView();
-
-            if (GUILayout.Button("Save Assets List"))
-            {
-                SaveAssetsList();
-            }
+            EditorGUILayout.EndScrollView();
         }
 
         private bool DrawPrefabButton(PrefabData prefabData)
@@ -104,8 +153,13 @@ namespace SurgeEngine.Editor
             {
                 Texture2D previewTexture = AssetPreview.GetAssetPreview(prefabData.prefab);
 
-                int size = 100;
-                if (GUILayout.Button(previewTexture, GUILayout.Width(size), GUILayout.Height(size)))
+                int size = 110;
+                var buttonStyle = new GUIStyle(GUI.skin.button)
+                {
+                    padding = new RectOffset(1, 1, 1, 1),
+                };
+                var rect = GUILayoutUtility.GetRect(size, size);
+                if (GUI.Button(rect, previewTexture, buttonStyle))
                 {
                     if (Event.current.button == 0)
                     {
@@ -120,11 +174,17 @@ namespace SurgeEngine.Editor
                 GUIStyle style = new GUIStyle
                 {
                     font = EditorStyles.boldFont,
-                    normal = { textColor = Color.white },
+                    normal = { textColor = Color.white, background = Texture2D.grayTexture },
                     alignment = TextAnchor.MiddleCenter,
-                    fontSize = 11
+                    fontSize = 10,
+                    padding = new RectOffset(2, 2, 2, 2),
+                    wordWrap = true
                 };
-                GUILayout.Label(prefabData.prefab.name, style, GUILayout.Width(100));
+                if (rect.Contains(Event.current.mousePosition) || _alwaysDrawPrefabName)
+                {
+                    float labelHeight = style.CalcHeight(new GUIContent(prefabData.prefab.name), rect.width);
+                    GUI.Label(new Rect(rect.x, rect.y, rect.width, Mathf.Max(20, labelHeight)), prefabData.prefab.name, style);
+                }
             }
             EditorGUILayout.EndVertical();
             return rightClick;

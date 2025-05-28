@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 3470409848343941267}
   - component: {fileID: 8801629178764066557}
   - component: {fileID: 8715703643676652550}
+  - component: {fileID: 761182868105817372}
   m_Layer: 15
   m_Name: Rail
   m_TagString: Untagged
@@ -50,7 +51,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   container: {fileID: 3377126870172534963}
   radius: 0.25
-  homingTargetPrefab: {fileID: 0}
+  homingTargetPrefab: {fileID: 1422545327962898458, guid: b82b82b8cfacd2548b382b4f38f3ce43, type: 3}
 --- !u!114 &3377126870172534963
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -205,4 +206,36 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: acf4f9fd53a015346ae1d5a3149851aa, type: 2}
+  m_Mesh: {fileID: 0}
+--- !u!114 &761182868105817372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1702804961767849459}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 222dc08d484f16869bdd89edd9d368fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Container: {fileID: 3377126870172534963}
+  m_TargetMesh: {fileID: 0}
+  m_RebuildOnSplineChange: 1
+  m_RebuildFrequency: 30
+  m_UpdateColliders: 1
+  m_Sides: 8
+  m_SegmentsPerUnit: 4
+  m_Capped: 1
+  m_Radius: 0.25
+  m_Range: {x: 0, y: 1}
+  m_FlipNormals: 0
+  m_Shape:
+    rid: 4382833210081411072
+  references:
+    version: 2
+    RefIds:
+    - rid: 4382833210081411072
+      type: {class: Circle, ns: UnityEngine.Splines.ExtrusionShapes, asm: Unity.Splines}
+      data:
+        m_Sides: 8

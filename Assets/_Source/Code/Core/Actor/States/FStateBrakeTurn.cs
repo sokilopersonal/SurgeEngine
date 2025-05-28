@@ -20,6 +20,8 @@ namespace SurgeEngine.Code.Core.Actor.States
             base.OnEnter();
 
             _timer = 0f;
+            
+            _rigidbody.rotation = Quaternion.Euler(0f, _rigidbodyRotation.eulerAngles.y, 0f);
             _rigidbodyRotation = _rigidbody.rotation;
         }
 
@@ -30,9 +32,9 @@ namespace SurgeEngine.Code.Core.Actor.States
             if (Kinematics.CheckForGround(out var result))
             {
                 Kinematics.Point = result.point;
-                Kinematics.Normal = result.normal;
+                Kinematics.Normal = Vector3.up;
                 
-                Kinematics.Snap(result.point, result.normal, true);
+                Kinematics.Snap(result.point, Kinematics.Normal, true);
                 
                 float duration = 0.3f;
                 if (_timer < duration)

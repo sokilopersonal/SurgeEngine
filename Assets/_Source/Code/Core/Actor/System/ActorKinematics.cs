@@ -177,13 +177,12 @@ namespace SurgeEngine.Code.Core.Actor.System
                 var spline = _path.Spline;
                 Vector3 localPos = _path.transform.InverseTransformPoint(_rigidbody.position);
                 SplineUtility.GetNearestPoint(spline, localPos, out var p, out var f, 12, 8);
-                f *= spline.GetLength();
 
                 SplineSample sample = new SplineSample
                 {
-                    pos = _path.EvaluatePosition(f / spline.GetLength()),
-                    tg = ((Vector3)_path.EvaluateTangent(f / spline.GetLength())).normalized,
-                    up = _path.EvaluateUpVector(f / spline.GetLength())
+                    pos = _path.EvaluatePosition(f),
+                    tg = ((Vector3)_path.EvaluateTangent(f)).normalized,
+                    up = _path.EvaluateUpVector(f)
                 };
                 
                 if (_prevTg == Vector3.zero) _prevTg = sample.tg;

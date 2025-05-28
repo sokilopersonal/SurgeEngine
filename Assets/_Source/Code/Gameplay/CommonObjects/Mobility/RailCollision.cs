@@ -16,7 +16,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
         {
             base.Contact(msg, context);
             
-            _rail.AttachToRail();
+            //_rail.AttachToRail();
         }
     }
 }
