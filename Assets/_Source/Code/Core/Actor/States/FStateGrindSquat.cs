@@ -7,7 +7,7 @@ namespace SurgeEngine.Code.Core.Actor.States
     {
         public FStateGrindSquat(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
-            _grindGravityPower = 13;
+            _grindGravityPower = 14;
         }
 
         public override void OnEnter()

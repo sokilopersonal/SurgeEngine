@@ -569,12 +569,66 @@ namespace SurgeEngine.Code.Core.Actor.System
             return _path;
         }
     }
-    
+
+    public class SplineData
+    {
+        public float Time { get; set; }
+        public float Length { get; private set; }
+        public float NormalizedTime => Time / Length;
+
+        private readonly SplineContainer _container;
+
+        public SplineData(SplineContainer container, Vector3 position)
+        {
+            _container = container;
+            
+            SplineUtility.GetNearestPoint(container.Spline, _container.transform.InverseTransformPoint(position), 
+                out _, out var f, 8, 3);
+            
+            Length = container.Spline.GetLength();
+            Time = f * Length;
+        }
+
+        public void Evaluate(out Vector3 position, out Vector3 tangent, out Vector3 up, out Vector3 right)
+        {
+            var spline = _container.Spline;
+
+            spline.Evaluate(NormalizedTime, 
+                out var pos,
+                out var tg,
+                out var upVector);
+            
+            position = pos;
+            tangent = ((Vector3)tg).normalized;
+            up = upVector;
+            right = Vector3.Cross(tg, Vector3.up).normalized;
+        }
+
+        public void EvaluateWorld(out Vector3 position, out Vector3 tangent, out Vector3 up, out Vector3 right)
+        {
+            var transform = _container.transform;
+            
+            float normalizedTime = Time / Length;
+            var spline = _container.Spline;
+
+            spline.Evaluate(normalizedTime, 
+                out var pos,
+                out var tg,
+                out var upVector);
+            
+            position = transform.TransformPoint(pos);
+            tangent = transform.TransformDirection(tg).normalized;
+            up = transform.TransformDirection(upVector);
+            right = Vector3.Cross(tangent, Vector3.up).normalized;
+        }
+    }
+
     public struct SplineSample
     {
         public Vector3 pos;
         public Vector3 tg;
         public Vector3 up;
+        public Vector3 right;
         
         public Vector3 ProjectOnUp(Vector3 vector) => Vector3.ProjectOnPlane(vector, Vector3.up);
     }
