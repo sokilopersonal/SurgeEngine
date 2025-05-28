@@ -1,4 +1,5 @@
 ﻿using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine.Code.Gameplay.CommonObjects.Mobility.Rails;
 using UnityEngine;
 
 namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility

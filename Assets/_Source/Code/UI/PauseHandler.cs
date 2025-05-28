@@ -58,7 +58,7 @@ namespace SurgeEngine.Code.UI
 
         private void Update()
         {
-            Common.TickTimer(ref _delay, pauseDelay, false, true);
+            Utility.TickTimer(ref _delay, pauseDelay, false, true);
         }
 
         private void OnPauseAction(InputAction.CallbackContext obj)

@@ -79,7 +79,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Collectables
         {
             RuntimeManager.PlayOneShot(ringSound);
 
-            Common.AddScore(10);
+            Utility.AddScore(10);
             var p = Instantiate(particle, transform.position, Quaternion.identity);
             Destroy(p.gameObject, 1f);
             gameObject.SetActive(false);

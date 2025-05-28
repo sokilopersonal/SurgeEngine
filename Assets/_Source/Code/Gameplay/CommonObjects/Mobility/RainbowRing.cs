@@ -21,12 +21,12 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             {
                 if (!_triggered)
                 {
-                    Common.AddScore(score);
+                    Utility.AddScore(score);
                     _triggered = true;
                 }
             }
             else
-                Common.AddScore(score);
+                Utility.AddScore(score);
         }
     }
 }

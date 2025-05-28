@@ -1,10 +1,9 @@
-﻿using System;
-using SurgeEngine.Code.Core.Actor.States;
+﻿using SurgeEngine.Code.Core.Actor.States;
 using SurgeEngine.Code.Core.Actor.System;
 using UnityEngine;
 using UnityEngine.Splines;
 
-namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
+namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility.Rails
 {
     [RequireComponent(typeof(MeshCollider))]
     public class Rail : MonoBehaviour
@@ -26,17 +25,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
         {
             if (other.gameObject.TryGetComponent(out ActorBase _))
             {
-                var contact = other.contacts[0];
-
-                SplineUtility.GetNearestPoint(container.Spline, contact.point, out _, out var f);
-                var up = container.Spline.EvaluateUpVector(f);
-                
-                float dot = Vector3.Dot(-contact.normal, up);
-
-                if (dot >= 0.6f)
-                {
-                    AttachToRail();
-                }
+                AttachToRail();
             }
         }
 

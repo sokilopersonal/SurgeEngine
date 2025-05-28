@@ -30,7 +30,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         {
             base.OnTick(dt);
             
-            Common.TickTimer(ref _jumpTimer, 0.25f, false);
+            Utility.TickTimer(ref _jumpTimer, 0.25f, false);
             
             CountTimer(dt);
         }

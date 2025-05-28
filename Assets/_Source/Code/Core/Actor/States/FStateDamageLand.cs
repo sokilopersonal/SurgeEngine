@@ -30,7 +30,7 @@ namespace SurgeEngine.Code.Core.Actor.States
                 Kinematics.Snap(hit.point, hit.normal, true);
             }
             
-            if (Common.TickTimer(ref _timer, 2f, false))
+            if (Utility.TickTimer(ref _timer, 2f, false))
             {
                 StateMachine.SetState<FStateIdle>();
             }

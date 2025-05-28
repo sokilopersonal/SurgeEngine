@@ -101,7 +101,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
                 context.transform.forward = Vector3.Cross(-startPoint.right, Vector3.up);
                 context.model.transform.forward = Vector3.Cross(-startPoint.right, Vector3.up);
                 
-                Vector3 impulse = Common.GetImpulseWithPitch(Vector3.Cross(-startPoint.right, Vector3.up), startPoint.right, firstPitch, firstSpeed);
+                Vector3 impulse = Utility.GetImpulseWithPitch(Vector3.Cross(-startPoint.right, Vector3.up), startPoint.right, firstPitch, firstSpeed);
                 context.kinematics.Rigidbody.linearVelocity = impulse;
                 
                 context.stateMachine.GetState<FStateSpecialJump>().SetSpecialData(new SpecialJumpData(SpecialJumpType.TrickJumper));
@@ -195,7 +195,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
                     {
                         float additionalScore = 1000f * _qteSequences[_sequenceId].time * (1.0f - timer * 0.01f);
                         int score = 1000;
-                        Common.AddScore(score + (int)additionalScore);
+                        Utility.AddScore(score + (int)additionalScore);
                         
                         _sequenceId++;
                         RuntimeManager.PlayOneShot(qteSuccessSound);
@@ -247,11 +247,11 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
 
                 context.kinematics.ResetVelocity();
                 Vector3 arcPeak = Trajectory.GetArcPosition(startPoint.position,
-                    Common.GetCross(transform, firstPitch, true), firstSpeed);
+                    Utility.GetCross(transform, firstPitch, true), firstSpeed);
                 yield return MoveRigidbodyToArc(body, arcPeak); // should snap Sonic to the arc point
                 context.animation.StateAnimator.TransitionToState($"Trick {Random.Range(1, 8)}", 0.2f).Then(() => context.animation.StateAnimator.TransitionToState(AnimatorParams.AirCycle, 0.2f));
                 
-                Vector3 impulse = Common.GetImpulseWithPitch(Vector3.Cross(-startPoint.right, Vector3.up), startPoint.right, secondPitch, secondSpeed);
+                Vector3 impulse = Utility.GetImpulseWithPitch(Vector3.Cross(-startPoint.right, Vector3.up), startPoint.right, secondPitch, secondSpeed);
                 context.kinematics.Rigidbody.linearVelocity = impulse;
             }
             else
@@ -306,9 +306,9 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             
             if (startPoint == null) return;
             
-            TrajectoryDrawer.DrawTrickTrajectory(startPoint.position, Common.GetCross(startPoint, firstPitch, true), Color.red, firstSpeed);
-            Vector3 peakPosition = Trajectory.GetArcPosition(startPoint.position, Common.GetCross(startPoint, firstPitch, true), firstSpeed);
-            TrajectoryDrawer.DrawTrickTrajectory(peakPosition, Common.GetCross(startPoint, secondPitch, true), Color.green, secondSpeed);
+            TrajectoryDrawer.DrawTrickTrajectory(startPoint.position, Utility.GetCross(startPoint, firstPitch, true), Color.red, firstSpeed);
+            Vector3 peakPosition = Trajectory.GetArcPosition(startPoint.position, Utility.GetCross(startPoint, firstPitch, true), firstSpeed);
+            TrajectoryDrawer.DrawTrickTrajectory(peakPosition, Utility.GetCross(startPoint, secondPitch, true), Color.green, secondSpeed);
         }
     }
 

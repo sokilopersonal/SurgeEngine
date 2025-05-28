@@ -24,7 +24,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             
             float dot = Vector3.Dot(context.transform.forward, context.transform.forward);
             float impulse = SonicTools.IsBoost() ? impulseOnBoost : impulseOnNormal;
-            Vector3 cross = Common.GetCross(transform, pitch);
+            Vector3 cross = Utility.GetCross(transform, pitch);
             
             if (dot > 0) // Make sure the player is facing the same direction as the jump collision
             {
@@ -38,7 +38,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
                         context.stats.movementVector = Vector3.zero;
 
                         context.transform.position += Vector3.up * 0.25f;
-                        context.transform.forward = Common.GetCross(transform, 0);
+                        context.transform.forward = Utility.GetCross(transform, 0);
 
                         Vector3 impulseV = cross.normalized * impulse;
                         
@@ -55,8 +55,8 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
         {
             base.OnDrawGizmos();
             
-            TrajectoryDrawer.DrawTrajectory(transform.position, Common.GetCross(transform, pitch), Color.green, impulseOnNormal);
-            TrajectoryDrawer.DrawTrajectory(transform.position, Common.GetCross(transform, pitch), Color.cyan, impulseOnBoost);
+            TrajectoryDrawer.DrawTrajectory(transform.position, Utility.GetCross(transform, pitch), Color.green, impulseOnNormal);
+            TrajectoryDrawer.DrawTrajectory(transform.position, Utility.GetCross(transform, pitch), Color.cyan, impulseOnBoost);
         }
     }
 }

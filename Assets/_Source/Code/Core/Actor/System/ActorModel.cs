@@ -119,7 +119,7 @@ namespace SurgeEngine.Code.Core.Actor.System
                 }
             }
 
-            Common.TickTimer(ref _timer, AirRotationResetTime, false);
+            Utility.TickTimer(ref _timer, AirRotationResetTime, false);
             
             Vector3.OrthoNormalize(ref _upVector, ref _forwardVector);
             root.localRotation = Quaternion.LookRotation(_forwardVector, _upVector);

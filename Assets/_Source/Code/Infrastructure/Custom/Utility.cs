@@ -6,10 +6,8 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Infrastructure.Custom
 {
-    public static class Common
+    public static class Utility
     {
-        public static Coroutine colliderCoroutine;
-        
         public static bool AddScore(int score)
         {
             int abs = Mathf.Abs(score);
@@ -71,6 +69,12 @@ namespace SurgeEngine.Code.Infrastructure.Custom
             dir = Quaternion.AngleAxis(pitch, right) * dir;
             Vector3 impulseV = dir * impulse;
             return impulseV;
+        }
+
+        public static bool IsObjectInView(this Camera camera, Transform obj)
+        {
+            Vector3 viewport = camera.WorldToViewportPoint(obj.position);
+            return viewport.x > 0 && viewport.x < 1 && viewport.y > 0 && viewport.y < 1 && viewport.z > 0;
         }
     }
 

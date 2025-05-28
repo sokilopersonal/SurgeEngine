@@ -28,7 +28,7 @@ namespace SurgeEngine.Code.Gameplay.Enemy.AeroCannon.States
                 Quaternion rotation = Quaternion.LookRotation(direction, Vector3.up);
                 transform.rotation = Quaternion.Slerp(transform.rotation, rotation, 8f * Time.deltaTime);
                 
-                if (Common.TickTimer(ref timer, aeroCannon.PrepareTime, false))
+                if (Utility.TickTimer(ref timer, aeroCannon.PrepareTime, false))
                 {
                     stateMachine.SetState<ACStateShoot>();
                 }

@@ -22,7 +22,7 @@ namespace SurgeEngine.Code.Gameplay.Enemy.AeroCannon.States
         public override void OnTick(float dt)
         {
             bool inSight = IsInSight(out var target);
-            if (Common.TickTimer(ref timer, aeroCannon.IdleTime, false))
+            if (Utility.TickTimer(ref timer, aeroCannon.IdleTime, false))
             {
                 if (inSight)
                 {

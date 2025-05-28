@@ -34,7 +34,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
                 context.transform.forward = Vector3.Cross(-startPoint.right, Vector3.up);
 
                 context.kinematics.Rigidbody.linearVelocity =
-                    Common.GetImpulseWithPitch(Vector3.Cross(-startPoint.right, Vector3.up), startPoint.right, pitch,
+                    Utility.GetImpulseWithPitch(Vector3.Cross(-startPoint.right, Vector3.up), startPoint.right, pitch,
                         impulse);
                 
                 FStateSpecialJump specialJump = context.stateMachine.SetState<FStateSpecialJump>(0.2f, true, true);
@@ -47,7 +47,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
 
         protected override void OnDrawGizmos()
         {
-            TrajectoryDrawer.DrawTrajectory(startPoint.position, Common.GetImpulseWithPitch(Vector3.Cross(-startPoint.right, Vector3.up), startPoint.right, pitch, impulse), Color.green, impulse);
+            TrajectoryDrawer.DrawTrajectory(startPoint.position, Utility.GetImpulseWithPitch(Vector3.Cross(-startPoint.right, Vector3.up), startPoint.right, pitch, impulse), Color.green, impulse);
         }
     }
 }

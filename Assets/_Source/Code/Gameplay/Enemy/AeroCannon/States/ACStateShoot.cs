@@ -30,7 +30,7 @@ namespace SurgeEngine.Code.Gameplay.Enemy.AeroCannon.States
         {
             base.OnTick(dt);
 
-            if (Common.TickTimer(ref timer, 1, false))
+            if (Utility.TickTimer(ref timer, 1, false))
             {
                 stateMachine.SetState<ACStateIdle>();
             }

@@ -27,7 +27,7 @@ namespace SurgeEngine.Code.Core.Actor.Sound
         {
             if (_canPlayVoice || ignoreDelay)
             {
-                RuntimeManager.PlayOneShot(voice);
+                RuntimeManager.PlayOneShot(voice, gameObject.transform.position);
                 
                 _voiceDelayTimer = VOICE_DELAY;
             }

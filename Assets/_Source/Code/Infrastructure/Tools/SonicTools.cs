@@ -3,7 +3,9 @@ using SurgeEngine.Code.Core.Actor.System;
 using SurgeEngine.Code.Core.Actor.System.Characters.Sonic;
 using SurgeEngine.Code.Gameplay.CommonObjects;
 using SurgeEngine.Code.Gameplay.CommonObjects.Mobility;
+using SurgeEngine.Code.Gameplay.CommonObjects.Mobility.Rails;
 using SurgeEngine.Code.Infrastructure.Config.SonicSpecific;
+using SurgeEngine.Code.Infrastructure.Custom;
 using UnityEngine;
 using UnityEngine.Splines;
 
@@ -30,7 +32,7 @@ namespace SurgeEngine.Code.Infrastructure.Tools
             
             float maxDistance = config.findDistance;
             LayerMask mask = config.mask;
-            mask |= 1 << LayerMask.NameToLayer("Rail");
+            mask |= _sonic.config.railMask;
             
             Collider[] hits = Physics.OverlapSphere(origin + dir, maxDistance, mask, QueryTriggerInteraction.Collide);
             
@@ -55,16 +57,11 @@ namespace SurgeEngine.Code.Infrastructure.Tools
                         tg = ((Vector3)spline.EvaluateTangent(f)).normalized,
                         up = spline.EvaluateUpVector(f)
                     };
-
-                    float dot = Vector3.Dot(dir, sample.tg);
-                    float sign = Mathf.Sign(dot);
-                        
-                    Vector3 plane = Vector3.Cross(sample.tg, Vector3.up);
-                    Debug.DrawRay(rail.transform.TransformPoint(sample.pos), sample.tg, Color.red, 2f);
+                    
                     Vector3 endTargetPos = sample.pos + sample.up * (rail.Radius + 0.35f);
                     Vector3 endWorldPos = rail.transform.TransformPoint(endTargetPos);
                     railTarget.transform.position = Vector3.Lerp(railTarget.transform.position, endWorldPos, 32 * Time.fixedDeltaTime);
-                        
+                    
                     closestTarget = railTarget;
                     closestDistance = Vector3.Distance(origin, railTarget.transform.position);
                 }
@@ -84,6 +81,9 @@ namespace SurgeEngine.Code.Infrastructure.Tools
                 }
             }
     
+            if (closestTarget != null && !Camera.main.IsObjectInView(closestTarget.transform))
+                return null;
+            
             return closestTarget;
         }
     }

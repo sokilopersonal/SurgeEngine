@@ -47,7 +47,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
                 Model.RotateBody(Vector3.up);
             }
             
-            if (Common.TickTimer(ref _timer, 0.3f))
+            if (Utility.TickTimer(ref _timer, 0.3f))
             {
                 StateMachine.SetState<FStateAir>();
             }

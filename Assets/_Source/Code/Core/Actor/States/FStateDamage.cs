@@ -53,7 +53,7 @@ namespace SurgeEngine.Code.Core.Actor.States
                 Kinematics.Project();
                 _rigidbody.linearVelocity = new Vector3(_rigidbody.linearVelocity.x, 0, _rigidbody.linearVelocity.z);
                 
-                if (Common.TickTimer(ref _timer, 0.6f, false))
+                if (Utility.TickTimer(ref _timer, 0.6f, false))
                 {
                     if (_state == DamageState.Alive)
                     {
