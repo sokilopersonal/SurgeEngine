@@ -1,14 +1,12 @@
-﻿using SurgeEngine.Code.Core.Actor.States.BaseStates;
-using SurgeEngine.Code.Core.Actor.States.Characters.Sonic;
+﻿using System.Diagnostics;
+using SurgeEngine.Code.Core.Actor.States.BaseStates;
 using SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates;
 using SurgeEngine.Code.Core.Actor.System;
-using SurgeEngine.Code.Core.Actor.System.Characters.Sonic;
-using SurgeEngine.Code.Gameplay.CommonObjects.Mobility;
 using SurgeEngine.Code.Gameplay.CommonObjects.Mobility.Rails;
 using SurgeEngine.Code.Infrastructure.Custom;
-using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Splines;
+using Debug = UnityEngine.Debug;
 
 namespace SurgeEngine.Code.Core.Actor.States
 {
@@ -16,10 +14,11 @@ namespace SurgeEngine.Code.Core.Actor.States
     {
         private Rail _rail;
         private SplineSample _sample;
-        private Vector3 _prevTg;
         private bool _isForward;
-        private float _timer;
 
+        private float _railTime;
+        private float _railLength;
+        private float _timer;
 
         protected float _grindGravityPower;
         
@@ -33,7 +32,6 @@ namespace SurgeEngine.Code.Core.Actor.States
             base.OnEnter();
 
             _timer = 0.25f;
-
             _rigidbody.linearVelocity = Vector3.ClampMagnitude(_rigidbody.linearVelocity, Actor.config.topSpeed);
         }
 
@@ -44,7 +42,7 @@ namespace SurgeEngine.Code.Core.Actor.States
             if (Input.JumpPressed)
             {
                 StateMachine.SetState<FStateGrindJump>();
-                _rigidbody.position += _sample.up * 0.05f;
+                _rigidbody.position += _sample.up * 0.25f;
             }
 
             if (this is not FStateGrindSquat)
@@ -66,57 +64,38 @@ namespace SurgeEngine.Code.Core.Actor.States
             if (_rail != null)
             {
                 var spline = _rail.Container.Spline;
-                Vector3 pos = _rigidbody.position - Actor.transform.up * _rail.Radius;
-                Vector3 localPos = _rail.transform.InverseTransformPoint(pos);
-                SplineUtility.GetNearestPoint(spline, localPos, out var p, out var f);
-
+                float normalizedTime = _railTime / _railLength;
+                spline.Evaluate(normalizedTime, out var pos, out var tg, out var up);
+                tg = _rail.transform.TransformDirection(tg);
+                
                 _sample = new SplineSample
                 {
-                    pos = _rail.Container.EvaluatePosition(f),
-                    tg = ((Vector3)spline.EvaluateTangent(f)).normalized,
-                    up = spline.EvaluateUpVector(f)
+                    pos = pos,
+                    tg = ((Vector3)tg).normalized,
+                    up = up
                 };
                 
-                if (_prevTg == Vector3.zero) _prevTg = _sample.tg;
+                Vector3 right = Vector3.Cross(_sample.tg, Vector3.up).normalized;
+                Vector3 targetUp = _rail.transform.TransformDirection(up);
                 
-                Vector3 upSplinePlane = Vector3.Cross(_sample.tg, _sample.up);
+                Debug.DrawRay(_rail.transform.TransformPoint(pos), targetUp, Color.red, 3f);
+                _rigidbody.linearVelocity = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, targetUp);
+                _rigidbody.linearVelocity = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, right);
                 
-                Kinematics.Project(_sample.up);
-                Kinematics.Project(upSplinePlane);
+                Vector3 endPos = pos + up * (1 + _rail.Radius);
+                _rigidbody.position = _rail.transform.TransformPoint(endPos);
                 
-                float sign = Mathf.Sign(Vector3.Dot(_rigidbody.transform.forward, _sample.tg));
-                _isForward = Mathf.Approximately(sign, 1);
-                Vector3 direction = _isForward ? _sample.tg : -_sample.tg;
-                _rigidbody.rotation = Quaternion.LookRotation(direction, _sample.up);
+                Vector3 targetTangent = _isForward ? _sample.tg : -_sample.tg;
+                _rigidbody.rotation = Quaternion.LookRotation(targetTangent, targetUp);
                 
-                _prevTg = _sample.tg;
-
-                Vector3 newPos = _sample.pos;
-                newPos += _sample.up * (1 + _rail.Radius);
-
-                Vector3 planeNormal = Vector3.ProjectOnPlane(_sample.tg, _sample.up);
-                SurgeMath.SplitPlanarVector(_rigidbody.position, 
-                    planeNormal, 
-                    out _, 
-                    out var pVer);
-                
-                SurgeMath.SplitPlanarVector(newPos, planeNormal, 
-                    out var sLat,
-                    out _);
-                
-                Vector3 slopeForce = Vector3.ProjectOnPlane(Vector3.down, _sample.up) * _grindGravityPower;
-                _rigidbody.AddForce(slopeForce * Time.fixedDeltaTime, ForceMode.Impulse);
-                
-                _rigidbody.position = sLat + pVer;
-                
-                Kinematics.Normal = _sample.up;
+                _railTime += Vector3.Dot(_rigidbody.linearVelocity, _sample.tg) * dt;
 
                 if (!_rail.Container.Spline.Closed)
                 {
                     if (IsRailCooldown()) return;
 
                     const float THRESHOLD = 0.0005f;
-                    bool outOfTime = 1 - f < THRESHOLD || f < THRESHOLD;
+                    bool outOfTime = 1 - normalizedTime < THRESHOLD || normalizedTime < THRESHOLD;
                     
                     if (outOfTime)
                     {
@@ -129,6 +108,17 @@ namespace SurgeEngine.Code.Core.Actor.States
 
         public void SetRail(Rail rail)
         {
+            Vector3 pos = _rigidbody.position - Actor.transform.up * rail.Radius;
+            var spline = rail.Container.Spline;
+            SplineUtility.GetNearestPoint(spline, rail.transform.InverseTransformPoint(pos), out var near, out var f);
+            
+            _railLength = spline.GetLength();
+            _railTime = f * _railLength;
+
+            float dot = Vector3.Dot(_rigidbody.transform.forward,
+                rail.transform.TransformDirection(spline.EvaluateTangent(_railTime)));
+            _isForward = dot > 0;
+            
             _rail = rail;
         }
         

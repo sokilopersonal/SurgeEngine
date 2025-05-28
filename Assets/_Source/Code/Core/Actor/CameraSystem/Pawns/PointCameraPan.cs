@@ -4,17 +4,16 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
 {
-    public class VerticalCameraPan : NewModernState
+    public class PointCameraPan : NewModernState
     {
-        private VerticalPanData _vData => _panData as VerticalPanData;
+        private PointPanData _pData => _panData as PointPanData;
         
-        public VerticalCameraPan(ActorBase owner) : base(owner)
-        {
-            
-        }
+        public PointCameraPan(ActorBase owner) : base(owner) { }
 
         public override void OnEnter()
         {
+            base.OnEnter();
+            
             _lastData = _stateMachine.RememberRelativeLastData();
         }
 
@@ -29,18 +28,18 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
         {
             base.OnTick(dt);
             
-            _stateMachine.distance = Mathf.Lerp(_lastData.distance, _vData.distance, _stateMachine.interpolatedBlendFactor);
-            _stateMachine.yOffset = Mathf.Lerp(_lastData.yOffset, _vData.yOffset, _stateMachine.interpolatedBlendFactor);
+            _stateMachine.SetDirection(_pData.Forward);
             
-            _stateMachine.SetDirection(_vData.forward);
+            _stateMachine.distance = Mathf.Lerp(_lastData.distance, _pData.distance, _stateMachine.interpolatedBlendFactor);
+            _stateMachine.yOffset = Mathf.Lerp(_lastData.yOffset, _pData.yOffset, _stateMachine.interpolatedBlendFactor);
             
-            _stateMachine.fov = Mathf.Lerp(_lastData.fov, _vData.fov, _stateMachine.interpolatedBlendFactor);
+            _stateMachine.fov = Mathf.Lerp(_lastData.fov, _pData.fov, _stateMachine.interpolatedBlendFactor);
         }
-
+        
         protected override void SetPosition(Vector3 targetPosition)
         {
             Vector3 center = _stateMachine.actorPosition;
-            Vector3 diff = targetPosition - center;
+            Vector3 diff = targetPosition + _stateMachine.transform.TransformDirection(_pData.offset) - center;
             _stateMachine.position = Vector3.Slerp(_lastData.position, diff, _stateMachine.interpolatedBlendFactor);
             _stateMachine.position += center;
         }
@@ -50,6 +49,8 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
             Vector3 look = 
                 actorPosition
                 + _stateMachine.transform.TransformDirection(_stateMachine.lookOffset)
+                + _stateMachine.transform.TransformDirection(_pData.localLookOffset)
+                + _stateMachine.transform.TransformDirection(_pData.offset)
                 - _stateMachine.position;
             
             if (look != Vector3.zero)
@@ -63,12 +64,6 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
         protected override void LookAxis()
         {
             
-        }
-
-        protected override void AutoLookDirection()
-        {
-            _stateMachine.xAutoLook = 0;
-            _stateMachine.yAutoLook = 0;
         }
     }
 }

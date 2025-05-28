@@ -86,6 +86,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
             stateMachine.AddState(new NormalCameraPan(Actor));
             stateMachine.AddState(new RestoreCameraPawn(Actor));
             stateMachine.AddState(new FallCameraState(Actor));
+            stateMachine.AddState(new PointCameraPan(Actor));
 
             stateMachine.SetState<NewModernState>();
             stateMachine.SetDirection(Actor.transform.forward);

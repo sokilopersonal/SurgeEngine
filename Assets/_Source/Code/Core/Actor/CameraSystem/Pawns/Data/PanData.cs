@@ -12,13 +12,6 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns.Data
         public float easeTimeExit = 1f;
         public float fov = 60f;
         public bool allowRotation = true;
-        public RestoreType restoreType = RestoreType.Camera;
-
-        public Vector3 RestoreDirection()
-        {
-            var context = ActorContext.Context;
-            return restoreType == RestoreType.Player ? context.transform.forward : context.camera.GetCameraTransform().transform.forward;
-        }
     }
 
     [Serializable]
@@ -40,6 +33,16 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns.Data
     {
         public float distance = 4f;
         public float yOffset = 0.25f;
+    }
+
+    [Serializable]
+    public class PointPanData : PanData
+    {
+        public float distance = 4f;
+        public float yOffset = 0.25f;
+        public Vector3 offset;
+        public Vector2 localLookOffset;
+        public Vector3 Forward { get; set; }
     }
 
     public enum RestoreType
