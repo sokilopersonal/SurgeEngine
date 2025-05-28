@@ -85,18 +85,14 @@ namespace SurgeEngine.Editor
             EditorGUILayout.Space(10);
             
             _categories = new[] { "All", "Common", "Enemies", "Ring Groups", "Cameras", "System", "Thorns" };
+            
             _selectedCategoryIndex = EditorGUILayout.Popup("Category", _selectedCategoryIndex, _categories);
             _normalOffset = EditorGUILayout.Slider("Normal Offset", _normalOffset, 0, 0.5f);
-
-            var alwaysDrawRect = EditorGUILayout.BeginVertical();
-            var content = new GUIContent("Always Draw Prefab Name ");
-            EditorGUILayout.LabelField(content);
             
-            Vector2 labelSize = EditorStyles.label.CalcSize(content);
-            alwaysDrawRect.x += labelSize.x + 10;
-            _alwaysDrawPrefabName = EditorGUI.Toggle(alwaysDrawRect, _alwaysDrawPrefabName);
-
-            EditorGUILayout.EndVertical();
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("Always Draw Prefab Name", GUILayout.Width(155));
+            _alwaysDrawPrefabName = EditorGUILayout.Toggle("", _alwaysDrawPrefabName);
+            EditorGUILayout.EndHorizontal();
             
             EditorPrefs.SetInt("AssetManagerCategoryIndex", _selectedCategoryIndex);
             EditorPrefs.SetFloat("AssetManagerNormalOffset", _normalOffset);
