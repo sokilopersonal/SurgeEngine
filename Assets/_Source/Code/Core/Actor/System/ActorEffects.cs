@@ -37,8 +37,6 @@ namespace SurgeEngine.Code.Core.Actor.System
                 { GroundTag.Water, step.SmokeWater },
                 { GroundTag.Concrete, step.SmokeIron },
             };
-            
-            
         }
 
         protected virtual void OnEnable()
@@ -65,7 +63,7 @@ namespace SurgeEngine.Code.Core.Actor.System
                 swingTrail.Toggle(false);
             }
             
-            grindEffect.Toggle(obj is FStateGrind or FStateGrindSquat);
+            //grindEffect.Toggle(obj is FStateGrind or FStateGrindSquat);
             
             bool nowGrounded = obj is FStateGround or FStateCrawl or FStateBrake;
             if (_isGrounded != nowGrounded)

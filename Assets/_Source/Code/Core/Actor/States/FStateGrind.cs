@@ -29,9 +29,13 @@ namespace SurgeEngine.Code.Core.Actor.States
         public override void OnEnter()
         {
             base.OnEnter();
-
-            //SetCooldown(0.1f);
+            
             _rigidbody.linearVelocity = Vector3.ClampMagnitude(_rigidbody.linearVelocity, Actor.config.topSpeed);
+        }
+
+        public override void OnExit()
+        {
+            base.OnExit();
         }
 
         public override void OnTick(float dt)
@@ -40,8 +44,9 @@ namespace SurgeEngine.Code.Core.Actor.States
             
             if (Input.JumpPressed)
             {
-                StateMachine.SetState<FStateGrindJump>();
+                _rail.End();
                 SetCooldown(0.1f);
+                StateMachine.SetState<FStateGrindJump>();
             }
 
             if (this is not FStateGrindSquat)
@@ -94,7 +99,9 @@ namespace SurgeEngine.Code.Core.Actor.States
                     
                     if (outOfTime)
                     {
-                        _rigidbody.position += _rigidbody.transform.forward * 0.3f;
+                        //_rigidbody.position += _rigidbody.transform.forward * 0.3f;
+                        _rail.End();
+                        SetCooldown(0.1f);
                         StateMachine.SetState<FStateAir>();
                     }
                 }
@@ -105,7 +112,10 @@ namespace SurgeEngine.Code.Core.Actor.States
         {
             Vector3 pos = _rigidbody.position - Actor.transform.up * rail.Radius;
             _data = new SplineData(rail.Container, pos);
-            _data.EvaluateWorld(out _, out Vector3 tg, out _, out _);
+            _data.EvaluateWorld(out _, out Vector3 tg, out var up, out var right);
+            
+            _rigidbody.linearVelocity = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, up);
+            _rigidbody.linearVelocity = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, right);
             
             float dot = Vector3.Dot(_rigidbody.transform.forward, tg);
             _isForward = dot > 0;

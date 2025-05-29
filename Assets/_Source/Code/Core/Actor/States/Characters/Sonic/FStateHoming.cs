@@ -49,14 +49,14 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
             
             if (_target != null)
             {
-                Vector3 direction = (_target.transform.position - Actor.transform.position + Actor.transform.up * 0.5f).normalized;
+                Vector3 direction = (_target.transform.position - _rigidbody.position + _rigidbody.transform.up * 0.5f).normalized;
                 _rigidbody.linearVelocity = direction * _config.speed;
                 _rigidbody.rotation = Quaternion.LookRotation(direction, Vector3.up);
                 
-                float distance = Vector3.Distance(Actor.transform.position, _target.transform.position);
-                if (distance <= 0.7f)
+                float distance = Vector3.Distance(_rigidbody.position, _target.transform.position);
+                if (distance <= _target.DistanceThreshold)
                 {
-                    _target.OnTargetReached.Invoke();
+                    _target.OnTargetReached.Invoke(Actor);
                 }
                 
                 // If for some reason Sonic get stuck
