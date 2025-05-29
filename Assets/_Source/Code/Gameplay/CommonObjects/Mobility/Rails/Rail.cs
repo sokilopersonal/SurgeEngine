@@ -1,4 +1,5 @@
-﻿using SurgeEngine.Code.Core.Actor.States;
+﻿using System;
+using SurgeEngine.Code.Core.Actor.States;
 using SurgeEngine.Code.Core.Actor.System;
 using UnityEngine;
 using UnityEngine.Splines;
@@ -26,9 +27,9 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility.Rails
             gameObject.layer = LayerMask.NameToLayer("Rail");
         }
 
-        private void OnCollisionEnter(Collision other)
+        private void OnTriggerEnter(Collider other)
         {
-            if (other.gameObject.TryGetComponent(out ActorBase actor) && !actor.stateMachine.GetState<FStateGrind>().IsRailCooldown())
+            if (other.transform.parent.TryGetComponent(out ActorBase actor))
             {
                 AttachToRail();
             }

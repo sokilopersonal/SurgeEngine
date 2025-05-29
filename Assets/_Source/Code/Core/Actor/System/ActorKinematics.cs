@@ -599,7 +599,7 @@ namespace SurgeEngine.Code.Core.Actor.System
             position = transform.TransformPoint(pos);
             tangent = transform.TransformDirection(tg).normalized;
             up = transform.TransformDirection(upVector);
-            right = Vector3.Cross(tangent, Vector3.up).normalized;
+            right = Vector3.Cross(tangent, -up).normalized;
         }
     }
 
