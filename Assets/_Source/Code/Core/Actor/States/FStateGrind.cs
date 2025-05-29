@@ -64,7 +64,7 @@ namespace SurgeEngine.Code.Core.Actor.States
             {
                 _data.EvaluateWorld(out var pos,  out var tg, out var targetUp, out var right);
 
-                Debug.DrawRay(pos, tg, Color.red);
+                Debug.DrawRay(pos, tg, Color.white);
                 Debug.DrawRay(pos, targetUp, Color.green);
                 Debug.DrawRay(pos, right, Color.yellow);
                 
@@ -83,7 +83,7 @@ namespace SurgeEngine.Code.Core.Actor.States
                 Kinematics.Normal = targetUp;
                 
                 _data.Time += Vector3.Dot(_rigidbody.linearVelocity, tg) * dt;
-                _data.Time = Mathf.Repeat(_data.Time, _data.Length);
+                if (_rail.Container.Spline.Closed) _data.Time = Mathf.Repeat(_data.Time, _data.Length);
 
                 if (!_rail.Container.Spline.Closed)
                 {
