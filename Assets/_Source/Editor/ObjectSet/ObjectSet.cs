@@ -1,11 +1,11 @@
 ﻿using System;
-using UnityEditor;
-using UnityEngine;
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
+using UnityEditor;
+using UnityEngine;
 
-namespace SurgeEngine.Editor
+namespace SurgeEngine._Source.Editor.ObjectSet
 {
     public class ObjectSet : EditorWindow
     {
@@ -24,7 +24,7 @@ namespace SurgeEngine.Editor
 
         private readonly List<PrefabData> _prefabDataList = new List<PrefabData>();
         private Vector2 _scrollPosition;
-        private const string SaveFilePath = "Assets/Editor/ObjectSet/SelectedPrefabs.json";
+        private const string SaveFilePath = "Assets/_Source/Editor/ObjectSet/SelectedPrefabs.json";
         private string[] _categories;
         private GameObject _currentPrefabInstance;
         private bool _isPlacingPrefab;

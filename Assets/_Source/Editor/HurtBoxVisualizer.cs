@@ -1,9 +1,8 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 using UnityEditor;
 using UnityEngine;
 
-namespace SurgeEngine.Editor
+namespace SurgeEngine._Source.Editor
 {
     public class HurtBoxVisualizer : EditorWindow
     {

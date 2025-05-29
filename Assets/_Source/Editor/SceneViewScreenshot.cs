@@ -2,7 +2,7 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 
-namespace SurgeEngine.Editor
+namespace SurgeEngine._Source.Editor
 {
     public static class SceneViewScreenshot
     {

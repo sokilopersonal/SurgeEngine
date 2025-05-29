@@ -1,12 +1,10 @@
-﻿using SurgeEngine.Code.Gameplay.CommonObjects.System;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 using UnityEngine.SceneManagement;
 using Zenject;
 
-namespace SurgeEngine.Editor
+namespace SurgeEngine._Source.Editor
 {
     public static class SceneValidator
     {

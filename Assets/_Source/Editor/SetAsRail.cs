@@ -3,7 +3,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Splines;
 
-namespace SurgeEngine.Editor
+namespace SurgeEngine._Source.Editor
 {
     public static class SetAsRail
     {

@@ -37,7 +37,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.CameraObjects
                 alignment = TextAnchor.MiddleCenter
             };
 
-            string tName = GetType().Name;
+            string tName = name;
             float distance = Vector3.Distance(transform.position, Camera.current.transform.position);
             if (distance < 35f)
             {

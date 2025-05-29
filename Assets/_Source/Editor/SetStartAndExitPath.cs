@@ -1,9 +1,7 @@
-﻿using System.Linq;
-using UnityEditor;
-using UnityEngine;
+﻿using UnityEditor;
 using UnityEngine.Splines;
 
-namespace SurgeEngine.Editor
+namespace SurgeEngine._Source.Editor
 {
     public static class SetStartAndExitPath
     {
