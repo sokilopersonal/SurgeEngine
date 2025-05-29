@@ -15,9 +15,6 @@ namespace SurgeEngine.Code.Core.Actor.System
         private Dictionary<GroundTag, ParticleSystem> _stepMap;
         private ParticleSystem _currentStep;
         private bool _isGrounded;
-        
-        [Header("Grind")]
-        public Effect grindEffect;
 
         [Header("Damage")] 
         [SerializeField] private DamageEffect damageEffect;
@@ -62,8 +59,6 @@ namespace SurgeEngine.Code.Core.Actor.System
             {
                 swingTrail.Toggle(false);
             }
-            
-            //grindEffect.Toggle(obj is FStateGrind or FStateGrindSquat);
             
             bool nowGrounded = obj is FStateGround or FStateCrawl or FStateBrake;
             if (_isGrounded != nowGrounded)

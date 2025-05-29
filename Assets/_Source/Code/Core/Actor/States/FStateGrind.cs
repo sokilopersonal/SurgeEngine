@@ -33,18 +33,12 @@ namespace SurgeEngine.Code.Core.Actor.States
             _rigidbody.linearVelocity = Vector3.ClampMagnitude(_rigidbody.linearVelocity, Actor.config.topSpeed);
         }
 
-        public override void OnExit()
-        {
-            base.OnExit();
-        }
-
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
             
             if (Input.JumpPressed)
             {
-                _rail.End();
                 SetCooldown(0.1f);
                 StateMachine.SetState<FStateGrindJump>();
             }
@@ -99,8 +93,6 @@ namespace SurgeEngine.Code.Core.Actor.States
                     
                     if (outOfTime)
                     {
-                        //_rigidbody.position += _rigidbody.transform.forward * 0.3f;
-                        _rail.End();
                         SetCooldown(0.1f);
                         StateMachine.SetState<FStateAir>();
                     }
