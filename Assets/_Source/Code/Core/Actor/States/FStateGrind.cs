@@ -83,6 +83,7 @@ namespace SurgeEngine.Code.Core.Actor.States
                 Kinematics.Normal = targetUp;
                 
                 _data.Time += Vector3.Dot(_rigidbody.linearVelocity, tg) * dt;
+                _data.Time = Mathf.Repeat(_data.Time, _data.Length);
 
                 if (!_rail.Container.Spline.Closed)
                 {
