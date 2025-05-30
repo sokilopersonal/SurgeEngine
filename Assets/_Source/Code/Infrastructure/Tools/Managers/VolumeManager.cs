@@ -7,6 +7,7 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers
 {
     public class VolumeManager : JsonStorageService<VolumeData>
     {
+        private const string GameVolumeKey = "GameVolume";
         private const string MasterVolumeKey = "MasterVolume";
         private const string MusicVolumeKey = "MusicVolume";
         private const string SFXVolumeKey = "SFXVolume";
@@ -37,6 +38,11 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers
             Data.SfxVolume = value / 100f;
             
             RuntimeManager.StudioSystem.setParameterByName(SFXVolumeKey, Data.SfxVolume);
+        }
+
+        public void ToggleGameGroup(bool value)
+        {
+            RuntimeManager.StudioSystem.setParameterByName(GameVolumeKey, value ? 1f : 0f);
         }
     }
 

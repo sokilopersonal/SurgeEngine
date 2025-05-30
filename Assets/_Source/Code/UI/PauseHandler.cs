@@ -29,6 +29,7 @@ namespace SurgeEngine.Code.UI
         private InputDevice _device;
 
         [Inject] private GameSettings _gameSettings;
+        [Inject] private VolumeManager _volumeManager;
         
         private void Awake()
         {
@@ -87,10 +88,12 @@ namespace SurgeEngine.Code.UI
             if (Active)
             {
                 MenusHandler.Instance.OpenMenu<Pause>();
+                _volumeManager.ToggleGameGroup(false);
             }
             else
             {
                 MenusHandler.Instance.CloseMenu<Pause>();
+                _volumeManager.ToggleGameGroup(true);
             }
             
             _uiCanvasGroup.interactable = isPaused;

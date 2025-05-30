@@ -106,33 +106,6 @@ MonoBehaviour:
   MinDistance: 10
   MaxDistance: 500
   Length: 1780
---- !u!114 &-6974189085637325191
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Music/Music
-  m_EditorClassIdentifier: 
-  Path: event:/Music/Music
-  Guid:
-    Data1: 488817604
-    Data2: 1312532294
-    Data3: -610899534
-    Data4: 591606807
-  Banks:
-  - {fileID: 9216933473542814511}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 0
 --- !u!114 &-6895595798261339398
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -343,30 +316,6 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 340
---- !u!114 &-6029437521593154672
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
-  m_Name: parameter:/EnableVoice
-  m_EditorClassIdentifier: 
-  Name: EnableVoice
-  StudioPath: parameter:/EnableVoice
-  Min: 0
-  Max: 1
-  Default: 1
-  ID:
-    data1: 723381410
-    data2: 2532535856
-  Type: 1
-  IsGlobal: 1
-  Labels: []
-  Exists: 1
 --- !u!114 &-5867047468771705454
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -800,6 +749,57 @@ MonoBehaviour:
   MinDistance: 15
   MaxDistance: 400
   Length: 1291
+--- !u!114 &-2765343209901973132
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/GameVolume
+  m_EditorClassIdentifier: 
+  Name: GameVolume
+  StudioPath: parameter:/MixerVolumes/GameVolume
+  Min: 0
+  Max: 1
+  Default: 1
+  ID:
+    data1: 376805726
+    data2: 3499019432
+  Type: 0
+  IsGlobal: 1
+  Labels: []
+  Exists: 1
+--- !u!114 &-2744188947253129082
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Music/DevStage
+  m_EditorClassIdentifier: 
+  Path: event:/Music/DevStage
+  Guid:
+    Data1: 652316829
+    Data2: 1234255361
+    Data3: 34337444
+    Data4: 1245306631
+  Banks:
+  - {fileID: 9216933473542814511}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 232896
 --- !u!114 &-2526003699723310432
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1008,11 +1008,6 @@ MonoBehaviour:
   - {fileID: 9216933473542814511}
   - {fileID: 5254960618264887086}
   EditorEvents:
-  - {fileID: 6093727491456411387}
-  - {fileID: 7764740921087169020}
-  - {fileID: 7443791514682875743}
-  - {fileID: -6974189085637325191}
-  - {fileID: 9046403880274491199}
   - {fileID: 5321302748100636959}
   - {fileID: -6458390638152587309}
   - {fileID: -5867047468771705454}
@@ -1078,19 +1073,51 @@ MonoBehaviour:
   - {fileID: 8655432026496053378}
   - {fileID: -4029029692153767053}
   - {fileID: -3426309341345403151}
+  - {fileID: 7414464061801824786}
+  - {fileID: 2371450769844098504}
+  - {fileID: -2744188947253129082}
+  - {fileID: 189871554213385837}
+  - {fileID: 881094973138353059}
   EditorParameters:
   - {fileID: 5995610635198282250}
-  - {fileID: -6029437521593154672}
   - {fileID: -8328794580217013048}
   - {fileID: -6895595798261339398}
   - {fileID: 6323534020601326214}
   - {fileID: -6616734016563077501}
+  - {fileID: -2765343209901973132}
   MasterBanks:
   - {fileID: 2004410931106567551}
   StringsBanks:
   - {fileID: 2584338381920338702}
-  cacheTime: 638830784483931039
+  cacheTime: 638842408513790710
   cacheVersion: 131619
+--- !u!114 &189871554213385837
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Music/Music
+  m_EditorClassIdentifier: 
+  Path: event:/Music/Music
+  Guid:
+    Data1: 488817604
+    Data2: 1312532294
+    Data3: -610899534
+    Data4: 591606807
+  Banks:
+  - {fileID: 9216933473542814511}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &573100900434683461
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1145,6 +1172,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 628
+--- !u!114 &881094973138353059
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Music/GameLand
+  m_EditorClassIdentifier: 
+  Path: event:/Music/GameLand
+  Guid:
+    Data1: 1736423652
+    Data2: 1232467109
+    Data3: -1582614608
+    Data4: 2127758299
+  Banks:
+  - {fileID: 9216933473542814511}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 158328
 --- !u!114 &899168967826043308
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1241,10 +1295,10 @@ MonoBehaviour:
   Path: FMOD/SurgeEngine/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638830784483160305
+  lastModified: 638842408513740554
   FileSizes:
   - Name: Desktop
-    Value: 4402
+    Value: 4754
   Exists: 1
 --- !u!114 &2360013085092785194
 MonoBehaviour:
@@ -1273,6 +1327,33 @@ MonoBehaviour:
   - Grass
   - Water
   Exists: 1
+--- !u!114 &2371450769844098504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Music/ApotosDayHUD
+  m_EditorClassIdentifier: 
+  Path: event:/Music/ApotosDayHUD
+  Guid:
+    Data1: 217913905
+    Data2: 1189895326
+    Data3: -1260740421
+    Data4: -1921013111
+  Banks:
+  - {fileID: 9216933473542814511}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 198816
 --- !u!114 &2428154293304247624
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1315,10 +1396,10 @@ MonoBehaviour:
   Path: FMOD/SurgeEngine/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638830784483173327
+  lastModified: 638842408513790710
   FileSizes:
   - Name: Desktop
-    Value: 4444
+    Value: 4516
   Exists: 1
 --- !u!114 &3012978104053735727
 MonoBehaviour:
@@ -1632,7 +1713,7 @@ MonoBehaviour:
   Path: FMOD/SurgeEngine/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 638830784483931039
+  lastModified: 638842405883502343
   FileSizes:
   - Name: Desktop
     Value: 1371200
@@ -1847,33 +1928,6 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 1564
---- !u!114 &6093727491456411387
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: 'event:/Music/Cool Edge (Day) - Sonic Unleashed [OST]'
-  m_EditorClassIdentifier: 
-  Path: 'event:/Music/Cool Edge (Day) - Sonic Unleashed [OST]'
-  Guid:
-    Data1: 799646475
-    Data2: 1078104739
-    Data3: -141466435
-    Data4: 1549946529
-  Banks:
-  - {fileID: 9216933473542814511}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 0
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 320136
 --- !u!114 &6226218766636303581
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2006,7 +2060,7 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 451
---- !u!114 &7443791514682875743
+--- !u!114 &7414464061801824786
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2016,23 +2070,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Music/DevStage
+  m_Name: 'event:/Music/Cool Edge (Day) - Sonic Unleashed [OST]'
   m_EditorClassIdentifier: 
-  Path: event:/Music/DevStage
+  Path: 'event:/Music/Cool Edge (Day) - Sonic Unleashed [OST]'
   Guid:
-    Data1: 652316829
-    Data2: 1234255361
-    Data3: 34337444
-    Data4: 1245306631
+    Data1: 799646475
+    Data2: 1078104739
+    Data3: -141466435
+    Data4: 1549946529
   Banks:
   - {fileID: 9216933473542814511}
-  IsStream: 1
+  IsStream: 0
   Is3D: 0
   IsOneShot: 0
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 232896
+  Length: 320136
 --- !u!114 &7709773184398253028
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2060,33 +2114,6 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 739
---- !u!114 &7764740921087169020
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Music/ApotosDayHUD
-  m_EditorClassIdentifier: 
-  Path: event:/Music/ApotosDayHUD
-  Guid:
-    Data1: 217913905
-    Data2: 1189895326
-    Data3: -1260740421
-    Data4: -1921013111
-  Banks:
-  - {fileID: 9216933473542814511}
-  IsStream: 1
-  Is3D: 0
-  IsOneShot: 0
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 198816
 --- !u!114 &7900241915235114394
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2223,33 +2250,6 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 1777
---- !u!114 &9046403880274491199
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Music/GameLand
-  m_EditorClassIdentifier: 
-  Path: event:/Music/GameLand
-  Guid:
-    Data1: 1736423652
-    Data2: 1232467109
-    Data3: -1582614608
-    Data4: 2127758299
-  Banks:
-  - {fileID: 9216933473542814511}
-  IsStream: 1
-  Is3D: 0
-  IsOneShot: 0
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 158328
 --- !u!114 &9126713525473972173
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2319,8 +2319,8 @@ MonoBehaviour:
   Path: FMOD/SurgeEngine/Build/Desktop/Music.bank
   Name: Music
   StudioPath: bank:/Music
-  lastModified: 638830784483808266
+  lastModified: 638842405876893858
   FileSizes:
   - Name: Desktop
-    Value: 8302016
+    Value: 8302144
   Exists: 1
