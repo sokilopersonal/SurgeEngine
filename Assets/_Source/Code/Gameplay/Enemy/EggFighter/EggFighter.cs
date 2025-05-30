@@ -74,7 +74,7 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter
         public void TakeDamage(MonoBehaviour sender, float damage)
         {
             ActorBase context = ActorContext.Context;
-            Vector3 force = context.kinematics.Rigidbody.linearVelocity * 1.25f;
+            Vector3 force = context.Kinematics.Rigidbody.linearVelocity * 1.25f;
             force += Vector3.up * (force.magnitude * 0.15f);
             StateMachine.SetState<EGStateDead>(0f, true, true).ApplyKnockback(force, ragdollPrefab);
             

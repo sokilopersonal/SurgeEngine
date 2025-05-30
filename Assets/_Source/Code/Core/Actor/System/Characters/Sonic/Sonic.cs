@@ -1,6 +1,4 @@
-﻿using NaughtyAttributes;
-using SurgeEngine.Code.Core.Actor.States;
-using SurgeEngine.Code.Core.Actor.States.Characters.Sonic;
+﻿using SurgeEngine.Code.Core.Actor.States.Characters.Sonic;
 using SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates;
 using SurgeEngine.Code.Infrastructure.Config.SonicSpecific;
 using UnityEngine;
@@ -9,29 +7,14 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
 {
     public class Sonic : ActorBase
     {
-        [Foldout("Boost")]
-        [Expandable] public BoostConfig boostConfig;
-        
-        [Foldout("Drift")]
-        [Expandable] public DriftConfig driftConfig;
-
-        [Foldout("Homing")]
-        [Expandable] public HomingConfig homingConfig;
-        
-        [Foldout("Stomp")]
-        [Expandable] public StompConfig stompConfig;
-        
-        [Foldout("Slide")]
-        [Expandable] public SlideConfig slideConfig;
-        
-        [Foldout("Quickstep")]
-        [Expandable] public QuickStepConfig quickstepConfig;
-
-        [Foldout("Crawl")]
-        [Expandable] public CrawlConfig crawlConfig;
-
-        [Foldout("SweepKick")]
-        [Expandable] public SweepConfig sweepKickConfig;
+        public BoostConfig boostConfig;
+        public DriftConfig driftConfig;
+        public HomingConfig homingConfig;
+        public StompConfig stompConfig;
+        public SlideConfig slideConfig;
+        public QuickStepConfig quickstepConfig;
+        public CrawlConfig crawlConfig;
+        public SweepConfig sweepKickConfig;
 
         protected override void InitializeConfigs()
         {
@@ -51,19 +34,17 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
         {
             base.AddStates();
             
-            Rigidbody body = GetComponent<Rigidbody>();
-
-            stateMachine.AddState(new FStateAirBoost(this, body));
-            stateMachine.AddState(new FStateStomp(this, body));
-            stateMachine.AddState(new FStateStompLand(this, body));
-            stateMachine.AddState(new FStateHoming(this, body));
+            stateMachine.AddState(new FStateAirBoost(this, Rigidbody));
+            stateMachine.AddState(new FStateStomp(this, Rigidbody));
+            stateMachine.AddState(new FStateStompLand(this, Rigidbody));
+            stateMachine.AddState(new FStateHoming(this, Rigidbody));
             stateMachine.AddState(new FStateAfterHoming(this));
-            stateMachine.AddState(new FStateDrift(this, body));
-            stateMachine.AddState(new FStateSlide(this, body));
-            stateMachine.AddState(new FStateRunQuickstep(this, body));
-            stateMachine.AddState(new FStateQuickstep(this, body));
-            stateMachine.AddState(new FStateCrawl(this, body));
-            stateMachine.AddState(new FStateSweepKick(this, body));
+            stateMachine.AddState(new FStateDrift(this, Rigidbody));
+            stateMachine.AddState(new FStateSlide(this, Rigidbody));
+            stateMachine.AddState(new FStateRunQuickstep(this, Rigidbody));
+            stateMachine.AddState(new FStateQuickstep(this, Rigidbody));
+            stateMachine.AddState(new FStateCrawl(this, Rigidbody));
+            stateMachine.AddState(new FStateSweepKick(this, Rigidbody));
 
             stateMachine.AddSubState(new FBoost(this));
             stateMachine.AddSubState(new FSweepKick(this));
@@ -74,7 +55,7 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
             var boost = stateMachine.GetSubState<FBoost>();
             boost.Active = false;
             boost.BoostEnergy = 0;
-            (effects as SonicEffects)?.BoostAura.Clear();
+            (Effects as SonicEffects)?.BoostAura.Clear();
             
             base.Load(loadPosition, loadRotation);
         }

@@ -82,7 +82,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
                 ResetBlendFactor();
             };
             
-            master.Actor.kinematics.OnModeChange += mode =>
+            master.Actor.Kinematics.OnModeChange += mode =>
             {
                 is2D = mode == KinematicsMode.Side;
             };
@@ -100,7 +100,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
 
                 if (baseData.allowRotation)
                 {
-                    Vector2 v = ActorContext.Context.input.lookVector;
+                    Vector2 v = ActorContext.Context.Input.lookVector;
                     v = Vector3.ClampMagnitude(v, 2f);
                     lookOffset = Vector3.Lerp(lookOffset, v, SurgeMath.Smooth(1 - 0.75f));
                 }
@@ -114,7 +114,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
             actorPosition = GetActorPosition() + sideOffset;
             
             defaultDirection = GetDirection();
-            if (master.Actor.kinematics.IsPathValid())
+            if (master.Actor.Kinematics.IsPathValid())
             {
                 sideDirection = GetSideDirection();
             }
@@ -131,7 +131,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
             
             sideBlendFactor = Mathf.Clamp01(sideBlendFactor);
             
-            if (master.Actor.kinematics.IsPathValid() && is2D) sideOffset = 
+            if (master.Actor.Kinematics.IsPathValid() && is2D) sideOffset = 
                 Vector3.SmoothDamp(sideOffset, GetSideOffset(), ref _sideOffsetVelocity, 0.2f);
             else
             {
@@ -162,9 +162,9 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
         
         private Vector3 GetSideDirection()
         {
-            var path = master.Actor.kinematics.GetPath();
+            var path = master.Actor.Kinematics.GetPath();
             var spline = path.Spline;
-            Vector3 pos = master.Actor.kinematics.Rigidbody.position - master.Actor.transform.up;
+            Vector3 pos = master.Actor.Kinematics.Rigidbody.position - master.Actor.transform.up;
             Vector3 localPos = path.transform.InverseTransformPoint(pos);
             SplineUtility.GetNearestPoint(spline, localPos, out _, out var f);
 
@@ -184,7 +184,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
 
         private Vector3 GetSideOffset()
         {
-            var path = master.Actor.kinematics.GetPath();
+            var path = master.Actor.Kinematics.GetPath();
             var spline = path.Spline;
             SplineUtility.GetNearestPoint(spline, path.transform.InverseTransformPoint(actorPosition),
                 out _, out var f);

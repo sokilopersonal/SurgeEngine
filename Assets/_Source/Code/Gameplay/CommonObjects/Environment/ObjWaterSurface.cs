@@ -58,7 +58,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Environment
             ActorBase actor = ActorContext.Context;
             if (_isActorOnSurface)
             {
-                Rigidbody actorRigidbody = actor.kinematics.Rigidbody;
+                Rigidbody actorRigidbody = actor.Kinematics.Rigidbody;
                 Vector3 vel = actorRigidbody.linearVelocity;
                 float currentSpeed = vel.magnitude;
                 float horizontalSpeed = actorRigidbody.GetHorizontalMagnitude();
@@ -99,12 +99,12 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Environment
 
                 if (_isUnderwater)
                 {
-                    float underwaterGravity = actor.stats.startGravity * gravityMultiplier;
-                    actor.stats.gravity = underwaterGravity;
+                    float underwaterGravity = actor.Stats.startGravity * gravityMultiplier;
+                    actor.Stats.gravity = underwaterGravity;
                 }
                 else
                 {
-                    actor.stats.gravity = actor.stats.startGravity;
+                    actor.Stats.gravity = actor.Stats.startGravity;
                 }
             }
         }
@@ -128,8 +128,8 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Environment
             {
                 ParticlesContainer.Spawn("WaterSplash", other.ClosestPoint(transform.position));
                 
-                context.flags.RemoveFlag(FlagType.OnWater);
-                context.stats.gravity = context.stats.startGravity;
+                context.Flags.RemoveFlag(FlagType.OnWater);
+                context.Stats.gravity = context.Stats.startGravity;
                 _isActorOnSurface = false;
                 _isUnderwater = false;
                 _collider.isTrigger = true;

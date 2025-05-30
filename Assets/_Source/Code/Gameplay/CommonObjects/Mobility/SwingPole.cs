@@ -17,7 +17,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             base.Contact(msg, context);
             
             context.PutIn(grip.position);
-            context.effects.SwingTrail.trail2D = trail2D;
+            context.Effects.SwingTrail.trail2D = trail2D;
 
             float lookDot = Vector3.Dot(context.transform.forward, transform.forward);
             float lookAngle = Vector3.Angle(context.transform.forward, transform.forward);

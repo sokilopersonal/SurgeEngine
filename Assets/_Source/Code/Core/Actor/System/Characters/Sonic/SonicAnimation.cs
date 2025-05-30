@@ -312,7 +312,7 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
         
         private IEnumerator PlayHop()
         {
-            bool hop = Actor.kinematics.HorizontalSpeed > 5;
+            bool hop = Actor.Kinematics.HorizontalSpeed > 5;
             _hopAnimation = _hopAnimation == "HopL" ? "HopR" : "HopL";
             StateAnimator.TransitionToState(hop ? _hopAnimation : "JumpStart", 0f);
             
@@ -321,7 +321,7 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
             if (Actor.stateMachine.CurrentState is not FStateJump)
                 yield break;
             
-            if (Actor.input.JumpHeld)
+            if (Actor.Input.JumpHeld)
             {
                 StateAnimator.TransitionToState("Ball", 0f);
             }

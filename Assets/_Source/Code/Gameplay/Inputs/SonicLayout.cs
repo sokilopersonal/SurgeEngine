@@ -7,8 +7,8 @@ namespace SurgeEngine.Code.Gameplay.Inputs
     public static class SonicInputLayout
     {
         private static Sonic _sonic => (Sonic)ActorContext.Context;
-        private static PlayerInput _input => _sonic.input.playerInput;
+        private static PlayerInput _input => _sonic.Input.playerInput;
         
-        public static bool DriftHeld => _sonic.input.BHeld || _input.actions["Trigger"].IsPressed();
+        public static bool DriftHeld => _sonic.Input.BHeld || _input.actions["Trigger"].IsPressed();
     }
 }

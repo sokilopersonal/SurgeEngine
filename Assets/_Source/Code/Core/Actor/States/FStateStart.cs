@@ -19,7 +19,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         {
             base.OnEnter();
 
-            Actor.input.enabled = false;
+            Actor.Input.enabled = false;
             
             _timer = 0;
         }
@@ -43,11 +43,11 @@ namespace SurgeEngine.Code.Core.Actor.States
                         if (_startData.speed > 0)
                         {
                             _rigidbody.linearVelocity = _rigidbody.transform.forward * _startData.speed;
-                            Actor.flags.AddFlag(new Flag(FlagType.OutOfControl, null, true, _startData.time));
+                            Actor.Flags.AddFlag(new Flag(FlagType.OutOfControl, null, true, _startData.time));
                         }
                     }
 
-                    Actor.input.enabled = true;
+                    Actor.Input.enabled = true;
                     StateMachine.SetState<FStateGround>();
                 }
             }
@@ -60,8 +60,8 @@ namespace SurgeEngine.Code.Core.Actor.States
             if (_startData.startType == StartType.Dash)
             {
                 _rigidbody.linearVelocity = _rigidbody.transform.forward * _startData.speed;
-                Actor.input.enabled = true;
-                Actor.flags.AddFlag(new Flag(FlagType.OutOfControl, null, true, _startData.time));
+                Actor.Input.enabled = true;
+                Actor.Flags.AddFlag(new Flag(FlagType.OutOfControl, null, true, _startData.time));
                 StateMachine.SetState<FStateGround>();
             }
         }

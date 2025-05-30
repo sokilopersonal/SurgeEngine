@@ -100,7 +100,7 @@ namespace SurgeEngine.Code.Shaders
 				Destroy(gameObject);
 			}
 
-			if (_emit && ActorContext.Context.stats.currentSpeed > 1) 
+			if (_emit && ActorContext.Context.Stats.currentSpeed > 1) 
 			{
 				TubeVertex p = new TubeVertex
 				{

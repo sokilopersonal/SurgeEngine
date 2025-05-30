@@ -34,7 +34,7 @@ namespace SurgeEngine.Code.Core.Actor.Sound
                 _stompLoopInstance.stop(STOP_MODE.IMMEDIATE);
             }
 
-            if (Actor.stateMachine.PreviousState is FStateStomp && Actor.kinematics.CheckForGround(out _))
+            if (Actor.stateMachine.PreviousState is FStateStomp && Actor.Kinematics.CheckForGround(out _))
             {
                 RuntimeManager.PlayOneShot(stompLandSound);
             }

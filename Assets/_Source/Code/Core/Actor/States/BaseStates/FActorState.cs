@@ -20,11 +20,11 @@ namespace SurgeEngine.Code.Core.Actor.States.BaseStates
             
             StateMachine = owner.stateMachine;
             
-            Input = owner.input;
-            Stats = owner.stats;
-            Animation = owner.animation;
-            Kinematics = owner.kinematics;
-            Model = owner.model;
+            Input = owner.Input;
+            Stats = owner.Stats;
+            Animation = owner.Animation;
+            Kinematics = owner.Kinematics;
+            Model = owner.Model;
         }
     }
 }

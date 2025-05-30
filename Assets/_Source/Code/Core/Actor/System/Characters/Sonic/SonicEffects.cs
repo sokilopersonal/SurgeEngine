@@ -93,7 +93,7 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
         {
             if (obj is not FBoost) return;
             boostAura.Toggle(value);
-            var viewport = Actor.camera.GetCamera().WorldToViewportPoint(Actor.transform.position);
+            var viewport = Actor.Camera.GetCamera().WorldToViewportPoint(Actor.transform.position);
             viewport.y *= 0.8f;
             if (value) boostDistortion.Play(viewport);
         }
@@ -101,7 +101,7 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
         private IEnumerator PlayJumpball()
         {
             yield return new WaitForSeconds(0.117f);
-            if (Actor.stateMachine.CurrentState is FStateJump && Actor.input.JumpHeld)
+            if (Actor.stateMachine.CurrentState is FStateJump && Actor.Input.JumpHeld)
                 spinball.Toggle(true);
         }
     }

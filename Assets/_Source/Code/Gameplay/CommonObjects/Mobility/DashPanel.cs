@@ -17,23 +17,23 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
         {
             base.Contact(msg, context);
             
-            Rigidbody body = context.kinematics.Rigidbody;
+            Rigidbody body = context.Kinematics.Rigidbody;
             
             if (center)
             {
                 Vector3 target = transform.position + transform.up * 0.25f;
-                context.camera.stateMachine.SetLateOffset(context.transform.position - target - transform.up * 0.75f); // We need to use this and not just context.PutIn because the late offset is not calculated properly
+                context.Camera.stateMachine.SetLateOffset(context.transform.position - target - transform.up * 0.75f); // We need to use this and not just context.PutIn because the late offset is not calculated properly
                 context.transform.position = target;
             }
             
-            context.animation.StateAnimator.TransitionToState(AnimatorParams.RunCycle);
+            context.Animation.StateAnimator.TransitionToState(AnimatorParams.RunCycle);
             body.linearVelocity = transform.forward * speed;
             context.stateMachine.SetState<FStateGround>();
             
             body.rotation = Quaternion.LookRotation(transform.forward, transform.up);
-            context.model.root.rotation = body.rotation;
+            context.Model.root.rotation = body.rotation;
 
-            context.flags.AddFlag(new Flag(FlagType.OutOfControl, 
+            context.Flags.AddFlag(new Flag(FlagType.OutOfControl, 
                 new [] { Tags.AllowBoost }, true, Mathf.Abs(outOfControl)));
             
             new Rumble().Vibrate(0.7f, 0.9f, 0.5f);

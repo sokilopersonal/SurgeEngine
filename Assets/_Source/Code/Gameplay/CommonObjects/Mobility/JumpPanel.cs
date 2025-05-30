@@ -26,14 +26,14 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
                 bool boosted = SonicTools.IsBoost();
 
                 if (boosted)
-                    context.effects.JumpDeluxEffect.Toggle(true);
+                    context.Effects.JumpDeluxEffect.Toggle(true);
 
                 context.stateMachine.GetSubState<FBoost>().Active = false;
 
                 context.PutIn(startPoint.position);
                 context.transform.forward = Vector3.Cross(-startPoint.right, Vector3.up);
 
-                context.kinematics.Rigidbody.linearVelocity =
+                context.Kinematics.Rigidbody.linearVelocity =
                     Utility.GetImpulseWithPitch(Vector3.Cross(-startPoint.right, Vector3.up), startPoint.right, pitch,
                         impulse);
                 
@@ -41,7 +41,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
                 specialJump.SetSpecialData(new SpecialJumpData(SpecialJumpType.JumpBoard));
                 specialJump.PlaySpecialAnimation(0.2f, isDelux || boosted);
                     
-                context.flags.AddFlag(new Flag(FlagType.OutOfControl, null, true, Mathf.Abs(outOfControl)));
+                context.Flags.AddFlag(new Flag(FlagType.OutOfControl, null, true, Mathf.Abs(outOfControl)));
             }
         }
 

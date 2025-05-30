@@ -23,7 +23,7 @@ namespace SurgeEngine.Code.Core.Actor.States
                 StateMachine.SetState<FStateGround>();
             }
 
-            if (!Actor.flags.HasFlag(FlagType.OutOfControl))
+            if (!Actor.Flags.HasFlag(FlagType.OutOfControl))
             {
                 if (Input.JumpPressed)
                 {

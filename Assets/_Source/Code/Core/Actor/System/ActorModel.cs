@@ -60,7 +60,7 @@ namespace SurgeEngine.Code.Core.Actor.System
             FState prev = Actor.stateMachine.PreviousState;
             _forwardVector = Vector3.Slerp(root.forward, Actor.transform.forward, Time.deltaTime * horizontalRotationSpeed);
             _upVector = Vector3.Slerp(root.up, Actor.transform.up, Time.deltaTime * verticalRotationSpeed
-                * Mathf.Lerp(1f, 2f, Actor.kinematics.Speed / Actor.config.topSpeed));
+                * Mathf.Lerp(1f, 2f, Actor.Kinematics.Speed / Actor.config.topSpeed));
 
             if (prev is FStateSpecialJump)
             {
@@ -127,16 +127,16 @@ namespace SurgeEngine.Code.Core.Actor.System
         
         public void RotateBody(Vector3 normal)
         {
-            Vector3 vel = Actor.kinematics.Velocity;
+            Vector3 vel = Actor.Kinematics.Velocity;
             if (vel.sqrMagnitude > 0.01f)
             {
                 Quaternion targetRotation = Quaternion.LookRotation(vel, normal);
-                Actor.kinematics.Rigidbody.rotation = targetRotation;
+                Actor.Kinematics.Rigidbody.rotation = targetRotation;
             }
             else
             {
                 Quaternion targetRotation = Quaternion.LookRotation(Actor.transform.forward, normal);
-                Actor.kinematics.Rigidbody.rotation = targetRotation;
+                Actor.Kinematics.Rigidbody.rotation = targetRotation;
             }
         }
 
@@ -147,30 +147,30 @@ namespace SurgeEngine.Code.Core.Actor.System
             if (vector.sqrMagnitude > 0.01f)
             {
                 Quaternion targetRotation = Quaternion.LookRotation(vector, normal);
-                Actor.kinematics.Rigidbody.rotation = Quaternion.Slerp(targetRotation, Actor.kinematics.Rigidbody.rotation, Mathf.Clamp01(_timer));
+                Actor.Kinematics.Rigidbody.rotation = Quaternion.Slerp(targetRotation, Actor.Kinematics.Rigidbody.rotation, Mathf.Clamp01(_timer));
             }
             else
             {
                 Quaternion targetRotation = Quaternion.LookRotation(Actor.transform.forward, normal);
-                Actor.kinematics.Rigidbody.rotation = targetRotation;
+                Actor.Kinematics.Rigidbody.rotation = targetRotation;
             }
         }
 
         private void Flip()
         {
             Quaternion flipRotation = Quaternion.AngleAxis(flipAngle * Time.deltaTime, Vector3.left);
-            Actor.kinematics.Rigidbody.rotation *= flipRotation;
+            Actor.Kinematics.Rigidbody.rotation *= flipRotation;
         }
 
         public void VelocityRotation(bool transformRotation = false)
         {
-            Vector3 vel = Actor.kinematics.Velocity.normalized;
+            Vector3 vel = Actor.Kinematics.Velocity.normalized;
             float dot = Vector3.Dot(_tUp, Vector3.up);
             Vector3 left = Vector3.Cross(vel, Vector3.up);
 
             if (dot >= 0.99f)
             {
-                if (!transformRotation) Actor.kinematics.Rigidbody.rotation = Quaternion.FromToRotation(Actor.transform.up, Vector3.up) * Actor.kinematics.Rigidbody.rotation;
+                if (!transformRotation) Actor.Kinematics.Rigidbody.rotation = Quaternion.FromToRotation(Actor.transform.up, Vector3.up) * Actor.Kinematics.Rigidbody.rotation;
                 else root.rotation = Quaternion.FromToRotation(Actor.transform.up, Vector3.up) * root.rotation;
             }
             else
@@ -178,19 +178,19 @@ namespace SurgeEngine.Code.Core.Actor.System
                 if (vel.sqrMagnitude > 0.1f)
                 {
                     Vector3 forward = Vector3.Cross(vel, left); 
-                    if (!transformRotation) Actor.kinematics.Rigidbody.rotation = Quaternion.LookRotation(forward, vel);
+                    if (!transformRotation) Actor.Kinematics.Rigidbody.rotation = Quaternion.LookRotation(forward, vel);
                     else root.rotation = Quaternion.LookRotation(forward, vel);
                 }
             }
             
-            if (!transformRotation) root.rotation = Actor.kinematics.Rigidbody.rotation;
+            if (!transformRotation) root.rotation = Actor.Kinematics.Rigidbody.rotation;
         }
 
         private void OnStateAssign(FState obj)
         {
             if (obj is FStateAir)
             {
-                if (Mathf.Abs(Actor.kinematics.Angle - 90) < 0.05f && Actor.kinematics.Velocity.y > 3f)
+                if (Mathf.Abs(Actor.Kinematics.Angle - 90) < 0.05f && Actor.Kinematics.Velocity.y > 3f)
                 {
                     _isFlipping = true;
                     _flipTimer = 0.75f;

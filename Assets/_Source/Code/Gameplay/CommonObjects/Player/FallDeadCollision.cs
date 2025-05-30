@@ -15,10 +15,10 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Player
         {
             base.Contact(msg, context);
 
-            ActorInput input = context.input;
+            ActorInput input = context.Input;
             input.playerInput.enabled = false;
             
-            context.camera.stateMachine.SetState<FallCameraState>();
+            context.Camera.stateMachine.SetState<FallCameraState>();
             context.OnDiedInvoke(context, true);
         }
 

@@ -41,7 +41,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates
             CanAirBoost = true;
             BoostEnergy = MaxBoostEnergy;
             
-            Actor.input.BoostAction += BoostAction;
+            Actor.Input.BoostAction += BoostAction;
             Actor.stateMachine.OnStateAssign += OnStateAssign;
 
             ObjectEvents.OnObjectCollected += OnRingCollected;
@@ -50,7 +50,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates
         
         ~FBoost()
         {
-            Actor.input.BoostAction -= BoostAction;
+            Actor.Input.BoostAction -= BoostAction;
             Actor.stateMachine.OnStateAssign -= OnStateAssign;
 
             ObjectEvents.OnObjectCollected -= OnRingCollected;
@@ -140,7 +140,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates
                     Active = false;
                 }
                 
-                Actor.kinematics.TurnRate *= _config.TurnSpeedMultiplier;
+                Actor.Kinematics.TurnRate *= _config.TurnSpeedMultiplier;
             }
             
             BoostEnergy = Mathf.Clamp(BoostEnergy, 0, 100);
@@ -164,15 +164,15 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates
             
             if (CanBoost())
             {
-                Active = obj.started && !Actor.flags.HasFlag(FlagType.OutOfControl);
+                Active = obj.started && !Actor.Flags.HasFlag(FlagType.OutOfControl);
             }
             
             if (Active)
             {
-                Rigidbody body = Actor.kinematics.Rigidbody;
+                Rigidbody body = Actor.Kinematics.Rigidbody;
                 float startSpeed = _config.StartSpeed;
 
-                if (Actor.kinematics.HorizontalSpeed < startSpeed)
+                if (Actor.Kinematics.HorizontalSpeed < startSpeed)
                 {
                     if (Actor.stateMachine.CurrentState is FStateIdle)
                     {
@@ -194,12 +194,12 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates
         {
             float dt = Time.deltaTime;
             BaseActorConfig config = Actor.config;
-            Rigidbody body = Actor.kinematics.Rigidbody;
-            float speed = Actor.kinematics.HorizontalSpeed;
+            Rigidbody body = Actor.Kinematics.Rigidbody;
+            float speed = Actor.Kinematics.HorizontalSpeed;
             
             if (Active)
             {
-                if (Actor.input.moveVector == Vector3.zero) Actor.kinematics.SetInputDir(Actor.transform.forward);
+                if (Actor.Input.moveVector == Vector3.zero) Actor.Kinematics.SetInputDir(Actor.transform.forward);
                 float maxSpeed = config.maxSpeed * _config.MaxSpeedMultiplier;
                 if (speed < maxSpeed) body.AddForce(body.linearVelocity.normalized * (_config.Acceleration * dt), ForceMode.Impulse);
             }

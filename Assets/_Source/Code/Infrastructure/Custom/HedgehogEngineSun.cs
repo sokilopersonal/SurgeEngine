@@ -11,7 +11,7 @@ namespace SurgeEngine.Code.Infrastructure.Custom
         
         private HDAdditionalLightData _light;
         
-        private Camera _camera => ActorContext.Context.camera.GetCamera();
+        private Camera _camera => ActorContext.Context.Camera.GetCamera();
 
         private void Awake()
         {

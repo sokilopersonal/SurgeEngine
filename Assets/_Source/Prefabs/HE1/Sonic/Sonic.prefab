@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2456151525592967584}
-  - component: {fileID: 3919129401711663017}
   - component: {fileID: 7099733658116403469}
   - component: {fileID: 1696099844310411520}
   - component: {fileID: 3201943500692532830}
@@ -43,37 +42,6 @@ Transform:
   - {fileID: 5409558417290078129}
   m_Father: {fileID: 8308832228826993834}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3919129401711663017
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 100729958831981340}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7bd6cbed6149450d8915473bfd11948e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  input: {fileID: 8032504807134332376}
-  stats: {fileID: 7099733658116403469}
-  sounds: {fileID: 8348964648566409893}
-  camera: {fileID: 249638428982365570}
-  animation: {fileID: 7180063613898469974}
-  effects: {fileID: 3679809459229990554}
-  model: {fileID: 6916054324571523613}
-  flags: {fileID: 1696099844310411520}
-  kinematics: {fileID: 3201943500692532830}
-  config: {fileID: 11400000, guid: 4943dea0e9db112488453fa3fc70581d, type: 2}
-  damageKickConfig: {fileID: 11400000, guid: 0d35e45a1e8c5774a86dd443e1656b72, type: 2}
-  boostConfig: {fileID: 11400000, guid: cefe272c9833c134599bdf98dc172d8f, type: 2}
-  driftConfig: {fileID: 11400000, guid: 3963394ce6d7cbc4981f7467b1f4aa59, type: 2}
-  homingConfig: {fileID: 11400000, guid: 26d8aa117f8802940838f20a3156f005, type: 2}
-  stompConfig: {fileID: 11400000, guid: 588815eaf43a5c74baefdf410bf8f0e7, type: 2}
-  slideConfig: {fileID: 11400000, guid: 283ca8e9aad16f646a81ce036b53029d, type: 2}
-  quickstepConfig: {fileID: 11400000, guid: c647c84618c165449a31b694d78eba22, type: 2}
-  crawlConfig: {fileID: 11400000, guid: 6a0b92f06cecb1947aba52f93c682421, type: 2}
-  sweepKickConfig: {fileID: 11400000, guid: 1ceb257673b4401468d8a7299d58b92d, type: 2}
 --- !u!114 &7099733658116403469
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15706,6 +15674,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8308832228826993834}
+  - component: {fileID: 202919159491562231}
   - component: {fileID: 8032504807134332376}
   - component: {fileID: 8699919761573115592}
   m_Layer: 0
@@ -15733,6 +15702,37 @@ Transform:
   - {fileID: 4638284470361493281}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &202919159491562231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 930709539082581898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bd6cbed6149450d8915473bfd11948e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  input: {fileID: 8032504807134332376}
+  stats: {fileID: 7099733658116403469}
+  sounds: {fileID: 8348964648566409893}
+  camera: {fileID: 249638428982365570}
+  animation: {fileID: 7180063613898469974}
+  effects: {fileID: 3679809459229990554}
+  model: {fileID: 6916054324571523613}
+  flags: {fileID: 1696099844310411520}
+  kinematics: {fileID: 3201943500692532830}
+  config: {fileID: 11400000, guid: 4943dea0e9db112488453fa3fc70581d, type: 2}
+  damageKickConfig: {fileID: 11400000, guid: 0d35e45a1e8c5774a86dd443e1656b72, type: 2}
+  boostConfig: {fileID: 11400000, guid: cefe272c9833c134599bdf98dc172d8f, type: 2}
+  driftConfig: {fileID: 11400000, guid: 3963394ce6d7cbc4981f7467b1f4aa59, type: 2}
+  homingConfig: {fileID: 11400000, guid: 26d8aa117f8802940838f20a3156f005, type: 2}
+  stompConfig: {fileID: 11400000, guid: 588815eaf43a5c74baefdf410bf8f0e7, type: 2}
+  slideConfig: {fileID: 11400000, guid: 283ca8e9aad16f646a81ce036b53029d, type: 2}
+  quickstepConfig: {fileID: 11400000, guid: c647c84618c165449a31b694d78eba22, type: 2}
+  crawlConfig: {fileID: 11400000, guid: 6a0b92f06cecb1947aba52f93c682421, type: 2}
+  sweepKickConfig: {fileID: 11400000, guid: 1ceb257673b4401468d8a7299d58b92d, type: 2}
 --- !u!114 &8032504807134332376
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15919,7 +15919,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   step: {fileID: 2772024662099277936}
-  grindEffect: {fileID: 5295992643565744341}
   damageEffect: {fileID: 6274841486737520282}
   swingTrail: {fileID: 2784087477685412802}
   jumpDeluxEffect: {fileID: 8840932572874216934}
@@ -31338,7 +31337,6 @@ MonoBehaviour:
       easeTimeExit: 1
       fov: 60
       allowRotation: 1
-      restoreType: 1
   sensitivity: 0.75
   maxSensitivitySpeed: 1
   minSensitivitySpeed: 0.75

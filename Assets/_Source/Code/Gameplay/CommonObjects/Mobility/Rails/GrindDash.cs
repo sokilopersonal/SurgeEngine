@@ -26,7 +26,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility.Rails
 
             if (context.stateMachine.CurrentState is FStateGrind grind)
             {
-                context.kinematics.Rigidbody.linearVelocity = transform.forward * speed;
+                context.Kinematics.Rigidbody.linearVelocity = transform.forward * speed;
                 grind.SetForward(isForward);
             }
             else

@@ -38,7 +38,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         {
             base.OnTick(dt);
 
-            if (!Actor.flags.HasFlag(FlagType.OutOfControl))
+            if (!Actor.Flags.HasFlag(FlagType.OutOfControl))
             {
                 if (Input.JumpHeld)
                 {
@@ -63,7 +63,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         {
             base.OnFixedTick(dt);
             
-            if (Actor.animation.StateAnimator.GetCurrentAnimationState() == "Ball" 
+            if (Actor.Animation.StateAnimator.GetCurrentAnimationState() == "Ball" 
                 && HurtBox.CreateAttached(Actor, Actor.transform, new Vector3(0f, -0.45f, 0f), new Vector3(0.6f, 0.6f, 0.6f), 
                     HurtBoxTarget.Enemy | HurtBoxTarget.Breakable))
             {

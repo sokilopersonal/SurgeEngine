@@ -34,14 +34,14 @@ namespace SurgeEngine.Code.Infrastructure.Custom.Drawers
             {
                 $"Position: {actor.transform.position}",
                 $"Euler Angles: {actor.transform.rotation.eulerAngles}",
-                $"Move Dot: {actor.stats.moveDot}",
-                $"Current Speed: {actor.kinematics.Speed}",
-                $"Current Vertical Speed: {actor.kinematics.Velocity.y}",
-                $"Body Velocity: {actor.kinematics.Velocity}",
-                $"Planar Velocity: {actor.kinematics.PlanarVelocity}",
+                $"Move Dot: {actor.Stats.moveDot}",
+                $"Current Speed: {actor.Kinematics.Speed}",
+                $"Current Vertical Speed: {actor.Kinematics.Velocity.y}",
+                $"Body Velocity: {actor.Kinematics.Velocity}",
+                $"Planar Velocity: {actor.Kinematics.PlanarVelocity}",
                 $"State: {actor.stateMachine.currentStateName}",
-                $"Animation: {actor.animation.StateAnimator.GetCurrentAnimationState()}",
-                $"Camera State: {actor.camera.stateMachine.currentStateName}"
+                $"Animation: {actor.Animation.StateAnimator.GetCurrentAnimationState()}",
+                $"Camera State: {actor.Camera.stateMachine.currentStateName}"
             };
             
             holder.text = string.Join("\n", text);

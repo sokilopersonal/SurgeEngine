@@ -16,7 +16,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
         
         public FStateSwing(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
-            soundReference = owner.sounds.GetComponent<SwingSound>();
+            soundReference = owner.Sounds.GetComponent<SwingSound>();
         }
 
         public override void OnEnter()
@@ -42,7 +42,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
         {
             base.OnTick(dt);
 
-            _rotationAngle = Actor.animation.StateAnimator.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime % 1;
+            _rotationAngle = Actor.Animation.StateAnimator.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime % 1;
 
             if (_rotationAngle > 0.9f && !_swingSound)
             {

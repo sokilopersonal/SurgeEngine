@@ -15,7 +15,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.ChangeModes
             base.Contact(msg, context);
             
             ActorBase actor = ActorContext.Context;
-            ActorKinematics kinematics = actor.kinematics;
+            ActorKinematics kinematics = actor.Kinematics;
             if (!kinematics.IsPathValid())
             {
                 kinematics.SetPath(path, KinematicsMode.Dash);

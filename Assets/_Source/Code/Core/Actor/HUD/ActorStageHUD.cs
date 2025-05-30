@@ -74,12 +74,12 @@ namespace SurgeEngine.Code.Core.Actor.HUD
 
         private void UpdateHomingTarget()
         {
-            HomingTarget target = _actor.stats.homingTarget;
+            HomingTarget target = _actor.Stats.homingTarget;
             if (target)
             {
                 homingIcon.gameObject.SetActive(true);
                 homingIcon.Activate();
-                homingIcon.transform.position = _actor.camera.GetCamera().WorldToScreenPoint(target.transform.position);
+                homingIcon.transform.position = _actor.Camera.GetCamera().WorldToScreenPoint(target.transform.position);
             }
             else
             {

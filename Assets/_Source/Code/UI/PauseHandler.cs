@@ -98,7 +98,7 @@ namespace SurgeEngine.Code.UI
             var context = ActorContext.Context;
             if (context)
             {
-                PlayerInput playerInput = context.input.playerInput;
+                PlayerInput playerInput = context.Input.playerInput;
                 playerInput.enabled = !isPaused;
             }
             

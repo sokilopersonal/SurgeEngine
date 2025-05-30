@@ -170,7 +170,7 @@ namespace SurgeEngine.Code.Core.Actor.System
                 lookVector = Vector2.zero;
             }
             
-            if (Actor.flags.HasFlag(FlagType.OutOfControl))
+            if (Actor.Flags.HasFlag(FlagType.OutOfControl))
             {
                 moveVector = Vector3.zero;
             }
@@ -180,7 +180,7 @@ namespace SurgeEngine.Code.Core.Actor.System
         {
             if (obj.started) OnButtonPressed?.Invoke(ButtonType.A);
             
-            if (Actor.flags.HasFlag(FlagType.OutOfControl))
+            if (Actor.Flags.HasFlag(FlagType.OutOfControl))
             {
                 return;
             }

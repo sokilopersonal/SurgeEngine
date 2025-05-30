@@ -24,9 +24,9 @@ namespace SurgeEngine.Code.Core.Actor.States
         {
             base.OnEnter();
             
-            if (Mathf.Abs(Kinematics.Angle - 90) < 0.05f && Actor.kinematics.Velocity.y > 3f)
+            if (Mathf.Abs(Kinematics.Angle - 90) < 0.05f && Actor.Kinematics.Velocity.y > 3f)
             {
-                Actor.flags.AddFlag(new Flag(FlagType.OutOfControl, null, true, 0.5f));
+                Actor.Flags.AddFlag(new Flag(FlagType.OutOfControl, null, true, 0.5f));
             }
             
             AirTime = 0f;
@@ -41,7 +41,7 @@ namespace SurgeEngine.Code.Core.Actor.States
             
             if (GetAirTime() > 0.1f)
             {
-                if (!Actor.flags.HasFlag(FlagType.OutOfControl))
+                if (!Actor.Flags.HasFlag(FlagType.OutOfControl))
                 {
                     HomingTarget homingTarget = Stats.homingTarget;
 
@@ -62,7 +62,7 @@ namespace SurgeEngine.Code.Core.Actor.States
                 }
             }
 
-            if (!Actor.flags.HasFlag(FlagType.OutOfControl))
+            if (!Actor.Flags.HasFlag(FlagType.OutOfControl))
             {
                 if (Input.BPressed)
                 {
@@ -87,7 +87,7 @@ namespace SurgeEngine.Code.Core.Actor.States
                 Model.RotateBody(vel, Vector3.up);
                 
                 float gravity = Stats.gravity;
-                if (Actor.flags.HasFlag(FlagType.OnWater))
+                if (Actor.Flags.HasFlag(FlagType.OnWater))
                 {
                     gravity /= 4f;
                 }
@@ -106,7 +106,7 @@ namespace SurgeEngine.Code.Core.Actor.States
 
         public void BoostHandle()
         {
-            if (!Actor.flags.HasFlag(FlagType.OutOfControl))
+            if (!Actor.Flags.HasFlag(FlagType.OutOfControl))
             {
                 FBoost boost = StateMachine.GetSubState<FBoost>();
                 if (Input.BoostPressed && boost.CanBoost() && boost.CanAirBoost)

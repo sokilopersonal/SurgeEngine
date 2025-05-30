@@ -28,7 +28,7 @@ namespace SurgeEngine.Code.Infrastructure.Tools
             Transform transform = _sonic.transform;
             HomingConfig config = _sonic.homingConfig;
             Vector3 origin = transform.position + Vector3.down;
-            Vector3 dir = _sonic.kinematics.GetInputDir() == Vector3.zero ? transform.forward : _sonic.kinematics.GetInputDir();
+            Vector3 dir = _sonic.Kinematics.GetInputDir() == Vector3.zero ? transform.forward : _sonic.Kinematics.GetInputDir();
             
             float maxDistance = config.findDistance;
             LayerMask mask = config.mask;

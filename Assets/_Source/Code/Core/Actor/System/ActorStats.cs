@@ -46,7 +46,7 @@ namespace SurgeEngine.Code.Core.Actor.System
             currentSpeed = _rigidbody.linearVelocity.magnitude;
             currentVerticalSpeed = _rigidbody.linearVelocity.y;
             
-            moveDot = Vector3.Dot(Actor.kinematics.GetInputDir().normalized, _rigidbody.linearVelocity.normalized);
+            moveDot = Vector3.Dot(Actor.Kinematics.GetInputDir().normalized, _rigidbody.linearVelocity.normalized);
 
             FState state = Actor.stateMachine.CurrentState;
             isGrounded = state is FStateGround;
@@ -66,7 +66,7 @@ namespace SurgeEngine.Code.Core.Actor.System
         {
             Vector3 forward = Actor.transform.forward;
             Vector3 f = Vector3.ProjectOnPlane(forward, Vector3.up).normalized;
-            Vector3 c = Vector3.ProjectOnPlane(Actor.camera.GetCameraTransform().forward, Vector3.up).normalized;
+            Vector3 c = Vector3.ProjectOnPlane(Actor.Camera.GetCameraTransform().forward, Vector3.up).normalized;
             float dot = Vector3.Dot(Actor.transform.up, Vector3.down);
             return f.SignedAngleByAxis(c, dot > 0 ? Vector3.up : Vector3.down);
         }
@@ -74,7 +74,7 @@ namespace SurgeEngine.Code.Core.Actor.System
         public float GetUpwardSignedAngle()
         {
             Vector3 f = Vector3.ProjectOnPlane(Actor.transform.up, Vector3.up).normalized;
-            Vector3 c = Vector3.ProjectOnPlane(Actor.camera.GetCameraTransform().up, Vector3.up).normalized;
+            Vector3 c = Vector3.ProjectOnPlane(Actor.Camera.GetCameraTransform().up, Vector3.up).normalized;
             return Vector3.SignedAngle(f, c, -Vector3.up);
         }
 

@@ -135,7 +135,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Environment
         public void OnContact(Collider msg)
         {
             _surfaceActor = msg.transform.root.GetComponentInChildren<ActorBase>(); ;
-            _surfaceRigidbody = _surfaceActor.kinematics.Rigidbody;
+            _surfaceRigidbody = _surfaceActor.Kinematics.Rigidbody;
             _contactPoint = msg.ClosestPoint(_surfaceRigidbody.transform.position);
             
             RuntimeManager.PlayOneShot(_splashSound, _contactPoint);
@@ -147,7 +147,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Environment
             DestroyRunSplash();
             _currentRunSplash = Instantiate(runSplash);
 
-            _surfaceActor.flags.AddFlag(new Flag(FlagType.OnWater, null, false));
+            _surfaceActor.Flags.AddFlag(new Flag(FlagType.OnWater, null, false));
         }
 
         private void OnTriggerExit(Collider other)
@@ -162,7 +162,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Environment
                     
                     RuntimeManager.PlayOneShot(_splashSound, _surfaceRigidbody.position);
                     
-                    _surfaceActor.flags.RemoveFlag(FlagType.OnWater);
+                    _surfaceActor.Flags.RemoveFlag(FlagType.OnWater);
                     
                     _surfaceRigidbody = null;
                     _surfaceActor = null;

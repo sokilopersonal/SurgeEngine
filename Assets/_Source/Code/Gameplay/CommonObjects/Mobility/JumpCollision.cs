@@ -28,14 +28,14 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             
             if (dot > 0) // Make sure the player is facing the same direction as the jump collision
             {
-                if (context.kinematics.Speed >= speedRequired) // If the player is moving fast enough apply an impulse
+                if (context.Kinematics.Speed >= speedRequired) // If the player is moving fast enough apply an impulse
                 {
                     if (impulse > 0)
                     {
-                        Rigidbody body = context.kinematics.Rigidbody;
+                        Rigidbody body = context.Kinematics.Rigidbody;
                         body.linearVelocity = Vector3.zero;
-                        context.stats.planarVelocity = Vector3.zero;
-                        context.stats.movementVector = Vector3.zero;
+                        context.Stats.planarVelocity = Vector3.zero;
+                        context.Stats.movementVector = Vector3.zero;
 
                         context.transform.position += Vector3.up * 0.25f;
                         context.transform.forward = Utility.GetCross(transform, 0);
@@ -46,7 +46,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
                         body.linearVelocity = Vector3.ClampMagnitude(body.linearVelocity, impulse);
                     }
                 
-                    context.flags.AddFlag(new Flag(FlagType.OutOfControl, null, true, outOfControl));
+                    context.Flags.AddFlag(new Flag(FlagType.OutOfControl, null, true, outOfControl));
                 }
             }
         }

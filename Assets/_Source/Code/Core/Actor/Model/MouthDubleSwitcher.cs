@@ -13,7 +13,7 @@ namespace SurgeEngine.Code.Core.Actor.Model
         private void Start()
         {
             _actor = ActorContext.Context;
-            _cameraTransform = _actor.camera.GetCamera().transform;
+            _cameraTransform = _actor.Camera.GetCamera().transform;
         }
 
         private void LateUpdate()

@@ -44,9 +44,9 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             
             if (_playerInside)
             {
-                bool aPressed = _actor.input.JumpHeld;
-                bool bPressed = _actor.input.BHeld;
-                bool xPressed = _actor.input.BoostHeld;
+                bool aPressed = _actor.Input.JumpHeld;
+                bool bPressed = _actor.Input.BHeld;
+                bool xPressed = _actor.Input.BoostHeld;
 
                 bool anyButton = aPressed
                     || bPressed
@@ -64,7 +64,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
                 else
                 {
                     _actor.stateMachine.SetState<FStateAir>();
-                    _actor.flags.RemoveFlag(FlagType.OutOfControl);
+                    _actor.Flags.RemoveFlag(FlagType.OutOfControl);
                     OnJumpSelectorResult?.Invoke(JumpSelectorResultType.Fall);
                     _playerInside = false;
                 }
@@ -118,7 +118,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
                             OnJumpSelectorResult?.Invoke(JumpSelectorResultType.Wrong);
                         }
                         
-                        _actor.flags.AddFlag(new Flag(FlagType.OutOfControl, null, true, outOfControl));
+                        _actor.Flags.AddFlag(new Flag(FlagType.OutOfControl, null, true, outOfControl));
                         _timer = 0;
                         _launching = false;
                         _playerInside = false;
@@ -142,9 +142,9 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             
             Quaternion rot = Quaternion.LookRotation(transform.forward, Vector3.up);
             _actor.transform.rotation = rot;
-            _actor.model.root.localRotation = rot;
+            _actor.Model.root.localRotation = rot;
             
-            _actor.flags.AddFlag(new Flag(FlagType.OutOfControl, null, false));
+            _actor.Flags.AddFlag(new Flag(FlagType.OutOfControl, null, false));
         }
 
         private void OnDrawGizmosSelected()

@@ -95,20 +95,20 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             if (firstSpeed > 0)
             {
                 context.stateMachine.GetSubState<FBoost>().Active = false;
-                context.kinematics.ResetVelocity();
+                context.Kinematics.ResetVelocity();
                 
                 context.PutIn(startPoint.position);
                 context.transform.forward = Vector3.Cross(-startPoint.right, Vector3.up);
-                context.model.transform.forward = Vector3.Cross(-startPoint.right, Vector3.up);
+                context.Model.transform.forward = Vector3.Cross(-startPoint.right, Vector3.up);
                 
                 Vector3 impulse = Utility.GetImpulseWithPitch(Vector3.Cross(-startPoint.right, Vector3.up), startPoint.right, firstPitch, firstSpeed);
-                context.kinematics.Rigidbody.linearVelocity = impulse;
+                context.Kinematics.Rigidbody.linearVelocity = impulse;
                 
                 context.stateMachine.GetState<FStateSpecialJump>().SetSpecialData(new SpecialJumpData(SpecialJumpType.TrickJumper));
                 FStateSpecialJump specialJump = context.stateMachine.SetState<FStateSpecialJump>(0.2f, true, true);
                 specialJump.PlaySpecialAnimation(0);
                 
-                context.flags.AddFlag(new Flag(FlagType.OutOfControl, null, false));
+                context.Flags.AddFlag(new Flag(FlagType.OutOfControl, null, false));
                 
                 yield return SetTime(TargetTimeScale, TimeScaleDuration);
                 
@@ -138,7 +138,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
                     CreateSequence(trickCount[i], trickTime[i]);
                 }
                 
-                ActorContext.Context.input.OnButtonPressed += OnButtonPressed;
+                ActorContext.Context.Input.OnButtonPressed += OnButtonPressed;
             }
         }
 
@@ -239,37 +239,37 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             _sequenceId = 0;
             
             ActorBase context = ActorContext.Context;
-            Rigidbody body = context.kinematics.Rigidbody;
+            Rigidbody body = context.Kinematics.Rigidbody;
             if (result.success)
             {
-                context.flags.RemoveFlag(FlagType.OutOfControl);
-                context.flags.AddFlag(new Flag(FlagType.OutOfControl, null, true, secondOutOfControl));
+                context.Flags.RemoveFlag(FlagType.OutOfControl);
+                context.Flags.AddFlag(new Flag(FlagType.OutOfControl, null, true, secondOutOfControl));
 
-                context.kinematics.ResetVelocity();
+                context.Kinematics.ResetVelocity();
                 Vector3 arcPeak = Trajectory.GetArcPosition(startPoint.position,
                     Utility.GetCross(transform, firstPitch, true), firstSpeed);
                 yield return MoveRigidbodyToArc(body, arcPeak); // should snap Sonic to the arc point
-                context.animation.StateAnimator.TransitionToState($"Trick {Random.Range(1, 8)}", 0.2f).Then(() => context.animation.StateAnimator.TransitionToState(AnimatorParams.AirCycle, 0.2f));
+                context.Animation.StateAnimator.TransitionToState($"Trick {Random.Range(1, 8)}", 0.2f).Then(() => context.Animation.StateAnimator.TransitionToState(AnimatorParams.AirCycle, 0.2f));
                 
                 Vector3 impulse = Utility.GetImpulseWithPitch(Vector3.Cross(-startPoint.right, Vector3.up), startPoint.right, secondPitch, secondSpeed);
-                context.kinematics.Rigidbody.linearVelocity = impulse;
+                context.Kinematics.Rigidbody.linearVelocity = impulse;
             }
             else
             {
-                context.flags.RemoveFlag(FlagType.OutOfControl);
-                context.flags.AddFlag(new Flag(FlagType.OutOfControl, null, true, firstOutOfControl));
+                context.Flags.RemoveFlag(FlagType.OutOfControl);
+                context.Flags.AddFlag(new Flag(FlagType.OutOfControl, null, true, firstOutOfControl));
                 
-                context.animation.StateAnimator.TransitionToState("Air Cycle");
+                context.Animation.StateAnimator.TransitionToState("Air Cycle");
                 
                 RuntimeManager.PlayOneShot(qteFailSound);
                 RuntimeManager.PlayOneShot(qteFailVoiceSound);
             }
 
-            context.stats.movementVector = body.linearVelocity;
-            context.stats.planarVelocity = body.linearVelocity;
+            context.Stats.movementVector = body.linearVelocity;
+            context.Stats.planarVelocity = body.linearVelocity;
             
             context.stateMachine.SetState<FStateAir>();
-            context.input.OnButtonPressed -= OnButtonPressed;
+            context.Input.OnButtonPressed -= OnButtonPressed;
             
             yield return SetTime(1f, 0.1f);
         }

@@ -20,7 +20,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.ChangeModes
         private void TogglePath()
         {
             ActorBase context = ActorContext.Context;
-            ActorKinematics kinematics = context.kinematics;
+            ActorKinematics kinematics = context.Kinematics;
             if (!kinematics.IsPathValid())
             {
                 kinematics.SetPath(path, KinematicsMode.Forward);

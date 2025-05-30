@@ -64,9 +64,9 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
                 if (distance < 0.1f)
                 {
                     ctx.stateMachine.SetState<FStateAir>();
-                    ctx.kinematics.Rigidbody.position += Vector3.up;
-                    ctx.kinematics.Rigidbody.AddForce(transform.up * upPushForce, ForceMode.Impulse);
-                    ctx.kinematics.Rigidbody.AddForce(model.forward * forwardPushForce, ForceMode.Impulse);
+                    ctx.Kinematics.Rigidbody.position += Vector3.up;
+                    ctx.Kinematics.Rigidbody.AddForce(transform.up * upPushForce, ForceMode.Impulse);
+                    ctx.Kinematics.Rigidbody.AddForce(model.forward * forwardPushForce, ForceMode.Impulse);
                     
                     Cancel(ctx);
                 }
@@ -98,7 +98,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             model.DOLocalMove(_localStartPosition + Vector3.up * length, moveTime).SetEase(Ease.InSine).SetUpdate(UpdateType.Fixed).SetLink(gameObject);
             _isPlayerAttached = true;
             
-            context.camera.stateMachine.SetLateOffset(context.transform.position - attachPoint.position);
+            context.Camera.stateMachine.SetLateOffset(context.transform.position - attachPoint.position);
             
             _eventInstance.start();
         }

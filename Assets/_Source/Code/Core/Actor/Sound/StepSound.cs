@@ -59,7 +59,7 @@ namespace SurgeEngine.Code.Core.Actor.Sound
             {
                 FState prev = machine.PreviousState;
 
-                if (prev is FStateAir && Actor.kinematics.Velocity.y < LandSoundActivationThreshold)
+                if (prev is FStateAir && Actor.Kinematics.Velocity.y < LandSoundActivationThreshold)
                 {
                     _landSoundInstance.start();
                 }

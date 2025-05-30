@@ -30,15 +30,15 @@ namespace SurgeEngine.Code.Core.Actor.System
         protected virtual void Update()
         {
             var animator = StateAnimator.Animator;
-            animator.SetFloat(AnimatorParams.GroundSpeed, Mathf.Clamp(Actor.kinematics.Speed, 4, 30f));
-            animator.SetFloat(AnimatorParams.VerticalSpeed, Actor.kinematics.Velocity.y);
-            animator.SetFloat("SpeedPercent", Mathf.Clamp(Actor.kinematics.Speed / Actor.config.topSpeed, 0f, 1.25f));
+            animator.SetFloat(AnimatorParams.GroundSpeed, Mathf.Clamp(Actor.Kinematics.Speed, 4, 30f));
+            animator.SetFloat(AnimatorParams.VerticalSpeed, Actor.Kinematics.Velocity.y);
+            animator.SetFloat("SpeedPercent", Mathf.Clamp(Actor.Kinematics.Speed / Actor.config.topSpeed, 0f, 1.25f));
 
-            Vector3 vel = Actor.kinematics.Velocity;
-            float signed = Vector3.SignedAngle(vel, Actor.model.root.forward, -Vector3.up);
+            Vector3 vel = Actor.Kinematics.Velocity;
+            float signed = Vector3.SignedAngle(vel, Actor.Model.root.forward, -Vector3.up);
             float angle = signed * 0.3f;
 
-            Vector3 cross = Vector3.Cross(Actor.model.root.forward, Actor.kinematics.Normal);
+            Vector3 cross = Vector3.Cross(Actor.Model.root.forward, Actor.Kinematics.Normal);
             float mDot = Vector3.Dot(vel, cross);
             mDot = Mathf.Clamp(mDot * 0.3f, -1f, 1f);
             
@@ -48,7 +48,7 @@ namespace SurgeEngine.Code.Core.Actor.System
             float dot = Vector3.Dot(Vector3.up, Actor.transform.right);
             animator.SetFloat("WallDot", -dot);
             animator.SetFloat("AbsWallDot", Mathf.Lerp(animator.GetFloat("AbsWallDot"), 
-                Mathf.Abs(Mathf.Approximately(Actor.kinematics.Angle, 90) ? dot : 0), 1 * Time.deltaTime));
+                Mathf.Abs(Mathf.Approximately(Actor.Kinematics.Angle, 90) ? dot : 0), 1 * Time.deltaTime));
         }
 
         /// <summary>

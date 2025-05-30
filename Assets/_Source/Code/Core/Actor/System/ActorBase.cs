@@ -1,33 +1,38 @@
 ﻿using System;
-using System.Collections.Generic;
-using NaughtyAttributes;
 using SurgeEngine.Code.Core.Actor.CameraSystem;
-using SurgeEngine.Code.Core.Actor.CameraSystem.Pawns;
 using SurgeEngine.Code.Core.Actor.States;
 using SurgeEngine.Code.Core.Actor.States.Characters.Sonic;
 using SurgeEngine.Code.Gameplay.CommonObjects.Interfaces;
-using SurgeEngine.Code.Gameplay.CommonObjects.Player;
 using SurgeEngine.Code.Gameplay.CommonObjects.System;
 using SurgeEngine.Code.Infrastructure.Config;
 using UnityEngine;
-using Zenject;
 using Random = UnityEngine.Random;
 
 namespace SurgeEngine.Code.Core.Actor.System
 {
     public class ActorBase : Entity, IDamageable, IPointMarkerLoader
     {
-        [Foldout("Components")] public ActorInput input;
-        [Foldout("Components")] public ActorStats stats;
-        [Foldout("Components")] public ActorSounds sounds;
-        [Foldout("Components")] public new ActorCamera camera;
-        [Foldout("Components")] public new ActorAnimation animation;
-        [Foldout("Components")] public ActorEffects effects;
-        [Foldout("Components")] public ActorModel model;
-        [Foldout("Components")] public ActorFlags flags;
-        [Foldout("Components")] public ActorKinematics kinematics;
+        public new Transform transform => Rigidbody.transform;
         
-        [Foldout("Base Physics")]
+        [SerializeField] private ActorInput input;
+        [SerializeField] private ActorStats stats;
+        [SerializeField] private ActorSounds sounds; 
+        [SerializeField] private new ActorCamera camera;
+        [SerializeField] private new ActorAnimation animation;
+        [SerializeField] private ActorEffects effects;
+        [SerializeField] private ActorModel model;
+        [SerializeField] private ActorFlags flags;
+        [SerializeField] private ActorKinematics kinematics;
+        public ActorInput Input => input;
+        public ActorStats Stats => stats;
+        public ActorSounds Sounds => sounds;
+        public ActorCamera Camera => camera; 
+        public ActorAnimation Animation => animation;
+        public ActorEffects Effects => effects;
+        public ActorModel Model => model;
+        public ActorFlags Flags => flags;
+        public ActorKinematics Kinematics => kinematics;
+        
         public BaseActorConfig config;
         public DamageKickConfig damageKickConfig;
 
@@ -37,16 +42,16 @@ namespace SurgeEngine.Code.Core.Actor.System
         public event Action OnRingLoss;
         
         private StartData _startData;
-        private Rigidbody _rigidbody;
         
+        public Rigidbody Rigidbody { get; private set; }
+
         protected override void Awake()
         {
             base.Awake();
             
-            ActorContext.Set(this);
+            Rigidbody = GetComponentInChildren<Rigidbody>();
             
-            _rigidbody = GetComponent<Rigidbody>();
-            _rigidbody.centerOfMass -= Vector3.up * 0.5f;
+            ActorContext.Set(this);
             
             InitializeConfigs();
             AddStates();
@@ -56,37 +61,37 @@ namespace SurgeEngine.Code.Core.Actor.System
 
         private void InitializeComponents()
         {
-            input?.Set(this);
-            stats?.Set(this);
-            sounds?.Set(this);
-            camera?.Set(this);
-            animation?.Set(this);
-            effects?.Set(this);
-            model?.Set(this);
-            kinematics?.Set(this);
+            Input?.Set(this);
+            Stats?.Set(this);
+            Sounds?.Set(this);
+            Camera?.Set(this);
+            Animation?.Set(this);
+            Effects?.Set(this);
+            Model?.Set(this);
+            Kinematics?.Set(this);
         }
 
         protected virtual void AddStates()
         {
-            stateMachine.AddState(new FStateStart(this, _rigidbody));
-            stateMachine.AddState(new FStateIdle(this, _rigidbody));
-            stateMachine.AddState(new FStateGround(this, _rigidbody));
-            stateMachine.AddState(new FStateBrake(this, _rigidbody));
-            stateMachine.AddState(new FStateBrakeTurn(this, _rigidbody));
-            stateMachine.AddState(new FStateAir(this, _rigidbody));
-            stateMachine.AddState(new FStateSpecialJump(this, _rigidbody));
-            stateMachine.AddState(new FStateSit(this, _rigidbody));
-            stateMachine.AddState(new FStateJump(this, _rigidbody));
-            stateMachine.AddState(new FStateGrind(this, _rigidbody));
-            stateMachine.AddState(new FStateGrindJump(this, _rigidbody));
-            stateMachine.AddState(new FStateGrindSquat(this, _rigidbody));
-            stateMachine.AddState(new FStateJumpSelector(this, _rigidbody));
-            stateMachine.AddState(new FStateJumpSelectorLaunch(this, _rigidbody));
-            stateMachine.AddState(new FStateSwing(this, _rigidbody));
-            stateMachine.AddState(new FStateSwingJump(this, _rigidbody));
-            stateMachine.AddState(new FStateDamage(this, _rigidbody));
-            stateMachine.AddState(new FStateDamageLand(this, _rigidbody));
-            stateMachine.AddState(new FStateUpreel(this, _rigidbody));
+            stateMachine.AddState(new FStateStart(this, Rigidbody));
+            stateMachine.AddState(new FStateIdle(this, Rigidbody));
+            stateMachine.AddState(new FStateGround(this, Rigidbody));
+            stateMachine.AddState(new FStateBrake(this, Rigidbody));
+            stateMachine.AddState(new FStateBrakeTurn(this, Rigidbody));
+            stateMachine.AddState(new FStateAir(this, Rigidbody));
+            stateMachine.AddState(new FStateSpecialJump(this, Rigidbody));
+            stateMachine.AddState(new FStateSit(this, Rigidbody));
+            stateMachine.AddState(new FStateJump(this, Rigidbody));
+            stateMachine.AddState(new FStateGrind(this, Rigidbody));
+            stateMachine.AddState(new FStateGrindJump(this, Rigidbody));
+            stateMachine.AddState(new FStateGrindSquat(this, Rigidbody));
+            stateMachine.AddState(new FStateJumpSelector(this, Rigidbody));
+            stateMachine.AddState(new FStateJumpSelectorLaunch(this, Rigidbody));
+            stateMachine.AddState(new FStateSwing(this, Rigidbody));
+            stateMachine.AddState(new FStateSwingJump(this, Rigidbody));
+            stateMachine.AddState(new FStateDamage(this, Rigidbody));
+            stateMachine.AddState(new FStateDamageLand(this, Rigidbody));
+            stateMachine.AddState(new FStateUpreel(this, Rigidbody));
             stateMachine.AddState(new FStateDead(this));
         }
 
@@ -106,7 +111,7 @@ namespace SurgeEngine.Code.Core.Actor.System
 
         public void PutIn(Vector3 position)
         {
-            camera.stateMachine.SetLateOffset(transform.position - position);
+            Camera.stateMachine.SetLateOffset(transform.position - position);
             transform.position = position;
         }
 
@@ -123,7 +128,7 @@ namespace SurgeEngine.Code.Core.Actor.System
 
         public void TakeDamage(MonoBehaviour sender, float damage)
         {
-            if (stateMachine.CurrentState is IDamageableState dmgState && !flags.HasFlag(FlagType.Invincible))
+            if (stateMachine.CurrentState is IDamageableState dmgState && !Flags.HasFlag(FlagType.Invincible))
             {
                 IsDead = false;
                 var damageState = stateMachine.GetState<FStateDamage>();
@@ -151,19 +156,19 @@ namespace SurgeEngine.Code.Core.Actor.System
                 }
                 
                 dmgState.TakeDamage(this);
-                if (!IsDead) flags.AddFlag(new Flag(FlagType.Invincible, null, true, damageKickConfig.invincibleTime));
+                if (!IsDead) Flags.AddFlag(new Flag(FlagType.Invincible, null, true, damageKickConfig.invincibleTime));
             }
         }
 
         public virtual void Load(Vector3 loadPosition, Quaternion loadRotation)
         {
-            _rigidbody.linearVelocity = Vector3.zero;
-            _rigidbody.position = loadPosition;
-            _rigidbody.rotation = loadRotation;
-            if (model) model.root.rotation = loadRotation;
-            if (animation) animation.StateAnimator.TransitionToState("Idle", 0f);
-            if (flags) flags.AddFlag(new Flag(FlagType.OutOfControl, null, true, 0.5f));
-            if (input) input.playerInput.enabled = true;
+            Rigidbody.linearVelocity = Vector3.zero;
+            Rigidbody.position = loadPosition;
+            Rigidbody.rotation = loadRotation;
+            if (Model) Model.root.rotation = loadRotation;
+            if (Animation) Animation.StateAnimator.TransitionToState("Idle", 0f);
+            if (Flags) Flags.AddFlag(new Flag(FlagType.OutOfControl, null, true, 0.5f));
+            if (Input) Input.playerInput.enabled = true;
             
             IsDead = false;
 

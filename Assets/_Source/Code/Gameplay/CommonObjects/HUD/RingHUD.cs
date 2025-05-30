@@ -17,7 +17,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.HUD
 
         private float _distance;
         
-        private Camera _camera => ActorContext.Context.camera.GetCamera();
+        private Camera _camera => ActorContext.Context.Camera.GetCamera();
         private ActorStageHUD _actorStageHUD;
 
         public void Initialize(ActorStageHUD hud)
@@ -30,7 +30,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.HUD
             _startScale = transform.localScale;
 
             var context = ActorContext.Context;
-            float t = context.kinematics.Speed / context.config.topSpeed;
+            float t = context.Kinematics.Speed / context.config.topSpeed;
             _startScale *= Mathf.Lerp(1f, Random.Range(1.2f, 1.6f), t);
             _startPosition += Vector3.up * (Random.Range(-0.175f, 0.175f) * t);
             _startPosition += Vector3.right * (Random.Range(-0.175f, 0.175f) * t);
@@ -69,7 +69,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.HUD
 
             float easedFactor = easingCurve.Evaluate(_factor);
             var context = ActorContext.Context;
-            float speedT = context.kinematics.Speed / context.config.topSpeed;
+            float speedT = context.Kinematics.Speed / context.config.topSpeed;
             
             Vector3 targetLocalPos = transform.parent.InverseTransformPoint(worldPos);
             transform.localPosition = Vector3.Lerp(_startPosition, targetLocalPos, easedFactor);

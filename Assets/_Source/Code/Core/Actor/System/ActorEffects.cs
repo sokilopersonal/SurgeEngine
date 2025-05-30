@@ -103,7 +103,7 @@ namespace SurgeEngine.Code.Core.Actor.System
 
         public void CreateParaloop()
         {
-            paraloopEffect.startPoint = Actor.kinematics.Rigidbody.position;
+            paraloopEffect.startPoint = Actor.Kinematics.Rigidbody.position;
             paraloopEffect.sonicContext = Actor;
             paraloopEffect.Toggle(true);
         }

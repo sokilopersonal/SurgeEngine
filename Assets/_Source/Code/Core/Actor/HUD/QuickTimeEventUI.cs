@@ -55,7 +55,7 @@ namespace SurgeEngine.Code.Core.Actor.HUD
         {
             _buttons.Capacity = sequence.buttons.Count;
             ActorBase context = ActorContext.Context;
-            ActorInput input = context.input;
+            ActorInput input = context.Input;
             for (int i = 0; i < sequence.buttons.Count; i++)
             {
                 ButtonType buttonType = sequence.buttons[i].type;

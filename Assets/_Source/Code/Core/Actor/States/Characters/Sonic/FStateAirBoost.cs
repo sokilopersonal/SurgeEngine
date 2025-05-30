@@ -52,7 +52,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
                 StateMachine.SetState<FStateAir>();
             }
 
-            if (!Actor.flags.HasFlag(FlagType.OutOfControl))
+            if (!Actor.Flags.HasFlag(FlagType.OutOfControl))
             {
                 if (Input.BPressed)
                 {

@@ -74,7 +74,7 @@ namespace SurgeEngine.Code.Core.Actor.System
 
         private BaseActorConfig _config;
 
-        public void Awake()
+        private void Awake()
         {
             _rigidbody = GetComponent<Rigidbody>();
             Normal = Vector3.up;
@@ -96,17 +96,17 @@ namespace SurgeEngine.Code.Core.Actor.System
 
         private void CalculateInputDirection()
         {
-            _cameraTransform = Actor.camera.GetCameraTransform();
+            _cameraTransform = Actor.Camera.GetCameraTransform();
 
             Vector3 transformedInput = Quaternion.FromToRotation(_cameraTransform.up, Normal) *
-                                       (_cameraTransform.rotation * Actor.input.moveVector);
+                                       (_cameraTransform.rotation * Actor.Input.moveVector);
             transformedInput = Vector3.ProjectOnPlane(transformedInput, Normal);
-            _inputDir = transformedInput.normalized * Actor.input.moveVector.magnitude;
+            _inputDir = transformedInput.normalized * Actor.Input.moveVector.magnitude;
         }
 
         private void CalculateMovementStats()
         {
-            _moveDot = Vector3.Dot(Actor.kinematics.GetInputDir().normalized, _rigidbody.linearVelocity.normalized);
+            _moveDot = Vector3.Dot(Actor.Kinematics.GetInputDir().normalized, _rigidbody.linearVelocity.normalized);
             _skidding = _moveDot < _config.skiddingThreshold;
             _speed = _rigidbody.linearVelocity.magnitude;
             _angle = Vector3.Angle(Normal, Vector3.up);
@@ -272,7 +272,7 @@ namespace SurgeEngine.Code.Core.Actor.System
         private void HighSpeedFix()
         {
             Vector3 predictedPosition = _rigidbody.position;
-            Vector3 predictedNormal = Actor.stats.groundNormal;
+            Vector3 predictedNormal = Actor.Stats.groundNormal;
             Vector3 predictedVelocity = _rigidbody.linearVelocity;
             int steps = 16;
             LayerMask mask = _config.castLayer;
@@ -285,7 +285,7 @@ namespace SurgeEngine.Code.Core.Actor.System
                     if (Vector3.Angle(predictedNormal, pGround.normal) < 45)
                     {
                         predictedPosition = pGround.point + pGround.normal * 0.5f;
-                        predictedVelocity = Quaternion.FromToRotation(Actor.stats.groundNormal, pGround.normal) * predictedVelocity;
+                        predictedVelocity = Quaternion.FromToRotation(Actor.Stats.groundNormal, pGround.normal) * predictedVelocity;
                         predictedNormal = pGround.normal;
                     } 
                     else
@@ -302,7 +302,7 @@ namespace SurgeEngine.Code.Core.Actor.System
             }
             if (i >= steps)
             {
-                Actor.stats.groundNormal = predictedNormal;
+                Actor.Stats.groundNormal = predictedNormal;
                 _rigidbody.position = Vector3.MoveTowards(_rigidbody.position, predictedPosition, Time.fixedDeltaTime);
             }
         }
@@ -354,7 +354,7 @@ namespace SurgeEngine.Code.Core.Actor.System
             {
                 case CheckGroundType.Normal:
                     origin = Actor.transform.position;
-                    direction = -Actor.kinematics.Normal;
+                    direction = -Actor.Kinematics.Normal;
                     break;
                 case CheckGroundType.DefaultDown:
                     origin = Actor.transform.position;
@@ -362,19 +362,19 @@ namespace SurgeEngine.Code.Core.Actor.System
                     break;
                 case CheckGroundType.Predict:
                     origin = Actor.transform.position;
-                    direction = Actor.kinematics.Rigidbody.linearVelocity.normalized;
+                    direction = Actor.Kinematics.Rigidbody.linearVelocity.normalized;
                     break;
                 case CheckGroundType.PredictJump:
                     origin = Actor.transform.position - Actor.transform.up * 0.5f;
-                    direction = Actor.kinematics.Rigidbody.linearVelocity.normalized;
+                    direction = Actor.Kinematics.Rigidbody.linearVelocity.normalized;
                     break;
                 case CheckGroundType.PredictOnRail:
                     origin = Actor.transform.position + Actor.transform.forward;
-                    direction = -Actor.kinematics.Normal;
+                    direction = -Actor.Kinematics.Normal;
                     break;
                 case CheckGroundType.PredictEdge:
                     origin = Actor.transform.position + Vector3.ClampMagnitude(PlanarVelocity * 0.075f, 1f);
-                    direction = -Actor.kinematics.Normal;
+                    direction = -Actor.Kinematics.Normal;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
@@ -480,7 +480,7 @@ namespace SurgeEngine.Code.Core.Actor.System
 
         protected virtual bool CanDecelerate()
         {
-            return !Actor.flags.HasFlag(FlagType.OutOfControl);
+            return !Actor.Flags.HasFlag(FlagType.OutOfControl);
         }
         
         public void SetDetachTime(float t)

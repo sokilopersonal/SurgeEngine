@@ -22,7 +22,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
 
         public override void Contact(Collider msg, ActorBase context)
         {
-            float vertSpeed = Mathf.Abs(context.kinematics.Velocity.y);
+            float vertSpeed = Mathf.Abs(context.Kinematics.Velocity.y);
             float pointDistance = Mathf.Clamp01(Vector3.Distance(new Vector3(context.transform.position.x, point.position.y, context.transform.position.z), point.position) * 0.5f);
 
             if (vertSpeed > 25f)
@@ -41,7 +41,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
 
             float finalSpeed = Mathf.Lerp(speed, speed * 0.5f, pointDistance);
 
-            context.kinematics.Rigidbody.linearVelocity = transform.up * finalSpeed;
+            context.Kinematics.Rigidbody.linearVelocity = transform.up * finalSpeed;
         }
 
         protected override void OnDrawGizmos()

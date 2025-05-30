@@ -41,7 +41,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         {
             base.OnTick(dt);
 
-            if (!Actor.flags.HasFlag(FlagType.OutOfControl))
+            if (!Actor.Flags.HasFlag(FlagType.OutOfControl))
             {
                 if (Input.JumpPressed)
                 {

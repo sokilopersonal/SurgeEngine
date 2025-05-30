@@ -38,7 +38,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
         private const float LateralOffsetResetSpeed = 3.25f;
         private const float MinCollisionDistance = 0.1f;
 
-        private bool IsAuto => _actor.input.IsAutoCamera();
+        private bool IsAuto => _actor.Input.IsAutoCamera();
 
         public NewModernState(ActorBase owner) : base(owner)
         {
@@ -114,14 +114,14 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
                 _stateMachine.xAutoLook = Mathf.Lerp(_stateMachine.xAutoLook, 0, Time.deltaTime * DefaultSensitivityResetSpeed);
             }
 
-            Vector2 lookInput = _actor.input.lookVector * (_master.sensitivity * _sensSpeedMod);
+            Vector2 lookInput = _actor.Input.lookVector * (_master.sensitivity * _sensSpeedMod);
             _stateMachine.x += lookInput.x + _stateMachine.xAutoLook;
             _stateMachine.y = Mathf.Clamp(_stateMachine.y - lookInput.y, MinPitch, MaxPitch);
         }
 
         private void ZLag()
         {
-            Vector3 vel = _actor.kinematics.Rigidbody.linearVelocity;
+            Vector3 vel = _actor.Kinematics.Rigidbody.linearVelocity;
             Vector3 localVel = _actor.transform.InverseTransformDirection(vel);
             float zLag = Mathf.Clamp(localVel.z * ZLagFactor, 0, _master.zLagMax);
             _stateMachine.zLag = Mathf.SmoothDamp(_stateMachine.zLag, zLag, ref _stateMachine.zLagVelocity, _master.zLagTime);
@@ -129,7 +129,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
 
         private void YLag()
         {
-            Vector3 vel = _actor.kinematics.Velocity;
+            Vector3 vel = _actor.Kinematics.Velocity;
             float targetYLag = _actor.stateMachine.CurrentState is FStateAir or FStateSpecialJump 
                 ? Mathf.Clamp(vel.y * YLagVelocityFactor, _master.yLagMin, _master.yLagMax) 
                 : 0f;
@@ -138,7 +138,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
             float adjustedYLag = targetYLag * (targetYLag > 0 ? YLagRisingFactor : YLagFallingFactor);
             float targetLookYTime = adjustedYLag < 0 ? RisingSmoothingTime 
                 : adjustedYLag > 0 ? FallingSmoothingTime 
-                : RestoreSmoothingTime * (1 - _actor.kinematics.Speed * SpeedModFactor);
+                : RestoreSmoothingTime * (1 - _actor.Kinematics.Speed * SpeedModFactor);
 
             _lookYTime = Mathf.Lerp(_lookYTime, targetLookYTime, Time.deltaTime * LerpSpeed);
             _master.lookOffset.y = Mathf.SmoothDamp(_master.lookOffset.y, -adjustedYLag * YLagMultiplier, ref _lookVelocity, _lookYTime);
@@ -146,13 +146,13 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
 
         protected virtual void AutoLookDirection()
         {
-            float speed = _actor.kinematics.Speed;
+            float speed = _actor.Kinematics.Speed;
             float lookMod = speed / _actor.config.topSpeed;
             _sensSpeedMod = Mathf.Lerp(_master.maxSensitivitySpeed, _master.minSensitivitySpeed, lookMod);
 
             if (speed > MinSpeedThreshold)
             {
-                Vector3 vel = _actor.kinematics.Rigidbody.linearVelocity;
+                Vector3 vel = _actor.Kinematics.Rigidbody.linearVelocity;
                 _velocity = Vector3.Lerp(_velocity, vel, Time.deltaTime * VelocityLerpSpeed);
                 float yAutoLook = Mathf.Clamp(-vel.y, _master.verticalMinAmplitude, _master.verticalMaxAmplitude);
                 _stateMachine.yAutoLook = yAutoLook + _master.verticalDefaultAmplitude;
@@ -180,8 +180,8 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
 
         protected void LateralOffset()
         {
-            float x = _actor.input.moveVector.x;
-            float time = _actor.kinematics.Speed / _actor.config.topSpeed;
+            float x = _actor.Input.moveVector.x;
+            float time = _actor.Kinematics.Speed / _actor.config.topSpeed;
             AnimationCurve curve = _master.LateralOffsetSpeedCurve;
             float modifier = 0;
 

@@ -14,7 +14,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.ChangeModes
         {
             base.Contact(msg, context);
             
-            ActorKinematics kinematics = context.kinematics;
+            ActorKinematics kinematics = context.Kinematics;
             if (!kinematics.IsPathValid())
             {
                 kinematics.SetPath(path, KinematicsMode.Side);
