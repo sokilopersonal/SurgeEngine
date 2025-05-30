@@ -28,7 +28,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
                 if (boosted)
                     context.Effects.JumpDeluxEffect.Toggle(true);
 
-                context.stateMachine.GetSubState<FBoost>().Active = false;
+                context.StateMachine.GetSubState<FBoost>().Active = false;
 
                 context.PutIn(startPoint.position);
                 context.transform.forward = Vector3.Cross(-startPoint.right, Vector3.up);
@@ -37,7 +37,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
                     Utility.GetImpulseWithPitch(Vector3.Cross(-startPoint.right, Vector3.up), startPoint.right, pitch,
                         impulse);
                 
-                FStateSpecialJump specialJump = context.stateMachine.SetState<FStateSpecialJump>(0.2f, true, true);
+                FStateSpecialJump specialJump = context.StateMachine.SetState<FStateSpecialJump>(0.2f, true, true);
                 specialJump.SetSpecialData(new SpecialJumpData(SpecialJumpType.JumpBoard));
                 specialJump.PlaySpecialAnimation(0.2f, isDelux || boosted);
                     

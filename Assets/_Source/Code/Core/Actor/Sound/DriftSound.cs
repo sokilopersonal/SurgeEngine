@@ -25,12 +25,12 @@ namespace SurgeEngine.Code.Core.Actor.Sound
 
         private void Update()
         {
-            _driftLoopInstance.setParameterByName("OnWater", Actor.stateMachine.GetState<FStateGround>().GetSurfaceTag() == GroundTag.Water ? 1 : 0);
+            _driftLoopInstance.setParameterByName("OnWater", Actor.StateMachine.GetState<FStateGround>().GetSurfaceTag() == GroundTag.Water ? 1 : 0);
         }
 
         protected override void SoundState(FState obj)
         {
-            FState prev = Actor.stateMachine.PreviousState;
+            FState prev = Actor.StateMachine.PreviousState;
             if (obj is FStateDrift)
             {
                 _driftLoopInstance.start();

@@ -111,7 +111,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
         {
             base.OnFixedTick(dt);
             
-            var config = Actor.config;
+            var config = Actor.Config;
             float distance = config.castDistance *
                              config.castDistanceCurve.Evaluate(Kinematics.Speed / config.topSpeed);
             if (Kinematics.CheckForGround(out RaycastHit hit, castDistance: distance))

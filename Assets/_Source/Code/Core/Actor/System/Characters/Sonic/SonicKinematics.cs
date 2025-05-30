@@ -8,12 +8,12 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
     {
         protected override bool CanReturnToBaseSpeed()
         {
-            return !Actor.stateMachine.GetSubState<FBoost>().Active;
+            return !Actor.StateMachine.GetSubState<FBoost>().Active;
         }
 
         protected override bool CanDecelerate()
         {
-            return !Actor.stateMachine.GetSubState<FBoost>().Active && base.CanDecelerate();
+            return !Actor.StateMachine.GetSubState<FBoost>().Active && base.CanDecelerate();
         }
 
         protected override void SetStateOnZeroSpeed(FState state)

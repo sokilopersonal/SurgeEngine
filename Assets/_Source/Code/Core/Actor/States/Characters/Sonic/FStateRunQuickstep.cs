@@ -121,7 +121,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
 
             if (!Kinematics.CheckForGround(out _))
             {
-                Actor.stateMachine.SetState<FStateAir>();
+                Actor.StateMachine.SetState<FStateAir>();
             }
         }
 

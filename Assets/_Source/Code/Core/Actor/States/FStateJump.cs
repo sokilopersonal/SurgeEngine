@@ -14,7 +14,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         public FStateJump(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
             _maxAirTime = 0.8f;
-            _config = Actor.config;
+            _config = Actor.Config;
         }
 
         public override void OnEnter()

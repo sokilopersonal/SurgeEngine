@@ -18,7 +18,7 @@ namespace SurgeEngine.Code.Core.Actor.States.BaseStates
         {
             Actor = owner;
             
-            StateMachine = owner.stateMachine;
+            StateMachine = owner.StateMachine;
             
             Input = owner.Input;
             Stats = owner.Stats;

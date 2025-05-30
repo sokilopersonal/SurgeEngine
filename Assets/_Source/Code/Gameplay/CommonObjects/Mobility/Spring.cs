@@ -38,9 +38,9 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
                 context.AddIn(target);
             }
             
-            if (cancelBoost) context.stateMachine.GetSubState<FBoost>().Active = false;
+            if (cancelBoost) context.StateMachine.GetSubState<FBoost>().Active = false;
             
-            FStateSpecialJump specialJump = context.stateMachine.SetState<FStateSpecialJump>(ignoreInactiveDelay: true, allowSameState: true);
+            FStateSpecialJump specialJump = context.StateMachine.SetState<FStateSpecialJump>(ignoreInactiveDelay: true, allowSameState: true);
             specialJump.SetSpecialData(new SpecialJumpData(SpecialJumpType.Spring, transform, outOfControl));
             specialJump.PlaySpecialAnimation(0);
             specialJump.SetKeepVelocity(keepVelocity);

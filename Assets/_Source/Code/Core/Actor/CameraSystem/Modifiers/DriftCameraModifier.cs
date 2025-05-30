@@ -12,7 +12,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Modifiers
         {
             base.Set(actor);
             
-            actor.stateMachine.OnStateAssign += OnDrift;
+            Actor.StateMachine.OnStateAssign += OnDrift;
         }
 
         private void OnDrift(FState obj)

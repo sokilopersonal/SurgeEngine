@@ -107,7 +107,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
             // you did it!!
 
             Vector3 prevNormal = Kinematics.Normal;
-            BaseActorConfig config = Actor.config;
+            BaseActorConfig config = Actor.Config;
             float distance = config.castDistance * config.castDistanceCurve
                 .Evaluate(Kinematics.HorizontalSpeed / _crawlConfig.topSpeed);
             if (Kinematics.CheckForGroundWithDirection(out RaycastHit data, Vector3.down, distance))

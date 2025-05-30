@@ -17,7 +17,7 @@ namespace SurgeEngine.Code.Core.Actor.Sound
             if (obj is FStateJump)
             {
                 Voice.Play(_voiceSound);
-                if (Actor.stateMachine.IsPrevExact<FStateJump>())
+                if (Actor.StateMachine.IsPrevExact<FStateJump>())
                     RuntimeManager.PlayOneShot(_spinSound);
                 else
                     StartCoroutine(SpinSound());

@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using SurgeEngine.Code.Core.Actor.CameraSystem;
 using SurgeEngine.Code.Core.Actor.States;
 using SurgeEngine.Code.Core.Actor.States.Characters.Sonic;
+using SurgeEngine.Code.Core.StateMachine;
 using SurgeEngine.Code.Gameplay.CommonObjects.Interfaces;
 using SurgeEngine.Code.Gameplay.CommonObjects.System;
 using SurgeEngine.Code.Infrastructure.Config;
@@ -10,10 +12,11 @@ using Random = UnityEngine.Random;
 
 namespace SurgeEngine.Code.Core.Actor.System
 {
-    public class ActorBase : Entity, IDamageable, IPointMarkerLoader
+    public class ActorBase : MonoBehaviour, IDamageable, IPointMarkerLoader
     {
         public new Transform transform => Rigidbody.transform;
         
+        [Header("Components")]
         [SerializeField] private ActorInput input;
         [SerializeField] private ActorStats stats;
         [SerializeField] private ActorSounds sounds; 
@@ -32,22 +35,26 @@ namespace SurgeEngine.Code.Core.Actor.System
         public ActorModel Model => model;
         public ActorFlags Flags => flags;
         public ActorKinematics Kinematics => kinematics;
-        
-        public BaseActorConfig config;
-        public DamageKickConfig damageKickConfig;
+
+        [SerializeField] private BaseActorConfig config;
+        [SerializeField] private DamageKickConfig damageKickConfig;
+        public BaseActorConfig Config => config;
+        public DamageKickConfig DamageKickConfig => damageKickConfig;
 
         public bool IsDead { get; set; }
         public event Action<ActorBase> OnDied;
-
         public event Action OnRingLoss;
         
-        private StartData _startData;
+        private readonly Dictionary<Type, ScriptableObject> _configs = new();
         
+        private StartData _startData;
+
+        public FStateMachine StateMachine { get; private set; }
         public Rigidbody Rigidbody { get; private set; }
 
-        protected override void Awake()
+        private void Awake()
         {
-            base.Awake();
+            StateMachine = new FStateMachine();
             
             Rigidbody = GetComponentInChildren<Rigidbody>();
             
@@ -57,6 +64,21 @@ namespace SurgeEngine.Code.Core.Actor.System
             AddStates();
 
             InitializeComponents();
+        }
+
+        private void Update()
+        {
+            StateMachine.Tick(Time.deltaTime);
+        }
+
+        private void FixedUpdate()
+        {
+            StateMachine.FixedTick(Time.fixedDeltaTime);
+        }
+
+        private void LateUpdate()
+        {
+            StateMachine.LateTick(Time.deltaTime);
         }
 
         private void InitializeComponents()
@@ -73,26 +95,26 @@ namespace SurgeEngine.Code.Core.Actor.System
 
         protected virtual void AddStates()
         {
-            stateMachine.AddState(new FStateStart(this, Rigidbody));
-            stateMachine.AddState(new FStateIdle(this, Rigidbody));
-            stateMachine.AddState(new FStateGround(this, Rigidbody));
-            stateMachine.AddState(new FStateBrake(this, Rigidbody));
-            stateMachine.AddState(new FStateBrakeTurn(this, Rigidbody));
-            stateMachine.AddState(new FStateAir(this, Rigidbody));
-            stateMachine.AddState(new FStateSpecialJump(this, Rigidbody));
-            stateMachine.AddState(new FStateSit(this, Rigidbody));
-            stateMachine.AddState(new FStateJump(this, Rigidbody));
-            stateMachine.AddState(new FStateGrind(this, Rigidbody));
-            stateMachine.AddState(new FStateGrindJump(this, Rigidbody));
-            stateMachine.AddState(new FStateGrindSquat(this, Rigidbody));
-            stateMachine.AddState(new FStateJumpSelector(this, Rigidbody));
-            stateMachine.AddState(new FStateJumpSelectorLaunch(this, Rigidbody));
-            stateMachine.AddState(new FStateSwing(this, Rigidbody));
-            stateMachine.AddState(new FStateSwingJump(this, Rigidbody));
-            stateMachine.AddState(new FStateDamage(this, Rigidbody));
-            stateMachine.AddState(new FStateDamageLand(this, Rigidbody));
-            stateMachine.AddState(new FStateUpreel(this, Rigidbody));
-            stateMachine.AddState(new FStateDead(this));
+            StateMachine.AddState(new FStateStart(this, Rigidbody));
+            StateMachine.AddState(new FStateIdle(this, Rigidbody));
+            StateMachine.AddState(new FStateGround(this, Rigidbody));
+            StateMachine.AddState(new FStateBrake(this, Rigidbody));
+            StateMachine.AddState(new FStateBrakeTurn(this, Rigidbody));
+            StateMachine.AddState(new FStateAir(this, Rigidbody));
+            StateMachine.AddState(new FStateSpecialJump(this, Rigidbody));
+            StateMachine.AddState(new FStateSit(this, Rigidbody));
+            StateMachine.AddState(new FStateJump(this, Rigidbody));
+            StateMachine.AddState(new FStateGrind(this, Rigidbody));
+            StateMachine.AddState(new FStateGrindJump(this, Rigidbody));
+            StateMachine.AddState(new FStateGrindSquat(this, Rigidbody));
+            StateMachine.AddState(new FStateJumpSelector(this, Rigidbody));
+            StateMachine.AddState(new FStateJumpSelectorLaunch(this, Rigidbody));
+            StateMachine.AddState(new FStateSwing(this, Rigidbody));
+            StateMachine.AddState(new FStateSwingJump(this, Rigidbody));
+            StateMachine.AddState(new FStateDamage(this, Rigidbody));
+            StateMachine.AddState(new FStateDamageLand(this, Rigidbody));
+            StateMachine.AddState(new FStateUpreel(this, Rigidbody));
+            StateMachine.AddState(new FStateDead(this));
         }
 
         public void SetStart(StartData data)
@@ -101,11 +123,11 @@ namespace SurgeEngine.Code.Core.Actor.System
             
             if (data.startType != StartType.None)
             {
-                stateMachine.SetState<FStateStart>().SetData(data);
+                StateMachine.SetState<FStateStart>().SetData(data);
             }
             else
             {
-                stateMachine.SetState<FStateIdle>();
+                StateMachine.SetState<FStateIdle>();
             }
         }
 
@@ -122,16 +144,32 @@ namespace SurgeEngine.Code.Core.Actor.System
 
         protected virtual void InitializeConfigs()
         {
-            AddConfig(config);
-            AddConfig(damageKickConfig);
+            AddConfig(Config);
+            AddConfig(DamageKickConfig);
+        }
+        
+        protected void AddConfig(ScriptableObject obj)
+        {
+            _configs.Add(obj.GetType(), obj);
+        }
+        
+        public void TryGetConfig<T>(out T request) where T : ScriptableObject
+        {
+            if (_configs.TryGetValue(typeof(T), out var result))
+            {
+                request = (T)result;
+                return;
+            }
+
+            request = null;
         }
 
         public void TakeDamage(MonoBehaviour sender, float damage)
         {
-            if (stateMachine.CurrentState is IDamageableState dmgState && !Flags.HasFlag(FlagType.Invincible))
+            if (StateMachine.CurrentState is IDamageableState dmgState && !Flags.HasFlag(FlagType.Invincible))
             {
                 IsDead = false;
-                var damageState = stateMachine.GetState<FStateDamage>();
+                var damageState = StateMachine.GetState<FStateDamage>();
                 
                 // Imagine it's over
                 if (Stage.Instance.data.RingCount <= 0)
@@ -156,7 +194,7 @@ namespace SurgeEngine.Code.Core.Actor.System
                 }
                 
                 dmgState.TakeDamage(this);
-                if (!IsDead) Flags.AddFlag(new Flag(FlagType.Invincible, null, true, damageKickConfig.invincibleTime));
+                if (!IsDead) Flags.AddFlag(new Flag(FlagType.Invincible, null, true, DamageKickConfig.invincibleTime));
             }
         }
 
@@ -172,20 +210,20 @@ namespace SurgeEngine.Code.Core.Actor.System
             
             IsDead = false;
 
-            if (stateMachine.CurrentState is IPointMarkerLoader stateLoader)
+            if (StateMachine.CurrentState is IPointMarkerLoader stateLoader)
             {
                 stateLoader.Load(loadPosition, loadRotation);
             }
             
-            stateMachine.SetState<FStateIdle>(ignoreInactiveDelay: true);
+            StateMachine.SetState<FStateIdle>(ignoreInactiveDelay: true);
         }
-
-        public StartData GetStartData() => _startData;
 
         public virtual void OnDiedInvoke(ActorBase obj, bool isMarkedForDeath)
         {
             IsDead = isMarkedForDeath;
             OnDied?.Invoke(obj);
         }
+
+        public StartData GetStartData() => _startData;
     }
 }

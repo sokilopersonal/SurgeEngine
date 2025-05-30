@@ -21,14 +21,14 @@ namespace SurgeEngine.Code.Core.Actor.Sound
 
         protected virtual void OnEnable()
         {
-            var stateMachine = Actor.stateMachine;
+            var stateMachine = Actor.StateMachine;
             stateMachine.OnStateAssign += SoundState;
             stateMachine.OnStateEarlyAssign += EarlySoundState;
         }
 
         protected virtual void OnDisable()
         {
-            var stateMachine = Actor.stateMachine;
+            var stateMachine = Actor.StateMachine;
             stateMachine.OnStateAssign -= SoundState;
             stateMachine.OnStateEarlyAssign -= EarlySoundState;
         }

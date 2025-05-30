@@ -34,7 +34,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
 
             RuntimeManager.PlayOneShot(soundEffect, transform.position);
 
-            FStateSpecialJump specialJump = context.stateMachine.SetState<FStateSpecialJump>(ignoreInactiveDelay: true, allowSameState: true);
+            FStateSpecialJump specialJump = context.StateMachine.SetState<FStateSpecialJump>(ignoreInactiveDelay: true, allowSameState: true);
             specialJump.SetSpecialData(new SpecialJumpData(SpecialJumpType.Spring, transform, 0));
             specialJump.PlaySpecialAnimation(0);
             specialJump.SetKeepVelocity(keepVelocity);

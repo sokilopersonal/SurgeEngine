@@ -28,7 +28,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             
             context.Animation.StateAnimator.TransitionToState(AnimatorParams.RunCycle);
             body.linearVelocity = transform.forward * speed;
-            context.stateMachine.SetState<FStateGround>();
+            context.StateMachine.SetState<FStateGround>();
             
             body.rotation = Quaternion.LookRotation(transform.forward, transform.up);
             context.Model.root.rotation = body.rotation;

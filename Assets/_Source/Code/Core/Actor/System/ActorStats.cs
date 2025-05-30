@@ -48,7 +48,7 @@ namespace SurgeEngine.Code.Core.Actor.System
             
             moveDot = Vector3.Dot(Actor.Kinematics.GetInputDir().normalized, _rigidbody.linearVelocity.normalized);
 
-            FState state = Actor.stateMachine.CurrentState;
+            FState state = Actor.StateMachine.CurrentState;
             isGrounded = state is FStateGround;
             isInAir = state is FStateAir or FStateAirBoost or FStateJump or FStateSpecialJump;
             

@@ -32,11 +32,11 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
 
             context.transform.rotation = grip.rotation;
 
-            context.stateMachine.GetState<FStateSwingJump>().successVel = shotVelSuccess;
-            context.stateMachine.GetState<FStateSwingJump>().failVel = shotVelFail;
+            context.StateMachine.GetState<FStateSwingJump>().successVel = shotVelSuccess;
+            context.StateMachine.GetState<FStateSwingJump>().failVel = shotVelFail;
 
-            context.stateMachine.GetState<FStateSwing>().poleGrip = grip;
-            context.stateMachine.SetState<FStateSwing>();
+            context.StateMachine.GetState<FStateSwing>().poleGrip = grip;
+            context.StateMachine.SetState<FStateSwing>();
         }
 
         protected override void OnDrawGizmos()

@@ -7,52 +7,61 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
 {
     public class Sonic : ActorBase
     {
-        public BoostConfig boostConfig;
-        public DriftConfig driftConfig;
-        public HomingConfig homingConfig;
-        public StompConfig stompConfig;
-        public SlideConfig slideConfig;
-        public QuickStepConfig quickstepConfig;
-        public CrawlConfig crawlConfig;
-        public SweepConfig sweepKickConfig;
+        [SerializeField] private BoostConfig boostConfig;
+        [SerializeField] private DriftConfig driftConfig;
+        [SerializeField] private HomingConfig homingConfig;
+        [SerializeField] private StompConfig stompConfig;
+        [SerializeField] private SlideConfig slideConfig;
+        [SerializeField] private QuickStepConfig quickstepConfig;
+        [SerializeField] private CrawlConfig crawlConfig;
+        [SerializeField] private SweepConfig sweepKickConfig;
+
+        public BoostConfig BoostConfig => boostConfig;
+        public DriftConfig DriftConfig => driftConfig; 
+        public HomingConfig HomingConfig => homingConfig;
+        public StompConfig StompConfig => stompConfig;
+        public SlideConfig SlideConfig => slideConfig;
+        public QuickStepConfig QuickstepConfig => quickstepConfig;
+        public CrawlConfig CrawlConfig => crawlConfig;
+        public SweepConfig SweepKickConfig => sweepKickConfig;
 
         protected override void InitializeConfigs()
         {
             base.InitializeConfigs();
             
-            AddConfig(boostConfig);
-            AddConfig(driftConfig);
-            AddConfig(homingConfig);
-            AddConfig(stompConfig);
-            AddConfig(slideConfig);
-            AddConfig(quickstepConfig);
-            AddConfig(crawlConfig);
-            AddConfig(sweepKickConfig);
+            AddConfig(BoostConfig);
+            AddConfig(DriftConfig);
+            AddConfig(HomingConfig);
+            AddConfig(StompConfig);
+            AddConfig(SlideConfig);
+            AddConfig(QuickstepConfig);
+            AddConfig(CrawlConfig);
+            AddConfig(SweepKickConfig);
         }
 
         protected override void AddStates()
         {
             base.AddStates();
             
-            stateMachine.AddState(new FStateAirBoost(this, Rigidbody));
-            stateMachine.AddState(new FStateStomp(this, Rigidbody));
-            stateMachine.AddState(new FStateStompLand(this, Rigidbody));
-            stateMachine.AddState(new FStateHoming(this, Rigidbody));
-            stateMachine.AddState(new FStateAfterHoming(this));
-            stateMachine.AddState(new FStateDrift(this, Rigidbody));
-            stateMachine.AddState(new FStateSlide(this, Rigidbody));
-            stateMachine.AddState(new FStateRunQuickstep(this, Rigidbody));
-            stateMachine.AddState(new FStateQuickstep(this, Rigidbody));
-            stateMachine.AddState(new FStateCrawl(this, Rigidbody));
-            stateMachine.AddState(new FStateSweepKick(this, Rigidbody));
+            StateMachine.AddState(new FStateAirBoost(this, Rigidbody));
+            StateMachine.AddState(new FStateStomp(this, Rigidbody));
+            StateMachine.AddState(new FStateStompLand(this, Rigidbody));
+            StateMachine.AddState(new FStateHoming(this, Rigidbody));
+            StateMachine.AddState(new FStateAfterHoming(this));
+            StateMachine.AddState(new FStateDrift(this, Rigidbody));
+            StateMachine.AddState(new FStateSlide(this, Rigidbody));
+            StateMachine.AddState(new FStateRunQuickstep(this, Rigidbody));
+            StateMachine.AddState(new FStateQuickstep(this, Rigidbody));
+            StateMachine.AddState(new FStateCrawl(this, Rigidbody));
+            StateMachine.AddState(new FStateSweepKick(this, Rigidbody));
 
-            stateMachine.AddSubState(new FBoost(this));
-            stateMachine.AddSubState(new FSweepKick(this));
+            StateMachine.AddSubState(new FBoost(this));
+            StateMachine.AddSubState(new FSweepKick(this));
         }
 
         public override void Load(Vector3 loadPosition, Quaternion loadRotation)
         {
-            var boost = stateMachine.GetSubState<FBoost>();
+            var boost = StateMachine.GetSubState<FBoost>();
             boost.Active = false;
             boost.BoostEnergy = 0;
             (Effects as SonicEffects)?.BoostAura.Clear();

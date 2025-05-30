@@ -71,7 +71,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Environment
                 
                 _collider.isTrigger = !_isRunningOnWater;
 
-                if (actor.stateMachine.CurrentState is FStateStomp)
+                if (actor.StateMachine.CurrentState is FStateStomp)
                 {
                     _collider.isTrigger = true; // Trigger collision for stomp so Sonic doesn't get hit when stomping
                 }
@@ -91,7 +91,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Environment
                         counter = vel.normalized * (currentSpeed * (_isUnderwater ? underwaterResistance : resistance) * Time.fixedDeltaTime);
                     }
 
-                    if (actor.stateMachine.CurrentState is not FStateDrift)
+                    if (actor.StateMachine.CurrentState is not FStateDrift)
                     {
                         actorRigidbody.linearVelocity -= counter;
                     }

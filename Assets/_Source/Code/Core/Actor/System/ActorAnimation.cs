@@ -19,12 +19,12 @@ namespace SurgeEngine.Code.Core.Actor.System
 
         private void OnEnable()
         {
-            Actor.stateMachine.OnStateEarlyAssign += ChangeAnimationState;
+            Actor.StateMachine.OnStateEarlyAssign += ChangeAnimationState;
         }
 
         private void OnDisable()
         {
-            Actor.stateMachine.OnStateEarlyAssign -= ChangeAnimationState;
+            Actor.StateMachine.OnStateEarlyAssign -= ChangeAnimationState;
         }
 
         protected virtual void Update()
@@ -32,7 +32,7 @@ namespace SurgeEngine.Code.Core.Actor.System
             var animator = StateAnimator.Animator;
             animator.SetFloat(AnimatorParams.GroundSpeed, Mathf.Clamp(Actor.Kinematics.Speed, 4, 30f));
             animator.SetFloat(AnimatorParams.VerticalSpeed, Actor.Kinematics.Velocity.y);
-            animator.SetFloat("SpeedPercent", Mathf.Clamp(Actor.Kinematics.Speed / Actor.config.topSpeed, 0f, 1.25f));
+            animator.SetFloat("SpeedPercent", Mathf.Clamp(Actor.Kinematics.Speed / Actor.Config.topSpeed, 0f, 1.25f));
 
             Vector3 vel = Actor.Kinematics.Velocity;
             float signed = Vector3.SignedAngle(vel, Actor.Model.root.forward, -Vector3.up);

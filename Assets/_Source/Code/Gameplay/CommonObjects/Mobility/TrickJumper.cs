@@ -91,10 +91,10 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
         {
             ActorBase context = ActorContext.Context;
 
-            if (context.stateMachine.CurrentState is FStateSpecialJump) yield break;
+            if (context.StateMachine.CurrentState is FStateSpecialJump) yield break;
             if (firstSpeed > 0)
             {
-                context.stateMachine.GetSubState<FBoost>().Active = false;
+                context.StateMachine.GetSubState<FBoost>().Active = false;
                 context.Kinematics.ResetVelocity();
                 
                 context.PutIn(startPoint.position);
@@ -104,8 +104,8 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
                 Vector3 impulse = Utility.GetImpulseWithPitch(Vector3.Cross(-startPoint.right, Vector3.up), startPoint.right, firstPitch, firstSpeed);
                 context.Kinematics.Rigidbody.linearVelocity = impulse;
                 
-                context.stateMachine.GetState<FStateSpecialJump>().SetSpecialData(new SpecialJumpData(SpecialJumpType.TrickJumper));
-                FStateSpecialJump specialJump = context.stateMachine.SetState<FStateSpecialJump>(0.2f, true, true);
+                context.StateMachine.GetState<FStateSpecialJump>().SetSpecialData(new SpecialJumpData(SpecialJumpType.TrickJumper));
+                FStateSpecialJump specialJump = context.StateMachine.SetState<FStateSpecialJump>(0.2f, true, true);
                 specialJump.PlaySpecialAnimation(0);
                 
                 context.Flags.AddFlag(new Flag(FlagType.OutOfControl, null, false));
@@ -268,7 +268,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             context.Stats.movementVector = body.linearVelocity;
             context.Stats.planarVelocity = body.linearVelocity;
             
-            context.stateMachine.SetState<FStateAir>();
+            context.StateMachine.SetState<FStateAir>();
             context.Input.OnButtonPressed -= OnButtonPressed;
             
             yield return SetTime(1f, 0.1f);

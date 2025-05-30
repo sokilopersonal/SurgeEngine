@@ -40,7 +40,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility.Rails
 
         private void AttachToRail(ActorBase actor)
         {
-            actor.stateMachine.SetState<FStateGrind>()?.SetRail(this);
+            actor.StateMachine.SetState<FStateGrind>()?.SetRail(this);
         }
     }
 }

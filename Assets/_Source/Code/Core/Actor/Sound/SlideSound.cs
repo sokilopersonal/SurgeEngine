@@ -30,7 +30,7 @@ namespace SurgeEngine.Code.Core.Actor.Sound
             {
                 _slideLoop.set3DAttributes(transform.To3DAttributes());
                 _slideLoop.start();
-                if (Actor.stateMachine.PreviousState is FStateGround)
+                if (Actor.StateMachine.PreviousState is FStateGround)
                 {
                     Voice.Play(slideVoice);
                 }

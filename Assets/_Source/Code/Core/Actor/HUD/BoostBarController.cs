@@ -23,7 +23,7 @@ namespace SurgeEngine.Code.Core.Actor.HUD
 
         public void UpdateBoostBar()
         {
-            FBoost boost = _actor.stateMachine.GetSubState<FBoost>();
+            FBoost boost = _actor.StateMachine.GetSubState<FBoost>();
             float amount = boost.BoostEnergy / boost.MaxBoostEnergy;;
             SetBoostBarFill(amount, energyDivider);
             

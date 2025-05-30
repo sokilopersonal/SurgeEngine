@@ -13,7 +13,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
         {
             base.Contact(msg, context);
             
-            if (context.stateMachine.PreviousState is FStateStomp)
+            if (context.StateMachine.PreviousState is FStateStomp)
                 onContact.Invoke();
         }
     }

@@ -38,13 +38,13 @@ namespace SurgeEngine.Code.Core.Actor.Sound
 
         public void PlaySound()
         {
-            if (_stepSoundInstance.isValid() && Actor.stateMachine.CurrentState is FStateGround)
+            if (_stepSoundInstance.isValid() && Actor.StateMachine.CurrentState is FStateGround)
             {
                 RuntimeManager.AttachInstanceToGameObject(_stepSoundInstance, transform);
-                _stepSoundInstance.setParameterByNameWithLabel("GroundTag", Actor.stateMachine.GetState<FStateGround>().GetSurfaceTag().ToString());
+                _stepSoundInstance.setParameterByNameWithLabel("GroundTag", Actor.StateMachine.GetState<FStateGround>().GetSurfaceTag().ToString());
                 _stepSoundInstance.start();
             }
-            if (_crawlSoundInstance.isValid() && Actor.stateMachine.CurrentState is FStateCrawl)
+            if (_crawlSoundInstance.isValid() && Actor.StateMachine.CurrentState is FStateCrawl)
             {
                 RuntimeManager.AttachInstanceToGameObject(_crawlSoundInstance, transform);
                 _crawlSoundInstance.start();
@@ -53,7 +53,7 @@ namespace SurgeEngine.Code.Core.Actor.Sound
 
         protected override void SoundState(FState obj)
         {
-            FStateMachine machine = Actor.stateMachine;
+            FStateMachine machine = Actor.StateMachine;
             RuntimeManager.AttachInstanceToGameObject(_landSoundInstance, transform);
             if (machine.IsExact<FStateGround>() || machine.IsExact<FStateIdle>())
             {

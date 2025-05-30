@@ -12,7 +12,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Environment
         {
             base.Contact(msg, context);
             
-            if (context.Kinematics.Speed >= context.config.minParaloopSpeed)
+            if (context.Kinematics.Speed >= context.Config.minParaloopSpeed)
             {
                 context.Effects.CreateParaloop();
                 context.Sounds.GetComponent<ParaloopSound>().Play();

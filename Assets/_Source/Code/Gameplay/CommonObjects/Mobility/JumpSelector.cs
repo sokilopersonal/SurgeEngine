@@ -63,7 +63,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
                 }
                 else
                 {
-                    _actor.stateMachine.SetState<FStateAir>();
+                    _actor.StateMachine.SetState<FStateAir>();
                     _actor.Flags.RemoveFlag(FlagType.OutOfControl);
                     OnJumpSelectorResult?.Invoke(JumpSelectorResultType.Fall);
                     _playerInside = false;
@@ -98,7 +98,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
                     if (_holdTimer >= 0.7f)
                     {
                         Vector3 force = _direction * (_direction == Vector3.up ? upForce : _direction == transform.forward ? forwardForce : 0f);
-                        _actor.stateMachine.SetState<FStateJumpSelectorLaunch>().SetData(force, keepVelocityTime);
+                        _actor.StateMachine.SetState<FStateJumpSelectorLaunch>().SetData(force, keepVelocityTime);
                         
                         if (_direction == Vector3.up)
                         {
@@ -129,7 +129,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
 
         public override void Contact(Collider msg, ActorBase context)
         {
-            _actor.stateMachine.SetState<FStateJumpSelector>();
+            _actor.StateMachine.SetState<FStateJumpSelector>();
             OnJumpSelectorResult?.Invoke(JumpSelectorResultType.Start);
             
             _startPos = _actor.transform.position;

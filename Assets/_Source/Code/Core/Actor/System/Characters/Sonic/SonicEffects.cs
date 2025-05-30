@@ -35,21 +35,21 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
         {
             base.OnEnable();
             
-            Actor.stateMachine.GetSubState<FBoost>().OnActiveChanged += OnBoostActivate;
+            Actor.StateMachine.GetSubState<FBoost>().OnActiveChanged += OnBoostActivate;
         }
 
         protected override void OnDisable()
         {
             base.OnDisable();
             
-            Actor.stateMachine.GetSubState<FBoost>().OnActiveChanged -= OnBoostActivate;
+            Actor.StateMachine.GetSubState<FBoost>().OnActiveChanged -= OnBoostActivate;
         }
 
         protected override void OnStateAssign(FState obj)
         {
             base.OnStateAssign(obj);
             
-            FState prev = Actor.stateMachine.PreviousState;
+            FState prev = Actor.StateMachine.PreviousState;
             
             if (obj is FStateHoming or FStateStomp or FStateSwingJump)
                 trailRenderer.Emit(0.6f);
@@ -101,7 +101,7 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
         private IEnumerator PlayJumpball()
         {
             yield return new WaitForSeconds(0.117f);
-            if (Actor.stateMachine.CurrentState is FStateJump && Actor.Input.JumpHeld)
+            if (Actor.StateMachine.CurrentState is FStateJump && Actor.Input.JumpHeld)
                 spinball.Toggle(true);
         }
     }

@@ -18,7 +18,7 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
             
             const string Drift = "Drift";
             
-            FStateMachine machine = Actor.stateMachine;
+            FStateMachine machine = Actor.StateMachine;
             FState prev = machine.PreviousState;
             Animator animator = StateAnimator.Animator;
             
@@ -139,7 +139,7 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
             }
             if (obj is FStateAir && prev is FStateSpecialJump)
             {
-                if (Actor.stateMachine.GetState<FStateSpecialJump>().data.type != SpecialJumpType.TrickJumper) StateAnimator.TransitionToState(AnimatorParams.AirCycle, 0.5f);
+                if (Actor.StateMachine.GetState<FStateSpecialJump>().data.type != SpecialJumpType.TrickJumper) StateAnimator.TransitionToState(AnimatorParams.AirCycle, 0.5f);
             }
             if (obj is FStateSlide)
             {
@@ -318,7 +318,7 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
             
             yield return new WaitForSeconds(0.117f);
 
-            if (Actor.stateMachine.CurrentState is not FStateJump)
+            if (Actor.StateMachine.CurrentState is not FStateJump)
                 yield break;
             
             if (Actor.Input.JumpHeld)

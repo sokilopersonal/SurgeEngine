@@ -130,7 +130,7 @@ namespace SurgeEngine.Code.Core.Actor.States
             base.OnFixedTick(dt);
             
             Vector3 prevNormal = Kinematics.Normal;
-            BaseActorConfig config = Actor.config;
+            BaseActorConfig config = Actor.Config;
             float distance = config.castDistance * config.castDistanceCurve
                 .Evaluate(Kinematics.HorizontalSpeed / config.topSpeed);
             bool checkForPredictedGround =
@@ -173,12 +173,12 @@ namespace SurgeEngine.Code.Core.Actor.States
 
         public void BoostHandle()
         {
-            Actor.stateMachine.GetSubState<FBoost>().BaseGroundBoost();
+            Actor.StateMachine.GetSubState<FBoost>().BaseGroundBoost();
         }
 
         private void ConvertAirToGroundVelocity()
         {
-            if (Physics.Raycast(Actor.transform.position, _rigidbody.linearVelocity.normalized, out RaycastHit velocityFix, _rigidbody.linearVelocity.magnitude, Actor.config.castLayer))
+            if (Physics.Raycast(Actor.transform.position, _rigidbody.linearVelocity.normalized, out RaycastHit velocityFix, _rigidbody.linearVelocity.magnitude, Actor.Config.castLayer))
             {
                 float nextGroundAngle = Vector3.Angle(velocityFix.normal, Vector3.up);
                 if (nextGroundAngle <= Kinematics.maxAngleDifference)

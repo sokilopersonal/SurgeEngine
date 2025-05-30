@@ -42,7 +42,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates
             BoostEnergy = MaxBoostEnergy;
             
             Actor.Input.BoostAction += BoostAction;
-            Actor.stateMachine.OnStateAssign += OnStateAssign;
+            Actor.StateMachine.OnStateAssign += OnStateAssign;
 
             ObjectEvents.OnObjectCollected += OnRingCollected;
             ObjectEvents.OnEnemyDied += OnEnemyDied;
@@ -51,7 +51,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates
         ~FBoost()
         {
             Actor.Input.BoostAction -= BoostAction;
-            Actor.stateMachine.OnStateAssign -= OnStateAssign;
+            Actor.StateMachine.OnStateAssign -= OnStateAssign;
 
             ObjectEvents.OnObjectCollected -= OnRingCollected;
             ObjectEvents.OnEnemyDied -= OnEnemyDied;
@@ -107,8 +107,8 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates
             
             _boostHandler?.BoostHandle();
 
-            FState state = Actor.stateMachine.CurrentState;
-            FState prev = Actor.stateMachine.PreviousState;
+            FState state = Actor.StateMachine.CurrentState;
+            FState prev = Actor.StateMachine.PreviousState;
 
             if (state is FStateDrift)
             {
@@ -158,9 +158,9 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates
 
         private void BoostAction(InputAction.CallbackContext obj)
         {
-            if (Actor.stateMachine.CurrentState is FStateAir && !CanAirBoost) return;
-            if (Actor.stateMachine.CurrentState is FStateStomp) return;
-            if (Actor.stateMachine.CurrentState is FStateSlide) return;
+            if (Actor.StateMachine.CurrentState is FStateAir && !CanAirBoost) return;
+            if (Actor.StateMachine.CurrentState is FStateStomp) return;
+            if (Actor.StateMachine.CurrentState is FStateSlide) return;
             
             if (CanBoost())
             {
@@ -174,9 +174,9 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates
 
                 if (Actor.Kinematics.HorizontalSpeed < startSpeed)
                 {
-                    if (Actor.stateMachine.CurrentState is FStateIdle)
+                    if (Actor.StateMachine.CurrentState is FStateIdle)
                     {
-                        Actor.stateMachine.SetState<FStateGround>();
+                        Actor.StateMachine.SetState<FStateGround>();
                     }
                     
                     body.linearVelocity = body.transform.forward * startSpeed;
@@ -193,7 +193,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates
         public void BaseGroundBoost()
         {
             float dt = Time.deltaTime;
-            BaseActorConfig config = Actor.config;
+            BaseActorConfig config = Actor.Config;
             Rigidbody body = Actor.Kinematics.Rigidbody;
             float speed = Actor.Kinematics.HorizontalSpeed;
             

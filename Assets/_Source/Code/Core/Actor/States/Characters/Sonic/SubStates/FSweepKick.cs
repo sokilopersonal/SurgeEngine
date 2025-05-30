@@ -19,7 +19,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates
         {
             if (button != ButtonType.B || !_config.eligibleAnimationStates.Contains(Actor.Animation.StateAnimator.GetCurrentAnimationState()))
                 return;
-            Actor.stateMachine.SetState<FStateSweepKick>();
+            Actor.StateMachine.SetState<FStateSweepKick>();
         }
     }
 }

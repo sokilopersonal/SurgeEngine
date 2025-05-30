@@ -38,14 +38,14 @@ namespace SurgeEngine.Code.Core.Actor.System
 
         protected virtual void OnEnable()
         {
-            Actor.stateMachine.GetState<FStateGround>().OnSurfaceTagChanged += OnSurfaceTagChanged;
-            Actor.stateMachine.OnStateAssign += OnStateAssign;
+            Actor.StateMachine.GetState<FStateGround>().OnSurfaceTagChanged += OnSurfaceTagChanged;
+            Actor.StateMachine.OnStateAssign += OnStateAssign;
         }
 
         protected virtual void OnDisable()
         {
-            Actor.stateMachine.GetState<FStateGround>().OnSurfaceTagChanged -= OnSurfaceTagChanged;
-            Actor.stateMachine.OnStateAssign -= OnStateAssign;
+            Actor.StateMachine.GetState<FStateGround>().OnSurfaceTagChanged -= OnSurfaceTagChanged;
+            Actor.StateMachine.OnStateAssign -= OnStateAssign;
         }
 
         protected virtual void OnStateAssign(FState obj)
@@ -69,7 +69,7 @@ namespace SurgeEngine.Code.Core.Actor.System
                 {
                     _currentStep?.Stop();
                 }
-                else if (_stepMap.TryGetValue(Actor.stateMachine.GetState<FStateGround>().GetSurfaceTag(), out var ps))
+                else if (_stepMap.TryGetValue(Actor.StateMachine.GetState<FStateGround>().GetSurfaceTag(), out var ps))
                 {
                     _currentStep = ps;
                     _currentStep?.Play();

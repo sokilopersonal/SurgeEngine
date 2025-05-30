@@ -39,7 +39,7 @@ namespace SurgeEngine.Code.Infrastructure.Custom.Drawers
                 $"Current Vertical Speed: {actor.Kinematics.Velocity.y}",
                 $"Body Velocity: {actor.Kinematics.Velocity}",
                 $"Planar Velocity: {actor.Kinematics.PlanarVelocity}",
-                $"State: {actor.stateMachine.currentStateName}",
+                $"State: {actor.StateMachine.currentStateName}",
                 $"Animation: {actor.Animation.StateAnimator.GetCurrentAnimationState()}",
                 $"Camera State: {actor.Camera.stateMachine.currentStateName}"
             };

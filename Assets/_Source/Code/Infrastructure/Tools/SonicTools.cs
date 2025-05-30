@@ -20,19 +20,19 @@ namespace SurgeEngine.Code.Infrastructure.Tools
         
         public static bool IsBoost()
         {
-            return _sonic.stateMachine.GetSubState<FBoost>().Active;
+            return _sonic.StateMachine.GetSubState<FBoost>().Active;
         }
 
         public static HomingTarget FindHomingTarget()
         {
             Transform transform = _sonic.transform;
-            HomingConfig config = _sonic.homingConfig;
+            HomingConfig config = _sonic.HomingConfig;
             Vector3 origin = transform.position + Vector3.down;
             Vector3 dir = _sonic.Kinematics.GetInputDir() == Vector3.zero ? transform.forward : _sonic.Kinematics.GetInputDir();
             
             float maxDistance = config.findDistance;
             LayerMask mask = config.mask;
-            mask |= _sonic.config.railMask;
+            mask |= _sonic.Config.railMask;
             
             Collider[] hits = Physics.OverlapSphere(origin + dir, maxDistance, mask, QueryTriggerInteraction.Collide);
             
@@ -67,7 +67,7 @@ namespace SurgeEngine.Code.Infrastructure.Tools
                 }
                 
                 bool facing = Vector3.Dot(direction.normalized, transform.forward) > 0.5f;
-                if (facing && !Physics.Linecast(origin, end, _sonic.config.castLayer))
+                if (facing && !Physics.Linecast(origin, end, _sonic.Config.castLayer))
                 {
                     if (target.TryGetComponent(out HomingTarget homingTarget))
                     {

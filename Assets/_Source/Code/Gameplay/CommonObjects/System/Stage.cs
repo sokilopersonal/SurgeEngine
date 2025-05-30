@@ -36,7 +36,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.System
 
         private void Update()
         {
-            if (!_actor.stateMachine.IsExact<FStateStart>())
+            if (!_actor.StateMachine.IsExact<FStateStart>())
             {
                 data.Time += Time.deltaTime;
             }

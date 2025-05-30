@@ -45,22 +45,22 @@ namespace SurgeEngine.Code.Core.Actor.System
 
         private void OnEnable()
         {
-            Actor.stateMachine.OnStateAssign += OnStateAssign;
+            Actor.StateMachine.OnStateAssign += OnStateAssign;
         }
         
         private void OnDisable()
         {
-            Actor.stateMachine.OnStateAssign -= OnStateAssign;
+            Actor.StateMachine.OnStateAssign -= OnStateAssign;
         }
 
         private void Update()
         {
             root.localPosition = Actor.transform.localPosition;
             
-            FState prev = Actor.stateMachine.PreviousState;
+            FState prev = Actor.StateMachine.PreviousState;
             _forwardVector = Vector3.Slerp(root.forward, Actor.transform.forward, Time.deltaTime * horizontalRotationSpeed);
             _upVector = Vector3.Slerp(root.up, Actor.transform.up, Time.deltaTime * verticalRotationSpeed
-                * Mathf.Lerp(1f, 2f, Actor.Kinematics.Speed / Actor.config.topSpeed));
+                * Mathf.Lerp(1f, 2f, Actor.Kinematics.Speed / Actor.Config.topSpeed));
 
             if (prev is FStateSpecialJump)
             {

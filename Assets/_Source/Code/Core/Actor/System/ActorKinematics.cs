@@ -79,7 +79,7 @@ namespace SurgeEngine.Code.Core.Actor.System
             _rigidbody = GetComponent<Rigidbody>();
             Normal = Vector3.up;
 
-            _config = Actor.config;
+            _config = Actor.Config;
         }
 
         private void Update()
@@ -219,7 +219,7 @@ namespace SurgeEngine.Code.Core.Actor.System
             if (_speed < _config.slopeMinSpeed && _angle >= _config.slopeDeslopeAngle)
             {
                 _rigidbody.AddForce(Normal * _config.slopeDeslopeForce, ForceMode.Impulse);
-                Actor.stateMachine.SetState<FStateAir>(_config.slopeInactiveDuration);
+                Actor.StateMachine.SetState<FStateAir>(_config.slopeInactiveDuration);
             }
             
             if (_angle > _config.slopeMinAngle && _speed > _config.slopeMinForceSpeed)
@@ -382,7 +382,7 @@ namespace SurgeEngine.Code.Core.Actor.System
             
             Ray ray = new Ray(origin, direction);
             if (castDistance == 0) castDistance = _config.castDistance;
-            LayerMask castMask = Actor.config.castLayer;
+            LayerMask castMask = Actor.Config.castLayer;
 
             bool hit = Physics.Raycast(ray, out result,
                 castDistance, castMask, QueryTriggerInteraction.Ignore);
@@ -395,17 +395,17 @@ namespace SurgeEngine.Code.Core.Actor.System
         {
             Vector3 origin = Actor.transform.position;
             
-            if (castDistance == 0) castDistance = Actor.config.castDistance;
+            if (castDistance == 0) castDistance = Actor.Config.castDistance;
             
             Ray ray = new Ray(origin, direction);
-            LayerMask castMask = Actor.config.castLayer;
+            LayerMask castMask = Actor.Config.castLayer;
             bool hit = Physics.Raycast(ray, out result, castDistance, castMask, QueryTriggerInteraction.Ignore);
             return hit;
         }
         
         public bool CheckForCeiling(out RaycastHit result)
         {
-            bool hit = Physics.Raycast(Actor.transform.position - Actor.transform.up * 0.5f, Actor.transform.up, out result, Actor.config.castDistance * 0.5f, Actor.config.castLayer, QueryTriggerInteraction.Ignore);
+            bool hit = Physics.Raycast(Actor.transform.position - Actor.transform.up * 0.5f, Actor.transform.up, out result, Actor.Config.castDistance * 0.5f, Actor.Config.castLayer, QueryTriggerInteraction.Ignore);
             return hit;
         }
         
@@ -457,7 +457,7 @@ namespace SurgeEngine.Code.Core.Actor.System
             else
             {
                 _movementVector = Vector3.zero;
-                SetStateOnZeroSpeed(Actor.stateMachine.CurrentState);
+                SetStateOnZeroSpeed(Actor.StateMachine.CurrentState);
             }
         }
 
@@ -468,7 +468,7 @@ namespace SurgeEngine.Code.Core.Actor.System
                 case FStateAir:
                     break;
                 default:
-                    Actor.stateMachine.SetState<FStateIdle>();
+                    Actor.StateMachine.SetState<FStateIdle>();
                     break;
             }
         }

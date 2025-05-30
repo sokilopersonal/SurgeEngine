@@ -30,7 +30,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         {
             base.OnEnter();
             
-            _rigidbody.linearVelocity = Vector3.ClampMagnitude(_rigidbody.linearVelocity, Actor.config.topSpeed);
+            _rigidbody.linearVelocity = Vector3.ClampMagnitude(_rigidbody.linearVelocity, Actor.Config.topSpeed);
         }
 
         public override void OnTick(float dt)
@@ -135,7 +135,7 @@ namespace SurgeEngine.Code.Core.Actor.States
 
         public void BoostHandle()
         {
-            Actor.stateMachine.GetSubState<FBoost>().BaseGroundBoost();
+            Actor.StateMachine.GetSubState<FBoost>().BaseGroundBoost();
         }
     }
 }

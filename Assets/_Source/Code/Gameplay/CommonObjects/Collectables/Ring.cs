@@ -40,7 +40,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Collectables
             
             transform.rotation *= Quaternion.AngleAxis(rotationSpeed * Time.deltaTime, Vector3.up);
             
-            if ((transform.position - _actor.transform.position).magnitude < _actor.stateMachine.GetSubState<FBoost>().GetConfig().MagnetRadius
+            if ((transform.position - _actor.transform.position).magnitude < _actor.StateMachine.GetSubState<FBoost>().GetConfig().MagnetRadius
                 && SonicTools.IsBoost() && !_magneted)
             {
                 _initialPosition = transform.position;

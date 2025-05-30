@@ -63,7 +63,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
                 float distance = Vector3.Distance(model.localPosition, target);
                 if (distance < 0.1f)
                 {
-                    ctx.stateMachine.SetState<FStateAir>();
+                    ctx.StateMachine.SetState<FStateAir>();
                     ctx.Kinematics.Rigidbody.position += Vector3.up;
                     ctx.Kinematics.Rigidbody.AddForce(transform.up * upPushForce, ForceMode.Impulse);
                     ctx.Kinematics.Rigidbody.AddForce(model.forward * forwardPushForce, ForceMode.Impulse);
@@ -89,8 +89,8 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
         {
             base.Contact(msg, context);
 
-            context.stateMachine.SetState<FStateUpreel>(0.1f)?.SetAttach(attachPoint);
-            context.stateMachine.OnStateAssign += OnStateAssign;
+            context.StateMachine.SetState<FStateUpreel>(0.1f)?.SetAttach(attachPoint);
+            context.StateMachine.OnStateAssign += OnStateAssign;
 
             _contactPoint = context.transform.position;
             _attachTimer = 0;
@@ -109,7 +109,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             _attachTimer = 0;
             _eventInstance.stop(STOP_MODE.ALLOWFADEOUT);
             model.DOLocalMove(_localStartPosition, 1f).SetEase(Ease.InSine).SetDelay(0.5f).SetLink(gameObject);
-            ctx.stateMachine.OnStateAssign -= OnStateAssign;
+            ctx.StateMachine.OnStateAssign -= OnStateAssign;
         }
 
         private void OnStateAssign(FState obj)

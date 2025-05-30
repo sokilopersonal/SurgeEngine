@@ -30,9 +30,9 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
                 Vector3 target = transform.up * yOffset;
                 context.AddIn(target);
             }
-            if (cancelBoost) context.stateMachine.GetSubState<FBoost>().Active = false;
+            if (cancelBoost) context.StateMachine.GetSubState<FBoost>().Active = false;
             
-            FStateSpecialJump specialJump = context.stateMachine.SetState<FStateSpecialJump>(0.2f, true, true);
+            FStateSpecialJump specialJump = context.StateMachine.SetState<FStateSpecialJump>(0.2f, true, true);
             specialJump.SetSpecialData(new SpecialJumpData(SpecialJumpType.DashRing, transform, outOfControl));
             specialJump.PlaySpecialAnimation(0f);
             specialJump.SetKeepVelocity(keepVelocity);
