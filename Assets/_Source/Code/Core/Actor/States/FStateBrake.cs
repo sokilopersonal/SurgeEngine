@@ -6,11 +6,11 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.States
 {
-    public class FStateBrake : FStateMove, IDamageableState
+    public class FStateBrake : FActorState, IDamageableState
     {
         private readonly BaseActorConfig _config;
         
-        public FStateBrake(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        public FStateBrake(ActorBase owner) : base(owner)
         {
             owner.TryGetConfig(out _config);
         }
@@ -36,14 +36,14 @@ namespace SurgeEngine.Code.Core.Actor.States
                 Kinematics.Snap(hit.point, Vector3.up, true);
                 
                 float f = Mathf.Lerp(_config.maxSkiddingRate, _config.minSkiddingRate, Kinematics.Speed / _config.topSpeed);
-                _rigidbody.linearVelocity = Vector3.MoveTowards(_rigidbody.linearVelocity, Vector3.zero,
+                Rigidbody.linearVelocity = Vector3.MoveTowards(Rigidbody.linearVelocity, Vector3.zero,
                     Time.fixedDeltaTime * f);
                 Kinematics.Project();
                 
                 //Model.RotateBody(Vector3.up);
                 Kinematics.SlopePhysics();
 
-                if (_rigidbody.linearVelocity.magnitude < 0.2f)
+                if (Rigidbody.linearVelocity.magnitude < 0.2f)
                 {
                     if (Kinematics.Skidding) StateMachine.SetState<FStateBrakeTurn>();
                     else

@@ -14,7 +14,7 @@ using Vector3 = UnityEngine.Vector3;
 
 namespace SurgeEngine.Code.Core.Actor.States
 {
-    public sealed class FStateGround : FStateMove, IBoostHandler, IDamageableState
+    public sealed class FStateGround : FActorState, IBoostHandler, IDamageableState
     {
         private GroundTag _surfaceTag;
         
@@ -23,7 +23,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         private readonly QuickStepConfig _quickstepConfig;
         private readonly SlideConfig _slideConfig;
 
-        public FStateGround(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        public FStateGround(ActorBase owner) : base(owner)
         {
             owner.TryGetConfig(out _quickstepConfig);
             owner.TryGetConfig(out _slideConfig);
@@ -140,8 +140,8 @@ namespace SurgeEngine.Code.Core.Actor.States
                 Kinematics.Point = data.point;
                 Kinematics.SlerpSnapNormal(data.normal);
                 
-                Vector3 stored = Vector3.ClampMagnitude(_rigidbody.linearVelocity, config.maxSpeed);
-                _rigidbody.linearVelocity = Quaternion.FromToRotation(_rigidbody.transform.up, prevNormal) * stored;
+                Vector3 stored = Vector3.ClampMagnitude(Rigidbody.linearVelocity, config.maxSpeed);
+                Rigidbody.linearVelocity = Quaternion.FromToRotation(Rigidbody.transform.up, prevNormal) * stored;
 
                 Kinematics.BasePhysics(Kinematics.Normal);
                 Kinematics.Snap(Kinematics.Point, Kinematics.Normal, true);
@@ -155,7 +155,7 @@ namespace SurgeEngine.Code.Core.Actor.States
                 StateMachine.SetState<FStateAir>();
             }
 
-            if (Kinematics.CheckForGroundWithDirection(out RaycastHit verticalHit, _rigidbody.transform.up) && Kinematics.Angle >= 90)
+            if (Kinematics.CheckForGroundWithDirection(out RaycastHit verticalHit, Rigidbody.transform.up) && Kinematics.Angle >= 90)
             {
                 Kinematics.Point = verticalHit.point;
                 Kinematics.Normal = verticalHit.normal;
@@ -178,14 +178,14 @@ namespace SurgeEngine.Code.Core.Actor.States
 
         private void ConvertAirToGroundVelocity()
         {
-            if (Physics.Raycast(Actor.transform.position, _rigidbody.linearVelocity.normalized, out RaycastHit velocityFix, _rigidbody.linearVelocity.magnitude, Actor.Config.castLayer))
+            if (Physics.Raycast(Actor.transform.position, Rigidbody.linearVelocity.normalized, out RaycastHit velocityFix, Rigidbody.linearVelocity.magnitude, Actor.Config.castLayer))
             {
                 float nextGroundAngle = Vector3.Angle(velocityFix.normal, Vector3.up);
                 if (nextGroundAngle <= Kinematics.maxAngleDifference)
                 {
-                    Vector3 fixedVelocity = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, Kinematics.Normal);
+                    Vector3 fixedVelocity = Vector3.ProjectOnPlane(Rigidbody.linearVelocity, Kinematics.Normal);
                     fixedVelocity = Quaternion.FromToRotation(Actor.transform.up, velocityFix.normal) * fixedVelocity;
-                    _rigidbody.linearVelocity = fixedVelocity;
+                    Rigidbody.linearVelocity = fixedVelocity;
                 }
             }
         }

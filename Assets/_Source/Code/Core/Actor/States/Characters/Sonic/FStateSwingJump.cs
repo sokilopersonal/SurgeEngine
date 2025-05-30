@@ -8,7 +8,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
         public float failVel;
         public float successVel;
         
-        public FStateSwingJump(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        public FStateSwingJump(ActorBase owner) : base(owner)
         {
             
         }
@@ -23,7 +23,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
 
         public void Launch(bool successful)
         {
-            _rigidbody.linearVelocity = (Actor.transform.forward + Actor.transform.up).normalized * (successful ? successVel : failVel);
+            Rigidbody.linearVelocity = (Actor.transform.forward + Actor.transform.up).normalized * (successful ? successVel : failVel);
         }
     }
 }

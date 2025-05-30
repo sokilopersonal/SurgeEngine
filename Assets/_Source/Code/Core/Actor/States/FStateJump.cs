@@ -11,7 +11,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         private BaseActorConfig _config;
         protected float _maxAirTime;
 
-        public FStateJump(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        public FStateJump(ActorBase owner) : base(owner)
         {
             _maxAirTime = 0.8f;
             _config = Actor.Config;
@@ -21,7 +21,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         {
             base.OnEnter();
             
-            _rigidbody.linearVelocity += _rigidbody.transform.up * Mathf.Sqrt(_config.jumpForce * 2f * Kinematics.Gravity);
+            Rigidbody.linearVelocity += Rigidbody.transform.up * Mathf.Sqrt(_config.jumpForce * 2f * Kinematics.Gravity);
             _jumpTime = 0;
             
             Actor.transform.rotation = Quaternion.Euler(0, Actor.transform.rotation.eulerAngles.y, 0);
@@ -44,8 +44,8 @@ namespace SurgeEngine.Code.Core.Actor.States
                 {
                     if (_jumpTime < _config.jumpStartTime)
                     {
-                        if (_rigidbody.linearVelocity.y > 0) 
-                            _rigidbody.linearVelocity += Actor.transform.up * (_config.jumpHoldForce * dt);
+                        if (Rigidbody.linearVelocity.y > 0) 
+                            Rigidbody.linearVelocity += Actor.transform.up * (_config.jumpHoldForce * dt);
                         _jumpTime += dt;
                     }
                 }

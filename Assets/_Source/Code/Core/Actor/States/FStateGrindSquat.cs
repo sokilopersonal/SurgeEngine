@@ -5,7 +5,7 @@ namespace SurgeEngine.Code.Core.Actor.States
 {
     public class FStateGrindSquat : FStateGrind
     {
-        public FStateGrindSquat(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        public FStateGrindSquat(ActorBase owner) : base(owner)
         {
             _grindGravityPower = 14;
         }

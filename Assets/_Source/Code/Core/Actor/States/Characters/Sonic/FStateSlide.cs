@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
 {
-    public class FStateSlide : FStateMove, IStateTimeout, IDamageableState
+    public class FStateSlide : FActorState, IStateTimeout, IDamageableState
     {
         public float Timeout { get; set; }
         
@@ -17,7 +17,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
 
         private bool _released;
         
-        public FStateSlide(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        public FStateSlide(ActorBase owner) : base(owner)
         {
             owner.TryGetConfig(out _config);
             owner.TryGetConfig(out _quickstepConfig);
@@ -120,8 +120,8 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
                 Kinematics.Normal = hit.normal;
                 Kinematics.Snap(hit.point, hit.normal, true);
                 
-                _rigidbody.linearVelocity = Vector3.MoveTowards(_rigidbody.linearVelocity, Vector3.zero, _config.deceleration * dt);
-                _rigidbody.linearVelocity = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, hit.normal);
+                Rigidbody.linearVelocity = Vector3.MoveTowards(Rigidbody.linearVelocity, Vector3.zero, _config.deceleration * dt);
+                Rigidbody.linearVelocity = Vector3.ProjectOnPlane(Rigidbody.linearVelocity, hit.normal);
                 Model.RotateBody(hit.normal);
                 
                 Kinematics.SlopePhysics();
@@ -131,7 +131,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
                 StateMachine.SetState<FStateAir>();
             }
 
-            var transform = _rigidbody.transform;
+            var transform = Rigidbody.transform;
             var offset = -transform.up * 0.6f;
             offset += transform.forward * 0.2f;
             HurtBox.CreateAttached(Actor, transform, offset, new Vector3(0.5f, 0.5f, 0.75f), HurtBoxTarget.Enemy | HurtBoxTarget.Breakable);

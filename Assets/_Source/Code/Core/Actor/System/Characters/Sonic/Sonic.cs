@@ -43,17 +43,17 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
         {
             base.AddStates();
             
-            StateMachine.AddState(new FStateAirBoost(this, Rigidbody));
-            StateMachine.AddState(new FStateStomp(this, Rigidbody));
-            StateMachine.AddState(new FStateStompLand(this, Rigidbody));
-            StateMachine.AddState(new FStateHoming(this, Rigidbody));
+            StateMachine.AddState(new FStateAirBoost(this));
+            StateMachine.AddState(new FStateStomp(this));
+            StateMachine.AddState(new FStateStompLand(this));
+            StateMachine.AddState(new FStateHoming(this));
             StateMachine.AddState(new FStateAfterHoming(this));
-            StateMachine.AddState(new FStateDrift(this, Rigidbody));
-            StateMachine.AddState(new FStateSlide(this, Rigidbody));
-            StateMachine.AddState(new FStateRunQuickstep(this, Rigidbody));
-            StateMachine.AddState(new FStateQuickstep(this, Rigidbody));
-            StateMachine.AddState(new FStateCrawl(this, Rigidbody));
-            StateMachine.AddState(new FStateSweepKick(this, Rigidbody));
+            StateMachine.AddState(new FStateDrift(this));
+            StateMachine.AddState(new FStateSlide(this));
+            StateMachine.AddState(new FStateRunQuickstep(this));
+            StateMachine.AddState(new FStateQuickstep(this));
+            StateMachine.AddState(new FStateCrawl(this));
+            StateMachine.AddState(new FStateSweepKick(this));
 
             StateMachine.AddSubState(new FBoost(this));
             StateMachine.AddSubState(new FSweepKick(this));

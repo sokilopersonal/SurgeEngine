@@ -4,9 +4,9 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.States
 {
-    public class FStateJumpSelector : FStateMove
+    public class FStateJumpSelector : FActorState
     {
-        public FStateJumpSelector(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        public FStateJumpSelector(ActorBase owner) : base(owner)
         {
             
         }
@@ -15,7 +15,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         {
             base.OnEnter();
             
-            _rigidbody.linearVelocity = Vector3.zero;
+            Rigidbody.linearVelocity = Vector3.zero;
         }
     }
 }

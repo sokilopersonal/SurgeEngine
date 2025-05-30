@@ -8,9 +8,9 @@ using NotImplementedException = System.NotImplementedException;
 
 namespace SurgeEngine.Code.Core.Actor.States
 {
-    public class FStateIdle : FStateMove, IDamageableState, IBoostHandler
+    public class FStateIdle : FActorState, IDamageableState, IBoostHandler
     {
-        public FStateIdle(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        public FStateIdle(ActorBase owner) : base(owner)
         {
         }
 

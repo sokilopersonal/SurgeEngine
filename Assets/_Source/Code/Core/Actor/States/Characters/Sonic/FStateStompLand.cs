@@ -5,12 +5,12 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
 {
-    public class FStateStompLand : FStateMove
+    public class FStateStompLand : FActorState
     {
         private float _timer;
         private const float WaitTime = 0.15f;
         
-        public FStateStompLand(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        public FStateStompLand(ActorBase owner) : base(owner)
         {
         }
 

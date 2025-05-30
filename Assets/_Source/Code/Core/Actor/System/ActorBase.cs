@@ -15,6 +15,7 @@ namespace SurgeEngine.Code.Core.Actor.System
 {
     public class ActorBase : MonoBehaviour, IDamageable, IPointMarkerLoader
     {
+        [field: SerializeField] public Transform Parent { get; private set; }
         public new Transform transform => Rigidbody.transform;
         
         [Header("Components")]
@@ -34,7 +35,7 @@ namespace SurgeEngine.Code.Core.Actor.System
         public ActorModel Model => model;
         public ActorFlags Flags => flags;
         public ActorKinematics Kinematics => kinematics;
-        private Dictionary<Type, ActorComponent> _components = new();
+        private readonly Dictionary<Type, ActorComponent> _components = new();
 
         [Header("Config")]
         [SerializeField] private BaseActorConfig config;
@@ -56,14 +57,16 @@ namespace SurgeEngine.Code.Core.Actor.System
         private void Awake()
         {
             StateMachine = new FStateMachine();
-            Rigidbody = GetComponentInChildren<Rigidbody>();
+            Rigidbody = GetComponent<Rigidbody>();
+            
+            Parent = transform.parent;
             
             ActorContext.Set(this);
             
             InitializeConfigs();
             AddStates();
             
-            foreach (var component in GetComponentsInChildren<ActorComponent>())
+            foreach (var component in Parent.GetComponentsInChildren<ActorComponent>())
             {
                 _components.Add(component.GetType(), component);
                 component.Set(this);
@@ -87,25 +90,25 @@ namespace SurgeEngine.Code.Core.Actor.System
 
         protected virtual void AddStates()
         {
-            StateMachine.AddState(new FStateStart(this, Rigidbody));
-            StateMachine.AddState(new FStateIdle(this, Rigidbody));
-            StateMachine.AddState(new FStateGround(this, Rigidbody));
-            StateMachine.AddState(new FStateBrake(this, Rigidbody));
-            StateMachine.AddState(new FStateBrakeTurn(this, Rigidbody));
-            StateMachine.AddState(new FStateAir(this, Rigidbody));
-            StateMachine.AddState(new FStateSpecialJump(this, Rigidbody));
-            StateMachine.AddState(new FStateSit(this, Rigidbody));
-            StateMachine.AddState(new FStateJump(this, Rigidbody));
-            StateMachine.AddState(new FStateGrind(this, Rigidbody));
-            StateMachine.AddState(new FStateGrindJump(this, Rigidbody));
-            StateMachine.AddState(new FStateGrindSquat(this, Rigidbody));
-            StateMachine.AddState(new FStateJumpSelector(this, Rigidbody));
-            StateMachine.AddState(new FStateJumpSelectorLaunch(this, Rigidbody));
-            StateMachine.AddState(new FStateSwing(this, Rigidbody));
-            StateMachine.AddState(new FStateSwingJump(this, Rigidbody));
-            StateMachine.AddState(new FStateDamage(this, Rigidbody));
-            StateMachine.AddState(new FStateDamageLand(this, Rigidbody));
-            StateMachine.AddState(new FStateUpreel(this, Rigidbody));
+            StateMachine.AddState(new FStateStart(this));
+            StateMachine.AddState(new FStateIdle(this));
+            StateMachine.AddState(new FStateGround(this));
+            StateMachine.AddState(new FStateBrake(this));
+            StateMachine.AddState(new FStateBrakeTurn(this));
+            StateMachine.AddState(new FStateAir(this));
+            StateMachine.AddState(new FStateSpecialJump(this));
+            StateMachine.AddState(new FStateSit(this));
+            StateMachine.AddState(new FStateJump(this));
+            StateMachine.AddState(new FStateGrind(this));
+            StateMachine.AddState(new FStateGrindJump(this));
+            StateMachine.AddState(new FStateGrindSquat(this));
+            StateMachine.AddState(new FStateJumpSelector(this));
+            StateMachine.AddState(new FStateJumpSelectorLaunch(this));
+            StateMachine.AddState(new FStateSwing(this));
+            StateMachine.AddState(new FStateSwingJump(this));
+            StateMachine.AddState(new FStateDamage(this));
+            StateMachine.AddState(new FStateDamageLand(this));
+            StateMachine.AddState(new FStateUpreel(this));
             StateMachine.AddState(new FStateDead(this));
         }
 
@@ -154,6 +157,19 @@ namespace SurgeEngine.Code.Core.Actor.System
             }
 
             request = null;
+        }
+
+        public T Get<T>() where T : ActorComponent
+        {
+            foreach (var pair in _components)
+            {
+                if (typeof(T).IsAssignableFrom(pair.Key))
+                {
+                    return (T)pair.Value;
+                }
+            }
+            
+            return null;
         }
 
         public void TakeDamage(MonoBehaviour sender, float damage)

@@ -7,7 +7,7 @@ using UnityEngine.Splines;
 
 namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
 {
-    public class FStateQuickstep : FStateMove, IStateTimeout
+    public class FStateQuickstep : FActorState, IStateTimeout
     {
         private QuickstepDirection _direction;
         private float _timer;
@@ -16,7 +16,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
 
         private readonly QuickStepConfig _config;
 
-        public FStateQuickstep(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        public FStateQuickstep(ActorBase owner) : base(owner)
         {
             owner.TryGetConfig(out _config);
         }
@@ -30,14 +30,14 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
 
             if (Kinematics.mode != KinematicsMode.Dash)
             {
-                var local = Actor.transform.InverseTransformDirection(_rigidbody.linearVelocity);
+                var local = Actor.transform.InverseTransformDirection(Rigidbody.linearVelocity);
                 _savedXSpeed = _config.force * (int)_direction;
                 local.x = _savedXSpeed;
-                _rigidbody.linearVelocity = Actor.transform.TransformDirection(local);
+                Rigidbody.linearVelocity = Actor.transform.TransformDirection(local);
             }
             else
             {
-                _lastPosition = _rigidbody.position;
+                _lastPosition = Rigidbody.position;
             }
         }
 
@@ -96,14 +96,14 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
                         sample.tg = -sample.tg;
                     }
 
-                    _rigidbody.position = Vector3.Lerp(_lastPosition, targetPosition, _timer);
+                    Rigidbody.position = Vector3.Lerp(_lastPosition, targetPosition, _timer);
                     Actor.transform.rotation = Quaternion.LookRotation(sample.tg, sample.up);
                 }
             }
 
-            Vector3 local = Actor.transform.InverseTransformDirection(_rigidbody.linearVelocity);
+            Vector3 local = Actor.transform.InverseTransformDirection(Rigidbody.linearVelocity);
             local.x = Mathf.Lerp(_savedXSpeed, 0f, _timer);
-            _rigidbody.linearVelocity = Actor.transform.TransformDirection(local);
+            Rigidbody.linearVelocity = Actor.transform.TransformDirection(local);
 
             if (_timer >= 1f)
             {

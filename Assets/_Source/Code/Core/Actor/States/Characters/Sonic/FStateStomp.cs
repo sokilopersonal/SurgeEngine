@@ -8,14 +8,14 @@ using Vector3 = UnityEngine.Vector3;
 
 namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
 {
-    public class FStateStomp : FStateMove
+    public class FStateStomp : FActorState
     {
         private float _timer;
 
         private bool _released;
         private readonly StompConfig _config;
 
-        public FStateStomp(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        public FStateStomp(ActorBase owner) : base(owner)
         {
             owner.TryGetConfig(out _config);
         }
@@ -26,10 +26,10 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
             
             StateMachine.GetSubState<FBoost>().Active = false;
             _released = false;
-            _rigidbody.linearVelocity = new Vector3(_rigidbody.linearVelocity.x, 0f, _rigidbody.linearVelocity.z);
+            Rigidbody.linearVelocity = new Vector3(Rigidbody.linearVelocity.x, 0f, Rigidbody.linearVelocity.z);
             
             Kinematics.Normal = Vector3.up;
-            _rigidbody.rotation = Quaternion.LookRotation(Vector3.Cross(_rigidbody.transform.right, Vector3.up), Vector3.up);
+            Rigidbody.rotation = Quaternion.LookRotation(Vector3.Cross(Rigidbody.transform.right, Vector3.up), Vector3.up);
 
             _timer = 0;
         }
@@ -46,10 +46,10 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
         {
             base.OnFixedTick(dt);
             
-            HurtBox.CreateAttached(Actor, _rigidbody.transform, new Vector3(0f, -0.1f, 0f),
+            HurtBox.CreateAttached(Actor, Rigidbody.transform, new Vector3(0f, -0.1f, 0f),
                 new Vector3(1.1f, 2f, 1.1f), HurtBoxTarget.Enemy | HurtBoxTarget.Breakable);
 
-            Vector3 vel = _rigidbody.linearVelocity;
+            Vector3 vel = Rigidbody.linearVelocity;
             float horizontalSpeedMultiplier = _released ? 0f : _config.curve.Evaluate(_timer);
             Vector3 smoothedXZVelocity = new Vector3(vel.x * horizontalSpeedMultiplier, vel.y, vel.z * horizontalSpeedMultiplier);
             
@@ -62,7 +62,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
                 Mathf.Clamp(vel.y + -stompSpeed, minYVelocity, maxYVelocity), 
                 smoothedXZVelocity.z);
 
-            _rigidbody.linearVelocity = vel;
+            Rigidbody.linearVelocity = vel;
             _timer += dt;
             
             if (Kinematics.CheckForGround(out RaycastHit hit))
@@ -85,7 +85,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
                 }
                 else
                 {
-                    _rigidbody.linearVelocity = Vector3.zero;
+                    Rigidbody.linearVelocity = Vector3.zero;
                     Kinematics.Snap(point, Vector3.up, true);
                     StateMachine.SetState<FStateStompLand>();
                 }

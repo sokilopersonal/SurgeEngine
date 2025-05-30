@@ -12,7 +12,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates
         public FSweepKick(ActorBase owner) : base(owner)
         {
             owner.TryGetConfig(out _config);
-            Actor.Input.OnButtonPressed += ButtonPressed;
+            owner.Input.OnButtonPressed += ButtonPressed;
         }
 
         private void ButtonPressed(ButtonType button)

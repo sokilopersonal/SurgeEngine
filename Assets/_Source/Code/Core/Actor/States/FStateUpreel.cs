@@ -4,11 +4,11 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.States
 {
-    public class FStateUpreel : FStateMove
+    public class FStateUpreel : FActorState
     {
         private Transform _attach;
         
-        public FStateUpreel(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        public FStateUpreel(ActorBase owner) : base(owner)
         {
         }
 
@@ -16,15 +16,15 @@ namespace SurgeEngine.Code.Core.Actor.States
         {
             base.OnEnter();
             
-            _rigidbody.linearVelocity = Vector3.zero;
-            _rigidbody.isKinematic = true;
+            Rigidbody.linearVelocity = Vector3.zero;
+            Rigidbody.isKinematic = true;
         }
 
         public override void OnExit()
         {
             base.OnExit();
 
-            _rigidbody.isKinematic = false;
+            Rigidbody.isKinematic = false;
         }
 
         public override void OnTick(float dt)

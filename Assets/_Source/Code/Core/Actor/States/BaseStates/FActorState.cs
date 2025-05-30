@@ -1,28 +1,25 @@
 ﻿using SurgeEngine.Code.Core.Actor.System;
 using SurgeEngine.Code.Core.StateMachine;
 using SurgeEngine.Code.Core.StateMachine.Base;
+using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.States.BaseStates
 {
     public abstract class FActorState : FState
     {
-        protected ActorBase Actor { get; private set; }
-        protected ActorInput Input { get; private set; }
-        protected ActorAnimation Animation { get; private set; }
-        protected ActorKinematics Kinematics { get; private set; }
-        protected ActorModel Model { get; private set; }
+        protected ActorBase Actor { get; }
+        protected ActorKinematics Kinematics => Actor.Kinematics;
+        protected ActorInput Input => Actor.Input;
+        protected ActorModel Model => Actor.Model;
+        protected ActorAnimation Animation => Actor.Animation;
+        
+        protected Rigidbody Rigidbody => Actor.Rigidbody;
         protected FStateMachine StateMachine { get; private set; }
 
         protected FActorState(ActorBase owner)
         {
             Actor = owner;
-            
             StateMachine = owner.StateMachine;
-            
-            Input = owner.Input;
-            Animation = owner.Animation;
-            Kinematics = owner.Kinematics;
-            Model = owner.Model;
         }
     }
 }

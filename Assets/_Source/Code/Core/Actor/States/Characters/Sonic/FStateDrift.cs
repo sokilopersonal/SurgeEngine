@@ -12,14 +12,14 @@ using Vector3 = UnityEngine.Vector3;
 
 namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
 {
-    public class FStateDrift : FStateMove, IBoostHandler, IStateTimeout, IDamageableState
+    public class FStateDrift : FActorState, IBoostHandler, IStateTimeout, IDamageableState
     {
         private float _driftXDirection;
         private float _ignoreTimer;
 
         private readonly DriftConfig _config;
 
-        public FStateDrift(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        public FStateDrift(ActorBase owner) : base(owner)
         {
             owner.TryGetConfig(out _config);
         }
@@ -48,7 +48,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
                 _ignoreTimer = 0;
             }
             
-            if (!SonicInputLayout.DriftHeld || _rigidbody.linearVelocity.magnitude < _config.minSpeed|| _ignoreTimer > 0.15f)
+            if (!SonicInputLayout.DriftHeld || Rigidbody.linearVelocity.magnitude < _config.minSpeed|| _ignoreTimer > 0.15f)
                 StateMachine.SetState<FStateGround>(0.1f);
         }
 
@@ -56,7 +56,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
         {
             base.OnFixedTick(dt);
 
-            var transform = _rigidbody.transform;
+            var transform = Rigidbody.transform;
             var offset = -transform.up * 0.75f;
             HurtBox.CreateAttached(Actor, transform, offset, new Vector3(0.75f, 0.3f, 0.75f), HurtBoxTarget.Enemy | HurtBoxTarget.Breakable);
             /*HurtBox.Create(Actor, Actor.transform.position + new Vector3(0f, -0.75f, 0f), Actor.transform.rotation,
@@ -77,9 +77,9 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
                 
                 float boostForce = SonicTools.IsBoost() ? 0.5f : 1f;
                 Quaternion angle = Quaternion.AngleAxis(_driftXDirection * _config.centrifugalForce * boostForce, Kinematics.Normal);
-                Vector3 driftVelocity = angle * _rigidbody.linearVelocity;
-                _rigidbody.linearVelocity = driftVelocity;
-                if (Kinematics.HorizontalSpeed < _config.maxSpeed) _rigidbody.linearVelocity += _rigidbody.linearVelocity.normalized *
+                Vector3 driftVelocity = angle * Rigidbody.linearVelocity;
+                Rigidbody.linearVelocity = driftVelocity;
+                if (Kinematics.HorizontalSpeed < _config.maxSpeed) Rigidbody.linearVelocity += Rigidbody.linearVelocity.normalized *
                     (0.05f * Mathf.Lerp(4f, 1f, Kinematics.HorizontalSpeed / _config.maxSpeed));
 
                 Kinematics.Snap(point, normal);

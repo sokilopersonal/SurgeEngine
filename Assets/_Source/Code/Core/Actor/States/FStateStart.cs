@@ -5,12 +5,12 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.States
 {
-    public class FStateStart : FStateMove
+    public class FStateStart : FActorState
     {
         private StartData _startData;
         private float _timer;
         
-        public FStateStart(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        public FStateStart(ActorBase owner) : base(owner)
         {
             
         }
@@ -19,7 +19,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         {
             base.OnEnter();
 
-            Actor.Input.enabled = false;
+            Input.enabled = false;
             
             _timer = 0;
         }
@@ -42,12 +42,12 @@ namespace SurgeEngine.Code.Core.Actor.States
                     {
                         if (_startData.speed > 0)
                         {
-                            _rigidbody.linearVelocity = _rigidbody.transform.forward * _startData.speed;
+                            Rigidbody.linearVelocity = Rigidbody.transform.forward * _startData.speed;
                             Actor.Flags.AddFlag(new Flag(FlagType.OutOfControl, null, true, _startData.time));
                         }
                     }
 
-                    Actor.Input.enabled = true;
+                    Input.enabled = true;
                     StateMachine.SetState<FStateGround>();
                 }
             }
@@ -59,8 +59,8 @@ namespace SurgeEngine.Code.Core.Actor.States
             
             if (_startData.startType == StartType.Dash)
             {
-                _rigidbody.linearVelocity = _rigidbody.transform.forward * _startData.speed;
-                Actor.Input.enabled = true;
+                Rigidbody.linearVelocity = Rigidbody.transform.forward * _startData.speed;
+                Input.enabled = true;
                 Actor.Flags.AddFlag(new Flag(FlagType.OutOfControl, null, true, _startData.time));
                 StateMachine.SetState<FStateGround>();
             }

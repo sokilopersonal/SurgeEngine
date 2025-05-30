@@ -14,7 +14,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         Dead
     }
     
-    public class FStateDamage : FStateMove
+    public class FStateDamage : FActorState
     {
         private readonly DamageKickConfig _config;
         private float _timer;
@@ -22,7 +22,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         private DamageState _state;
         public DamageState State => _state;
 
-        public FStateDamage(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        public FStateDamage(ActorBase owner) : base(owner)
         {
             owner.TryGetConfig(out _config);
         }
@@ -35,7 +35,7 @@ namespace SurgeEngine.Code.Core.Actor.States
             Kinematics.ResetVelocity();
             _timer = 0.4f;
             
-            _rigidbody.AddForce(-Actor.transform.forward * _config.directionalForce, ForceMode.VelocityChange);
+            Rigidbody.AddForce(-Actor.transform.forward * _config.directionalForce, ForceMode.VelocityChange);
         }
 
         public override void OnFixedTick(float dt)
@@ -51,7 +51,7 @@ namespace SurgeEngine.Code.Core.Actor.States
                 
                 Kinematics.Snap(hit.point, hit.normal, true);
                 Kinematics.Project();
-                _rigidbody.linearVelocity = new Vector3(_rigidbody.linearVelocity.x, 0, _rigidbody.linearVelocity.z);
+                Rigidbody.linearVelocity = new Vector3(Rigidbody.linearVelocity.x, 0, Rigidbody.linearVelocity.z);
                 
                 if (Utility.TickTimer(ref _timer, 0.6f, false))
                 {
@@ -61,11 +61,11 @@ namespace SurgeEngine.Code.Core.Actor.States
                     }
                     else
                     {
-                        _rigidbody.linearVelocity = Vector3.zero;
+                        Rigidbody.linearVelocity = Vector3.zero;
                     }
                 }
                 
-                Model.RotateBody(-_rigidbody.GetHorizontalVelocity(), hit.normal);
+                Model.RotateBody(-Rigidbody.GetHorizontalVelocity(), hit.normal);
             }
         }
         

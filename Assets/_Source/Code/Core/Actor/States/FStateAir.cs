@@ -9,13 +9,13 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.States
 {
-    public class FStateAir : FStateMove, IBoostHandler, IDamageableState, IPointMarkerLoader
+    public class FStateAir : FActorState, IBoostHandler, IDamageableState, IPointMarkerLoader
     {
         protected float AirTime;
 
         public bool IsFallDeath { get; set; }
 
-        public FStateAir(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        public FStateAir(ActorBase owner) : base(owner)
         {
             
         }

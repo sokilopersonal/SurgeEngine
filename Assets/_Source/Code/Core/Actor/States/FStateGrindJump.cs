@@ -5,7 +5,7 @@ namespace SurgeEngine.Code.Core.Actor.States
 {
     public class FStateGrindJump : FStateJump
     {
-        public FStateGrindJump(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        public FStateGrindJump(ActorBase owner) : base(owner)
         { }
     }
 }

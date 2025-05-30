@@ -10,14 +10,14 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
 {
-    public class FStateHoming : FStateMove, IStateTimeout
+    public class FStateHoming : FActorState, IStateTimeout
     {
         private HomingTarget _target;
         private float _timer;
 
         private readonly HomingConfig _config;
 
-        public FStateHoming(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        public FStateHoming(ActorBase owner) : base(owner)
         {
             owner.TryGetConfig(out _config);
         }
@@ -49,11 +49,11 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
             
             if (_target != null)
             {
-                Vector3 direction = (_target.transform.position - _rigidbody.position + _rigidbody.transform.up * 0.5f).normalized;
-                _rigidbody.linearVelocity = direction * _config.speed;
-                _rigidbody.rotation = Quaternion.LookRotation(direction, Vector3.up);
+                Vector3 direction = (_target.transform.position - Rigidbody.position + Rigidbody.transform.up * 0.5f).normalized;
+                Rigidbody.linearVelocity = direction * _config.speed;
+                Rigidbody.rotation = Quaternion.LookRotation(direction, Vector3.up);
                 
-                float distance = Vector3.Distance(_rigidbody.position, _target.transform.position);
+                float distance = Vector3.Distance(Rigidbody.position, _target.transform.position);
                 if (distance <= _target.DistanceThreshold)
                 {
                     _target.OnTargetReached.Invoke(Actor);
@@ -75,9 +75,9 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
                 }
                 
                 Vector3 direction = Vector3.Cross(Actor.transform.right, Vector3.up);
-                _rigidbody.linearVelocity = direction * (_config.jumpDashDistance *
+                Rigidbody.linearVelocity = direction * (_config.jumpDashDistance *
                                                          _config.JumpDashCurve.Evaluate(_timer));
-                _rigidbody.rotation = Quaternion.LookRotation(direction, Vector3.up);
+                Rigidbody.rotation = Quaternion.LookRotation(direction, Vector3.up);
                 
                 _timer += dt / _config.jumpDashTime;
                 if (_timer >= 1f)

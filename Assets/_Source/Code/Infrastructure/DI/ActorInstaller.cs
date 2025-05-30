@@ -32,13 +32,13 @@ namespace SurgeEngine.Code.Infrastructure.DI
             var instance = Container.InstantiatePrefabForComponent<ActorBase>(actorPrefab, data.StartTransform.position, data.StartTransform.rotation, null);
 
             Container.Bind<ActorBase>().FromInstance(instance).AsSingle().NonLazy();
+            Quaternion par = instance.Parent.rotation;
+            instance.Parent.rotation = Quaternion.identity;
+            instance.transform.rotation = par;
+            
             Container.Bind<ActorContext>().FromNew().AsSingle().NonLazy();
             
             instance.SetStart(data);
-            
-            Quaternion par = instance.transform.parent.rotation;
-            instance.transform.parent.rotation = Quaternion.identity;
-            instance.transform.rotation = par;
         }
     }
 }

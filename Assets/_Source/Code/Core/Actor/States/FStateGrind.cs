@@ -10,7 +10,7 @@ using Debug = UnityEngine.Debug;
 
 namespace SurgeEngine.Code.Core.Actor.States
 {
-    public class FStateGrind : FStateMove, IBoostHandler
+    public class FStateGrind : FActorState, IBoostHandler
     {
         private Rail _rail;
         private SplineData _data;
@@ -21,7 +21,7 @@ namespace SurgeEngine.Code.Core.Actor.States
 
         protected float _grindGravityPower;
         
-        public FStateGrind(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        public FStateGrind(ActorBase owner) : base(owner)
         {
             _grindGravityPower = 10f;
         }
@@ -30,7 +30,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         {
             base.OnEnter();
             
-            _rigidbody.linearVelocity = Vector3.ClampMagnitude(_rigidbody.linearVelocity, Actor.Config.topSpeed);
+            Rigidbody.linearVelocity = Vector3.ClampMagnitude(Rigidbody.linearVelocity, Actor.Config.topSpeed);
         }
 
         public override void OnTick(float dt)
@@ -67,21 +67,21 @@ namespace SurgeEngine.Code.Core.Actor.States
                 Debug.DrawRay(pos, targetUp, Color.green);
                 Debug.DrawRay(pos, right, Color.yellow);
                 
-                _rigidbody.linearVelocity = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, targetUp);
-                _rigidbody.linearVelocity = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, right);
+                Rigidbody.linearVelocity = Vector3.ProjectOnPlane(Rigidbody.linearVelocity, targetUp);
+                Rigidbody.linearVelocity = Vector3.ProjectOnPlane(Rigidbody.linearVelocity, right);
                 
                 Vector3 downForce = Vector3.ProjectOnPlane(Vector3.down, targetUp) * _grindGravityPower;
-                _rigidbody.AddForce(downForce * dt, ForceMode.Impulse);
+                Rigidbody.AddForce(downForce * dt, ForceMode.Impulse);
                 
                 Vector3 endPos = pos + targetUp * (1 + _rail.Radius);
-                _rigidbody.position = endPos;
+                Rigidbody.position = endPos;
                 
                 Vector3 targetTangent = _isForward ? tg : -tg;
-                _rigidbody.rotation = Quaternion.LookRotation(targetTangent, targetUp);
+                Rigidbody.rotation = Quaternion.LookRotation(targetTangent, targetUp);
                 
                 Kinematics.Normal = targetUp;
                 
-                _data.Time += Vector3.Dot(_rigidbody.linearVelocity, tg) * dt;
+                _data.Time += Vector3.Dot(Rigidbody.linearVelocity, tg) * dt;
                 if (_rail.Container.Spline.Closed) _data.Time = Mathf.Repeat(_data.Time, _data.Length);
 
                 if (!_rail.Container.Spline.Closed)
@@ -102,14 +102,14 @@ namespace SurgeEngine.Code.Core.Actor.States
 
         public void SetRail(Rail rail)
         {
-            Vector3 pos = _rigidbody.position - Actor.transform.up * rail.Radius;
+            Vector3 pos = Rigidbody.position - Actor.transform.up * rail.Radius;
             _data = new SplineData(rail.Container, pos);
             _data.EvaluateWorld(out _, out Vector3 tg, out var up, out var right);
             
-            _rigidbody.linearVelocity = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, up);
-            _rigidbody.linearVelocity = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, right);
+            Rigidbody.linearVelocity = Vector3.ProjectOnPlane(Rigidbody.linearVelocity, up);
+            Rigidbody.linearVelocity = Vector3.ProjectOnPlane(Rigidbody.linearVelocity, right);
             
-            float dot = Vector3.Dot(_rigidbody.transform.forward, tg);
+            float dot = Vector3.Dot(Rigidbody.transform.forward, tg);
             _isForward = dot > 0;
             
             _rail = rail;

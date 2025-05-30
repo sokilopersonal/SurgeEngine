@@ -7,14 +7,14 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.States
 {
-    public class FStateSpecialJump : FStateMove
+    public class FStateSpecialJump : FActorState
     {
         public SpecialJumpData data;
         private float _jumpTimer;
         
         private float _keepVelocityTimer;
 
-        public FStateSpecialJump(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        public FStateSpecialJump(ActorBase owner) : base(owner)
         {
             
         }

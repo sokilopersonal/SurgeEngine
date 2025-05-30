@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
 {
-    public class FStateSwing : FStateMove
+    public class FStateSwing : FActorState
     {
         public Transform poleGrip;
         private float _rotationAngle;
@@ -14,7 +14,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
         private bool _swingSound;
         private readonly SwingSound soundReference;
         
-        public FStateSwing(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        public FStateSwing(ActorBase owner) : base(owner)
         {
             soundReference = owner.Sounds.GetComponent<SwingSound>();
         }

@@ -7,12 +7,12 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
 {
-    public class FStateAirBoost : FStateMove
+    public class FStateAirBoost : FActorState
     {
         private float _timer;
         private readonly BoostConfig _config;
         
-        public FStateAirBoost(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        public FStateAirBoost(ActorBase owner) : base(owner)
         {
             owner.TryGetConfig(out _config);
         }
@@ -40,10 +40,10 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
             FBoost boost = StateMachine.GetSubState<FBoost>();
             if (boost.CanAirBoost)
             {
-                Vector3 direction = Vector3.Cross(_rigidbody.transform.right, Vector3.up);
+                Vector3 direction = Vector3.Cross(Rigidbody.transform.right, Vector3.up);
                 Vector3 force = direction * _config.AirBoostSpeed;
 
-                _rigidbody.linearVelocity = force;
+                Rigidbody.linearVelocity = force;
                 Model.RotateBody(Vector3.up);
             }
             

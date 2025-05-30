@@ -7,13 +7,13 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
 {
-    public class FStateSweepKick : FStateMove
+    public class FStateSweepKick : FActorState
     {
         private float timer;
 
         private readonly SweepConfig _config;
 
-        public FStateSweepKick(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        public FStateSweepKick(ActorBase owner) : base(owner)
         {
             owner.TryGetConfig(out _config);
         }
@@ -24,7 +24,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
 
             timer = 0f;
 
-            if (_rigidbody.linearVelocity.magnitude < 1f)
+            if (Rigidbody.linearVelocity.magnitude < 1f)
                 Kinematics.ResetVelocity();
 
             StateMachine.GetSubState<FBoost>().Active = false;
@@ -76,8 +76,8 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
                 Kinematics.Point = hit.point;
                 Kinematics.SlerpSnapNormal(hit.normal);
                 
-                _rigidbody.linearVelocity = Vector3.MoveTowards(_rigidbody.linearVelocity, Vector3.zero, _config.deceleration * dt);
-                _rigidbody.linearVelocity = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, Kinematics.Normal);
+                Rigidbody.linearVelocity = Vector3.MoveTowards(Rigidbody.linearVelocity, Vector3.zero, _config.deceleration * dt);
+                Rigidbody.linearVelocity = Vector3.ProjectOnPlane(Rigidbody.linearVelocity, Kinematics.Normal);
                 Model.RotateBody(Kinematics.Normal);
                 
                 Kinematics.Snap(Kinematics.Point, Kinematics.Normal, true);
@@ -89,9 +89,9 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
 
             if (timer >= 0.26f && timer <= 0.7f)
             {
-                var offset = -_rigidbody.transform.up * 0.65f;
+                var offset = -Rigidbody.transform.up * 0.65f;
                 var size = new Vector3(1.4f, 0.4f, 1.4f);
-                HurtBox.CreateAttached(Actor, _rigidbody.transform, offset, size, HurtBoxTarget.Enemy | HurtBoxTarget.Breakable);
+                HurtBox.CreateAttached(Actor, Rigidbody.transform, offset, size, HurtBoxTarget.Enemy | HurtBoxTarget.Breakable);
             }
         }
     }

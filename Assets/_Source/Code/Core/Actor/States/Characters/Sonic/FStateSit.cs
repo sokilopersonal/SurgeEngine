@@ -4,9 +4,9 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
 {
-    public class FStateSit : FStateMove, IDamageableState
+    public class FStateSit : FActorState, IDamageableState
     {
-        public FStateSit(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        public FStateSit(ActorBase owner) : base(owner)
         {
         }
 

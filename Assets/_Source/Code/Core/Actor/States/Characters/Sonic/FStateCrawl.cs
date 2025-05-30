@@ -9,14 +9,14 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
 {
-    public class FStateCrawl : FStateMove, IStateTimeout, IDamageableState
+    public class FStateCrawl : FActorState, IStateTimeout, IDamageableState
     {
         private GroundTag _surfaceTag;
 
         private readonly CrawlConfig _crawlConfig;
         private readonly QuickStepConfig _quickstepConfig;
         
-        public FStateCrawl(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        public FStateCrawl(ActorBase owner) : base(owner)
         {
             owner.TryGetConfig(out _crawlConfig);
             owner.TryGetConfig(out _quickstepConfig);
@@ -115,8 +115,8 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
                 Kinematics.Point = data.point;
                 Kinematics.Normal = Vector3.up;
 
-                Vector3 stored = Vector3.ClampMagnitude(_rigidbody.linearVelocity, _crawlConfig.maxSpeed);
-                _rigidbody.linearVelocity = Quaternion.FromToRotation(_rigidbody.transform.up, prevNormal) * stored;
+                Vector3 stored = Vector3.ClampMagnitude(Rigidbody.linearVelocity, _crawlConfig.maxSpeed);
+                Rigidbody.linearVelocity = Quaternion.FromToRotation(Rigidbody.transform.up, prevNormal) * stored;
 
                 Kinematics.BasePhysics(data.normal);
                 

@@ -4,11 +4,11 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.States
 {
-    public class FStateJumpSelectorLaunch : FStateMove
+    public class FStateJumpSelectorLaunch : FActorState
     {
         private float _timer;
         
-        public FStateJumpSelectorLaunch(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        public FStateJumpSelectorLaunch(ActorBase owner) : base(owner)
         {
             
         }
@@ -36,7 +36,7 @@ namespace SurgeEngine.Code.Core.Actor.States
 
         public void SetData(Vector3 force, float keepVelocityTime)
         {
-            _rigidbody.linearVelocity = force;
+            Rigidbody.linearVelocity = force;
             _timer = keepVelocityTime;
         }
     }

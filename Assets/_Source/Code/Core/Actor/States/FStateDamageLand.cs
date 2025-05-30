@@ -5,11 +5,11 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.States
 {
-    public class FStateDamageLand : FStateMove
+    public class FStateDamageLand : FActorState
     {
         private float _timer;
         
-        public FStateDamageLand(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
+        public FStateDamageLand(ActorBase owner) : base(owner)
         {
         }
 
