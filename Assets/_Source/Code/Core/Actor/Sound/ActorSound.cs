@@ -4,7 +4,8 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.Sound
 {
-    public class ActorSound : MonoBehaviour
+    [RequireComponent(typeof(VoiceHandler), typeof(ActorSounds))]
+    public abstract class ActorSound : MonoBehaviour
     {
         protected ActorBase Actor;
         protected VoiceHandler Voice;

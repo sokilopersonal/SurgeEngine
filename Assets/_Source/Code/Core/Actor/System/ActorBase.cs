@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using NaughtyAttributes;
 using SurgeEngine.Code.Core.Actor.CameraSystem;
 using SurgeEngine.Code.Core.Actor.States;
 using SurgeEngine.Code.Core.Actor.States.Characters.Sonic;
@@ -17,17 +18,15 @@ namespace SurgeEngine.Code.Core.Actor.System
         public new Transform transform => Rigidbody.transform;
         
         [Header("Components")]
-        [SerializeField] private ActorInput input;
-        [SerializeField] private ActorStats stats;
-        [SerializeField] private ActorSounds sounds; 
-        [SerializeField] private new ActorCamera camera;
-        [SerializeField] private new ActorAnimation animation;
-        [SerializeField] private ActorEffects effects;
-        [SerializeField] private ActorModel model;
-        [SerializeField] private ActorFlags flags;
-        [SerializeField] private ActorKinematics kinematics;
+        [SerializeField, Required] private ActorInput input;
+        [SerializeField, Required] private ActorSounds sounds; 
+        [SerializeField, Required] private new ActorCamera camera;
+        [SerializeField, Required] private new ActorAnimation animation;
+        [SerializeField, Required] private ActorEffects effects;
+        [SerializeField, Required] private ActorModel model;
+        [SerializeField, Required] private ActorFlags flags;
+        [SerializeField, Required] private ActorKinematics kinematics;
         public ActorInput Input => input;
-        public ActorStats Stats => stats;
         public ActorSounds Sounds => sounds;
         public ActorCamera Camera => camera; 
         public ActorAnimation Animation => animation;
@@ -36,6 +35,7 @@ namespace SurgeEngine.Code.Core.Actor.System
         public ActorFlags Flags => flags;
         public ActorKinematics Kinematics => kinematics;
 
+        [Header("Config")]
         [SerializeField] private BaseActorConfig config;
         [SerializeField] private DamageKickConfig damageKickConfig;
         public BaseActorConfig Config => config;
@@ -84,7 +84,6 @@ namespace SurgeEngine.Code.Core.Actor.System
         private void InitializeComponents()
         {
             Input?.Set(this);
-            Stats?.Set(this);
             Sounds?.Set(this);
             Camera?.Set(this);
             Animation?.Set(this);

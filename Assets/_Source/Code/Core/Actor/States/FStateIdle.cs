@@ -1,24 +1,31 @@
 ﻿using SurgeEngine.Code.Core.Actor.States.BaseStates;
 using SurgeEngine.Code.Core.Actor.States.Characters.Sonic;
+using SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates;
 using SurgeEngine.Code.Core.Actor.System;
 using SurgeEngine.Code.Infrastructure.Custom;
 using UnityEngine;
+using NotImplementedException = System.NotImplementedException;
 
 namespace SurgeEngine.Code.Core.Actor.States
 {
-    public class FStateIdle : FStateMove, IDamageableState
+    public class FStateIdle : FStateMove, IDamageableState, IBoostHandler
     {
         public FStateIdle(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
+        }
+
+        public override void OnEnter()
+        {
+            base.OnEnter();
+            
+            Kinematics.ResetVelocity();
         }
 
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
             
-            Kinematics.ResetVelocity();
-
-            if (Input.moveVector.magnitude > 0.2f)
+            if (Input.moveVector.magnitude > 0.2f || Kinematics.Speed > 0)
             {
                 StateMachine.SetState<FStateGround>();
             }
@@ -67,10 +74,7 @@ namespace SurgeEngine.Code.Core.Actor.States
                 Actor.transform.rotation = Quaternion.LookRotation(forward);
                 Model.root.rotation = Quaternion.LookRotation(forward);
                 
-                Debug.DrawRay(Kinematics.Point, hit.normal, Color.magenta);
-                
                 Kinematics.Snap(Kinematics.Point, Kinematics.Normal, true);
-                
                 Kinematics.SlopePhysics();
             }
             else
@@ -78,5 +82,7 @@ namespace SurgeEngine.Code.Core.Actor.States
                 StateMachine.SetState<FStateAir>();
             }
         }
+
+        public void BoostHandle() { }
     }
 }

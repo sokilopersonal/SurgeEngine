@@ -171,38 +171,35 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates
             {
                 Rigidbody body = Actor.Kinematics.Rigidbody;
                 float startSpeed = _config.StartSpeed;
-
-                if (Actor.Kinematics.HorizontalSpeed < startSpeed)
+                
+                if (Actor.Kinematics.Speed < startSpeed)
                 {
-                    if (Actor.StateMachine.CurrentState is FStateIdle)
-                    {
-                        Actor.StateMachine.SetState<FStateGround>();
-                    }
-                    
                     body.linearVelocity = body.transform.forward * startSpeed;
-                    RestoringTopSpeed = true;
                 }
                 
                 BoostEnergy -= _config.StartDrain;
                 new Rumble().Vibrate(0.7f, 0.8f, 0.5f);
             }
         }
-        
-        public BoostConfig GetConfig() => _config;
 
         public void BaseGroundBoost()
         {
             float dt = Time.deltaTime;
             BaseActorConfig config = Actor.Config;
             Rigidbody body = Actor.Kinematics.Rigidbody;
-            float speed = Actor.Kinematics.HorizontalSpeed;
+            float speed = Actor.Kinematics.Speed;
             
             if (Active)
             {
                 if (Actor.Input.moveVector == Vector3.zero) Actor.Kinematics.SetInputDir(Actor.transform.forward);
                 float maxSpeed = config.maxSpeed * _config.MaxSpeedMultiplier;
-                if (speed < maxSpeed) body.AddForce(body.linearVelocity.normalized * (_config.Acceleration * dt), ForceMode.Impulse);
+                if (speed < maxSpeed)
+                {
+                    //body.AddForce(body.linearVelocity.normalized * (_config.Acceleration * dt), ForceMode.Impulse);
+                }
             }
         }
+
+        public BoostConfig GetConfig() => _config;
     }
 }

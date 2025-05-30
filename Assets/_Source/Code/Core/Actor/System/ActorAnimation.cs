@@ -1,4 +1,5 @@
-﻿using SurgeEngine.Code.Core.StateMachine.Base;
+﻿using NaughtyAttributes;
+using SurgeEngine.Code.Core.StateMachine.Base;
 using SurgeEngine.Code.Core.StateMachine.Components;
 using UnityEngine;
 
@@ -10,12 +11,7 @@ namespace SurgeEngine.Code.Core.Actor.System
     /// </summary>
     public abstract class ActorAnimation : ActorComponent
     {
-        public StateAnimator StateAnimator { get; private set; }
-        
-        private void Awake()
-        {
-            StateAnimator = GetComponent<StateAnimator>();
-        }
+        [field: SerializeField, Required("State Animator is required!")] public StateAnimator StateAnimator { get; private set; }
 
         private void OnEnable()
         {

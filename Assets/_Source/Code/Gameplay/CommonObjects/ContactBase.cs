@@ -13,8 +13,6 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects
 
         public virtual void Contact([NotNull] Collider msg, [CanBeNull] ActorBase context)
         {
-            if (context) context.Stats.lastContactObject = this;
-            
             ObjectEvents.OnObjectCollected?.Invoke(this);
             
             OnContact?.Invoke(this);

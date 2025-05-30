@@ -43,7 +43,7 @@ namespace SurgeEngine.Code.Core.Actor.States
             {
                 if (!Actor.Flags.HasFlag(FlagType.OutOfControl))
                 {
-                    HomingTarget homingTarget = Stats.homingTarget;
+                    HomingTarget homingTarget = Kinematics.HomingTarget;
 
                     if (Input.JumpPressed)
                     {
@@ -86,7 +86,7 @@ namespace SurgeEngine.Code.Core.Actor.States
                 vel.y = 0;
                 Model.RotateBody(vel, Vector3.up);
                 
-                float gravity = Stats.gravity;
+                float gravity = Kinematics.Gravity;
                 if (Actor.Flags.HasFlag(FlagType.OnWater))
                 {
                     gravity /= 4f;

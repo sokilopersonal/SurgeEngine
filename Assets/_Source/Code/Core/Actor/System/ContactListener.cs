@@ -1,5 +1,4 @@
-﻿using System;
-using SurgeEngine.Code.Gameplay.CommonObjects;
+﻿using SurgeEngine.Code.Gameplay.CommonObjects;
 using SurgeEngine.Code.Gameplay.CommonObjects.Interfaces;
 using UnityEngine;
 

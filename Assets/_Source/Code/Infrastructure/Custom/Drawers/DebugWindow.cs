@@ -34,7 +34,7 @@ namespace SurgeEngine.Code.Infrastructure.Custom.Drawers
             {
                 $"Position: {actor.transform.position}",
                 $"Euler Angles: {actor.transform.rotation.eulerAngles}",
-                $"Move Dot: {actor.Stats.moveDot}",
+                $"Move Dot: {actor.Kinematics.MoveDot}",
                 $"Current Speed: {actor.Kinematics.Speed}",
                 $"Current Vertical Speed: {actor.Kinematics.Velocity.y}",
                 $"Body Velocity: {actor.Kinematics.Velocity}",

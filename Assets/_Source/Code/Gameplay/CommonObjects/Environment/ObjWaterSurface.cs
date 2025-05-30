@@ -99,12 +99,12 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Environment
 
                 if (_isUnderwater)
                 {
-                    float underwaterGravity = actor.Stats.startGravity * gravityMultiplier;
-                    actor.Stats.gravity = underwaterGravity;
+                    float underwaterGravity = actor.Kinematics.InitialGravity * gravityMultiplier;
+                    actor.Kinematics.Gravity = underwaterGravity;
                 }
                 else
                 {
-                    actor.Stats.gravity = actor.Stats.startGravity;
+                    actor.Kinematics.Gravity = actor.Kinematics.InitialGravity;
                 }
             }
         }
@@ -129,7 +129,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Environment
                 ParticlesContainer.Spawn("WaterSplash", other.ClosestPoint(transform.position));
                 
                 context.Flags.RemoveFlag(FlagType.OnWater);
-                context.Stats.gravity = context.Stats.startGravity;
+                context.Kinematics.Gravity = context.Kinematics.InitialGravity;
                 _isActorOnSurface = false;
                 _isUnderwater = false;
                 _collider.isTrigger = true;

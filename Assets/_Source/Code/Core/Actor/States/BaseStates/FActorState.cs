@@ -8,7 +8,6 @@ namespace SurgeEngine.Code.Core.Actor.States.BaseStates
     {
         protected ActorBase Actor { get; private set; }
         protected ActorInput Input { get; private set; }
-        protected ActorStats Stats { get; private set; }
         protected ActorAnimation Animation { get; private set; }
         protected ActorKinematics Kinematics { get; private set; }
         protected ActorModel Model { get; private set; }
@@ -21,7 +20,6 @@ namespace SurgeEngine.Code.Core.Actor.States.BaseStates
             StateMachine = owner.StateMachine;
             
             Input = owner.Input;
-            Stats = owner.Stats;
             Animation = owner.Animation;
             Kinematics = owner.Kinematics;
             Model = owner.Model;

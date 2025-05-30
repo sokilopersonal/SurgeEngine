@@ -264,9 +264,6 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
                 RuntimeManager.PlayOneShot(qteFailSound);
                 RuntimeManager.PlayOneShot(qteFailVoiceSound);
             }
-
-            context.Stats.movementVector = body.linearVelocity;
-            context.Stats.planarVelocity = body.linearVelocity;
             
             context.StateMachine.SetState<FStateAir>();
             context.Input.OnButtonPressed -= OnButtonPressed;

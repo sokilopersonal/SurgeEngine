@@ -21,7 +21,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         {
             base.OnEnter();
             
-            _rigidbody.linearVelocity += _rigidbody.transform.up * Mathf.Sqrt(_config.jumpForce * 2f * Stats.gravity);
+            _rigidbody.linearVelocity += _rigidbody.transform.up * Mathf.Sqrt(_config.jumpForce * 2f * Kinematics.Gravity);
             _jumpTime = 0;
             
             Actor.transform.rotation = Quaternion.Euler(0, Actor.transform.rotation.eulerAngles.y, 0);

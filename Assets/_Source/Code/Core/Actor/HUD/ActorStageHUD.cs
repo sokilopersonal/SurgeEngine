@@ -74,7 +74,7 @@ namespace SurgeEngine.Code.Core.Actor.HUD
 
         private void UpdateHomingTarget()
         {
-            HomingTarget target = _actor.Stats.homingTarget;
+            HomingTarget target = _actor.Kinematics.HomingTarget;
             if (target)
             {
                 homingIcon.gameObject.SetActive(true);

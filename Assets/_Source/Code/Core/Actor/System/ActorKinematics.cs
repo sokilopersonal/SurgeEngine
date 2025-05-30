@@ -1,6 +1,7 @@
 ﻿using System;
 using SurgeEngine.Code.Core.Actor.States;
 using SurgeEngine.Code.Core.StateMachine.Base;
+using SurgeEngine.Code.Gameplay.CommonObjects;
 using SurgeEngine.Code.Infrastructure.Config;
 using SurgeEngine.Code.Infrastructure.Custom;
 using UnityEngine;
@@ -14,20 +15,22 @@ namespace SurgeEngine.Code.Core.Actor.System
     public class ActorKinematics : ActorComponent
     {
         public Rigidbody Rigidbody => _rigidbody;
+        public HomingTarget HomingTarget { get; set; }
+
+        [Header("Gravity")] 
+        [SerializeField] private float initialGravity;
+        public float Gravity { get; set; }
+        public float InitialGravity => initialGravity;
+        
+        [Header("Prediction")]
         [SerializeField, Range(25, 90)] public float maxAngleDifference = 80;
         public KinematicsMode mode = KinematicsMode.Free;
 
-        [Header("Snap Normal")] 
+        [Header("Normal")] 
         [SerializeField] private float normalLerpSpeed = 7f;
         [SerializeField] private float normalSpeedThreshold = 10f;
         
         public event Action<KinematicsMode> OnModeChange;
-
-        public float TurnRate
-        {
-            get => _turnRate;
-            set => _turnRate = value;
-        }
 
         public float Speed => _speed;
         public float HorizontalSpeed
@@ -40,19 +43,13 @@ namespace SurgeEngine.Code.Core.Actor.System
             }
         }
 
-        public float Angle => _angle;
         public Vector3 Point { get; set; }
         public Vector3 Normal { get; set; }
+        public float Angle => _angle;
         public Vector3 Velocity => _rigidbody.linearVelocity;
-        
-        public Vector3 MovementVector
-        {
-            get => _movementVector;
-            set => _movementVector = value;
-        }
-        
+        public Vector3 MovementVector => _movementVector;
         public Vector3 PlanarVelocity => _planarVelocity;
-
+        public float TurnRate { get; set; }
         public bool Skidding => _skidding;
         public float MoveDot => _moveDot;
 
@@ -66,7 +63,6 @@ namespace SurgeEngine.Code.Core.Actor.System
 
         private float _speed;
         private float _moveDot;
-        private float _turnRate;
         private float _angle;
         private float _detachTimer;
         private bool _canAttach;
@@ -76,10 +72,13 @@ namespace SurgeEngine.Code.Core.Actor.System
 
         private void Awake()
         {
-            _rigidbody = GetComponent<Rigidbody>();
-            Normal = Vector3.up;
-
+            _rigidbody = Actor.Rigidbody;
             _config = Actor.Config;
+            
+            if (initialGravity == 0) initialGravity = Mathf.Abs(Physics.gravity.y);
+            Gravity = initialGravity;
+
+            Normal = Vector3.up;
         }
 
         private void Update()
@@ -127,7 +126,7 @@ namespace SurgeEngine.Code.Core.Actor.System
                 {
                     if (!_skidding)
                     {
-                        _turnRate = Mathf.Lerp(_turnRate, _config.turnSpeed, _config.turnSmoothing * Time.fixedDeltaTime);
+                        TurnRate = Mathf.Lerp(TurnRate, _config.turnSpeed, _config.turnSmoothing * Time.fixedDeltaTime);
                         float accelRateMod = _config.accelerationCurve.Evaluate(_planarVelocity.magnitude / _config.topSpeed);
                         if (_planarVelocity.magnitude < _config.topSpeed)
                             _planarVelocity += dir * (_config.accelerationRate * accelRateMod * Time.fixedDeltaTime);
@@ -152,7 +151,7 @@ namespace SurgeEngine.Code.Core.Actor.System
                 {
                     if (!_skidding)
                     {
-                        _turnRate = Mathf.Lerp(_turnRate, _config.turnSpeed, _config.turnSmoothing * Time.fixedDeltaTime);
+                        TurnRate = Mathf.Lerp(TurnRate, _config.turnSpeed, _config.turnSmoothing * Time.fixedDeltaTime);
                         float accelRateMod = _config.accelerationCurve.Evaluate(_planarVelocity.magnitude / _config.topSpeed);
                         if (_planarVelocity.magnitude < _config.topSpeed)
                             _planarVelocity += dir * (_config.accelerationRate * accelRateMod * Time.fixedDeltaTime);
@@ -197,8 +196,8 @@ namespace SurgeEngine.Code.Core.Actor.System
         private void BaseGroundPhysics()
         {
             Vector3 newVelocity = Quaternion.FromToRotation(_planarVelocity.normalized, _inputDir.normalized) * _planarVelocity;
-            float handling = _turnRate;
-            handling *= _config.turnCurve.Evaluate(_planarVelocity.magnitude / _config.topSpeed);
+            float handling = TurnRate;
+            handling *= _config.turnCurve.Evaluate(_speed / _config.topSpeed);
             _movementVector = Vector3.Slerp(_planarVelocity, newVelocity, handling * Time.fixedDeltaTime);
             
             Project();
@@ -206,7 +205,7 @@ namespace SurgeEngine.Code.Core.Actor.System
 
         private void BaseAirPhysics()
         {
-            float handling = _turnRate;
+            float handling = TurnRate;
             handling *= _config.airControl;
             _movementVector = Vector3.Lerp(_planarVelocity, _inputDir.normalized * _planarVelocity.magnitude, 
                 handling * Time.fixedDeltaTime);
@@ -214,7 +213,7 @@ namespace SurgeEngine.Code.Core.Actor.System
 
         public void SlopePhysics()
         {
-            SlopePrediction();
+            //SlopePrediction();
             
             if (_speed < _config.slopeMinSpeed && _angle >= _config.slopeDeslopeAngle)
             {
@@ -247,6 +246,9 @@ namespace SurgeEngine.Code.Core.Actor.System
             float speedFrame = _rigidbody.linearVelocity.magnitude * Time.fixedDeltaTime;
             float lerpJump = 0.015f;
             LayerMask mask = _config.castLayer;
+
+            if (Speed <= 0)
+                return;
             
             if (!Physics.Raycast(predictedPosition, predictedVelocity.normalized, 
                     out RaycastHit pGround, speedFrame * 1.3f, mask)) { HighSpeedFix(); return; }
@@ -272,7 +274,7 @@ namespace SurgeEngine.Code.Core.Actor.System
         private void HighSpeedFix()
         {
             Vector3 predictedPosition = _rigidbody.position;
-            Vector3 predictedNormal = Actor.Stats.groundNormal;
+            Vector3 predictedNormal = Normal;
             Vector3 predictedVelocity = _rigidbody.linearVelocity;
             int steps = 16;
             LayerMask mask = _config.castLayer;
@@ -285,7 +287,7 @@ namespace SurgeEngine.Code.Core.Actor.System
                     if (Vector3.Angle(predictedNormal, pGround.normal) < 45)
                     {
                         predictedPosition = pGround.point + pGround.normal * 0.5f;
-                        predictedVelocity = Quaternion.FromToRotation(Actor.Stats.groundNormal, pGround.normal) * predictedVelocity;
+                        predictedVelocity = Quaternion.FromToRotation(Normal, pGround.normal) * predictedVelocity;
                         predictedNormal = pGround.normal;
                     } 
                     else
@@ -302,7 +304,7 @@ namespace SurgeEngine.Code.Core.Actor.System
             }
             if (i >= steps)
             {
-                Actor.Stats.groundNormal = predictedNormal;
+                Normal = predictedNormal;
                 _rigidbody.position = Vector3.MoveTowards(_rigidbody.position, predictedPosition, Time.fixedDeltaTime);
             }
         }
@@ -343,7 +345,10 @@ namespace SurgeEngine.Code.Core.Actor.System
         
         public void ApplyGravity(float yGravity)
         {
-            if (!Rigidbody.isKinematic) Rigidbody.linearVelocity += Vector3.down * (yGravity * Time.fixedDeltaTime);
+            if (!Rigidbody.isKinematic)
+            {
+                Rigidbody.linearVelocity += Vector3.down * (yGravity * Time.fixedDeltaTime);
+            }
         }
         
         public bool CheckForGround(out RaycastHit result, CheckGroundType type = CheckGroundType.Normal, float castDistance = 0f)

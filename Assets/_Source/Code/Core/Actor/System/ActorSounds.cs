@@ -6,15 +6,11 @@ namespace SurgeEngine.Code.Core.Actor.System
 {
     public class ActorSounds : ActorComponent
     {
-        private List<ActorSound> _sounds = new List<ActorSound>();
-
         internal override void Set(ActorBase actor)
         {
             base.Set(actor);
             
-            _sounds = GetComponents<ActorSound>().ToList();
-
-            foreach (ActorSound sound in _sounds)
+            foreach (ActorSound sound in GetComponents<ActorSound>())
             {
                 sound.Initialize(actor);
             }

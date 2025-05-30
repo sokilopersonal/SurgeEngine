@@ -34,8 +34,6 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
                     {
                         Rigidbody body = context.Kinematics.Rigidbody;
                         body.linearVelocity = Vector3.zero;
-                        context.Stats.planarVelocity = Vector3.zero;
-                        context.Stats.movementVector = Vector3.zero;
 
                         context.transform.position += Vector3.up * 0.25f;
                         context.transform.forward = Utility.GetCross(transform, 0);

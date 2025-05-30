@@ -58,7 +58,7 @@ namespace SurgeEngine.Code.Core.Actor.States
 
                 float minSpeed = _slideConfig.minSpeed;
                 minSpeed += minSpeed * 1.5f;
-                float dot = Stats.moveDot;
+                float dot = Kinematics.MoveDot;
                 float abs = Mathf.Abs(dot);
             
                 bool readyForDrift = Kinematics.Speed > 5f && abs < 0.4f && !Mathf.Approximately(dot, 0f);

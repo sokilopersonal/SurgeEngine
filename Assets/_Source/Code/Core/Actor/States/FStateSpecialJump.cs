@@ -65,10 +65,10 @@ namespace SurgeEngine.Code.Core.Actor.States
             switch (data.type)
             {
                 case SpecialJumpType.JumpBoard:
-                    Kinematics.ApplyGravity(Stats.gravity);
+                    Kinematics.ApplyGravity(Kinematics.Gravity);
                     break;
                 case SpecialJumpType.TrickJumper:
-                    Kinematics.ApplyGravity(Stats.gravity);
+                    Kinematics.ApplyGravity(Kinematics.Gravity);
                     break;
                 case SpecialJumpType.Spring:
                     Model.SetRestoreUp(data.transform.up);
@@ -79,7 +79,7 @@ namespace SurgeEngine.Code.Core.Actor.States
                     Model.VelocityRotation();
                     break;
                 case SpecialJumpType.JumpSelector:
-                    Kinematics.ApplyGravity(Stats.gravity);
+                    Kinematics.ApplyGravity(Kinematics.Gravity);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
