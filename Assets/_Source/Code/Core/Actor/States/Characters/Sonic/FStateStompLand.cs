@@ -40,5 +40,18 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
                 }
             }
         }
+
+        public override void OnFixedTick(float dt)
+        {
+            base.OnFixedTick(dt);
+            
+            if (Kinematics.CheckForGround(out RaycastHit hit))
+            {
+                Kinematics.Point = hit.point;
+                Kinematics.Normal = Vector3.up;
+
+                Kinematics.Snap(Kinematics.Point, Vector3.up, true);
+            }
+        }
     }
 }

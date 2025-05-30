@@ -34,11 +34,6 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
             _timer = 0;
         }
 
-        public override void OnExit()
-        {
-            base.OnExit();
-        }
-
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
@@ -73,9 +68,8 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
             if (Kinematics.CheckForGround(out RaycastHit hit))
             {
                 Vector3 point = hit.point;
-                Vector3 normal = hit.normal;
                 Kinematics.Point = point;
-                Kinematics.Normal = normal;
+                Kinematics.Normal = Vector3.up;
 
                 float speed = Kinematics.HorizontalSpeed;
                 float angle = Vector3.Angle(hit.normal, Vector3.up);
@@ -92,7 +86,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
                 else
                 {
                     _rigidbody.linearVelocity = Vector3.zero;
-                    _rigidbody.position = point + normal;
+                    Kinematics.Snap(point, Vector3.up, true);
                     StateMachine.SetState<FStateStompLand>();
                 }
             }
