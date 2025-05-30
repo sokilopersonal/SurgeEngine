@@ -12,7 +12,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Player
         {
             base.FixedUpdate();
 
-            HurtBox.CreateAttached(this, damagePoint, size, HurtBoxTarget.Player);
+            HurtBox.CreateAttached(this, damagePoint, Vector3.zero, size, HurtBoxTarget.Player);
         }
 
         private void OnDrawGizmos()
@@ -22,7 +22,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Player
             
             Gizmos.matrix = damagePoint.localToWorldMatrix;
             Gizmos.color = Color.red;
-            Gizmos.DrawWireCube(Vector3.zero, size * 2);
+            Gizmos.DrawWireCube(Vector3.zero, size * 2f);
         }
     }
 }

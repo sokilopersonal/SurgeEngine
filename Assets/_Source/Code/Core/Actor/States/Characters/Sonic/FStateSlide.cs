@@ -131,9 +131,10 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
                 StateMachine.SetState<FStateAir>();
             }
 
-            HurtBox.Create(Actor, 
-                Actor.transform.position + new Vector3(0f, 0.25f, 0.25f),
-                Actor.transform.rotation, new Vector3(0.5f, 0.5f, 0.75f), HurtBoxTarget.Enemy | HurtBoxTarget.Breakable);
+            var transform = _rigidbody.transform;
+            var offset = -transform.up * 0.6f;
+            offset += transform.forward * 0.2f;
+            HurtBox.CreateAttached(Actor, transform, offset, new Vector3(0.5f, 0.5f, 0.75f), HurtBoxTarget.Enemy | HurtBoxTarget.Breakable);
         }
     }
 }

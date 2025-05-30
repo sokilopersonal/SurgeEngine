@@ -87,10 +87,12 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
                 StateMachine.SetState<FStateAir>();
             }
 
-            if (timer >= 0.2f && timer <= 0.7f)
-                HurtBox.Create(Actor, 
-                    Actor.transform.position + new Vector3(0f, 0.25f, 0f),
-                    Actor.transform.rotation, new Vector3(1f, 0.5f, 1f), HurtBoxTarget.Enemy | HurtBoxTarget.Breakable);
+            if (timer >= 0.26f && timer <= 0.7f)
+            {
+                var offset = -_rigidbody.transform.up * 0.65f;
+                var size = new Vector3(1.4f, 0.4f, 1.4f);
+                HurtBox.CreateAttached(Actor, _rigidbody.transform, offset, size, HurtBoxTarget.Enemy | HurtBoxTarget.Breakable);
+            }
         }
     }
 }

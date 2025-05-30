@@ -46,7 +46,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
         {
             base.OnFixedTick(dt);
             
-            HurtBox.Create(Actor, Actor.transform.position + new Vector3(0f, -0.1f, 0f), Actor.transform.rotation,
+            HurtBox.CreateAttached(Actor, _rigidbody.transform, new Vector3(0f, -0.1f, 0f),
                 new Vector3(1.1f, 2f, 1.1f), HurtBoxTarget.Enemy | HurtBoxTarget.Breakable);
 
             Vector3 vel = _rigidbody.linearVelocity;
