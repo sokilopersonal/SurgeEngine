@@ -8,7 +8,9 @@ namespace SurgeEngine.Code.Core.Actor.States
     public class FStateBrakeTurn : FStateMove, IDamageableState
     {
         private float _timer;
-        private Quaternion _rigidbodyRotation;
+
+        private Quaternion _startRotation;
+        private Quaternion _endRotation;
         
         public FStateBrakeTurn(ActorBase owner, Rigidbody rigidbody) : base(owner, rigidbody)
         {
@@ -21,8 +23,10 @@ namespace SurgeEngine.Code.Core.Actor.States
 
             _timer = 0f;
             
-            _rigidbody.rotation = Quaternion.Euler(0f, _rigidbodyRotation.eulerAngles.y, 0f);
-            _rigidbodyRotation = _rigidbody.rotation;
+            _startRotation = _rigidbody.rotation;
+            _endRotation = _rigidbody.rotation * Quaternion.Euler(0f, 180f, 0f);
+            _rigidbody.rotation =
+                Quaternion.LookRotation(Vector3.Cross(_rigidbody.transform.right, Vector3.up), Vector3.up);
         }
 
         public override void OnTick(float dt)
@@ -36,13 +40,13 @@ namespace SurgeEngine.Code.Core.Actor.States
                 
                 Kinematics.Snap(result.point, Kinematics.Normal, true);
                 
-                float duration = 0.3f;
+                float duration = 0.42f;
                 if (_timer < duration)
                 {
-                    _timer += dt;
-                
-                    _rigidbody.rotation *= Quaternion.AngleAxis(600f * dt, Vector3.up);
+                    _rigidbody.rotation = Quaternion.Lerp(_startRotation, _endRotation, Easings.Get(Easing.InSine, _timer / duration));
                     Model.root.rotation = _rigidbody.rotation;
+                
+                    _timer += dt;
                 }
                 else
                 {
