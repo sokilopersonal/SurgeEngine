@@ -85,17 +85,6 @@ namespace SurgeEngine.Code.Core.Actor.System
             StateMachine.LateTick(Time.deltaTime);
         }
 
-        private void InitializeComponents()
-        {
-            Input?.Set(this);
-            Sounds?.Set(this);
-            Camera?.Set(this);
-            Animation?.Set(this);
-            Effects?.Set(this);
-            Model?.Set(this);
-            Kinematics?.Set(this);
-        }
-
         protected virtual void AddStates()
         {
             StateMachine.AddState(new FStateStart(this, Rigidbody));
