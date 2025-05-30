@@ -114,6 +114,8 @@ namespace SurgeEngine.Code.Core.Actor.States
             
             _rail = rail;
         }
+        
+        public void SetForward(bool isForward) => _isForward = isForward;
 
         /// <summary>
         /// We need to share data between grind states to prevent unwanted calculations
