@@ -40,6 +40,11 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers
             RuntimeManager.StudioSystem.setParameterByName(SFXVolumeKey, Data.SfxVolume);
         }
 
+        public void SetDistortion(bool value)
+        {
+            Data.BoostDistortionEnabled = value;
+        }
+
         public void ToggleGameGroup(bool value)
         {
             RuntimeManager.StudioSystem.setParameterByName(GameVolumeKey, value ? 1f : 0f);
@@ -50,5 +55,6 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers
     public class VolumeData
     {
         public float MasterVolume = 1f, MusicVolume = 1f, SfxVolume = 1f;
+        public bool BoostDistortionEnabled = true;
     }
 }

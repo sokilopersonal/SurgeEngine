@@ -1,6 +1,7 @@
-﻿using System.Collections;
-using FMODUnity;
+﻿using FMODUnity;
 using UnityEngine;
+using Zenject;
+using VolumeManager = SurgeEngine.Code.Infrastructure.Tools.Managers.VolumeManager;
 
 namespace SurgeEngine.Code.Core.Actor.Sound
 {
@@ -8,10 +9,12 @@ namespace SurgeEngine.Code.Core.Actor.Sound
     {
         private bool _enabled;
         
-        private Coroutine _fadeCoroutine;
+        [Inject] private VolumeManager _volumeManager;
         
         public void Toggle()
         {
+            if (!_volumeManager.GetData().BoostDistortionEnabled) return;
+            
             _enabled = !_enabled;
 
             if (_enabled)
@@ -22,20 +25,6 @@ namespace SurgeEngine.Code.Core.Actor.Sound
             {
                 RuntimeManager.StudioSystem.setParameterByName("Distort", 0);
             }
-        }
-
-        private IEnumerator FadeDistort(float value, float duration)
-        {
-            float t = 0;
-
-            while (t < duration)
-            {
-                RuntimeManager.StudioSystem.setParameterByName("Distort", value);
-                t += Time.deltaTime;
-                yield return null;
-            }
-            
-            RuntimeManager.StudioSystem.setParameterByName("Distort", value);
         }
     }
 }

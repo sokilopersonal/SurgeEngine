@@ -9,6 +9,7 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers.UI
         [SerializeField] private OptionBar masterVolumeBar;
         [SerializeField] private OptionBar musicVolumeBar;
         [SerializeField] private OptionBar sfxVolumeBar;
+        [SerializeField] private OptionBar boostDistortionBar;
 
         [Inject] private VolumeManager _volumeManager;
 
@@ -21,10 +22,12 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers.UI
                 masterVolumeBar.OnIndexChanged += index => _volumeManager.SetMasterVolume(index);
                 musicVolumeBar.OnIndexChanged += index => _volumeManager.SetMusicVolume(index);
                 sfxVolumeBar.OnIndexChanged += index => _volumeManager.SetSFXVolume(index);
+                boostDistortionBar.OnIndexChanged += index => _volumeManager.SetDistortion(index == 1);
             
                 masterVolumeBar.SetIndex(Mathf.FloorToInt(volumeData.MasterVolume * 100));
                 musicVolumeBar.SetIndex(Mathf.FloorToInt(volumeData.MusicVolume * 100));
                 sfxVolumeBar.SetIndex(Mathf.FloorToInt(volumeData.SfxVolume * 100));
+                boostDistortionBar.SetIndex(volumeData.BoostDistortionEnabled ? 1 : 0);
             });
         }
 
@@ -42,6 +45,7 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers.UI
                 masterVolumeBar.SetIndex(Mathf.FloorToInt(data.MasterVolume * 100));
                 musicVolumeBar.SetIndex(Mathf.FloorToInt(data.MusicVolume * 100));
                 sfxVolumeBar.SetIndex(Mathf.FloorToInt(data.SfxVolume * 100));
+                boostDistortionBar.SetIndex(data.BoostDistortionEnabled ? 1 : 0);
                 
                 Save();
             });

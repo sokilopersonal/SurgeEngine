@@ -41,6 +41,8 @@ namespace SurgeEngine.Code.UI
             
             _pauseAction = pauseInputReference.action;
             _pauseAction.Enable();
+            
+            _volumeManager.ToggleGameGroup(true);
         }
 
         private void OnEnable()

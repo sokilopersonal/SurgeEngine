@@ -17747,6 +17747,14 @@ PrefabInstance:
       propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2209318624920227184, guid: ab736efa3b79b9c4ca897e110d359881, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2209318624920227184, guid: ab736efa3b79b9c4ca897e110d359881, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2450039399579850524, guid: ab736efa3b79b9c4ca897e110d359881, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -17754,6 +17762,10 @@ PrefabInstance:
     - target: {fileID: 2450039399579850524, guid: ab736efa3b79b9c4ca897e110d359881, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2477218141014110445, guid: ab736efa3b79b9c4ca897e110d359881, type: 3}
+      propertyPath: m_Size
+      value: 0.888
       objectReference: {fileID: 0}
     - target: {fileID: 2725910254810142068, guid: ab736efa3b79b9c4ca897e110d359881, type: 3}
       propertyPath: m_Name
@@ -17861,7 +17873,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8097003155478701341, guid: ab736efa3b79b9c4ca897e110d359881, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 28
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8831777383719816263, guid: ab736efa3b79b9c4ca897e110d359881, type: 3}
       propertyPath: m_Size
@@ -18307,8 +18319,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3940391641460585411, guid: baee382833a016d44aa32c39843db848, type: 3}
+      propertyPath: optionName
+      value: Master Volume
+      objectReference: {fileID: 0}
+    - target: {fileID: 3940391641460585411, guid: baee382833a016d44aa32c39843db848, type: 3}
       propertyPath: sliderTextFormat
       value: F0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3940391641460585411, guid: baee382833a016d44aa32c39843db848, type: 3}
+      propertyPath: optionDescription
+      value: Global volume of the game.
       objectReference: {fileID: 0}
     - target: {fileID: 3940391641460585411, guid: baee382833a016d44aa32c39843db848, type: 3}
       propertyPath: m_Navigation.m_WrapAround
@@ -20648,8 +20668,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3940391641460585411, guid: baee382833a016d44aa32c39843db848, type: 3}
+      propertyPath: optionName
+      value: Music
+      objectReference: {fileID: 0}
+    - target: {fileID: 3940391641460585411, guid: baee382833a016d44aa32c39843db848, type: 3}
       propertyPath: sliderTextFormat
       value: F0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3940391641460585411, guid: baee382833a016d44aa32c39843db848, type: 3}
+      propertyPath: optionDescription
+      value: Volume of the music.
       objectReference: {fileID: 0}
     - target: {fileID: 3940391641460585411, guid: baee382833a016d44aa32c39843db848, type: 3}
       propertyPath: m_Navigation.m_WrapAround
@@ -23656,6 +23684,147 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1001 &5335416626090459690
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 6968063997774142556}
+    m_Modifications:
+    - target: {fileID: 646986978709707880, guid: 0f78a098e0e1c184e8e38884775421bd, type: 3}
+      propertyPath: m_text
+      value: Boost Sound Distortion
+      objectReference: {fileID: 0}
+    - target: {fileID: 646986978709707880, guid: 0f78a098e0e1c184e8e38884775421bd, type: 3}
+      propertyPath: m_fontSize
+      value: 29.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1323976465587856096, guid: 0f78a098e0e1c184e8e38884775421bd, type: 3}
+      propertyPath: optionName
+      value: Boost Sound Distortion
+      objectReference: {fileID: 0}
+    - target: {fileID: 1323976465587856096, guid: 0f78a098e0e1c184e8e38884775421bd, type: 3}
+      propertyPath: optionDescription
+      value: Enable sound distortion when boosting?
+      objectReference: {fileID: 0}
+    - target: {fileID: 1323976465587856096, guid: 0f78a098e0e1c184e8e38884775421bd, type: 3}
+      propertyPath: states.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1323976465587856096, guid: 0f78a098e0e1c184e8e38884775421bd, type: 3}
+      propertyPath: 'states.Array.data[0]'
+      value: Off
+      objectReference: {fileID: 0}
+    - target: {fileID: 1323976465587856096, guid: 0f78a098e0e1c184e8e38884775421bd, type: 3}
+      propertyPath: 'states.Array.data[1]'
+      value: On
+      objectReference: {fileID: 0}
+    - target: {fileID: 2274649523417170249, guid: 0f78a098e0e1c184e8e38884775421bd, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2274649523417170249, guid: 0f78a098e0e1c184e8e38884775421bd, type: 3}
+      propertyPath: m_Pivot.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2274649523417170249, guid: 0f78a098e0e1c184e8e38884775421bd, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2274649523417170249, guid: 0f78a098e0e1c184e8e38884775421bd, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2274649523417170249, guid: 0f78a098e0e1c184e8e38884775421bd, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2274649523417170249, guid: 0f78a098e0e1c184e8e38884775421bd, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2274649523417170249, guid: 0f78a098e0e1c184e8e38884775421bd, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2274649523417170249, guid: 0f78a098e0e1c184e8e38884775421bd, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 2274649523417170249, guid: 0f78a098e0e1c184e8e38884775421bd, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2274649523417170249, guid: 0f78a098e0e1c184e8e38884775421bd, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2274649523417170249, guid: 0f78a098e0e1c184e8e38884775421bd, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2274649523417170249, guid: 0f78a098e0e1c184e8e38884775421bd, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2274649523417170249, guid: 0f78a098e0e1c184e8e38884775421bd, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2274649523417170249, guid: 0f78a098e0e1c184e8e38884775421bd, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2274649523417170249, guid: 0f78a098e0e1c184e8e38884775421bd, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2274649523417170249, guid: 0f78a098e0e1c184e8e38884775421bd, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2274649523417170249, guid: 0f78a098e0e1c184e8e38884775421bd, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2274649523417170249, guid: 0f78a098e0e1c184e8e38884775421bd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2274649523417170249, guid: 0f78a098e0e1c184e8e38884775421bd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2274649523417170249, guid: 0f78a098e0e1c184e8e38884775421bd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7820451558486510028, guid: 0f78a098e0e1c184e8e38884775421bd, type: 3}
+      propertyPath: m_Name
+      value: BoostSoundDistortion
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 0f78a098e0e1c184e8e38884775421bd, type: 3}
+--- !u!224 &6168269679293825891 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 2274649523417170249, guid: 0f78a098e0e1c184e8e38884775421bd, type: 3}
+  m_PrefabInstance: {fileID: 5335416626090459690}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6364853682294661322 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1323976465587856096, guid: 0f78a098e0e1c184e8e38884775421bd, type: 3}
+  m_PrefabInstance: {fileID: 5335416626090459690}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7dbb85854404d9081871b29b55b44be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &5478490215129533210
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24169,7 +24338,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6740945161319245502, guid: cdbf08eaadd86b54fb662df47af5ec2b, type: 3}
       propertyPath: optionBars.Array.size
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6740945161319245502, guid: cdbf08eaadd86b54fb662df47af5ec2b, type: 3}
       propertyPath: 'optionBars.Array.data[0]'
@@ -24183,6 +24352,10 @@ PrefabInstance:
       propertyPath: 'optionBars.Array.data[2]'
       value: 
       objectReference: {fileID: 1635721917087560256}
+    - target: {fileID: 6740945161319245502, guid: cdbf08eaadd86b54fb662df47af5ec2b, type: 3}
+      propertyPath: 'optionBars.Array.data[3]'
+      value: 
+      objectReference: {fileID: 6364853682294661322}
     - target: {fileID: 6857165195134451900, guid: cdbf08eaadd86b54fb662df47af5ec2b, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -24216,6 +24389,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3731283954076668010, guid: cdbf08eaadd86b54fb662df47af5ec2b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4618399654770573886}
+    - targetCorrespondingSourceObject: {fileID: 3731283954076668010, guid: cdbf08eaadd86b54fb662df47af5ec2b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6168269679293825891}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4736819000157087788, guid: cdbf08eaadd86b54fb662df47af5ec2b, type: 3}
       insertIndex: 1
@@ -24258,6 +24434,7 @@ MonoBehaviour:
   masterVolumeBar: {fileID: 4171617663271246818}
   musicVolumeBar: {fileID: 1635721917087560256}
   sfxVolumeBar: {fileID: 5054936469445989519}
+  boostDistortionBar: {fileID: 6364853682294661322}
 --- !u!114 &1470365412267844057 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5124091664605916655, guid: cdbf08eaadd86b54fb662df47af5ec2b, type: 3}
@@ -25723,8 +25900,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3940391641460585411, guid: baee382833a016d44aa32c39843db848, type: 3}
+      propertyPath: optionName
+      value: SFX Volume
+      objectReference: {fileID: 0}
+    - target: {fileID: 3940391641460585411, guid: baee382833a016d44aa32c39843db848, type: 3}
       propertyPath: sliderTextFormat
       value: F0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3940391641460585411, guid: baee382833a016d44aa32c39843db848, type: 3}
+      propertyPath: optionDescription
+      value: Volume of the sound effects.
       objectReference: {fileID: 0}
     - target: {fileID: 3940391641460585411, guid: baee382833a016d44aa32c39843db848, type: 3}
       propertyPath: m_Navigation.m_WrapAround
