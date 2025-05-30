@@ -7,15 +7,8 @@ namespace SurgeEngine.Code.Core.Actor.System
     /// <summary>
     /// Listens for collisions
     /// </summary>
-    public class ContactListener : MonoBehaviour
+    public class ContactListener : ActorComponent
     {
-        private ActorBase _actor;
-
-        private void Awake()
-        {
-            _actor = GetComponentInParent<ActorBase>();
-        }
-
         private void OnTriggerEnter(Collider other)
         {
             IPlayerContactable playerContactable = null;
@@ -28,7 +21,7 @@ namespace SurgeEngine.Code.Core.Actor.System
             }
 
             var col = GetComponent<Collider>();
-            contactable?.Contact(col, _actor);
+            contactable?.Contact(col, Actor);
             playerContactable?.OnContact(col);
         }
     }

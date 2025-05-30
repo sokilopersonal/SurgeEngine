@@ -34,6 +34,7 @@ namespace SurgeEngine.Code.Core.Actor.System
         public ActorModel Model => model;
         public ActorFlags Flags => flags;
         public ActorKinematics Kinematics => kinematics;
+        private Dictionary<Type, ActorComponent> _components = new();
 
         [Header("Config")]
         [SerializeField] private BaseActorConfig config;
@@ -55,15 +56,18 @@ namespace SurgeEngine.Code.Core.Actor.System
         private void Awake()
         {
             StateMachine = new FStateMachine();
-            
             Rigidbody = GetComponentInChildren<Rigidbody>();
             
             ActorContext.Set(this);
             
             InitializeConfigs();
             AddStates();
-
-            InitializeComponents();
+            
+            foreach (var component in GetComponentsInChildren<ActorComponent>())
+            {
+                _components.Add(component.GetType(), component);
+                component.Set(this);
+            }
         }
 
         private void Update()

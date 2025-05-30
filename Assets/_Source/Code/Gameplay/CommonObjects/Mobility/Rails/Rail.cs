@@ -32,9 +32,9 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility.Rails
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.transform.parent.TryGetComponent(out ActorBase actor))
+            if (other.transform.TryGetComponent(out ContactListener listener))
             {
-                AttachToRail(actor);
+                AttachToRail(listener.Actor);
             }
         }
 

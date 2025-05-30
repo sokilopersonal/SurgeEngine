@@ -15,7 +15,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.PhysicsObjects
         public void TakeDamage(MonoBehaviour sender, float damage)
         {
             var piece = Instantiate(destroyPiece, transform.position, transform.rotation, null);
-            piece.ApplyDirectionForce(sender.GetComponentInParent<Rigidbody>().linearVelocity, 1.1f);
+            piece.ApplyDirectionForce(sender.GetComponentInChildren<Rigidbody>().linearVelocity, 1.1f);
             
             RuntimeManager.PlayOneShot(BoxDestroySound, transform.position);
             Destroy(gameObject);

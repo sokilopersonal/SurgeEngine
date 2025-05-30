@@ -195,7 +195,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates
                 float maxSpeed = config.maxSpeed * _config.MaxSpeedMultiplier;
                 if (speed < maxSpeed)
                 {
-                    //body.AddForce(body.linearVelocity.normalized * (_config.Acceleration * dt), ForceMode.Impulse);
+                    body.AddForce(body.linearVelocity.normalized * (_config.Acceleration * dt), ForceMode.Impulse);
                 }
             }
         }

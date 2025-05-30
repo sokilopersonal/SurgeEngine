@@ -38,8 +38,6 @@ namespace SurgeEngine.Code.Core.Actor.System
 
             _rigidbody = GetComponent<Rigidbody>();
         }
-        
-        public void OnInit() {}
 
         private void Update()
         {
