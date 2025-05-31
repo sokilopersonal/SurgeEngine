@@ -15,9 +15,9 @@ namespace SurgeEngine.Code.Infrastructure.Config.SonicSpecific
         [SerializeField] private float magnetRadius = 2.75f;
         [SerializeField] private float acceleration = 45f;
         [SerializeField, Range(25, 100)] private float boostCapacity = 100;
-        [Foldout("Energy Additions")] private float ringEnergyAddition = 1.5f;
-        [Foldout("Energy Additions")] private float driftEnergyAddition = 6.75f;
-        [Foldout("Time")] private float inAirTime = 0.3f;
+        [SerializeField] private float ringEnergyAddition = 1.5f;
+        [SerializeField] private float driftEnergyAddition = 6.75f;
+        [SerializeField] private float inAirTime = 0.3f;
 
         public float StartSpeed => startSpeed;
         public float AirBoostSpeed => airBoostSpeed;
