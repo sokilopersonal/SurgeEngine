@@ -32,10 +32,8 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             }
             if (cancelBoost) context.StateMachine.GetSubState<FBoost>().Active = false;
             
-            var jump = context.StateMachine.GetState<FStateSpecialJump>();
-            jump.SetSpecialData(new SpecialJumpData(SpecialJumpType.DashRing, transform, outOfControl));
+            context.StateMachine.GetState<FStateSpecialJump>().SetSpecialData(new SpecialJumpData(SpecialJumpType.DashRing, transform, outOfControl)).SetKeepVelocity(keepVelocity);
             context.StateMachine.SetState<FStateSpecialJump>(0f, true, true);
-            jump.SetKeepVelocity(keepVelocity);
 
             context.Kinematics.Rigidbody.linearVelocity = transform.up * speed;
             Rigidbody body = context.Kinematics.Rigidbody;

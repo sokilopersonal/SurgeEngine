@@ -69,8 +69,12 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
         {
             if (_qteSequences.Count > 0)
             {
-                float fps = 1f / Time.unscaledDeltaTime;
-                if (fps > 2f) _timer -= Time.unscaledDeltaTime;
+                const float MaxFrameTime = 0.33f;
+                float deltaTime = Time.unscaledDeltaTime;
+                if (deltaTime < MaxFrameTime)
+                {
+                    _timer -= deltaTime;
+                }
                 
                 if (_timer <= 0)
                 {
@@ -105,8 +109,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
                 Vector3 impulse = Utility.GetImpulseWithPitch(Vector3.Cross(-startPoint.right, Vector3.up), startPoint.right, firstPitch, firstSpeed);
                 _actor.Kinematics.Rigidbody.linearVelocity = impulse;
 
-                var jump = _actor.StateMachine.GetState<FStateSpecialJump>();
-                jump.SetSpecialData(new SpecialJumpData(SpecialJumpType.TrickJumper));
+                _actor.StateMachine.GetState<FStateSpecialJump>().SetSpecialData(new SpecialJumpData(SpecialJumpType.TrickJumper));
                 _actor.StateMachine.SetState<FStateSpecialJump>(0f, true, true);
                 
                 _actor.Flags.AddFlag(new Flag(FlagType.OutOfControl, null, false));

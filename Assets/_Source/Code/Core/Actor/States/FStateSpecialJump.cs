@@ -102,14 +102,18 @@ namespace SurgeEngine.Code.Core.Actor.States
             }
         }
 
-        public void SetSpecialData(SpecialJumpData data)
+        public FStateSpecialJump SetSpecialData(SpecialJumpData data)
         {
             this.data = data;
+
+            return this;
         }
 
-        public void SetKeepVelocity(float time)
+        public FStateSpecialJump SetKeepVelocity(float time)
         {
             _keepVelocityTimer = time;
+
+            return this;
         }
     }
 

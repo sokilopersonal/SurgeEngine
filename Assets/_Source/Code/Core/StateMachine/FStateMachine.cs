@@ -96,10 +96,10 @@ namespace SurgeEngine.Code.Core.StateMachine
             CurrentState?.OnEnter();
         }
 
-        public TState GetState<TState>() where TState : FState
+        public T GetState<T>() where T : FState
         {
-            Type type = typeof(TState);
-            return _states[type] as TState;
+            Type type = typeof(T);
+            return _states[type] as T;
         }
         
         public bool IsExact<T>() where T : FState
@@ -114,9 +114,9 @@ namespace SurgeEngine.Code.Core.StateMachine
             return PreviousState != null && PreviousState.GetType() == type;
         }
         
-        public bool IsPreviousState<TState>() where TState : FState
+        public bool IsPreviousState<T>() where T : FState
         {
-            return PreviousState is TState;
+            return PreviousState is T;
         }
         
         public T GetSubState<T>() where T : FSubState
