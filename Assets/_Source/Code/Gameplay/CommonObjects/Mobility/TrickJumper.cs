@@ -70,7 +70,9 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
         {
             if (_qteSequences.Count > 0)
             {
-                timer -= Time.unscaledDeltaTime;
+                float fps = 1f / Time.unscaledDeltaTime;
+                if (fps > 2f) timer -= Time.unscaledDeltaTime;
+                
                 if (timer <= 0)
                 {
                     OnQTEResultReceived?.Invoke(QTEResult.Fail);
