@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using SurgeEngine.Code.Gameplay.CommonObjects.Mobility;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.DualShock;
 using UnityEngine.InputSystem.Utilities;
+using UnityEngine.InputSystem.XInput;
 
 namespace SurgeEngine.Code.Core.Actor.System
 {
@@ -55,8 +57,6 @@ namespace SurgeEngine.Code.Core.Actor.System
         private bool _lockCamera;
         private InputDevice _device;
 
-        private Dictionary<string, string> _translatedDeviceNames;
-
         private float _noInputTimer;
         private bool _autoCamera;
 
@@ -65,12 +65,6 @@ namespace SurgeEngine.Code.Core.Actor.System
         private void Awake()
         {
             playerInput ??= GetComponent<PlayerInput>();
-            
-            _translatedDeviceNames = new Dictionary<string, string>()
-            {
-                ["Keyboard"] = "Keyboard",
-                ["XInputControllerWindows"] = "Xbox",
-            };
         }
 
         private void OnEnable()
@@ -137,7 +131,6 @@ namespace SurgeEngine.Code.Core.Actor.System
             }
             
             ReadOnlyArray<InputDevice> devices = InputSystem.devices;
-
             foreach (InputDevice device in devices)
             {
                 if (device.wasUpdatedThisFrame)
@@ -234,8 +227,38 @@ namespace SurgeEngine.Code.Core.Actor.System
         }
         
         public bool IsAutoCamera() { return _autoCamera; }
-        
-        public InputDevice GetDevice() { return _device; }
-        public string GetTranslatedDeviceName(InputDevice device) { return _translatedDeviceNames[device.name]; }
+
+        public GameDevice GetDevice()
+        {
+            GameDevice device = GameDevice.Keyboard;
+
+            switch (_device)
+            {
+                case Keyboard:
+                    device = GameDevice.Keyboard;
+                    break;
+                case XInputController:
+                    device = GameDevice.XboxController;
+                    break;
+                case Gamepad:
+                {
+                    if (_device is DualShockGamepad)
+                    {
+                        device = GameDevice.Playstation;
+                    }
+
+                    break;
+                }
+            }
+
+            return device;
+        }
+    }
+
+    public enum GameDevice
+    {
+        Keyboard,
+        XboxController,
+        Playstation
     }
 }

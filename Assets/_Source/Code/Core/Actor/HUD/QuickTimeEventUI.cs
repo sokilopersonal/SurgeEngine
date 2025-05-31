@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using SurgeEngine.Code.Core.Actor.System;
 using SurgeEngine.Code.Gameplay.CommonObjects.Mobility;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace SurgeEngine.Code.Core.Actor.HUD
@@ -59,13 +58,12 @@ namespace SurgeEngine.Code.Core.Actor.HUD
             for (int i = 0; i < sequence.buttons.Count; i++)
             {
                 ButtonType buttonType = sequence.buttons[i].type;
-                InputDevice dv = input.GetDevice();
-                string translatedName = input.GetTranslatedDeviceName(dv);
-                QTEButtonSprites buttons = quickTimeEventUIButtons.Find(x => x.device == translatedName);
+                GameDevice dv = input.GetDevice();
+                QTEButtonSprites buttons = quickTimeEventUIButtons.Find(x => x.device == dv);
                 
                 QuickTimeEventUIButton tempButton = Instantiate(button, buttonParent);
 
-                bool isBumper = buttonType is ButtonType.LB or ButtonType.RB && buttons.device != "Keyboard";
+                bool isBumper = buttonType is ButtonType.LB or ButtonType.RB && buttons.device is not GameDevice.Keyboard;
                 float scale = isBumper ? 1.4f : 1f;
                 tempButton.SetButtonAppearence(buttons.GetSprite(buttonType), scale);
                 
@@ -88,7 +86,7 @@ namespace SurgeEngine.Code.Core.Actor.HUD
     [Serializable]
     public struct QTEButtonSprites
     {
-        public string device;
+        public GameDevice device;
         
         public Sprite aButtonSprite;
         public Sprite bButtonSprite;
