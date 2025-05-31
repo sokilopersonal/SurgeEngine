@@ -13,6 +13,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         private float _jumpTimer;
         
         private float _keepVelocityTimer;
+        public bool IsDelux { get; private set; }
 
         public FStateSpecialJump(ActorBase owner) : base(owner)
         {
@@ -113,6 +114,13 @@ namespace SurgeEngine.Code.Core.Actor.States
         {
             _keepVelocityTimer = time;
 
+            return this;
+        }
+        
+        public FStateSpecialJump SetDelux(bool value)
+        {
+            IsDelux = value;
+            
             return this;
         }
     }

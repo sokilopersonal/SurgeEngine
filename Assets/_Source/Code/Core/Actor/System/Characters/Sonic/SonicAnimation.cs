@@ -237,7 +237,7 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
                 switch (specialJump.data.type)
                 {
                     case SpecialJumpType.JumpBoard:
-                        StateAnimator.TransitionToState("Jump Standard", 0);
+                        StateAnimator.TransitionToState(!specialJump.IsDelux ? "Jump Standard" : "Jump Delux", 0);
                         break;
                     case SpecialJumpType.TrickJumper:
                         StateAnimator.TransitionToState("Jump Spring", 0.2f);
