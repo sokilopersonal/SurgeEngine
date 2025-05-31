@@ -1,7 +1,6 @@
 ﻿using SurgeEngine.Code.Core.Actor.States;
 using SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates;
 using SurgeEngine.Code.Core.Actor.System;
-using SurgeEngine.Code.Infrastructure.Custom;
 using SurgeEngine.Code.Infrastructure.Custom.Drawers;
 using UnityEngine;
 
@@ -15,13 +14,6 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
         [SerializeField] protected float yOffset = 0.5f;
         [SerializeField] private bool center = true;
         [SerializeField] private bool cancelBoost;
-
-        protected Vector3 direction = Vector3.up;
-
-        protected override void Awake()
-        {
-            direction = transform.up;
-        }
 
         public override void Contact(Collider msg, ActorBase context)
         {
@@ -39,15 +31,13 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             }
             
             if (cancelBoost) context.StateMachine.GetSubState<FBoost>().Active = false;
-            
-            FStateSpecialJump specialJump = context.StateMachine.SetState<FStateSpecialJump>(ignoreInactiveDelay: true, allowSameState: true);
-            specialJump.SetSpecialData(new SpecialJumpData(SpecialJumpType.Spring, transform, outOfControl));
-            specialJump.PlaySpecialAnimation(0);
-            specialJump.SetKeepVelocity(keepVelocity);
+
+            var jump = context.StateMachine.GetState<FStateSpecialJump>();
+            jump.SetSpecialData(new SpecialJumpData(SpecialJumpType.Spring, transform, outOfControl));
+            context.StateMachine.SetState<FStateSpecialJump>(0f, true, true);
+            jump.SetKeepVelocity(keepVelocity);
 
             context.Kinematics.Rigidbody.linearVelocity = transform.up * speed;
-            Rigidbody body = context.Kinematics.Rigidbody;
-            body.linearVelocity = Vector3.ClampMagnitude(body.linearVelocity, speed);
             context.Flags.AddFlag(new Flag(FlagType.OutOfControl, 
                 null, true, Mathf.Abs(outOfControl)));
         }

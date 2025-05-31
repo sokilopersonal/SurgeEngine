@@ -47,9 +47,8 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
         private int _buttonId;
         private int _sequenceId;
         private QuickTimeEventUI _currentQTEUI;
-        private float timer;
-        
-        public List<QTESequence> QTESequences => _qteSequences;
+        private float _timer;
+        private ActorBase _actor;
 
         protected override void Awake()
         {
@@ -71,9 +70,9 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             if (_qteSequences.Count > 0)
             {
                 float fps = 1f / Time.unscaledDeltaTime;
-                if (fps > 2f) timer -= Time.unscaledDeltaTime;
+                if (fps > 2f) _timer -= Time.unscaledDeltaTime;
                 
-                if (timer <= 0)
+                if (_timer <= 0)
                 {
                     OnQTEResultReceived?.Invoke(QTEResult.Fail);
                 }
@@ -83,6 +82,8 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
         public override void Contact(Collider msg, ActorBase context)
         {
             base.Contact(msg, context);
+
+            _actor = context;
             
             StartCoroutine(TrickContact());
 
@@ -91,26 +92,24 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
 
         private IEnumerator TrickContact()
         {
-            ActorBase context = ActorContext.Context;
-
-            if (context.StateMachine.CurrentState is FStateSpecialJump) yield break;
+            if (_actor.StateMachine.CurrentState is FStateSpecialJump) yield break;
             if (firstSpeed > 0)
             {
-                context.StateMachine.GetSubState<FBoost>().Active = false;
-                context.Kinematics.ResetVelocity();
+                _actor.StateMachine.GetSubState<FBoost>().Active = false;
+                _actor.Kinematics.ResetVelocity();
                 
-                context.PutIn(startPoint.position);
-                context.transform.forward = Vector3.Cross(-startPoint.right, Vector3.up);
-                context.Model.transform.forward = Vector3.Cross(-startPoint.right, Vector3.up);
+                _actor.PutIn(startPoint.position);
+                _actor.transform.forward = Vector3.Cross(-startPoint.right, Vector3.up);
+                _actor.Model.transform.forward = Vector3.Cross(-startPoint.right, Vector3.up);
                 
                 Vector3 impulse = Utility.GetImpulseWithPitch(Vector3.Cross(-startPoint.right, Vector3.up), startPoint.right, firstPitch, firstSpeed);
-                context.Kinematics.Rigidbody.linearVelocity = impulse;
+                _actor.Kinematics.Rigidbody.linearVelocity = impulse;
+
+                var jump = _actor.StateMachine.GetState<FStateSpecialJump>();
+                jump.SetSpecialData(new SpecialJumpData(SpecialJumpType.TrickJumper));
+                _actor.StateMachine.SetState<FStateSpecialJump>(0f, true, true);
                 
-                context.StateMachine.GetState<FStateSpecialJump>().SetSpecialData(new SpecialJumpData(SpecialJumpType.TrickJumper));
-                FStateSpecialJump specialJump = context.StateMachine.SetState<FStateSpecialJump>(0.2f, true, true);
-                specialJump.PlaySpecialAnimation(0);
-                
-                context.Flags.AddFlag(new Flag(FlagType.OutOfControl, null, false));
+                _actor.Flags.AddFlag(new Flag(FlagType.OutOfControl, null, false));
                 
                 yield return SetTime(TargetTimeScale, TimeScaleDuration);
                 
@@ -140,7 +139,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
                     CreateSequence(trickCount[i], trickTime[i]);
                 }
                 
-                ActorContext.Context.Input.OnButtonPressed += OnButtonPressed;
+                _actor.Input.OnButtonPressed += OnButtonPressed;
             }
         }
 
@@ -174,7 +173,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             _qteSequences.Add(sequence);
             if (_qteSequences.Count == 1)
             {
-                timer = sequence.time;
+                _timer = sequence.time;
                 
                 // Notify TrickJumperUI about the first sequence
                 OnNewSequenceStarted?.Invoke(sequence);
@@ -195,7 +194,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
 
                     if (_buttonId >= sequence.buttons.Count) // all buttons pressed
                     {
-                        float additionalScore = 1000f * _qteSequences[_sequenceId].time * (1.0f - timer * 0.01f);
+                        float additionalScore = 1000f * _qteSequences[_sequenceId].time * (1.0f - _timer * 0.01f);
                         int score = 1000;
                         Utility.AddScore(score + (int)additionalScore);
                         
@@ -210,7 +209,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
                         else
                         {
                             _buttonId = 0;
-                            timer = _qteSequences[_sequenceId].time;
+                            _timer = _qteSequences[_sequenceId].time;
                             
                             // Notify TrickJumperUI about the new sequence
                             OnNewSequenceStarted?.Invoke(_qteSequences[_sequenceId]);
@@ -240,35 +239,31 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             _buttonId = 0;
             _sequenceId = 0;
             
-            ActorBase context = ActorContext.Context;
-            Rigidbody body = context.Kinematics.Rigidbody;
+            Rigidbody body = _actor.Kinematics.Rigidbody;
             if (result.success)
             {
-                context.Flags.RemoveFlag(FlagType.OutOfControl);
-                context.Flags.AddFlag(new Flag(FlagType.OutOfControl, null, true, secondOutOfControl));
+                _actor.Flags.RemoveFlag(FlagType.OutOfControl);
+                _actor.Flags.AddFlag(new Flag(FlagType.OutOfControl, null, true, secondOutOfControl));
 
-                context.Kinematics.ResetVelocity();
-                Vector3 arcPeak = Trajectory.GetArcPosition(startPoint.position,
-                    Utility.GetCross(transform, firstPitch, true), firstSpeed);
+                _actor.Kinematics.ResetVelocity();
+                Vector3 arcPeak = Trajectory.GetArcPosition(startPoint.position, Utility.GetCross(transform, firstPitch, true), firstSpeed);
+                _actor.StateMachine.SetState<FStateTrick>().SetTimer(secondOutOfControl);
                 yield return MoveRigidbodyToArc(body, arcPeak); // should snap Sonic to the arc point
-                context.Animation.StateAnimator.TransitionToState($"Trick {Random.Range(1, 8)}", 0.2f).Then(() => context.Animation.StateAnimator.TransitionToState(AnimatorParams.AirCycle, 0.2f));
                 
                 Vector3 impulse = Utility.GetImpulseWithPitch(Vector3.Cross(-startPoint.right, Vector3.up), startPoint.right, secondPitch, secondSpeed);
-                context.Kinematics.Rigidbody.linearVelocity = impulse;
+                _actor.Kinematics.Rigidbody.linearVelocity = impulse;
             }
             else
             {
-                context.Flags.RemoveFlag(FlagType.OutOfControl);
-                context.Flags.AddFlag(new Flag(FlagType.OutOfControl, null, true, firstOutOfControl));
-                
-                context.Animation.StateAnimator.TransitionToState("Air Cycle");
+                _actor.Flags.RemoveFlag(FlagType.OutOfControl);
+                _actor.Flags.AddFlag(new Flag(FlagType.OutOfControl, null, true, firstOutOfControl));
+                _actor.StateMachine.SetState<FStateAir>();
                 
                 RuntimeManager.PlayOneShot(qteFailSound);
                 RuntimeManager.PlayOneShot(qteFailVoiceSound);
             }
             
-            context.StateMachine.SetState<FStateAir>();
-            context.Input.OnButtonPressed -= OnButtonPressed;
+            _actor.Input.OnButtonPressed -= OnButtonPressed;
             
             yield return SetTime(1f, 0.1f);
         }
@@ -291,7 +286,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
 
         public float GetTimer()
         {
-            return timer;
+            return _timer;
         }
 
         public QTESequence GetCurrentSequence()

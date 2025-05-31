@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using SurgeEngine.Code.Core.Actor.States;
 using SurgeEngine.Code.Core.StateMachine.Base;
 using SurgeEngine.Code.Core.StateMachine.Interfaces;
 using UnityEngine;
@@ -92,12 +93,17 @@ namespace SurgeEngine.Code.Core.StateMachine
             CurrentState = newState;
             currentStateName = CurrentState?.GetType().Name;
             OnStateAssign?.Invoke(CurrentState);
-            CurrentState.OnEnter();
+            CurrentState?.OnEnter();
         }
 
         public TState GetState<TState>() where TState : FState
         {
-            return _states[typeof(TState)] as TState;
+            Type type = typeof(TState);
+            if (type.IsInstanceOfType(typeof(FStateSpecialJump)))
+            {
+                Debug.Log("123131");
+            }
+            return _states[type] as TState;
         }
         
         public bool IsExact<T>() where T : FState

@@ -22,15 +22,15 @@ namespace SurgeEngine.Code.Core.Actor.States
         public override void OnEnter()
         {
             base.OnEnter();
-
-            _jumpTimer = 0.25f;
+            
+            _jumpTimer = 0.2f;
         }
 
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
             
-            Utility.TickTimer(ref _jumpTimer, 0.25f, false);
+            Utility.TickTimer(ref _jumpTimer, 0.2f, false);
             
             CountTimer(dt);
         }
@@ -39,7 +39,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         {
             base.OnFixedTick(dt);
 
-            SpecialTick(dt);
+            SpecialTick();
             
             if (Mathf.Approximately(_jumpTimer, 0))
             {
@@ -60,7 +60,7 @@ namespace SurgeEngine.Code.Core.Actor.States
             }
         }
 
-        private void SpecialTick(float dt)
+        private void SpecialTick()
         {
             switch (data.type)
             {
@@ -85,7 +85,7 @@ namespace SurgeEngine.Code.Core.Actor.States
                     throw new ArgumentOutOfRangeException();
             }
 
-            if (data.type == SpecialJumpType.Spring || data.type == SpecialJumpType.DashRing)
+            if (data.type is SpecialJumpType.Spring or SpecialJumpType.DashRing)
             {
                 if (_keepVelocityTimer < 0)
                 {
@@ -106,30 +106,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         {
             this.data = data;
         }
-        
-        public void PlaySpecialAnimation(float time, object arg = null)
-        {
-            Animation.StateAnimator.ResetCurrentAnimationState();
-            
-            switch (data.type)
-            {
-                case SpecialJumpType.JumpBoard:
-                    Animation.StateAnimator.TransitionToState((bool)arg ? "Jump Delux" : "Jump Standard", time);
-                    break;
-                case SpecialJumpType.TrickJumper:
-                    Animation.StateAnimator.TransitionToState("Jump Spring", time);
-                    break;
-                case SpecialJumpType.Spring:
-                    Animation.StateAnimator.TransitionToState("Jump Spring", time);
-                    break;
-                case SpecialJumpType.DashRing:
-                    Animation.StateAnimator.TransitionToState("Dash Ring", time);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(data), data, null);
-            }
-        }
-        
+
         public void SetKeepVelocity(float time)
         {
             _keepVelocityTimer = time;

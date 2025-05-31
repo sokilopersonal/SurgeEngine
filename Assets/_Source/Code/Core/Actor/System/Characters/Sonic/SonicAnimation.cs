@@ -1,10 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using SurgeEngine.Code.Core.Actor.States;
 using SurgeEngine.Code.Core.Actor.States.Characters.Sonic;
 using SurgeEngine.Code.Core.StateMachine;
 using SurgeEngine.Code.Core.StateMachine.Base;
 using SurgeEngine.Code.Core.StateMachine.Components;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
 {
@@ -72,10 +74,8 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
                 {
                     if (machine.IsPrevExact<FStateJump>())
                     {
-                        if (StateAnimator.GetCurrentAnimationState() == "Ball")
-                            StateAnimator.TransitionToState(AnimatorParams.RunCycle, 0f);
-                        else
-                            StateAnimator.TransitionToState(AnimatorParams.RunCycle, 0.2f);
+                        StateAnimator.TransitionToState(AnimatorParams.RunCycle,
+                            StateAnimator.GetCurrentAnimationState() == "Ball" ? 0f : 0.2f);
                         return;
                     }
             
@@ -121,7 +121,7 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
                     StateAnimator.SetCurrentAnimationState(AnimatorParams.RunCycle);
                 }
             }
-            if (obj is FStateAir && prev is not FStateSpecialJump and not FStateAfterHoming and not FStateAirBoost)
+            if (obj is FStateAir && prev is not FStateSpecialJump and not FStateAfterHoming and not FStateAirBoost and not FStateTrick)
             {
                 if (prev is FStateUpreel)
                 {
@@ -139,7 +139,7 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
             }
             if (obj is FStateAir && prev is FStateSpecialJump)
             {
-                if (Actor.StateMachine.GetState<FStateSpecialJump>().data.type != SpecialJumpType.TrickJumper) StateAnimator.TransitionToState(AnimatorParams.AirCycle, 0.5f);
+                 StateAnimator.TransitionToState(AnimatorParams.AirCycle, 0.5f);
             }
             if (obj is FStateSlide)
             {
@@ -230,17 +230,34 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
                 
                 StateAnimator.SetCurrentAnimationState(Drift);
             }
-            
+            if (obj is FStateSpecialJump specialJump)
+            {
+                StateAnimator.ResetCurrentAnimationState();
+                
+                switch (specialJump.data.type)
+                {
+                    case SpecialJumpType.JumpBoard:
+                        StateAnimator.TransitionToState("Jump Standard", 0);
+                        break;
+                    case SpecialJumpType.TrickJumper:
+                        StateAnimator.TransitionToState("Jump Spring", 0.2f);
+                        break;
+                    case SpecialJumpType.Spring:
+                        StateAnimator.TransitionToState("Jump Spring", 0);
+                        break;
+                    case SpecialJumpType.DashRing:
+                        StateAnimator.TransitionToState("Dash Ring", 0);
+                        break;
+                }
+            }
             if (obj is FStateGrind && prev is not FStateGrindSquat)
             {
                 StateAnimator.TransitionToState("Grind_S", 0f);
             }
-            
             if (obj is FStateGrindSquat)
             {
                 StateAnimator.TransitionToState("GrindSquat", 0.25f);
             }
-            
             if (obj is FStateGrind && prev is FStateGrindSquat)
             {
                 StateAnimator.TransitionToState("GrindLoop", 0.25f);
@@ -283,30 +300,29 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
                     StateAnimator.TransitionToState("QuickstepRight", 0.1f);
                 }
             }
-            
             if (obj is FStateSwing)
             {
                 StateAnimator.TransitionToState("SwingLoop", 0f);
             }
-            
             if (obj is FStateSwingJump)
             {
                 StateAnimator.TransitionToState("SwingJump", 0f).Then(() => { StateAnimator.TransitionToState("SwingJumpLoop", 0f); });
             }
-
             if (obj is FStateDamage)
             {
                 StateAnimator.TransitionToState("NearDamage", 0);
             }
-
             if (obj is FStateDamageLand)
             {
                 StateAnimator.TransitionToStateDelayed("DamageRestore", 1f, 0);
             }
-
             if (obj is FStateUpreel)
             {
                 StateAnimator.TransitionToState("UpreelStart", 0f).Then(() => StateAnimator.TransitionToState("PulleyLoop", 0.25f));
+            }
+            if (obj is FStateTrick)
+            {
+                StateAnimator.TransitionToState($"Trick {Random.Range(1, 8)}").Then(() => StateAnimator.TransitionToState(AnimatorParams.AirCycle));
             }
         }
         
@@ -333,9 +349,9 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
                 }
                 else
                 {
-                    StateAnimator.TransitionToState("JumpLow", 0.25f).After(0.25f, () =>
+                    StateAnimator.TransitionToState("JumpLow").After(0.25f, () =>
                     {
-                        StateAnimator.TransitionToState(AnimatorParams.AirCycle, 0.25f);
+                        StateAnimator.TransitionToState(AnimatorParams.AirCycle);
                     });
                 }
             }

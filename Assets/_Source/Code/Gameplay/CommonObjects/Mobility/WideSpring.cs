@@ -4,11 +4,6 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
 {
     public class WideSpring : Spring
     {
-        protected override void Awake()
-        {
-            direction = Vector3.up;
-        }
-
         protected override void OnDrawGizmos()
         {
             base.OnDrawGizmos();
