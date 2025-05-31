@@ -67,7 +67,7 @@ namespace SurgeEngine.Code.UI
         private void OnPauseAction(InputAction.CallbackContext obj)
         {
             var context = ActorContext.Context;
-            if (context != null && context.StateMachine.IsExact<FStateSpecialJump>() && context.StateMachine.GetState<FStateSpecialJump>().data.type ==
+            if (context != null && context.StateMachine.IsExact<FStateSpecialJump>() && context.StateMachine.GetState<FStateSpecialJump>().SpecialJumpData.type ==
                 SpecialJumpType.TrickJumper) return;
             
             if (!CanPause || context.IsDead) return;

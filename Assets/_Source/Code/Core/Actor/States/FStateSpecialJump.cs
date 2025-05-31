@@ -9,39 +9,39 @@ namespace SurgeEngine.Code.Core.Actor.States
 {
     public class FStateSpecialJump : FActorState
     {
-        public SpecialJumpData data;
+        private const float DefaultJumpTime = 0.2f;
+
+        public SpecialJumpData SpecialJumpData { get; private set; }
         private float _jumpTimer;
-        
         private float _keepVelocityTimer;
+
         public bool IsDelux { get; private set; }
 
         public FStateSpecialJump(ActorBase owner) : base(owner)
         {
-            
         }
 
         public override void OnEnter()
         {
             base.OnEnter();
             
-            _jumpTimer = 0.2f;
+            _jumpTimer = DefaultJumpTime;
         }
 
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
             
-            Utility.TickTimer(ref _jumpTimer, 0.2f, false);
-            
-            CountTimer(dt);
+            Utility.TickTimer(ref _jumpTimer, DefaultJumpTime, false);
+            UpdateKeepVelocityTimer(dt);
         }
 
         public override void OnFixedTick(float dt)
         {
             base.OnFixedTick(dt);
-
-            SpecialTick();
             
+            SpecialTick();
+
             if (Mathf.Approximately(_jumpTimer, 0))
             {
                 if (Kinematics.CheckForGround(out _, CheckGroundType.Predict))
@@ -54,8 +54,8 @@ namespace SurgeEngine.Code.Core.Actor.States
         public override void OnExit()
         {
             base.OnExit();
-
-            if (data.type is SpecialJumpType.Spring or SpecialJumpType.DashRing)
+            
+            if (SpecialJumpData.type is SpecialJumpType.Spring or SpecialJumpType.DashRing)
             {
                 Model.StartAirRestore(0.4f);
             }
@@ -63,30 +63,22 @@ namespace SurgeEngine.Code.Core.Actor.States
 
         private void SpecialTick()
         {
-            switch (data.type)
+            switch (SpecialJumpData.type)
             {
                 case SpecialJumpType.JumpBoard:
-                    Kinematics.ApplyGravity(Kinematics.Gravity);
-                    break;
                 case SpecialJumpType.TrickJumper:
+                case SpecialJumpType.JumpSelector:
                     Kinematics.ApplyGravity(Kinematics.Gravity);
                     break;
                 case SpecialJumpType.Spring:
-                    Model.SetRestoreUp(data.transform.up);
-                    Model.VelocityRotation();
-                    break;
                 case SpecialJumpType.DashRing:
-                    Model.SetRestoreUp(data.transform.up);
-                    Model.VelocityRotation();
-                    break;
-                case SpecialJumpType.JumpSelector:
-                    Kinematics.ApplyGravity(Kinematics.Gravity);
+                    HandleSpringOrDashRing();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
 
-            if (data.type is SpecialJumpType.Spring or SpecialJumpType.DashRing)
+            if (SpecialJumpData.type is SpecialJumpType.Spring or SpecialJumpType.DashRing)
             {
                 if (_keepVelocityTimer < 0)
                 {
@@ -94,8 +86,14 @@ namespace SurgeEngine.Code.Core.Actor.States
                 }
             }
         }
-        
-        private void CountTimer(float dt)
+
+        private void HandleSpringOrDashRing()
+        {
+            Model.SetRestoreUp(SpecialJumpData.transform.up);
+            Model.VelocityRotation();
+        }
+
+        private void UpdateKeepVelocityTimer(float dt)
         {
             if (_keepVelocityTimer > 0)
             {
@@ -105,22 +103,19 @@ namespace SurgeEngine.Code.Core.Actor.States
 
         public FStateSpecialJump SetSpecialData(SpecialJumpData data)
         {
-            this.data = data;
-
+            SpecialJumpData = data;
             return this;
         }
 
         public FStateSpecialJump SetKeepVelocity(float time)
         {
             _keepVelocityTimer = time;
-
             return this;
         }
-        
+
         public FStateSpecialJump SetDelux(bool value)
         {
             IsDelux = value;
-            
             return this;
         }
     }
