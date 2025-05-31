@@ -99,10 +99,6 @@ namespace SurgeEngine.Code.Core.StateMachine
         public TState GetState<TState>() where TState : FState
         {
             Type type = typeof(TState);
-            if (type.IsInstanceOfType(typeof(FStateSpecialJump)))
-            {
-                Debug.Log("123131");
-            }
             return _states[type] as TState;
         }
         
