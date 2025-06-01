@@ -1,5 +1,4 @@
-﻿using System;
-using NaughtyAttributes;
+﻿using NaughtyAttributes;
 using SurgeEngine.Code.Core.Actor.States;
 using SurgeEngine.Code.Core.Actor.System;
 using UnityEngine;

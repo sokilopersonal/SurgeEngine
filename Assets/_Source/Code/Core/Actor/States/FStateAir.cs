@@ -1,13 +1,11 @@
 ﻿using SurgeEngine.Code.Core.Actor.States.BaseStates;
-using SurgeEngine.Code.Core.Actor.States.Characters.Sonic;
-using SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates;
 using SurgeEngine.Code.Core.Actor.System;
 using SurgeEngine.Code.Gameplay.CommonObjects.System;
 using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.States
 {
-    public class FStateAir : FActorState, IBoostHandler, IDamageableState, IPointMarkerLoader
+    public class FStateAir : FActorState, IDamageableState, IPointMarkerLoader
     {
         public float AirTime { get; private set; }
 
@@ -59,18 +57,6 @@ namespace SurgeEngine.Code.Core.Actor.States
                 {
                     if (Kinematics.Speed > 5f) StateMachine.SetState<FStateGround>();
                     else StateMachine.SetState<FStateIdle>();
-                }
-            }
-        }
-
-        public void BoostHandle()
-        {
-            if (!Actor.Flags.HasFlag(FlagType.OutOfControl))
-            {
-                FBoost boost = StateMachine.GetSubState<FBoost>();
-                if (Input.BoostPressed && boost.CanBoost() && boost.CanAirBoost)
-                {
-                    StateMachine.SetState<FStateAirBoost>();
                 }
             }
         }

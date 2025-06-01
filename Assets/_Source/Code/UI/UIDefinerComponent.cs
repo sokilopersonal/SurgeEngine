@@ -1,5 +1,4 @@
-﻿using System;
-using SurgeEngine.Code.UI.Menus;
+﻿using SurgeEngine.Code.UI.Menus;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;

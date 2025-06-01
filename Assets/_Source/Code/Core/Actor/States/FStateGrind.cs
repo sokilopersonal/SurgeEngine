@@ -1,16 +1,12 @@
-﻿using System.Diagnostics;
-using SurgeEngine.Code.Core.Actor.States.BaseStates;
-using SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates;
+﻿using SurgeEngine.Code.Core.Actor.States.BaseStates;
 using SurgeEngine.Code.Core.Actor.System;
 using SurgeEngine.Code.Gameplay.CommonObjects.Mobility.Rails;
-using SurgeEngine.Code.Infrastructure.Custom;
 using UnityEngine;
-using UnityEngine.Splines;
 using Debug = UnityEngine.Debug;
 
 namespace SurgeEngine.Code.Core.Actor.States
 {
-    public class FStateGrind : FActorState, IBoostHandler
+    public class FStateGrind : FActorState
     {
         private Rail _rail;
         private SplineData _data;
@@ -132,10 +128,5 @@ namespace SurgeEngine.Code.Core.Actor.States
             _timer = Mathf.Abs(time);
         }
         public bool IsRailCooldown() => _timer > 0;
-
-        public void BoostHandle()
-        {
-            Actor.StateMachine.GetSubState<FBoost>().BaseGroundBoost();
-        }
     }
 }

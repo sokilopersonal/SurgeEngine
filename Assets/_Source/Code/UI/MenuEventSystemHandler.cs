@@ -1,11 +1,9 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using FMODUnity;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.UI;
 using UnityEngine.UI;
 
 namespace SurgeEngine.Code.UI

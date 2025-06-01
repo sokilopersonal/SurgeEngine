@@ -1,9 +1,6 @@
-using System;
 using SurgeEngine.Code.Core.StateMachine.Base;
 using SurgeEngine.Code.Core.StateMachine.Components;
-using SurgeEngine.Code.Gameplay.Enemy.EggFighter.States;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace SurgeEngine.Code.Gameplay.Enemy.Base
 {

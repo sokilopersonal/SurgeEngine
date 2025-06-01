@@ -1,7 +1,6 @@
 using System;
 using FMODUnity;
 using SurgeEngine.Code.Infrastructure.Tools.Services;
-using UnityEngine;
 
 namespace SurgeEngine.Code.Infrastructure.Tools.Managers
 {

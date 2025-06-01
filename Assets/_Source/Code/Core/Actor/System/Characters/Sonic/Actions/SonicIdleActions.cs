@@ -1,7 +1,6 @@
 ﻿using SurgeEngine.Code.Core.Actor.States;
 using SurgeEngine.Code.Core.Actor.States.Characters.Sonic;
 using SurgeEngine.Code.Core.StateMachine;
-using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic.Actions
 {

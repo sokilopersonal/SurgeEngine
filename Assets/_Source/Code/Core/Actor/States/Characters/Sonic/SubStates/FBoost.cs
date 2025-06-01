@@ -72,15 +72,22 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates
 
         private void OnStateAssign(FState obj)
         {
-            if (obj is IBoostHandler casted)
+            /*if (obj is IBoostHandler casted)
             {
                 _boostHandler = casted;
             }
             else
             {
                 _boostHandler = null;
-            }
-            
+            }*/
+
+            _boostHandler = obj switch
+            {
+                FStateIdle or FStateGround or FStateDrift or FStateGrind => new BoostGroundHandle(),
+                FStateAir => new BoostAirHandle(),
+                _ => _boostHandler
+            };
+
             if (obj is FStateGround)
             {
                 CanAirBoost = true;
@@ -105,11 +112,9 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates
         {
             base.OnTick(dt);
             
-            _boostHandler?.BoostHandle();
+            _boostHandler?.BoostHandle(Actor, _config);
 
             FState state = Actor.StateMachine.CurrentState;
-            FState prev = Actor.StateMachine.PreviousState;
-
             if (state is FStateDrift)
             {
                 BoostEnergy += _config.DriftEnergyAddition * dt;
@@ -158,10 +163,6 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates
 
         private void BoostAction(InputAction.CallbackContext obj)
         {
-            if (Actor.StateMachine.CurrentState is FStateAir && !CanAirBoost) return;
-            if (Actor.StateMachine.CurrentState is FStateStomp) return;
-            if (Actor.StateMachine.CurrentState is FStateSlide) return;
-            
             if (CanBoost())
             {
                 Active = obj.started && !Actor.Flags.HasFlag(FlagType.OutOfControl);
@@ -179,24 +180,6 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates
                 
                 BoostEnergy -= _config.StartDrain;
                 new Rumble().Vibrate(0.7f, 0.8f, 0.5f);
-            }
-        }
-
-        public void BaseGroundBoost()
-        {
-            float dt = Time.deltaTime;
-            BaseActorConfig config = Actor.Config;
-            Rigidbody body = Actor.Kinematics.Rigidbody;
-            float speed = Actor.Kinematics.Speed;
-            
-            if (Active)
-            {
-                if (Actor.Input.moveVector == Vector3.zero) Actor.Kinematics.SetInputDir(Actor.transform.forward);
-                float maxSpeed = config.maxSpeed * _config.MaxSpeedMultiplier;
-                if (speed < maxSpeed)
-                {
-                    body.AddForce(body.linearVelocity.normalized * (_config.Acceleration * dt), ForceMode.Impulse);
-                }
             }
         }
 

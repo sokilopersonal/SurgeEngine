@@ -1,5 +1,4 @@
-﻿using System;
-using FMODUnity;
+﻿using FMODUnity;
 using SurgeEngine.Code.Gameplay.Enemy.Base;
 using SurgeEngine.Code.Gameplay.Enemy.EggFighter.States;
 using UnityEngine;

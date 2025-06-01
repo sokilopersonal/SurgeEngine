@@ -1,4 +1,3 @@
-using System;
 using NaughtyAttributes;
 using SurgeEngine.Code.UI.Menus;
 using UnityEngine;

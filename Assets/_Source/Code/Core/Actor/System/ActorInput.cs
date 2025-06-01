@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using SurgeEngine.Code.Gameplay.CommonObjects.Mobility;
 using UnityEngine;
 using UnityEngine.InputSystem;

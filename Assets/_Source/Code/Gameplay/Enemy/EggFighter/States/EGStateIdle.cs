@@ -1,6 +1,4 @@
-﻿using SurgeEngine.Code.Core.Actor.System;
-using SurgeEngine.Code.Gameplay.CommonObjects.Sensors;
-using SurgeEngine.Code.Gameplay.Enemy.Base;
+﻿using SurgeEngine.Code.Gameplay.Enemy.Base;
 using UnityEngine;
 
 namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter.States

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using SurgeEngine.Code.Core.Actor.States;
 using SurgeEngine.Code.Core.Actor.States.Characters.Sonic;
 using SurgeEngine.Code.Core.StateMachine.Base;

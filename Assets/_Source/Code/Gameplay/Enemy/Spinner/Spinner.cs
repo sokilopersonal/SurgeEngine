@@ -1,5 +1,4 @@
-﻿using SurgeEngine.Code.Core.Actor.System;
-using SurgeEngine.Code.Gameplay.CommonObjects.Interfaces;
+﻿using SurgeEngine.Code.Gameplay.CommonObjects.Interfaces;
 using SurgeEngine.Code.Gameplay.Enemy.Base;
 using UnityEngine;
 

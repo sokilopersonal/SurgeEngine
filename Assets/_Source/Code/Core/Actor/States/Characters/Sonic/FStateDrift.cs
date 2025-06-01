@@ -1,5 +1,4 @@
 ﻿using SurgeEngine.Code.Core.Actor.States.BaseStates;
-using SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates;
 using SurgeEngine.Code.Core.Actor.System;
 using SurgeEngine.Code.Core.StateMachine.Interfaces;
 using SurgeEngine.Code.Gameplay.CommonObjects;
@@ -12,7 +11,7 @@ using Vector3 = UnityEngine.Vector3;
 
 namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
 {
-    public class FStateDrift : FActorState, IBoostHandler, IStateTimeout, IDamageableState
+    public class FStateDrift : FActorState, IStateTimeout, IDamageableState
     {
         private float _driftXDirection;
         private float _ignoreTimer;
@@ -89,11 +88,6 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
             {
                 StateMachine.SetState<FStateAir>(0.1f);
             }
-        }
-
-        public void BoostHandle()
-        {
-            StateMachine.GetSubState<FBoost>().BaseGroundBoost();
         }
 
         public float Timeout { get; set; }

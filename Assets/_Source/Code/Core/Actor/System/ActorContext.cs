@@ -1,6 +1,4 @@
-﻿using Zenject;
-
-namespace SurgeEngine.Code.Core.Actor.System
+﻿namespace SurgeEngine.Code.Core.Actor.System
 {
     public class ActorContext
     {

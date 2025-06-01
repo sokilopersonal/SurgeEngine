@@ -1,5 +1,4 @@
-﻿using System;
-using SurgeEngine.Code.UI.Menus;
+﻿using SurgeEngine.Code.UI.Menus;
 using SurgeEngine.Code.UI.Menus.OptionElements;
 using UnityEngine;
 

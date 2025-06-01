@@ -1,5 +1,4 @@
-﻿using NaughtyAttributes;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace SurgeEngine.Code.Infrastructure.Config.SonicSpecific
 {

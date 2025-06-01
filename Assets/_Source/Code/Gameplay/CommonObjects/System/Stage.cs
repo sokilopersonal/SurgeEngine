@@ -4,7 +4,6 @@ using SurgeEngine.Code.Core.Actor.System;
 using SurgeEngine.Code.Gameplay.CommonObjects.Collectables;
 using SurgeEngine.Code.Infrastructure.Tools.Managers;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using Zenject;
 

@@ -3,7 +3,6 @@ using SurgeEngine.Code.Core.Actor.CameraSystem.Pawns.Data;
 using SurgeEngine.Code.Core.Actor.States;
 using SurgeEngine.Code.Core.Actor.System;
 using UnityEngine;
-using UnityEngine.Splines;
 
 namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
 {

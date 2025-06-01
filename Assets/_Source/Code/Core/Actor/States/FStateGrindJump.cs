@@ -1,5 +1,4 @@
 ﻿using SurgeEngine.Code.Core.Actor.System;
-using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.States
 {

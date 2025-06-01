@@ -1,9 +1,7 @@
 ﻿using System;
 using SurgeEngine.Code.Core.Actor.States.BaseStates;
-using SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates;
 using SurgeEngine.Code.Core.Actor.System;
 using SurgeEngine.Code.Infrastructure.Config;
-using SurgeEngine.Code.Infrastructure.Config.SonicSpecific;
 using SurgeEngine.Code.Infrastructure.Custom;
 using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
@@ -11,19 +9,15 @@ using Vector3 = UnityEngine.Vector3;
 
 namespace SurgeEngine.Code.Core.Actor.States
 {
-    public sealed class FStateGround : FActorState, IBoostHandler, IDamageableState
+    public sealed class FStateGround : FActorState, IDamageableState
     {
         private GroundTag _surfaceTag;
         
         public event Action<GroundTag> OnSurfaceTagChanged;
         
-        private readonly QuickStepConfig _quickstepConfig;
-        private readonly SlideConfig _slideConfig;
-
         public FStateGround(ActorBase owner) : base(owner)
         {
-            owner.TryGetConfig(out _quickstepConfig);
-            owner.TryGetConfig(out _slideConfig);
+            
         }
 
         public override void OnEnter()
@@ -88,11 +82,6 @@ namespace SurgeEngine.Code.Core.Actor.States
                 _surfaceTag = newTag;
                 OnSurfaceTagChanged?.Invoke(newTag);
             }
-        }
-
-        public void BoostHandle()
-        {
-            Actor.StateMachine.GetSubState<FBoost>().BaseGroundBoost();
         }
 
         private void ConvertAirToGroundVelocity()

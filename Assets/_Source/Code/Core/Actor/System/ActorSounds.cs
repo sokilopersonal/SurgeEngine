@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using SurgeEngine.Code.Core.Actor.Sound;
+﻿using SurgeEngine.Code.Core.Actor.Sound;
 
 namespace SurgeEngine.Code.Core.Actor.System
 {

@@ -1,5 +1,4 @@
-﻿using System;
-using Coffee.UIExtensions;
+﻿using Coffee.UIExtensions;
 using SurgeEngine.Code.Core.Actor.System;
 using SurgeEngine.Code.Core.Actor.System.Characters.Sonic;
 using SurgeEngine.Code.Gameplay.CommonObjects;

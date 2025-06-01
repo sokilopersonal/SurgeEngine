@@ -1,7 +1,6 @@
 ﻿using DG.Tweening;
 using SurgeEngine.Code.Infrastructure.Tools.Managers.UI;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace SurgeEngine.Code.UI.Menus

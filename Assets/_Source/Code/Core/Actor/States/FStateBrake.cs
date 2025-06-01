@@ -1,7 +1,6 @@
 ﻿using SurgeEngine.Code.Core.Actor.States.BaseStates;
 using SurgeEngine.Code.Core.Actor.System;
 using SurgeEngine.Code.Infrastructure.Config;
-using SurgeEngine.Code.Infrastructure.Custom;
 using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.States

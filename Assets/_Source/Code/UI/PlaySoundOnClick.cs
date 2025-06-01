@@ -1,7 +1,5 @@
-﻿using System;
-using FMODUnity;
+﻿using FMODUnity;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace SurgeEngine.Code.UI

@@ -1,6 +1,7 @@
 ﻿using SurgeEngine.Code.Core.Actor.States.BaseStates;
 using SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates;
 using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine.Code.Infrastructure.Config.SonicSpecific;
 using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.States
@@ -59,6 +60,6 @@ namespace SurgeEngine.Code.Core.Actor.States
             }
         }
 
-        public void BoostHandle() { }
+        public void BoostHandle(ActorBase actor, BoostConfig config) { }
     }
 }

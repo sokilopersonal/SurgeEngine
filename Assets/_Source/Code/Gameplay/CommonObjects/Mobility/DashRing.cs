@@ -1,7 +1,6 @@
 ﻿using SurgeEngine.Code.Core.Actor.States;
 using SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates;
 using SurgeEngine.Code.Core.Actor.System;
-using SurgeEngine.Code.Infrastructure.Custom;
 using SurgeEngine.Code.Infrastructure.Custom.Drawers;
 using UnityEngine;
 
