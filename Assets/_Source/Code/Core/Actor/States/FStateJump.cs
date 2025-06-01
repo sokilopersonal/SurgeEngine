@@ -53,7 +53,7 @@ namespace SurgeEngine.Code.Core.Actor.States
 
             Kinematics.Normal = Vector3.up;
 
-            if (GetAirTime() > _maxAirTime)
+            if (Kinematics.AirTime > _maxAirTime)
             {
                 StateMachine.SetState<FStateAir>();
             }

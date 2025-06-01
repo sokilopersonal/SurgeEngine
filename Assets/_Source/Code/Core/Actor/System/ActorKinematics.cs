@@ -19,6 +19,7 @@ namespace SurgeEngine.Code.Core.Actor.System
         [SerializeField] private float initialGravity;
         public float Gravity { get; set; }
         public float InitialGravity => initialGravity;
+        public float AirTime { get; private set; }
         
         [Header("Prediction")]
         [SerializeField, Range(25, 90)] public float maxAngleDifference = 80;
@@ -84,6 +85,7 @@ namespace SurgeEngine.Code.Core.Actor.System
             CalculateInputDirection();
             CalculateMovementStats();
             CalculateDetachState();
+            CheckIfIsInAir();
         }
 
         protected virtual void FixedUpdate()
@@ -107,6 +109,18 @@ namespace SurgeEngine.Code.Core.Actor.System
             _skidding = _moveDot < _config.skiddingThreshold;
             _speed = _rigidbody.linearVelocity.magnitude;
             _angle = Vector3.Angle(Normal, Vector3.up);
+        }
+
+        private void CheckIfIsInAir()
+        {
+            if (InAir())
+            {
+                AirTime += Time.deltaTime;
+            }
+            else
+            {
+                AirTime = 0;
+            }
         }
 
         public void BasePhysics(Vector3 normal, MovementType movementType = MovementType.Ground)
@@ -455,6 +469,8 @@ namespace SurgeEngine.Code.Core.Actor.System
         {
             return _inputDir;
         }
+
+        public virtual bool InAir() => Actor.StateMachine.CurrentState is FStateAir;
         
         public void SetPath(SplineContainer path, KinematicsMode desiredMode = KinematicsMode.Free)
         {

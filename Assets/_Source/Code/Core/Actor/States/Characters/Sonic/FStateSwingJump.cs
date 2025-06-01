@@ -17,7 +17,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
         {
             base.OnTick(dt);
 
-            if (GetAirTime() > 0.4f)
+            if (Kinematics.AirTime > 0.4f)
                 StateMachine.SetState<FStateAir>();
         }
 

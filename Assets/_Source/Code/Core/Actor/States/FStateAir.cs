@@ -1,10 +1,7 @@
-﻿using System;
-using SurgeEngine.Code.Core.Actor.States.BaseStates;
+﻿using SurgeEngine.Code.Core.Actor.States.BaseStates;
 using SurgeEngine.Code.Core.Actor.States.Characters.Sonic;
 using SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates;
 using SurgeEngine.Code.Core.Actor.System;
-using SurgeEngine.Code.Core.Actor.System.Characters.Sonic;
-using SurgeEngine.Code.Gameplay.CommonObjects;
 using SurgeEngine.Code.Gameplay.CommonObjects.System;
 using UnityEngine;
 
@@ -12,7 +9,7 @@ namespace SurgeEngine.Code.Core.Actor.States
 {
     public class FStateAir : FActorState, IBoostHandler, IDamageableState, IPointMarkerLoader
     {
-        protected float AirTime;
+        public float AirTime { get; private set; }
 
         public bool IsFallDeath { get; set; }
 
@@ -25,51 +22,12 @@ namespace SurgeEngine.Code.Core.Actor.States
         {
             base.OnEnter();
             
-            if (Mathf.Abs(Kinematics.Angle - 90) < 0.05f && Actor.Kinematics.Velocity.y > 3f)
+            if (Mathf.Abs(Kinematics.Angle - 90) < 0.05f && Kinematics.Velocity.y > 3f)
             {
                 Actor.Flags.AddFlag(new Flag(FlagType.OutOfControl, null, true, 0.5f));
             }
             
-            AirTime = 0f;
             Kinematics.Normal = Vector3.up;
-        }
-
-        public override void OnTick(float dt)
-        {
-            base.OnTick(dt);
-            
-            CalculateAirTime(dt);
-            
-            if (GetAirTime() > 0.1f)
-            {
-                if (!Actor.Flags.HasFlag(FlagType.OutOfControl))
-                {
-                    HomingTarget homingTarget = (Kinematics as SonicKinematics)?.HomingTarget;
-
-                    if (Input.JumpPressed)
-                    {
-                        if (StateMachine.PreviousState is not FStateHoming or FStateAirBoost)
-                        {
-                            if (homingTarget != null)
-                            {
-                                StateMachine.SetState<FStateHoming>()?.SetTarget(homingTarget);
-                            }
-                            else
-                            {
-                                StateMachine.SetState<FStateHoming>();
-                            }
-                        }
-                    }
-                }
-            }
-
-            if (!Actor.Flags.HasFlag(FlagType.OutOfControl))
-            {
-                if (Input.BPressed)
-                {
-                    StateMachine.SetState<FStateStomp>();
-                }
-            }
         }
 
         public override void OnFixedTick(float dt)
@@ -115,13 +73,6 @@ namespace SurgeEngine.Code.Core.Actor.States
                     StateMachine.SetState<FStateAirBoost>();
                 }
             }
-        }
-
-        protected float GetAirTime() => AirTime;
-
-        private void CalculateAirTime(float dt)
-        {
-            AirTime += dt;
         }
 
         public void Load(Vector3 loadPosition, Quaternion loadRotation)

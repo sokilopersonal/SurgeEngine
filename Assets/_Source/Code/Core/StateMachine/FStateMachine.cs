@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using SurgeEngine.Code.Core.Actor.States;
 using SurgeEngine.Code.Core.StateMachine.Base;
 using SurgeEngine.Code.Core.StateMachine.Interfaces;
@@ -100,6 +101,14 @@ namespace SurgeEngine.Code.Core.StateMachine
         {
             Type type = typeof(T);
             return _states[type] as T;
+        }
+        
+        public T[] GetAllStatesOfType<T>() where T : FState
+        {
+            return _states.Values
+                .Where(state => typeof(T).IsAssignableFrom(state.GetType()))
+                .Select(state => state as T)
+                .ToArray();
         }
         
         public bool IsExact<T>() where T : FState

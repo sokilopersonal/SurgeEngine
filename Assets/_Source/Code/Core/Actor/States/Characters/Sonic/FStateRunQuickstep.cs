@@ -125,7 +125,10 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
             }
         }
 
-        public void SetDirection(QuickstepDirection direction) => _direction = direction;
+        public void SetDirection(QuickstepDirection direction)
+        {
+            _direction = direction;
+        }
 
         public QuickstepDirection GetDirection()
         {

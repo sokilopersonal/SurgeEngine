@@ -1,10 +1,7 @@
 ﻿using SurgeEngine.Code.Core.Actor.States.BaseStates;
-using SurgeEngine.Code.Core.Actor.States.Characters.Sonic;
 using SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates;
 using SurgeEngine.Code.Core.Actor.System;
-using SurgeEngine.Code.Infrastructure.Custom;
 using UnityEngine;
-using NotImplementedException = System.NotImplementedException;
 
 namespace SurgeEngine.Code.Core.Actor.States
 {
@@ -36,27 +33,6 @@ namespace SurgeEngine.Code.Core.Actor.States
                 {
                     Kinematics.SetDetachTime(0.2f);
                     StateMachine.SetState<FStateJump>();
-                }
-
-                if (Input.BPressed)
-                {
-                    StateMachine.SetState<FStateSit>();
-                }
-
-                if (StateMachine.Exists<FStateQuickstep>())
-                {
-                    if (Input.LeftBumperPressed)
-                    {
-                        var qs = StateMachine.GetState<FStateQuickstep>();
-                        qs.SetDirection(QuickstepDirection.Left);
-                        StateMachine.SetState<FStateQuickstep>();
-                    }
-                    else if (Input.RightBumperPressed)
-                    {
-                        var qs = StateMachine.GetState<FStateQuickstep>();
-                        qs.SetDirection(QuickstepDirection.Right);
-                        StateMachine.SetState<FStateQuickstep>();
-                    }
                 }
             }
         }

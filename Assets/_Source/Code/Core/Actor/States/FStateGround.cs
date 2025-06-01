@@ -1,13 +1,10 @@
 ﻿using System;
 using SurgeEngine.Code.Core.Actor.States.BaseStates;
-using SurgeEngine.Code.Core.Actor.States.Characters.Sonic;
 using SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates;
 using SurgeEngine.Code.Core.Actor.System;
-using SurgeEngine.Code.Gameplay.Inputs;
 using SurgeEngine.Code.Infrastructure.Config;
 using SurgeEngine.Code.Infrastructure.Config.SonicSpecific;
 using SurgeEngine.Code.Infrastructure.Custom;
-using SurgeEngine.Code.Infrastructure.Tools;
 using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
 using Vector3 = UnityEngine.Vector3;
@@ -40,88 +37,10 @@ namespace SurgeEngine.Code.Core.Actor.States
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
-
-            if (!Actor.Flags.HasFlag(FlagType.OutOfControl))
-            {
-                if (Input.JumpPressed)
-                {
-                    StateMachine.SetState<FStateJump>(0.1f);
-                }
-                
-                if (!SonicTools.IsBoost())
-                {
-                    if (Kinematics.Skidding && Kinematics.HorizontalSpeed > 15f)
-                    {
-                        StateMachine.SetState<FStateBrake>();
-                    }
-                }
-
-                float minSpeed = _slideConfig.minSpeed;
-                minSpeed += minSpeed * 1.5f;
-                float dot = Kinematics.MoveDot;
-                float abs = Mathf.Abs(dot);
             
-                bool readyForDrift = Kinematics.Speed > 5f && abs < 0.4f && !Mathf.Approximately(dot, 0f);
-                bool readyForSlide = Kinematics.Speed > minSpeed;
-
-                if (_quickstepConfig && StateMachine.Exists<FStateRunQuickstep>())
-                {
-                    if (Input.LeftBumperPressed)
-                    {
-                        if (Kinematics.Speed >= _quickstepConfig.minSpeed)
-                        {
-                            var qs = StateMachine.GetState<FStateRunQuickstep>();
-                            qs.SetDirection(QuickstepDirection.Left);
-                            StateMachine.SetState<FStateRunQuickstep>();
-                        }
-                        else
-                        {
-                            var qs = StateMachine.GetState<FStateQuickstep>();
-                            qs.SetDirection(QuickstepDirection.Left);
-                            StateMachine.SetState<FStateQuickstep>();
-                        }
-                    }
-                    else if (Input.RightBumperPressed)
-                    {
-                        if (Kinematics.Speed >= _quickstepConfig.minSpeed)
-                        {
-                            var qs = StateMachine.GetState<FStateRunQuickstep>();
-                            qs.SetDirection(QuickstepDirection.Right);
-                            StateMachine.SetState<FStateRunQuickstep>();
-                        }
-                        else
-                        {
-                            var qs = StateMachine.GetState<FStateQuickstep>();
-                            qs.SetDirection(QuickstepDirection.Right);
-                            StateMachine.SetState<FStateQuickstep>();
-                        }
-                    }
-                }
-                
-                if (Input.BHeld)
-                {
-                    if (readyForSlide && !readyForDrift)
-                    {
-                        StateMachine.SetState<FStateSlide>();
-                    }
-                    else if(!readyForSlide && !readyForDrift)
-                    {
-                        StateMachine.SetState<FStateCrawl>();
-                    }
-
-                    if (readyForDrift)
-                    {
-                        StateMachine.SetState<FStateDrift>();
-                    }
-                }
-
-                if (SonicInputLayout.DriftHeld)
-                {
-                    if (readyForDrift)
-                    {
-                        StateMachine.SetState<FStateDrift>();
-                    }
-                }
+            if (Input.JumpPressed)
+            {
+                StateMachine.SetState<FStateJump>(0.1f);
             }
         }
 
