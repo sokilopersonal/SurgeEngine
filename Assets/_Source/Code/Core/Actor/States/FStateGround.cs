@@ -48,7 +48,18 @@ namespace SurgeEngine.Code.Core.Actor.States
                 .Evaluate(Kinematics.HorizontalSpeed / config.topSpeed);
             bool checkForPredictedGround =
                 Kinematics.CheckForPredictedGround(Kinematics.Velocity, Kinematics.Normal, Time.fixedDeltaTime, distance, 8);
-            if (Kinematics.CheckForGround(out RaycastHit data, castDistance: distance) && checkForPredictedGround)
+            bool ground = Kinematics.CheckForGround(out RaycastHit data, castDistance: distance);
+            if (Kinematics.Speed < config.topSpeed / 2)
+            {
+                float angle = Vector3.Angle(data.normal, Vector3.up);
+                if (Kinematics.IsHardAngle(data.normal) && angle < 85)
+                {
+                    StateMachine.SetState<FStateAir>();
+                    return;
+                }
+            }
+            
+            if (ground && checkForPredictedGround)
             {
                 Kinematics.Point = data.point;
                 Kinematics.SlerpSnapNormal(data.normal);

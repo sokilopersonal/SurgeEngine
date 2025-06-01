@@ -31,8 +31,16 @@ namespace SurgeEngine.Code.Core.Actor.States
         public override void OnFixedTick(float dt)
         {
             base.OnFixedTick(dt);
+
+            bool air = !Kinematics.CheckForGround(out var hit);
+            if (Kinematics.IsHardAngle(hit.normal))
+            {
+                Rigidbody.linearVelocity += Vector3.down * (Kinematics.Gravity * dt);
+                Rigidbody.linearVelocity = Vector3.ProjectOnPlane(Rigidbody.linearVelocity, hit.normal);
+                return;
+            }
             
-            if (!Kinematics.CheckForGround(out var hit))
+            if (air)
             {
                 Kinematics.Point = hit.point;
                 Kinematics.Normal = Vector3.up;

@@ -8,6 +8,8 @@ namespace SurgeEngine.Code.Core.Actor.States
 {
     public class FStateIdle : FActorState, IDamageableState, IBoostHandler
     {
+        private float _angle;
+        
         public FStateIdle(ActorBase owner) : base(owner)
         {
         }
@@ -42,7 +44,8 @@ namespace SurgeEngine.Code.Core.Actor.States
         {
             base.OnFixedTick(dt);
             
-            if (Kinematics.CheckForGroundWithDirection(out RaycastHit hit, Vector3.down, 2f))
+            if (Kinematics.CheckForGroundWithDirection(out RaycastHit hit, Vector3.down, 2f) &&
+                !Kinematics.IsHardAngle(hit.normal))
             {
                 Kinematics.Point = hit.point;
                 Kinematics.Normal = Vector3.up;

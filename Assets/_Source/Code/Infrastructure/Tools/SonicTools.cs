@@ -80,7 +80,8 @@ namespace SurgeEngine.Code.Infrastructure.Tools
                 }
             }
     
-            if (closestTarget != null && !Camera.main.IsObjectInView(closestTarget.transform))
+            var cam = Camera.main;
+            if (closestTarget != null && cam && !cam.IsObjectInView(closestTarget.transform))
                 return null;
             
             return closestTarget;

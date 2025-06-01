@@ -28,10 +28,11 @@ namespace SurgeEngine.Code.Core.Actor.System
         [Header("Normal")] 
         [SerializeField] private float normalLerpSpeed = 7f;
         [SerializeField] private float normalSpeedThreshold = 10f;
+        [SerializeField, Range(0, 90), Tooltip("When slope angle is greater than this value, the player will slide down")] private float hardAngle = 60f;
         
         public event Action<KinematicsMode> OnModeChange;
 
-        public float Speed => _speed;
+        public float Speed => _rigidbody.linearVelocity.magnitude;
         public float HorizontalSpeed
         {
             get
@@ -44,12 +45,12 @@ namespace SurgeEngine.Code.Core.Actor.System
 
         public Vector3 Point { get; set; }
         public Vector3 Normal { get; set; }
-        public float Angle => _angle;
+        public float Angle => Vector3.Angle(Normal, Vector3.up);
         public Vector3 Velocity => _rigidbody.linearVelocity;
         public Vector3 MovementVector => _movementVector;
         public Vector3 PlanarVelocity => _planarVelocity;
         public float TurnRate { get; set; }
-        public bool Skidding => _skidding;
+        public bool Skidding => _moveDot < _config.skiddingThreshold;
         public float MoveDot => _moveDot;
 
         private Vector3 _inputDir;
@@ -59,13 +60,10 @@ namespace SurgeEngine.Code.Core.Actor.System
         private Vector3 _planarVelocity;
 
         private SplineData _splineData;
-
-        private float _speed;
+        
         private float _moveDot;
-        private float _angle;
         private float _detachTimer;
         private bool _canAttach;
-        private bool _skidding;
 
         private BaseActorConfig _config;
 
@@ -106,9 +104,6 @@ namespace SurgeEngine.Code.Core.Actor.System
         private void CalculateMovementStats()
         {
             _moveDot = Vector3.Dot(Actor.Kinematics.GetInputDir().normalized, _rigidbody.linearVelocity.normalized);
-            _skidding = _moveDot < _config.skiddingThreshold;
-            _speed = _rigidbody.linearVelocity.magnitude;
-            _angle = Vector3.Angle(Normal, Vector3.up);
         }
 
         private void CheckIfIsInAir()
@@ -136,7 +131,7 @@ namespace SurgeEngine.Code.Core.Actor.System
             {
                 if (_inputDir.magnitude > 0.2f)
                 {
-                    if (!_skidding)
+                    if (!Skidding)
                     {
                         TurnRate = Mathf.Lerp(TurnRate, _config.turnSpeed, _config.turnSmoothing * Time.fixedDeltaTime);
                         float accelRateMod = _config.accelerationCurve.Evaluate(_planarVelocity.magnitude / _config.topSpeed);
@@ -161,7 +156,7 @@ namespace SurgeEngine.Code.Core.Actor.System
             {
                 if (_inputDir.magnitude > 0.2f)
                 {
-                    if (!_skidding)
+                    if (!Skidding)
                     {
                         TurnRate = Mathf.Lerp(TurnRate, _config.turnSpeed, _config.turnSmoothing * Time.fixedDeltaTime);
                         float accelRateMod = _config.accelerationCurve.Evaluate(_planarVelocity.magnitude / _config.topSpeed);
@@ -216,7 +211,7 @@ namespace SurgeEngine.Code.Core.Actor.System
         {
             Vector3 newVelocity = Quaternion.FromToRotation(_planarVelocity.normalized, _inputDir.normalized) * _planarVelocity;
             float handling = TurnRate;
-            handling *= _config.turnCurve.Evaluate(_speed / _config.topSpeed);
+            handling *= _config.turnCurve.Evaluate(Speed / _config.topSpeed);
             _movementVector = Vector3.Slerp(_planarVelocity, newVelocity, handling * Time.fixedDeltaTime);
             
             Project();
@@ -232,13 +227,13 @@ namespace SurgeEngine.Code.Core.Actor.System
 
         public void SlopePhysics()
         {
-            if (_speed < _config.slopeMinSpeed && _angle >= _config.slopeDeslopeAngle)
+            if (Speed < _config.slopeMinSpeed && Angle >= _config.slopeDeslopeAngle)
             {
                 _rigidbody.AddForce(Normal * _config.slopeDeslopeForce, ForceMode.Impulse);
                 Actor.StateMachine.SetState<FStateAir>(_config.slopeInactiveDuration);
             }
             
-            if (_angle > _config.slopeMinAngle && _speed > _config.slopeMinForceSpeed)
+            if (Angle > _config.slopeMinAngle && Speed > _config.slopeMinForceSpeed)
             {
                 bool uphill = Vector3.Dot(_rigidbody.linearVelocity.normalized, Vector3.down) < 0;
                 Vector3 slopeForce = Vector3.ProjectOnPlane(Vector3.down, Normal) * (1 * (uphill ? _config.slopeUphillForce : _config.slopeDownhillForce));
@@ -246,7 +241,7 @@ namespace SurgeEngine.Code.Core.Actor.System
             }
             
             float rDot = Vector3.Dot(Vector3.up, Actor.transform.right);
-            if (Mathf.Abs(rDot) > 0.1f && Mathf.Approximately(_angle, 90))
+            if (Mathf.Abs(rDot) > 0.1f && Mathf.Approximately(Angle, 90))
             {
                 _rigidbody.linearVelocity += Vector3.down * (4 * Time.fixedDeltaTime);
             }
@@ -446,6 +441,8 @@ namespace SurgeEngine.Code.Core.Actor.System
         {
             _movementVector = vector;
         }
+
+        public bool IsHardAngle(Vector3 normal) => Vector3.Angle(normal, Vector3.up) > hardAngle;
 
         private void CalculateDetachState()
         {
