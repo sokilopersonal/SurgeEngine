@@ -3,6 +3,7 @@ using SurgeEngine.Code.Core.Actor.States.BaseStates;
 using SurgeEngine.Code.Core.Actor.States.Characters.Sonic;
 using SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates;
 using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine.Code.Core.Actor.System.Characters.Sonic;
 using SurgeEngine.Code.Gameplay.CommonObjects;
 using SurgeEngine.Code.Gameplay.CommonObjects.System;
 using UnityEngine;
@@ -43,7 +44,7 @@ namespace SurgeEngine.Code.Core.Actor.States
             {
                 if (!Actor.Flags.HasFlag(FlagType.OutOfControl))
                 {
-                    HomingTarget homingTarget = Kinematics.HomingTarget;
+                    HomingTarget homingTarget = (Kinematics as SonicKinematics)?.HomingTarget;
 
                     if (Input.JumpPressed)
                     {

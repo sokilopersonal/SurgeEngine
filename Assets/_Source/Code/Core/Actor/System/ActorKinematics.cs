@@ -1,10 +1,8 @@
 ﻿using System;
 using SurgeEngine.Code.Core.Actor.States;
 using SurgeEngine.Code.Core.StateMachine.Base;
-using SurgeEngine.Code.Gameplay.CommonObjects;
 using SurgeEngine.Code.Infrastructure.Config;
 using SurgeEngine.Code.Infrastructure.Custom;
-using SurgeEngine.Code.Infrastructure.Tools;
 using UnityEngine;
 using UnityEngine.Splines;
 
@@ -16,7 +14,6 @@ namespace SurgeEngine.Code.Core.Actor.System
     public class ActorKinematics : ActorComponent
     {
         public Rigidbody Rigidbody => _rigidbody;
-        public HomingTarget HomingTarget { get; private set; } // Move to SonicKinematics
 
         [Header("Gravity")] 
         [SerializeField] private float initialGravity;
@@ -82,16 +79,14 @@ namespace SurgeEngine.Code.Core.Actor.System
             Normal = Vector3.up;
         }
 
-        private void Update()
+        protected virtual void Update()
         {
             CalculateInputDirection();
             CalculateMovementStats();
             CalculateDetachState();
-
-            FindHomingTarget();
         }
 
-        private void FixedUpdate()
+        protected virtual void FixedUpdate()
         {
             SplineCalculation();
         }
@@ -112,18 +107,6 @@ namespace SurgeEngine.Code.Core.Actor.System
             _skidding = _moveDot < _config.skiddingThreshold;
             _speed = _rigidbody.linearVelocity.magnitude;
             _angle = Vector3.Angle(Normal, Vector3.up);
-        }
-
-        private void FindHomingTarget()
-        {
-            if (Actor.StateMachine.CurrentState is FStateAir)
-            {
-                HomingTarget = SonicTools.FindHomingTarget();
-            }
-            else
-            {
-                HomingTarget = null;
-            }
         }
 
         public void BasePhysics(Vector3 normal, MovementType movementType = MovementType.Ground)

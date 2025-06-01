@@ -1,6 +1,7 @@
 ﻿using System;
 using Coffee.UIExtensions;
 using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine.Code.Core.Actor.System.Characters.Sonic;
 using SurgeEngine.Code.Gameplay.CommonObjects;
 using SurgeEngine.Code.Gameplay.CommonObjects.Collectables;
 using SurgeEngine.Code.Gameplay.CommonObjects.HUD;
@@ -74,7 +75,7 @@ namespace SurgeEngine.Code.Core.Actor.HUD
 
         private void UpdateHomingTarget()
         {
-            HomingTarget target = _actor.Kinematics.HomingTarget;
+            HomingTarget target = (_actor.Kinematics as SonicKinematics)?.HomingTarget;
             if (target)
             {
                 homingIcon.gameObject.SetActive(true);
