@@ -32,11 +32,6 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
             _ignoreTimer = 0;
         }
 
-        public override void OnExit()
-        {
-            base.OnExit();
-        }
-
         public override void OnTick(float dt)
         {
             base.OnTick(dt);

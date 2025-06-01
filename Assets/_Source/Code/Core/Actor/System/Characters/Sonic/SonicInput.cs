@@ -2,8 +2,6 @@
 {
     public class SonicInput : ActorInput
     {
-        public bool BoostPressed => LeftPressed;
-        
-        public bool DriftHeld => DownHeld || TriggerAction.IsPressed();
+        public bool DriftHeld => BHeld || TriggerAction.IsPressed();
     }
 }

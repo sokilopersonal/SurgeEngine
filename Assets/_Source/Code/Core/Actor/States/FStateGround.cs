@@ -32,7 +32,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         {
             base.OnTick(dt);
             
-            if (Input.UpPressed)
+            if (Input.APressed)
             {
                 StateMachine.SetState<FStateJump>(0.1f);
             }

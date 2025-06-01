@@ -14,28 +14,28 @@ namespace SurgeEngine.Code.Core.Actor.System
         public Vector2 lookVector;
         public PlayerInput playerInput;
         
-        public bool LeftPressed => LeftInputAction.WasPressedThisFrame();
-        public bool LeftHeld => LeftInputAction.IsPressed();
-        public bool UpPressed => UpInputAction.WasPressedThisFrame();
-        public bool UpHeld => UpInputAction.IsPressed();
-        public bool DownPressed => DownInputAction.WasPressedThisFrame();
-        public bool DownReleased => DownInputAction.WasReleasedThisFrame();
-        public bool DownHeld => playerInput.actions["BAction"].IsPressed();
-        public bool SpecialPressed => SpecialInputAction.WasPressedThisFrame();
-        public bool SpecialHeld => SpecialInputAction.IsPressed();
+        public bool XPressed => XInputAction.WasPressedThisFrame();
+        public bool XHeld => XInputAction.IsPressed();
+        public bool APressed => AInputAction.WasPressedThisFrame();
+        public bool AHeld => AInputAction.IsPressed();
+        public bool BPressed => BInputAction.WasPressedThisFrame();
+        public bool BReleased => BInputAction.WasReleasedThisFrame();
+        public bool BHeld => BInputAction.IsPressed();
+        public bool YPressed => YInputAction.WasPressedThisFrame();
+        public bool YHeld => YInputAction.IsPressed();
         public bool LeftBumperPressed => BumperInputAction.ReadValue<Vector2>() == new Vector2(-1, 0);
         public bool RightBumperPressed => BumperInputAction.ReadValue<Vector2>() == new Vector2(1, 0);
         
-        public Action<InputAction.CallbackContext> LeftAction;
-        public Action<InputAction.CallbackContext> UpAction;
-        public Action<InputAction.CallbackContext> DownAction;
-        public Action<InputAction.CallbackContext> SpecialAction;
+        public Action<InputAction.CallbackContext> XAction;
+        public Action<InputAction.CallbackContext> AAction;
+        public Action<InputAction.CallbackContext> BAction;
+        public Action<InputAction.CallbackContext> YAction;
         public Action<InputAction.CallbackContext> BumperAction;
         
-        protected InputAction LeftInputAction => playerInput.actions["XAction"];
-        protected InputAction UpInputAction => playerInput.actions["AAction"];
-        protected InputAction DownInputAction => playerInput.actions["BAction"];
-        protected InputAction SpecialInputAction => playerInput.actions["YAction"];
+        protected InputAction XInputAction => playerInput.actions["XAction"];
+        protected InputAction AInputAction => playerInput.actions["AAction"];
+        protected InputAction BInputAction => playerInput.actions["BAction"];
+        protected InputAction YInputAction => playerInput.actions["YAction"];
         protected InputAction BumperInputAction => playerInput.actions["Bumper"];
         protected InputAction TriggerAction => playerInput.actions["Trigger"];
 
@@ -163,14 +163,14 @@ namespace SurgeEngine.Code.Core.Actor.System
                 return;
             }
 
-            UpAction?.Invoke(obj);
+            AAction?.Invoke(obj);
         }
 
         private void BoostInput(InputAction.CallbackContext obj)
         {
             if (obj.started) OnButtonPressed?.Invoke(ButtonType.X);
 
-            LeftAction?.Invoke(obj);
+            XAction?.Invoke(obj);
         }
 
         private void BInput(InputAction.CallbackContext obj)

@@ -44,9 +44,9 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             
             if (_playerInside)
             {
-                bool aPressed = _actor.Input.UpHeld;
-                bool bPressed = _actor.Input.DownHeld;
-                bool xPressed = _actor.Input.LeftHeld;
+                bool aPressed = _actor.Input.AHeld;
+                bool bPressed = _actor.Input.BHeld;
+                bool xPressed = _actor.Input.XHeld;
 
                 bool anyButton = aPressed
                     || bPressed

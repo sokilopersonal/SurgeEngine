@@ -53,7 +53,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
             }
             if (timer > 1f && Kinematics.Speed < 1f)
             {
-                if (Input.DownHeld)
+                if (Input.BHeld)
                 {
                     StateMachine.SetState<FStateSit>();
                 }

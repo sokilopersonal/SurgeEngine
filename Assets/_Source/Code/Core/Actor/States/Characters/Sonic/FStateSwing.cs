@@ -54,7 +54,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
                 _swingSound = false;
             }
 
-            if(Input.UpPressed)
+            if(Input.APressed)
                 Jump();
             
             Actor.transform.position = poleGrip.position;

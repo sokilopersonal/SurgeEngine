@@ -27,7 +27,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
             bool ceiling = Kinematics.CheckForCeiling(out RaycastHit data);
             if (Utility.TickTimer(ref _timer, WaitTime))
             {
-                if (Input.DownHeld)
+                if (Input.BHeld)
                 {
                     StateMachine.SetState<FStateSit>();
                 }

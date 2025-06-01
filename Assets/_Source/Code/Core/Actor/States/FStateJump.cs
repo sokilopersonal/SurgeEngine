@@ -40,7 +40,7 @@ namespace SurgeEngine.Code.Core.Actor.States
 
             if (!Actor.Flags.HasFlag(FlagType.OutOfControl))
             {
-                if (Input.UpHeld)
+                if (Input.AHeld)
                 {
                     if (_jumpTime < _config.jumpStartTime)
                     {

@@ -42,7 +42,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
-            if (!Input.DownHeld && !Kinematics.CheckForCeiling(out RaycastHit data))
+            if (!Input.BHeld && !Kinematics.CheckForCeiling(out RaycastHit data))
             {
                 if (Input.moveVector.magnitude > 0.1f)
                 {
@@ -54,7 +54,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
                 }
             }
 
-            if (Input.UpPressed)
+            if (Input.APressed)
             {
                 StateMachine.SetState<FStateJump>(0.1f);
             }

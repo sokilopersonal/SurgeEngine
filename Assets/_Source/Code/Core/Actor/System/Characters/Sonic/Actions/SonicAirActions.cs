@@ -25,7 +25,7 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic.Actions
                 {
                     HomingTarget homingTarget = (Kinematics as SonicKinematics)?.HomingTarget;
 
-                    if (Input.UpPressed)
+                    if (Input.APressed)
                     {
                         if (homingTarget != null)
                         {
@@ -41,7 +41,7 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic.Actions
 
             if (!Flags.HasFlag(FlagType.OutOfControl))
             {
-                if (Input.DownPressed)
+                if (Input.BPressed)
                 {
                     StateMachine.SetState<FStateStomp>();
                 }

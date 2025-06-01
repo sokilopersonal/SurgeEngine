@@ -336,7 +336,7 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
             if (Actor.StateMachine.CurrentState is not FStateJump)
                 yield break;
             
-            if (Actor.Input.UpHeld)
+            if (Actor.Input.AHeld)
             {
                 StateAnimator.TransitionToState("Ball", 0f);
             }
