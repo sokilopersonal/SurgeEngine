@@ -5,7 +5,6 @@ using SurgeEngine.Code.Gameplay.CommonObjects;
 using SurgeEngine.Code.Gameplay.CommonObjects.Collectables;
 using SurgeEngine.Code.Gameplay.Enemy.Base;
 using SurgeEngine.Code.Gameplay.Inputs;
-using SurgeEngine.Code.Infrastructure.Config;
 using SurgeEngine.Code.Infrastructure.Config.SonicSpecific;
 using UnityEngine;
 using UnityEngine.InputSystem;
