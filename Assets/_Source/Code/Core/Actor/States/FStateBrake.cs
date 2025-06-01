@@ -32,15 +32,12 @@ namespace SurgeEngine.Code.Core.Actor.States
             if (Kinematics.CheckForGround(out var hit))
             {
                 Kinematics.Normal = Vector3.up;
-                
                 Kinematics.Snap(hit.point, Vector3.up, true);
                 
                 float f = Mathf.Lerp(_config.maxSkiddingRate, _config.minSkiddingRate, Kinematics.Speed / _config.topSpeed);
                 Rigidbody.linearVelocity = Vector3.MoveTowards(Rigidbody.linearVelocity, Vector3.zero,
                     Time.fixedDeltaTime * f);
-                Kinematics.Project();
-                
-                //Model.RotateBody(Vector3.up);
+                Kinematics.Project(hit.normal);
                 Kinematics.SlopePhysics();
 
                 if (Rigidbody.linearVelocity.magnitude < 0.2f)

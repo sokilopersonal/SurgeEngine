@@ -185,24 +185,31 @@ namespace SurgeEngine.Code.Core.Actor.System
 
         private void SplineCalculation()
         {
-            if (_splineData != null && mode == KinematicsMode.Forward || mode == KinematicsMode.Side)
+            if (_splineData != null)
             {
-                _splineData.EvaluateWorld(out var pos, out var tg, out var up, out var right);
-                Project(right);
-                
-                _inputDir = Vector3.ProjectOnPlane(_inputDir, right);
-
-                Vector3 endPos = pos;
-                endPos += up;
-                endPos.y = _rigidbody.position.y;
-                
-                _rigidbody.position = Vector3.MoveTowards(_rigidbody.position, endPos, Mathf.Min(Speed / 64f, 1) * 16f * Time.fixedDeltaTime);
-                _splineData.Time += Vector3.Dot(Velocity, Vector3.ProjectOnPlane(tg, Normal)) * Time.fixedDeltaTime;
-
-                float distance = Vector3.Distance(_rigidbody.position, pos);
-                if (distance > 5f)
+                if (mode == KinematicsMode.Forward || mode == KinematicsMode.Side)
                 {
-                    Debug.Log("Too far away from the point. Resetting path.");
+                    _splineData.EvaluateWorld(out var pos, out var tg, out var up, out var right);
+                    Project(right);
+                
+                    _inputDir = Vector3.ProjectOnPlane(_inputDir, right);
+
+                    Vector3 endPos = pos;
+                    endPos += up;
+                    endPos.y = _rigidbody.position.y;
+                
+                    _rigidbody.position = Vector3.MoveTowards(_rigidbody.position, endPos, Mathf.Min(Speed / 64f, 1) * 16f * Time.fixedDeltaTime);
+                    _splineData.Time += Vector3.Dot(Velocity, Vector3.ProjectOnPlane(tg, Normal)) * Time.fixedDeltaTime;
+
+                    float distance = Vector3.Distance(_rigidbody.position, pos);
+                    if (distance > 5f)
+                    {
+                        Debug.Log("Too far away from the point. Resetting path.");
+                        SetPath(null);
+                    }
+                }
+                else
+                {
                     SetPath(null);
                 }
             }
@@ -228,8 +235,6 @@ namespace SurgeEngine.Code.Core.Actor.System
 
         public void SlopePhysics()
         {
-            //SlopePrediction();
-            
             if (_speed < _config.slopeMinSpeed && _angle >= _config.slopeDeslopeAngle)
             {
                 _rigidbody.AddForce(Normal * _config.slopeDeslopeForce, ForceMode.Impulse);
@@ -247,80 +252,6 @@ namespace SurgeEngine.Code.Core.Actor.System
             if (Mathf.Abs(rDot) > 0.1f && Mathf.Approximately(_angle, 90))
             {
                 _rigidbody.linearVelocity += Vector3.down * (4 * Time.fixedDeltaTime);
-            }
-        }
-
-        #region BIG CODE
-
-        private void SlopePrediction()
-        {
-            float lowerValue = 0.43f;
-            Vector3 predictedPosition = _rigidbody.position + -Normal * lowerValue;
-            Vector3 predictedNormal = Normal;
-            Vector3 predictedVelocity = _rigidbody.linearVelocity;
-            float speedFrame = _rigidbody.linearVelocity.magnitude * Time.fixedDeltaTime;
-            float lerpJump = 0.015f;
-            LayerMask mask = _config.castLayer;
-
-            if (Speed <= 0)
-                return;
-            
-            if (!Physics.Raycast(predictedPosition, predictedVelocity.normalized, 
-                    out RaycastHit pGround, speedFrame * 1.3f, mask)) { HighSpeedFix(); return; }
-
-            for (float lerp = lerpJump; lerp < maxAngleDifference / 90; lerp += lerpJump)
-            {
-                if (!Physics.Raycast(predictedPosition, Vector3.Lerp(predictedVelocity.normalized, Normal, lerp), out pGround, speedFrame * 1.3f, mask))
-                {
-                    lerp += lerpJump;
-                    Physics.Raycast(predictedPosition + Vector3.Lerp(predictedVelocity.normalized, Normal, lerp) * (speedFrame * 1.3f), -predictedNormal, 
-                        out pGround, _config.castDistance + 0.2f, mask);
-
-                    predictedPosition = predictedPosition + Vector3.Lerp(predictedVelocity.normalized, Normal, lerp) * speedFrame + pGround.normal * lowerValue;
-                    predictedVelocity = Quaternion.FromToRotation(Normal, pGround.normal) * predictedVelocity;
-                    Normal = pGround.normal;
-                    _rigidbody.position = Vector3.MoveTowards(_rigidbody.position, predictedPosition, Time.fixedDeltaTime);
-                    _rigidbody.linearVelocity = predictedVelocity;
-                    break;
-                }
-            }
-        }
-
-        private void HighSpeedFix()
-        {
-            Vector3 predictedPosition = _rigidbody.position;
-            Vector3 predictedNormal = Normal;
-            Vector3 predictedVelocity = _rigidbody.linearVelocity;
-            int steps = 16;
-            LayerMask mask = _config.castLayer;
-            int i;
-            for (i = 0; i < steps; i++)
-            {
-                predictedPosition += predictedVelocity * Time.fixedDeltaTime / steps;
-                if (Physics.Raycast(predictedPosition, -predictedNormal, out RaycastHit pGround, _config.castDistance + 0.2f, mask))
-                {
-                    if (Vector3.Angle(predictedNormal, pGround.normal) < 45)
-                    {
-                        predictedPosition = pGround.point + pGround.normal * 0.5f;
-                        predictedVelocity = Quaternion.FromToRotation(Normal, pGround.normal) * predictedVelocity;
-                        predictedNormal = pGround.normal;
-                    } 
-                    else
-                    {
-                        i = -1;
-                        break;
-                    }
-                } 
-                else
-                {
-                    i = -1;
-                    break;
-                }
-            }
-            if (i >= steps)
-            {
-                Normal = predictedNormal;
-                _rigidbody.position = Vector3.MoveTowards(_rigidbody.position, predictedPosition, Time.fixedDeltaTime);
             }
         }
 
@@ -347,8 +278,6 @@ namespace SurgeEngine.Code.Core.Actor.System
 
             return willBeGrounded;
         }
-
-        #endregion
 
         public void ResetVelocity()
         {
