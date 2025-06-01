@@ -1,5 +1,6 @@
 ﻿using SurgeEngine.Code.Core.Actor.States.BaseStates;
 using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine.Code.Core.Actor.System.Characters.Sonic;
 using SurgeEngine.Code.Core.StateMachine.Interfaces;
 using SurgeEngine.Code.Gameplay.CommonObjects;
 using SurgeEngine.Code.Gameplay.Inputs;
@@ -47,7 +48,8 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
                 _ignoreTimer = 0;
             }
             
-            if (!SonicInputLayout.DriftHeld || Rigidbody.linearVelocity.magnitude < _config.minSpeed|| _ignoreTimer > 0.15f)
+            bool driftHeld = ((SonicInput)Input).DriftHeld;
+            if (!driftHeld || Rigidbody.linearVelocity.magnitude < _config.minSpeed|| _ignoreTimer > 0.15f)
                 StateMachine.SetState<FStateGround>(0.1f);
         }
 
@@ -58,8 +60,6 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
             var transform = Rigidbody.transform;
             var offset = -transform.up * 0.75f;
             HurtBox.CreateAttached(Actor, transform, offset, new Vector3(0.75f, 0.3f, 0.75f), HurtBoxTarget.Enemy | HurtBoxTarget.Breakable);
-            /*HurtBox.Create(Actor, Actor.transform.position + new Vector3(0f, -0.75f, 0f), Actor.transform.rotation,
-                new Vector3(0.75f, 0.3f, 0.75f), HurtBoxTarget.Enemy | HurtBoxTarget.Breakable);*/
             
             if (Kinematics.CheckForGround(out RaycastHit hit))
             {

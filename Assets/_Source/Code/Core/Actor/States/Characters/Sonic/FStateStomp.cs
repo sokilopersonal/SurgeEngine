@@ -38,7 +38,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
         {
             base.OnTick(dt);
 
-            if (Input.BReleased)
+            if (Input.DownReleased)
                 _released = true;
         }
 
@@ -73,7 +73,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
 
                 float speed = Kinematics.HorizontalSpeed;
                 float angle = Vector3.Angle(hit.normal, Vector3.up);
-                if (angle >= 20 && Input.BHeld)
+                if (angle >= 20 && Input.DownHeld)
                 {
                     StateMachine.SetState<FStateSlide>();
                     return;

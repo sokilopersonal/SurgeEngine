@@ -30,12 +30,12 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
 
             bool ceiling = Kinematics.CheckForCeiling(out RaycastHit data);
 
-            if (!Input.BHeld && !ceiling)
+            if (!Input.DownHeld && !ceiling)
             {
                 StateMachine.SetState<FStateIdle>();
             }
 
-            if (Input.JumpPressed && !ceiling)
+            if (Input.UpPressed && !ceiling)
             {
                 StateMachine.SetState<FStateJump>(0.1f);
             }

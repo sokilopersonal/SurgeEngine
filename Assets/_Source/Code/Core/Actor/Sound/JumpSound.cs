@@ -28,7 +28,7 @@ namespace SurgeEngine.Code.Core.Actor.Sound
         {
             RuntimeManager.PlayOneShot(_jumpSound);
             yield return new WaitForSeconds(0.117f);
-            if (Actor.Input.JumpHeld)
+            if (Actor.Input.UpHeld)
             {
                 RuntimeManager.PlayOneShot(_spinSound);
             }

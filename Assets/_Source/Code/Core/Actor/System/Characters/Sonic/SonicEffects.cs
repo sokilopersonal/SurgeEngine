@@ -101,7 +101,7 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
         private IEnumerator PlayJumpball()
         {
             yield return new WaitForSeconds(0.117f);
-            if (Actor.StateMachine.CurrentState is FStateJump && Actor.Input.JumpHeld)
+            if (Actor.StateMachine.CurrentState is FStateJump && Actor.Input.UpHeld)
                 spinball.Toggle(true);
         }
     }

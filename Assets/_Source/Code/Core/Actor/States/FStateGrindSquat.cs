@@ -17,7 +17,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         {
             base.OnTick(dt);
 
-            if (!Input.BHeld)
+            if (!Input.DownHeld)
             {
                 StateMachine.SetState<FStateGrind>();
             }

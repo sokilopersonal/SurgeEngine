@@ -54,7 +54,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
 
             if (!Actor.Flags.HasFlag(FlagType.OutOfControl))
             {
-                if (Input.BPressed)
+                if (Input.DownPressed)
                 {
                     StateMachine.SetState<FStateStomp>();
                 }

@@ -13,45 +13,31 @@ namespace SurgeEngine.Code.Core.Actor.System
         public Vector3 moveVector;
         public Vector2 lookVector;
         public PlayerInput playerInput;
-
-        // Boost
-
-        public bool BoostPressed => playerInput.actions["XAction"].WasPressedThisFrame();
-
-        public bool BoostHeld => playerInput.actions["XAction"].IsPressed();
-
-        public Action<InputAction.CallbackContext> BoostAction;
-
-        // Jump
-
-        public bool JumpPressed => playerInput.actions["AAction"].WasPressedThisFrame();
-
-        public bool JumpHeld => playerInput.actions["AAction"].IsPressed();
-
-        public Action<InputAction.CallbackContext> JumpAction;
-
-        // B Button
-
-        public bool BPressed => playerInput.actions["BAction"].WasPressedThisFrame();
-
-        public bool BReleased => playerInput.actions["BAction"].WasReleasedThisFrame();
-
-        public bool BHeld => playerInput.actions["BAction"].IsPressed();
-
-        public Action<InputAction.CallbackContext> BAction;
-
-        // Y Button
-
-        public bool YPressed => playerInput.actions["YAction"].WasPressedThisFrame();
-
-        public bool YHeld => playerInput.actions["YAction"].IsPressed();
-
-        public Action<InputAction.CallbackContext> YAction;
-
-        // Bumpers
-        public bool LeftBumperPressed => playerInput.actions["Bumper"].ReadValue<Vector2>() == new Vector2(-1, 0);
-        public bool RightBumperPressed => playerInput.actions["Bumper"].ReadValue<Vector2>() == new Vector2(1, 0);
+        
+        public bool LeftPressed => LeftInputAction.WasPressedThisFrame();
+        public bool LeftHeld => LeftInputAction.IsPressed();
+        public bool UpPressed => UpInputAction.WasPressedThisFrame();
+        public bool UpHeld => UpInputAction.IsPressed();
+        public bool DownPressed => DownInputAction.WasPressedThisFrame();
+        public bool DownReleased => DownInputAction.WasReleasedThisFrame();
+        public bool DownHeld => playerInput.actions["BAction"].IsPressed();
+        public bool SpecialPressed => SpecialInputAction.WasPressedThisFrame();
+        public bool SpecialHeld => SpecialInputAction.IsPressed();
+        public bool LeftBumperPressed => BumperInputAction.ReadValue<Vector2>() == new Vector2(-1, 0);
+        public bool RightBumperPressed => BumperInputAction.ReadValue<Vector2>() == new Vector2(1, 0);
+        
+        public Action<InputAction.CallbackContext> LeftAction;
+        public Action<InputAction.CallbackContext> UpAction;
+        public Action<InputAction.CallbackContext> DownAction;
+        public Action<InputAction.CallbackContext> SpecialAction;
         public Action<InputAction.CallbackContext> BumperAction;
+        
+        protected InputAction LeftInputAction => playerInput.actions["XAction"];
+        protected InputAction UpInputAction => playerInput.actions["AAction"];
+        protected InputAction DownInputAction => playerInput.actions["BAction"];
+        protected InputAction SpecialInputAction => playerInput.actions["YAction"];
+        protected InputAction BumperInputAction => playerInput.actions["Bumper"];
+        protected InputAction TriggerAction => playerInput.actions["Trigger"];
 
         private bool _lockCamera;
         private InputDevice _device;
@@ -177,14 +163,14 @@ namespace SurgeEngine.Code.Core.Actor.System
                 return;
             }
 
-            JumpAction?.Invoke(obj);
+            UpAction?.Invoke(obj);
         }
 
         private void BoostInput(InputAction.CallbackContext obj)
         {
             if (obj.started) OnButtonPressed?.Invoke(ButtonType.X);
 
-            BoostAction?.Invoke(obj);
+            LeftAction?.Invoke(obj);
         }
 
         private void BInput(InputAction.CallbackContext obj)

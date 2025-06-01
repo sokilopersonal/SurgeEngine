@@ -40,7 +40,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates
             CanAirBoost = true;
             BoostEnergy = MaxBoostEnergy;
             
-            owner.Input.BoostAction += BoostAction;
+            owner.Input.LeftAction += BoostAction;
             Actor.StateMachine.OnStateAssign += OnStateAssign;
 
             ObjectEvents.OnObjectCollected += OnRingCollected;
@@ -49,7 +49,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates
         
         ~FBoost()
         {
-            Actor.Input.BoostAction -= BoostAction;
+            Actor.Input.LeftAction -= BoostAction;
             Actor.StateMachine.OnStateAssign -= OnStateAssign;
 
             ObjectEvents.OnObjectCollected -= OnRingCollected;

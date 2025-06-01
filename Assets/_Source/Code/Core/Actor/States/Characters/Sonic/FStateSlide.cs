@@ -45,7 +45,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
         {
             base.OnTick(dt);
 
-            if (Input.BReleased)
+            if (Input.DownReleased)
                 _released = true;
 
             bool ceiling = Kinematics.CheckForCeiling(out _);

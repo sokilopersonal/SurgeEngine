@@ -30,7 +30,7 @@ namespace SurgeEngine.Code.Core.Actor.States
 
             if (!Actor.Flags.HasFlag(FlagType.OutOfControl))
             {
-                if (Input.JumpPressed)
+                if (Input.UpPressed)
                 {
                     Kinematics.SetDetachTime(0.2f);
                     StateMachine.SetState<FStateJump>();

@@ -33,7 +33,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         {
             base.OnTick(dt);
             
-            if (Input.JumpPressed)
+            if (Input.UpPressed)
             {
                 SetCooldown(0.1f);
                 StateMachine.SetState<FStateGrindJump>();
@@ -41,7 +41,7 @@ namespace SurgeEngine.Code.Core.Actor.States
 
             if (this is not FStateGrindSquat)
             {
-                if (Input.BHeld)
+                if (Input.DownHeld)
                 {
                     StateMachine.SetState<FStateGrindSquat>()?.Share(_rail, _data, _isForward);
                 }

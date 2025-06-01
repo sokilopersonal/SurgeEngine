@@ -73,7 +73,7 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic.Actions
                     }
                 }
                 
-                if (Input.BHeld)
+                if (Input.DownHeld)
                 {
                     if (readyForSlide && !readyForDrift)
                     {
@@ -90,7 +90,7 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic.Actions
                     }
                 }
 
-                if (SonicInputLayout.DriftHeld)
+                if (((SonicInput)Input).DriftHeld)
                 {
                     if (readyForDrift)
                     {
