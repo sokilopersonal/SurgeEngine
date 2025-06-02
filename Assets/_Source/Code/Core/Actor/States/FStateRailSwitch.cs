@@ -40,7 +40,6 @@ namespace SurgeEngine.Code.Core.Actor.States
         {
             base.OnTick(dt);
     
-            float t = Easings.Get(Easing.Gens, _switchTimer);
             _data.EvaluateWorld(out var pos, out var tg, out var up, out var right);
 
             if (tg == Vector3.zero)
@@ -57,11 +56,12 @@ namespace SurgeEngine.Code.Core.Actor.States
             float dot = Vector3.Dot(tg, vel.normalized);
             Vector3 newDir = tg * (vel.magnitude * dot);
     
+            float t = _switchTimer;
             _start += newDir * dt;
             _end += newDir * dt;
             Vector3 midPoint = (_start + _end) * 0.5f + Vector3.up * 3f;
-            Vector3 p1 = Vector3.Lerp(_start, midPoint, _switchTimer);
-            Vector3 p2 = Vector3.Lerp(midPoint, _end, _switchTimer);
+            Vector3 p1 = Vector3.Lerp(_start, midPoint, t);
+            Vector3 p2 = Vector3.Lerp(midPoint, _end, t);
             Rigidbody.position = Vector3.Lerp(p1, p2, t);
             Rigidbody.rotation = Quaternion.LookRotation(tg * dot, up);
 

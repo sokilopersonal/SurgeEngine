@@ -13,14 +13,13 @@ namespace SurgeEngine.Code.Core.Actor.States
         private Vector3 _lastTangent;
         
         private bool _isForward;
-        
         private float _timer;
 
-        protected float _grindGravityPower;
+        protected float gravityPower;
         
         public FStateGrind(ActorBase owner) : base(owner)
         {
-            _grindGravityPower = 10f;
+            gravityPower = 10f;
         }
 
         public override void OnEnter()
@@ -85,7 +84,7 @@ namespace SurgeEngine.Code.Core.Actor.States
                 
                 _lastTangent = tg;
                 
-                Vector3 downForce = Vector3.ProjectOnPlane(Vector3.down, targetUp) * _grindGravityPower;
+                Vector3 downForce = Vector3.ProjectOnPlane(Vector3.down, targetUp) * gravityPower;
                 Rigidbody.AddForce(downForce * dt, ForceMode.Impulse);
                 
                 Vector3 endPos = pos + targetUp * (1 + _rail.Radius);
@@ -133,22 +132,27 @@ namespace SurgeEngine.Code.Core.Actor.States
         private void FindRailInDirection(bool isLeft)
         {
             Vector3 direction = isLeft ? -Rigidbody.transform.right : Rigidbody.transform.right;
-            if (Physics.SphereCast(Rigidbody.position, 2f, direction, out var hit, 7f))
+            Vector3 forward = Rigidbody.transform.forward;
+            float angle = 65;
+            Vector3 predictedPoint = Rigidbody.position + Vector3.Normalize(Vector3.Lerp(direction, forward, angle / 90)) * 10f;
+            
+            Debug.DrawRay(Rigidbody.position, (predictedPoint - Rigidbody.position).normalized * 10f, Color.green);
+            
+            if (Physics.SphereCast(Rigidbody.position, 2f, (predictedPoint - Rigidbody.position).normalized, out var hit, 10f))
             {
-                if (hit.collider.TryGetComponent(out Rail rail))
+                if (hit.collider.TryGetComponent(out Rail rail) && rail != _rail)
                 {
                     Debug.Log($"Found rail {rail.name}");
                     
                     Vector3 hitPoint = hit.point;
                     var splineData = new SplineData(rail.Container, hitPoint);
                     splineData.EvaluateWorld(out var pos, out var tangent, out var up, out _);
-                    Vector3 nextPos = pos + tangent.normalized * 1.5f + up * (1 + rail.Radius);
+                    Vector3 nextPos = pos + tangent.normalized * Vector3.Dot(Rigidbody.transform.forward, tangent) + up * (1 + rail.Radius);
                     
-                    SetCooldown(0.1f);
+                    SetCooldown(0.2f);
                     Vector3 savedVelocity = Rigidbody.linearVelocity;
-                    Rigidbody.position += Vector3.up * 0.15f;
 
-                    StateMachine.GetState<FStateRailSwitch>().Set(Rigidbody.position, nextPos, rail, savedVelocity, isLeft);
+                    StateMachine.GetState<FStateRailSwitch>()?.Set(Rigidbody.position, nextPos, rail, savedVelocity, isLeft);
                     StateMachine.SetState<FStateRailSwitch>();
                 }
             }
