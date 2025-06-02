@@ -702,8 +702,7 @@ AnimatorState:
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
-  m_StateMachineBehaviours:
-  - {fileID: -8948005506436823404}
+  m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -2164,8 +2163,8 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 3
-    m_ConditionEvent: LocalTurnAngle
-    m_EventTreshold: 0.95
+    m_ConditionEvent: SmoothTurnAngle
+    m_EventTreshold: 3.5
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -6415622582962284027}
   m_Solo: 0
@@ -3558,8 +3557,8 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 4
-    m_ConditionEvent: LocalTurnAngle
-    m_EventTreshold: -0.95
+    m_ConditionEvent: SmoothTurnAngle
+    m_EventTreshold: -3.5
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -2142575869352867369}
   m_Solo: 0

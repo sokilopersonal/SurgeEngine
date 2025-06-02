@@ -22,7 +22,6 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates
         public float MaxBoostEnergy => _config.BoostCapacity;
 
         public bool CanAirBoost ;
-        public bool RestoringTopSpeed;
 
         private float _boostEnergy;
         private IBoostHandler _boostHandler;
@@ -162,6 +161,8 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates
 
         private void BoostAction(InputAction.CallbackContext obj)
         {
+            if (Actor.StateMachine.CurrentState is FStateAir && !CanAirBoost) return;
+            
             if (CanBoost())
             {
                 Active = obj.started && !Actor.Flags.HasFlag(FlagType.OutOfControl);

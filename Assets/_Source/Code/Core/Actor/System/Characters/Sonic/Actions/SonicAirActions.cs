@@ -27,13 +27,16 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic.Actions
 
                     if (Input.APressed)
                     {
-                        if (homingTarget != null)
+                        if (StateMachine.PreviousState is not FStateHoming or FStateAirBoost)
                         {
-                            StateMachine.SetState<FStateHoming>()?.SetTarget(homingTarget);
-                        }
-                        else
-                        {
-                            StateMachine.SetState<FStateHoming>();
+                            if (homingTarget != null)
+                            {
+                                StateMachine.SetState<FStateHoming>()?.SetTarget(homingTarget);
+                            }
+                            else
+                            {
+                                StateMachine.SetState<FStateHoming>();
+                            }
                         }
                     }
                 }
