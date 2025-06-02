@@ -10,6 +10,7 @@ namespace SurgeEngine.Code.Core.Actor.States
     {
         private Rail _rail;
         private SplineData _data;
+        private Vector3 _lastTangent;
         
         private bool _isForward;
         
@@ -58,13 +59,20 @@ namespace SurgeEngine.Code.Core.Actor.States
             if (_rail != null)
             {
                 _data.EvaluateWorld(out var pos,  out var tg, out var targetUp, out var right);
-
+                
                 Debug.DrawRay(pos, tg, Color.white);
                 Debug.DrawRay(pos, targetUp, Color.green);
                 Debug.DrawRay(pos, right, Color.yellow);
                 
+                if (_lastTangent != Vector3.zero)
+                {
+                    Rigidbody.linearVelocity = Quaternion.FromToRotation(_lastTangent, tg) * Rigidbody.linearVelocity;
+                }
+                
                 Rigidbody.linearVelocity = Vector3.ProjectOnPlane(Rigidbody.linearVelocity, targetUp);
                 Rigidbody.linearVelocity = Vector3.ProjectOnPlane(Rigidbody.linearVelocity, right);
+                
+                _lastTangent = tg;
                 
                 Vector3 downForce = Vector3.ProjectOnPlane(Vector3.down, targetUp) * _grindGravityPower;
                 Rigidbody.AddForce(downForce * dt, ForceMode.Impulse);
@@ -104,6 +112,7 @@ namespace SurgeEngine.Code.Core.Actor.States
             
             Rigidbody.linearVelocity = Vector3.ProjectOnPlane(Rigidbody.linearVelocity, up);
             Rigidbody.linearVelocity = Vector3.ProjectOnPlane(Rigidbody.linearVelocity, right);
+            _lastTangent = tg;
             
             float dot = Vector3.Dot(Rigidbody.transform.forward, tg);
             _isForward = dot > 0;
