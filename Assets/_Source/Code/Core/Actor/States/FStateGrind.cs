@@ -133,23 +133,24 @@ namespace SurgeEngine.Code.Core.Actor.States
         {
             Vector3 direction = isLeft ? -Rigidbody.transform.right : Rigidbody.transform.right;
             Vector3 forward = Rigidbody.transform.forward;
-            float angle = 65;
-            Vector3 predictedPoint = Rigidbody.position + Vector3.Normalize(Vector3.Lerp(direction, forward, angle / 90)) * 10f;
+            float angle = 45;
+            Vector3 predictedPoint = Rigidbody.position + Vector3.Normalize(Vector3.Lerp(direction, forward, angle / 90));
             
-            Debug.DrawRay(Rigidbody.position, (predictedPoint - Rigidbody.position).normalized * 10f, Color.green);
+            Debug.DrawRay(Rigidbody.position, (predictedPoint - Rigidbody.position).normalized * 8f, Color.green);
             
-            if (Physics.SphereCast(Rigidbody.position, 2f, (predictedPoint - Rigidbody.position).normalized, out var hit, 10f))
+            Vector3 rayDirection = (predictedPoint - Rigidbody.position).normalized;
+            
+            if (Physics.SphereCast(Rigidbody.position, 1.25f, rayDirection, out var hit, 8f))
             {
                 if (hit.collider.TryGetComponent(out Rail rail) && rail != _rail)
                 {
                     Debug.Log($"Found rail {rail.name}");
                     
-                    Vector3 hitPoint = hit.point;
-                    var splineData = new SplineData(rail.Container, hitPoint);
+                    var splineData = new SplineData(rail.Container, Rigidbody.position);
                     splineData.EvaluateWorld(out var pos, out var tangent, out var up, out _);
-                    Vector3 nextPos = pos + tangent.normalized * Vector3.Dot(Rigidbody.transform.forward, tangent) + up * (1 + rail.Radius);
+                    Vector3 nextPos = pos + up * (1 + rail.Radius);
                     
-                    SetCooldown(0.2f);
+                    SetCooldown(0.1f);
                     Vector3 savedVelocity = Rigidbody.linearVelocity;
 
                     StateMachine.GetState<FStateRailSwitch>()?.Set(Rigidbody.position, nextPos, rail, savedVelocity, isLeft);
