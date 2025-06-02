@@ -60,6 +60,7 @@ namespace SurgeEngine.Code.Core.Actor.System
         private Vector3 _planarVelocity;
 
         private SplineData _splineData;
+        private Vector3 _lastTangent;
         
         private float _moveDot;
         private float _detachTimer;
@@ -182,10 +183,21 @@ namespace SurgeEngine.Code.Core.Actor.System
                 if (mode == KinematicsMode.Forward || mode == KinematicsMode.Side)
                 {
                     _splineData.EvaluateWorld(out var pos, out var tg, out var up, out var right);
-                    Project(right);
-                
-                    _inputDir = Vector3.ProjectOnPlane(_inputDir, right);
 
+                    if (_lastTangent != Vector3.zero)
+                    {
+                        Rigidbody.linearVelocity = Quaternion.FromToRotation(_lastTangent, tg) * Rigidbody.linearVelocity;
+                    }
+
+                    _lastTangent = tg;
+
+                    if (right != Vector3.zero)
+                    {
+                        _inputDir = Vector3.ProjectOnPlane(_inputDir, right);
+                        _inputDir = Vector3.ProjectOnPlane(_inputDir, tg);
+                        Project(right);
+                    }
+                    
                     Vector3 endPos = pos;
                     endPos += up;
                     endPos.y = _rigidbody.position.y;
