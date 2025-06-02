@@ -131,7 +131,7 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
                 StateAnimator.TransitionToState(AnimatorParams.AirCycle, prev switch
                 {
                     FStateGround => 0.2f,
-                    FStateGrindJump => 0.1f,
+                    FStateGrindJump or FStateRailSwitch => 0.1f,
                     FStateJump or FStateHoming => 0f,
                     _ => 0.2f
                 });
@@ -322,6 +322,17 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
             if (obj is FStateTrick)
             {
                 StateAnimator.TransitionToState($"Trick {Random.Range(1, 8)}").Then(() => StateAnimator.TransitionToState(AnimatorParams.AirCycle));
+            }
+            if (obj is FStateRailSwitch railSwitch)
+            {
+                if (railSwitch.IsLeft)
+                {
+                    StateAnimator.TransitionToState("RailSwitchL");
+                }
+                else
+                {
+                    StateAnimator.TransitionToState("RailSwitchR");
+                }
             }
         }
         

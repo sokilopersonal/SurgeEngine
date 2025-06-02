@@ -558,6 +558,18 @@ namespace SurgeEngine.Code.Core.Actor.System
             up = transform.TransformDirection(upVector);
             right = Vector3.Cross(tangent, -up).normalized;
         }
+
+        public Vector3 EvaluatePosition()
+        {
+            EvaluateWorld(out var pos, out _, out _, out _);
+            return pos;
+        }
+        
+        public Vector3 EvaluateTangent()
+        {
+            EvaluateWorld(out _, out var tg, out _, out _);
+            return tg;
+        }
     }
 
     public struct SplineSample

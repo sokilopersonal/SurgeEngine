@@ -23,8 +23,11 @@ namespace SurgeEngine.Code.Core.Actor.System
         public bool BHeld => BInputAction.IsPressed();
         public bool YPressed => YInputAction.WasPressedThisFrame();
         public bool YHeld => YInputAction.IsPressed();
-        public bool LeftBumperPressed => BumperInputAction.ReadValue<Vector2>() == new Vector2(-1, 0);
-        public bool RightBumperPressed => BumperInputAction.ReadValue<Vector2>() == new Vector2(1, 0);
+        public bool LeftBumperPressed => BumperInputAction.WasPressedThisFrame() && BumperInputAction.ReadValue<Vector2>().x < 0;
+        public bool RightBumperPressed => BumperInputAction.WasPressedThisFrame() && BumperInputAction.ReadValue<Vector2>().x > 0;
+        public bool LeftBumperHeld => BumperInputAction.ReadValue<Vector2>().x < 0;
+        public bool RightBumperHeld => BumperInputAction.ReadValue<Vector2>().x > 0;
+        
         
         public Action<InputAction.CallbackContext> XAction;
         public Action<InputAction.CallbackContext> AAction;
