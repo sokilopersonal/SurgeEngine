@@ -49,9 +49,7 @@ namespace SurgeEngine.Code.Core.Actor.States
                 StateMachine.SetState<FStateAir>();
                 return;
             }
-
-            _data.Time += Vector3.Dot(tg, _savedVelocity) * dt;
-
+            
             Vector3 vel = _savedVelocity;
             float dot = Vector3.Dot(tg, vel.normalized);
             Vector3 newDir = tg * (vel.magnitude * dot);
@@ -59,29 +57,34 @@ namespace SurgeEngine.Code.Core.Actor.States
             float t = _switchTimer;
             _start += newDir * dt;
             _end += newDir * dt;
-            Vector3 midPoint = (_start + _end) * 0.5f + Vector3.up * 3f;
+            Vector3 midPoint = (_start + _end) * 0.5f + Vector3.up * 4f;
             Vector3 p1 = Vector3.Lerp(_start, midPoint, t);
             Vector3 p2 = Vector3.Lerp(midPoint, _end, t);
-            Rigidbody.position = Vector3.Lerp(p1, p2, t);
+            Rigidbody.position = Vector3.Lerp(p1, p2, Actor.Config.railSwitchCurve.Evaluate(t));
             Rigidbody.rotation = Quaternion.LookRotation(tg * dot, up);
 
-            _switchTimer += dt / 0.65f;
+            _lastTangent = tg;
+            
+            _data.Time += Vector3.Dot(tg, _savedVelocity) * dt;
+
+            _switchTimer += dt / 0.625f;
             _switchTimer = Mathf.Clamp01(_switchTimer);
 
             if (_switchTimer >= 1f)
             {
                 Rigidbody.isKinematic = false;
-                Vector3 vertical = p2 - p1;
-                vertical.x = 0f;
-                vertical.z = 0f;
-                Rigidbody.linearVelocity = newDir + vertical;
-
                 if (!Physics.Raycast(new Ray(Rigidbody.position, Vector3.down), out var hit, 2f, Actor.Config.railMask))
                 {
+                    Vector3 vertical = p2 - p1;
+                    vertical.x *= 2f;
+                    vertical.z *= 2f;
+                    Vector3 newVel = newDir + vertical;
+                    Rigidbody.linearVelocity = Quaternion.FromToRotation(_lastTangent, tg) * newVel;
                     StateMachine.SetState<FStateAir>();
                     return;
                 }
         
+                Rigidbody.linearVelocity = newDir;
                 StateMachine.SetState<FStateGrind>().SetRail(_targetRail);
             }
         }

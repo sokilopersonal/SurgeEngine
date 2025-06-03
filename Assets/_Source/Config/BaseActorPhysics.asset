@@ -40,9 +40,6 @@ MonoBehaviour:
   castLayer:
     serializedVersion: 2
     m_Bits: 67585
-  railMask:
-    serializedVersion: 2
-    m_Bits: 32768
   topSpeed: 30
   maxSpeed: 40
   minParaloopSpeed: 28
@@ -121,3 +118,31 @@ MonoBehaviour:
   slopeDownhillForce: 24
   slopeMinAngle: 5
   slopeMinSpeed: 10
+  railMask:
+    serializedVersion: 2
+    m_Bits: 32768
+  railSearchDistance: 10
+  railSwitchCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0.22922534
+      outSlope: 0.22922534
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.0921659
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1.6994295
+      outSlope: 1.6994295
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.044546843
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4

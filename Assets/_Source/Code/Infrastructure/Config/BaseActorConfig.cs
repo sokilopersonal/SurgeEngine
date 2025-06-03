@@ -9,7 +9,6 @@ namespace SurgeEngine.Code.Infrastructure.Config
         public float castDistance = 1.15f;
         public AnimationCurve castDistanceCurve;
         public LayerMask castLayer;
-        public LayerMask railMask;
 
         [Header("Base Physics")]
         public float topSpeed = 28;
@@ -58,5 +57,10 @@ namespace SurgeEngine.Code.Infrastructure.Config
         public float slopeDownhillForce = 5;
         public float slopeMinAngle = 20;
         public float slopeMinSpeed = 6;
+        
+        [Header("Rails")]
+        public LayerMask railMask;
+        public float railSearchDistance = 10f;
+        public AnimationCurve railSwitchCurve;
     }
 }

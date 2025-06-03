@@ -102,7 +102,7 @@ namespace SurgeEngine.Code.Core.Actor.States
                 {
                     if (IsRailCooldown()) return;
 
-                    const float THRESHOLD = 0.0005f;
+                    const float THRESHOLD = 0.00075f;
                     bool outOfTime = 1 - _data.NormalizedTime < THRESHOLD || _data.NormalizedTime < THRESHOLD;
                     
                     if (outOfTime)
@@ -132,16 +132,16 @@ namespace SurgeEngine.Code.Core.Actor.States
         private void FindRailInDirection(bool isLeft)
         {
             Vector3 direction = isLeft ? -Rigidbody.transform.right : Rigidbody.transform.right;
-            Vector3 forward = Rigidbody.transform.forward;
-            float angle = 45;
-            Vector3 predictedPoint = Rigidbody.position + Vector3.Normalize(Vector3.Lerp(direction, forward, angle / 90));
+            float mult = Vector3.ClampMagnitude(Rigidbody.linearVelocity / 32f, 1f).magnitude;
+            Vector3 forward = Rigidbody.transform.forward * mult;
+            Vector3 predictedPoint = Rigidbody.position + Vector3.Normalize(Vector3.Lerp(direction, forward, 0.5f));
 
-            float dist = 8f;
+            float dist = Actor.Config.railSearchDistance;
             Vector3 rayDirection = (predictedPoint - Rigidbody.position).normalized;
             
             Debug.DrawRay(Rigidbody.position, rayDirection * dist, Color.green);
             
-            if (Physics.SphereCast(Rigidbody.position, 1.25f, rayDirection, out var hit, dist))
+            if (Physics.SphereCast(Rigidbody.position, 1.45f, rayDirection, out var hit, dist))
             {
                 if (hit.collider.TryGetComponent(out Rail rail) && rail != _rail && hit.distance <= dist / 2)
                 {
