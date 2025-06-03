@@ -135,14 +135,15 @@ namespace SurgeEngine.Code.Core.Actor.States
             Vector3 forward = Rigidbody.transform.forward;
             float angle = 45;
             Vector3 predictedPoint = Rigidbody.position + Vector3.Normalize(Vector3.Lerp(direction, forward, angle / 90));
-            
-            Debug.DrawRay(Rigidbody.position, (predictedPoint - Rigidbody.position).normalized * 8f, Color.green);
-            
+
+            float dist = 8f;
             Vector3 rayDirection = (predictedPoint - Rigidbody.position).normalized;
             
-            if (Physics.SphereCast(Rigidbody.position, 1.25f, rayDirection, out var hit, 8f))
+            Debug.DrawRay(Rigidbody.position, rayDirection * dist, Color.green);
+            
+            if (Physics.SphereCast(Rigidbody.position, 1.25f, rayDirection, out var hit, dist))
             {
-                if (hit.collider.TryGetComponent(out Rail rail) && rail != _rail)
+                if (hit.collider.TryGetComponent(out Rail rail) && rail != _rail && hit.distance <= dist / 2)
                 {
                     Debug.Log($"Found rail {rail.name}");
                     
