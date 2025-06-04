@@ -1,5 +1,5 @@
 ﻿using SurgeEngine.Code.Gameplay.Enemy.Base;
-using SurgeEngine.Code.Gameplay.Enemy.Physics;
+using SurgeEngine.Code.Gameplay.Enemy.RagdollPhysics;
 using UnityEngine;
 
 namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter.States

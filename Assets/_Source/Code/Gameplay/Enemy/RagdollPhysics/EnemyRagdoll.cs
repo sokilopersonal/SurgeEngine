@@ -3,7 +3,7 @@ using SurgeEngine.Code.Gameplay.CommonObjects.System;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace SurgeEngine.Code.Gameplay.Enemy.Physics
+namespace SurgeEngine.Code.Gameplay.Enemy.RagdollPhysics
 {
     public class EnemyRagdoll : MonoBehaviour, IPointMarkerLoader
     {

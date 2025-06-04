@@ -5,7 +5,7 @@ using SurgeEngine.Code.Gameplay.CommonObjects.Sensors;
 using SurgeEngine.Code.Gameplay.CommonObjects.System;
 using SurgeEngine.Code.Gameplay.Enemy.Base;
 using SurgeEngine.Code.Gameplay.Enemy.EggFighter.States;
-using SurgeEngine.Code.Gameplay.Enemy.Physics;
+using SurgeEngine.Code.Gameplay.Enemy.RagdollPhysics;
 using UnityEngine;
 
 namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter
