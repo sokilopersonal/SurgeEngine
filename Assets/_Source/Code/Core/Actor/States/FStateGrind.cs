@@ -120,9 +120,6 @@ namespace SurgeEngine.Code.Core.Actor.States
             _data = new SplineData(rail.Container, pos);
             _data.EvaluateWorld(out _, out Vector3 tg, out var up, out var right);
             
-            Rigidbody.linearVelocity = Vector3.ProjectOnPlane(Rigidbody.linearVelocity, up);
-            Rigidbody.linearVelocity = Vector3.ProjectOnPlane(Rigidbody.linearVelocity, right);
-            
             float dot = Vector3.Dot(Rigidbody.transform.forward, tg);
             _isForward = dot > 0;
             

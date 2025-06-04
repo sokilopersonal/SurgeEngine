@@ -19,10 +19,10 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
         {
             base.OnTick(dt);
             
-            _stateMachine.distance = Mathf.Lerp(_lastData.distance, _stateMachine.startDistance, _stateMachine.interpolatedBlendFactor);
-            _stateMachine.yOffset = Mathf.Lerp(_lastData.yOffset, _stateMachine.startYOffset, _stateMachine.interpolatedBlendFactor);
+            _stateMachine.Distance = Mathf.Lerp(_lastData.distance, _stateMachine.StartDistance, _stateMachine.interpolatedBlendFactor);
+            _stateMachine.VerticalOffset = Mathf.Lerp(_lastData.yOffset, _stateMachine.StartVerticalOffset, _stateMachine.interpolatedBlendFactor);
             
-            _stateMachine.fov = Mathf.Lerp(_lastData.fov, _stateMachine.fov, _stateMachine.interpolatedBlendFactor);
+            _stateMachine.FOV = Mathf.Lerp(_lastData.fov, _stateMachine.FOV, _stateMachine.interpolatedBlendFactor);
             if (_stateMachine.blendFactor >= 1f)
             {
                 _stateMachine.SetState<NewModernState>();
@@ -31,16 +31,16 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
 
         protected override void SetPosition(Vector3 targetPosition)
         {
-            Vector3 center = _stateMachine.actorPosition;
+            Vector3 center = _stateMachine.ActorPosition;
             Vector3 diff = targetPosition - center;
-            _stateMachine.position = Vector3.Slerp(_lastData.position, diff, _stateMachine.interpolatedBlendFactor);
-            _stateMachine.position += center;
+            _stateMachine.Position = Vector3.Slerp(_lastData.position, diff, _stateMachine.interpolatedBlendFactor);
+            _stateMachine.Position += center;
         }
 
         protected override void SetRotation(Vector3 actorPosition)
         {
-            _stateMachine.rotation = Quaternion.Lerp(_lastData.rotation, 
-                Quaternion.LookRotation(actorPosition + _stateMachine.transform.TransformDirection(new Vector3(_master.lookOffset.x, 0, 0)) - _stateMachine.position), _stateMachine.interpolatedBlendFactor);
+            _stateMachine.Rotation = Quaternion.Lerp(_lastData.rotation, 
+                Quaternion.LookRotation(actorPosition + _stateMachine.Transform.TransformDirection(new Vector3(_master.lookOffset.x, 0, 0)) - _stateMachine.Position), _stateMachine.interpolatedBlendFactor);
         }
 
         protected override void AutoLook(float multiplier)

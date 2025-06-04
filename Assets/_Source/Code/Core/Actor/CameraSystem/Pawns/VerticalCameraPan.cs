@@ -22,41 +22,41 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
         {
             base.OnExit();
             
-            _stateMachine.SetDirection(_stateMachine.transform.transform.forward);
+            _stateMachine.SetDirection(_stateMachine.Transform.transform.forward);
         }
 
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
             
-            _stateMachine.distance = Mathf.Lerp(_lastData.distance, _vData.distance, _stateMachine.interpolatedBlendFactor);
-            _stateMachine.yOffset = Mathf.Lerp(_lastData.yOffset, _vData.yOffset, _stateMachine.interpolatedBlendFactor);
+            _stateMachine.Distance = Mathf.Lerp(_lastData.distance, _vData.distance, _stateMachine.interpolatedBlendFactor);
+            _stateMachine.VerticalOffset = Mathf.Lerp(_lastData.yOffset, _vData.yOffset, _stateMachine.interpolatedBlendFactor);
             
             _stateMachine.SetDirection(_vData.forward);
             
-            _stateMachine.fov = Mathf.Lerp(_lastData.fov, _vData.fov, _stateMachine.interpolatedBlendFactor);
+            _stateMachine.FOV = Mathf.Lerp(_lastData.fov, _vData.fov, _stateMachine.interpolatedBlendFactor);
         }
 
         protected override void SetPosition(Vector3 targetPosition)
         {
-            Vector3 center = _stateMachine.actorPosition;
+            Vector3 center = _stateMachine.ActorPosition;
             Vector3 diff = targetPosition - center;
-            _stateMachine.position = Vector3.Slerp(_lastData.position, diff, _stateMachine.interpolatedBlendFactor);
-            _stateMachine.position += center;
+            _stateMachine.Position = Vector3.Slerp(_lastData.position, diff, _stateMachine.interpolatedBlendFactor);
+            _stateMachine.Position += center;
         }
         
         protected override void SetRotation(Vector3 actorPosition)
         {
             Vector3 look = 
                 actorPosition
-                + _stateMachine.transform.TransformDirection(_stateMachine.lookOffset)
-                - _stateMachine.position;
+                + _stateMachine.Transform.TransformDirection(_stateMachine.LookOffset)
+                - _stateMachine.Position;
             
             if (look != Vector3.zero)
             {
                 Quaternion rot = Quaternion.LookRotation(look);
             
-                _stateMachine.rotation = Quaternion.Lerp(_lastData.rotation, rot, _stateMachine.interpolatedBlendFactor);
+                _stateMachine.Rotation = Quaternion.Lerp(_lastData.rotation, rot, _stateMachine.interpolatedBlendFactor);
             }
         }
 
@@ -67,8 +67,8 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
 
         protected override void AutoLookDirection()
         {
-            _stateMachine.xAutoLook = 0;
-            _stateMachine.yAutoLook = 0;
+            _stateMachine.YawAuto = 0;
+            _stateMachine.PitchAuto = 0;
         }
     }
 }

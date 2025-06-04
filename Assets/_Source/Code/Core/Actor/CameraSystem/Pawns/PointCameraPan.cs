@@ -21,7 +21,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
         {
             base.OnExit();
             
-            _stateMachine.SetDirection(_stateMachine.transform.transform.forward);
+            _stateMachine.SetDirection(_stateMachine.Transform.transform.forward);
         }
 
         public override void OnTick(float dt)
@@ -30,34 +30,34 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
             
             _stateMachine.SetDirection(_pData.Forward);
             
-            _stateMachine.distance = Mathf.Lerp(_lastData.distance, _pData.distance, _stateMachine.interpolatedBlendFactor);
-            _stateMachine.yOffset = Mathf.Lerp(_lastData.yOffset, _pData.yOffset, _stateMachine.interpolatedBlendFactor);
+            _stateMachine.Distance = Mathf.Lerp(_lastData.distance, _pData.distance, _stateMachine.interpolatedBlendFactor);
+            _stateMachine.VerticalOffset = Mathf.Lerp(_lastData.yOffset, _pData.yOffset, _stateMachine.interpolatedBlendFactor);
             
-            _stateMachine.fov = Mathf.Lerp(_lastData.fov, _pData.fov, _stateMachine.interpolatedBlendFactor);
+            _stateMachine.FOV = Mathf.Lerp(_lastData.fov, _pData.fov, _stateMachine.interpolatedBlendFactor);
         }
         
         protected override void SetPosition(Vector3 targetPosition)
         {
-            Vector3 center = _stateMachine.actorPosition;
-            Vector3 diff = targetPosition + _stateMachine.transform.TransformDirection(_pData.offset) - center;
-            _stateMachine.position = Vector3.Slerp(_lastData.position, diff, _stateMachine.interpolatedBlendFactor);
-            _stateMachine.position += center;
+            Vector3 center = _stateMachine.ActorPosition;
+            Vector3 diff = targetPosition + _stateMachine.Transform.TransformDirection(_pData.offset) - center;
+            _stateMachine.Position = Vector3.Slerp(_lastData.position, diff, _stateMachine.interpolatedBlendFactor);
+            _stateMachine.Position += center;
         }
         
         protected override void SetRotation(Vector3 actorPosition)
         {
             Vector3 look = 
                 actorPosition
-                + _stateMachine.transform.TransformDirection(_stateMachine.lookOffset)
-                + _stateMachine.transform.TransformDirection(_pData.localLookOffset)
-                + _stateMachine.transform.TransformDirection(_pData.offset)
-                - _stateMachine.position;
+                + _stateMachine.Transform.TransformDirection(_stateMachine.LookOffset)
+                + _stateMachine.Transform.TransformDirection(_pData.localLookOffset)
+                + _stateMachine.Transform.TransformDirection(_pData.offset)
+                - _stateMachine.Position;
             
             if (look != Vector3.zero)
             {
                 Quaternion rot = Quaternion.LookRotation(look);
             
-                _stateMachine.rotation = Quaternion.Lerp(_lastData.rotation, rot, _stateMachine.interpolatedBlendFactor);
+                _stateMachine.Rotation = Quaternion.Lerp(_lastData.rotation, rot, _stateMachine.interpolatedBlendFactor);
             }
         }
 

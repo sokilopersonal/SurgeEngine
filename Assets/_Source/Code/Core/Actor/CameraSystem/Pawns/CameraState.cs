@@ -18,13 +18,13 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
             _actor = owner;
 
             _stateMachine = owner.Camera.stateMachine;
-            _master = _stateMachine.master;
+            _master = _stateMachine.Master;
         }
 
         public void SetData(PanData data)
         {
             _panData = data as T;
-            _stateMachine.currentData = _panData;
+            _stateMachine.CurrentData = _panData;
         }
     }
 }

@@ -500,9 +500,9 @@ namespace SurgeEngine.Code.Core.Actor.System
             return _splineData != null;
         }
 
-        public SplineContainer GetPath()
+        public SplineData GetPath()
         {
-            return _splineData.Container;
+            return _splineData;
         }
     }
 

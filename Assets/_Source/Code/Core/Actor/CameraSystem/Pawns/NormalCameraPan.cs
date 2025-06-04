@@ -23,10 +23,10 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
         {
             base.OnTick(dt);
             
-            _stateMachine.distance = Mathf.Lerp(_lastData.distance, _nData.distance, _stateMachine.interpolatedBlendFactor);
-            _stateMachine.yOffset = Mathf.Lerp(_lastData.yOffset, _nData.yOffset, _stateMachine.interpolatedBlendFactor);
+            _stateMachine.Distance = Mathf.Lerp(_lastData.distance, _nData.distance, _stateMachine.interpolatedBlendFactor);
+            _stateMachine.VerticalOffset = Mathf.Lerp(_lastData.yOffset, _nData.yOffset, _stateMachine.interpolatedBlendFactor);
             
-            _stateMachine.fov = Mathf.Lerp(_lastData.fov, _nData.fov, _stateMachine.interpolatedBlendFactor);
+            _stateMachine.FOV = Mathf.Lerp(_lastData.fov, _nData.fov, _stateMachine.interpolatedBlendFactor);
         }
     }
 }

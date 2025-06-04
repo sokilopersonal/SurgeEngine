@@ -1,98 +1,141 @@
-﻿using System;
-using SurgeEngine.Code.Core.Actor.CameraSystem.Pawns;
+﻿using SurgeEngine.Code.Core.Actor.CameraSystem.Pawns;
 using SurgeEngine.Code.Core.Actor.CameraSystem.Pawns.Data;
 using SurgeEngine.Code.Core.Actor.System;
 using SurgeEngine.Code.Core.StateMachine;
 using SurgeEngine.Code.Infrastructure.Custom;
 using UnityEngine;
-using UnityEngine.Splines;
 
 namespace SurgeEngine.Code.Core.Actor.CameraSystem
 {
-    [Serializable]
     public class CameraStateMachine : FStateMachine
     {
-        public ActorCamera master;
-        
-        public float x;
-        public float y;
+        public ActorCamera Master { get; }
+        public Camera Camera { get; }
+        public Transform Transform { get; }
 
-        public float startDistance;
-        public float startYOffset;
-        public float distance;
-        public float yOffset;
-        
-        public float xAutoLook;
-        public float yAutoLook;
-        
-        public float yLag;
-        public float yLagVelocity;
-        public float zLag;
-        public float zLagVelocity;
+        public float Yaw { get; set; }
+        public float Pitch { get; set; }
 
-        public float baseFov = 55f;
-        public float fov;
+        public float StartDistance { get; }
+        public float StartVerticalOffset { get; }
+        public float Distance { get; set; }
+        public float VerticalOffset { get; set; }
 
-        public Vector3 position;
-        public Quaternion rotation;
-        public Vector3 lookOffset;
-        public Vector3 actorPosition;
+        public float YawAuto { get; set; }
+        public float PitchAuto { get; set; }
 
-        public Vector3 actualDirection;
-        public Vector3 defaultDirection;
-        public Vector3 sideDirection;
-        public Vector3 sideOffset;
-        
+        public float VerticalLag { get; set; }
+        public float VerticalLagVelocity;
+        public float ForwardLag { get; set; }
+        public float ForwardLagVelocity;
+
+        public float BaseFov => 55f;
+        public float FOV { get; set; }
+
+        public Vector3 Position { get; set; }
+        public Quaternion Rotation { get; set; }
+        public Vector3 LookOffset { get; private set; }
+
+        public Vector3 ActorPosition { get; private set; }
+        public Vector3 ActualDirection { get; private set; }
+        private Vector3 DefaultDirection { get; set; }
+        private Vector3 SideDirection { get; set; }
+        private Vector3 SideOffset { get; set; }
+        public float SideBlendFactor { get; private set; }
         private Vector3 _sideOffsetVelocity;
-        public float sideBlendFactor;
-        public bool is2D;
+        public bool Is2D { get; private set; }
         
-        public Vector3 LateOffset { get; private set; }
-        
-        private float _directionTransitionFactor;
-        
-        public Camera camera;
-        public Transform transform;
-
-        public PanData currentData;
-        
+        public PanData CurrentData { get; set; }
         public float blendFactor { get; private set; }
         public float interpolatedBlendFactor { get; private set; }
 
-        private bool _isPointMarkerLoaded;
-
-        public CameraStateMachine(Camera camera, Transform transform, ActorCamera master)
+        private Vector3 LateOffset { get; set; }
+        
+        private readonly ActorBase _actor;
+        
+        public CameraStateMachine(Camera camera, Transform transform, ActorBase actor, ActorCamera master)
         {
-            this.camera = camera;
-            this.transform = transform;
-            this.master = master;
+            Camera = camera;
+            Transform = transform;
+            _actor = actor;
+            Master = actor.Camera;
 
-            startDistance = master.distance;
-            startYOffset = master.yOffset;
-            distance = startDistance;
-            yOffset = startYOffset;
+            StartDistance = master.distance;
+            StartVerticalOffset = master.yOffset;
+            Distance = StartDistance;
+            VerticalOffset = StartVerticalOffset;
             
-            fov = baseFov;
+            FOV = BaseFov;
             
-            defaultDirection = GetDirection();
-            actualDirection = defaultDirection;
+            DefaultDirection = GetCameraDirection();
+            ActualDirection = DefaultDirection;
 
             OnStateEarlyAssign += _ =>
             {
                 ResetBlendFactor();
             };
             
-            master.Actor.Kinematics.OnModeChange += mode =>
+            actor.Kinematics.OnModeChange += mode =>
             {
-                is2D = mode == KinematicsMode.Side;
+                if (Is2D && mode != KinematicsMode.Side)
+                {
+                    SetDirection(master.Actor.transform.forward);
+                }
+                
+                Is2D = mode == KinematicsMode.Side;
             };
         }
 
         public override void Tick(float dt)
         {
-            if (currentData != null)
+            PanBlend(dt);
+            Setup(dt);
+
+            base.Tick(dt);
+            
+            Transform.position = Position;
+            Transform.rotation = Rotation;
+            Camera.fieldOfView = FOV;
+        }
+
+        private void Setup(float dt)
+        {
+            LateOffset = Vector3.Lerp(LateOffset, Vector3.zero, 4f * dt);
+            
+            ActorPosition = GetActorWorldPosition() + SideOffset;
+            DefaultDirection = GetCameraDirection();
+            if (Master.Actor.Kinematics.IsPathValid())
             {
-                PanData baseData = currentData;
+                SideDirection = GetSideCameraDirection();
+            }
+            ActualDirection = Vector3.Lerp(DefaultDirection, SideDirection, Easings.Get(Easing.Gens, SideBlendFactor));
+            
+            if (Is2D)
+            {
+                SideBlendFactor += dt;
+            }
+            else
+            {
+                SideBlendFactor -= dt;
+            }
+            
+            SideBlendFactor = Mathf.Clamp01(SideBlendFactor);
+
+            if (!_actor.Kinematics.IsPathValid() || !Is2D)
+            {
+                SideOffset = Vector3.SmoothDamp(SideOffset, Vector3.zero, ref _sideOffsetVelocity, 0.2f);
+            }
+            else
+            {
+                SideOffset = Vector3.SmoothDamp(SideOffset, GetSideOffset(), ref _sideOffsetVelocity, 0.2f);
+            }
+        }
+
+        private void PanBlend(float dt)
+        {
+            if (CurrentData != null)
+            {
+                PanData baseData = CurrentData;
                 float easeTime = !IsExact<RestoreCameraPawn>() ? baseData.easeTimeEnter : baseData.easeTimeExit;
                 blendFactor += dt / easeTime;
                 blendFactor = Mathf.Clamp01(blendFactor);
@@ -100,109 +143,49 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
 
                 if (baseData.allowRotation)
                 {
-                    Vector2 v = ActorContext.Context.Input.lookVector;
+                    Vector2 v = _actor.Input.lookVector;
                     v = Vector3.ClampMagnitude(v, 2f);
-                    lookOffset = Vector3.Lerp(lookOffset, v, SurgeMath.Smooth(1 - 0.75f));
+                    LookOffset = Vector3.Lerp(LookOffset, v, 6f * dt);
                 }
             }
             else
             {
-                lookOffset = Vector3.zero;
+                LookOffset = Vector3.zero;
             }
-
-            LateOffset = Vector3.Lerp(LateOffset, Vector3.zero, 4f * dt);
-            actorPosition = GetActorPosition() + sideOffset;
-            
-            defaultDirection = GetDirection();
-            if (master.Actor.Kinematics.IsPathValid())
-            {
-                sideDirection = GetSideDirection();
-            }
-            actualDirection = Vector3.Lerp(defaultDirection, sideDirection, Easings.Get(Easing.Gens, sideBlendFactor));
-            
-            if (is2D)
-            {
-                sideBlendFactor += dt;
-            }
-            else
-            {
-                sideBlendFactor -= dt;
-            }
-            
-            sideBlendFactor = Mathf.Clamp01(sideBlendFactor);
-            
-            if (master.Actor.Kinematics.IsPathValid() && is2D) sideOffset = 
-                Vector3.SmoothDamp(sideOffset, GetSideOffset(), ref _sideOffsetVelocity, 0.2f);
-            else
-            {
-                sideOffset = Vector3.SmoothDamp(sideOffset, Vector3.zero, ref _sideOffsetVelocity, 0.2f);
-            }
-            
-            base.Tick(dt);
-            
-            transform.position = position;
-            transform.rotation = rotation;
-            camera.fieldOfView = fov;
         }
 
-        private Vector3 GetActorPosition()
+        private Vector3 GetActorWorldPosition()
         {
-            Vector3 basePosition = master.Actor.transform.position + LateOffset + Vector3.up * yOffset + Vector3.up * yLag;
+            Vector3 basePosition = _actor.transform.position + LateOffset + Vector3.up * VerticalOffset + Vector3.up * VerticalLag;
 
             return basePosition;
         }
         
-        public Vector3 GetDirection()
+        public Vector3 GetCameraDirection()
         {
-            var horizontal = Quaternion.AngleAxis(x, Vector3.up);
-            var vertical = Quaternion.AngleAxis(y, Vector3.right);
+            var horizontal = Quaternion.AngleAxis(Yaw, Vector3.up);
+            var vertical = Quaternion.AngleAxis(Pitch, Vector3.right);
             
             return horizontal * vertical * Vector3.back;
         }
         
-        private Vector3 GetSideDirection()
+        private Vector3 GetSideCameraDirection()
         {
-            var path = master.Actor.Kinematics.GetPath();
-            var spline = path.Spline;
-            Vector3 pos = master.Actor.Kinematics.Rigidbody.position - master.Actor.transform.up;
-            Vector3 localPos = path.transform.InverseTransformPoint(pos);
-            SplineUtility.GetNearestPoint(spline, localPos, out _, out var f);
-
-            path.Evaluate(spline, f, out var p, out var tg, out var up);
-
-            var sample = new SplineSample
-            {
-                pos = p,
-                tg = ((Vector3)tg).normalized,
-                up = up
-            };
+            var path = _actor.Kinematics.GetPath();
+            path.EvaluateWorld(out var pos, out var tg, out var up, out var right);
             
-            Vector3 plane = Vector3.Cross(sample.tg, -Vector3.up);
-            plane = Vector3.ProjectOnPlane(plane, Vector3.up).normalized;
-            return plane * 3.5f;
+            return right * 3.5f;
         }
 
         private Vector3 GetSideOffset()
         {
-            var path = master.Actor.Kinematics.GetPath();
-            var spline = path.Spline;
-            SplineUtility.GetNearestPoint(spline, path.transform.InverseTransformPoint(actorPosition),
-                out _, out var f);
+            var path = _actor.Kinematics.GetPath();
             
-            path.Evaluate(spline, f, out var p, out var tg, out var up);
-
-            var sample = new SplineSample
-            {
-                pos = p,
-                tg = ((Vector3)tg).normalized,
-                up = up
-            };
+            path.EvaluateWorld(out var pos, out var tg, out var up, out var right);
             
-            sample.tg = Vector3.ProjectOnPlane(sample.tg, Vector3.up).normalized;
-            
-            Vector3 side = sample.tg;
-            float dot = Vector3.Dot(side, master.Actor.transform.forward);
-            side *= 1f;
+            Vector3 side = tg;
+            float dot = Vector3.Dot(side, _actor.transform.forward);
+            side *= 0.5f;
 
             if (dot < 0)
             {
@@ -212,49 +195,49 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
             return side;
         }
 
-        public void SetDirection(Vector3 forward, bool resetY = false)
-        {
-            Quaternion dir = Quaternion.LookRotation(forward, Vector3.up).normalized;
-            x = dir.eulerAngles.y;
-            y = !resetY ? dir.eulerAngles.x : 0f;
-            
-            xAutoLook = 0f;
-            yAutoLook = 0f;
-        }
-        
-        public void SetLateOffset(Vector3 offset)
-        {
-            LateOffset = offset;
-        }
-        
-        public void ResetBlendFactor()
+        private void ResetBlendFactor()
         {
             blendFactor = 0f;
             interpolatedBlendFactor = 0f;
+        }
+
+        public void SetDirection(Vector3 forward, bool resetY = false)
+        {
+            Quaternion dir = Quaternion.LookRotation(forward, Vector3.up).normalized;
+            Yaw = dir.eulerAngles.y;
+            Pitch = !resetY ? dir.eulerAngles.x : 0f;
+            
+            YawAuto = 0f;
+            PitchAuto = 0f;
+        }
+
+        public void SetLateOffset(Vector3 offset)
+        {
+            LateOffset = offset;
         }
 
         public LastCameraData RememberLastData()
         {
             return new LastCameraData
             {
-                position = position,
-                rotation = rotation,
-                fov = fov,
-                distance = distance,
-                yOffset = yOffset
+                position = Position,
+                rotation = Rotation,
+                fov = FOV,
+                distance = Distance,
+                yOffset = VerticalOffset
             };
         }
         
         public LastCameraData RememberRelativeLastData()
         {
-            Vector3 center = actorPosition; // Player
+            Vector3 center = ActorPosition; // Player
             return new LastCameraData
             {
-                position = position - center,
-                rotation = rotation,
-                fov = fov,
-                distance = distance,
-                yOffset = yOffset
+                position = Position - center,
+                rotation = Rotation,
+                fov = FOV,
+                distance = Distance,
+                yOffset = VerticalOffset
             };
         }
         
@@ -262,9 +245,9 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
         {
             return new LastCameraData
             {
-                position = position,
-                rotation = rotation,
-                fov = fov
+                position = Position,
+                rotation = Rotation,
+                fov = FOV
             };
         }
     }

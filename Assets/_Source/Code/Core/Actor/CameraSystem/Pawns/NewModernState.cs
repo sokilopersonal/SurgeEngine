@@ -54,20 +54,20 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
         private void ModernSetup()
         {
             float distance = 1;
-            if (_stateMachine.master.GetModifier(out BoostDistanceCameraModifier boostDistance))
+            if (_stateMachine.Master.GetModifier(out BoostDistanceCameraModifier boostDistance))
             {
                 distance = boostDistance.Value;
             }
 
             float fov = 1;
-            if (_stateMachine.master.GetModifier(out BoostViewCameraModifier boostView))
+            if (_stateMachine.Master.GetModifier(out BoostViewCameraModifier boostView))
             {
                 fov = boostView.Value;
             }
 
-            _stateMachine.fov = _stateMachine.baseFov * fov;
+            _stateMachine.FOV = _stateMachine.BaseFov * fov;
             
-            Vector3 actorPosition = CalculateTarget(out Vector3 targetPosition, _stateMachine.actualDirection, _stateMachine.distance * distance);
+            Vector3 actorPosition = CalculateTarget(out Vector3 targetPosition, _stateMachine.ActualDirection, _stateMachine.Distance * distance);
             ZLag();
             YLag();
             LateralOffset();
@@ -76,8 +76,8 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
 
         protected Vector3 CalculateTarget(out Vector3 targetPosition, Vector3 dir, float distance)
         {
-            Vector3 actorPosition = _stateMachine.actorPosition;
-            Vector3 initialTargetPosition = actorPosition + dir * (distance + _stateMachine.zLag);
+            Vector3 actorPosition = _stateMachine.ActorPosition;
+            Vector3 initialTargetPosition = actorPosition + dir * (distance + _stateMachine.ForwardLag);
             targetPosition = HandleCameraCollision(actorPosition, initialTargetPosition, distance);
             return actorPosition;
         }
@@ -87,7 +87,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
             Vector3 cameraDirection = (targetPosition - actorPosition).normalized;
             
             float distance = 1;
-            if (_stateMachine.master.GetModifier(out BoostDistanceCameraModifier boostDistance))
+            if (_stateMachine.Master.GetModifier(out BoostDistanceCameraModifier boostDistance))
             {
                 distance = boostDistance.Value;
             }
@@ -103,19 +103,19 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
 
         protected virtual void LookAxis()
         {
-            if (IsAuto && !_stateMachine.is2D)
+            if (IsAuto && !_stateMachine.Is2D)
             {
                 AutoLookDirection();
             }
             else
             {
                 _sensSpeedMod = 1f;
-                _stateMachine.xAutoLook = Mathf.Lerp(_stateMachine.xAutoLook, 0, Time.deltaTime * DefaultSensitivityResetSpeed);
+                _stateMachine.YawAuto = Mathf.Lerp(_stateMachine.YawAuto, 0, Time.deltaTime * DefaultSensitivityResetSpeed);
             }
 
             Vector2 lookInput = _actor.Input.lookVector * (_master.sensitivity * _sensSpeedMod);
-            _stateMachine.x += lookInput.x + _stateMachine.xAutoLook;
-            _stateMachine.y = Mathf.Clamp(_stateMachine.y - lookInput.y, MinPitch, MaxPitch);
+            _stateMachine.Yaw += lookInput.x + _stateMachine.YawAuto;
+            _stateMachine.Pitch = Mathf.Clamp(_stateMachine.Pitch - lookInput.y, MinPitch, MaxPitch);
         }
 
         private void ZLag()
@@ -123,7 +123,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
             Vector3 vel = _actor.Kinematics.Rigidbody.linearVelocity;
             Vector3 localVel = _actor.transform.InverseTransformDirection(vel);
             float zLag = Mathf.Clamp(localVel.z * ZLagFactor, 0, _master.zLagMax);
-            _stateMachine.zLag = Mathf.SmoothDamp(_stateMachine.zLag, zLag, ref _stateMachine.zLagVelocity, _master.zLagTime);
+            _stateMachine.ForwardLag = Mathf.SmoothDamp(_stateMachine.ForwardLag, zLag, ref _stateMachine.ForwardLagVelocity, _master.zLagTime);
         }
 
         private void YLag()
@@ -132,7 +132,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
             float targetYLag = _actor.StateMachine.CurrentState is FStateAir or FStateSpecialJump 
                 ? Mathf.Clamp(vel.y * YLagVelocityFactor, _master.yLagMin, _master.yLagMax) 
                 : 0f;
-            _stateMachine.yLag = Mathf.SmoothDamp(_stateMachine.yLag, targetYLag, ref _stateMachine.yLagVelocity, _master.yLagTime);
+            _stateMachine.VerticalLag = Mathf.SmoothDamp(_stateMachine.VerticalLag, targetYLag, ref _stateMachine.VerticalLagVelocity, _master.yLagTime);
 
             float adjustedYLag = targetYLag * (targetYLag > 0 ? YLagRisingFactor : YLagFallingFactor);
             float targetLookYTime = adjustedYLag < 0 ? RisingSmoothingTime 
@@ -154,26 +154,26 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
                 Vector3 vel = _actor.Kinematics.Rigidbody.linearVelocity;
                 _velocity = Vector3.Lerp(_velocity, vel, Time.deltaTime * VelocityLerpSpeed);
                 float yAutoLook = Mathf.Clamp(-vel.y, _master.verticalMinAmplitude, _master.verticalMaxAmplitude);
-                _stateMachine.yAutoLook = yAutoLook + _master.verticalDefaultAmplitude;
-                _stateMachine.y = Mathf.SmoothDamp(_stateMachine.y, _stateMachine.yAutoLook, ref _yAutoLookVelocity, YAutoLookSmoothTime);
+                _stateMachine.PitchAuto = yAutoLook + _master.verticalDefaultAmplitude;
+                _stateMachine.Pitch = Mathf.SmoothDamp(_stateMachine.Pitch, _stateMachine.PitchAuto, ref _yAutoLookVelocity, YAutoLookSmoothTime);
 
                 float multiplier = _master.horizontalAutoLookAmplitude * Mathf.Max(_master.horizontalAutoLookMinAmplitude, Mathf.Clamp01(lookMod));
                 AutoLook(multiplier);
             }
             else
             {
-                _stateMachine.xAutoLook = Mathf.Lerp(_stateMachine.xAutoLook, 0, Time.deltaTime * AutoLookResetSpeed);
-                _stateMachine.yAutoLook = Mathf.Lerp(_stateMachine.yAutoLook, 0, Time.deltaTime * AutoLookResetSpeed);
+                _stateMachine.YawAuto = Mathf.Lerp(_stateMachine.YawAuto, 0, Time.deltaTime * AutoLookResetSpeed);
+                _stateMachine.PitchAuto = Mathf.Lerp(_stateMachine.PitchAuto, 0, Time.deltaTime * AutoLookResetSpeed);
             }
         }
 
         protected virtual void AutoLook(float multiplier)
         {
-            float angle = GetAutoAngle() * (1 - _stateMachine.sideBlendFactor) * Time.deltaTime;
-            float dot = Vector3.Dot(Vector3.Cross(_stateMachine.transform.right, Vector3.up), _actor.transform.forward);
+            float angle = GetAutoAngle() * (1 - _stateMachine.SideBlendFactor) * Time.deltaTime;
+            float dot = Vector3.Dot(Vector3.Cross(_stateMachine.Transform.right, Vector3.up), _actor.transform.forward);
             if (!Mathf.Approximately(dot, -1))
             {
-                _stateMachine.xAutoLook = angle * multiplier;
+                _stateMachine.YawAuto = angle * multiplier;
             }
         }
 
@@ -184,14 +184,14 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
             AnimationCurve curve = _master.LateralOffsetSpeedCurve;
             float modifier = 0;
 
-            if (_stateMachine.master.GetModifier(out DriftCameraModifier driftCameraModifier))
+            if (_stateMachine.Master.GetModifier(out DriftCameraModifier driftCameraModifier))
             {
                 modifier += driftCameraModifier.Value;
             }
             
             if (Mathf.Abs(x) > 0)
             {
-                float viewDot = Vector3.Dot(_stateMachine.transform.forward, -_master.Actor.transform.up);
+                float viewDot = Vector3.Dot(_stateMachine.Transform.forward, -_master.Actor.transform.up);
                 viewDot = Mathf.Abs(viewDot);
 
                 if (viewDot >= 0.9f)
@@ -215,19 +215,19 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
             SetRotation(actorPosition);
         }
 
-        protected virtual void SetPosition(Vector3 targetPosition) => _stateMachine.position = targetPosition;
+        protected virtual void SetPosition(Vector3 targetPosition) => _stateMachine.Position = targetPosition;
 
         protected virtual void SetRotation(Vector3 actorPosition)
         {
-            Vector3 lookTarget = actorPosition + _stateMachine.transform.TransformDirection(new Vector3(_master.lookOffset.x, 0, 0));
-            Vector3 lookDirection = lookTarget - _stateMachine.position;
-            _stateMachine.rotation = Quaternion.LookRotation(lookDirection.normalized);
+            Vector3 lookTarget = actorPosition + _stateMachine.Transform.TransformDirection(new Vector3(_master.lookOffset.x, 0, 0));
+            Vector3 lookDirection = lookTarget - _stateMachine.Position;
+            _stateMachine.Rotation = Quaternion.LookRotation(lookDirection.normalized);
         }
 
         public float GetAutoAngle()
         {
             Vector3 crossedForward = Vector3.Cross(_actor.transform.right, Vector3.up);
-            Vector3 crossedCamForward = Vector3.Cross(_stateMachine.transform.right, Vector3.up);
+            Vector3 crossedCamForward = Vector3.Cross(_stateMachine.Transform.right, Vector3.up);
             Vector3 forward = Vector3.ProjectOnPlane(crossedForward, Vector3.up).normalized;
             Vector3 camForward = Vector3.ProjectOnPlane(crossedCamForward, Vector3.up).normalized;
             return Vector3.SignedAngle(forward, camForward, -Vector3.up);

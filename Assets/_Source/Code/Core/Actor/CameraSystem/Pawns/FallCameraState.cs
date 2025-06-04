@@ -18,7 +18,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
         {
             base.OnEnter();
 
-            _stateMachine.currentData = _panData;
+            _stateMachine.CurrentData = _panData;
             _lastData = _stateMachine.RememberLastData();
         }
 
@@ -26,9 +26,9 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
         {
             base.OnTick(dt);
             
-            Quaternion rotation = Quaternion.LookRotation(_actor.transform.position - _stateMachine.position);
-            _stateMachine.rotation = Quaternion.Lerp(_lastData.rotation, rotation, _stateMachine.interpolatedBlendFactor);
-            _stateMachine.fov = Mathf.Lerp(_lastData.fov, 50, _stateMachine.interpolatedBlendFactor);
+            Quaternion rotation = Quaternion.LookRotation(_actor.transform.position - _stateMachine.Position);
+            _stateMachine.Rotation = Quaternion.Lerp(_lastData.rotation, rotation, _stateMachine.interpolatedBlendFactor);
+            _stateMachine.FOV = Mathf.Lerp(_lastData.fov, 50, _stateMachine.interpolatedBlendFactor);
         }
     }
 }
