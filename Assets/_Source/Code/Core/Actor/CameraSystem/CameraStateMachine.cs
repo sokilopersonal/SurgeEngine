@@ -34,7 +34,8 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
 
         public Vector3 Position { get; set; }
         public Quaternion Rotation { get; set; }
-        public Vector3 LookOffset { get; private set; }
+        public Vector3 LookOffset;
+        public Vector3 PanLookOffset;
 
         public Vector3 ActorPosition { get; private set; }
         public Vector3 ActualDirection { get; private set; }
@@ -60,8 +61,8 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
             _actor = actor;
             Master = actor.Camera;
 
-            StartDistance = master.distance;
-            StartVerticalOffset = master.yOffset;
+            StartDistance = master.Distance;
+            StartVerticalOffset = master.YOffset;
             Distance = StartDistance;
             VerticalOffset = StartVerticalOffset;
             
@@ -145,12 +146,12 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
                 {
                     Vector2 v = _actor.Input.lookVector;
                     v = Vector3.ClampMagnitude(v, 2f);
-                    LookOffset = Vector3.Lerp(LookOffset, v, 6f * dt);
+                    PanLookOffset = Vector3.Lerp(PanLookOffset, v, 6f * dt);
                 }
             }
             else
             {
-                LookOffset = Vector3.zero;
+                PanLookOffset = Vector3.zero;
             }
         }
 

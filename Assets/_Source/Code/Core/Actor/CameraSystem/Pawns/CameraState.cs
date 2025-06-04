@@ -17,7 +17,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
         {
             _actor = owner;
 
-            _stateMachine = owner.Camera.stateMachine;
+            _stateMachine = owner.Camera.StateMachine;
             _master = _stateMachine.Master;
         }
 

@@ -49,7 +49,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
         {
             Vector3 look = 
                 actorPosition
-                + _stateMachine.Transform.TransformDirection(_stateMachine.LookOffset)
+                + _stateMachine.Transform.TransformDirection(_stateMachine.PanLookOffset)
                 - _stateMachine.Position;
             
             if (look != Vector3.zero)

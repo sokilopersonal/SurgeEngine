@@ -74,9 +74,9 @@ namespace SurgeEngine.Code.Core.Actor.States
     {
         public Transform StartTransform { get; set; }
         
-        public StartType startType = StartType.Standing;
-        public float speed;
-        public float time;
+        [field: SerializeField] public StartType startType { get; set; } = StartType.Standing;
+        [field: SerializeField] public float speed { get; set; }
+        [field: SerializeField] public float time { get; set; }
     }
 
     public enum StartType

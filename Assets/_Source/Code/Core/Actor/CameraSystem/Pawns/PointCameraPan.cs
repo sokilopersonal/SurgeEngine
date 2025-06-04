@@ -48,7 +48,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
         {
             Vector3 look = 
                 actorPosition
-                + _stateMachine.Transform.TransformDirection(_stateMachine.LookOffset)
+                + _stateMachine.Transform.TransformDirection(_stateMachine.PanLookOffset)
                 + _stateMachine.Transform.TransformDirection(_pData.localLookOffset)
                 + _stateMachine.Transform.TransformDirection(_pData.offset)
                 - _stateMachine.Position;

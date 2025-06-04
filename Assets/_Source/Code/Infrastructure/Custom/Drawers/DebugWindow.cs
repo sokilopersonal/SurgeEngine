@@ -41,7 +41,7 @@ namespace SurgeEngine.Code.Infrastructure.Custom.Drawers
                 $"Planar Velocity: {actor.Kinematics.PlanarVelocity}",
                 $"State: {actor.StateMachine.currentStateName}",
                 $"Animation: {actor.Animation.StateAnimator.GetCurrentAnimationState()}",
-                $"Camera State: {actor.Camera.stateMachine.currentStateName}"
+                $"Camera State: {actor.Camera.StateMachine.currentStateName}"
             };
             
             holder.text = string.Join("\n", text);

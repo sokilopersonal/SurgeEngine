@@ -22,7 +22,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             if (center)
             {
                 Vector3 target = transform.position + transform.up * 0.25f;
-                context.Camera.stateMachine.SetLateOffset(context.transform.position - target - transform.up * 0.75f); // We need to use this and not just context.PutIn because the late offset is not calculated properly
+                context.Camera.StateMachine.SetLateOffset(context.transform.position - target - transform.up * 0.75f); // We need to use this and not just context.PutIn because the late offset is not calculated properly
                 context.transform.position = target;
             }
             

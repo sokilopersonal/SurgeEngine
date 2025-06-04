@@ -22,13 +22,13 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.CameraObjects
         public override void SetPan()
         {
             ActorBase context = ActorContext.Context;
-            context.Camera.stateMachine.SetState<VerticalCameraPan>(allowSameState: true).SetData(data);
+            context.Camera.StateMachine.SetState<VerticalCameraPan>(allowSameState: true).SetData(data);
         }
         
         public override void RemovePan()
         {
             ActorBase context = ActorContext.Context;
-            context.Camera.stateMachine.SetState<RestoreCameraPawn>(allowSameState: true);
+            context.Camera.StateMachine.SetState<RestoreCameraPawn>(allowSameState: true);
         }
     }
 }

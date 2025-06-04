@@ -31,7 +31,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
 
             _stateMachine.Position = Vector3.Lerp(_lastData.position, _panData.position, _stateMachine.interpolatedBlendFactor);
             
-            Quaternion rotation = Quaternion.LookRotation(_actor.transform.position + _stateMachine.Transform.TransformDirection(_stateMachine.LookOffset) - _stateMachine.Position, Vector3.up);
+            Quaternion rotation = Quaternion.LookRotation(_actor.transform.position + _stateMachine.Transform.TransformDirection(_stateMachine.PanLookOffset) - _stateMachine.Position, Vector3.up);
             _stateMachine.Rotation = Quaternion.Lerp(_lastData.rotation, rotation, _stateMachine.interpolatedBlendFactor);
             _stateMachine.FOV = Mathf.Lerp(_lastData.fov, _panData.fov, _stateMachine.interpolatedBlendFactor);
         }

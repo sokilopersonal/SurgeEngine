@@ -10,47 +10,66 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
 {
     public class ActorCamera : ActorComponent, IPointMarkerLoader
     {
-        public CameraStateMachine stateMachine;
+        public CameraStateMachine StateMachine { get; private set; }
         
         [Header("Input")]
-        public float sensitivity = 0.5f;
-        public float maxSensitivitySpeed = 1f;
-        public float minSensitivitySpeed = 0.5f;
+        [SerializeField] private float sensitivity = 0.5f;
+        [SerializeField] private float maxSensitivitySpeed = 1f;
+        [SerializeField] private float minSensitivitySpeed = 0.5f;
 
         [Header("Target")] 
-        public float distance = 2.9f;
-        public float yOffset = 0.1f;
-        public Vector3 lookOffset;
+        [SerializeField] private float distance = 2.9f;
+        [SerializeField] private float yOffset = 0.1f;
 
         [Header("Auto Look")] 
-        public float horizontalAutoLookAmplitude = 4f;
-        public float horizontalAutoLookMinAmplitude = 0.2f;
-        public float verticalDefaultAmplitude = 7f;
-        public float verticalMinAmplitude = -5f;
-        public float verticalMaxAmplitude = 5f;
-        public float verticalMinLerpSpeed = 0.75f;
-        public float verticalLerpSpeed = 1.65f;
+        [SerializeField] private float pitchAutoLookAmplitude = 4f;
+        [SerializeField] private float pitchAutoLookMinAmplitude = 0.2f;
+        [SerializeField] private float yawDefaultAmplitude = 7f;
+        [SerializeField] private float yawMinAmplitude = -5f;
+        [SerializeField] private float yawMaxAmplitude = 5f;
+        [SerializeField] private float yawMinLerpSpeed = 0.75f;
+        [SerializeField] private float yawLerpSpeed = 1.65f;
         
         [Header("Z Lag")]
-        public float zLagMax = 0.5f;
-        [Range(0, 1)] public float zLagTime = 0.5f;
+        [SerializeField] private float zLagMax = 0.5f;
+        [SerializeField, Range(0, 1)] private float zLagTime = 0.5f;
         
         [Header("Y Lag")]
-        public float yLagMin = -1f;
-        public float yLagMax = 0.5f;
-        [Range(0, 1)] public float yLagTime = 0.1f;
+        [SerializeField] private float yLagMin = -1f;
+        [SerializeField] private float yLagMax = 0.5f;
+        [SerializeField, Range(0, 1)] private float yLagTime = 0.1f;
         
         [Header("Lateral Offset")]
         [SerializeField] private AnimationCurve lateralOffsetSpeedCurve;
-        public AnimationCurve LateralOffsetSpeedCurve => lateralOffsetSpeedCurve;
         
         [Header("Collision")]
-        public LayerMask collisionMask;
-        public float collisionRadius = 0.2f;
+        [SerializeField] private LayerMask collisionMask;
+        [SerializeField] private float collisionRadius = 0.2f;
 
         [Header("Modifiers")] 
         [SerializeField] private List<BaseCameraModifier> baseCameraModifiers;
         private readonly Dictionary<Type, BaseCameraModifier> _modifiersDictionary = new();
+
+        public float Sensitivity => sensitivity;
+        public float MaxSensitivitySpeed => maxSensitivitySpeed;
+        public float MinSensitivitySpeed => minSensitivitySpeed;
+        public float Distance => distance;
+        public float YOffset => yOffset;
+        public float PitchAutoLookAmplitude => pitchAutoLookAmplitude;
+        public float PitchAutoLookMinAmplitude => pitchAutoLookMinAmplitude;
+        public float YawDefaultAmplitude => yawDefaultAmplitude;
+        public float YawMinAmplitude => yawMinAmplitude;
+        public float YawMaxAmplitude => yawMaxAmplitude;
+        public float YawMinLerpSpeed => yawMinLerpSpeed;
+        public float YawLerpSpeed => yawLerpSpeed;
+        public float ZLagMax => zLagMax;
+        public float ZLagTime => zLagTime;
+        public float YLagMin => yLagMin;
+        public float YLagMax => yLagMax;
+        public float YLagTime => yLagTime;
+        public LayerMask CollisionMask => collisionMask;
+        public float CollisionRadius => collisionRadius;
+        public AnimationCurve LateralOffsetSpeedCurve => lateralOffsetSpeedCurve;
         
         private Camera _camera;
         private Transform _cameraTransform;
@@ -77,34 +96,34 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
 
         public void Start()
         {
-            stateMachine = new CameraStateMachine(_camera, _cameraTransform, Actor, this);
+            StateMachine = new CameraStateMachine(_camera, _cameraTransform, Actor, this);
             
-            stateMachine.AddState(new NewModernState(Actor));
-            stateMachine.AddState(new CameraPan(Actor));
-            stateMachine.AddState(new VerticalCameraPan(Actor));
-            stateMachine.AddState(new FixedCameraPan(Actor));
-            stateMachine.AddState(new NormalCameraPan(Actor));
-            stateMachine.AddState(new RestoreCameraPawn(Actor));
-            stateMachine.AddState(new FallCameraState(Actor));
-            stateMachine.AddState(new PointCameraPan(Actor));
+            StateMachine.AddState(new NewModernState(Actor));
+            StateMachine.AddState(new CameraPan(Actor));
+            StateMachine.AddState(new VerticalCameraPan(Actor));
+            StateMachine.AddState(new FixedCameraPan(Actor));
+            StateMachine.AddState(new NormalCameraPan(Actor));
+            StateMachine.AddState(new RestoreCameraPawn(Actor));
+            StateMachine.AddState(new FallCameraState(Actor));
+            StateMachine.AddState(new PointCameraPan(Actor));
 
-            stateMachine.SetState<NewModernState>();
-            stateMachine.SetDirection(Actor.transform.forward);
+            StateMachine.SetState<NewModernState>();
+            StateMachine.SetDirection(Actor.transform.forward);
         }
 
         private void Update()
         {
-            stateMachine.Tick(Time.deltaTime);
+            StateMachine.Tick(Time.deltaTime);
         }
 
         private void FixedUpdate()
         {
-            stateMachine.FixedTick(Time.fixedDeltaTime);
+            StateMachine.FixedTick(Time.fixedDeltaTime);
         }
 
         private void LateUpdate()
         {
-            stateMachine.LateTick(Time.deltaTime);
+            StateMachine.LateTick(Time.deltaTime);
         }
         
         public Camera GetCamera()
@@ -129,7 +148,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
 
         public void Load(Vector3 loadPosition, Quaternion loadRotation)
         {
-            stateMachine.SetState<NewModernState>();
+            StateMachine.SetState<NewModernState>();
         }
     }
 }

@@ -31179,54 +31179,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 740a61d889173f2439f57c5376d36240, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stateMachine:
-    currentStateName: NewModernState
-    master: {fileID: 0}
-    x: 0
-    y: 0
-    startDistance: 0
-    startYOffset: 0
-    distance: 0
-    yOffset: 0
-    xAutoLook: 0
-    yAutoLook: 0
-    yLag: 0
-    yLagVelocity: 0
-    zLag: 0
-    zLagVelocity: 0
-    baseFov: 0
-    fov: 0
-    position: {x: 0, y: 0, z: 0}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-    lookOffset: {x: 0, y: 0, z: 0}
-    actorPosition: {x: 0, y: 0, z: 0}
-    actualDirection: {x: 0, y: 0, z: 0}
-    defaultDirection: {x: 0, y: 0, z: 0}
-    sideDirection: {x: 0, y: 0, z: 0}
-    sideOffset: {x: 0, y: 0, z: 0}
-    sideBlendFactor: 0
-    is2D: 0
-    camera: {fileID: 4273712975694131987}
-    transform: {fileID: 4604916912254361020}
-    currentData:
-      position: {x: 0, y: 0, z: 0}
-      easeTimeEnter: 0.5
-      easeTimeExit: 1
-      fov: 60
-      allowRotation: 1
   sensitivity: 0.75
   maxSensitivitySpeed: 1
   minSensitivitySpeed: 0.75
   distance: 2.44
   yOffset: 0.01
-  lookOffset: {x: 0, y: 0, z: 0}
-  horizontalAutoLookAmplitude: 11
-  horizontalAutoLookMinAmplitude: 0
-  verticalDefaultAmplitude: 6
-  verticalMinAmplitude: -18
-  verticalMaxAmplitude: 18
-  verticalMinLerpSpeed: 0.75
-  verticalLerpSpeed: 1.65
+  pitchAutoLookAmplitude: 8
+  pitchAutoLookMinAmplitude: 0.2
+  yawDefaultAmplitude: 7
+  yawMinAmplitude: -10
+  yawMaxAmplitude: 10
+  yawMinLerpSpeed: 0.75
+  yawLerpSpeed: 1.65
   zLagMax: 0.35
   zLagTime: 0.3
   yLagMin: -0.55
