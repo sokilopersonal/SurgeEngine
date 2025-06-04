@@ -219,7 +219,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
 
         protected virtual void SetRotation(Vector3 actorPosition)
         {
-            Vector3 lookTarget = actorPosition + _stateMachine.Transform.TransformDirection(_stateMachine.LookOffset);
+            Vector3 lookTarget = actorPosition + _stateMachine.Transform.TransformDirection(new Vector3(_stateMachine.LookOffset.x, 0f, 0f));
             Vector3 lookDirection = lookTarget - _stateMachine.Position;
             _stateMachine.Rotation = Quaternion.LookRotation(lookDirection.normalized);
         }
