@@ -6,6 +6,8 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic.Actions
 {
     public class SonicIdleActions : ActorActions
     {
+        public SonicIdleActions(ActorBase actor) : base(actor) { }
+
         protected override void Connect(FStateMachine stateMachine)
         {
             stateMachine.GetState<FStateIdle>().SetActions(this);

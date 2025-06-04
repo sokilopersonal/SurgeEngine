@@ -3,8 +3,13 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.System
 {
-    public abstract class ActorActions : ActorComponent
+    /// <summary>
+    /// Represents a base class for defining various action sets for an actor in the system.
+    /// </summary>
+    public abstract class ActorActions
     {
+        protected readonly ActorBase Actor;
+        
         protected FStateMachine StateMachine => Actor.StateMachine;
         protected Rigidbody Rigidbody => Actor.Rigidbody;
         
@@ -14,8 +19,10 @@ namespace SurgeEngine.Code.Core.Actor.System
         protected ActorAnimation Animation => Actor.Animation;
         protected ActorFlags Flags => Actor.Flags;
 
-        private void Awake()
+        public ActorActions(ActorBase actor)
         {
+            Actor = actor;
+            
             Connect(StateMachine);
         }
 

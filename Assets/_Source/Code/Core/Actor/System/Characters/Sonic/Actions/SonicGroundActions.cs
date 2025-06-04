@@ -12,7 +12,9 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic.Actions
     {
         private SlideConfig _slideConfig;
         private QuickStepConfig _quickstepConfig;
-        
+
+        public SonicGroundActions(ActorBase actor) : base(actor) { }
+
         protected override void Connect(FStateMachine stateMachine)
         {
             stateMachine.GetState<FStateGround>().SetActions(this);

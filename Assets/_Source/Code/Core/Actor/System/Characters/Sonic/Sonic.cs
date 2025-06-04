@@ -1,5 +1,6 @@
 ﻿using SurgeEngine.Code.Core.Actor.States.Characters.Sonic;
 using SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates;
+using SurgeEngine.Code.Core.Actor.System.Characters.Sonic.Actions;
 using SurgeEngine.Code.Infrastructure.Config.SonicSpecific;
 using UnityEngine;
 
@@ -57,6 +58,10 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
 
             StateMachine.AddSubState(new FBoost(this));
             StateMachine.AddSubState(new FSweepKick(this));
+
+            _ = new SonicIdleActions(this);
+            _ = new SonicGroundActions(this);
+            _ = new SonicAirActions(this);
         }
 
         public override void Load(Vector3 loadPosition, Quaternion loadRotation)
