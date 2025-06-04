@@ -40,7 +40,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
         {
             Vector3 center = _stateMachine.ActorPosition;
             Vector3 diff = targetPosition + _stateMachine.Transform.TransformDirection(_pData.offset) - center;
-            _stateMachine.Position = Vector3.Slerp(_lastData.position, diff, _stateMachine.interpolatedBlendFactor);
+            _stateMachine.Position = Vector3.Lerp(_lastData.position, diff, _stateMachine.interpolatedBlendFactor);
             _stateMachine.Position += center;
         }
         
@@ -48,7 +48,6 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
         {
             Vector3 look = 
                 actorPosition
-                + _stateMachine.Transform.TransformDirection(_stateMachine.PanLookOffset)
                 + _stateMachine.Transform.TransformDirection(_pData.localLookOffset)
                 + _stateMachine.Transform.TransformDirection(_pData.offset)
                 - _stateMachine.Position;

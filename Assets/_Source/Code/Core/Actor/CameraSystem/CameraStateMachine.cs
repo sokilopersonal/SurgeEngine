@@ -134,10 +134,11 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
 
         private void PanBlend(float dt)
         {
+            bool isExit = IsExact<RestoreCameraPawn>();
             if (CurrentData != null)
             {
                 PanData baseData = CurrentData;
-                float easeTime = !IsExact<RestoreCameraPawn>() ? baseData.easeTimeEnter : baseData.easeTimeExit;
+                float easeTime = !isExit ? baseData.easeTimeEnter : baseData.easeTimeExit;
                 blendFactor += dt / easeTime;
                 blendFactor = Mathf.Clamp01(blendFactor);
                 interpolatedBlendFactor = Easings.Get(Easing.Gens, blendFactor);
@@ -151,7 +152,15 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
             }
             else
             {
-                PanLookOffset = Vector3.zero;
+                PanLookOffset = Vector3.Lerp(PanLookOffset, Vector3.zero, 12f * dt);;
+            }
+
+            if (isExit)
+            {
+                if (blendFactor >= 1f)
+                {
+                    CurrentData = null;
+                }
             }
         }
 
