@@ -44,7 +44,7 @@ namespace SurgeEngine.Code.Core.Actor.States
 
             if (Mathf.Approximately(_jumpTimer, 0))
             {
-                if (Kinematics.CheckForGround(out _, CheckGroundType.Predict))
+                if (Kinematics.CheckForGroundWithDirection(out _, Vector3.down))
                 {
                     StateMachine.SetState<FStateGround>();
                 }

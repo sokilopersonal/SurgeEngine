@@ -23,6 +23,12 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Sensors
 
         public bool FindVisibleTargets(out Vector3 targetPosition)
         {
+            if (!enabled)
+            {
+                targetPosition = LastTargetPosition;
+                return false;
+            }
+            
             Collider[] hits = Physics.OverlapSphere(transform.position, radius, targetMask);
 
             foreach (var hit in hits)
@@ -44,7 +50,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Sensors
             return false;
         }
 
-        public Vector3 DirectionFromAngle(float deg, bool isGlobal)
+        private Vector3 DirectionFromAngle(float deg, bool isGlobal)
         {
             if (!isGlobal)
                 deg += transform.eulerAngles.y;

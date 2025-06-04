@@ -28,8 +28,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.CameraObjects
         
         private void OnTriggerExit(Collider other)
         {
-            ActorBase context = ActorContext.Context;
-            if (context.gameObject == other.transform.parent.gameObject)
+            if (other.transform.parent.TryGetComponent(out ActorBase actor))
             {
                 target.RemovePan();
             }

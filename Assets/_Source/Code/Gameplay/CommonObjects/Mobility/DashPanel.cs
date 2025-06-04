@@ -25,9 +25,17 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
                 context.Camera.StateMachine.SetLateOffset(context.transform.position - target - transform.up * 0.75f); // We need to use this and not just context.PutIn because the late offset is not calculated properly
                 context.transform.position = target;
             }
+
+            var bodySpeed = context.Kinematics.Speed;
+            if (bodySpeed < speed)
+            {
+                body.linearVelocity = transform.forward * speed;
+            }
+            else
+            {
+                body.linearVelocity = transform.forward * bodySpeed;
+            }
             
-            context.Animation.StateAnimator.TransitionToState(AnimatorParams.RunCycle);
-            body.linearVelocity = transform.forward * speed;
             context.StateMachine.SetState<FStateGround>();
             
             body.rotation = Quaternion.LookRotation(transform.forward, transform.up);
