@@ -15,10 +15,12 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter
         public EGView View => view as EGView;
         public EggFighterEffects effects;
         public EnemyRagdoll ragdollPrefab;
-        
         public VisionSensor Sensor { get; private set; }
         [field: SerializeField] public AnimationEventCallback PunchAnimationCallback { get; private set; }
 
+        [Header("AI")]
+        [SerializeField, Tooltip("Disabling this will disable enemy vision, meaning enemy won't notice you, but still will be functional.")] private bool enableAI = true;
+        
         [Header("Idle")]
         public float findDistance;
         
@@ -60,6 +62,7 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter
             rb.freezeRotation = true;
             
             Sensor = GetComponentInChildren<VisionSensor>();
+            Sensor.enabled = enableAI;
             
             StateMachine.AddState(new EGStateIdle(this));
             StateMachine.AddState(new EGStateChase(this));
