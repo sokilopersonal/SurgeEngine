@@ -1,28 +1,45 @@
-using System;
+﻿using System;
 using NaughtyAttributes;
+using SurgeEngine.Code.Core.Actor.HUD;
 using SurgeEngine.Code.Core.Actor.States;
 using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine.Code.Gameplay.CommonObjects.System;
 using UnityEngine;
 using Zenject;
 
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
-
 namespace SurgeEngine.Code.Infrastructure.DI
 {
-    public class ActorInstaller : MonoInstaller
+    public class GameplaySceneContext : MonoInstaller
     {
-        [SerializeField, Required] private Transform actorPrefab;
-        [SerializeField, Required] private Transform spawnPoint;
+        [Header("Stage")]
+        [SerializeField] private Stage stage;
+        
+        [Header("Actor")]
+        [SerializeField] private Transform actorPrefab;
+        [SerializeField] private Transform spawnPoint;
         [SerializeField] private StartData data;
-
+        
+        [Header("HUD")]
+        [SerializeField] private ActorStageHUD hudPrefab;
+        
         public override void InstallBindings()
+        {
+            SetupStage();
+            SetupActor();
+            SetupHUD();
+        }
+
+        private void SetupStage()
+        {
+            Container.Bind<Stage>().FromInstance(stage).AsSingle().NonLazy();
+        }
+
+        private void SetupActor()
         {
             if (!spawnPoint)
             {
 #if UNITY_EDITOR
-                EditorApplication.isPlaying = false;
+                UnityEditor.EditorApplication.isPlaying = false;
                 throw new NullReferenceException("Spawn Point is not assigned, please do it in ActorInstaller under GameplaySceneContext. Stopping play mode...");
 #endif
             }
@@ -39,6 +56,11 @@ namespace SurgeEngine.Code.Infrastructure.DI
             Container.Bind<ActorContext>().FromNew().AsSingle().NonLazy();
             
             instance.SetStart(data);
+        }
+
+        private void SetupHUD()
+        {
+            Container.InstantiatePrefabForComponent<ActorStageHUD>(hudPrefab);
         }
     }
 }

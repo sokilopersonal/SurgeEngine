@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Gameplay.CommonObjects
 {
-    [ExecuteInEditMode]
+    [ExecuteAlways]
     public class ActorModelRenderer : MonoBehaviour
     {
         [Space(10)]
