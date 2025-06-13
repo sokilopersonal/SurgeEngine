@@ -8,6 +8,8 @@ namespace SurgeEngine.Code.Core.Actor.System
     public class ActorModel : ActorComponent
     {
         public Transform root;
+        [SerializeField] private Transform modelTransform;
+        [SerializeField] private float verticalOffset = -1f;
 
         public CapsuleCollider collision;
         private float _collisionStartHeight;
@@ -35,12 +37,14 @@ namespace SurgeEngine.Code.Core.Actor.System
         
         public const float AirRotationResetTime = 2f;
 
-        private void Start()
+        private void Awake()
         {
             _collisionStartHeight = collision.height;
             _collisionStartRadius = collision.radius;
             
             root.rotation = Actor.transform.rotation;
+            
+            modelTransform.localPosition = new Vector3(0, verticalOffset, 0);
         }
 
         private void OnEnable()
