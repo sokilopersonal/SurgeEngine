@@ -25,7 +25,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
             LastCameraData last = _stateMachine.GetLastData();
             
             _stateMachine.Position = Vector3.Lerp(last.position, _panData.position, _stateMachine.interpolatedBlendFactor);
-            _stateMachine.Rotation = Quaternion.Slerp(last.rotation, _panData.target, _stateMachine.interpolatedBlendFactor);
+            _stateMachine.Rotation = Quaternion.Lerp(last.rotation, _panData.target, _stateMachine.interpolatedBlendFactor);
             _stateMachine.Camera.fieldOfView = Mathf.Lerp(last.fov, _panData.fov, _stateMachine.interpolatedBlendFactor);
         }
     }

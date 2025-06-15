@@ -22,7 +22,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
         {
             base.OnExit();
             
-            _stateMachine.SetDirection(_stateMachine.Transform.transform.forward);
+            _stateMachine.SetDirection(_stateMachine.Transform.forward);
         }
 
         public override void OnTick(float dt)
@@ -47,17 +47,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
         
         protected override void SetRotation(Vector3 actorPosition)
         {
-            Vector3 look = 
-                actorPosition
-                + _stateMachine.Transform.TransformDirection(_stateMachine.PanLookOffset)
-                - _stateMachine.Position;
-            
-            if (look != Vector3.zero)
-            {
-                Quaternion rot = Quaternion.LookRotation(look);
-            
-                _stateMachine.Rotation = Quaternion.Lerp(_lastData.rotation, rot, _stateMachine.interpolatedBlendFactor);
-            }
+            _stateMachine.SetRotationInterpolated(actorPosition, _lastData.rotation);
         }
 
         protected override void LookAxis()

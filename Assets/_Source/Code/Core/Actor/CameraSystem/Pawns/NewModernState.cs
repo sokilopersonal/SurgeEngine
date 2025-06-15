@@ -219,12 +219,10 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
 
         protected virtual void SetRotation(Vector3 actorPosition)
         {
-            Vector3 lookTarget = actorPosition + _stateMachine.Transform.TransformDirection(_stateMachine.LookOffset);
-            Vector3 lookDirection = lookTarget - _stateMachine.Position;
-            _stateMachine.Rotation = Quaternion.LookRotation(lookDirection.normalized);
+            _stateMachine.SetRotation(actorPosition);
         }
 
-        public float GetAutoAngle()
+        private float GetAutoAngle()
         {
             Vector3 crossedForward = Vector3.Cross(_actor.transform.right, Vector3.up);
             Vector3 crossedCamForward = Vector3.Cross(_stateMachine.Transform.right, Vector3.up);

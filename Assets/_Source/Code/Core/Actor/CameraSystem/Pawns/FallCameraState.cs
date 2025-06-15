@@ -8,7 +8,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
     {
         public FallCameraState(ActorBase owner) : base(owner)
         {
-            _panData = new PanData()
+            _panData = new PanData
             {
                 easeTimeEnter = 0.75f,
             };
@@ -26,8 +26,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
         {
             base.OnTick(dt);
             
-            Quaternion rotation = Quaternion.LookRotation(_actor.transform.position - _stateMachine.Position);
-            _stateMachine.Rotation = Quaternion.Lerp(_lastData.rotation, rotation, _stateMachine.interpolatedBlendFactor);
+            _stateMachine.SetRotationInterpolated(_actor.transform.position, _lastData.rotation);
             _stateMachine.FOV = Mathf.Lerp(_lastData.fov, 50, _stateMachine.interpolatedBlendFactor);
         }
     }

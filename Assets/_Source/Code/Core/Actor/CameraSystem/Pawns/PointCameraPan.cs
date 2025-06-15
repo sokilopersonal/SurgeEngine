@@ -46,18 +46,10 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
         
         protected override void SetRotation(Vector3 actorPosition)
         {
-            Vector3 look = 
-                actorPosition
-                + _stateMachine.Transform.TransformDirection(_pData.localLookOffset)
-                + _stateMachine.Transform.TransformDirection(_pData.offset)
-                - _stateMachine.Position;
-            
-            if (look != Vector3.zero)
-            {
-                Quaternion rot = Quaternion.LookRotation(look);
-            
-                _stateMachine.Rotation = Quaternion.Lerp(_lastData.rotation, rot, _stateMachine.interpolatedBlendFactor);
-            }
+            _stateMachine.SetRotationInterpolated(actorPosition
+                                                  + _stateMachine.Transform.TransformDirection(_pData.localLookOffset)
+                                                  + _stateMachine.Transform.TransformDirection(_pData.offset), _lastData.rotation);
+
         }
 
         protected override void LookAxis()

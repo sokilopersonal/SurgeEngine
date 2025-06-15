@@ -4,6 +4,7 @@ using SurgeEngine.Code.Core.Actor.System;
 using SurgeEngine.Code.Core.StateMachine;
 using SurgeEngine.Code.Infrastructure.Custom;
 using UnityEngine;
+using UnityEngine.Internal;
 
 namespace SurgeEngine.Code.Core.Actor.CameraSystem
 {
@@ -147,7 +148,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
                 {
                     Vector2 v = _actor.Input.lookVector;
                     v = Vector3.ClampMagnitude(v, 2f);
-                    PanLookOffset = Vector3.Lerp(PanLookOffset, v, 6f * dt);
+                    PanLookOffset = Vector3.Lerp(PanLookOffset, v, 4f * dt);
                 }
             }
             else
@@ -221,9 +222,42 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
             PitchAuto = 0f;
         }
 
+        public void SetRotation(Vector3 from, Vector3 to)
+        {
+            Quaternion look = Quaternion.LookRotation(from + GetOffset() - to, Vector3.up);
+            Rotation = look;
+        }
+
+        public void SetRotation(Vector3 from)
+        {
+            Quaternion look = Quaternion.LookRotation(from + GetOffset() - Position, Vector3.up);
+            Rotation = look;
+        }
+
+        public void SetRotationInterpolated(Vector3 from, Vector3 to, Quaternion last)
+        {
+            Quaternion look = Quaternion.LookRotation(from + GetOffset() - to, Vector3.up);
+            Rotation = Quaternion.Lerp(last, look, interpolatedBlendFactor);
+        }
+        
+        public void SetRotationInterpolated(Vector3 from, Quaternion last)
+        {
+            Quaternion look = Quaternion.LookRotation(from + GetOffset() - Position, Vector3.up);
+            Rotation = Quaternion.Lerp(last, look, interpolatedBlendFactor);
+        }
+
         public void SetLateOffset(Vector3 offset)
         {
             LateOffset = offset;
+        }
+
+        public Vector3 GetOffset()
+        {
+            Vector3 lookOffset = LookOffset;
+            Vector3 globalVerticalOffset = new Vector3(0, lookOffset.y, 0);
+            Vector3 cameraSpaceSideOffset = new Vector3(lookOffset.x, 0, lookOffset.z);
+            cameraSpaceSideOffset = Transform.TransformDirection(cameraSpaceSideOffset);
+            return globalVerticalOffset + cameraSpaceSideOffset + Transform.TransformDirection(PanLookOffset);
         }
 
         public LastCameraData RememberLastData()
