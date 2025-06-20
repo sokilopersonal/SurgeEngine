@@ -37,6 +37,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility.Rails
 
         private void OnValidate()
         {
+#if UNITY_EDITOR
             if (!_wereSplineAssigned)
             {
                 if (container != null)
@@ -68,6 +69,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility.Rails
                     _wereSplineAssigned = false;
                 }
             }
+#endif
         }
 
         private float PutInClosest()
