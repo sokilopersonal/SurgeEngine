@@ -100,6 +100,9 @@ namespace SurgeEngine.Code.Core.Actor.System
             Vector3 orientedInput = Quaternion.FromToRotation(_cameraTransform.up, Normal) * rawInput;
             _inputDir = GetMovementDirectionProjectedOnPlane(orientedInput, Normal, _cameraTransform.up)
                         * Actor.Input.moveVector.magnitude;
+            
+            if (Actor.Flags.HasFlag(FlagType.Autorun))
+                _inputDir = Actor.transform.forward;
         }
 
         private void CalculateMovementStats()

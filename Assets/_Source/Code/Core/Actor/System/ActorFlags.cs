@@ -88,6 +88,7 @@ namespace SurgeEngine.Code.Core.Actor.System
         OutOfControl = 1,
         OnWater = 2,
         Underwater = 4,
-        Invincible = 8
+        Invincible = 8,
+        Autorun = 16,
     }
 }
