@@ -15,10 +15,12 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             if (!flags.HasFlag(FlagType.Autorun))
             {
                 flags.AddFlag(new Flag(FlagType.Autorun, null, false));
+                flags.AddFlag(new Flag(FlagType.OutOfControl, null, false));
             }
             else
             {
                 flags.RemoveFlag(FlagType.Autorun);
+                flags.RemoveFlag(FlagType.OutOfControl);
             }
         }
 
