@@ -224,11 +224,10 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
 
         private float GetAutoAngle()
         {
-            Vector3 crossedForward = Vector3.Cross(_actor.transform.right, Vector3.up);
-            Vector3 crossedCamForward = Vector3.Cross(_stateMachine.Transform.right, Vector3.up);
-            Vector3 forward = Vector3.ProjectOnPlane(crossedForward, Vector3.up).normalized;
-            Vector3 camForward = Vector3.ProjectOnPlane(crossedCamForward, Vector3.up).normalized;
-            return Vector3.SignedAngle(forward, camForward, -Vector3.up);
+            Vector3 forward = Vector3.ProjectOnPlane(_actor.Kinematics.Velocity, Vector3.up);
+            Vector3 camForward = Vector3.ProjectOnPlane(_stateMachine.Transform.forward, Vector3.up);
+            float angle = Vector3.SignedAngle(forward, camForward, -Vector3.up);
+            return angle;
         }
     }
 }

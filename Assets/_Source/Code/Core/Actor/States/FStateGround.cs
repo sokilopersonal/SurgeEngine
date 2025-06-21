@@ -4,6 +4,7 @@ using SurgeEngine.Code.Core.Actor.System;
 using SurgeEngine.Code.Infrastructure.Config;
 using SurgeEngine.Code.Infrastructure.Custom;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 using Quaternion = UnityEngine.Quaternion;
 using Vector3 = UnityEngine.Vector3;
 
@@ -47,7 +48,7 @@ namespace SurgeEngine.Code.Core.Actor.States
             float distance = config.castDistance * config.castDistanceCurve
                 .Evaluate(Kinematics.HorizontalSpeed / config.topSpeed);
             bool checkForPredictedGround =
-                Kinematics.CheckForPredictedGround(Kinematics.Velocity, Kinematics.Normal, Time.fixedDeltaTime, distance, 8);
+                Kinematics.CheckForPredictedGround(Kinematics.Velocity, Rigidbody.transform.up, Time.fixedDeltaTime, distance, 8);
             bool ground = Kinematics.CheckForGround(out RaycastHit data, castDistance: distance);
             if (Kinematics.Speed < config.topSpeed / 2)
             {
@@ -70,6 +71,7 @@ namespace SurgeEngine.Code.Core.Actor.States
                 Kinematics.BasePhysics(Kinematics.Normal);
                 Kinematics.Snap(Kinematics.Point, Kinematics.Normal, true);
                 Model.RotateBody(Kinematics.Normal);
+                
                 Kinematics.SlopePhysics();
                 
                 UpdateSurfaceTag(data.transform.gameObject.GetGroundTag());

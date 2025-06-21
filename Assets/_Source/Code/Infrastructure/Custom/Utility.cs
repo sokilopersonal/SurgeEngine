@@ -45,9 +45,13 @@ namespace SurgeEngine.Code.Infrastructure.Custom
             string input = gameObject.name;
             int index = input.IndexOf('@');
             string result = index == -1 ? "Concrete" : input.Substring(index + 1);
-            GroundTag tag = (GroundTag)Enum.Parse(typeof(GroundTag), result);
             
-            return tag;
+            if(Enum.TryParse(typeof(GroundTag), result, out object tag))
+            {
+                return (GroundTag)tag;
+            }
+            
+            return GroundTag.Concrete;
         }
 
         public static bool InDelayTime(float last, float delay)

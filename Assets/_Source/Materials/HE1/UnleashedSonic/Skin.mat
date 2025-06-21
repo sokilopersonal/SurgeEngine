@@ -178,6 +178,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _TransmissionMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _TransmissionMaskMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -274,6 +278,7 @@ Material:
     - _Metallic: 0
     - _MetallicRemapMax: 1
     - _MetallicRemapMin: 0
+    - _NormalIntensity: 1
     - _NormalMapSpace: 0
     - _NormalScale: 1
     - _NormalStrength: 0
@@ -323,7 +328,7 @@ Material:
     - _TransmissionEnable: 1
     - _TransmissionMask: 1
     - _TransmissionProfile: 2.8566177
-    - _TransmissionThickness: 0.225
+    - _TransmissionThickness: 0.35
     - _TransparentBackfaceEnable: 0
     - _TransparentCullMode: 2
     - _TransparentDepthPostpassEnable: 0

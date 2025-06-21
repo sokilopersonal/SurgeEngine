@@ -182,6 +182,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _TransmissionMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _TransmissionMaskMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -248,7 +252,7 @@ Material:
     - _EmissionIntensity: 1
     - _EmissionMaskIntensity: 0.5
     - _EmissionPowerFalloff: 0
-    - _EmissionPowerReflection: 0.25
+    - _EmissionPowerReflection: 1
     - _EmissionPowerSpecular: 0.1
     - _EmissiveColorMode: 1
     - _EmissiveExposureWeight: 1
@@ -283,7 +287,7 @@ Material:
     - _LinkDetailsWithBase: 1
     - _MaterialID: 1
     - _MaterialTypeMask: 18
-    - _Metallic: 0
+    - _Metallic: 1
     - _MetallicRemapMax: 1
     - _MetallicRemapMin: 0
     - _Mode: 0
@@ -305,7 +309,7 @@ Material:
     - _RayTracing: 0
     - _ReceivesSSR: 0
     - _ReceivesSSRTransparent: 0
-    - _ReflectionIntensity: 2
+    - _ReflectionIntensity: 4
     - _RefractionModel: 0
     - _RenderQueueType: 1
     - _RequireSplitLighting: 0

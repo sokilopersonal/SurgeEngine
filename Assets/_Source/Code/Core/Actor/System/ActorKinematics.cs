@@ -96,10 +96,10 @@ namespace SurgeEngine.Code.Core.Actor.System
         {
             _cameraTransform = Actor.Camera.GetCameraTransform();
 
-            Vector3 transformedInput = Quaternion.FromToRotation(_cameraTransform.up, Normal) *
-                                       (_cameraTransform.rotation * Actor.Input.moveVector);
-            transformedInput = Vector3.ProjectOnPlane(transformedInput, Normal);
-            _inputDir = transformedInput.normalized * Actor.Input.moveVector.magnitude;
+            Vector3 rawInput = _cameraTransform.rotation * Actor.Input.moveVector;
+            Vector3 orientedInput = Quaternion.FromToRotation(_cameraTransform.up, Normal) * rawInput;
+            _inputDir = GetMovementDirectionProjectedOnPlane(orientedInput, Normal, _cameraTransform.up)
+                        * Actor.Input.moveVector.magnitude;
         }
 
         private void CalculateMovementStats()
@@ -244,19 +244,27 @@ namespace SurgeEngine.Code.Core.Actor.System
                 _rigidbody.AddForce(Normal * _config.slopeDeslopeForce, ForceMode.Impulse);
                 Actor.StateMachine.SetState<FStateAir>(_config.slopeInactiveDuration);
             }
-            
+
             if (Angle > _config.slopeMinAngle && Speed > _config.slopeMinForceSpeed)
             {
                 bool uphill = Vector3.Dot(_rigidbody.linearVelocity.normalized, Vector3.down) < 0;
-                Vector3 slopeForce = Vector3.ProjectOnPlane(Vector3.down, Normal) * (1 * (uphill ? _config.slopeUphillForce : _config.slopeDownhillForce));
-                _rigidbody.AddForce(slopeForce * Time.fixedDeltaTime, ForceMode.Impulse);
+                float forceMag = uphill ? _config.slopeUphillForce : _config.slopeDownhillForce;
+                Vector3 slopeDir = GetMovementDirectionProjectedOnPlane(Vector3.down, Normal, Vector3.up);
+                _rigidbody.AddForce(slopeDir * (forceMag * Time.fixedDeltaTime), ForceMode.Impulse);
             }
-            
+
             float rDot = Vector3.Dot(Vector3.up, Actor.transform.right);
-            if (Mathf.Abs(rDot) > 0.1f && Mathf.Approximately(Angle, 90))
-            {
-                _rigidbody.linearVelocity += Vector3.down * (4 * Time.fixedDeltaTime);
-            }
+            if (Mathf.Abs(rDot) > 0.1f && Mathf.Approximately(Angle, 90f))
+                _rigidbody.linearVelocity += Vector3.down * (4f * Time.fixedDeltaTime);
+        }
+
+        private Vector3 GetMovementDirectionProjectedOnPlane(Vector3 movement, Vector3 groundNormal, Vector3 upDirection)
+        {
+            Vector3 movementProjectedOnPlane = Vector3.ProjectOnPlane(movement, groundNormal);
+            Vector3 axisToRotateAround = Vector3.Cross(movement, upDirection);
+            float angle = Vector3.SignedAngle(movement, movementProjectedOnPlane, axisToRotateAround);
+            Quaternion rotation = Quaternion.AngleAxis(angle, axisToRotateAround);
+            return (rotation * movement).normalized;
         }
 
         public bool CheckForPredictedGround(Vector3 velocity, Vector3 normal, float deltaTime, float distance, int steps)

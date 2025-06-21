@@ -6,7 +6,7 @@ using UnityEngine.Splines;
 
 namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility.Rails
 {
-    [RequireComponent(typeof(MeshCollider), typeof(SplineContainer), typeof(SplineExtrude))]
+    [RequireComponent(typeof(MeshCollider), typeof(SplineContainer))]
     public class Rail : MonoBehaviour
     {
         private SplineContainer container;
