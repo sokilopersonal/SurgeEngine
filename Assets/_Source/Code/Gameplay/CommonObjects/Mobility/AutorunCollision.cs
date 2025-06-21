@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
 {
-    public class AutorunCollision : ContactBase
+    public class AutorunCollision : ModeCollision
     {
         private BoxCollider _boxCollider;
         

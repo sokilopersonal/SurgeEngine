@@ -4,7 +4,7 @@ using UnityEngine.Splines;
 
 namespace SurgeEngine.Code.Gameplay.CommonObjects.ChangeModes
 {
-    public class ChangeModeSide : ContactBase
+    public class ChangeModeSide : ModeCollision
     {
         [SerializeField] private SplineContainer path;
         
@@ -13,6 +13,9 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.ChangeModes
         public override void Contact(Collider msg, ActorBase context)
         {
             base.Contact(msg, context);
+
+            if (!CheckFacing(context.transform.forward))
+                return;
             
             ActorKinematics kinematics = context.Kinematics;
             if (!kinematics.IsPathValid())

@@ -26,12 +26,10 @@ namespace SurgeEngine.Code.Gameplay.Enemy.AeroCannon
             enemy.StateMachine.OnStateAssign += OnStateAssign;
         }
 
-        private void OnDestroy()
+        private void OnDisable()
         {
             _chargeInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
             _fireInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-
-            Debug.Log("Destroyed");
         }
 
         private void OnStateAssign(FState obj)
