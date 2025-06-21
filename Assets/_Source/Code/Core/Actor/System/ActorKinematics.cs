@@ -100,6 +100,9 @@ namespace SurgeEngine.Code.Core.Actor.System
                                        (_cameraTransform.rotation * Actor.Input.moveVector);
             transformedInput = Vector3.ProjectOnPlane(transformedInput, Normal);
             _inputDir = transformedInput.normalized * Actor.Input.moveVector.magnitude;
+
+            if (Actor.Flags.HasFlag(FlagType.Autorun))
+                _inputDir = Actor.transform.forward;
         }
 
         private void CalculateMovementStats()
