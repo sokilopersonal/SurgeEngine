@@ -10,6 +10,9 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
         public override void Contact(Collider msg, ActorBase context)
         {
             base.Contact(msg, context);
+            
+            if (!CheckFacing(context.transform.forward))
+                return;
 
             var flags = context.Flags;
             if (!flags.HasFlag(FlagType.Autorun))

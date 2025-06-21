@@ -13,7 +13,8 @@ namespace SurgeEngine.Code.Core.Actor.States
     public sealed class FStateGround : FActorState, IDamageableState
     {
         private GroundTag _surfaceTag;
-        
+        private float _hardAngleTimer;
+
         public event Action<GroundTag> OnSurfaceTagChanged;
         
         public FStateGround(ActorBase owner) : base(owner)
@@ -32,10 +33,13 @@ namespace SurgeEngine.Code.Core.Actor.States
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
-            
-            if (Input.APressed)
+
+            if (!Actor.Flags.HasFlag(FlagType.OutOfControl))
             {
-                StateMachine.SetState<FStateJump>(0.1f);
+                if (Input.APressed)
+                {
+                    StateMachine.SetState<FStateJump>(0.1f);
+                }
             }
         }
 
@@ -50,27 +54,23 @@ namespace SurgeEngine.Code.Core.Actor.States
             bool checkForPredictedGround =
                 Kinematics.CheckForPredictedGround(Kinematics.Velocity, Rigidbody.transform.up, Time.fixedDeltaTime, distance, 8);
             bool ground = Kinematics.CheckForGround(out RaycastHit data, castDistance: distance);
-            if (Kinematics.Speed < config.topSpeed / 2)
-            {
-                float angle = Vector3.Angle(data.normal, Vector3.up);
-                if (Kinematics.IsHardAngle(data.normal) && angle < 85)
-                {
-                    StateMachine.SetState<FStateAir>();
-                    return;
-                }
-            }
-            
             if (ground && checkForPredictedGround)
             {
                 Kinematics.Point = data.point;
-                Kinematics.SlerpSnapNormal(data.normal);
+                Kinematics.RotateSnapNormal(data.normal);
                 
                 Vector3 stored = Vector3.ClampMagnitude(Rigidbody.linearVelocity, config.maxSpeed);
                 Rigidbody.linearVelocity = Quaternion.FromToRotation(Rigidbody.transform.up, prevNormal) * stored;
-
+                
                 Kinematics.BasePhysics(Kinematics.Normal);
                 Kinematics.Snap(Kinematics.Point, Kinematics.Normal, true);
                 Model.RotateBody(Kinematics.Normal);
+                Kinematics.Project(Kinematics.Normal);
+                
+                if (Kinematics.Speed < config.topSpeed / 4 && Kinematics.IsHardAngle(data.normal) && Kinematics.mode == KinematicsMode.Free)
+                {
+                    StateMachine.SetState<FStateSlip>();
+                }
                 
                 Kinematics.SlopePhysics();
                 

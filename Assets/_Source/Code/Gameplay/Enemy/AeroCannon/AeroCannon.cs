@@ -34,6 +34,8 @@ namespace SurgeEngine.Code.Gameplay.Enemy.AeroCannon
         public void TakeDamage(MonoBehaviour sender, float damage)
         {
             OnDied?.Invoke();
+            
+            view.Destroy();
         }
     }
 }

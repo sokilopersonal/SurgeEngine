@@ -25,7 +25,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         {
             base.OnTick(dt);
             
-            if (Input.moveVector.magnitude > 0.2f || Kinematics.Speed > 0.02f)
+            if (Kinematics.GetInputDir().magnitude > 0.2f || Kinematics.Speed > 0.02f)
             {
                 StateMachine.SetState<FStateGround>();
             }
@@ -44,8 +44,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         {
             base.OnFixedTick(dt);
             
-            if (Kinematics.CheckForGroundWithDirection(out RaycastHit hit, Vector3.down, 2f) &&
-                !Kinematics.IsHardAngle(hit.normal))
+            if (Kinematics.CheckForGroundWithDirection(out RaycastHit hit, Vector3.down, 2f))
             {
                 Kinematics.Point = hit.point;
                 Kinematics.Normal = Vector3.up;

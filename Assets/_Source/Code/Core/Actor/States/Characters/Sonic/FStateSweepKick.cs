@@ -74,7 +74,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
             if (Kinematics.CheckForGround(out RaycastHit hit))
             {
                 Kinematics.Point = hit.point;
-                Kinematics.SlerpSnapNormal(hit.normal);
+                Kinematics.RotateSnapNormal(hit.normal);
                 
                 Rigidbody.linearVelocity = Vector3.MoveTowards(Rigidbody.linearVelocity, Vector3.zero, _config.deceleration * dt);
                 Rigidbody.linearVelocity = Vector3.ProjectOnPlane(Rigidbody.linearVelocity, Kinematics.Normal);

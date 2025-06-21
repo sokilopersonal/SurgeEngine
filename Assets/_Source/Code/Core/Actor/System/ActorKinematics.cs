@@ -49,6 +49,7 @@ namespace SurgeEngine.Code.Core.Actor.System
         public Vector3 Velocity => _rigidbody.linearVelocity;
         public Vector3 MovementVector => _movementVector;
         public Vector3 PlanarVelocity => _planarVelocity;
+        public Vector3 Vertical => _vertical;
         public float TurnRate { get; set; }
         public bool Skidding => _moveDot < _config.skiddingThreshold;
         public float MoveDot => _moveDot;
@@ -58,6 +59,7 @@ namespace SurgeEngine.Code.Core.Actor.System
         private Transform _cameraTransform;
         private Vector3 _movementVector;
         private Vector3 _planarVelocity;
+        private Vector3 _vertical;
 
         private SplineData _splineData;
         private Vector3 _lastTangent;
@@ -96,13 +98,17 @@ namespace SurgeEngine.Code.Core.Actor.System
         {
             _cameraTransform = Actor.Camera.GetCameraTransform();
 
-            Vector3 rawInput = _cameraTransform.rotation * Actor.Input.moveVector;
-            Vector3 orientedInput = Quaternion.FromToRotation(_cameraTransform.up, Normal) * rawInput;
-            _inputDir = GetMovementDirectionProjectedOnPlane(orientedInput, Normal, _cameraTransform.up)
-                        * Actor.Input.moveVector.magnitude;
-            
-            if (Actor.Flags.HasFlag(FlagType.Autorun))
+            if (!Actor.Flags.HasFlag(FlagType.Autorun))
+            {
+                Vector3 rawInput = _cameraTransform.rotation * Actor.Input.moveVector;
+                Vector3 orientedInput = Quaternion.FromToRotation(_cameraTransform.up, Normal) * rawInput;
+                _inputDir = GetMovementDirectionProjectedOnPlane(orientedInput, Normal, _cameraTransform.up)
+                            * Actor.Input.moveVector.magnitude;
+            }
+            else
+            {
                 _inputDir = Actor.transform.forward;
+            }
         }
 
         private void CalculateMovementStats()
@@ -126,7 +132,7 @@ namespace SurgeEngine.Code.Core.Actor.System
         {
             Vector3 vel = _rigidbody.linearVelocity;
             Vector3 dir = _inputDir;
-            SurgeMath.SplitPlanarVector(vel, normal, out Vector3 planar, out Vector3 vertical);
+            SurgeMath.SplitPlanarVector(vel, normal, out Vector3 planar, out var vertical);
             
             WriteMovementVector(planar);
             _planarVelocity = planar;
@@ -176,7 +182,12 @@ namespace SurgeEngine.Code.Core.Actor.System
                 }
             }
             
-            _rigidbody.linearVelocity = _movementVector + vertical;
+            _rigidbody.linearVelocity = _movementVector;
+
+            if (movementType == MovementType.Air)
+            {
+                _rigidbody.linearVelocity += vertical;
+            }
         }
 
         private void SplineCalculation()
@@ -224,12 +235,10 @@ namespace SurgeEngine.Code.Core.Actor.System
 
         private void BaseGroundPhysics()
         {
-            Vector3 newVelocity = Quaternion.FromToRotation(_planarVelocity.normalized, _inputDir.normalized) * _planarVelocity;
+            Vector3 newVelocity = Quaternion.FromToRotation(_planarVelocity.normalized, Vector3.ProjectOnPlane(_inputDir.normalized, Vector3.up)) * _planarVelocity;
             float handling = TurnRate;
             handling *= _config.turnCurve.Evaluate(Speed / _config.topSpeed);
             _movementVector = Vector3.Slerp(_planarVelocity, newVelocity, handling * Time.fixedDeltaTime);
-            
-            Project();
         }
 
         private void BaseAirPhysics()
@@ -397,11 +406,11 @@ namespace SurgeEngine.Code.Core.Actor.System
             }
         }
 
-        public void SlerpSnapNormal(Vector3 targetNormal)
+        public void RotateSnapNormal(Vector3 targetNormal)
         {
             if (Speed > normalSpeedThreshold)
             {
-                Normal = Vector3.Slerp(Normal, targetNormal, (normalLerpSpeed + Speed / 2) * Time.fixedDeltaTime);
+                Normal = Vector3.Slerp(Normal, targetNormal, (normalLerpSpeed + Speed / 4) * Time.fixedDeltaTime);
             }
             else
             {

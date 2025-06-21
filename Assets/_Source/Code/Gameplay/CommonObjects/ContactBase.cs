@@ -22,5 +22,12 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects
         {
             
         }
+        
+        protected bool CheckFacing(Vector3 dir)
+        {
+            float dot = Vector3.Dot(transform.forward, dir);
+            Debug.Log(dot);
+            return dot > 0.02f;
+        }
     }
 }

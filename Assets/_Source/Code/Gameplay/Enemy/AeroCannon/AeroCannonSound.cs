@@ -12,34 +12,37 @@ namespace SurgeEngine.Code.Gameplay.Enemy.AeroCannon
         [SerializeField] private EventReference chargeSound;
         [SerializeField] private EventReference fireSound;
 
-        private EventInstance charge;
-        private EventInstance fire;
+        private EventInstance _chargeInstance;
+        private EventInstance _fireInstance;
 
         private void Start()
         {
-            charge = RuntimeManager.CreateInstance(chargeSound);
-            charge.set3DAttributes(transform.To3DAttributes());
+            _chargeInstance = RuntimeManager.CreateInstance(chargeSound);
+            _chargeInstance.set3DAttributes(transform.To3DAttributes());
 
-            fire = RuntimeManager.CreateInstance(fireSound);
-            fire.set3DAttributes(transform.To3DAttributes());
+            _fireInstance = RuntimeManager.CreateInstance(fireSound);
+            _fireInstance.set3DAttributes(transform.To3DAttributes());
 
             enemy.StateMachine.OnStateAssign += OnStateAssign;
         }
 
         private void OnDestroy()
         {
-            charge.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            _chargeInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            _fireInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+
+            Debug.Log("Destroyed");
         }
 
         private void OnStateAssign(FState obj)
         {
             if (obj is ACStatePrepare)
-                charge.start();
+                _chargeInstance.start();
             else
-                charge.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+                _chargeInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
 
             if (obj is ACStateShoot)
-                fire.start();
+                _fireInstance.start();
         }
     }
 }

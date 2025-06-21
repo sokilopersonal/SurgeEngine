@@ -54582,11 +54582,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c140d653e29442285d8fe6d251da1a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stateMachine:
-    currentStateName: 
   view: {fileID: 4547457691980812445}
-  animation: {fileID: 5006998213474647552}
-  config: {fileID: 11400000, guid: f90b2f0ab11050b488a4d360cd395cf3, type: 2}
+  animation: {fileID: 0}
+  viewDistance: 10
+  mask:
+    serializedVersion: 2
+    m_Bits: 1
+  idleTime: 1.5
+  prepareTime: 1
   shootPoint: {fileID: 4949581083101068224}
   bulletPrefab: {fileID: 7123386352214734269, guid: f7ded45629c0e9b4c8012de5735564ad, type: 3}
 --- !u!65 &2570968368960566440

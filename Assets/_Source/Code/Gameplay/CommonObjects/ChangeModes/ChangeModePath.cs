@@ -14,12 +14,14 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.ChangeModes
         {
             base.Contact(msg, context);
 
-            TogglePath();
+            if (!CheckFacing(context.transform.forward))
+                return;
+            
+            TogglePath(context);
         }
         
-        private void TogglePath()
+        private void TogglePath(ActorBase context)
         {
-            ActorBase context = ActorContext.Context;
             ActorKinematics kinematics = context.Kinematics;
             if (!kinematics.IsPathValid())
             {

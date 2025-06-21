@@ -5,10 +5,10 @@ namespace SurgeEngine.Code.Infrastructure.Custom
 {
     public static class SurgeMath
     {
-        public static void SplitPlanarVector(Vector3 Vector, Vector3 Normal, out Vector3 Planar, out Vector3 Vertical)
+        public static void SplitPlanarVector(Vector3 vector, Vector3 normal, out Vector3 planar, out Vector3 vertical)
         {
-            Planar = Vector3.ProjectOnPlane(Vector, Normal);
-            Vertical = Vector - Planar;
+            planar = Vector3.ProjectOnPlane(vector, normal);
+            vertical = vector - Vector3.ProjectOnPlane(vector, normal);
         }
         
         public static float Smooth(float t, float f = 0.5f, float a1 = 0.1f)

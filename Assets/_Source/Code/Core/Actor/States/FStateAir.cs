@@ -33,13 +33,6 @@ namespace SurgeEngine.Code.Core.Actor.States
             base.OnFixedTick(dt);
 
             bool air = !Kinematics.CheckForGround(out var hit);
-            if (Kinematics.IsHardAngle(hit.normal))
-            {
-                Rigidbody.linearVelocity += Vector3.down * (Kinematics.Gravity * dt);
-                Rigidbody.linearVelocity = Vector3.ProjectOnPlane(Rigidbody.linearVelocity, hit.normal);
-                return;
-            }
-            
             if (air)
             {
                 Kinematics.Point = hit.point;
