@@ -28,7 +28,10 @@ namespace SurgeEngine.Code.Core.Actor.System
             var animator = StateAnimator.Animator;
             animator.SetFloat(AnimatorParams.GroundSpeed, Mathf.Clamp(Actor.Kinematics.Speed, 4, 30f));
             animator.SetFloat(AnimatorParams.VerticalSpeed, Actor.Kinematics.Velocity.y);
-            animator.SetFloat("SpeedPercent", Mathf.Clamp(Actor.Kinematics.Speed / Actor.Config.topSpeed, 0f, 1.25f));
+            
+            float targetSpeedPercent = Mathf.Clamp(Actor.Kinematics.Speed / Actor.Config.topSpeed, 0f, 1.25f);
+            float currentSpeedPercent = animator.GetFloat("SpeedPercent");
+            animator.SetFloat("SpeedPercent", Mathf.Lerp(currentSpeedPercent, targetSpeedPercent, 10f * Time.deltaTime));
 
             Vector3 vel = Actor.Kinematics.Velocity;
             float signed = Vector3.SignedAngle(vel, Actor.Model.root.forward, -Vector3.up);

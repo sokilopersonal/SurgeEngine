@@ -64,10 +64,11 @@ namespace SurgeEngine.Code.Core.Actor.States
                 
                 Kinematics.BasePhysics(Kinematics.Normal);
                 Kinematics.Snap(Kinematics.Point, Kinematics.Normal, true);
-                Model.RotateBody(Kinematics.Normal);
+                Model.RotateBody(Kinematics.Velocity, Kinematics.Normal);
                 Kinematics.Project(Kinematics.Normal);
                 
-                if (Kinematics.Speed < config.topSpeed / 4 && Kinematics.IsHardAngle(data.normal) && Kinematics.mode == KinematicsMode.Free)
+                bool hit = Physics.Raycast(Rigidbody.position, Rigidbody.transform.forward, 0.5f, config.castLayer);
+                if (Kinematics.Speed < config.topSpeed / 4 && !hit && Kinematics.IsHardAngle(data.normal) && Kinematics.mode == KinematicsMode.Free)
                 {
                     StateMachine.SetState<FStateSlip>();
                 }
@@ -87,7 +88,12 @@ namespace SurgeEngine.Code.Core.Actor.States
                 Kinematics.Normal = verticalHit.normal;
             }
         }
-        
+
+        private void Rotate()
+        {
+            
+        }
+
         private void UpdateSurfaceTag(GroundTag newTag)
         {
             if (_surfaceTag != newTag)

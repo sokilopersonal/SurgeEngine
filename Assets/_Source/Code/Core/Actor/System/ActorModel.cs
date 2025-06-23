@@ -144,11 +144,11 @@ namespace SurgeEngine.Code.Core.Actor.System
             }
         }
 
-        public void RotateBody(Vector3 vector, Vector3 normal)
+        public void RotateBody(Vector3 vector, Vector3 normal, float angleDelta = 1200f)
         {
             if (_airRestoring || _isFlipping) return;
             
-            if (vector.sqrMagnitude > 0.01f)
+            /*if (vector.sqrMagnitude > 0.01f)
             {
                 Quaternion targetRotation = Quaternion.LookRotation(vector, normal);
                 Actor.Kinematics.Rigidbody.rotation = Quaternion.Slerp(targetRotation, Actor.Kinematics.Rigidbody.rotation, Mathf.Clamp01(_timer));
@@ -157,6 +157,51 @@ namespace SurgeEngine.Code.Core.Actor.System
             {
                 Quaternion targetRotation = Quaternion.LookRotation(Actor.transform.forward, normal);
                 Actor.Kinematics.Rigidbody.rotation = targetRotation;
+            }*/
+            
+            var kinematics = Actor.Kinematics;
+            var rb = kinematics.Rigidbody;
+            Vector3 inputDir = kinematics.GetInputDir();
+            var config = Actor.Config;
+            Vector3 currentVelocity = Vector3.ProjectOnPlane(vector, normal);
+            float currentSpeed = currentVelocity.magnitude;
+
+            float baseRotationSpeed = angleDelta;
+            float speedThreshold = 4f;
+            float maxSpeed = config.topSpeed;
+
+            if (inputDir.magnitude > 0.1f)
+            {
+                Vector3 targetDirection = inputDir;
+
+                if (currentSpeed > speedThreshold && currentSpeed > 0.1f)
+                {
+                    Vector3 velocityDir = currentVelocity.normalized;
+                    inputDir = Vector3.ProjectOnPlane(inputDir, velocityDir);
+
+                    float velocityInfluence =
+                        Mathf.Clamp01((currentSpeed - speedThreshold) / (maxSpeed - speedThreshold));
+                    velocityInfluence = Mathf.Pow(velocityInfluence, 0.5f);
+
+                    targetDirection = Vector3.Slerp(inputDir, velocityDir, velocityInfluence * 24f);
+                    targetDirection.Normalize();
+
+                    baseRotationSpeed *= Mathf.Lerp(1f, 0.2f, velocityInfluence);
+                }
+
+                Quaternion targetRotation = Quaternion.LookRotation(targetDirection, normal);
+                rb.rotation = Quaternion.RotateTowards(rb.rotation, targetRotation,
+                    baseRotationSpeed * Time.fixedDeltaTime);
+            }
+            else
+            {
+                if (currentSpeed > 0.1f)
+                {
+                    Vector3 velocityDir = currentVelocity.normalized;
+                    Quaternion targetRotation = Quaternion.LookRotation(velocityDir, normal);
+                    rb.rotation = Quaternion.RotateTowards(rb.rotation, targetRotation, 20f * Time.fixedDeltaTime);
+                    rb.rotation = Quaternion.FromToRotation(rb.transform.up, kinematics.Normal) * rb.rotation;
+                }
             }
         }
 

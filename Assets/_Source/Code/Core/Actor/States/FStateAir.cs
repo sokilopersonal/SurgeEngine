@@ -42,7 +42,7 @@ namespace SurgeEngine.Code.Core.Actor.States
                 
                 Vector3 vel = Kinematics.Velocity;
                 vel.y = 0;
-                Model.RotateBody(vel, Vector3.up);
+                Model.RotateBody(vel, Vector3.up, 360f);
                 
                 float gravity = Kinematics.Gravity;
                 if (Actor.Flags.HasFlag(FlagType.OnWater))
