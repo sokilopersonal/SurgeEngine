@@ -60,6 +60,7 @@ namespace SurgeEngine.Code.Core.Actor.System
         private Vector3 _movementVector;
         private Vector3 _planarVelocity;
         private Vector3 _vertical;
+        private Vector3 _normalSmoothVelocity;
 
         private SplineData _splineData;
         private Vector3 _lastTangent;
@@ -286,22 +287,27 @@ namespace SurgeEngine.Code.Core.Actor.System
             return (rotation * movement).normalized;
         }
 
-        public bool CheckForPredictedGround(Vector3 velocity, Vector3 normal, float deltaTime, float distance, int steps)
+        public bool CheckForPredictedGround(float deltaTime, float distance, int steps)
         {
             bool willBeGrounded = false;
+            Vector3 velocity = Velocity;
             Vector3 initialVelocity = velocity;
+            Vector3 normal = Normal;
             Vector3 predictedNormal = normal;
             Vector3 predictedPos = _rigidbody.position;
             for (int i = 0; i < steps; i++)
             {
                 predictedPos += velocity * deltaTime / steps;
-                if (Physics.Raycast(predictedPos, -predictedNormal, out RaycastHit hit, distance, _config.castLayer))
+                Ray ray = new Ray(predictedPos, -predictedNormal);
+                Debug.DrawRay(ray.origin, ray.direction * distance, Color.blue);
+                if (Physics.Raycast(ray, out RaycastHit hit, distance, _config.castLayer))
                 {
-                    if (Vector3.Angle(predictedNormal, hit.normal) < maxAngleDifference)
+                    var angle = Vector3.Angle(predictedNormal, hit.normal);
+                    if (angle > maxAngleDifference)
                     {
                         predictedPos = hit.point + hit.normal;
                         predictedNormal = hit.normal;
-                        initialVelocity = Quaternion.FromToRotation(Normal, predictedNormal) * initialVelocity;
+                        initialVelocity = Quaternion.FromToRotation(normal, predictedNormal) * initialVelocity;
                         willBeGrounded = true;
                     }
                 }
@@ -415,14 +421,15 @@ namespace SurgeEngine.Code.Core.Actor.System
 
         public void RotateSnapNormal(Vector3 targetNormal)
         {
-            if (Speed > normalSpeedThreshold)
-            {
-                Normal = Vector3.Slerp(Normal, targetNormal, (normalLerpSpeed + Speed) * Time.fixedDeltaTime);
-            }
-            else
-            {
-                Normal = Vector3.Slerp(Normal, Vector3.up, normalLerpSpeed * Time.fixedDeltaTime);
-            }
+            float minSpeed = normalSpeedThreshold * 0.5f;
+            float maxSpeed = normalSpeedThreshold * 2f;
+            float t = Mathf.Clamp01((Speed - minSpeed) / (maxSpeed - minSpeed));
+    
+            Vector3 goal = Vector3.Slerp(Vector3.up, targetNormal, t);
+            float smoothTime = 1f / (normalLerpSpeed + Speed * t);
+            Normal = Vector3
+                .SmoothDamp(Normal, goal, ref _normalSmoothVelocity, smoothTime, Mathf.Infinity, Time.fixedDeltaTime)
+                .normalized;
         }
 
         public void Deceleration(float min, float max)

@@ -155,7 +155,7 @@ namespace SurgeEngine.Code.Core.Actor.System
             var config = Actor.Config;
             Vector3 currentVelocity = Vector3.ProjectOnPlane(vector, normal);
             float currentSpeed = currentVelocity.magnitude;
-            
+
             if (rawInput.sqrMagnitude > 0.01f)
             {
                 Vector3 targetDir = inputDir.normalized;
@@ -168,9 +168,7 @@ namespace SurgeEngine.Code.Core.Actor.System
                     targetDir = Vector3.Slerp(inputDir.normalized, velDir, t * 14f).normalized;
                 }
 
-                float rotSpeed = angleDelta * (currentSpeed > 2f
-                    ? Mathf.Lerp(1f, 0.175f, Mathf.Pow((currentSpeed - 2f) / (config.topSpeed - 2f), 0.5f))
-                    : 1f);
+                float rotSpeed = angleDelta * (currentSpeed > 2f ? Mathf.Lerp(1f, 0.175f, Mathf.Pow((currentSpeed - 2f) / (config.topSpeed - 2f), 0.5f)) : 1f);
 
                 var targetRot = Quaternion.LookRotation(targetDir, normal);
                 kinematics.Rigidbody.rotation = Quaternion.RotateTowards(kinematics.Rigidbody.rotation, targetRot, rotSpeed * Time.fixedDeltaTime);
@@ -181,7 +179,8 @@ namespace SurgeEngine.Code.Core.Actor.System
                 {
                     Vector3 velocityDir = currentVelocity.normalized;
                     Quaternion targetRotation = Quaternion.LookRotation(velocityDir, normal);
-                    rb.rotation = Quaternion.RotateTowards(rb.rotation, targetRotation, 45f * Time.fixedDeltaTime);
+                    Debug.Log(normal);
+                    rb.rotation = Quaternion.RotateTowards(rb.rotation, targetRotation, 60f * Time.fixedDeltaTime);
                     rb.rotation = Quaternion.FromToRotation(rb.transform.up, kinematics.Normal) * rb.rotation;
                 }
             }

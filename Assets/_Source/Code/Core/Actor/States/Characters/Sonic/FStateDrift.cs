@@ -52,15 +52,26 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
         {
             base.OnFixedTick(dt);
 
+            Vector3 prevNormal = Kinematics.Normal;
             var transform = Rigidbody.transform;
             var offset = -transform.up * 0.75f;
             HurtBox.CreateAttached(Actor, transform, offset, new Vector3(0.75f, 0.3f, 0.75f), HurtBoxTarget.Enemy | HurtBoxTarget.Breakable);
             
             if (Kinematics.CheckForGround(out RaycastHit hit))
             {
+                if (Kinematics.CheckForPredictedGround(dt, Actor.Config.castDistance, 4))
+                {
+                    Kinematics.Normal = prevNormal;
+                    
+                    Kinematics.SlopePhysics();
+                    Kinematics.Project();
+                    
+                    return;
+                }
+                
                 Vector3 point = hit.point;
                 Vector3 normal = hit.normal;
-                Kinematics.Normal = normal;
+                Kinematics.RotateSnapNormal(normal);
                 
                 Vector3 dir = Input.moveVector;
                 _driftXDirection = Mathf.Sign(dir.x);

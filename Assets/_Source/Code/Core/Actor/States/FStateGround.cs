@@ -51,16 +51,25 @@ namespace SurgeEngine.Code.Core.Actor.States
             BaseActorConfig config = Actor.Config;
             float distance = config.castDistance * config.castDistanceCurve
                 .Evaluate(Kinematics.HorizontalSpeed / config.topSpeed);
-            bool checkForPredictedGround =
-                Kinematics.CheckForPredictedGround(Kinematics.Velocity, Rigidbody.transform.up, Time.fixedDeltaTime, distance, 8);
             bool ground = Kinematics.CheckForGround(out RaycastHit data, castDistance: distance);
-            if (ground && checkForPredictedGround)
+            if (ground)
             {
+                if (Kinematics.CheckForPredictedGround(dt, distance, 4))
+                {
+                    // Operate the previous normal
+                    Kinematics.BasePhysics(prevNormal);
+                    Kinematics.Normal = prevNormal;
+                    Model.RotateBody(Kinematics.Velocity, Kinematics.Normal);
+                    Kinematics.Project(prevNormal);
+                    Kinematics.SlopePhysics();
+                    return;
+                }
+                
                 Kinematics.Point = data.point;
                 Kinematics.RotateSnapNormal(data.normal);
                 
-                Vector3 stored = Vector3.ClampMagnitude(Rigidbody.linearVelocity, config.maxSpeed);
-                //Rigidbody.linearVelocity = Quaternion.FromToRotation(Rigidbody.transform.up, prevNormal) * stored;
+                Vector3 stored = Rigidbody.linearVelocity;
+                Rigidbody.linearVelocity = Quaternion.FromToRotation(Kinematics.Normal, prevNormal) * stored;
                 
                 Kinematics.BasePhysics(Kinematics.Normal);
                 Kinematics.Snap(Kinematics.Point, Kinematics.Normal, true);
@@ -84,8 +93,8 @@ namespace SurgeEngine.Code.Core.Actor.States
 
             if (Kinematics.CheckForGroundWithDirection(out RaycastHit verticalHit, Rigidbody.transform.up) && Kinematics.Angle >= 90)
             {
-                //Kinematics.Point = verticalHit.point;
-                //Kinematics.Normal = verticalHit.normal;
+                Kinematics.Point = verticalHit.point;
+                Kinematics.Normal = verticalHit.normal;
             }
         }
 
