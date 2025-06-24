@@ -155,20 +155,21 @@ namespace SurgeEngine.Code.Core.Actor.System
             var config = Actor.Config;
             Vector3 currentVelocity = Vector3.ProjectOnPlane(vector, normal);
             float currentSpeed = currentVelocity.magnitude;
+            float speedThreshold = 3.5f;
 
             if (rawInput.sqrMagnitude > 0.01f)
             {
                 Vector3 targetDir = inputDir.normalized;
 
-                if (currentSpeed > 2f)
+                if (currentSpeed > speedThreshold)
                 {
                     var velDir = Vector3.ProjectOnPlane(currentVelocity.normalized, normal);
-                    float t = Mathf.Clamp01((currentSpeed - 2f) / (config.topSpeed - 2f));
+                    float t = Mathf.Clamp01((currentSpeed - speedThreshold) / (config.topSpeed - speedThreshold));
                     t = Mathf.Sqrt(t);
-                    targetDir = Vector3.Slerp(inputDir.normalized, velDir, t * 14f).normalized;
+                    targetDir = Vector3.Slerp(inputDir.normalized, velDir, t * 8f).normalized;
                 }
 
-                float rotSpeed = angleDelta * (currentSpeed > 2f ? Mathf.Lerp(1f, 0.175f, Mathf.Pow((currentSpeed - 2f) / (config.topSpeed - 2f), 0.5f)) : 1f);
+                float rotSpeed = angleDelta * (currentSpeed > speedThreshold ? Mathf.Lerp(1f, 0.15f, Mathf.Pow((currentSpeed - speedThreshold) / (config.topSpeed - speedThreshold), 0.5f)) : 1f);
 
                 var targetRot = Quaternion.LookRotation(targetDir, normal);
                 kinematics.Rigidbody.rotation = Quaternion.RotateTowards(kinematics.Rigidbody.rotation, targetRot, rotSpeed * Time.fixedDeltaTime);
@@ -179,8 +180,7 @@ namespace SurgeEngine.Code.Core.Actor.System
                 {
                     Vector3 velocityDir = currentVelocity.normalized;
                     Quaternion targetRotation = Quaternion.LookRotation(velocityDir, normal);
-                    Debug.Log(normal);
-                    rb.rotation = Quaternion.RotateTowards(rb.rotation, targetRotation, 60f * Time.fixedDeltaTime);
+                    rb.rotation = Quaternion.RotateTowards(rb.rotation, targetRotation, (32f + currentSpeed / 2) * Time.fixedDeltaTime);
                     rb.rotation = Quaternion.FromToRotation(rb.transform.up, kinematics.Normal) * rb.rotation;
                 }
             }

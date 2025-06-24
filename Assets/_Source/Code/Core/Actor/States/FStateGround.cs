@@ -54,7 +54,8 @@ namespace SurgeEngine.Code.Core.Actor.States
             bool ground = Kinematics.CheckForGround(out RaycastHit data, castDistance: distance);
             if (ground)
             {
-                if (Kinematics.CheckForPredictedGround(dt, distance, 4))
+                bool predictedGround = Kinematics.CheckForPredictedGround(dt, distance, 4);
+                if (predictedGround)
                 {
                     // Operate the previous normal
                     Kinematics.BasePhysics(prevNormal);
