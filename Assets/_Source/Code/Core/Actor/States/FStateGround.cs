@@ -60,7 +60,7 @@ namespace SurgeEngine.Code.Core.Actor.States
                 Kinematics.RotateSnapNormal(data.normal);
                 
                 Vector3 stored = Vector3.ClampMagnitude(Rigidbody.linearVelocity, config.maxSpeed);
-                Rigidbody.linearVelocity = Quaternion.FromToRotation(Rigidbody.transform.up, prevNormal) * stored;
+                //Rigidbody.linearVelocity = Quaternion.FromToRotation(Rigidbody.transform.up, prevNormal) * stored;
                 
                 Kinematics.BasePhysics(Kinematics.Normal);
                 Kinematics.Snap(Kinematics.Point, Kinematics.Normal, true);
@@ -84,14 +84,9 @@ namespace SurgeEngine.Code.Core.Actor.States
 
             if (Kinematics.CheckForGroundWithDirection(out RaycastHit verticalHit, Rigidbody.transform.up) && Kinematics.Angle >= 90)
             {
-                Kinematics.Point = verticalHit.point;
-                Kinematics.Normal = verticalHit.normal;
+                //Kinematics.Point = verticalHit.point;
+                //Kinematics.Normal = verticalHit.normal;
             }
-        }
-
-        private void Rotate()
-        {
-            
         }
 
         private void UpdateSurfaceTag(GroundTag newTag)

@@ -223,6 +223,13 @@ namespace SurgeEngine.Code.Core.Actor.System
                     if (distance > 5f)
                     {
                         Debug.Log("Too far away from the point. Resetting path.");
+                        
+                        var flags = Actor.Flags;
+                        if (flags.HasFlag(FlagType.Autorun))
+                        {
+                            flags.RemoveFlag(FlagType.Autorun);
+                        }
+                        
                         SetPath(null);
                     }
                 }
@@ -410,7 +417,7 @@ namespace SurgeEngine.Code.Core.Actor.System
         {
             if (Speed > normalSpeedThreshold)
             {
-                Normal = Vector3.Slerp(Normal, targetNormal, (normalLerpSpeed + Speed / 4) * Time.fixedDeltaTime);
+                Normal = Vector3.Slerp(Normal, targetNormal, (normalLerpSpeed + Speed) * Time.fixedDeltaTime);
             }
             else
             {

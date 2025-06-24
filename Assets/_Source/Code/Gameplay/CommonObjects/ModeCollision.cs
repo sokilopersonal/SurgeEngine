@@ -12,7 +12,6 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects
                 return true;
             
             float dot = Vector3.Dot(transform.forward, dir);
-            Debug.Log(dot);
             return dot > 0.02f;
         }
     }

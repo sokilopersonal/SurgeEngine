@@ -21,7 +21,9 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
             Kinematics.ResetVelocity();
             Kinematics.Rigidbody.linearVelocity += Vector3.up * _config.afterForce;
             
-            Actor.transform.localRotation = Quaternion.Euler(0f, Actor.Model.transform.localRotation.eulerAngles.y, 0f);
+            Vector3 currentRotation = Kinematics.Rigidbody.rotation.eulerAngles;
+            Vector3 newRotation = new Vector3(0f, currentRotation.y, 0f);
+            Kinematics.Rigidbody.rotation = Quaternion.Euler(newRotation);
             
             StateMachine.SetState<FStateAir>();
         }

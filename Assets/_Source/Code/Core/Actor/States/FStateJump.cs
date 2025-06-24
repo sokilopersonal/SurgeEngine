@@ -1,6 +1,7 @@
 ﻿using SurgeEngine.Code.Core.Actor.System;
 using SurgeEngine.Code.Gameplay.CommonObjects;
 using SurgeEngine.Code.Infrastructure.Config;
+using SurgeEngine.Code.Infrastructure.Custom;
 using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.States
@@ -21,10 +22,13 @@ namespace SurgeEngine.Code.Core.Actor.States
         {
             base.OnEnter();
             
-            Rigidbody.linearVelocity += Rigidbody.transform.up * Mathf.Sqrt(_config.jumpForce * 2f * Kinematics.Gravity);
+            ExecuteJump();
+
             _jumpTime = 0;
             
-            Actor.transform.rotation = Quaternion.Euler(0, Actor.transform.rotation.eulerAngles.y, 0);
+            Vector3 currentRotation = Kinematics.Rigidbody.rotation.eulerAngles;
+            Vector3 newRotation = new Vector3(0f, currentRotation.y, 0f);
+            Kinematics.Rigidbody.rotation = Quaternion.Euler(newRotation);
             
             Model.SetCollisionParam(_config.jumpCollisionHeight, _config.jumpCollisionCenter, _config.jumpCollisionRadius);
         }
@@ -32,6 +36,11 @@ namespace SurgeEngine.Code.Core.Actor.States
         public override void OnExit()
         {
             Model.ResetCollisionToDefault();
+        }
+
+        private void ExecuteJump(bool bounce = false)
+        {
+            Rigidbody.linearVelocity = new Vector3(Rigidbody.linearVelocity.x, Mathf.Sqrt(_config.jumpForce * 2f * (!bounce ? 1f : _config.jumpHoldForce / 4) * Kinematics.Gravity), Rigidbody.linearVelocity.z);
         }
 
         public override void OnTick(float dt)
@@ -67,7 +76,7 @@ namespace SurgeEngine.Code.Core.Actor.States
                 && HurtBox.CreateAttached(Actor, Actor.transform, new Vector3(0f, -0.45f, 0f), new Vector3(0.6f, 0.6f, 0.6f), 
                     HurtBoxTarget.Enemy | HurtBoxTarget.Breakable))
             {
-                StateMachine.SetState<FStateJump>(allowSameState: true);
+                ExecuteJump(true);
             }
         }
     }
