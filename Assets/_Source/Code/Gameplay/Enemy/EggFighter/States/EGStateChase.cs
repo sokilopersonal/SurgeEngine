@@ -49,9 +49,7 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter.States
             
             var rootPos = obj.rootPosition;
             rootPos.y = agent.nextPosition.y;
-            agent.updatePosition = true;
-            agent.speed = 0;
-            agent.Move(rootPos);
+            transform.position = rootPos;
             agent.nextPosition = rootPos;
         }
     }
