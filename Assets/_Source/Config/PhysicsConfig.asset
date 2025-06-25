@@ -74,23 +74,23 @@ MonoBehaviour:
   minDecelerationRate: 18
   maxDecelerationRate: 15
   airDecelerationRate: 24
-  minSkiddingRate: 46
-  maxSkiddingRate: 75
+  minSkiddingRate: 28
+  maxSkiddingRate: 55
   skiddingThreshold: -0.7
   skiddingSpeedThreshold: 15
-  turnSpeed: 7
+  turnSpeed: 9
   turnCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
       value: 1.0000122
-      inSlope: -1.4949273
-      outSlope: -1.4949273
+      inSlope: -1.8639767
+      outSlope: -1.8639767
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.0890937
+      outWeight: 0.035330262
     - serializedVersion: 3
       time: 1
       value: 0.15
@@ -103,10 +103,10 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  turnSmoothing: 6.75
-  jumpForce: 1
-  jumpHoldForce: 43
-  jumpStartTime: 0.25
+  turnSmoothing: 7
+  jumpForce: 3
+  jumpHoldForce: 34
+  jumpStartTime: 0.3
   jumpCollisionHeight: 1
   jumpCollisionCenter: -0.5
   jumpCollisionRadius: 0.3
@@ -115,8 +115,8 @@ MonoBehaviour:
   slopeDeslopeAngle: 75
   slopeMinForceSpeed: 10
   slopeInactiveDuration: 0.15
-  slopeUphillForce: 14
-  slopeDownhillForce: 17
+  slopeUphillForce: 18
+  slopeDownhillForce: 24
   slopeMinAngle: 12
   slopeMinSpeed: 10
   railMask:

@@ -26,11 +26,28 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers
             "_REFRACTIONQUALITY_NATIVE",
         };
         
-        public UserGraphics(Volume volume)
+        public UserGraphics()
         {
-            var instance = Object.Instantiate(volume);
-            Object.DontDestroyOnLoad(instance.gameObject);
-            _volume = volume.profile;
+            // Create temp profile
+            var volumeObject = new GameObject("[UserGraphics] Volume");
+            var volumeComponent = volumeObject.AddComponent<Volume>();
+            var profile = ScriptableObject.CreateInstance<VolumeProfile>();
+            Object.DontDestroyOnLoad(volumeObject);
+
+            var ao = profile.Add<ScreenSpaceAmbientOcclusion>();
+            var ssr = profile.Add<ScreenSpaceReflection>();
+            var contactShadows = profile.Add<ContactShadows>();
+            var bloom = profile.Add<Bloom>();
+            var motionBlur = profile.Add<MotionBlur>();
+
+            ao.quality.overrideState = true;
+            ssr.quality.overrideState = true;
+            contactShadows.quality.overrideState = true;
+            bloom.quality.overrideState = true;
+            motionBlur.quality.overrideState = true;
+            
+            volumeComponent.profile = profile;
+            _volume = profile;
             _lightsData = new List<LightDefiner>();
             
             SceneManager.sceneLoaded += OnSceneLoaded;
