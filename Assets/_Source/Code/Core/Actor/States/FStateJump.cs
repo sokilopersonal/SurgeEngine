@@ -88,7 +88,10 @@ namespace SurgeEngine.Code.Core.Actor.States
 
         private void ExecuteJump(bool bounce = false)
         {
-            Rigidbody.linearVelocity += Actor.transform.up * (_config.jumpForce * 2f * (!bounce ? 1f : _config.jumpHoldForce / 2));
+            if (!bounce) Rigidbody.linearVelocity += Actor.transform.up * _config.jumpForce;
+            
+            if (bounce)
+                Rigidbody.linearVelocity = new Vector3(Rigidbody.linearVelocity.x, _config.jumpForce * _config.jumpHoldForce / 4, Rigidbody.linearVelocity.z);
         }
     }
 }
