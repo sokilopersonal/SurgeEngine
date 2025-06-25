@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b1f37b37c23e94746a87aa4ac3191046, type: 3}
-  m_Name: BaseActorPhysics
+  m_Name: PhysicsConfig
   m_EditorClassIdentifier: 
   castDistance: 1.15
   castDistanceCurve:
@@ -43,8 +43,9 @@ MonoBehaviour:
   topSpeed: 30
   maxSpeed: 50
   minParaloopSpeed: 26
-  maxVerticalSpeed: 80
-  airControl: 0.3
+  minVerticalSpeed: 30
+  maxVerticalSpeed: 44
+  airControl: 0.4
   accelerationRate: 12
   accelerationCurve:
     serializedVersion: 2
@@ -103,8 +104,8 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   turnSmoothing: 6.75
-  jumpForce: 0.125
-  jumpHoldForce: 46
+  jumpForce: 1
+  jumpHoldForce: 43
   jumpStartTime: 0.25
   jumpCollisionHeight: 1
   jumpCollisionCenter: -0.5

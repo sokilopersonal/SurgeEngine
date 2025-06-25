@@ -17,6 +17,7 @@ namespace SurgeEngine.Code.Core.Actor.System
         public bool XPressed => XInputAction.WasPressedThisFrame();
         public bool XHeld => XInputAction.IsPressed();
         public bool APressed => AInputAction.WasPressedThisFrame();
+        public bool AReleased => AInputAction.WasReleasedThisFrame();
         public bool AHeld => AInputAction.IsPressed();
         public bool BPressed => BInputAction.WasPressedThisFrame();
         public bool BReleased => BInputAction.WasReleasedThisFrame();

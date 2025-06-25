@@ -14,9 +14,10 @@ namespace SurgeEngine.Code.Infrastructure.Config
         public float topSpeed = 28;
         public float maxSpeed = 35;
         public float minParaloopSpeed = 28;
-        
-        [Header("Air Physics")]
-        public float maxVerticalSpeed;
+
+        [Header("Air Physics")] 
+        public float minVerticalSpeed = 30;
+        public float maxVerticalSpeed = 40;
         [Range(0.1f, 1)] public float airControl = 0.4f;
         
         [Header("Acceleration")]
