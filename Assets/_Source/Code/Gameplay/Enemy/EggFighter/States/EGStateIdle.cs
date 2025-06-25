@@ -21,8 +21,6 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter.States
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
-            
-            eggFighter.rb.linearVelocity = Vector3.zero;
 
             if (sensor.FindVisibleTargets(out _))
             {

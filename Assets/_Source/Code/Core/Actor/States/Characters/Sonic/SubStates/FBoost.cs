@@ -140,8 +140,6 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates
                     if (Actor.Kinematics.Speed < _config.MaxBoostSpeed / 8)
                     {
                         _boostLowSpeedCancelTimer += dt / 0.35f;
-                        Debug.Log(_boostLowSpeedCancelTimer);
-
                         if (_boostLowSpeedCancelTimer >= 1f)
                         {
                             Active = false;

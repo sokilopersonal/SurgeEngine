@@ -7,6 +7,7 @@ using SurgeEngine.Code.Gameplay.Enemy.Base;
 using SurgeEngine.Code.Gameplay.Enemy.EggFighter.States;
 using SurgeEngine.Code.Gameplay.Enemy.RagdollPhysics;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter
 {
@@ -40,8 +41,8 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter
         public AnimationCurve turnCurve;
         public AnimationCurve turnHeightCurve;
         public float turnTime;
-        
-        [HideInInspector] public Rigidbody rb;
+
+        public NavMeshAgent Agent { get; private set; }
         private int ragdollLayer = 69;
 
         private Vector3 _startPosition;
@@ -58,8 +59,7 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter
 
             ragdollLayer = LayerMask.NameToLayer("EnemyRagdoll");
 
-            rb = GetComponent<Rigidbody>();
-            rb.freezeRotation = true;
+            Agent = GetComponent<NavMeshAgent>();
             
             Sensor = GetComponentInChildren<VisionSensor>();
             Sensor.enabled = enableAI;
@@ -76,8 +76,7 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter
 
         public void TakeDamage(MonoBehaviour sender, float damage)
         {
-            ActorBase context = ActorContext.Context;
-            Vector3 force = context.Kinematics.Rigidbody.linearVelocity * 1.25f;
+            Vector3 force = sender.GetComponent<ActorBase>().Kinematics.Rigidbody.linearVelocity * 1.25f;
             force += Vector3.up * (force.magnitude * 0.15f);
             StateMachine.SetState<EGStateDead>(0f, true, true).ApplyKnockback(force, ragdollPrefab);
             

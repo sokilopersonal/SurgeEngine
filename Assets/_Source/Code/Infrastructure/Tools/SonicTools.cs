@@ -4,9 +4,13 @@ using SurgeEngine.Code.Core.Actor.System.Characters.Sonic;
 using SurgeEngine.Code.Gameplay.CommonObjects;
 using SurgeEngine.Code.Gameplay.CommonObjects.Mobility.Rails;
 using SurgeEngine.Code.Infrastructure.Config.SonicSpecific;
-using SurgeEngine.Code.Infrastructure.Custom;
 using UnityEngine;
 using UnityEngine.Splines;
+
+#if UNITY_EDITOR
+using SurgeEngine.Code.Infrastructure.Custom.Extensions;
+using UnityEditor;
+#endif
 
 namespace SurgeEngine.Code.Infrastructure.Tools
 {
@@ -26,14 +30,24 @@ namespace SurgeEngine.Code.Infrastructure.Tools
         {
             Transform transform = _sonic.transform;
             HomingConfig config = _sonic.HomingConfig;
-            Vector3 origin = transform.position + Vector3.down;
+            Vector3 origin = transform.position + Vector3.down / 2;
             Vector3 dir = _sonic.Kinematics.GetInputDir() == Vector3.zero ? transform.forward : _sonic.Kinematics.GetInputDir();
             
             float maxDistance = config.findDistance;
             LayerMask mask = config.mask;
             mask |= _sonic.Config.railMask;
+
+            Vector3 finalOrigin = origin + dir * maxDistance / 2;
+            Vector3 size = new Vector3(6f, 4.5f, maxDistance);
+            Quaternion orientation = transform.rotation;
+            Collider[] hits = 
+                Physics.OverlapBox(finalOrigin, 
+                    size, orientation, mask, QueryTriggerInteraction.Collide);
             
-            Collider[] hits = Physics.OverlapSphere(origin + dir, maxDistance, mask, QueryTriggerInteraction.Collide);
+            #if UNITY_EDITOR
+            var trs = Matrix4x4.TRS(finalOrigin, orientation, Vector3.one);
+            DebugExtensions.DrawCube(trs, size);
+            #endif
             
             HomingTarget closestTarget = null;
             float closestDistance = float.MaxValue;
@@ -79,10 +93,6 @@ namespace SurgeEngine.Code.Infrastructure.Tools
                     }
                 }
             }
-    
-            var cam = Camera.main;
-            if (closestTarget != null && cam && !cam.IsObjectInView(closestTarget.transform))
-                return null;
             
             return closestTarget;
         }

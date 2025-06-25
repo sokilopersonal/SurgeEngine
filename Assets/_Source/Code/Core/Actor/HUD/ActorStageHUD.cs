@@ -1,10 +1,12 @@
-﻿using Coffee.UIExtensions;
+﻿using System;
+using Coffee.UIExtensions;
 using SurgeEngine.Code.Core.Actor.System;
 using SurgeEngine.Code.Core.Actor.System.Characters.Sonic;
 using SurgeEngine.Code.Gameplay.CommonObjects;
 using SurgeEngine.Code.Gameplay.CommonObjects.Collectables;
 using SurgeEngine.Code.Gameplay.CommonObjects.HUD;
 using SurgeEngine.Code.Gameplay.CommonObjects.System;
+using SurgeEngine.Code.Infrastructure.Custom;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -40,6 +42,13 @@ namespace SurgeEngine.Code.Core.Actor.HUD
         [SerializeField] private BoostBarController boostBarController;
 
         [Inject] private ActorBase _actor;
+        
+        private Camera _camera;
+
+        private void Awake()
+        {
+            _camera = _actor.Camera.GetCamera();
+        }
 
         private void OnEnable()
         {
@@ -77,9 +86,9 @@ namespace SurgeEngine.Code.Core.Actor.HUD
             HomingTarget target = (_actor.Kinematics as SonicKinematics)?.HomingTarget;
             if (target)
             {
-                homingIcon.gameObject.SetActive(true);
+                if (_camera.IsObjectInView(target.transform)) homingIcon.gameObject.SetActive(true);
                 homingIcon.Activate();
-                homingIcon.transform.position = _actor.Camera.GetCamera().WorldToScreenPoint(target.transform.position);
+                homingIcon.transform.position = _camera.WorldToScreenPoint(target.transform.position);
             }
             else
             {

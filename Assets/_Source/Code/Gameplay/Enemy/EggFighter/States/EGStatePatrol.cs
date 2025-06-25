@@ -24,7 +24,7 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter.States
 
             if (eggFighter.StateMachine.PreviousState is EGStateTurn)
             {
-                _targetPoint = eggFighter.rb.position + transform.forward * eggFighter.patrolDistance;
+                //_targetPoint = eggFighter.rb.position + transform.forward * eggFighter.patrolDistance;
             }
             else
             {

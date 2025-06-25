@@ -25,6 +25,9 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility.Rails
             HomingTarget = Instantiate(homingTargetPrefab, transform, false);
             HomingTarget.OnTargetReached.AddListener(AttachToRail);
             HomingTarget.SetDistanceThreshold(1f);
+
+            var pos = Container.Spline.EvaluatePosition(0f);
+            HomingTarget.transform.position = transform.TransformPoint(pos);
             
             gameObject.layer = LayerMask.NameToLayer("Rail");
         }

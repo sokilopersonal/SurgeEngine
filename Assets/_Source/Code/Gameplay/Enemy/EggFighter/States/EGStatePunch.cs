@@ -32,7 +32,7 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter.States
         {
             base.OnTick(dt);
 
-            eggFighter.rb.linearVelocity = Vector3.zero;
+            eggFighter.Agent.velocity = Vector3.zero;
             
             if (_stayTimer < 1f)
             {
