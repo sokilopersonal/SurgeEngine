@@ -67,6 +67,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.System
                 yield return new WaitForSeconds(2f);
                 CurrentPointMarker.Load();
                 data.Score = 0;
+                data.RingCount = 0;
             }
             else
             {

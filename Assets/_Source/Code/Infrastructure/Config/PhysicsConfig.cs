@@ -2,8 +2,8 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Infrastructure.Config
 {
-    [CreateAssetMenu(fileName = "BaseActorConfig", menuName = "SurgeEngine/Configs/Physics/Base", order = 0)]
-    public class BaseActorConfig : ScriptableObject
+    [CreateAssetMenu(fileName = "PhysicsConfig", menuName = "SurgeEngine/Configs/Physics/Base", order = 0)]
+    public class PhysicsConfig : ScriptableObject
     {
         [Header("Cast")]
         public float castDistance = 1.15f;
@@ -62,5 +62,16 @@ namespace SurgeEngine.Code.Infrastructure.Config
         public LayerMask railMask;
         public float railSearchDistance = 10f;
         public AnimationCurve railSwitchCurve;
+
+        /// <summary>
+        /// Evaluates the cast distance over time based on a animation curve and base distance.
+        /// </summary>
+        /// <param name="time">Time value. Use normalized value (CurrentSpeed / TopSpeed).</param>
+        public float EvaluateCastDistance(float time)
+        {
+            var baseDistance = castDistance;
+            var speedMod = castDistanceCurve.Evaluate(time);
+            return baseDistance * speedMod;
+        }
     }
 }

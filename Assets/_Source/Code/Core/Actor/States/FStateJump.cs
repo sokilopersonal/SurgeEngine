@@ -9,7 +9,7 @@ namespace SurgeEngine.Code.Core.Actor.States
     public class FStateJump : FStateAir
     {
         private float _jumpTime;
-        private BaseActorConfig _config;
+        private PhysicsConfig _config;
         protected float _maxAirTime;
 
         public FStateJump(ActorBase owner) : base(owner)
@@ -40,7 +40,7 @@ namespace SurgeEngine.Code.Core.Actor.States
 
         private void ExecuteJump(bool bounce = false)
         {
-            Rigidbody.linearVelocity = new Vector3(Rigidbody.linearVelocity.x, Mathf.Sqrt(_config.jumpForce * 2f * (!bounce ? 1f : _config.jumpHoldForce / 4) * Kinematics.Gravity), Rigidbody.linearVelocity.z);
+            Rigidbody.linearVelocity += Actor.transform.up * Mathf.Sqrt(_config.jumpForce * 2f * (!bounce ? 1f : _config.jumpHoldForce / 4) * Kinematics.Gravity);
         }
 
         public override void OnTick(float dt)

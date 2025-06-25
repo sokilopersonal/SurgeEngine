@@ -69,7 +69,7 @@ namespace SurgeEngine.Code.Core.Actor.System
         private float _detachTimer;
         private bool _canAttach;
 
-        private BaseActorConfig _config;
+        private PhysicsConfig _config;
         private float _maxSpeedMultiplier = 1f;
 
         private void Awake()

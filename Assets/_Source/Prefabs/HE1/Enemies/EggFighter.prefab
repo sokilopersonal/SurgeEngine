@@ -44,8 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 567b9084d68c49f2b7024c77d492ee6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 15
-  angle: 120
+  radius: 20
+  angle: 210
   targetMask:
     serializedVersion: 2
     m_Bits: 72
@@ -250,7 +250,7 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -517,7 +517,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4842856219945099798, guid: efc2ce8db1f28fa4eba27cea4d948f68, type: 3}
       propertyPath: m_RenderingLayerMask
-      value: 4294967295
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4842856219945099798, guid: efc2ce8db1f28fa4eba27cea4d948f68, type: 3}
       propertyPath: m_UpdateWhenOffscreen

@@ -40,7 +40,7 @@ namespace SurgeEngine.Code.Core.Actor.States
                 
                 Kinematics.Snap(result.point, Kinematics.Normal, true);
                 
-                float duration = 0.42f;
+                float duration = 0.45f;
                 if (_timer < duration)
                 {
                     Rigidbody.rotation = Quaternion.Lerp(_startRotation, _endRotation, Easings.Get(Easing.InSine, _timer / duration));

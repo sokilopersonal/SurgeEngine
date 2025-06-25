@@ -31,7 +31,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
             _timer = 0f;
             Timeout = _config.delay;
 
-            BaseActorConfig config = Actor.Config;
+            PhysicsConfig config = Actor.Config;
             Model.SetCollisionParam(config.jumpCollisionHeight, config.jumpCollisionCenter, config.jumpCollisionRadius);
         }
 

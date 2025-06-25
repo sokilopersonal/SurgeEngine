@@ -7,7 +7,7 @@ namespace SurgeEngine.Code.Core.Actor.States
 {
     public class FStateBrake : FActorState, IDamageableState
     {
-        private readonly BaseActorConfig _config;
+        private readonly PhysicsConfig _config;
         
         public FStateBrake(ActorBase owner) : base(owner)
         {
@@ -28,7 +28,12 @@ namespace SurgeEngine.Code.Core.Actor.States
         {
             base.OnFixedTick(dt);
 
-            if (Kinematics.CheckForGround(out var hit))
+            var config = Actor.Config;
+            var curve = config.castDistanceCurve;
+            var curveDistance = curve.Evaluate(Kinematics.Speed / _config.topSpeed);
+            float distance = config.castDistance * curveDistance;
+            
+            if (Kinematics.CheckForGround(out var hit, castDistance: distance))
             {
                 Kinematics.Normal = Vector3.up;
                 Kinematics.Snap(hit.point, Vector3.up, true);
@@ -38,6 +43,9 @@ namespace SurgeEngine.Code.Core.Actor.States
                     Time.fixedDeltaTime * f);
                 Kinematics.Project(hit.normal);
                 Kinematics.SlopePhysics();
+
+                Quaternion target = Quaternion.FromToRotation(Rigidbody.transform.up, Vector3.up) * Rigidbody.rotation;
+                Rigidbody.rotation = Quaternion.Lerp(Rigidbody.rotation, target, Time.fixedDeltaTime * 8f);
 
                 if (Rigidbody.linearVelocity.magnitude < 0.2f)
                 {

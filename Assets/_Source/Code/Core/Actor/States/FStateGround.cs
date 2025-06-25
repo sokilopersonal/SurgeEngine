@@ -48,9 +48,8 @@ namespace SurgeEngine.Code.Core.Actor.States
             base.OnFixedTick(dt);
             
             Vector3 prevNormal = Kinematics.Normal;
-            BaseActorConfig config = Actor.Config;
-            float distance = config.castDistance * config.castDistanceCurve
-                .Evaluate(Kinematics.HorizontalSpeed / config.topSpeed);
+            PhysicsConfig config = Actor.Config;
+            float distance = config.EvaluateCastDistance(Kinematics.Speed / config.topSpeed);
             bool ground = Kinematics.CheckForGround(out RaycastHit data, castDistance: distance);
             if (ground)
             {

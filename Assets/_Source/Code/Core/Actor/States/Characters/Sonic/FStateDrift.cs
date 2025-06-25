@@ -59,19 +59,15 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
             
             if (Kinematics.CheckForGround(out RaycastHit hit))
             {
-                if (Kinematics.CheckForPredictedGround(dt, Actor.Config.castDistance, 4))
+                bool predictedGround = Kinematics.CheckForPredictedGround(dt, Actor.Config.castDistance, 4);
+                if (predictedGround)
                 {
                     Kinematics.Normal = prevNormal;
-                    
-                    Kinematics.SlopePhysics();
-                    Kinematics.Project();
-                    
-                    return;
                 }
                 
                 Vector3 point = hit.point;
                 Vector3 normal = hit.normal;
-                Kinematics.RotateSnapNormal(normal);
+                if (!predictedGround) Kinematics.RotateSnapNormal(normal);
                 
                 Vector3 dir = Input.moveVector;
                 _driftXDirection = Mathf.Sign(dir.x);
@@ -87,7 +83,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
                 if (Kinematics.HorizontalSpeed < _config.maxSpeed) Rigidbody.linearVelocity += Rigidbody.linearVelocity.normalized *
                     (0.05f * Mathf.Lerp(4f, 1f, Kinematics.HorizontalSpeed / _config.maxSpeed));
 
-                Kinematics.Snap(point, normal);
+                if (!predictedGround) Kinematics.Snap(point, normal);
                 Kinematics.Project();
             }
             else

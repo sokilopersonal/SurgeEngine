@@ -1,13 +1,15 @@
 ﻿using FMODUnity;
 using SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates;
 using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine.Code.Gameplay.CommonObjects.System;
 using SurgeEngine.Code.Infrastructure.Custom;
 using SurgeEngine.Code.Infrastructure.Tools;
 using UnityEngine;
+using NotImplementedException = System.NotImplementedException;
 
 namespace SurgeEngine.Code.Gameplay.CommonObjects.Collectables
 {
-    public class Ring : ContactBase
+    public class Ring : ContactBase, IPointMarkerLoader
     {
         [SerializeField] private float rotationSpeed = 360f;
         [SerializeField] private float flyDuration = 1f;
@@ -23,8 +25,12 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Collectables
         private Vector3 _targetPosition;
         private float _elapsedTime;
 
+        private Vector3 _startPosition;
+
         private void Start()
         {
+            _startPosition = transform.position;
+            
             if (heightCurve == null)
             {
                 heightCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
@@ -83,6 +89,15 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Collectables
             var p = Instantiate(particle, transform.position, Quaternion.identity);
             Destroy(p.gameObject, 1f);
             gameObject.SetActive(false);
+        }
+
+        public void Load(Vector3 loadPosition, Quaternion loadRotation)
+        {
+            _magneted = false;
+            _elapsedTime = 0f;
+
+            transform.position = _startPosition;
+            gameObject.SetActive(true);
         }
     }
 }

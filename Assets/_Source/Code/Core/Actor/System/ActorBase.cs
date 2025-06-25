@@ -38,9 +38,9 @@ namespace SurgeEngine.Code.Core.Actor.System
         private readonly Dictionary<Type, ActorComponent> _components = new();
 
         [Header("Config")]
-        [SerializeField] private BaseActorConfig config;
+        [SerializeField] private PhysicsConfig config;
         [SerializeField] private DamageKickConfig damageKickConfig;
-        public BaseActorConfig Config => config;
+        public PhysicsConfig Config => config;
         public DamageKickConfig DamageKickConfig => damageKickConfig;
 
         public bool IsDead { get; set; }

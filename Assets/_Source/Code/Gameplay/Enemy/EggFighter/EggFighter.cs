@@ -96,7 +96,7 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter
 
         public void Load(Vector3 loadPosition, Quaternion loadRotation)
         {
-            transform.position = _startPosition;
+            Agent.Warp(_startPosition);
             transform.rotation = _startRotation;
         }
     }

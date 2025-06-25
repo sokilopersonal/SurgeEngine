@@ -22,6 +22,13 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
             _lastData = _stateMachine.RememberLastData();
         }
 
+        public override void OnExit()
+        {
+            base.OnExit();
+
+            _stateMachine.CurrentData = null;
+        }
+
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
