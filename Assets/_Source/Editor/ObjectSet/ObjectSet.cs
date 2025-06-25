@@ -36,7 +36,7 @@ namespace SurgeEngine._Source.Editor.ObjectSet
         private bool _alwaysDrawPrefabName;
         
         [MenuItem("Surge Engine/Asset Manager")]
-        private static void ShowWindow()
+        public static void ShowWindow()
         {
             var window = GetWindow<ObjectSet>();
             window.titleContent = new GUIContent("Asset Manager");
