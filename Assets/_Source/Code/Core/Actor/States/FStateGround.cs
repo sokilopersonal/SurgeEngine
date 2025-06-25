@@ -58,22 +58,19 @@ namespace SurgeEngine.Code.Core.Actor.States
                 if (predictedGround)
                 {
                     // Operate the previous normal
-                    Kinematics.BasePhysics(prevNormal);
                     Kinematics.Normal = prevNormal;
-                    Model.RotateBody(Kinematics.Velocity, Kinematics.Normal);
-                    Kinematics.Project(prevNormal);
-                    Kinematics.SlopePhysics();
-                    return;
                 }
                 
                 Kinematics.Point = data.point;
-                Kinematics.RotateSnapNormal(data.normal);
+                if (!predictedGround) Kinematics.RotateSnapNormal(data.normal);
+                
+                Kinematics.ClampVelocityToMax();
                 
                 Vector3 stored = Rigidbody.linearVelocity;
-                Rigidbody.linearVelocity = Quaternion.FromToRotation(Kinematics.Normal, prevNormal) * stored;
+                Rigidbody.linearVelocity = Quaternion.FromToRotation(Rigidbody.transform.up, prevNormal) * stored;
                 
                 Kinematics.BasePhysics(Kinematics.Normal);
-                Kinematics.Snap(Kinematics.Point, Kinematics.Normal, true);
+                if (!predictedGround) Kinematics.Snap(Kinematics.Point, Kinematics.Normal, true);
                 Model.RotateBody(Kinematics.Velocity, Kinematics.Normal);
                 Kinematics.Project(Kinematics.Normal);
                 

@@ -406,6 +406,15 @@ namespace SurgeEngine.Code.Core.Actor.System
             _rigidbody.linearVelocity = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, normal);
         }
 
+        public void ClampVelocityToMax()
+        {
+            var flags = Actor.Flags;
+            if (!flags.HasFlag(FlagType.OutOfControl) && !flags.HasFlag(FlagType.Autorun))
+            {
+                Rigidbody.linearVelocity = Vector3.ClampMagnitude(Rigidbody.linearVelocity, _config.maxSpeed);
+            }
+        }
+
         public void Snap(Vector3 point, Vector3 normal, bool instant = false)
         {
             if (!_canAttach) return;
@@ -467,7 +476,8 @@ namespace SurgeEngine.Code.Core.Actor.System
 
         protected virtual bool CanDecelerate()
         {
-            return !Actor.Flags.HasFlag(FlagType.OutOfControl);
+            var flags = Actor.Flags;
+            return !flags.HasFlag(FlagType.OutOfControl) || !flags.HasFlag(FlagType.Autorun);
         }
         
         public void SetDetachTime(float t)

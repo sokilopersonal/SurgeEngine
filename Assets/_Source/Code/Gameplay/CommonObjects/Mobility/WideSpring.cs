@@ -8,7 +8,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
         {
             base.OnDrawGizmos();
             
-            Vector3 startPosition = transform.position + Vector3.up * yOffset;
+            Vector3 startPosition = transform.position + Vector3.up;
             Vector3 dir = Vector3.up;
 
             if (keepVelocity > 0f)

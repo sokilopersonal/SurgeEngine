@@ -11,24 +11,11 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
         [SerializeField] protected float speed = 30f;
         [SerializeField] protected float keepVelocity;
         [SerializeField] protected float outOfControl = 0.5f;
-        [SerializeField] protected float yOffset = 0.5f;
-        [SerializeField] private bool center = true;
         [SerializeField] private bool cancelBoost;
 
         public override void Contact(Collider msg, ActorBase context)
         {
             base.Contact(msg, context);
-            
-            if (center) 
-            {
-                Vector3 target = transform.position + transform.up * yOffset;
-                context.PutIn(target);
-            }
-            else
-            {
-                Vector3 target = transform.up * yOffset;
-                context.AddIn(target);
-            }
             
             if (cancelBoost) context.StateMachine.GetSubState<FBoost>().Active = false;
 
@@ -42,7 +29,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
 
         protected override void OnDrawGizmos()
         {
-            TrajectoryDrawer.DrawTrajectory(transform.position + transform.up * yOffset, transform.up, Color.green, speed, keepVelocity);
+            TrajectoryDrawer.DrawTrajectory(transform.position + transform.up, transform.up, Color.green, speed, keepVelocity);
         }
     }
 }

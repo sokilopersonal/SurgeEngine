@@ -29,13 +29,9 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
                     context.Effects.JumpDeluxEffect.Toggle(true);
 
                 context.StateMachine.GetSubState<FBoost>().Active = false;
-
-                context.PutIn(startPoint.position);
-                context.transform.forward = Vector3.Cross(-startPoint.right, Vector3.up);
-
-                context.Kinematics.Rigidbody.linearVelocity =
-                    Utility.GetImpulseWithPitch(Vector3.Cross(-startPoint.right, Vector3.up), startPoint.right, pitch,
-                        impulse);
+                
+                context.transform.forward = Vector3.Cross(-transform.right, Vector3.up);
+                context.Kinematics.Rigidbody.linearVelocity = Utility.GetImpulseWithPitch(Vector3.Cross(-transform.right, Vector3.up), transform.right, pitch, impulse);
                 
                 context.StateMachine.GetState<FStateSpecialJump>().SetSpecialData(new SpecialJumpData(SpecialJumpType.JumpBoard)).SetDelux(boosted);
                 context.StateMachine.SetState<FStateSpecialJump>(0f, true, true);
@@ -46,7 +42,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
 
         protected override void OnDrawGizmos()
         {
-            TrajectoryDrawer.DrawTrajectory(startPoint.position, Utility.GetImpulseWithPitch(Vector3.Cross(-startPoint.right, Vector3.up), startPoint.right, pitch, impulse), Color.green, impulse);
+            TrajectoryDrawer.DrawTrajectory(transform.position, Utility.GetImpulseWithPitch(Vector3.Cross(-transform.right, Vector3.up), transform.right, pitch, impulse), Color.green, impulse);
         }
     }
 }

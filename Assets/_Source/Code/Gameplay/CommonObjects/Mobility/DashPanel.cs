@@ -11,21 +11,12 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
     {
         [SerializeField] private float speed = 35f;
         [SerializeField] private float outOfControl = 0.5f;
-        [SerializeField] private bool center;
 
         public override void Contact(Collider msg, ActorBase context)
         {
             base.Contact(msg, context);
             
             Rigidbody body = context.Kinematics.Rigidbody;
-            
-            if (center)
-            {
-                Vector3 target = transform.position + transform.up * 0.25f;
-                context.Camera.StateMachine.SetLateOffset(context.transform.position - target - transform.up * 0.75f); // We need to use this and not just context.PutIn because the late offset is not calculated properly
-                context.transform.position = target;
-            }
-
             var bodySpeed = context.Kinematics.Speed;
             if (bodySpeed < speed)
             {
