@@ -70,11 +70,13 @@ namespace SurgeEngine.Code.Core.Actor.System
         private bool _canAttach;
 
         private BaseActorConfig _config;
+        private float _maxSpeedMultiplier = 1f;
 
         private void Awake()
         {
             _rigidbody = Actor.Rigidbody;
             _config = Actor.Config;
+            _maxSpeedMultiplier = 1f;
             
             if (initialGravity == 0) initialGravity = Mathf.Abs(Physics.gravity.y);
             Gravity = initialGravity;
@@ -149,7 +151,7 @@ namespace SurgeEngine.Code.Core.Actor.System
                         if (_planarVelocity.magnitude < _config.topSpeed)
                             _planarVelocity += dir * (_config.accelerationRate * accelRateMod * Time.fixedDeltaTime);
                         else if (CanReturnToBaseSpeed())
-                            _planarVelocity = Vector3.MoveTowards(_planarVelocity, _planarVelocity.normalized * _config.topSpeed, 8f * Time.fixedDeltaTime);
+                            _planarVelocity = Vector3.MoveTowards(_planarVelocity, _planarVelocity.normalized * _config.topSpeed, 6f * Time.fixedDeltaTime);
                         
                         BaseGroundPhysics();
                     }

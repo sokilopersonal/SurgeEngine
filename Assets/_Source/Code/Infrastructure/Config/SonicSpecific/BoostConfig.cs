@@ -11,6 +11,7 @@ namespace SurgeEngine.Code.Infrastructure.Config.SonicSpecific
         [SerializeField] private float energyDrain = 5.25f;
         [SerializeField] private float turnSpeedMultiplier = 0.8f;
         [SerializeField] private float maxSpeedMultiplier = 1.2f;
+        [SerializeField] private float maxBoostSpeed = 45f;
         [SerializeField] private float magnetRadius = 2.75f;
         [SerializeField] private float acceleration = 45f;
         [SerializeField, Range(25, 100)] private float boostCapacity = 100;
@@ -24,6 +25,7 @@ namespace SurgeEngine.Code.Infrastructure.Config.SonicSpecific
         public float EnergyDrain => energyDrain;
         public float TurnSpeedMultiplier => turnSpeedMultiplier;
         public float MaxSpeedMultiplier => maxSpeedMultiplier;
+        public float MaxBoostSpeed => maxBoostSpeed;
         public float MagnetRadius => magnetRadius;
         public float Acceleration => acceleration;
         public float BoostCapacity => boostCapacity;

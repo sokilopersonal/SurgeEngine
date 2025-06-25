@@ -29,7 +29,7 @@ namespace SurgeEngine.Code.Core.Actor.System
             animator.SetFloat(AnimatorParams.GroundSpeed, Mathf.Clamp(Actor.Kinematics.Speed, 4, 30f));
             animator.SetFloat(AnimatorParams.VerticalSpeed, Actor.Kinematics.Velocity.y);
             
-            float targetSpeedPercent = Mathf.Clamp(Actor.Kinematics.Speed / Actor.Config.topSpeed, 0f, 1.25f);
+            float targetSpeedPercent = Mathf.Clamp(Actor.Kinematics.Speed / Actor.Config.topSpeed, 0.02f, 1.25f);
             float currentSpeedPercent = animator.GetFloat("SpeedPercent");
             animator.SetFloat("SpeedPercent", Mathf.Lerp(currentSpeedPercent, targetSpeedPercent, 10f * Time.deltaTime));
 

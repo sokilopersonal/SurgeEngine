@@ -20,6 +20,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
         [Header("Upreel Movement")]
         [SerializeField, Tooltip("How long it takes to move to the target position")] private float moveTime = 2;
         [SerializeField, Min(1)] private float length = 25;
+        [SerializeField, Tooltip("Out Of Control time when player exits the Upreel.")] private float outOfControl = 0.5f;
         
         [Header("After Speed")]
         [SerializeField] private float forwardPushForce = 7;
@@ -30,6 +31,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
 
         private Vector3 _localStartPosition;
         private bool _isPlayerAttached;
+        private ActorBase _attachedActor;
         private EventInstance _eventInstance;
 
         private Vector3 _contactPoint;
@@ -55,7 +57,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             
             if (_isPlayerAttached)
             {
-                var ctx = ActorContext.Context;
+                var ctx = _attachedActor;
                 _attachTimer += Time.deltaTime / 0.1f;
                 _attachTimer = Mathf.Clamp01(_attachTimer);
                 
@@ -79,7 +81,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
 
             if (_isPlayerAttached)
             {
-                var ctx = ActorContext.Context;
+                var ctx = _attachedActor;
                 ctx.transform.position = Vector3.Lerp(_contactPoint, attachPoint.position, _attachTimer);
                 ctx.transform.rotation = attachPoint.rotation;
             }
@@ -88,17 +90,17 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
         public override void Contact(Collider msg, ActorBase context)
         {
             base.Contact(msg, context);
+            
+            _attachedActor = context;
 
-            context.StateMachine.SetState<FStateUpreel>(0.1f)?.SetAttach(attachPoint);
-            context.StateMachine.OnStateAssign += OnStateAssign;
-
-            _contactPoint = context.transform.position;
+            _attachedActor.StateMachine.SetState<FStateUpreel>();
+            _contactPoint = _attachedActor.transform.position;
             _attachTimer = 0;
             
             model.DOLocalMove(_localStartPosition + Vector3.up * length, moveTime).SetEase(Ease.InSine).SetUpdate(UpdateType.Fixed).SetLink(gameObject);
             _isPlayerAttached = true;
             
-            context.Camera.StateMachine.SetLateOffset(context.transform.position - attachPoint.position);
+            _attachedActor.Camera.StateMachine.SetLateOffset(_attachedActor.transform.position - attachPoint.position);
             
             _eventInstance.start();
         }
@@ -109,15 +111,9 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             _attachTimer = 0;
             _eventInstance.stop(STOP_MODE.ALLOWFADEOUT);
             model.DOLocalMove(_localStartPosition, 1f).SetEase(Ease.InSine).SetDelay(0.5f).SetLink(gameObject);
-            ctx.StateMachine.OnStateAssign -= OnStateAssign;
-        }
+            ctx.Flags.AddFlag(new Flag(FlagType.OutOfControl, null, true, Mathf.Abs(outOfControl)));
 
-        private void OnStateAssign(FState obj)
-        {
-            if (obj is not FStateUpreel)
-            {
-                Cancel(ActorContext.Context);
-            }
+            _attachedActor = null;
         }
 
         protected override void OnDrawGizmos()

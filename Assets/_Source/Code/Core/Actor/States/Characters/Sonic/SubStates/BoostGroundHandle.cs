@@ -10,7 +10,6 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates
         public void BoostHandle(ActorBase actor, BoostConfig config)
         {
             float dt = Time.deltaTime;
-            var baseConfig = actor.Config;
             var body = actor.Kinematics.Rigidbody;
             float speed = actor.Kinematics.Speed;
 
@@ -18,7 +17,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates
             if (boost.Active)
             {
                 if (actor.Input.moveVector == Vector3.zero) actor.Kinematics.SetInputDir(actor.transform.forward);
-                float maxSpeed = baseConfig.maxSpeed * config.MaxSpeedMultiplier;
+                float maxSpeed = config.MaxBoostSpeed;
                 if (speed < maxSpeed)
                 {
                     body.AddForce(body.transform.forward * (config.Acceleration * dt), ForceMode.Impulse);

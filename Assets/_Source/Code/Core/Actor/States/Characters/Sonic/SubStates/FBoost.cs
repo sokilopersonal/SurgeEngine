@@ -30,6 +30,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates
         private readonly BoostConfig _config;
 
         private float _boostCancelTimer;
+        private float _boostLowSpeedCancelTimer;
         private const float EnemyEnergyAddition = 10;
 
         public FBoost(ActorBase owner) : base(owner)
@@ -133,6 +134,28 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates
                 {
                     _boostCancelTimer = 0;
                 }
+
+                if (state is FStateGround)
+                {
+                    if (Actor.Kinematics.Speed < _config.MaxBoostSpeed / 8)
+                    {
+                        _boostLowSpeedCancelTimer += dt / 0.35f;
+                        Debug.Log(_boostLowSpeedCancelTimer);
+
+                        if (_boostLowSpeedCancelTimer >= 1f)
+                        {
+                            Active = false;
+                        }
+                    }
+                    else
+                    {
+                        _boostLowSpeedCancelTimer = 0;
+                    }
+                }
+                else
+                {
+                    _boostLowSpeedCancelTimer = 0;
+                }
                 
                 if (BoostEnergy > 0)
                 {
@@ -162,6 +185,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates
         private void BoostAction(InputAction.CallbackContext obj)
         {
             if (Actor.StateMachine.CurrentState is FStateAir && !CanAirBoost) return;
+            if (Actor.StateMachine.CurrentState is FStateUpreel) return;
             
             if (CanBoost())
             {

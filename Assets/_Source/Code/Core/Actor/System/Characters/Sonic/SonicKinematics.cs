@@ -32,7 +32,16 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
         
         protected override bool CanReturnToBaseSpeed()
         {
-            return !Actor.StateMachine.GetSubState<FBoost>().Active;
+            var boost = Actor.StateMachine.GetSubState<FBoost>();
+            var boostActive = boost.Active;
+
+            if (boostActive && Actor.Kinematics.Speed > boost.GetConfig().MaxBoostSpeed && base.CanDecelerate())
+                return true;
+            
+            if (!boostActive)
+                return true;
+            
+            return base.CanReturnToBaseSpeed();
         }
 
         protected override bool CanDecelerate()

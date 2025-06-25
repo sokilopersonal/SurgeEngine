@@ -6,8 +6,6 @@ namespace SurgeEngine.Code.Core.Actor.States
 {
     public class FStateUpreel : FActorState
     {
-        private Transform _attach;
-        
         public FStateUpreel(ActorBase owner) : base(owner)
         {
         }
@@ -25,16 +23,6 @@ namespace SurgeEngine.Code.Core.Actor.States
             base.OnExit();
 
             Rigidbody.isKinematic = false;
-        }
-
-        public override void OnTick(float dt)
-        {
-            base.OnTick(dt);
-        }
-
-        public void SetAttach(Transform attach)
-        {
-            _attach = attach;
         }
     }
 }
