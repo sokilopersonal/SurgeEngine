@@ -6,11 +6,9 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter.States
 {
     public class EGStateChase : EGState
     {
-        private Vector3 _normal;
-
         public EGStateChase(EnemyBase enemy) : base(enemy)
         {
-            
+            ((EGAnimation)eggFighter.animation).OnAnimatorMoveEvent += OnAnimatorMove;
         }
 
         public override void OnTick(float dt)
@@ -23,18 +21,14 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter.States
                 Debug.DrawLine(transform.position, pos, Color.blue);
             }
 
-            bool cast = Physics.Raycast(transform.position, Vector3.down, out var ground, 1.5f, 1 << LayerMask.NameToLayer("Default"));
-            if (cast)
+            var agent = eggFighter.Agent;
+            agent.SetDestination(pos);
+            if (agent.remainingDistance < agent.stoppingDistance)
             {
-                _normal = ground.normal;
+                agent.velocity = Vector3.zero;
+                stateMachine.SetState<EGStateIdle>();
             }
-            else
-            {
-                _normal = Vector3.up;
-            }
-
-            eggFighter.GetComponent<NavMeshAgent>().SetDestination(pos);
-
+            
             if (Vector3.Distance(pos, transform.position) < eggFighter.punchRadius)
             {
                 if (hasTarget)
@@ -46,6 +40,19 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter.States
                     stateMachine.SetState<EGStateIdle>();
                 }
             }
+        }
+
+        private void OnAnimatorMove(Animator obj)
+        {
+            var agent = eggFighter.Agent;
+            if (agent.remainingDistance < agent.stoppingDistance) return;
+            
+            var rootPos = obj.rootPosition;
+            rootPos.y = agent.nextPosition.y;
+            agent.updatePosition = true;
+            agent.speed = 0;
+            agent.Move(rootPos);
+            agent.nextPosition = rootPos;
         }
     }
 }

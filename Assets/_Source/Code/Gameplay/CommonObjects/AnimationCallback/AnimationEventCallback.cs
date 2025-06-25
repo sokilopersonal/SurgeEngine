@@ -7,7 +7,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.AnimationCallback
     {
         public event Action OnAnimationEvent;
 
-        public void Call()
+        public void Call(string name)
         {
             OnAnimationEvent?.Invoke();
         }

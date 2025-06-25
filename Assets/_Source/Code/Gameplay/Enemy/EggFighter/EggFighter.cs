@@ -60,6 +60,8 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter
             ragdollLayer = LayerMask.NameToLayer("EnemyRagdoll");
 
             Agent = GetComponent<NavMeshAgent>();
+            Agent.updatePosition = false;
+            Agent.updateRotation = true;
             
             Sensor = GetComponentInChildren<VisionSensor>();
             Sensor.enabled = enableAI;

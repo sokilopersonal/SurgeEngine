@@ -54,10 +54,8 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
                 Rigidbody.rotation = Quaternion.LookRotation(direction, Vector3.up);
                 
                 float distance = Vector3.Distance(Rigidbody.position, _target.transform.position);
-                Debug.Log(distance);
                 if (distance <= _target.DistanceThreshold)
                 {
-                    Debug.Log("1");
                     _target.OnTargetReached.Invoke(Actor);
                 }
                 

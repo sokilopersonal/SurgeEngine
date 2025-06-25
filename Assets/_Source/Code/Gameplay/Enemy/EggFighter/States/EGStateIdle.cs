@@ -1,5 +1,6 @@
 ﻿using SurgeEngine.Code.Gameplay.Enemy.Base;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter.States
 {
@@ -22,9 +23,22 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter.States
         {
             base.OnTick(dt);
 
-            if (sensor.FindVisibleTargets(out _))
+            var agent = eggFighter.Agent;
+            agent.velocity = Vector3.zero;
+
+            var path = new NavMeshPath();
+            Debug.DrawRay(agent.destination, Vector3.up, Color.red, 2);
+            if (sensor.FindVisibleTargets(out var pos))
             {
-                stateMachine.SetState<EGStateChase>();
+                if (!agent.hasPath)
+                    stateMachine.SetState<EGStateChase>();
+                else
+                {
+                    agent.CalculatePath(pos, path);
+                    Debug.Log(path.status);
+                    if (path.status == NavMeshPathStatus.PathComplete)
+                        stateMachine.SetState<EGStateChase>();
+                }
             }
         }
     }

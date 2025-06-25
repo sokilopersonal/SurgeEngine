@@ -1,4 +1,5 @@
-﻿using SurgeEngine.Code.Core.StateMachine.Base;
+﻿using System;
+using SurgeEngine.Code.Core.StateMachine.Base;
 using SurgeEngine.Code.Core.StateMachine.Components;
 using SurgeEngine.Code.Gameplay.Enemy.Base;
 using SurgeEngine.Code.Gameplay.Enemy.EggFighter.States;
@@ -9,6 +10,8 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter
     [RequireComponent(typeof(StateAnimator))]
     public class EGAnimation : EnemyAnimation
     {
+        public event Action<Animator> OnAnimatorMoveEvent; 
+        
         protected override void ChangeStateAnimation(FState obj)
         {
             base.ChangeStateAnimation(obj);
@@ -18,19 +21,14 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter
                 stateAnimator.TransitionToState("Idle");
             }
             
-            if (obj is EGStatePatrol)
+            if (obj is EGStatePatrol or EGStateChase)
             {
                 stateAnimator.TransitionToState("Walk", 0.1f);
-            }
-            
-            if (obj is EGStateChase)
-            {
-                stateAnimator.TransitionToState("Run");
             }
         
             if (obj is EGStatePunch)
             {
-                stateAnimator.TransitionToState("PunchCharge", 0.25f);
+                stateAnimator.TransitionToState("Punch");
             }
         
             if (obj is EGStateTurn)
@@ -42,6 +40,11 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter
             {
                 stateAnimator.TransitionToState("IdleDead", 0f);
             }
+        }
+
+        private void OnAnimatorMove()
+        {
+            OnAnimatorMoveEvent?.Invoke(Animator);
         }
     }
 }
