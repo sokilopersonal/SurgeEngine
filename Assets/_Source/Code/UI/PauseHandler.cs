@@ -4,6 +4,7 @@ using SurgeEngine.Code.Core.Actor.States;
 using SurgeEngine.Code.Core.Actor.System;
 using SurgeEngine.Code.Infrastructure.Custom;
 using SurgeEngine.Code.Infrastructure.Tools.Managers;
+using SurgeEngine.Code.UI.Pages.Baseline;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -83,16 +84,14 @@ namespace SurgeEngine.Code.UI
             Active = isPaused;
             _delay = pauseDelay;
             
-            // if (Active)
-            // {
-            //     MenusHandler.Instance.OpenMenu<Pause>();
-            //     _volumeManager.ToggleGameGroup(false);
-            // }
-            // else
-            // {
-            //     MenusHandler.Instance.CloseMenu<Pause>();
-            //     _volumeManager.ToggleGameGroup(true);
-            // }
+            if (Active)
+            {
+                _volumeManager.ToggleGameGroup(false);
+            }
+            else
+            {
+                _volumeManager.ToggleGameGroup(true);
+            }
             
             _uiCanvasGroup.interactable = isPaused;
             
@@ -111,7 +110,7 @@ namespace SurgeEngine.Code.UI
             
             _pauseFadeTween?.Kill(true);
             _pauseFadeTween = DOTween.Sequence();
-            _pauseFadeTween.Append(_uiCanvasGroup.DOFade(isPaused ? 1 : 0, 0.4f));
+            _pauseFadeTween.Append(_uiCanvasGroup.DOFade(isPaused ? 1 : 0, 0.7f)).SetEase(Ease.OutCubic);
             _pauseFadeTween.Join(DOTween.To(() => Time.timeScale, x => Time.timeScale = x,
                 isPaused ? 0f : 1f, isPaused ? 0f : 0.25f));
             _pauseFadeTween.SetLink(gameObject);

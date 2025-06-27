@@ -1,4 +1,5 @@
 using SurgeEngine.Code.UI;
+using SurgeEngine.Code.UI.Pages.Baseline;
 using UnityEngine;
 using Zenject;
 
@@ -11,6 +12,7 @@ namespace SurgeEngine.Code.Infrastructure.DI
         public override void InstallBindings()
         {
             var pauseHandler = Container.InstantiatePrefabForComponent<PauseHandler>(pauseHandlerPrefab);
+            Container.Bind<PageController>().FromComponentOn(pauseHandler.gameObject).AsSingle().NonLazy();
             Container.Bind<PauseHandler>().FromInstance(pauseHandler).AsSingle().NonLazy();
         }
     }

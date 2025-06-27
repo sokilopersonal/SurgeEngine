@@ -71,7 +71,7 @@ namespace SurgeEngine.Code.UI.Pages.Baseline
         }
         
         // Input methods
-        private void OnCancel()
+        public void OnCancel()
         {
             if (_canvasGroup.interactable && _canvasGroup.gameObject.activeInHierarchy)
             {

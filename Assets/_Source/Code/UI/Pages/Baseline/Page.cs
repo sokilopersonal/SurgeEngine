@@ -28,7 +28,7 @@ namespace SurgeEngine.Code.UI.Pages.Baseline
 
         public void Enter()
         {
-            EventSystem.current.SetSelectedGameObject(firstSelectedObject);
+            if (firstSelectedObject) EventSystem.current.SetSelectedGameObject(firstSelectedObject);
             
             CanvasGroup.alpha = 1f;
             CanvasGroup.interactable = true;
