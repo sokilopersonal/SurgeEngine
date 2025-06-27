@@ -1,10 +1,10 @@
-﻿using SurgeEngine.Code.Core.Actor.CameraSystem.Pawns.Data;
+﻿using SurgeEngine.Code.Core.Actor.CameraSystem.Pans.Data;
 using SurgeEngine.Code.Core.Actor.System;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
+namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
 {
-    public class CameraPan : CameraState<PanData>
+    public class CameraPan : CameraBasePan<PanData>
     {
         public CameraPan(ActorBase owner) : base(owner)
         {

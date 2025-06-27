@@ -2,6 +2,7 @@ using FMODUnity;
 using SurgeEngine.Code.Core.Actor.States.Characters.Sonic;
 using SurgeEngine.Code.Core.Actor.System;
 using SurgeEngine.Code.Gameplay.CommonObjects.Interfaces;
+using SurgeEngine.Code.Infrastructure.Custom.Extensions;
 using UnityEngine;
 
 namespace SurgeEngine.Code.Gameplay.CommonObjects.Environment
@@ -154,7 +155,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Environment
         {
             if (_surfaceRigidbody)
             {
-                if (_surfaceRigidbody.gameObject == other.transform.parent.gameObject)
+                if (other.transform.TryGetComponentInParent(out ActorBase actor))
                 {
                     Vector3 splashPoint = _surfaceRigidbody.position;
                     splashPoint.y -= 0.75f;

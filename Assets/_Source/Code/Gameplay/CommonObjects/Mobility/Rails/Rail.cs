@@ -1,6 +1,7 @@
 ﻿using NaughtyAttributes;
 using SurgeEngine.Code.Core.Actor.States;
 using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine.Code.Infrastructure.Custom.Extensions;
 using UnityEngine;
 using UnityEngine.Splines;
 
@@ -34,7 +35,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility.Rails
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.transform.TryGetComponent(out ActorBase actor) && actor.StateMachine.CurrentState is not FStateRailSwitch)
+            if (other.transform.TryGetActor(out ActorBase actor) && actor.StateMachine.CurrentState is not FStateRailSwitch)
             {
                 AttachToRail(actor);
             }

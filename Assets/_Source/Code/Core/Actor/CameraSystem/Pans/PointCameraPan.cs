@@ -1,13 +1,14 @@
-﻿using SurgeEngine.Code.Core.Actor.CameraSystem.Pawns.Data;
+﻿using SurgeEngine.Code.Core.Actor.CameraSystem.Pans.Data;
 using SurgeEngine.Code.Core.Actor.System;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
+namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
 {
-    public class PointCameraPan : NewModernState
+    public class PointCameraPan : NewModernState, IPanState<PointPanData>
     {
-        private PointPanData _pData => _panData as PointPanData;
-        
+        private LastCameraData _lastData;
+        private PointPanData _pData;
+
         public PointCameraPan(ActorBase owner) : base(owner) { }
 
         public override void OnEnter()
@@ -55,6 +56,12 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
         protected override void LookAxis()
         {
             
+        }
+
+        public void SetData(PointPanData data)
+        {
+            _pData = data;
+            _stateMachine.CurrentData = data;
         }
     }
 }

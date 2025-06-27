@@ -531,6 +531,8 @@ namespace SurgeEngine.Code.Core.Actor.System
         {
             Vector3 pos = Rigidbody.position - Rigidbody.transform.up * 0.5f;
             _splineData = path != null ? new SplineData(path, pos) : null;
+
+            Debug.Log(desiredMode);
             
             mode = desiredMode;
             if (path == null)

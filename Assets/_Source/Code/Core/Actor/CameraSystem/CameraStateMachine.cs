@@ -1,5 +1,5 @@
-﻿using SurgeEngine.Code.Core.Actor.CameraSystem.Pawns;
-using SurgeEngine.Code.Core.Actor.CameraSystem.Pawns.Data;
+﻿using SurgeEngine.Code.Core.Actor.CameraSystem.Pans;
+using SurgeEngine.Code.Core.Actor.CameraSystem.Pans.Data;
 using SurgeEngine.Code.Core.Actor.System;
 using SurgeEngine.Code.Core.StateMachine;
 using SurgeEngine.Code.Infrastructure.Custom;

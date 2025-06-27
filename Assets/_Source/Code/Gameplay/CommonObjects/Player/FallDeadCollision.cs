@@ -1,4 +1,4 @@
-using SurgeEngine.Code.Core.Actor.CameraSystem.Pawns;
+using SurgeEngine.Code.Core.Actor.CameraSystem.Pans;
 using SurgeEngine.Code.Core.Actor.System;
 using UnityEngine;
 

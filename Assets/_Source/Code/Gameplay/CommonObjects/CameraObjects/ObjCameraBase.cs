@@ -3,15 +3,36 @@
 using UnityEditor;
 #endif
 
+using SurgeEngine.Code.Core.Actor.CameraSystem.Pans;
+using SurgeEngine.Code.Core.Actor.CameraSystem.Pans.Data;
+using SurgeEngine.Code.Core.Actor.System;
 using UnityEngine;
 
 namespace SurgeEngine.Code.Gameplay.CommonObjects.CameraObjects
 {
     public abstract class ObjCameraBase : MonoBehaviour
     {
-        public abstract void SetPan();
+        public abstract void SetPan(ActorBase ctx);
+        public abstract void RemovePan(ActorBase context);
+    }
+    
+    public abstract class ObjCameraBase<TState,TData> : ObjCameraBase
+        where TState: CameraState, IPanState<TData>
+        where TData : PanData
+    {
+        [SerializeField] protected TData data;
 
-        public abstract void RemovePan();
+        public override void SetPan(ActorBase ctx)
+        {
+            var st = ctx.Camera.StateMachine.GetState<TState>();
+            st?.SetData(data);
+            ctx.Camera.StateMachine.SetState<TState>(allowSameState: true);
+        }
+
+        public override void RemovePan(ActorBase ctx)
+        {
+            ctx.Camera.StateMachine.SetState<RestoreCameraPawn>();
+        }
 
         private void OnDrawGizmos()
         {

@@ -1,5 +1,6 @@
 ﻿using SurgeEngine.Code.Gameplay.CommonObjects;
 using SurgeEngine.Code.Gameplay.CommonObjects.Interfaces;
+using SurgeEngine.Code.Infrastructure.Custom.Extensions;
 using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.System
@@ -16,8 +17,8 @@ namespace SurgeEngine.Code.Core.Actor.System
             if (other.TryGetComponent(out ContactBase contactable) || other.TryGetComponent(out playerContactable)) {}
             else if (other.transform.parent != null)
             {
-                other.transform.parent.TryGetComponent(out contactable);
-                other.transform.parent.TryGetComponent(out playerContactable);
+                other.transform.TryGetComponentInParent(out contactable);
+                other.transform.TryGetComponentInParent(out playerContactable);
             }
 
             var col = GetComponent<Collider>();

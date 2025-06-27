@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using SurgeEngine.Code.Core.Actor.CameraSystem.Modifiers;
-using SurgeEngine.Code.Core.Actor.CameraSystem.Pawns;
+using SurgeEngine.Code.Core.Actor.CameraSystem.Pans;
 using SurgeEngine.Code.Core.Actor.System;
 using SurgeEngine.Code.Gameplay.CommonObjects.System;
 using UnityEngine;

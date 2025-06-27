@@ -1,12 +1,13 @@
-using SurgeEngine.Code.Core.Actor.CameraSystem.Pawns.Data;
+using SurgeEngine.Code.Core.Actor.CameraSystem.Pans.Data;
 using SurgeEngine.Code.Core.Actor.System;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
+namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
 {
-    public class NormalCameraPan : NewModernState
+    public class NormalCameraPan : NewModernState, IPanState<NormalPanData>
     {
-        private NormalPanData _nData => _panData as NormalPanData;
+        private LastCameraData _lastData;
+        private NormalPanData _nData;
         
         public NormalCameraPan(ActorBase owner) : base(owner)
         {
@@ -27,6 +28,12 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
             _stateMachine.VerticalOffset = Mathf.Lerp(_lastData.yOffset, _nData.yOffset, _stateMachine.interpolatedBlendFactor);
             
             _stateMachine.FOV = Mathf.Lerp(_lastData.fov, _nData.fov, _stateMachine.interpolatedBlendFactor);
+        }
+
+        public void SetData(NormalPanData data)
+        {
+            _nData = data;
+            _stateMachine.CurrentData = data;
         }
     }
 }

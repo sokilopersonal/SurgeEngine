@@ -1,13 +1,14 @@
-﻿using SurgeEngine.Code.Core.Actor.CameraSystem.Pawns.Data;
+﻿using SurgeEngine.Code.Core.Actor.CameraSystem.Pans.Data;
 using SurgeEngine.Code.Core.Actor.System;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
+namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
 {
-    public class VerticalCameraPan : NewModernState
+    public class VerticalCameraPan : NewModernState, IPanState<VerticalPanData>
     {
-        private VerticalPanData _vData => _panData as VerticalPanData;
-        
+        private LastCameraData _lastData;
+        private VerticalPanData _vData;
+
         public VerticalCameraPan(ActorBase owner) : base(owner)
         {
             
@@ -59,6 +60,12 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pawns
         {
             _stateMachine.YawAuto = 0;
             _stateMachine.PitchAuto = 0;
+        }
+
+        public void SetData(VerticalPanData data)
+        {
+            _vData = data;
+            _stateMachine.CurrentData = data;
         }
     }
 }

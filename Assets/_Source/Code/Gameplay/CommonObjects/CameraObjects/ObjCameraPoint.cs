@@ -1,29 +1,13 @@
-﻿using SurgeEngine.Code.Core.Actor.CameraSystem.Pawns;
-using SurgeEngine.Code.Core.Actor.CameraSystem.Pawns.Data;
-using SurgeEngine.Code.Core.Actor.System;
-using UnityEngine;
+﻿using SurgeEngine.Code.Core.Actor.CameraSystem.Pans;
+using SurgeEngine.Code.Core.Actor.CameraSystem.Pans.Data;
 
 namespace SurgeEngine.Code.Gameplay.CommonObjects.CameraObjects
 {
-    public class ObjCameraPoint : ObjCameraBase
+    public class ObjCameraPoint : ObjCameraBase<PointCameraPan, PointPanData>
     {
-        [SerializeField] private PointPanData data;
-
-        private void Update()
+        private void Awake()
         {
             data.Forward = transform.forward;
-        }
-
-        public override void SetPan()
-        {
-            ActorBase context = ActorContext.Context;
-            context.Camera.StateMachine.SetState<PointCameraPan>(allowSameState: true)?.SetData(data);
-        }
-        
-        public override void RemovePan()
-        {
-            ActorBase context = ActorContext.Context;
-            context.Camera.StateMachine.SetState<RestoreCameraPawn>();
         }
     }
 }

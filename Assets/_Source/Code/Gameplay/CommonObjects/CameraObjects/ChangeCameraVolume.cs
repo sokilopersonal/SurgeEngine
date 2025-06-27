@@ -23,26 +23,15 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.CameraObjects
         {
             base.Contact(msg, context);
             
-            target.SetPan();
+            target.SetPan(context);
         }
         
         private void OnTriggerExit(Collider other)
         {
             if (other.transform.TryGetComponent(out ActorBase actor))
             {
-                target.RemovePan();
+                target.RemovePan(actor);
             }
-        }
-
-        public void ResetPan()
-        {
-            target.RemovePan();
-        }
-
-        public void DisablePan()
-        {
-            _boxCollider.enabled = false;
-            target.RemovePan();
         }
 
         protected override void OnDrawGizmos()
