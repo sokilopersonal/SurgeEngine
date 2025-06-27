@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine.Code.Infrastructure.Custom.Extensions;
+using UnityEngine;
 
 namespace SurgeEngine.Code.Gameplay.CommonObjects.Player
 {
@@ -9,6 +12,14 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Player
         private void Awake()
         {
             contact = GetComponentInParent<ContactBase>();
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.TryGetActor(out ActorBase ctx))
+            {
+                contact.Contact(other, ctx);
+            }
         }
     }
 }

@@ -214,7 +214,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
 
         public void SetDirection(Vector3 forward, bool resetY = false)
         {
-            Quaternion dir = Quaternion.LookRotation(forward, Vector3.up).normalized;
+            Quaternion dir = Quaternion.LookRotation(forward).normalized;
             Yaw = dir.eulerAngles.y;
             Pitch = !resetY ? dir.eulerAngles.x : 0f;
             
@@ -222,27 +222,33 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
             PitchAuto = 0f;
         }
 
+        public void SetDirection(float yaw, float pitch)
+        {
+            Yaw = yaw;
+            Pitch = pitch;
+        }
+
         public void SetRotation(Vector3 from, Vector3 to)
         {
-            Quaternion look = Quaternion.LookRotation(from + GetOffset() - to, Vector3.up);
+            Quaternion look = Quaternion.LookRotation(from + GetOffset() - to);
             Rotation = look;
         }
 
         public void SetRotation(Vector3 from)
         {
-            Quaternion look = Quaternion.LookRotation(from + GetOffset() - Position, Vector3.up);
+            Quaternion look = Quaternion.LookRotation(from + GetOffset() - Position);
             Rotation = look;
         }
 
         public void SetRotationInterpolated(Vector3 from, Vector3 to, Quaternion last)
         {
-            Quaternion look = Quaternion.LookRotation(from + GetOffset() - to, Vector3.up);
+            Quaternion look = Quaternion.LookRotation(from + GetOffset() - to);
             Rotation = Quaternion.Lerp(last, look, interpolatedBlendFactor);
         }
         
         public void SetRotationInterpolated(Vector3 from, Quaternion last)
         {
-            Quaternion look = Quaternion.LookRotation(from + GetOffset() - Position, Vector3.up);
+            Quaternion look = Quaternion.LookRotation(from + GetOffset() - Position);
             Rotation = Quaternion.Lerp(last, look, interpolatedBlendFactor);
         }
 

@@ -12,17 +12,13 @@ namespace SurgeEngine.Code.Core.Actor.System
     {
         private void OnTriggerEnter(Collider other)
         {
-            IPlayerContactable playerContactable = null;
-
-            if (other.TryGetComponent(out ContactBase contactable) || other.TryGetComponent(out playerContactable)) {}
+            if (other.TryGetComponent(out IPlayerContactable playerContactable)) {}
             else if (other.transform.parent != null)
             {
-                other.transform.TryGetComponentInParent(out contactable);
                 other.transform.TryGetComponentInParent(out playerContactable);
             }
-
+        
             var col = GetComponent<Collider>();
-            contactable?.Contact(col, Actor);
             playerContactable?.OnContact(col);
         }
     }

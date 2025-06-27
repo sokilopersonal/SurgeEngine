@@ -63,9 +63,13 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.System
             var canvas = Instantiate(_loadCanvas);
             yield return canvas.Play();
             
+            Vector3 currentRotation = transform.rotation.eulerAngles;
+            Vector3 newRotation = new Vector3(0f, currentRotation.y, 0f);
+            Quaternion rotation = Quaternion.Euler(newRotation);
+            
             foreach (var loader in _loaders)
             {
-                loader.Load(transform.position + transform.up, transform.rotation);
+                loader.Load(transform.position + transform.up, rotation);
             }
 
             yield return canvas.Hide();

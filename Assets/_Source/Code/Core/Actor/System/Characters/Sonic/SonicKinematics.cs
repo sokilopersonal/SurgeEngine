@@ -34,9 +34,6 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
         {
             var boost = Actor.StateMachine.GetSubState<FBoost>();
             var boostActive = boost.Active;
-
-            if (boostActive && Actor.Kinematics.Speed > boost.GetConfig().MaxBoostSpeed && base.CanDecelerate())
-                return true;
             
             if (!boostActive)
                 return true;
@@ -46,7 +43,7 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
 
         protected override bool CanDecelerate()
         {
-            return !Actor.StateMachine.GetSubState<FBoost>().Active && base.CanDecelerate();
+            return base.CanDecelerate() && !Actor.StateMachine.GetSubState<FBoost>().Active;
         }
 
         protected override void SetStateOnZeroSpeed(FState state)

@@ -108,7 +108,10 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
             StateMachine.AddState(new PointCameraPan(Actor));
 
             StateMachine.SetState<NewModernState>();
-            StateMachine.SetDirection(Actor.transform.forward);
+
+            Vector3 dir = Quaternion.LookRotation(Actor.transform.forward).eulerAngles;
+            dir.x = yawDefaultAmplitude;
+            StateMachine.SetDirection(dir.y, dir.x);
         }
 
         private void Update()

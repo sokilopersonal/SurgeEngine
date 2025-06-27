@@ -479,7 +479,8 @@ namespace SurgeEngine.Code.Core.Actor.System
         protected virtual bool CanDecelerate()
         {
             var flags = Actor.Flags;
-            return !flags.HasFlag(FlagType.OutOfControl) || !flags.HasFlag(FlagType.Autorun);
+            bool canDecelerate = !flags.HasFlag(FlagType.OutOfControl) && !flags.HasFlag(FlagType.Autorun);
+            return canDecelerate;
         }
         
         public void SetDetachTime(float t)
@@ -531,8 +532,6 @@ namespace SurgeEngine.Code.Core.Actor.System
         {
             Vector3 pos = Rigidbody.position - Rigidbody.transform.up * 0.5f;
             _splineData = path != null ? new SplineData(path, pos) : null;
-
-            Debug.Log(desiredMode);
             
             mode = desiredMode;
             if (path == null)

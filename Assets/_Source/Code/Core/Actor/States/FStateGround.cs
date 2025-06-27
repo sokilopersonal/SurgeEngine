@@ -54,12 +54,6 @@ namespace SurgeEngine.Code.Core.Actor.States
             if (ground)
             {
                 bool predictedGround = Kinematics.CheckForPredictedGround(dt, distance, 4);
-                if (predictedGround)
-                {
-                    // Operate the previous normal
-                    Kinematics.Normal = prevNormal;
-                }
-                
                 Kinematics.Point = data.point;
                 if (!predictedGround) Kinematics.RotateSnapNormal(data.normal);
                 
