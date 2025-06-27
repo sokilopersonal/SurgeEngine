@@ -1,6 +1,4 @@
 using FMODUnity;
-using SurgeEngine.Code.Core.Actor.States;
-using SurgeEngine.Code.Core.StateMachine.Base;
 using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.Sound
@@ -9,12 +7,23 @@ namespace SurgeEngine.Code.Core.Actor.Sound
     {
         [SerializeField] private EventReference ringSpreadEvent;
 
-        protected override void SoundState(FState obj)
+        protected override void OnEnable()
         {
-            base.SoundState(obj);
+            base.OnEnable();
+            
+            Actor.OnRingLoss += OnRingLoss;
+        }
 
-            if (obj is FStateDamage { State: DamageState.Alive }) 
-                RuntimeManager.PlayOneShot(ringSpreadEvent);
+        protected override void OnDisable()
+        {
+            base.OnDisable();
+            
+            Actor.OnRingLoss -= OnRingLoss;
+        }
+
+        private void OnRingLoss()
+        {
+            RuntimeManager.PlayOneShot(ringSpreadEvent);
         }
     }
 }

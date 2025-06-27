@@ -166,7 +166,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         public void SetForward(bool isForward) => _isForward = isForward;
 
         /// <summary>
-        /// We need to share data between grind states to prevent unwanted calculations
+        /// Share data between grind states to prevent unwanted calculations
         /// </summary>
         private void Share(Rail rail, SplineData data, bool isForward)
         {

@@ -177,15 +177,20 @@ namespace SurgeEngine.Code.Core.Actor.System
 
         public void TakeDamage(MonoBehaviour sender, float damage)
         {
-            if (StateMachine.CurrentState is IDamageableState dmgState && !Flags.HasFlag(FlagType.Invincible))
+            IDamageable damageable = StateMachine.CurrentState switch
+            {
+                FStateGrind or FStateGrindSquat => new GrindDamage(),
+                _ => new GeneralDamage()
+            };
+            
+            if (!Flags.HasFlag(FlagType.Invincible))
             {
                 IsDead = false;
-                var damageState = StateMachine.GetState<FStateDamage>();
                 
                 // Imagine it's over
                 if (Stage.Instance.data.RingCount <= 0)
                 {
-                    damageState?.SetState(DamageState.Dead);
+                    if (damageable is GeneralDamage) StateMachine.GetState<FStateDamage>()?.SetState(DamageState.Dead);
 
                     OnDiedInvoke(this, true);
                 }
@@ -204,8 +209,8 @@ namespace SurgeEngine.Code.Core.Actor.System
                     OnRingLoss?.Invoke();
                 }
                 
-                dmgState.TakeDamage(this);
-                if (!IsDead) Flags.AddFlag(new Flag(FlagType.Invincible, null, true, DamageKickConfig.invincibleTime));
+                damageable.TakeDamage(this, 1);
+                Flags.AddFlag(new Flag(FlagType.Invincible, null, true, DamageKickConfig.invincibleTime));
             }
         }
 
@@ -236,5 +241,23 @@ namespace SurgeEngine.Code.Core.Actor.System
         }
 
         public StartData GetStartData() => _startData;
+    }
+
+    class GeneralDamage : IDamageable
+    {
+        public void TakeDamage(MonoBehaviour sender, float damage)
+        {
+            ActorBase owner = (ActorBase)sender;
+            
+            owner.StateMachine.SetState<FStateDamage>()?.SetState(owner.IsDead ? DamageState.Dead : DamageState.Alive);
+        }
+    }
+
+    class GrindDamage : IDamageable
+    {
+        public void TakeDamage(MonoBehaviour sender, float damage)
+        {
+            ActorBase owner = (ActorBase)sender;
+        }
     }
 }

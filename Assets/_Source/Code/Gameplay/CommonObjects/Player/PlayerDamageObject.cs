@@ -5,24 +5,12 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Player
 {
     public class PlayerDamageObject : Entity
     {
-        [SerializeField] private Transform damagePoint;
-        [SerializeField] private Vector3 size = Vector3.one;
-        
-        protected override void FixedUpdate()
+        private void OnTriggerEnter(Collider other)
         {
-            base.FixedUpdate();
-
-            HurtBox.CreateAttached(this, damagePoint, Vector3.zero, size, HurtBoxTarget.Player);
-        }
-
-        private void OnDrawGizmos()
-        {
-            if (damagePoint == null)
-                return;
-            
-            Gizmos.matrix = damagePoint.localToWorldMatrix;
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireCube(Vector3.zero, size * 2f);
+            if (other.TryGetComponent(out ActorBase actor))
+            {
+                actor.TakeDamage(this, 1f);
+            }
         }
     }
 }

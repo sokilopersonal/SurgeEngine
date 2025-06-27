@@ -54,7 +54,7 @@ namespace SurgeEngine.Code.Infrastructure.DI.Discord
 
         public void LateDispose()
         {
-            _discord.Dispose();
+            _discord?.Dispose();
         }
     }
 }
