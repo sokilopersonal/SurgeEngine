@@ -4,7 +4,6 @@ using SurgeEngine.Code.Core.Actor.States;
 using SurgeEngine.Code.Core.Actor.System;
 using SurgeEngine.Code.Infrastructure.Custom;
 using SurgeEngine.Code.Infrastructure.Tools.Managers;
-using SurgeEngine.Code.UI.Menus;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -71,9 +70,6 @@ namespace SurgeEngine.Code.UI
                 SpecialJumpType.TrickJumper) return;
             
             if (!CanPause || context.IsDead) return;
-
-            if (MenusHandler.Instance.IsAnyMenuOpened())
-                return;
             
             Active = !Active;
             OnPauseChanged?.Invoke(Active);
@@ -87,16 +83,16 @@ namespace SurgeEngine.Code.UI
             Active = isPaused;
             _delay = pauseDelay;
             
-            if (Active)
-            {
-                MenusHandler.Instance.OpenMenu<Pause>();
-                _volumeManager.ToggleGameGroup(false);
-            }
-            else
-            {
-                MenusHandler.Instance.CloseMenu<Pause>();
-                _volumeManager.ToggleGameGroup(true);
-            }
+            // if (Active)
+            // {
+            //     MenusHandler.Instance.OpenMenu<Pause>();
+            //     _volumeManager.ToggleGameGroup(false);
+            // }
+            // else
+            // {
+            //     MenusHandler.Instance.CloseMenu<Pause>();
+            //     _volumeManager.ToggleGameGroup(true);
+            // }
             
             _uiCanvasGroup.interactable = isPaused;
             
@@ -128,10 +124,7 @@ namespace SurgeEngine.Code.UI
             {
                 if (!_gameSettings.RunInBackground)
                 {
-                    if (!MenusHandler.Instance.IsAnyMenuOpened())
-                    {
-                        SetPause(true);
-                    }
+                    SetPause(true);
                 }
             }
         }
