@@ -28,7 +28,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.CameraObjects
         
         private void OnTriggerExit(Collider other)
         {
-            if (other.transform.parent.TryGetComponent(out ActorBase actor))
+            if (other.transform.TryGetComponent(out ActorBase actor))
             {
                 target.RemovePan();
             }
