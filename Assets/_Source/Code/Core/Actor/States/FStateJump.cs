@@ -91,7 +91,7 @@ namespace SurgeEngine.Code.Core.Actor.States
             if (!bounce) Rigidbody.linearVelocity += Actor.transform.up * _config.jumpForce;
             
             if (bounce)
-                Rigidbody.linearVelocity = new Vector3(Rigidbody.linearVelocity.x, _config.jumpForce * _config.jumpHoldForce / 4, Rigidbody.linearVelocity.z);
+                Rigidbody.linearVelocity = new Vector3(Rigidbody.linearVelocity.x, _config.jumpForce * 4, Rigidbody.linearVelocity.z);
         }
     }
 }

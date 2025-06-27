@@ -170,7 +170,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
 
         private void HandleButtonPressed(ButtonType button)
         {
-            for (int i = 0; i < _qteSequences.Count; i++)
+            for (int i = 0; i < _qteSequences.Count;)
             {
                 QTESequence sequence = _qteSequences[_sequenceId];
                 ButtonType sequenceButton = sequence.buttons[_buttonId].type;

@@ -35,7 +35,6 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter.States
                 else
                 {
                     agent.CalculatePath(pos, path);
-                    Debug.Log(path.status);
                     if (path.status == NavMeshPathStatus.PathComplete)
                         stateMachine.SetState<EGStateChase>();
                 }
