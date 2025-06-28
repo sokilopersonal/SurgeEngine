@@ -12,25 +12,25 @@ namespace SurgeEngine.Code.UI.Pages.Baseline
     public class PageController : MonoBehaviour
     {
         [Header("Initial")]
-        [SerializeField] private Page initial;
+        [SerializeField] protected Page initial;
         [SerializeField] private GameObject firstSelectedObject;
         
         [Header("Input")]
-        [SerializeField] private InputActionReference cancelActionReference;
+        [SerializeField] protected InputActionReference cancelActionReference;
         [SerializeField] private UnityEvent onCancelEvent;
         
+        public int Count => _pageStack.Count;
+        
         private Stack<Page> _pageStack;
-        private CanvasGroup _canvasGroup;
+        protected CanvasGroup _canvasGroup;
 
-        private void Awake()
+        protected virtual void Awake()
         {
             _pageStack = new Stack<Page>();
             _canvasGroup = GetComponent<CanvasGroup>();
-
-            cancelActionReference.action.started += _ => onCancelEvent.Invoke();
         }
 
-        private void Start()
+        protected virtual void Start()
         {
             if (firstSelectedObject)
                 EventSystem.current.SetSelectedGameObject(firstSelectedObject);
@@ -39,14 +39,16 @@ namespace SurgeEngine.Code.UI.Pages.Baseline
                 Push(initial);
         }
 
-        private void OnEnable()
+        protected virtual void OnEnable()
         {
             cancelActionReference.action.Enable();
+            cancelActionReference.action.performed += OnCancelAction;
         }
 
-        private void OnDisable()
+        protected virtual void OnDisable()
         {
             cancelActionReference.action.Disable();
+            cancelActionReference.action.performed -= OnCancelAction;
         }
 
         public void Push(Page page)
@@ -77,7 +79,7 @@ namespace SurgeEngine.Code.UI.Pages.Baseline
             }
             else
             {
-                Debug.LogWarning("Trying to pop a page, but only 1 page remains in the page stack.");
+                if (IsActive()) Debug.LogWarning("Trying to pop a page, but only 1 page remains in the page stack.");
             }
         }
 
@@ -89,7 +91,6 @@ namespace SurgeEngine.Code.UI.Pages.Baseline
             }
         }
         
-        // Input methods
         public void OnCancel()
         {
             if (IsActive())
@@ -97,6 +98,11 @@ namespace SurgeEngine.Code.UI.Pages.Baseline
                 if (_pageStack.Count != 0)
                     Pop();
             }
+        }
+
+        protected virtual void OnCancelAction(InputAction.CallbackContext obj)
+        {
+            onCancelEvent.Invoke();
         }
 
         private bool IsActive()

@@ -18,6 +18,11 @@ namespace SurgeEngine.Code.UI
         public float Delay => delay;
         public Ease Easing => easing;
         public bool Unscaled => unscaled;
+
+        public Action OnPreOpen;
+        public Action OnPostOpen;
+        public Action OnPreClose;
+        public Action OnPostClose;
         
         [SerializeReference] public List<ElementAnimation> animations = new();
 

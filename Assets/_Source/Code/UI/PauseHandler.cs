@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using DG.Tweening;
 using SurgeEngine.Code.Core.Actor.States;
 using SurgeEngine.Code.Core.Actor.System;
@@ -12,59 +12,49 @@ using Zenject;
 
 namespace SurgeEngine.Code.UI
 {
-    public class PauseHandler : MonoBehaviour
+    public class PauseHandler : PageController
     {
         public bool Active { get; private set; }
-        public event Action<bool> OnPauseChanged; 
 
         [Header("Input")]
-        [SerializeField] private InputActionReference pauseInputReference;
-        [SerializeField] private float pauseDelay = 0.5f;
-
-        [Header("Pause Page")] 
-        [SerializeField] private Page pausePage;
+        [SerializeField] private InputActionReference pauseActionReference;
+        [SerializeField] private float pauseDelay = 0.2f;
         
         private bool CanPause => _delay <= 0f;
 
         private float _delay;
-        private CanvasGroup _uiCanvasGroup;
         private Sequence _pauseFadeTween;
-        private InputAction _pauseAction;
         private InputDevice _device;
-        private PageController _pageController;
 
         [Inject] private GameSettings _gameSettings;
         [Inject] private VolumeManager _volumeManager;
         [Inject] private ActorBase _actor;
-        
-        private void Awake()
+
+        protected override void Awake()
         {
-            _uiCanvasGroup = GetComponent<CanvasGroup>();
+            base.Awake();
             
-            TryGetComponent(out _pageController);
-            
-            _uiCanvasGroup.alpha = 0f;
-            _uiCanvasGroup.interactable = false;
+            _canvasGroup.alpha = 0f;
+            _canvasGroup.interactable = false;
             Time.timeScale = 1f;
-            
-            _pauseAction = pauseInputReference.action;
-            _pauseAction.Enable();
             
             _volumeManager.ToggleGameGroup(true);
         }
 
-        private void OnEnable()
+        protected override void OnEnable()
         {
-#if UNITY_EDITOR
-            _pauseAction.ApplyBindingOverride("<Keyboard>/tab", path: "<Keyboard>/escape");
-#endif
+            base.OnEnable();
             
-            _pauseAction.performed += OnPauseAction;
+            pauseActionReference.action.Enable();
+            pauseActionReference.action.performed += OnPauseAction;
         }
-
-        private void OnDisable()
+        
+        protected override void OnDisable()
         {
-            _pauseAction.performed -= OnPauseAction;
+            base.OnDisable();
+            
+            pauseActionReference.action.Disable();
+            pauseActionReference.action.performed -= OnPauseAction;
         }
 
         private void Update()
@@ -78,13 +68,24 @@ namespace SurgeEngine.Code.UI
             if (context != null && context.StateMachine.IsExact<FStateSpecialJump>() && context.StateMachine.GetState<FStateSpecialJump>().SpecialJumpData.type ==
                 SpecialJumpType.TrickJumper) return;
             
-            if (!CanPause || context.IsDead) return;
+            if (!CanPause || context.IsDead || Count > 1) return; // TODO: Fix pause deactivation when popping the second page
             
             Active = !Active;
-            OnPauseChanged?.Invoke(Active);
 
             _device = obj.control.device;
             SetPause(Active);
+        }
+
+        protected override void OnCancelAction(InputAction.CallbackContext obj)
+        {
+            if (Count == 1 && Active)
+            {
+                SetPause(false);
+            }
+            else
+            {
+                base.OnCancelAction(obj);
+            }
         }
 
         public void SetPause(bool isPaused)
@@ -96,17 +97,24 @@ namespace SurgeEngine.Code.UI
             {
                 _volumeManager.ToggleGameGroup(false);
                 
-                if (_pageController && pausePage)
+                if (initial)
                 {
-                    _pageController.PopAllPages();
+                    initial.Enter();
                 }
             }
             else
             {
                 _volumeManager.ToggleGameGroup(true);
+
+                if (initial)
+                {
+                    PopAllPages();
+                    
+                    initial.Exit();
+                }
             }
             
-            _uiCanvasGroup.interactable = isPaused;
+            _canvasGroup.interactable = isPaused;
             
             var context = _actor;
             if (context)
@@ -121,9 +129,8 @@ namespace SurgeEngine.Code.UI
                 Cursor.lockState = isPaused ? CursorLockMode.None : CursorLockMode.Locked;
             }
             
-            _pauseFadeTween?.Kill(true);
             _pauseFadeTween = DOTween.Sequence();
-            _pauseFadeTween.Append(_uiCanvasGroup.DOFade(isPaused ? 1 : 0, 0.75f)).SetEase(Ease.OutCubic);
+            _pauseFadeTween.Join(_canvasGroup.DOFade(isPaused ? 1 : 0, 1f)).SetEase(Ease.OutCubic);
             _pauseFadeTween.Join(DOTween.To(() => Time.timeScale, x => Time.timeScale = x,
                 isPaused ? 0f : 1f, isPaused ? 0f : 0.25f));
             _pauseFadeTween.SetLink(gameObject);

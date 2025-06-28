@@ -1,5 +1,7 @@
 ﻿using System;
+using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 namespace SurgeEngine.Code.UI.Pages.Baseline
@@ -8,43 +10,73 @@ namespace SurgeEngine.Code.UI.Pages.Baseline
     [DisallowMultipleComponent]
     public class Page : MonoBehaviour
     {
-        // Fields
+        [Header("Transition")]
         [SerializeField] private GameObject firstSelectedObject;
         [SerializeField] private bool exitOnNewPush;
+        [SerializeField, Tooltip("Animated transition duration.")] protected float transitionDuration = 0.5f;
         
-        // Properties
         public CanvasGroup CanvasGroup { get; private set; }
         public bool ExitOnNewPush => exitOnNewPush;
+        
+        public UnityEvent OnPreEnter;
+        public UnityEvent OnPostEnter; 
+        public UnityEvent OnPreExit;
+        public UnityEvent OnPostExit;
+        
+        protected Sequence sequence;
 
-        private RectTransform _rectTransform;
-
-        private void Awake()
+        protected virtual void Awake()
         {
-            _rectTransform = GetComponent<RectTransform>();
             CanvasGroup = GetComponent<CanvasGroup>();
             
-            HideGroup();
+            CanvasGroup.alpha = 0f;
+            Block(true);
         }
 
         public void Enter()
         {
+            OnPreEnter.Invoke();
+            
             if (firstSelectedObject) EventSystem.current.SetSelectedGameObject(firstSelectedObject);
             
-            CanvasGroup.alpha = 1f;
-            CanvasGroup.interactable = true;
-            CanvasGroup.blocksRaycasts = true;
+            Block(false);
+            Show();
         }
 
         public void Exit()
         {
-            HideGroup();
+            OnPreExit.Invoke();
+            
+            Block(true);
+            Hide();
         }
 
-        private void HideGroup()
+        protected virtual void Show()
         {
-            CanvasGroup.alpha = 0f;
-            CanvasGroup.interactable = false;
-            CanvasGroup.blocksRaycasts = false;
+            CreateSequence();
+            sequence.onComplete += () => OnPostEnter.Invoke();
+            
+            sequence.Join(CanvasGroup.DOFade(1f, transitionDuration));
+        }
+
+        protected virtual void Hide()
+        {
+            CreateSequence();
+            sequence.onComplete += () => OnPostExit.Invoke();
+            
+            sequence.Join(CanvasGroup.DOFade(0f, transitionDuration));
+        }
+
+        private void CreateSequence()
+        {
+            sequence = DOTween.Sequence();
+            sequence.SetUpdate(true);
+        }
+
+        public void Block(bool value)
+        {
+            CanvasGroup.interactable = !value;
+            CanvasGroup.blocksRaycasts = !value;
         }
     }
 }

@@ -3,17 +3,34 @@ using System.Collections.Generic;
 using SurgeEngine.Code.UI.Animated;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace SurgeEngine.Code.UI.Navigation
 {
     public class MenuNavigationSystem : MonoBehaviour
     {
+        [Header("Selectables")]
         [SerializeField] private List<Selectable> selectables = new List<Selectable>();
+        
+        [Header("Input")]
+        [SerializeField] private InputActionReference navigationActionReference;
+
+        private Selectable _lastSelected;
 
         private void Awake()
         {
             SetupTrigger();
+            
+            navigationActionReference.action.Enable();
+            navigationActionReference.action.performed += _ =>
+            {
+                var current = EventSystem.current;
+                if (current.currentSelectedGameObject == null && _lastSelected != null)
+                {
+                    Select(_lastSelected.gameObject);
+                }
+            };
         }
 
         private void SetupTrigger()
@@ -62,7 +79,7 @@ namespace SurgeEngine.Code.UI.Navigation
 
         private void OnSelect(BaseEventData arg)
         {
-            
+            _lastSelected = arg.selectedObject.GetComponent<Selectable>();
         }
         
         private void OnDeselect(BaseEventData arg)
@@ -73,21 +90,22 @@ namespace SurgeEngine.Code.UI.Navigation
         private void OnPointerEnter(BaseEventData arg)
         {
             if (arg is PointerEventData pointerData)
+            {
                 Select(pointerData.pointerEnter, true);
+            }
         }
         
         private void OnPointerExit(BaseEventData arg)
         {
             if (arg is PointerEventData pointerData)
+            {
                 Select(null);
+            }
         }
 
         public void Select(GameObject obj, bool shouldPlaySound = false)
         {
             var current = EventSystem.current;
-            if (current.currentSelectedGameObject == obj)
-                return;
-            
             current.SetSelectedGameObject(obj);
 
             if (shouldPlaySound)

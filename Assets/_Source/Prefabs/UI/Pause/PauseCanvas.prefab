@@ -650,7 +650,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 25, y: 0}
+  m_AnchoredPosition: {x: 50, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &4111334158988561197
@@ -1100,7 +1100,7 @@ GameObject:
   - component: {fileID: 7418639350855881893}
   - component: {fileID: 3008904776117972654}
   - component: {fileID: 8297126242773727334}
-  - component: {fileID: 3623359653797253905}
+  - component: {fileID: 4373068354877343195}
   m_Layer: 5
   m_Name: Main
   m_TagString: Untagged
@@ -1148,7 +1148,7 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
---- !u!114 &3623359653797253905
+--- !u!114 &4373068354877343195
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1157,11 +1157,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 6358280338465375995}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57d5718dd5794ea7ae30e31e47184713, type: 3}
+  m_Script: {fileID: 11500000, guid: 93f337f296624d8699a9800930a6b05f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   firstSelectedObject: {fileID: 3140337604024968725}
   exitOnNewPush: 1
+  transitionDuration: 0.5
+  OnPreEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPostEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPreExit:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPostExit:
+    m_PersistentCalls:
+      m_Calls: []
+  container: {fileID: 1244172813454368886}
 --- !u!1 &7329639113110801760
 GameObject:
   m_ObjectHideFlags: 0
@@ -1175,9 +1189,8 @@ GameObject:
   - component: {fileID: 6560167774691639748}
   - component: {fileID: 7582904696159881077}
   - component: {fileID: 2660690482040677725}
-  - component: {fileID: 5286319803471583851}
-  - component: {fileID: 1134712764629619975}
   - component: {fileID: 3527368928707079476}
+  - component: {fileID: 1134712764629619975}
   m_Layer: 5
   m_Name: PauseCanvas
   m_TagString: Untagged
@@ -1284,7 +1297,7 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
---- !u!114 &5286319803471583851
+--- !u!114 &3527368928707079476
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1293,19 +1306,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 7329639113110801760}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac0ea3c39c3942cfaf8c9cb6d33faa51, type: 3}
+  m_Script: {fileID: 11500000, guid: 0e7d26e421a446a3ad49a1039e72ad22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initial: {fileID: 3623359653797253905}
+  initial: {fileID: 4373068354877343195}
   firstSelectedObject: {fileID: 3140337604024968725}
   cancelActionReference: {fileID: 7727032971491509709, guid: aa82a2cdd5263bc4a8583ac6684fc349, type: 3}
   onCancelEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5286319803471583851}
+      - m_Target: {fileID: 3527368928707079476}
         m_TargetAssemblyTypeName: SurgeEngine.Code.UI.Pages.Baseline.PageController,
           Assembly-CSharp
-        m_MethodName: Pop
+        m_MethodName: OnCancel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1315,6 +1328,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  pauseActionReference: {fileID: -8138131551743656002, guid: bfa2b227e3567354b8dd663fe1eccd22, type: 3}
+  pauseDelay: 0
 --- !u!114 &1134712764629619975
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1339,21 +1354,7 @@ MonoBehaviour:
   - {fileID: 952438375199349804}
   - {fileID: 7212597550491469513}
   - {fileID: 2777709930658613364}
---- !u!114 &3527368928707079476
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7329639113110801760}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e7d26e421a446a3ad49a1039e72ad22, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pauseInputReference: {fileID: -8436990913645838437, guid: aa82a2cdd5263bc4a8583ac6684fc349, type: 3}
-  pauseDelay: 0.5
-  pausePage: {fileID: 3623359653797253905}
+  navigationActionReference: {fileID: -8784545083839296357, guid: aa82a2cdd5263bc4a8583ac6684fc349, type: 3}
 --- !u!1 &7691899215192036426
 GameObject:
   m_ObjectHideFlags: 0
@@ -1643,6 +1644,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   firstSelectedObject: {fileID: 1140748774734632449}
   exitOnNewPush: 1
+  transitionDuration: 0.5
+  OnPreEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPostEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPreExit:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPostExit:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &8294160120708702634
 GameObject:
   m_ObjectHideFlags: 0
@@ -1717,6 +1731,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   firstSelectedObject: {fileID: 1512525865783859099}
   exitOnNewPush: 1
+  transitionDuration: 0.5
+  OnPreEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPostEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPreExit:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPostExit:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &8472895862519632278
 GameObject:
   m_ObjectHideFlags: 0
@@ -2271,7 +2298,7 @@ PrefabInstance:
     - target: {fileID: 3235971488958976487, guid: 51ce7cab6fcbfba40b7e0951c2a8f635, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 5286319803471583851}
+      objectReference: {fileID: 3527368928707079476}
     - target: {fileID: 3235971488958976487, guid: 51ce7cab6fcbfba40b7e0951c2a8f635, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
@@ -2542,7 +2569,7 @@ PrefabInstance:
     - target: {fileID: 3235971488958976487, guid: 51ce7cab6fcbfba40b7e0951c2a8f635, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 5286319803471583851}
+      objectReference: {fileID: 3527368928707079476}
     - target: {fileID: 3235971488958976487, guid: 51ce7cab6fcbfba40b7e0951c2a8f635, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
@@ -2967,7 +2994,7 @@ PrefabInstance:
     - target: {fileID: 3235971488958976487, guid: 51ce7cab6fcbfba40b7e0951c2a8f635, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 5286319803471583851}
+      objectReference: {fileID: 3527368928707079476}
     - target: {fileID: 3235971488958976487, guid: 51ce7cab6fcbfba40b7e0951c2a8f635, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
@@ -3531,7 +3558,7 @@ PrefabInstance:
     - target: {fileID: 3235971488958976487, guid: 51ce7cab6fcbfba40b7e0951c2a8f635, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 5286319803471583851}
+      objectReference: {fileID: 3527368928707079476}
     - target: {fileID: 3235971488958976487, guid: 51ce7cab6fcbfba40b7e0951c2a8f635, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
