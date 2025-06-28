@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 namespace SurgeEngine.Code.UI.Pages.Baseline
 {
@@ -9,8 +11,13 @@ namespace SurgeEngine.Code.UI.Pages.Baseline
     [DisallowMultipleComponent]
     public class PageController : MonoBehaviour
     {
+        [Header("Initial")]
         [SerializeField] private Page initial;
         [SerializeField] private GameObject firstSelectedObject;
+        
+        [Header("Input")]
+        [SerializeField] private InputActionReference cancelActionReference;
+        [SerializeField] private UnityEvent onCancelEvent;
         
         private Stack<Page> _pageStack;
         private CanvasGroup _canvasGroup;
@@ -19,6 +26,8 @@ namespace SurgeEngine.Code.UI.Pages.Baseline
         {
             _pageStack = new Stack<Page>();
             _canvasGroup = GetComponent<CanvasGroup>();
+
+            cancelActionReference.action.started += _ => onCancelEvent.Invoke();
         }
 
         private void Start()
@@ -28,6 +37,16 @@ namespace SurgeEngine.Code.UI.Pages.Baseline
 
             if (initial)
                 Push(initial);
+        }
+
+        private void OnEnable()
+        {
+            cancelActionReference.action.Enable();
+        }
+
+        private void OnDisable()
+        {
+            cancelActionReference.action.Disable();
         }
 
         public void Push(Page page)
@@ -64,7 +83,7 @@ namespace SurgeEngine.Code.UI.Pages.Baseline
 
         public void PopAllPages()
         {
-            foreach (var page in _pageStack)
+            for (var i = 1; i < _pageStack.Count; i++)
             {
                 Pop();
             }
@@ -73,13 +92,18 @@ namespace SurgeEngine.Code.UI.Pages.Baseline
         // Input methods
         public void OnCancel()
         {
-            if (_canvasGroup.interactable && _canvasGroup.gameObject.activeInHierarchy)
+            if (IsActive())
             {
                 if (_pageStack.Count != 0)
                     Pop();
             }
         }
-        
+
+        private bool IsActive()
+        {
+            return _canvasGroup.interactable && _canvasGroup.gameObject.activeInHierarchy;
+        }
+
         public bool IsPageInStack(Page page) => _pageStack.Contains(page);
         public bool IsPageOnTop(Page page) => _pageStack.Count > 0 && _pageStack.Peek() == page;
     }

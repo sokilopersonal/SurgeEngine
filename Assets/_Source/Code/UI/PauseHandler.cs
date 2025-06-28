@@ -17,8 +17,12 @@ namespace SurgeEngine.Code.UI
         public bool Active { get; private set; }
         public event Action<bool> OnPauseChanged; 
 
+        [Header("Input")]
         [SerializeField] private InputActionReference pauseInputReference;
         [SerializeField] private float pauseDelay = 0.5f;
+
+        [Header("Pause Page")] 
+        [SerializeField] private Page pausePage;
         
         private bool CanPause => _delay <= 0f;
 
@@ -27,14 +31,18 @@ namespace SurgeEngine.Code.UI
         private Sequence _pauseFadeTween;
         private InputAction _pauseAction;
         private InputDevice _device;
+        private PageController _pageController;
 
         [Inject] private GameSettings _gameSettings;
         [Inject] private VolumeManager _volumeManager;
+        [Inject] private ActorBase _actor;
         
         private void Awake()
         {
             _uiCanvasGroup = GetComponent<CanvasGroup>();
-
+            
+            TryGetComponent(out _pageController);
+            
             _uiCanvasGroup.alpha = 0f;
             _uiCanvasGroup.interactable = false;
             Time.timeScale = 1f;
@@ -66,7 +74,7 @@ namespace SurgeEngine.Code.UI
 
         private void OnPauseAction(InputAction.CallbackContext obj)
         {
-            var context = ActorContext.Context;
+            var context = _actor;
             if (context != null && context.StateMachine.IsExact<FStateSpecialJump>() && context.StateMachine.GetState<FStateSpecialJump>().SpecialJumpData.type ==
                 SpecialJumpType.TrickJumper) return;
             
@@ -87,6 +95,11 @@ namespace SurgeEngine.Code.UI
             if (Active)
             {
                 _volumeManager.ToggleGameGroup(false);
+                
+                if (_pageController && pausePage)
+                {
+                    _pageController.PopAllPages();
+                }
             }
             else
             {
@@ -95,7 +108,7 @@ namespace SurgeEngine.Code.UI
             
             _uiCanvasGroup.interactable = isPaused;
             
-            var context = ActorContext.Context;
+            var context = _actor;
             if (context)
             {
                 PlayerInput playerInput = context.Input.playerInput;
@@ -110,7 +123,7 @@ namespace SurgeEngine.Code.UI
             
             _pauseFadeTween?.Kill(true);
             _pauseFadeTween = DOTween.Sequence();
-            _pauseFadeTween.Append(_uiCanvasGroup.DOFade(isPaused ? 1 : 0, 0.7f)).SetEase(Ease.OutCubic);
+            _pauseFadeTween.Append(_uiCanvasGroup.DOFade(isPaused ? 1 : 0, 0.75f)).SetEase(Ease.OutCubic);
             _pauseFadeTween.Join(DOTween.To(() => Time.timeScale, x => Time.timeScale = x,
                 isPaused ? 0f : 1f, isPaused ? 0f : 0.25f));
             _pauseFadeTween.SetLink(gameObject);
