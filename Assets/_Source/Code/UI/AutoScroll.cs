@@ -11,7 +11,7 @@ namespace SurgeEngine.Code.UI
         public ScrollRect ScrollRect => _scrollRect;
         
         private RectTransform _rect;
-        private Vector2 _target;
+        private float _target;
 
         private void Awake()
         {
@@ -24,11 +24,11 @@ namespace SurgeEngine.Code.UI
             {
                 if (isSmoothing)
                 {
-                    _scrollRect.normalizedPosition = Vector2.Lerp(_scrollRect.normalizedPosition, _target, scrollSpeed * Time.unscaledDeltaTime);
+                    _scrollRect.verticalNormalizedPosition = Mathf.Lerp(_scrollRect.verticalNormalizedPosition, _target, scrollSpeed * Time.unscaledDeltaTime);
                 }
                 else
                 {
-                    _scrollRect.normalizedPosition = _target;
+                    _scrollRect.verticalNormalizedPosition = _target;
                 }
             }
         }
@@ -51,19 +51,19 @@ namespace SurgeEngine.Code.UI
                 Vector2 targetLocalPos = content.InverseTransformPoint(target.position);
                 Vector2 targetPos = new Vector2(targetLocalPos.x + contentSize.x * contentPivot.x,
                     targetLocalPos.y + contentSize.y * contentPivot.y);
-                Vector2 normalizedPos = new Vector2(0, 1);
+                float normalizedPos = _scrollRect.verticalNormalizedPosition;
                 if (scrollRect.vertical && contentSize.y > viewportSize.y)
                 {
                     float verticalPos =
                         Mathf.Clamp01((targetPos.y - viewportSize.y * 0.5f) / (contentSize.y - viewportSize.y));
-                    normalizedPos.y = verticalPos;
+                    normalizedPos = verticalPos;
                 }
 
                 _target = normalizedPos;
                 
                 if (quick)
                 {
-                    _scrollRect.normalizedPosition = _target;
+                    _scrollRect.verticalNormalizedPosition = _target;
                 }
             }
         }

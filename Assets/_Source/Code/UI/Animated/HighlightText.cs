@@ -3,24 +3,24 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace SurgeEngine.Code.UI.Animated
 {
     public class HighlightText : SelectReaction
     {
+        [SerializeField] private Graphic targetGraphic;
         [SerializeField] private Color highlightColor = Color.white;
         [SerializeField] private Color baseColor = Color.white;
         [SerializeField] private float duration = 0.3f;
 
-        private TMP_Text _text;
-        private Tween colorTween;
+        private Tween _colorTween;
 
         private void Awake()
         {
-            _text = GetComponent<TMP_Text>();
-            _text.color = baseColor;
+            targetGraphic.color = baseColor;
 
-            colorTween = _text.DOColor(highlightColor, duration)
+            _colorTween = targetGraphic.DOColor(highlightColor, duration)
                 .SetAutoKill(false)
                 .SetUpdate(true)
                 .Pause();
@@ -29,13 +29,13 @@ namespace SurgeEngine.Code.UI.Animated
         protected override void OnSelect(BaseEventData eventData)
         {
             base.OnSelect(eventData);
-            colorTween.PlayForward();
+            _colorTween.PlayForward();
         }
 
         protected override void OnDeselect(BaseEventData eventData)
         {
             base.OnDeselect(eventData);
-            colorTween.PlayBackwards();
+            _colorTween.PlayBackwards();
         }
     }
 }

@@ -70,7 +70,6 @@ namespace SurgeEngine.Code.UI.Pages.Baseline
 
         private void CreateSequence()
         {
-            sequence?.Kill(true);
             sequence = DOTween.Sequence();
             sequence.SetUpdate(true);
         }
