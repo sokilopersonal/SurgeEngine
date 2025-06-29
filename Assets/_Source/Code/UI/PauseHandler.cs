@@ -20,9 +20,8 @@ namespace SurgeEngine.Code.UI
         [SerializeField] private InputActionReference pauseActionReference;
         [SerializeField] private float pauseDelay = 0.2f;
         
-        private bool CanPause => _delay <= 0f;
-
-        private float _delay;
+        private bool _canPause;
+        
         private Sequence _pauseFadeTween;
         private InputDevice _device;
 
@@ -33,6 +32,8 @@ namespace SurgeEngine.Code.UI
         protected override void Awake()
         {
             base.Awake();
+
+            _canPause = true;
             
             _canvasGroup.alpha = 0f;
             _canvasGroup.interactable = false;
@@ -57,18 +58,13 @@ namespace SurgeEngine.Code.UI
             pauseActionReference.action.performed -= OnPauseAction;
         }
 
-        private void Update()
-        {
-            Utility.TickTimer(ref _delay, pauseDelay, false, true);
-        }
-
         private void OnPauseAction(InputAction.CallbackContext obj)
         {
             var context = _actor;
             if (context != null && context.StateMachine.IsExact<FStateSpecialJump>() && context.StateMachine.GetState<FStateSpecialJump>().SpecialJumpData.type ==
                 SpecialJumpType.TrickJumper) return;
             
-            if (!CanPause || context.IsDead || Count > 1) return; // TODO: Fix pause deactivation when popping the second page
+            if (!_canPause || context.IsDead) return;
             
             Active = !Active;
 
@@ -78,20 +74,36 @@ namespace SurgeEngine.Code.UI
 
         protected override void OnCancelAction(InputAction.CallbackContext obj)
         {
-            if (Count == 1 && Active)
+            // Double input fix
+            if (obj.control.device is Keyboard)
             {
-                SetPause(false);
+                if (Count > 1 && Active)
+                {
+                    _canPause = false;
+                    base.OnCancelAction(obj);
+                }
+                else
+                {
+                    _canPause = true;
+                }
             }
             else
             {
-                base.OnCancelAction(obj);
+                if (Count == 1 && Active)
+                {
+                    _canPause = true;
+                    SetPause(false);
+                }
+                else
+                {
+                    base.OnCancelAction(obj);
+                }
             }
         }
 
         public void SetPause(bool isPaused)
         {
             Active = isPaused;
-            _delay = pauseDelay;
             
             if (Active)
             {
