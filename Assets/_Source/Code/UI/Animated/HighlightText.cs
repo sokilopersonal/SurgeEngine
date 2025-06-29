@@ -10,6 +10,7 @@ namespace SurgeEngine.Code.UI.Animated
     {
         [SerializeField] private Color highlightColor = Color.white;
         [SerializeField] private Color baseColor = Color.white;
+        [SerializeField] private float duration = 0.3f;
 
         private TMP_Text _text;
         private Tween colorTween;
@@ -19,7 +20,7 @@ namespace SurgeEngine.Code.UI.Animated
             _text = GetComponent<TMP_Text>();
             _text.color = baseColor;
 
-            colorTween = _text.DOColor(highlightColor, 0.2f)
+            colorTween = _text.DOColor(highlightColor, duration)
                 .SetAutoKill(false)
                 .SetUpdate(true)
                 .Pause();

@@ -7,14 +7,16 @@ namespace SurgeEngine.Code.UI.Animated
     public class SelectedPanel : SelectReaction
     {
         private Tween _tween;
+        [SerializeField] private float duration = 0.35f;
+        [SerializeField] private Ease ease = Ease.OutCubic;
 
         private void Awake()
         {
             transform.localScale = new Vector3(0f, 1f, 1f);
-            _tween = transform.DOScaleX(1f, 0.2f)
+            _tween = transform.DOScaleX(1f, duration)
                 .SetAutoKill(false)
                 .SetUpdate(true)
-                .Pause().SetEase(Ease.OutCubic);
+                .Pause().SetEase(ease);
         }
 
         protected override void OnSelect(BaseEventData eventData)
