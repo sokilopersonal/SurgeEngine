@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 
 namespace SurgeEngine.Code.UI.Pages.Baseline
 {
-    [RequireComponent(typeof(Canvas), typeof(CanvasGroup))]
+    [RequireComponent(typeof(CanvasGroup))]
     [DisallowMultipleComponent]
     public class PageController : MonoBehaviour
     {
@@ -41,14 +41,20 @@ namespace SurgeEngine.Code.UI.Pages.Baseline
 
         protected virtual void OnEnable()
         {
-            cancelActionReference.action.Enable();
-            cancelActionReference.action.performed += OnCancelAction;
+            if (cancelActionReference)
+            {
+                cancelActionReference.action.Enable();
+                cancelActionReference.action.performed += OnCancelAction;
+            }
         }
 
         protected virtual void OnDisable()
         {
-            cancelActionReference.action.Disable();
-            cancelActionReference.action.performed -= OnCancelAction;
+            if (cancelActionReference)
+            {
+                cancelActionReference.action.Disable();
+                cancelActionReference.action.performed -= OnCancelAction;
+            }
         }
 
         public void Push(Page page)

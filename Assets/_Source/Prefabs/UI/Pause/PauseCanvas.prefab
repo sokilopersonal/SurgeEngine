@@ -271,7 +271,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: ac9bf06e4c2053c43ac08a7e7e14968c, type: 2}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.9607843}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.8627451}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -595,7 +595,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: 96fa9fa43403849408a44a790ceee9fb, type: 2}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0.37863874, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -725,11 +725,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1222011424689204032}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 75, y: -150}
   m_SizeDelta: {x: 400, y: 125}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &3087859960659531503
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -792,7 +792,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 2
+  m_HorizontalAlignment: 1
   m_VerticalAlignment: 4096
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -839,6 +839,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3010208501501066892}
   - component: {fileID: 5283282428640299336}
+  - component: {fileID: 5497564696567525525}
   m_Layer: 5
   m_Name: GameplayPage
   m_TagString: Untagged
@@ -878,6 +879,34 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &5497564696567525525
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5889051444985451876}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57d5718dd5794ea7ae30e31e47184713, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  firstSelectedObject: {fileID: 0}
+  exitOnNewPush: 1
+  enterDuration: 0.5
+  exitDuration: 0.02
+  OnPreEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPostEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPreExit:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPostExit:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &6099448862443179245
 GameObject:
   m_ObjectHideFlags: 0
@@ -985,11 +1014,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1806091641443631682}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 75, y: -150}
   m_SizeDelta: {x: 400, y: 125}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &3371176757766542510
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1052,7 +1081,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 2
+  m_HorizontalAlignment: 1
   m_VerticalAlignment: 4096
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -1162,7 +1191,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   firstSelectedObject: {fileID: 3140337604024968725}
   exitOnNewPush: 1
-  transitionDuration: 0.5
+  enterDuration: 0.5
+  exitDuration: 0.5
   OnPreEnter:
     m_PersistentCalls:
       m_Calls: []
@@ -1465,11 +1495,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 3010208501501066892}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 75, y: -150}
   m_SizeDelta: {x: 400, y: 125}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &5088282284373096188
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1532,7 +1562,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 2
+  m_HorizontalAlignment: 1
   m_VerticalAlignment: 4096
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -1581,6 +1611,7 @@ GameObject:
   - component: {fileID: 2726344679315787783}
   - component: {fileID: 2460165681397164228}
   - component: {fileID: 1366810032879201482}
+  - component: {fileID: 9141526135261224351}
   m_Layer: 5
   m_Name: Settings
   m_TagString: Untagged
@@ -1644,10 +1675,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   firstSelectedObject: {fileID: 1140748774734632449}
   exitOnNewPush: 1
-  transitionDuration: 0.5
+  enterDuration: 0.5
+  exitDuration: 0.5
   OnPreEnter:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 9141526135261224351}
+        m_TargetAssemblyTypeName: SurgeEngine.Code.UI.Pages.Baseline.SubPagesController,
+          Assembly-CSharp
+        m_MethodName: Push
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 7696465992651548151}
+          m_ObjectArgumentAssemblyTypeName: SurgeEngine.Code.UI.Pages.Baseline.Page,
+            Assembly-CSharp
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnPostEnter:
     m_PersistentCalls:
       m_Calls: []
@@ -1657,6 +1703,23 @@ MonoBehaviour:
   OnPostExit:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &9141526135261224351
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8292693717781409162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee4250fda964489d9a3d39c633604d0a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  subPages:
+  - {fileID: 7696465992651548151}
+  - {fileID: 3132688779335970430}
+  - {fileID: 5497564696567525525}
+  - {fileID: 3738768971273359694}
 --- !u!1 &8294160120708702634
 GameObject:
   m_ObjectHideFlags: 0
@@ -1731,7 +1794,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   firstSelectedObject: {fileID: 1512525865783859099}
   exitOnNewPush: 1
-  transitionDuration: 0.5
+  enterDuration: 0.5
+  exitDuration: 0.5
   OnPreEnter:
     m_PersistentCalls:
       m_Calls: []
@@ -1754,6 +1818,7 @@ GameObject:
   m_Component:
   - component: {fileID: 584669582307844761}
   - component: {fileID: 7635579834160734651}
+  - component: {fileID: 3132688779335970430}
   m_Layer: 5
   m_Name: VideoPage
   m_TagString: Untagged
@@ -1793,6 +1858,34 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &3132688779335970430
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8472895862519632278}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57d5718dd5794ea7ae30e31e47184713, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  firstSelectedObject: {fileID: 0}
+  exitOnNewPush: 1
+  enterDuration: 0.5
+  exitDuration: 0.02
+  OnPreEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPostEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPreExit:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPostExit:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &8578847238606184394
 GameObject:
   m_ObjectHideFlags: 0
@@ -1825,11 +1918,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 584669582307844761}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 75, y: -150}
   m_SizeDelta: {x: 400, y: 125}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &8061921536841627861
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1892,7 +1985,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 2
+  m_HorizontalAlignment: 1
   m_VerticalAlignment: 4096
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -1939,6 +2032,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1222011424689204032}
   - component: {fileID: 6511317627521700139}
+  - component: {fileID: 7696465992651548151}
   m_Layer: 5
   m_Name: DisplayPage
   m_TagString: Untagged
@@ -1978,6 +2072,34 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &7696465992651548151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8643565072437664488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57d5718dd5794ea7ae30e31e47184713, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  firstSelectedObject: {fileID: 0}
+  exitOnNewPush: 1
+  enterDuration: 0.5
+  exitDuration: 0.02
+  OnPreEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPostEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPreExit:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPostExit:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &8982887522787900087
 GameObject:
   m_ObjectHideFlags: 0
@@ -2027,6 +2149,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1806091641443631682}
   - component: {fileID: 7220695398644135090}
+  - component: {fileID: 3738768971273359694}
   m_Layer: 5
   m_Name: AudioPage
   m_TagString: Untagged
@@ -2066,6 +2189,34 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &3738768971273359694
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9090848973698054294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57d5718dd5794ea7ae30e31e47184713, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  firstSelectedObject: {fileID: 0}
+  exitOnNewPush: 1
+  enterDuration: 0.5
+  exitDuration: 0.02
+  OnPreEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPostEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPreExit:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPostExit:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &287648287044125425
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2169,6 +2320,38 @@ PrefabInstance:
     - target: {fileID: 3231441065629121506, guid: 51ce7cab6fcbfba40b7e0951c2a8f635, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3235971488958976487, guid: 51ce7cab6fcbfba40b7e0951c2a8f635, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3235971488958976487, guid: 51ce7cab6fcbfba40b7e0951c2a8f635, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3235971488958976487, guid: 51ce7cab6fcbfba40b7e0951c2a8f635, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 9141526135261224351}
+    - target: {fileID: 3235971488958976487, guid: 51ce7cab6fcbfba40b7e0951c2a8f635, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3235971488958976487, guid: 51ce7cab6fcbfba40b7e0951c2a8f635, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Push
+      objectReference: {fileID: 0}
+    - target: {fileID: 3235971488958976487, guid: 51ce7cab6fcbfba40b7e0951c2a8f635, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: SurgeEngine.Code.UI.Pages.Baseline.SubPagesController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3235971488958976487, guid: 51ce7cab6fcbfba40b7e0951c2a8f635, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 3132688779335970430}
+    - target: {fileID: 3235971488958976487, guid: 51ce7cab6fcbfba40b7e0951c2a8f635, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: SurgeEngine.Code.UI.Pages.Baseline.Page, Assembly-CSharp
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2715,6 +2898,38 @@ PrefabInstance:
     - target: {fileID: 3231441065629121506, guid: 51ce7cab6fcbfba40b7e0951c2a8f635, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3235971488958976487, guid: 51ce7cab6fcbfba40b7e0951c2a8f635, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3235971488958976487, guid: 51ce7cab6fcbfba40b7e0951c2a8f635, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3235971488958976487, guid: 51ce7cab6fcbfba40b7e0951c2a8f635, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 9141526135261224351}
+    - target: {fileID: 3235971488958976487, guid: 51ce7cab6fcbfba40b7e0951c2a8f635, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3235971488958976487, guid: 51ce7cab6fcbfba40b7e0951c2a8f635, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Push
+      objectReference: {fileID: 0}
+    - target: {fileID: 3235971488958976487, guid: 51ce7cab6fcbfba40b7e0951c2a8f635, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: SurgeEngine.Code.UI.Pages.Baseline.SubPagesController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3235971488958976487, guid: 51ce7cab6fcbfba40b7e0951c2a8f635, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 3738768971273359694}
+    - target: {fileID: 3235971488958976487, guid: 51ce7cab6fcbfba40b7e0951c2a8f635, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: SurgeEngine.Code.UI.Pages.Baseline.Page, Assembly-CSharp
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3305,6 +3520,38 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3235971488958976487, guid: 51ce7cab6fcbfba40b7e0951c2a8f635, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3235971488958976487, guid: 51ce7cab6fcbfba40b7e0951c2a8f635, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3235971488958976487, guid: 51ce7cab6fcbfba40b7e0951c2a8f635, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 9141526135261224351}
+    - target: {fileID: 3235971488958976487, guid: 51ce7cab6fcbfba40b7e0951c2a8f635, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3235971488958976487, guid: 51ce7cab6fcbfba40b7e0951c2a8f635, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Push
+      objectReference: {fileID: 0}
+    - target: {fileID: 3235971488958976487, guid: 51ce7cab6fcbfba40b7e0951c2a8f635, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: SurgeEngine.Code.UI.Pages.Baseline.SubPagesController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3235971488958976487, guid: 51ce7cab6fcbfba40b7e0951c2a8f635, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 5497564696567525525}
+    - target: {fileID: 3235971488958976487, guid: 51ce7cab6fcbfba40b7e0951c2a8f635, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: SurgeEngine.Code.UI.Pages.Baseline.Page, Assembly-CSharp
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3429,6 +3676,38 @@ PrefabInstance:
     - target: {fileID: 3231441065629121506, guid: 51ce7cab6fcbfba40b7e0951c2a8f635, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3235971488958976487, guid: 51ce7cab6fcbfba40b7e0951c2a8f635, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3235971488958976487, guid: 51ce7cab6fcbfba40b7e0951c2a8f635, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3235971488958976487, guid: 51ce7cab6fcbfba40b7e0951c2a8f635, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 9141526135261224351}
+    - target: {fileID: 3235971488958976487, guid: 51ce7cab6fcbfba40b7e0951c2a8f635, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3235971488958976487, guid: 51ce7cab6fcbfba40b7e0951c2a8f635, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Push
+      objectReference: {fileID: 0}
+    - target: {fileID: 3235971488958976487, guid: 51ce7cab6fcbfba40b7e0951c2a8f635, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: SurgeEngine.Code.UI.Pages.Baseline.SubPagesController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3235971488958976487, guid: 51ce7cab6fcbfba40b7e0951c2a8f635, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 7696465992651548151}
+    - target: {fileID: 3235971488958976487, guid: 51ce7cab6fcbfba40b7e0951c2a8f635, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: SurgeEngine.Code.UI.Pages.Baseline.Page, Assembly-CSharp
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

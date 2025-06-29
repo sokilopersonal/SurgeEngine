@@ -13,7 +13,8 @@ namespace SurgeEngine.Code.UI.Pages.Baseline
         [Header("Transition")]
         [SerializeField] private GameObject firstSelectedObject;
         [SerializeField] private bool exitOnNewPush;
-        [SerializeField, Tooltip("Animated transition duration.")] protected float transitionDuration = 0.5f;
+        [SerializeField, Tooltip("Animated enter duration.")] protected float enterDuration = 0.5f;
+        [SerializeField, Tooltip("Animated exit duration.")] protected float exitDuration = 0.5f;
         
         public CanvasGroup CanvasGroup { get; private set; }
         public bool ExitOnNewPush => exitOnNewPush;
@@ -56,7 +57,7 @@ namespace SurgeEngine.Code.UI.Pages.Baseline
             CreateSequence();
             sequence.onComplete += () => OnPostEnter.Invoke();
             
-            sequence.Join(CanvasGroup.DOFade(1f, transitionDuration));
+            sequence.Join(CanvasGroup.DOFade(1f, enterDuration));
         }
 
         protected virtual void Hide()
@@ -64,11 +65,12 @@ namespace SurgeEngine.Code.UI.Pages.Baseline
             CreateSequence();
             sequence.onComplete += () => OnPostExit.Invoke();
             
-            sequence.Join(CanvasGroup.DOFade(0f, transitionDuration));
+            sequence.Join(CanvasGroup.DOFade(0f, exitDuration));
         }
 
         private void CreateSequence()
         {
+            sequence?.Kill(true);
             sequence = DOTween.Sequence();
             sequence.SetUpdate(true);
         }

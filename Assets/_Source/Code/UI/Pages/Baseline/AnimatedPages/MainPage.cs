@@ -11,14 +11,14 @@ namespace SurgeEngine.Code.UI.Pages.Baseline.AnimatedPages
         {
             base.Show();
             
-            sequence.Join(container.DOAnchorPosX(25, transitionDuration).From(new Vector2(-400, 0)));
+            sequence.Join(container.DOAnchorPosX(25, enterDuration).From(new Vector2(-400, 0)));
         }
         
         protected override void Hide()
         {
             base.Hide();
             
-            sequence.Join(container.DOAnchorPosX(-400, transitionDuration));
+            sequence.Join(container.DOAnchorPosX(-400, exitDuration));
         }
     }
 }
