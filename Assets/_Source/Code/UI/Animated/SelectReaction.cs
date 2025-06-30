@@ -14,12 +14,12 @@ namespace SurgeEngine.Code.UI.Animated
             deselectEntry.callback.AddListener(OnDeselect);
         }
 
-        protected virtual void OnSelect(BaseEventData eventData)
+        public virtual void OnSelect(BaseEventData eventData)
         {
             
         }
-        
-        protected virtual void OnDeselect(BaseEventData eventData)
+
+        public virtual void OnDeselect(BaseEventData eventData)
         {
             
         }

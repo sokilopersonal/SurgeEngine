@@ -87,6 +87,13 @@ namespace SurgeEngine.Code.UI.OptionBars
             _autoScroll?.ScrollTo(_rectTransform);
         }
 
+        public override void OnSelect(BaseEventData eventData)
+        {
+            base.OnSelect(eventData);
+
+            _autoScroll?.ScrollTo(null);
+        }
+
         public void OnSubmit(BaseEventData eventData)
         {
             

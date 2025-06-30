@@ -32,6 +32,11 @@ namespace SurgeEngine.Code.UI
                 }
             }
         }
+        
+        public void ScrollTo(RectTransform target)
+        {
+            ScrollTo(target, false);
+        }
 
         public void ScrollTo(RectTransform target, bool quick = false)
         {

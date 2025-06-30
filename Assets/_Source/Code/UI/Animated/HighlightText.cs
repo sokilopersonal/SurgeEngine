@@ -26,13 +26,13 @@ namespace SurgeEngine.Code.UI.Animated
                 .Pause();
         }
 
-        protected override void OnSelect(BaseEventData eventData)
+        public override void OnSelect(BaseEventData eventData)
         {
             base.OnSelect(eventData);
             _colorTween.PlayForward();
         }
 
-        protected override void OnDeselect(BaseEventData eventData)
+        public override void OnDeselect(BaseEventData eventData)
         {
             base.OnDeselect(eventData);
             _colorTween.PlayBackwards();

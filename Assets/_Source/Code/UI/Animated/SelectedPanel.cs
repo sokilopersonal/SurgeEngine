@@ -19,14 +19,14 @@ namespace SurgeEngine.Code.UI.Animated
                 .Pause().SetEase(ease);
         }
 
-        protected override void OnSelect(BaseEventData eventData)
+        public override void OnSelect(BaseEventData eventData)
         {
             base.OnSelect(eventData);
             
             Show();
         }
 
-        protected override void OnDeselect(BaseEventData eventData)
+        public override void OnDeselect(BaseEventData eventData)
         {
             base.OnDeselect(eventData);
             
