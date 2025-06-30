@@ -16,8 +16,15 @@ namespace SurgeEngine.Code.UI.Pages.Baseline.AnimatedPages
         
         [SerializeField] private Image background;
         [SerializeField] private InputActionReference sideActionReference;
+        [SerializeField] private InputActionReference applyActionReference;
+        [SerializeField] private InputActionReference resetActionReference;
         private InputAction _sideAction;
+        private InputAction _applyAction;
+        private InputAction _resetAction;
 
+        [SerializeField] private Button applyButton;
+        [SerializeField] private Button resetButton;
+        
         [SerializeField] private Button[] subPagesButtons;
         private int _currentSubPage;
 
@@ -26,18 +33,28 @@ namespace SurgeEngine.Code.UI.Pages.Baseline.AnimatedPages
             base.Awake();
 
             _sideAction = sideActionReference.action;
+            _applyAction = applyActionReference.action;
+            _resetAction = resetActionReference.action;
         }
 
         private void OnEnable()
         {
             _sideAction.Enable();
+            _applyAction.Enable();
+            _resetAction.Enable();
             _sideAction.performed += OnSideAction;
+            _applyAction.performed += OnApplyAction;
+            _resetAction.performed += OnResetAction;
         }
 
         private void OnDisable()
         {
             _sideAction.Disable();
+            _applyAction.Disable();
+            _resetAction.Disable();
             _sideAction.performed -= OnSideAction;
+            _applyAction.performed -= OnApplyAction;
+            _resetAction.performed -= OnResetAction;
         }
 
         protected override void Show()
@@ -88,7 +105,7 @@ namespace SurgeEngine.Code.UI.Pages.Baseline.AnimatedPages
 
         private void OnSideAction(InputAction.CallbackContext obj)
         {
-            if (_current == null) return;
+            if (!IsActive()) return;
             
             var dir = (int)obj.ReadValue<Vector2>().x;
             bool isLeft = dir < 0;
@@ -98,6 +115,20 @@ namespace SurgeEngine.Code.UI.Pages.Baseline.AnimatedPages
             SubPush(subPages[_currentSubPage]);
             
             subPagesButtons[_currentSubPage].Select();
+        }
+
+        private void OnApplyAction(InputAction.CallbackContext obj)
+        {
+            if (!IsActive()) return;
+            
+            applyButton.Select();
+        }
+
+        private void OnResetAction(InputAction.CallbackContext obj)
+        {
+            if (!IsActive()) return;
+            
+            resetButton.Select();
         }
     }
 }

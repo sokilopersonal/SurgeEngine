@@ -20,8 +20,8 @@ namespace SurgeEngine.Code.UI.OptionBars
         [SerializeField] protected OptionDefinition definition = new();
         public string DisplayName => definition.DisplayName;
         
-        [SerializeField] private TMP_Text title;
-        [SerializeField] private TMP_Text state;
+        [SerializeField] protected TMP_Text title;
+        [SerializeField] protected TMP_Text state;
         
         [SerializeField, TextArea] private string description;
         
@@ -39,8 +39,8 @@ namespace SurgeEngine.Code.UI.OptionBars
                 SetTextState();
             }
         }
-        public string CurrentValue => definition.Values[Index];
-        
+        public string CurrentValue => definition.Values.Count > 0 ? definition.Values[Index] : "Empty";
+
         private RectTransform _rectTransform;
         private AutoScroll _autoScroll;
         private ScrollRect _scrollRect;
@@ -70,7 +70,7 @@ namespace SurgeEngine.Code.UI.OptionBars
             }
         }
 
-        private void SetTextState()
+        protected virtual void SetTextState()
         {
             state.text = CurrentValue;
         }

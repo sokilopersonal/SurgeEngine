@@ -16,7 +16,7 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers.UI
             }
         }
 
-        private void Start()
+        protected virtual void Start()
         {
             MarkClean();
         }

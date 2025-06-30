@@ -79,5 +79,7 @@ namespace SurgeEngine.Code.UI.Pages.Baseline
             CanvasGroup.interactable = !value;
             CanvasGroup.blocksRaycasts = !value;
         }
+        
+        public bool IsActive() => CanvasGroup.interactable && CanvasGroup.gameObject.activeInHierarchy && CanvasGroup.alpha > 0f;
     }
 }

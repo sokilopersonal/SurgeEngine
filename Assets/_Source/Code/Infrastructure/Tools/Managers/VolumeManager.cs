@@ -1,6 +1,7 @@
 using System;
 using FMODUnity;
 using SurgeEngine.Code.Infrastructure.Tools.Services;
+using UnityEngine;
 
 namespace SurgeEngine.Code.Infrastructure.Tools.Managers
 {
@@ -16,25 +17,27 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers
             SetMasterVolume(Data.MasterVolume);
             SetMusicVolume(Data.MusicVolume);
             SetSFXVolume(Data.SfxVolume);
+            
+            ToggleGameGroup(true);
         }
         
         public void SetMasterVolume(float value)
         {
-            Data.MasterVolume = value / 100f;
+            Data.MasterVolume = value;
             
             RuntimeManager.StudioSystem.setParameterByName(MasterVolumeKey, Data.MasterVolume);
         }
         
         public void SetMusicVolume(float value)
         {
-            Data.MusicVolume = value / 100f;
+            Data.MusicVolume = value;
             
             RuntimeManager.StudioSystem.setParameterByName(MusicVolumeKey, Data.MusicVolume);
         }
         
         public void SetSFXVolume(float value)
         {
-            Data.SfxVolume = value / 100f;
+            Data.SfxVolume = value;
             
             RuntimeManager.StudioSystem.setParameterByName(SFXVolumeKey, Data.SfxVolume);
         }

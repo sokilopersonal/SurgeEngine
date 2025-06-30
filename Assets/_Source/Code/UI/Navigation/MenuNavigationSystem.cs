@@ -65,10 +65,24 @@ namespace SurgeEngine.Code.UI.Navigation
                 };
                 pointerExitEntry.callback.AddListener(OnPointerExit);
                 
+                var submitEntry = new EventTrigger.Entry
+                {
+                    eventID = EventTriggerType.Submit
+                };
+                submitEntry.callback.AddListener(OnSubmit);
+                
+                var clickEntry = new EventTrigger.Entry
+                {
+                    eventID = EventTriggerType.PointerClick
+                };
+                clickEntry.callback.AddListener(OnSubmit);
+                
                 trigger.triggers.Add(selectEntry);
                 trigger.triggers.Add(deselectEntry);
                 trigger.triggers.Add(pointerEnterEntry);
                 trigger.triggers.Add(pointerExitEntry);
+                trigger.triggers.Add(submitEntry);
+                trigger.triggers.Add(clickEntry);
                 
                 foreach (var selectReaction in selectable.GetComponentsInChildren<SelectReaction>())
                 {
@@ -81,12 +95,12 @@ namespace SurgeEngine.Code.UI.Navigation
         {
             _lastSelected = arg.selectedObject.GetComponent<Selectable>();
         }
-        
+
         private void OnDeselect(BaseEventData arg)
         {
             
         }
-        
+
         private void OnPointerEnter(BaseEventData arg)
         {
             if (arg is PointerEventData pointerData)
@@ -94,13 +108,18 @@ namespace SurgeEngine.Code.UI.Navigation
                 Select(pointerData.pointerEnter, true);
             }
         }
-        
+
         private void OnPointerExit(BaseEventData arg)
         {
             if (arg is PointerEventData pointerData)
             {
                 Select(null);
             }
+        }
+
+        private void OnSubmit(BaseEventData arg0)
+        {
+            
         }
 
         public void Select(GameObject obj, bool shouldPlaySound = false)

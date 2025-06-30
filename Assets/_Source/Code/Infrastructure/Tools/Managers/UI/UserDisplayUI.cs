@@ -5,124 +5,81 @@ using Zenject;
 
 namespace SurgeEngine.Code.Infrastructure.Tools.Managers.UI
 {
-    public class UserGraphicsUI : OptionUI
+    public class UserDisplayUI : OptionUI
     {
-        [SerializeField] private OptionBar textureBar;
-        [SerializeField] private OptionBar sunShadowsQualityBar;
-        [SerializeField] private OptionBar punctualShadowsQualityBar;
-        [SerializeField] private OptionBar contactShadowsQualityBar;
-        [SerializeField] private OptionBar bloomBar;
-        [SerializeField] private OptionBar aoBar;
-        [SerializeField] private OptionBar motionBlurBar;
-        [SerializeField] private OptionBar refractionQualityBar;
-        [SerializeField] private OptionBar ssrQualityBar;
-        [SerializeField] private OptionBar subSurfaceScatteringQualityBar;
+        [SerializeField] private OptionBar antiAliasingQualityBar;
+        [SerializeField] private SliderOptionBar sharpnessSliderBar;
+        [SerializeField] private OptionBar fullscreenBar;
+        
+        [Inject] private UserDisplay _display;
 
-        [Inject] private UserGraphics _graphics;
-
-        protected override void Awake()
+        protected override void Start()
         {
-            base.Awake();
-            
-            var data = _graphics.GetData();
+            //var resolutions = InitializeResolutionOptions();
 
-            textureBar.OnChanged += b =>
+            var data = _display.GetData();
+            
+            antiAliasingQualityBar.OnChanged += b =>
             {
-                _graphics.SetTextureQuality((TextureQuality)b.Index);
-                _graphics.Apply();
+                _display.SetAntiAliasing((AntiAliasingQuality)b.Index);
+                _display.Apply();
             };
             
-            sunShadowsQualityBar.OnChanged += b =>
+            sharpnessSliderBar.OnChanged += b =>
             {
-                data.sunShadowsQuality = (ShadowsQuality)b.Index;
-                _graphics.Apply();
+                _display.SetSharpness(sharpnessSliderBar.Slider.value / 100f);
+                _display.Apply();
             };
             
-            punctualShadowsQualityBar.OnChanged += b =>
+            fullscreenBar.OnChanged += b =>
             {
-                data.additionalShadowsQuality = (ShadowsQuality)b.Index;
-                _graphics.Apply();
+                _display.SetFullscreen(b.Index == 1);
+                _display.Apply();
             };
             
-            contactShadowsQualityBar.OnChanged += b =>
-            {
-                data.contactShadowsQuality = (ContactShadowsQuality)b.Index;
-                _graphics.Apply();
-            };
+            antiAliasingQualityBar.Set((int)data.antiAliasingQuality);
+            sharpnessSliderBar.Slider.value = data.sharpness;
+            fullscreenBar.Set(data.fullscreen ? 1 : 0);
             
-            bloomBar.OnChanged += b =>
-            {
-                data.bloomQuality = (BloomQuality)b.Index;
-                _graphics.Apply();
-            };
-            
-            aoBar.OnChanged += b =>
-            {
-                data.aoQuality = (AmbientOcclusionQuality)b.Index;
-                _graphics.Apply();
-            };
-            
-            motionBlurBar.OnChanged += b =>
-            {
-                data.motionBlurQuality = (MotionBlurQuality)b.Index;
-                _graphics.Apply();
-            };
-            
-            refractionQualityBar.OnChanged += b =>
-            {
-                data.refractionQuality = (RefractionQuality)b.Index;
-                _graphics.Apply();
-            };
-            
-            ssrQualityBar.OnChanged += b =>
-            {
-                data.screenSpaceReflectionQuality = (ScreenSpaceReflectionQuality)b.Index;
-                _graphics.Apply();
-            };
-            
-            subSurfaceScatteringQualityBar.OnChanged += b =>
-            {
-                data.subSurfaceScatteringQuality = (SubSurfaceScatteringQuality)b.Index;
-                _graphics.Apply();
-            };
-            
-            textureBar.Set((int)data.textureQuality);
-            sunShadowsQualityBar.Set((int)data.sunShadowsQuality);
-            punctualShadowsQualityBar.Set((int)data.additionalShadowsQuality);
-            contactShadowsQualityBar.Set((int)data.contactShadowsQuality);
-            bloomBar.Set((int)data.bloomQuality);
-            aoBar.Set((int)data.aoQuality);
-            motionBlurBar.Set((int)data.motionBlurQuality);
-            refractionQualityBar.Set((int)data.refractionQuality);
-            ssrQualityBar.Set((int)data.screenSpaceReflectionQuality);
-            subSurfaceScatteringQualityBar.Set((int)data.subSurfaceScatteringQuality);
+            base.Start();
         }
+
+        /*private Resolution[] InitializeResolutionOptions()
+        {
+            Resolution[] allResolutions = Screen.resolutions;
+            int maxRefreshRate = (int)allResolutions.Max(r => r.refreshRateRatio.value);
+            
+            Resolution[] resolutions = allResolutions.Where(r => (int)r.refreshRateRatio.value == maxRefreshRate).ToArray();
+            string[] resolutionStrings = new string[resolutions.Length];
+            for (int i = 0; i < resolutions.Length; i++)
+            {
+                resolutionStrings[i] = $"{resolutions[i].width} x {resolutions[i].height}";
+            }
+            
+            resolutionDropdownBar.Dropdown.ClearOptions();
+            resolutionDropdownBar.Dropdown.AddOptions(new List<string>(resolutionStrings));
+            return resolutions;
+        }*/
 
         public override void Save()
         {
-            _graphics.Save();
+            _display.Save();
             
             base.Save();
         }
 
         public override void Revert()
         {
-            base.Revert();
-            
-            _graphics.Load(data =>
+            _display.Load(data =>
             {
-                textureBar.Set((int)data.textureQuality);
-                sunShadowsQualityBar.Set((int)data.sunShadowsQuality);
-                punctualShadowsQualityBar.Set((int)data.additionalShadowsQuality);
-                contactShadowsQualityBar.Set((int)data.contactShadowsQuality);
-                bloomBar.Set((int)data.bloomQuality);
-                aoBar.Set((int)data.aoQuality);
-                motionBlurBar.Set((int)data.motionBlurQuality);
-                refractionQualityBar.Set((int)data.refractionQuality);
-                ssrQualityBar.Set((int)data.screenSpaceReflectionQuality);
-                subSurfaceScatteringQualityBar.Set((int)data.subSurfaceScatteringQuality);
+                antiAliasingQualityBar.Set((int)data.antiAliasingQuality);
+                sharpnessSliderBar.Slider.value = data.sharpness * 100;
+                /*int currentResolutionIndex = Array.FindIndex(InitializeResolutionOptions(), r => r.width == data.screenWidth && r.height == data.screenHeight);
+                if (currentResolutionIndex >= 0)
+                    resolutionDropdownBar.SetIndex(currentResolutionIndex);*/
+                fullscreenBar.Set(data.fullscreen ? 1 : 0);
                 
-                _graphics.Apply();
+                _display.Apply();
                 Save();
             });
         }
