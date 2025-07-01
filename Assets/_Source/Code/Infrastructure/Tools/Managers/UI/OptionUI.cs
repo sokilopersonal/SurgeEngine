@@ -4,11 +4,11 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Infrastructure.Tools.Managers.UI
 {
-    public class OptionUI : MonoBehaviour
+    public abstract class OptionUI : MonoBehaviour
     {
         protected bool IsDirty { get; set; }
 
-        protected virtual void Awake()
+        protected void Awake()
         {
             foreach (var bar in GetComponentsInChildren<OptionBar>(false))
             {
@@ -16,10 +16,14 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers.UI
             }
         }
 
-        protected virtual void Start()
+        protected void Start()
         {
             MarkClean();
+
+            Setup();
         }
+
+        protected abstract void Setup();
 
         /// <summary>
         /// Saves the current data of the object implementing this method. It is important to call the base.Save() after the data has been saved to properly reset IsDirty state.

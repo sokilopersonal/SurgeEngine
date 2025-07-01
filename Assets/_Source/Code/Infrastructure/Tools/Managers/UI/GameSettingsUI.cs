@@ -10,7 +10,7 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers.UI
 
         [Inject] private GameSettings _gameSettings;
         
-        protected override void Start()
+        protected override void Setup()
         {
             var data = _gameSettings.GetData();
             
@@ -20,8 +20,6 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers.UI
             };
             
             runInBackgroundBar.Set(data.runInBackground ? 1 : 0);
-            
-            base.Start();
         }
 
         public override void Save()

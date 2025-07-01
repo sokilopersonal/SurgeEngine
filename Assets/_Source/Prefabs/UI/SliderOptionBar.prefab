@@ -396,8 +396,8 @@ GameObject:
   - component: {fileID: 2960971204486782741}
   - component: {fileID: 1053317609726713170}
   - component: {fileID: 1388163225539934981}
-  - component: {fileID: 3291431741879298752}
   - component: {fileID: 160737638503669476}
+  - component: {fileID: 8957466157568241986}
   m_Layer: 5
   m_Name: SliderOptionBar
   m_TagString: Untagged
@@ -466,18 +466,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &3291431741879298752
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4317790798456798651}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dcb13d14642f4dcc9fc786fcd426aeca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &160737638503669476
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -527,6 +515,26 @@ MonoBehaviour:
   description: 
   slider: {fileID: 7135443692195795217}
   format: 0
+--- !u!114 &8957466157568241986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4317790798456798651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreLayout: 0
+  m_MinWidth: -1
+  m_MinHeight: -1
+  m_PreferredWidth: -1
+  m_PreferredHeight: -1
+  m_FlexibleWidth: 1
+  m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!1 &5145328004023375457
 GameObject:
   m_ObjectHideFlags: 0

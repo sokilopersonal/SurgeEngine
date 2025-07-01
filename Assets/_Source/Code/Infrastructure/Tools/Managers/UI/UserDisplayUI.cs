@@ -13,7 +13,7 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers.UI
         
         [Inject] private UserDisplay _display;
 
-        protected override void Start()
+        protected override void Setup()
         {
             //var resolutions = InitializeResolutionOptions();
 
@@ -40,8 +40,6 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers.UI
             antiAliasingQualityBar.Set((int)data.antiAliasingQuality);
             sharpnessSliderBar.Slider.value = data.sharpness * 100;
             fullscreenBar.Set(data.fullscreen ? 1 : 0);
-            
-            base.Start();
         }
 
         /*private Resolution[] InitializeResolutionOptions()

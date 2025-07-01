@@ -12,10 +12,8 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers.UI
 
         [Inject] private VolumeManager _volumeManager;
 
-        protected override void Awake()
+        protected override void Setup()
         {
-            base.Awake();
-
             var data = _volumeManager.GetData();
 
             masterSlider.OnChanged += b =>

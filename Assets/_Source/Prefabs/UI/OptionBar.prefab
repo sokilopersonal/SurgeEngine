@@ -60,13 +60,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Bar Title Placeholder
+  m_text: Bar Placeholder
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6c646bb399593ee40aeb1088cbd6125e, type: 2}
   m_sharedMaterial: {fileID: 8748737836323268189, guid: 6c646bb399593ee40aeb1088cbd6125e, type: 2}
@@ -453,7 +453,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -663,7 +663,7 @@ GameObject:
   - component: {fileID: 8869349095474473079}
   - component: {fileID: 7407260109326110240}
   - component: {fileID: 4905830745723878732}
-  - component: {fileID: 6351732922788454373}
+  - component: {fileID: 8562283460596745512}
   m_Layer: 5
   m_Name: OptionBar
   m_TagString: Untagged
@@ -691,7 +691,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 940, y: 75}
+  m_SizeDelta: {x: 940, y: 65}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8869349095474473079
 CanvasRenderer:
@@ -781,7 +781,7 @@ MonoBehaviour:
   title: {fileID: 8561484007775964903}
   state: {fileID: 1619282040105543318}
   description: 
---- !u!114 &6351732922788454373
+--- !u!114 &8562283460596745512
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -790,9 +790,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 5648568439529998494}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dcb13d14642f4dcc9fc786fcd426aeca, type: 3}
+  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_IgnoreLayout: 0
+  m_MinWidth: -1
+  m_MinHeight: -1
+  m_PreferredWidth: -1
+  m_PreferredHeight: -1
+  m_FlexibleWidth: 1
+  m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!1 &6834148454603839460
 GameObject:
   m_ObjectHideFlags: 0

@@ -90,6 +90,11 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers
         {
             Data.aoQuality = value;
         }
+        
+        public void SetMotionBlur(MotionBlurState value)
+        {
+            Data.motionBlur = value;
+        }
 
         public void SetMotionBlurQuality(MotionBlurQuality value)
         {
@@ -189,12 +194,12 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers
             // Motion Blur Quality
             if (_volume.TryGet(out MotionBlur motionBlur))
             {
-                if (Data.motionBlurQuality == MotionBlurQuality.Off)
+                if (Data.motionBlur == MotionBlurState.Off)
                     _hdCameraData.renderingPathCustomFrameSettings.SetEnabled(FrameSettingsField.MotionBlur, false);
                 else
                 {
                     _hdCameraData.renderingPathCustomFrameSettings.SetEnabled(FrameSettingsField.MotionBlur, true);
-                    motionBlur.quality.value = (int)Data.motionBlurQuality - 1;
+                    motionBlur.quality.value = (int)Data.motionBlurQuality;
                 }
             }
             
@@ -263,6 +268,7 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers
         public ShadowsQuality additionalShadowsQuality = ShadowsQuality.High;
         public BloomQuality bloomQuality = BloomQuality.High;
         public AmbientOcclusionQuality aoQuality = AmbientOcclusionQuality.High;
+        public MotionBlurState motionBlur = MotionBlurState.On;
         public MotionBlurQuality motionBlurQuality = MotionBlurQuality.High;
         public TextureQuality textureQuality = TextureQuality.High;
         public RefractionQuality refractionQuality = RefractionQuality.Native;
@@ -303,12 +309,17 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers
         High = 3
     }
 
-    public enum MotionBlurQuality
+    public enum MotionBlurState
     {
         Off = 0,
-        Low = 1,
-        Medium = 2,
-        High = 3
+        On = 1
+    }
+
+    public enum MotionBlurQuality
+    {
+        Low = 0,
+        Medium = 1,
+        High = 2
     }
 
     public enum RefractionQuality

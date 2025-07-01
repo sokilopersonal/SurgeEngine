@@ -84,7 +84,8 @@ namespace SurgeEngine.Code.UI.OptionBars
         {
             base.OnMove(eventData);
             
-            _autoScroll?.ScrollTo(_rectTransform);
+            var dir = eventData.moveDir;
+            if (dir == MoveDirection.Up || dir == MoveDirection.Down) _autoScroll?.ScrollTo(_rectTransform);
         }
 
         public override void OnSelect(BaseEventData eventData)

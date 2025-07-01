@@ -26182,6 +26182,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7481723051273001237, guid: c58152dc6192a304283c311b469fe9f6, type: 3}
   m_PrefabInstance: {fileID: 731276523}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1582312897 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8033898079349639624, guid: 17fe1b2335965bf458073bda81e475b5, type: 3}
+  m_PrefabInstance: {fileID: 1947906748}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23b517f6ac874775bb1d486a44fb4f23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1585812877 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5094606002561158859, guid: f18ebdacbbf28e44d92b0aaa05ae7961, type: 3}
@@ -32287,6 +32298,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: + Gameplay Scene Context
       objectReference: {fileID: 0}
+    - target: {fileID: 3773654207124443349, guid: 17fe1b2335965bf458073bda81e475b5, type: 3}
+      propertyPath: _monoInstallers.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3773654207124443349, guid: 17fe1b2335965bf458073bda81e475b5, type: 3}
+      propertyPath: '_monoInstallers.Array.data[1]'
+      value: 
+      objectReference: {fileID: 1582312897}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
