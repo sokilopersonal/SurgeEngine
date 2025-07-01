@@ -38,7 +38,7 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers.UI
             };
             
             antiAliasingQualityBar.Set((int)data.antiAliasingQuality);
-            sharpnessSliderBar.Slider.value = data.sharpness;
+            sharpnessSliderBar.Slider.value = data.sharpness * 100;
             fullscreenBar.Set(data.fullscreen ? 1 : 0);
             
             base.Start();
