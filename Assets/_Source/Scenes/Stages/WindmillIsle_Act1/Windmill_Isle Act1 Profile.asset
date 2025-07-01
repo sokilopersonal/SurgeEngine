@@ -87,13 +87,13 @@ MonoBehaviour:
   active: 1
   lift:
     m_OverrideState: 0
-    m_Value: {x: 1, y: 1, z: 1, w: 0}
+    m_Value: {x: 0.95, y: 0.95, z: 1, w: -0.005}
   gamma:
-    m_OverrideState: 0
-    m_Value: {x: 0.9493925, y: 1, z: 1, w: 0}
+    m_OverrideState: 1
+    m_Value: {x: 0.97, y: 0.97, z: 1, w: -0.04}
   gain:
     m_OverrideState: 1
-    m_Value: {x: 0.54492277, y: 0.45835215, z: 1, w: 0.2741353}
+    m_Value: {x: 0.5999998, y: 0.39999998, z: 1, w: 0.2}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -104,7 +104,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d7fd9488000d3734a9e00ee676215985, type: 3}
-  m_Name: '- Volumes Profile'
+  m_Name: Windmill_Isle Act1 Profile
   m_EditorClassIdentifier: 
   components:
   - {fileID: -6495653108230338070}
@@ -199,7 +199,7 @@ MonoBehaviour:
     m_Value: 189
   skyIntensityMode:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 1
   exposure:
     m_OverrideState: 1
     m_Value: 14.75
@@ -213,8 +213,8 @@ MonoBehaviour:
     m_OverrideState: 1
     m_Value: {x: 0.32589632, y: 0.333877, z: 0.5}
   desiredLuxValue:
-    m_OverrideState: 0
-    m_Value: 20000
+    m_OverrideState: 1
+    m_Value: 60000
   updateMode:
     m_OverrideState: 0
     m_Value: 0
@@ -356,7 +356,7 @@ MonoBehaviour:
     m_Value: 300
   meanFreePath:
     m_OverrideState: 1
-    m_Value: 1500
+    m_Value: 3000
   enableVolumetricFog:
     m_OverrideState: 1
     m_Value: 1
@@ -429,7 +429,7 @@ MonoBehaviour:
     m_Value: 0
   limitMin:
     m_OverrideState: 1
-    m_Value: 13.25
+    m_Value: 14
   limitMax:
     m_OverrideState: 1
     m_Value: 15
