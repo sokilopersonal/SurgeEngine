@@ -49,9 +49,9 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers.UI
 
             _volumeManager.Load(data =>
             {
-                masterSlider.Slider.value = data.MasterVolume;
-                sfxSlider.Slider.value = data.SfxVolume;
-                musicSlider.Slider.value = data.MusicVolume;
+                masterSlider.Slider.value = data.MasterVolume * 100;
+                sfxSlider.Slider.value = data.SfxVolume * 100;
+                musicSlider.Slider.value = data.MusicVolume * 100;
 
                 Save();
             });

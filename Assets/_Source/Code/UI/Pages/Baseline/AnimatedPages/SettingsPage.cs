@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Linq;
 using DG.Tweening;
 using SurgeEngine.Code.Infrastructure.Tools.Managers.UI;
 using SurgeEngine.Code.UI.Animated;
@@ -26,11 +27,16 @@ namespace SurgeEngine.Code.UI.Pages.Baseline.AnimatedPages
         [SerializeField] private Button resetButton;
         
         [SerializeField] private Button[] subPagesButtons;
+        [SerializeField] private OptionUI[] subPagesOptionUIs;
+        [SerializeField] private ConfirmWindow confirmWindow;
         private int _currentSubPage;
+        private PageController _controller;
 
         protected override void Awake()
         {
             base.Awake();
+            
+            _controller = GetComponentInParent<PageController>();
 
             _sideAction = sideActionReference.action;
             _applyAction = applyActionReference.action;
@@ -78,10 +84,43 @@ namespace SurgeEngine.Code.UI.Pages.Baseline.AnimatedPages
         {
             _currentOptionUI.Save();
         }
+        
+        public void SaveAll()
+        {
+            foreach (var optionUI in subPagesOptionUIs)
+            {
+                optionUI.Save();
+            }
+        }
 
         public void Revert()
         {
             _currentOptionUI.Revert();
+        }
+        
+        public void RevertAll()
+        {
+            foreach (var optionUI in subPagesOptionUIs)
+            {
+                optionUI.Revert();
+            }
+        }
+
+        public void CheckDirty()
+        {
+            if (subPagesOptionUIs.Any(x => x.IsDirty))
+            {
+                _controller.Push(confirmWindow);
+                confirmWindow.Create(() =>
+                {
+                    SaveAll();
+                    _controller.Pop();
+                }, () =>
+                {
+                    RevertAll();
+                    confirmWindow.Exit();
+                }, RevertAll);
+            }
         }
 
         public void SubPush(Page page)
@@ -100,7 +139,6 @@ namespace SurgeEngine.Code.UI.Pages.Baseline.AnimatedPages
             page.CanvasGroup.alpha = 1f;
             page.CanvasGroup.interactable = true;
             page.CanvasGroup.blocksRaycasts = true;
-            _current = page;
         }
 
         private void OnSideAction(InputAction.CallbackContext obj)

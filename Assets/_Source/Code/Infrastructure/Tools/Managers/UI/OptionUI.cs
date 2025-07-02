@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using SurgeEngine.Code.UI.OptionBars;
 using UnityEngine;
 
@@ -6,7 +6,7 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers.UI
 {
     public abstract class OptionUI : MonoBehaviour
     {
-        protected bool IsDirty { get; set; }
+        public bool IsDirty { get; set; }
 
         protected void Awake()
         {
@@ -18,9 +18,9 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers.UI
 
         protected void Start()
         {
-            MarkClean();
-
             Setup();
+
+            MarkClean();
         }
 
         protected abstract void Setup();
@@ -47,5 +47,8 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers.UI
         {
             IsDirty = false;
         }
+
+        // Added public accessor to check dirty state from other scripts
+        public bool IsDirtyState => IsDirty;
     }
 }
