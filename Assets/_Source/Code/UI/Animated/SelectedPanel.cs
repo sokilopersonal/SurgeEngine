@@ -1,14 +1,18 @@
 ﻿using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace SurgeEngine.Code.UI.Animated
 {
     public class SelectedPanel : SelectReaction
     {
         private Tween _tween;
+        private Tween _tintTween;
         [SerializeField] private float duration = 0.35f;
         [SerializeField] private Ease ease = Ease.OutCubic;
+        [SerializeField] private Color baseColor = Color.white;
+        [SerializeField] private Color lowTintColor = new(0.4f, 0.4f, 0.4f);
 
         private void Awake()
         {
@@ -31,6 +35,26 @@ namespace SurgeEngine.Code.UI.Animated
             base.OnDeselect(eventData);
             
             Hide();
+        }
+
+        public override void OnSubmit(BaseEventData eventData)
+        {
+            base.OnSubmit(eventData);
+
+            LowTint();
+        }
+
+        public override void OnClick(BaseEventData eventData)
+        {
+            base.OnClick(eventData);
+            
+            LowTint();
+        }
+
+        private void LowTint()
+        {
+            var image = GetComponent<Image>();
+            _tintTween = image.DOColor(baseColor, 0.25f).From(lowTintColor).SetUpdate(true);
         }
 
         private void Show()

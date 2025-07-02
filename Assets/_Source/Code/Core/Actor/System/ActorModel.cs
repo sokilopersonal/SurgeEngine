@@ -86,8 +86,9 @@ namespace SurgeEngine.Code.Core.Actor.System
                 {
                     if (_upRestoring)
                     {
-                        _upVector = Vector3.Slerp(root.up, Actor.transform.up, Easings.Get(Easing.InCirc, _upRestoreTimer));
-                        _upRestoreTimer += Time.deltaTime / 0.8f;
+                        float dt = Time.deltaTime;
+                        _upRestoreTimer += dt / 0.8f;
+                        _upVector = Vector3.Slerp(root.up, Actor.transform.up, _upRestoreTimer);
                         
                         if (_upRestoreTimer >= 1)
                         {

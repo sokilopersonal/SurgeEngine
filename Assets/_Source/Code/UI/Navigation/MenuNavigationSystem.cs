@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using FMODUnity;
 using SurgeEngine.Code.UI.Animated;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -16,10 +17,17 @@ namespace SurgeEngine.Code.UI.Navigation
         [Header("Input")]
         [SerializeField] private InputActionReference navigationActionReference;
 
+        [Header("Sound")] 
+        [SerializeField] private EventReference selectSound;
+        [SerializeField] private EventReference submitSound;
+
         private Selectable _lastSelected;
+        private CanvasGroup _canvasGroup;
 
         private void Awake()
         {
+            _canvasGroup = GetComponent<CanvasGroup>();
+            
             SetupTrigger();
             
             navigationActionReference.action.Enable();
@@ -77,12 +85,19 @@ namespace SurgeEngine.Code.UI.Navigation
                 };
                 clickEntry.callback.AddListener(OnSubmit);
                 
+                var moveEntry = new EventTrigger.Entry
+                {
+                    eventID = EventTriggerType.Move
+                };
+                moveEntry.callback.AddListener(OnMove);
+                
                 trigger.triggers.Add(selectEntry);
                 trigger.triggers.Add(deselectEntry);
                 trigger.triggers.Add(pointerEnterEntry);
                 trigger.triggers.Add(pointerExitEntry);
                 trigger.triggers.Add(submitEntry);
                 trigger.triggers.Add(clickEntry);
+                trigger.triggers.Add(moveEntry);
                 
                 foreach (var selectReaction in selectable.GetComponentsInChildren<SelectReaction>())
                 {
@@ -94,6 +109,11 @@ namespace SurgeEngine.Code.UI.Navigation
         private void OnSelect(BaseEventData arg)
         {
             _lastSelected = arg.selectedObject.GetComponent<Selectable>();
+            
+            if (!IsActive())
+                return;
+            
+            RuntimeManager.PlayOneShot(selectSound);
         }
 
         private void OnDeselect(BaseEventData arg)
@@ -119,6 +139,14 @@ namespace SurgeEngine.Code.UI.Navigation
 
         private void OnSubmit(BaseEventData arg0)
         {
+            if (!IsActive())
+                return;
+            
+            RuntimeManager.PlayOneShot(submitSound);
+        }
+
+        private void OnMove(BaseEventData arg0)
+        {
             
         }
 
@@ -129,7 +157,7 @@ namespace SurgeEngine.Code.UI.Navigation
 
             if (shouldPlaySound)
             {
-                // Play sound
+                RuntimeManager.PlayOneShot(selectSound);
             }
         }
 
@@ -140,5 +168,7 @@ namespace SurgeEngine.Code.UI.Navigation
             
             selectables.Add(newSelectable);
         }
+        
+        private bool IsActive() => _canvasGroup.interactable && _canvasGroup.gameObject.activeInHierarchy;
     }
 }
