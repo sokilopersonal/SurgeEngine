@@ -155,7 +155,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Environment
         {
             if (_surfaceRigidbody)
             {
-                if (_surfaceRigidbody.TryGetActor(out ActorBase _))
+                if (other.TryGetComponent(out ActorBase _))
                 {
                     Vector3 splashPoint = _surfaceRigidbody.position;
                     splashPoint.y -= 0.75f;
