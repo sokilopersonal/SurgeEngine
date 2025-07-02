@@ -1,6 +1,7 @@
 ﻿using SurgeEngine.Code.Core.Actor.States;
 using SurgeEngine.Code.Core.Actor.States.Characters.Sonic;
 using SurgeEngine.Code.Core.StateMachine;
+using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic.Actions
 {
@@ -27,13 +28,13 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic.Actions
                 if (Input.LeftBumperPressed)
                 {
                     var qs = StateMachine.GetState<FStateQuickstep>();
-                    qs.SetDirection(QuickstepDirection.Left);
+                    qs.SetDirection(QuickstepDirection.Left).SetRun(false);
                     StateMachine.SetState<FStateQuickstep>();
                 }
                 else if (Input.RightBumperPressed)
                 {
                     var qs = StateMachine.GetState<FStateQuickstep>();
-                    qs.SetDirection(QuickstepDirection.Right);
+                    qs.SetDirection(QuickstepDirection.Right).SetRun(false);
                     StateMachine.SetState<FStateQuickstep>();
                 }
             }

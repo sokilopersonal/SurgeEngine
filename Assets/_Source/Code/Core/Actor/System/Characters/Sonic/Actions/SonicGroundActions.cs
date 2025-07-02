@@ -49,29 +49,13 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic.Actions
                 {
                     if (Input.LeftBumperPressed)
                     {
-                        if (Kinematics.Speed >= _quickstepConfig.minSpeed)
-                        {
-                            StateMachine.GetState<FStateRunQuickstep>().SetDirection(QuickstepDirection.Left);
-                            StateMachine.SetState<FStateRunQuickstep>();
-                        }
-                        else
-                        {
-                            StateMachine.GetState<FStateQuickstep>().SetDirection(QuickstepDirection.Left);
-                            StateMachine.SetState<FStateQuickstep>();
-                        }
+                        StateMachine.GetState<FStateQuickstep>().SetDirection(QuickstepDirection.Left).SetRun(true);
+                        StateMachine.SetState<FStateQuickstep>();
                     }
                     else if (Input.RightBumperPressed)
                     {
-                        if (Kinematics.Speed >= _quickstepConfig.minSpeed)
-                        {
-                            StateMachine.GetState<FStateRunQuickstep>().SetDirection(QuickstepDirection.Right);
-                            StateMachine.SetState<FStateRunQuickstep>();
-                        }
-                        else
-                        {
-                            StateMachine.GetState<FStateQuickstep>().SetDirection(QuickstepDirection.Right);
-                            StateMachine.SetState<FStateQuickstep>();
-                        }
+                        StateMachine.GetState<FStateQuickstep>().SetDirection(QuickstepDirection.Right).SetRun(true);
+                        StateMachine.SetState<FStateQuickstep>();
                     }
                 }
                 

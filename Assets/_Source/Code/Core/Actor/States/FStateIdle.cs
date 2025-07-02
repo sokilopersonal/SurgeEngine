@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.States
 {
-    public class FStateIdle : FActorState, IDamageableState, IBoostHandler
+    public class FStateIdle : FActorState, IDamageableState
     {
         private float _angle;
         
@@ -23,9 +23,7 @@ namespace SurgeEngine.Code.Core.Actor.States
 
         public override void OnTick(float dt)
         {
-            base.OnTick(dt);
-            
-            if (Kinematics.GetInputDir().magnitude > 0.2f || Kinematics.Speed > 0.02f)
+            if (Kinematics.GetInputDir().magnitude > 0.02f || Kinematics.Speed > 0.02f)
             {
                 StateMachine.SetState<FStateGround>();
             }
@@ -38,6 +36,8 @@ namespace SurgeEngine.Code.Core.Actor.States
                     StateMachine.SetState<FStateJump>();
                 }
             }
+            
+            base.OnTick(dt);
         }
 
         public override void OnFixedTick(float dt)
@@ -61,7 +61,5 @@ namespace SurgeEngine.Code.Core.Actor.States
                 StateMachine.SetState<FStateAir>();
             }
         }
-
-        public void BoostHandle(ActorBase actor, BoostConfig config) { }
     }
 }

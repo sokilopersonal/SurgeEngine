@@ -1,13 +1,17 @@
 ﻿using SurgeEngine.Code.Core.Actor.States.BaseStates;
 using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine.Code.Infrastructure.Config.SonicSpecific;
 using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
 {
     public class FStateSit : FActorState, IDamageableState
     {
+        private QuickStepConfig _quickstepConfig;
+        
         public FStateSit(ActorBase owner) : base(owner)
         {
+            owner.TryGetConfig(out _quickstepConfig);
         }
 
         public override void OnEnter()
@@ -48,13 +52,13 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
             if (Input.LeftBumperPressed && !ceiling)
             {
                 var qs = StateMachine.GetState<FStateQuickstep>();
-                qs.SetDirection(QuickstepDirection.Left);
+                qs.SetDirection(QuickstepDirection.Left).SetRun(Kinematics.Speed >= _quickstepConfig.minSpeed);
                 StateMachine.SetState<FStateQuickstep>();
             }
             else if (Input.RightBumperPressed && !ceiling)
             {
                 var qs = StateMachine.GetState<FStateQuickstep>();
-                qs.SetDirection(QuickstepDirection.Right);
+                qs.SetDirection(QuickstepDirection.Right).SetRun(Kinematics.Speed >= _quickstepConfig.minSpeed);
                 StateMachine.SetState<FStateQuickstep>();
             }
         }

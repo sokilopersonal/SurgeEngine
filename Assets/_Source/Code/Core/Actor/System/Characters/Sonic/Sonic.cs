@@ -51,7 +51,6 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
             StateMachine.AddState(new FStateAfterHoming(this));
             StateMachine.AddState(new FStateDrift(this));
             StateMachine.AddState(new FStateSlide(this));
-            StateMachine.AddState(new FStateRunQuickstep(this));
             StateMachine.AddState(new FStateQuickstep(this));
             StateMachine.AddState(new FStateCrawl(this));
             StateMachine.AddState(new FStateSweepKick(this));

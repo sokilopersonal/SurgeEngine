@@ -13,6 +13,8 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
         
         private QuickstepDirection _direction;
         private float _timer;
+        private bool _isRun;
+        public bool IsRun => _isRun;
 
         private readonly QuickStepConfig _config;
 
@@ -24,18 +26,29 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
         public override void OnEnter()
         {
             base.OnEnter();
+
+            _timer = 0;
             
             Timeout = _config.delay;
+
+            float speed = !IsRun ? _config.force : _config.runForce;
+            var sideDir = _direction == QuickstepDirection.Left ? -speed : speed;
+            SetSideVelocity(sideDir);
+            
+            if (StateMachine.PreviousState is FStateSlide)
+            {
+                Rigidbody.linearVelocity += Rigidbody.transform.forward * 8f; // TODO: Move this QSS value to config
+            }
         }
 
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
 
-            _timer += dt / _config.duration;
-
+            _timer += dt / (!IsRun ? _config.duration : _config.runDuration);
             if (_timer >= 1f)
             {
+                SetSideVelocity(0);
                 StateMachine.SetState<FStateGround>();
             }
         }
@@ -44,17 +57,50 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
         {
             base.OnFixedTick(dt);
 
-            if (!Kinematics.CheckForGround(out _))
+            var config = Actor.Config;
+            float distance = config.EvaluateCastDistance(config.castDistanceCurve.Evaluate(Kinematics.Speed / config.topSpeed));
+            if (Kinematics.CheckForGround(out var hit, castDistance: distance))
             {
-                Actor.StateMachine.SetState<FStateAir>();
+                bool predicted = Kinematics.CheckForPredictedGround(dt, distance, 4);
+                Kinematics.RotateSnapNormal(hit.normal);
+                
+                if (predicted) Kinematics.Snap(hit.point, Kinematics.Normal, true);
+                Kinematics.Project();
+            }
+            else
+            {
+                StateMachine.SetState<FStateAir>();
             }
         }
 
-        public void SetDirection(QuickstepDirection direction) => _direction = direction;
+        private void SetSideVelocity(float sideDir)
+        {
+            var localVel = Rigidbody.transform.InverseTransformDirection(Rigidbody.linearVelocity);
+            localVel.x = sideDir;
+            Rigidbody.linearVelocity = Rigidbody.transform.TransformDirection(localVel);
+        }
+
+        public FStateQuickstep SetDirection(QuickstepDirection direction)
+        {
+            _direction = direction;
+            return this;
+        }
+
+        public FStateQuickstep SetRun(bool isRun)
+        {
+            _isRun = isRun;
+            return this;
+        }
 
         public QuickstepDirection GetDirection()
         {
             return _direction;
         }
+    }
+    
+    public enum QuickstepDirection
+    {
+        Left = -1,
+        Right = 1
     }
 }
