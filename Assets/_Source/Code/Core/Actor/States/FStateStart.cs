@@ -30,7 +30,7 @@ namespace SurgeEngine.Code.Core.Actor.States
 
             if (_startData.startType != StartType.Dash)
             {
-                float time = _startData.startType == StartType.Prepare ? 3f : 3.7f;
+                float time = _startData.startType == StartType.Prepare ? 3.1f : 3.7f;
             
                 if (_timer < time)
                 {

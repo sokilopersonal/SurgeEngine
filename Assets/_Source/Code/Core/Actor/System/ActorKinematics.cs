@@ -236,10 +236,10 @@ namespace SurgeEngine.Code.Core.Actor.System
                         SetPath(null);
                     }
                 }
-                else
-                {
-                    SetPath(null);
-                }
+            }
+            else
+            {
+                SetPath(null);
             }
         }
 

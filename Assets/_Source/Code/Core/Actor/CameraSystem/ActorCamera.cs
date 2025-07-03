@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using SurgeEngine.Code.Core.Actor.CameraSystem.Modifiers;
 using SurgeEngine.Code.Core.Actor.CameraSystem.Pans;
+using SurgeEngine.Code.Core.Actor.States;
 using SurgeEngine.Code.Core.Actor.System;
 using SurgeEngine.Code.Gameplay.CommonObjects.System;
 using UnityEngine;
@@ -98,6 +99,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
         {
             StateMachine = new CameraStateMachine(_camera, _cameraTransform, Actor, this);
             
+            StateMachine.AddState(new CameraAnimState(Actor));
             StateMachine.AddState(new NewModernState(Actor));
             StateMachine.AddState(new CameraPan(Actor));
             StateMachine.AddState(new VerticalCameraPan(Actor));
@@ -107,7 +109,15 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
             StateMachine.AddState(new FallCameraState(Actor));
             StateMachine.AddState(new PointCameraPan(Actor));
 
-            StateMachine.SetState<NewModernState>();
+            var start = Actor.GetStartData();
+            if (start.startType == StartType.None || start.startType == StartType.Dash)
+            {
+                StateMachine.SetState<NewModernState>();
+            }
+            else
+            {
+                StateMachine.SetState<CameraAnimState>();
+            }
 
             Vector3 dir = Quaternion.LookRotation(Actor.transform.forward).eulerAngles;
             dir.x = yawDefaultAmplitude;

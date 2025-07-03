@@ -22,6 +22,24 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
             FStateMachine machine = Actor.StateMachine;
             FState prev = machine.PreviousState;
             Animator animator = StateAnimator.Animator;
+
+            if (obj is FStateStart)
+            {
+                var data = Actor.GetStartData();
+                AnimationHandle startHandle = null;
+                if (data.startType == StartType.Standing)
+                {
+                    startHandle = StateAnimator.TransitionToState("StandingStart", 0f);
+                }
+                else if (data.startType == StartType.Prepare)
+                {
+                    startHandle = StateAnimator.TransitionToState("PrepareStart", 0f);
+                }
+
+                startHandle?.Then(() => StateAnimator.TransitionToState("Idle"));
+
+                return;
+            }
             
             if (obj is FStateIdle)
             {

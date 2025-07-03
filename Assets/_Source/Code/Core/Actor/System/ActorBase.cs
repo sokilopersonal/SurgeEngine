@@ -121,12 +121,15 @@ namespace SurgeEngine.Code.Core.Actor.System
             
             if (data.startType != StartType.None)
             {
-                StateMachine.SetState<FStateStart>().SetData(data);
+                StateMachine.GetState<FStateStart>().SetData(data);
+                StateMachine.SetState<FStateStart>();
             }
             else
             {
                 StateMachine.SetState<FStateIdle>();
             }
+            
+            Model.root.forward = transform.forward;
         }
 
         public void PutIn(Vector3 position)
