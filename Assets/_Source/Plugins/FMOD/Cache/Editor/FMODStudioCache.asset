@@ -316,33 +316,6 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 744
---- !u!114 &-6458390638152587309
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Sonic/Start/ReadyVoice
-  m_EditorClassIdentifier: 
-  Path: event:/Sonic/Start/ReadyVoice
-  Guid:
-    Data1: -1412836348
-    Data2: 1202893641
-    Data3: 2028947360
-    Data4: -149950238
-  Banks:
-  - {fileID: 5254960618264887086}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 1150
 --- !u!114 &-6205443880564560898
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -908,33 +881,6 @@ MonoBehaviour:
   - Grass
   - Water
   Exists: 1
---- !u!114 &-2228935576394118831
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Sonic/Start/GOVoice
-  m_EditorClassIdentifier: 
-  Path: event:/Sonic/Start/GOVoice
-  Guid:
-    Data1: 157141173
-    Data2: 1274121787
-    Data3: -952550265
-    Data4: 1103656932
-  Banks:
-  - {fileID: 5254960618264887086}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 892
 --- !u!114 &-2008292002417736696
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1117,7 +1063,6 @@ MonoBehaviour:
   - {fileID: 5254960618264887086}
   EditorEvents:
   - {fileID: 5321302748100636959}
-  - {fileID: -6458390638152587309}
   - {fileID: -5867047468771705454}
   - {fileID: -6205443880564560898}
   - {fileID: 7900241915235114394}
@@ -1164,7 +1109,6 @@ MonoBehaviour:
   - {fileID: -7791690280280189148}
   - {fileID: -4620433154929196776}
   - {fileID: 6050038061373101343}
-  - {fileID: -2228935576394118831}
   - {fileID: -980194244735588117}
   - {fileID: -8464127487730650392}
   - {fileID: 8076348066985129513}
@@ -1187,6 +1131,7 @@ MonoBehaviour:
   - {fileID: -7901173900046634707}
   - {fileID: -6990193621310141815}
   - {fileID: 5439632411226267763}
+  - {fileID: 8836162866289641660}
   EditorParameters:
   - {fileID: 5995610635198282250}
   - {fileID: -8328794580217013048}
@@ -1198,7 +1143,7 @@ MonoBehaviour:
   - {fileID: 2004410931106567551}
   StringsBanks:
   - {fileID: 2584338381920338702}
-  cacheTime: 638868939846947171
+  cacheTime: 638871541209189086
   cacheVersion: 131619
 --- !u!114 &573100900434683461
 MonoBehaviour:
@@ -1350,7 +1295,7 @@ MonoBehaviour:
   Path: FMOD/SurgeEngine/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638868939846947171
+  lastModified: 638871540249304995
   FileSizes:
   - Name: Desktop
     Value: 5220
@@ -1451,10 +1396,10 @@ MonoBehaviour:
   Path: FMOD/SurgeEngine/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638868939015526225
+  lastModified: 638871540249335365
   FileSizes:
   - Name: Desktop
-    Value: 4558
+    Value: 4508
   Exists: 1
 --- !u!114 &2630509824030196603
 MonoBehaviour:
@@ -1822,10 +1767,10 @@ MonoBehaviour:
   Path: FMOD/SurgeEngine/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 638842405883502343
+  lastModified: 638871541209189086
   FileSizes:
   - Name: Desktop
-    Value: 1371200
+    Value: 1370560
   Exists: 1
 --- !u!114 &5321302748100636959
 MonoBehaviour:
@@ -2440,6 +2385,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 1777
+--- !u!114 &8836162866289641660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Sonic/Start/StartVoice
+  m_EditorClassIdentifier: 
+  Path: event:/Sonic/Start/StartVoice
+  Guid:
+    Data1: -2128333087
+    Data2: 1074827659
+    Data3: 117023928
+    Data4: -817461159
+  Banks:
+  - {fileID: 5254960618264887086}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 4692
 --- !u!114 &9126713525473972173
 MonoBehaviour:
   m_ObjectHideFlags: 0
