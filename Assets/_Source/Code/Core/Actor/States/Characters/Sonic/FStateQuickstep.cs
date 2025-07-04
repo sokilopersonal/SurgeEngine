@@ -34,6 +34,11 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
             float speed = !IsRun ? _config.force : _config.runForce;
             var sideDir = _direction == QuickstepDirection.Left ? -speed : speed;
             SetSideVelocity(sideDir);
+
+            if (Kinematics.mode == KinematicsMode.Dash)
+            {
+                SnapToNearestSpline();
+            }
             
             if (StateMachine.PreviousState is FStateSlide)
             {
@@ -78,6 +83,34 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
             var localVel = Rigidbody.transform.InverseTransformDirection(Rigidbody.linearVelocity);
             localVel.x = sideDir;
             Rigidbody.linearVelocity = Rigidbody.transform.TransformDirection(localVel);
+        }
+        
+        private void SnapToNearestSpline()
+        {
+            var container = Kinematics.GetPath();
+            if (container == null) return;
+
+            float bestDist = float.MaxValue;
+            Vector3 bestPos = Actor.transform.position;
+            Vector3 bestTangent = Actor.transform.forward;
+
+            for (int i = 0; i < container.Container.Splines.Count; i++)
+            {
+                var spline = container.Container.Splines[i];
+                SplineUtility.GetNearestPoint(spline, container.Container.transform.InverseTransformPoint(Rigidbody.position), out _, out float t);
+                Vector3 pos = spline.EvaluatePosition(t);
+                Vector3 tangent = spline.EvaluateTangent(t);
+                float d = Vector3.Distance(Rigidbody.position, pos);
+                if (d < bestDist)
+                {
+                    bestDist = d;
+                    bestPos = pos;
+                    bestTangent = tangent;
+                }
+            }
+
+            Actor.transform.position = bestPos;
+            Actor.transform.rotation = Quaternion.LookRotation(bestTangent, Actor.transform.up);
         }
 
         public FStateQuickstep SetDirection(QuickstepDirection direction)

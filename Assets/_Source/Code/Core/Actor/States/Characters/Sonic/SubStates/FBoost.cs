@@ -84,6 +84,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates
             {
                 FStateIdle or FStateGround or FStateDrift or FStateGrind => new BoostGroundHandle(),
                 FStateAir => new BoostAirHandle(),
+                FStateDamage => null,
                 _ => _boostHandler
             };
 

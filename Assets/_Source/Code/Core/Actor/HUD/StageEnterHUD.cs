@@ -18,7 +18,7 @@ namespace SurgeEngine.Code.Core.Actor.HUD
 
         private Sequence _sequence;
 
-        private void Awake()
+        private void Start()
         {
             _sequence = DOTween.Sequence();
             _sequence.PrependInterval(0.3f);

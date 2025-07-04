@@ -18,7 +18,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
             _playerCenter = owner.transform.position;
             if (startData.startType == StartType.Standing)
             {
-                _data = new CameraAnimStateData(owner.transform.forward * 2f + Vector3.up * 0.4f + -owner.transform.right, -owner.transform.forward * 2.7f + Vector3.up * 0.5f, 3.4f);
+                _data = new CameraAnimStateData(owner.transform.forward * 2.75f + Vector3.up * 0.1f, -owner.transform.forward * 3f + Vector3.up * 0.25f, 3.5f);
                 
                 _playerCenter -= Vector3.up * 0.2f; 
                 _data.start += _playerCenter;
@@ -26,9 +26,9 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
             }
             else if (startData.startType == StartType.Prepare)
             {
-                _data = new CameraAnimStateData(owner.transform.forward * 2f, -owner.transform.forward * 1f + owner.transform.right * 2, 3.2f);
+                _data = new CameraAnimStateData(-owner.transform.forward * 2.5f + Vector3.up * 0.25f, owner.transform.forward * 1.5f + owner.transform.right * 1.2f, 3.4f);
                 
-                _playerCenter -= Vector3.up * 0.15f;
+                _playerCenter -= Vector3.up * 0.3f;
                 _data.start += _playerCenter;
                 _data.end += _playerCenter;
             }
@@ -61,7 +61,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
             {
                 _stateMachine.CurrentData = new PanData
                 {
-                    easeTimeExit = 0.75f
+                    easeTimeExit = _actor.GetStartData().startType == StartType.Standing ? 0.5f : 0.25f
                 };
                 _stateMachine.SetState<RestoreCameraPawn>();
             }

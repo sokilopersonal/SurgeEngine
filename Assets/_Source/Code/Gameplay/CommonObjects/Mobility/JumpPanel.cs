@@ -33,7 +33,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
                 context.transform.forward = Vector3.Cross(-transform.right, Vector3.up);
                 context.Kinematics.Rigidbody.linearVelocity = Utility.GetImpulseWithPitch(Vector3.Cross(-transform.right, Vector3.up), transform.right, pitch, impulse);
                 
-                context.StateMachine.GetState<FStateSpecialJump>().SetSpecialData(new SpecialJumpData(SpecialJumpType.JumpBoard)).SetDelux(boosted);
+                context.StateMachine.GetState<FStateSpecialJump>().SetSpecialData(new SpecialJumpData(SpecialJumpType.JumpBoard)).SetDelux(boosted).SetKeepVelocity(outOfControl);
                 context.StateMachine.SetState<FStateSpecialJump>(0f, true, true);
                     
                 context.Flags.AddFlag(new Flag(FlagType.OutOfControl, null, true, Mathf.Abs(outOfControl)));

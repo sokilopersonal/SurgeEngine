@@ -78,9 +78,9 @@ namespace SurgeEngine.Code.Core.Actor.States
                     throw new ArgumentOutOfRangeException();
             }
 
-            if (SpecialJumpData.type is SpecialJumpType.Spring or SpecialJumpType.DashRing)
+            if (SpecialJumpData.type != SpecialJumpType.TrickJumper)
             {
-                if (_keepVelocityTimer < 0)
+                if (_keepVelocityTimer <= 0)
                 {
                     StateMachine.SetState<FStateAir>();
                 }

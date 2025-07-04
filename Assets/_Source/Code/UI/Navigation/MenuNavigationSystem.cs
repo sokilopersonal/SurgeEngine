@@ -153,11 +153,14 @@ namespace SurgeEngine.Code.UI.Navigation
         public void Select(GameObject obj, bool shouldPlaySound = false)
         {
             var current = EventSystem.current;
-            current.SetSelectedGameObject(obj);
-
-            if (shouldPlaySound)
+            if (current)
             {
-                RuntimeManager.PlayOneShot(selectSound);
+                current.SetSelectedGameObject(obj);
+
+                if (shouldPlaySound)
+                {
+                    RuntimeManager.PlayOneShot(selectSound);
+                }
             }
         }
 

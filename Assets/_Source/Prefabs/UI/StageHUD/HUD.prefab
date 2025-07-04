@@ -4121,7 +4121,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6248853949061625756
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4165,9 +4165,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blackBox: {fileID: 8686539664479227529}
   blueBox: {fileID: 9205610099537260453}
-  readyText: {fileID: 0}
-  goText: {fileID: 0}
-  flashImage: {fileID: 0}
   readyVoice:
     Guid:
       Data1: -2128333087
@@ -4175,13 +4172,6 @@ MonoBehaviour:
       Data3: 117023928
       Data4: -817461159
     Path: event:/Sonic/Start/StartVoice
-  goVoice:
-    Guid:
-      Data1: 157141173
-      Data2: 1274121787
-      Data3: -952550265
-      Data4: 1103656932
-    Path: event:/Sonic/Start/GOVoice
 --- !u!1 &9186879943402442327
 GameObject:
   m_ObjectHideFlags: 0

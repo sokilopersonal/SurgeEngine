@@ -23,14 +23,14 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.CameraObjects
         {
             base.Contact(msg, context);
             
-            target.SetPan(context);
+            if (target != null) target.SetPan(context);
         }
         
         private void OnTriggerExit(Collider other)
         {
             if (other.transform.TryGetComponent(out ActorBase actor))
             {
-                target.RemovePan(actor);
+                if (target != null) target.RemovePan(actor);
             }
         }
 

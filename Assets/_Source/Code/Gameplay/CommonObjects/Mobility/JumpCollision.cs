@@ -18,6 +18,8 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
         [SerializeField, Min(0)] private float impulseOnBoost = 15f;
         [SerializeField] private float outOfControl = 0.5f;
 
+        private BoxCollider _box;
+
         public override void Contact(Collider msg, ActorBase context)
         {
             base.Contact(msg, context);
@@ -52,6 +54,13 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
         protected override void OnDrawGizmos()
         {
             base.OnDrawGizmos();
+            
+            if (_box == null)
+                _box = GetComponent<BoxCollider>();
+            
+            Gizmos.color = new Color(0f, 1f, 0.33f, 0.16f);
+            Gizmos.matrix = transform.localToWorldMatrix;
+            Gizmos.DrawCube(_box.center, _box.size);
             
             TrajectoryDrawer.DrawTrajectory(transform.position, Utility.GetCross(transform, pitch), Color.green, impulseOnNormal);
             TrajectoryDrawer.DrawTrajectory(transform.position, Utility.GetCross(transform, pitch), Color.cyan, impulseOnBoost);
