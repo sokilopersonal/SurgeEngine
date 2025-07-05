@@ -248,10 +248,8 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
                 
                 StateAnimator.SetCurrentAnimationState(Drift);
             }
-            if (obj is FStateSpecialJump specialJump)
+            /*if (obj is FStateSpecialJump specialJump)
             {
-                StateAnimator.ResetCurrentAnimationState();
-                
                 switch (specialJump.SpecialJumpData.type)
                 {
                     case SpecialJumpType.JumpBoard:
@@ -267,6 +265,10 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
                         StateAnimator.TransitionToState("Dash Ring", 0);
                         break;
                 }
+            }*/
+            if (obj is FStateSpring)
+            {
+                StateAnimator.TransitionToState("Jump Spring", 0.2f);
             }
             if (obj is FStateGrind && prev is not FStateGrindSquat)
             {

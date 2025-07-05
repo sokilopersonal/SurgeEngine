@@ -6,19 +6,30 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
     {
         protected override void OnDrawGizmos()
         {
-            base.OnDrawGizmos();
-            
-            Vector3 startPosition = transform.position + Vector3.up;
-            Vector3 dir = Vector3.up;
+            Vector3 start = transform.position + Vector3.up * 0.5f;
 
             if (keepVelocity > 0f)
             {
-                Vector3 newStartPosition = startPosition + dir * keepVelocity * speed;
-                Debug.DrawLine(startPosition, newStartPosition, Color.red);
-                startPosition = newStartPosition;
+                Gizmos.color = Color.red;
+                var dir = Vector3.up;
+                var newStartPos = start + dir * keepVelocity;
+                Gizmos.DrawLine(start, newStartPos);
+                start = newStartPos;
             }
-            
-            Debug.DrawLine(startPosition, startPosition + dir * speed / 2, Color.green);
+
+            float v0 = speed;
+            float g = Physics.gravity.y;
+            Gizmos.color = Color.green;
+
+            Vector3 prev = start;
+            float dt = 0.1f;
+            for (float t = dt; t < 2 * v0 / -g; t += dt)
+            {
+                float y = v0 * t + 0.5f * g * t * t;
+                Vector3 next = start + Vector3.up * y;
+                Gizmos.DrawLine(prev, next);
+                prev = next;
+            }
         }
     }
 }

@@ -50,6 +50,15 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                     SetFloatReflection(dashPanel, "speed", speed);
                     SetFloatReflection(dashPanel, "outOfControl", outOfControl);
                 },
+                ["JumpBoard"] = (go, elem) =>
+                {
+                    float pitch = GetFloatWithMultiSetParam(elem, "AngleType");
+                    float impulseNormal = GetFloatWithMultiSetParam(elem, "ImpulseSpeedOnNormal");
+                    float impulseBoost = GetFloatWithMultiSetParam(elem, "ImpulseSpeedOnBoost");
+                    var jumpPanel = go.GetComponent<JumpPanel>();
+                    SetFloatReflection(jumpPanel, "pitch", pitch);
+                    SetFloatReflection(jumpPanel, "impulse", impulseNormal);
+                },
                 ["Spring"] = (go, elem) =>
                 {
                     float speed = GetFloatWithMultiSetParam(elem, "FirstSpeed");
@@ -58,7 +67,7 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                     var spring = go.GetComponent<Spring>();
                     SetFloatReflection(spring, "speed", speed);
                     SetFloatReflection(spring, "outOfControl", outOfControl);
-                    SetFloatReflection(spring, "keepVelocity", keepVelocity / 8);
+                    SetFloatReflection(spring, "keepVelocity", keepVelocity);
                 },
                 ["UpReel"] = (go, elem) =>
                 {

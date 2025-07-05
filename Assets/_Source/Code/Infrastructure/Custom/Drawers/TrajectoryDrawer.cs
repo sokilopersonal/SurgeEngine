@@ -10,7 +10,7 @@ namespace SurgeEngine.Code.Infrastructure.Custom.Drawers
 {
     public static class TrajectoryDrawer
     {
-        public static void DrawTrajectory(Vector3 startPosition, Vector3 direction, Color color, float impulse, float keepVelocity = 0f)
+        public static void DrawTrajectory(Vector3 startPosition, Vector3 direction, Color color, float impulse, float keepVelocityDistance = 0f)
         {
 #if UNITY_EDITOR
             int trajectoryPoints = 32;
@@ -18,9 +18,10 @@ namespace SurgeEngine.Code.Infrastructure.Custom.Drawers
             Vector3 gravity = Physics.gravity.y * Vector3.up;
             int layerMask = 1 << LayerMask.NameToLayer("Default");
 
-            if (keepVelocity > 0f)
+            if (keepVelocityDistance > 0f)
             {
-                Vector3 newStartPosition = startPosition + direction * keepVelocity * impulse;
+                var dir = direction.normalized;
+                var newStartPosition = startPosition + dir * keepVelocityDistance;
                 Handles.color = Color.red;
                 Handles.zTest = CompareFunction.LessEqual;
                 Handles.DrawLine(startPosition, newStartPosition);

@@ -19,8 +19,12 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             
             if (cancelBoost) context.StateMachine.GetSubState<FBoost>().Active = false;
 
-            context.StateMachine.GetState<FStateSpecialJump>().SetSpecialData(new SpecialJumpData(SpecialJumpType.Spring, transform, outOfControl)).SetKeepVelocity(keepVelocity);
-            context.StateMachine.SetState<FStateSpecialJump>(0f, true, true);
+            var stateSpring = context.StateMachine.GetState<FStateSpring>();
+            stateSpring.SetKeepVelocityDistance(keepVelocity);
+            stateSpring.SetSpringDirection(transform.up);
+            context.StateMachine.SetState<FStateSpring>(allowSameState: true);
+            
+            context.Rigidbody.position = transform.position;
 
             context.Kinematics.Rigidbody.linearVelocity = transform.up * speed;
             context.Flags.AddFlag(new Flag(FlagType.OutOfControl, 
@@ -29,7 +33,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
 
         protected override void OnDrawGizmos()
         {
-            TrajectoryDrawer.DrawTrajectory(transform.position + transform.up, transform.up, Color.green, speed, keepVelocity);
+            TrajectoryDrawer.DrawTrajectory(transform.position, transform.up, Color.green, speed, keepVelocity);
         }
     }
 }

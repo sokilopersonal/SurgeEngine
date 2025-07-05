@@ -90,7 +90,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         private void HandleSpringOrDashRing()
         {
             Model.SetRestoreUp(SpecialJumpData.transform.up);
-            Model.VelocityRotation();
+            Model.VelocityRotation(Actor.Kinematics.Velocity.normalized);
         }
 
         private void UpdateKeepVelocityTimer(float dt)
