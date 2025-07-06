@@ -12,8 +12,10 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
     {
         [Header("Properties")]
         [SerializeField, Min(0)] private float impulse = 15f;
-        [SerializeField, Range(15, 90)] private float pitch = 10f;
         [SerializeField] private float outOfControl = 0.5f;
+        
+        private Vector3 StartPosition => transform.position + Vector3.up;
+        private float Pitch => 38f;
         
         public override void Contact(Collider msg, ActorBase context)
         {
@@ -28,7 +30,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
                 context.StateMachine.GetSubState<FBoost>().Active = false;
                 
                 context.transform.forward = Vector3.Cross(-transform.right, Vector3.up);
-                context.Kinematics.Rigidbody.linearVelocity = Utility.GetImpulseWithPitch(-transform.forward, transform.right, pitch, impulse);
+                context.Kinematics.Rigidbody.linearVelocity = Utility.GetImpulseWithPitch(-transform.forward, transform.right, Pitch, impulse);
 
                 var jumpPanelState = context.StateMachine.GetState<FStateJumpPanel>();
                 jumpPanelState.SetDelux(boosted);
@@ -41,7 +43,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
 
         protected override void OnDrawGizmos()
         {
-            TrajectoryDrawer.DrawTrajectory(transform.position, Utility.GetImpulseWithPitch(-transform.forward, transform.right, pitch, impulse), Color.green, impulse);
+            TrajectoryDrawer.DrawTrajectory(StartPosition, Utility.GetImpulseWithPitch(-transform.forward, transform.right, Pitch, impulse), Color.green, impulse);
         }
     }
 }

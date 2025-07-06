@@ -23,8 +23,8 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                 ["eFighterTutorial"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Enemies/EggFighter.prefab"),
                 ["eAirCannonNormal"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Enemies/AeroCannon.prefab"),
                 ["ObjCameraPan"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/Camera/ObjCameraPan.prefab"),
-                ["ChangeVolumeCamera"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/Camera/ChangeCameraVolume.prefab"),
                 ["JumpBoard"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/JumpPanel_15S.prefab"),
+                ["JumpBoard3D"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/JumpPanel_30M.prefab"),
                 ["UpReel"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/Upreel.prefab"),
                 ["JumpCollision"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/JumpCollision.prefab"),
             };
@@ -34,14 +34,6 @@ namespace SurgeEngine._Source.Editor.HE1Importer
         {
             return new Dictionary<string, Action<GameObject, XElement>>
             {
-                ["ChangeVolumeCamera"] = (go, elem) =>
-                {
-                    float w = float.Parse(elem.Element("Collision_Width")?.Value.Trim()  ?? "1", CultureInfo.InvariantCulture);
-                    float h = float.Parse(elem.Element("Collision_Height")?.Value.Trim() ?? "1", CultureInfo.InvariantCulture);
-                    float d = float.Parse(elem.Element("Collision_Length")?.Value.Trim()  ?? "1", CultureInfo.InvariantCulture);
-                    if (go.TryGetComponent<BoxCollider>(out var bc))
-                        bc.size = new Vector3(w, h, d);
-                },
                 ["DashPanel"] = (go, elem) =>
                 {
                     float speed = GetFloatWithMultiSetParam(elem, "Speed");
@@ -54,10 +46,19 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                 {
                     float pitch = GetFloatWithMultiSetParam(elem, "AngleType");
                     float impulseNormal = GetFloatWithMultiSetParam(elem, "ImpulseSpeedOnNormal");
-                    float impulseBoost = GetFloatWithMultiSetParam(elem, "ImpulseSpeedOnBoost");
+                    float outOfControl = GetFloatWithMultiSetParam(elem, "OutOfControl");
                     var jumpPanel = go.GetComponent<JumpPanel>();
                     SetFloatReflection(jumpPanel, "pitch", pitch);
                     SetFloatReflection(jumpPanel, "impulse", impulseNormal);
+                    SetFloatReflection(jumpPanel, "outOfControl", outOfControl);
+                },
+                ["JumpBoard3D"] = (go, elem) =>
+                {
+                    float impulseNormal = GetFloatWithMultiSetParam(elem, "ImpulseSpeedOnNormal");
+                    float outOfControl = GetFloatWithMultiSetParam(elem, "OutOfControl");
+                    var jumpPanel = go.GetComponent<JumpPanel>();
+                    SetFloatReflection(jumpPanel, "impulse", impulseNormal);
+                    SetFloatReflection(jumpPanel, "outOfControl", outOfControl);
                 },
                 ["Spring"] = (go, elem) =>
                 {
@@ -67,7 +68,7 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                     var spring = go.GetComponent<Spring>();
                     SetFloatReflection(spring, "speed", speed);
                     SetFloatReflection(spring, "outOfControl", outOfControl);
-                    SetFloatReflection(spring, "keepVelocity", keepVelocity);
+                    SetFloatReflection(spring, "keepVelocityDistance", keepVelocity);
                 },
                 ["UpReel"] = (go, elem) =>
                 {
@@ -188,7 +189,6 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                     float.Parse(posE.Element("y")?.Value.Trim()  ?? "0", CultureInfo.InvariantCulture),
                     float.Parse(posE.Element("z")?.Value.Trim()  ?? "0", CultureInfo.InvariantCulture)
                 );
-
             var q = rotE == null
                 ? Quaternion.identity
                 : new Quaternion(
@@ -198,15 +198,22 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                     float.Parse(rotE.Element("w")?.Value.Trim() ?? "1", CultureInfo.InvariantCulture)
                 );
             q.Normalize();
+            var targetRot = ToEulerYXZ(q);
+            var parent = GameObject.FindWithTag("SetData").transform;
 
-            GameObject go;
-            go = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
-            
+            foreach (Transform child in parent)
+            {
+                if (child.gameObject.name != prefab.name) continue;
+                if (Vector3.Distance(child.position, p) < 0.01f 
+                    && Quaternion.Angle(child.rotation, targetRot) < 1f)
+                    return child.gameObject;
+            }
+
+            var go = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
             Undo.RegisterCreatedObjectUndo(go, "Import HE1 Objects");
-            
             go.transform.position = p;
-            go.transform.rotation = ToEulerYXZ(q);
-            go.transform.SetParent(GameObject.FindWithTag("SetData").transform, true);
+            go.transform.rotation = targetRot;
+            go.transform.SetParent(parent, true);
             return go;
         }
 
@@ -240,8 +247,15 @@ namespace SurgeEngine._Source.Editor.HE1Importer
 
         static void SetFloatReflection(object obj, string name, float value)
         {
-            var field = obj.GetType().GetField(name, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
-            field.SetValue(obj, value);
+            try
+            {
+                var field = obj.GetType().GetField(name, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+                field.SetValue(obj, value);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError("Can't set the value to " + name + ": " + e.Message);
+            }
         }
         
         static void ApplyCustom(string name, GameObject go, XElement elem)

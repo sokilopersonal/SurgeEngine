@@ -6,7 +6,7 @@ namespace SurgeEngine._Source.Editor.HE1Importer
 {
     public class HE1ObjectsReaderWindow : EditorWindow
     {
-        [MenuItem("SurgeEngine/Hedgehog Engine 1 Tools/Objects Reader (Importer)")]
+        [MenuItem("Surge Engine/Hedgehog Engine 1 Tools/Objects Reader (Importer)")]
         private static void ShowWindow()
         {
             var window = GetWindow<HE1ObjectsReaderWindow>();

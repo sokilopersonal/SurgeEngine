@@ -6,8 +6,6 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter.States
 {
     public class EGStateIdle : EGState
     {
-        private float _stayTimer;
-        
         public EGStateIdle(EnemyBase enemy) : base(enemy)
         {
         }
@@ -15,8 +13,6 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter.States
         public override void OnEnter()
         {
             base.OnEnter();
-            
-            _stayTimer = 0f;
         }
 
         public override void OnTick(float dt)
