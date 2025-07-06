@@ -27,7 +27,6 @@ namespace SurgeEngine.Code.Core.Actor.States
             base.OnEnter();
             
             Kinematics.SetDetachTime(0f);
-            ConvertAirToGroundVelocity();
         }
 
         public override void OnTick(float dt)
@@ -58,9 +57,6 @@ namespace SurgeEngine.Code.Core.Actor.States
                 if (!predictedGround) Kinematics.RotateSnapNormal(data.normal);
                 
                 Kinematics.ClampVelocityToMax();
-                
-                Vector3 stored = Rigidbody.linearVelocity;
-                Rigidbody.linearVelocity = Quaternion.FromToRotation(Rigidbody.transform.up, prevNormal) * stored;
                 
                 Kinematics.BasePhysics(Kinematics.Normal);
                 if (!predictedGround) Kinematics.Snap(Kinematics.Point, Kinematics.Normal, true);

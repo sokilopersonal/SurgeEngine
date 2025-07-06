@@ -8,11 +8,11 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
         {
             Vector3 start = transform.position + Vector3.up * 0.5f;
 
-            if (keepVelocity > 0f)
+            if (keepVelocityDistance > 0f)
             {
                 Gizmos.color = Color.red;
                 var dir = Vector3.up;
-                var newStartPos = start + dir * keepVelocity;
+                var newStartPos = start + dir * keepVelocityDistance;
                 Gizmos.DrawLine(start, newStartPos);
                 start = newStartPos;
             }

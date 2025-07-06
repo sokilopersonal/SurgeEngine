@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 3608644608425657608}
   - component: {fileID: 2361913074576162231}
   - component: {fileID: 8731062220765025212}
-  - component: {fileID: 3783265974239594460}
   m_Layer: 14
   m_Name: TrickPanel
   m_TagString: Untagged
@@ -117,22 +116,6 @@ MonoBehaviour:
       Data3: -970028388
       Data4: -1059937011
     Path: event:/CommonObjects/JumpPanel
---- !u!114 &3783265974239594460
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2462623610664270705}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ece8829cbb9743c1b9068e2f6a722a18, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _colliders:
-  - {fileID: 7360664701626324355}
-  - {fileID: 4968577596811486630}
-  time: 0.25
 --- !u!1 &4453286092968102352
 GameObject:
   m_ObjectHideFlags: 0
@@ -229,7 +212,7 @@ GameObject:
   - component: {fileID: 4714845521719265051}
   - component: {fileID: 4968577596811486630}
   - component: {fileID: 6543019877669174900}
-  m_Layer: 14
+  m_Layer: 8
   m_Name: ImpulseTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -245,7 +228,7 @@ Transform:
   m_GameObject: {fileID: 8743211812760810914}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.965926, z: 0.2588186, w: 0}
-  m_LocalPosition: {x: 0, y: 1.017, z: -0.03}
+  m_LocalPosition: {x: 0, y: 0.851, z: -0.053}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

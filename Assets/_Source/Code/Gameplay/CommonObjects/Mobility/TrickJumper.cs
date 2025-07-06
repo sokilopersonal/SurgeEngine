@@ -38,7 +38,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
         
         private const float TargetTimeScale = 0.045f;
         private const float TimeScaleDuration = 1.125f;
-        [SerializeField] private Transform startPoint;
+        private Vector3 StartPosition => transform.position + Vector3.up;
 
         public Action<QTEResult> OnQTEResultReceived;
         public event Action OnCorrectButton;
@@ -92,24 +92,24 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
 
         private IEnumerator PerformTrickContact()
         {
-            if (_actor.StateMachine.CurrentState is FStateSpecialJump) yield break;
+            if (_actor.StateMachine.CurrentState is FStateTrickJump) yield break;
             if (initialSpeed > 0)
             {
                 _actor.StateMachine.GetSubState<FBoost>().Active = false;
                 _actor.Kinematics.ResetVelocity();
-                _actor.PutIn(startPoint.position);
-                _actor.transform.forward = Vector3.Cross(-startPoint.right, Vector3.up);
-                _actor.Model.transform.forward = Vector3.Cross(-startPoint.right, Vector3.up);
+                _actor.Rigidbody.position = StartPosition;
+                _actor.transform.forward = Vector3.Cross(-transform.right, Vector3.up);
+                _actor.Model.root.forward = Vector3.Cross(-transform.right, Vector3.up);
 
                 Vector3 impulse = Utility.GetImpulseWithPitch(
-                    Vector3.Cross(-startPoint.right, Vector3.up),
-                    startPoint.right,
+                    -transform.forward,
+                    transform.right,
                     initialPitch,
                     initialSpeed
                 );
+                
                 _actor.Kinematics.Rigidbody.linearVelocity = impulse;
-                _actor.StateMachine.GetState<FStateSpecialJump>().SetSpecialData(new SpecialJumpData(SpecialJumpType.TrickJumper));
-                _actor.StateMachine.SetState<FStateSpecialJump>(0f, true, true);
+                _actor.StateMachine.SetState<FStateTrickJump>(0, true, true);
                 _actor.Flags.AddFlag(new Flag(FlagType.OutOfControl, null, false));
 
                 yield return SetTime(TargetTimeScale, TimeScaleDuration);
@@ -227,7 +227,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
                 _actor.Kinematics.ResetVelocity();
 
                 Vector3 arcPeak = Trajectory.GetArcPosition(
-                    startPoint.position,
+                    StartPosition,
                     Utility.GetCross(transform, initialPitch, true),
                     initialSpeed
                 );
@@ -235,8 +235,8 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
                 yield return MoveRigidbodyToArc(body, arcPeak);
 
                 Vector3 impulse = Utility.GetImpulseWithPitch(
-                    Vector3.Cross(-startPoint.right, Vector3.up),
-                    startPoint.right,
+                    Vector3.Cross(-transform.right, Vector3.up),
+                    transform.right,
                     finalPitch,
                     finalSpeed
                 );
@@ -286,22 +286,21 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
         protected override void OnDrawGizmos()
         {
             base.OnDrawGizmos();
-            if (startPoint == null) return;
             
             TrajectoryDrawer.DrawTrickTrajectory(
-                startPoint.position,
-                Utility.GetCross(startPoint, initialPitch, true),
+                StartPosition,
+                Utility.GetCross(transform, initialPitch, true),
                 Color.red,
                 initialSpeed
             );
             Vector3 peakPosition = Trajectory.GetArcPosition(
-                startPoint.position,
-                Utility.GetCross(startPoint, initialPitch, true),
+                StartPosition,
+                Utility.GetCross(transform, initialPitch, true),
                 initialSpeed
             );
             TrajectoryDrawer.DrawTrickTrajectory(
                 peakPosition,
-                Utility.GetCross(startPoint, finalPitch, true),
+                Utility.GetCross(transform, finalPitch, true),
                 Color.green,
                 finalSpeed
             );

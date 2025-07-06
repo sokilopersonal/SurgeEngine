@@ -66,7 +66,7 @@ namespace SurgeEngine.Code.Core.Actor.System
             _upVector = Vector3.Slerp(root.up, Actor.transform.up, Time.deltaTime * verticalRotationSpeed
                 * Mathf.Lerp(1f, 2f, Actor.Kinematics.Speed / Actor.Config.topSpeed));
 
-            if (prev is FStateAirObject)
+            if (prev is FStateObject)
             {
                 if (_airRestoring)
                 {
@@ -279,6 +279,12 @@ namespace SurgeEngine.Code.Core.Actor.System
             _airRestoreTimer = time;
             _airRestoring = true;
             _tUp = Actor.Kinematics.Velocity.normalized;
+        }
+
+        public void StopAirRestore()
+        {
+            _airRestoreTimer = 0;
+            _airRestoring = false;
         }
     }
 }

@@ -138,11 +138,17 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
                     StateAnimator.SetCurrentAnimationState(AnimatorParams.RunCycle);
                 }
             }
-            if (obj is FStateAir && prev is not FStateSpecialJump and not FStateAfterHoming and not FStateAirBoost and not FStateTrick)
+            if (obj is FStateAir && prev is not FStateAfterHoming and not FStateAirBoost and not FStateTrick)
             {
                 if (prev is FStateUpreel)
                 {
                     StateAnimator.TransitionToState("PulleyExit", 0.1f).AfterThen(0.25f, () => StateAnimator.TransitionToState(AnimatorParams.AirCycle, 1f));
+                    return;
+                }
+
+                if (prev is FStateJumpPanel)
+                {
+                    StateAnimator.TransitionToStateDelayed(AnimatorParams.AirCycle, 0.5f, 1f);
                     return;
                 }
                 
@@ -235,7 +241,6 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
             if (obj is FStateDrift)
             {
                 // Drift start
-                
                 float angle = animator.GetFloat(AnimatorParams.TurnAngle);
                 if (angle < 0)
                 {
@@ -266,9 +271,22 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
                         break;
                 }
             }*/
+            if (obj is FStateJumpPanel jumpPanel)
+            {
+                StateAnimator.TransitionToState(!jumpPanel.IsDelux ? "Jump Standard" : "Jump Delux", 0);
+            }
+            if (obj is FStateTrickJump)
+            {
+                StateAnimator.TransitionToState("Jump Spring", 0.2f);
+            }
             if (obj is FStateSpring)
             {
                 StateAnimator.TransitionToState("Jump Spring", 0.2f);
+            }
+            if (obj is FStateDashRing)
+            {
+                StateAnimator.ResetCurrentAnimationState();
+                StateAnimator.TransitionToState("Dash Ring", 0.2f);
             }
             if (obj is FStateGrind && prev is not FStateGrindSquat)
             {

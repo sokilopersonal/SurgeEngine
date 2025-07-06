@@ -53,8 +53,6 @@ MonoBehaviour:
   speed: 15
   keepVelocity: 0.5
   outOfControl: 1
-  yOffset: 0.5
-  center: 1
   cancelBoost: 0
   allowDoubleScore: 0
 --- !u!114 &1839055208667375598
@@ -114,6 +112,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1813336500067303792}
   - component: {fileID: 1865137289970425896}
+  - component: {fileID: 1709181141645346044}
   m_Layer: 14
   m_Name: Collision
   m_TagString: Untagged
@@ -157,6 +156,18 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2.4763277, y: 2.4763274, z: 0.25190896}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1709181141645346044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6573951447141120149}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 138b85e3ea314a05b7b7918e1b43380e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1703319899427131695
 PrefabInstance:
   m_ObjectHideFlags: 0

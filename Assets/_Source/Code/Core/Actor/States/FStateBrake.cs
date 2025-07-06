@@ -33,7 +33,7 @@ namespace SurgeEngine.Code.Core.Actor.States
             var curveDistance = curve.Evaluate(Kinematics.Speed / _config.topSpeed);
             float distance = config.castDistance * curveDistance;
             
-            if (Kinematics.CheckForGround(out var hit, castDistance: distance))
+            if (Kinematics.CheckForGroundWithDirection(out var hit, Vector3.down, distance))
             {
                 Kinematics.Normal = Vector3.up;
                 Kinematics.Snap(hit.point, Vector3.up, true);

@@ -56,8 +56,14 @@ namespace SurgeEngine.Code.Core.Actor.States
             {
                 if (Kinematics.GetAttachState())
                 {
-                    if (Kinematics.Speed > 5f) StateMachine.SetState<FStateGround>();
-                    else StateMachine.SetState<FStateIdle>();
+                    if (!Kinematics.IsHardAngle(hit.normal))
+                    {
+                        StateMachine.SetState<FStateGround>();
+                    }
+                    else
+                    {
+                        StateMachine.SetState<FStateSlip>();
+                    }
                 }
             }
         }

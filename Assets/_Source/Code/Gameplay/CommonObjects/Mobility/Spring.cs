@@ -9,7 +9,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
     public class Spring : ContactBase
     {
         [SerializeField] protected float speed = 30f;
-        [SerializeField] protected float keepVelocity;
+        [SerializeField] protected float keepVelocityDistance = 5;
         [SerializeField] protected float outOfControl = 0.5f;
         [SerializeField] private bool cancelBoost;
 
@@ -17,11 +17,11 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
         {
             base.Contact(msg, context);
             
-            if (cancelBoost) context.StateMachine.GetSubState<FBoost>().Active = false;
+            if (cancelBoost) 
+                context.StateMachine.GetSubState<FBoost>().Active = false;
 
             var stateSpring = context.StateMachine.GetState<FStateSpring>();
-            stateSpring.SetKeepVelocityDistance(keepVelocity);
-            stateSpring.SetSpringDirection(transform.up);
+            stateSpring.SetKeepVelocityDistance(keepVelocityDistance);
             context.StateMachine.SetState<FStateSpring>(allowSameState: true);
             
             context.Rigidbody.position = transform.position;
@@ -33,7 +33,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
 
         protected override void OnDrawGizmos()
         {
-            TrajectoryDrawer.DrawTrajectory(transform.position, transform.up, Color.green, speed, keepVelocity);
+            TrajectoryDrawer.DrawTrajectory(transform.position, transform.up, Color.green, speed, keepVelocityDistance);
         }
     }
 }
