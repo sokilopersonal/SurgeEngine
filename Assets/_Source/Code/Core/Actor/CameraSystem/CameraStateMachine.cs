@@ -1,7 +1,10 @@
-﻿using SurgeEngine.Code.Core.Actor.CameraSystem.Pans;
+﻿using System.Collections.Generic;
+using System.Linq;
+using SurgeEngine.Code.Core.Actor.CameraSystem.Pans;
 using SurgeEngine.Code.Core.Actor.CameraSystem.Pans.Data;
 using SurgeEngine.Code.Core.Actor.System;
 using SurgeEngine.Code.Core.StateMachine;
+using SurgeEngine.Code.Gameplay.CommonObjects.CameraObjects;
 using SurgeEngine.Code.Infrastructure.Custom;
 using UnityEngine;
 using UnityEngine.Internal;
@@ -50,13 +53,16 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
         public PanData CurrentData { get; set; }
         public float blendFactor { get; private set; }
         public float interpolatedBlendFactor { get; private set; }
+        private List<ChangeCameraVolume> _volumes;
 
         private Vector3 LateOffset { get; set; }
         
         private readonly ActorBase _actor;
-        
+
         public CameraStateMachine(Camera camera, Transform transform, ActorBase actor, ActorCamera master)
         {
+            _volumes = new();
+            
             Camera = camera;
             Transform = transform;
             _actor = actor;
@@ -164,7 +170,29 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
                 }
             }
         }
+        
+        public void RegisterVolume(ChangeCameraVolume vol)
+        {
+            _volumes.Add(vol);
+            ApplyTop();
+        }
 
+        public void UnregisterVolume(ChangeCameraVolume vol)
+        {
+            _volumes.Remove(vol);
+            ApplyTop();
+        }
+
+        private void ApplyTop()
+        {
+            var top = _volumes.OrderByDescending(v=>v.Priority).FirstOrDefault();
+            if (top != null) top.Target.SetPan(_actor);
+            else
+            {
+                SetState<RestoreCameraPawn>();
+            }
+        }
+        
         private Vector3 GetActorWorldPosition()
         {
             Vector3 basePosition = _actor.transform.position + LateOffset + Vector3.up * VerticalOffset + Vector3.up * VerticalLag;

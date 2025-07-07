@@ -13,8 +13,8 @@ namespace SurgeEngine.Code.Infrastructure.Custom.Drawers
         public static void DrawTrajectory(Vector3 startPosition, Vector3 direction, Color color, float impulse, float keepVelocityDistance = 0f)
         {
 #if UNITY_EDITOR
-            int trajectoryPoints = 32;
-            float timeStep = 0.1f;
+            int trajectoryPoints = 128;
+            float timeStep = 0.2f;
             Vector3 gravity = Physics.gravity.y * Vector3.up;
             int layerMask = 1 << LayerMask.NameToLayer("Default");
 

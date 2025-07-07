@@ -20,7 +20,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects
             }
         }
 
-        public virtual void Contact([NotNull] Collider msg, [CanBeNull] ActorBase context)
+        public virtual void Contact([NotNull] Collider msg, ActorBase context)
         {
             ObjectEvents.OnObjectCollected?.Invoke(this);
             

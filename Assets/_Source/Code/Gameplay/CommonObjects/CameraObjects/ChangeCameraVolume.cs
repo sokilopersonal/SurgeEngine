@@ -6,6 +6,9 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.CameraObjects
     public class ChangeCameraVolume : ContactBase
     {
         [SerializeField] private ObjCameraBase target;
+        public ObjCameraBase Target => target;
+        [SerializeField] private int priority;
+        public int Priority => priority;
         
         private BoxCollider _boxCollider;
 
@@ -13,7 +16,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.CameraObjects
         {
             _boxCollider = GetComponent<BoxCollider>();
             
-            if (target == null) // If we don't have a target, search it in the children
+            if (target == null)
             {
                 target = GetComponentInChildren<ObjCameraBase>();
             }
@@ -22,15 +25,18 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.CameraObjects
         public override void Contact(Collider msg, ActorBase context)
         {
             base.Contact(msg, context);
-            
-            if (target != null) target.SetPan(context);
+
+            if (target)
+            {
+                context.Camera.StateMachine.RegisterVolume(this);
+            }
         }
         
         private void OnTriggerExit(Collider other)
         {
             if (other.transform.TryGetComponent(out ActorBase actor))
             {
-                if (target != null) target.RemovePan(actor);
+                actor.Camera.StateMachine.UnregisterVolume(this);
             }
         }
 
