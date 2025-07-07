@@ -27,6 +27,7 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                 ["JumpBoard3D"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/JumpPanel_30M.prefab"),
                 ["UpReel"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/Upreel.prefab"),
                 ["JumpCollision"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/JumpCollision.prefab"),
+                ["ChangeVolumeCamera"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/Camera/ChangeCameraVolume.prefab")
             };
         }
 
@@ -34,6 +35,14 @@ namespace SurgeEngine._Source.Editor.HE1Importer
         {
             return new Dictionary<string, Action<GameObject, XElement>>
             {
+                ["ChangeVolumeCamera"] = (go, elem) =>
+                {
+                    float w = GetFloatWithMultiSetParam(elem, "Collision_Width");
+                    float h = GetFloatWithMultiSetParam(elem, "Collision_Height");
+                    float l = GetFloatWithMultiSetParam(elem, "Collision_Length");
+                    var volume = go.GetComponent<BoxCollider>();
+                    volume.size = new Vector3(w, h, l);
+                },
                 ["DashPanel"] = (go, elem) =>
                 {
                     float speed = GetFloatWithMultiSetParam(elem, "Speed");
@@ -48,7 +57,6 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                     float impulseNormal = GetFloatWithMultiSetParam(elem, "ImpulseSpeedOnNormal");
                     float outOfControl = GetFloatWithMultiSetParam(elem, "OutOfControl");
                     var jumpPanel = go.GetComponent<JumpPanel>();
-                    SetFloatReflection(jumpPanel, "pitch", pitch);
                     SetFloatReflection(jumpPanel, "impulse", impulseNormal);
                     SetFloatReflection(jumpPanel, "outOfControl", outOfControl);
                 },

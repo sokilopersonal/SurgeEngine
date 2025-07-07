@@ -4,12 +4,12 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
 {
-    public class VerticalCameraPan : NewModernState, IPanState<VerticalPanData>
+    public class ParallelCameraPan : NewModernState, IPanState<ParallelPanData>
     {
         private LastCameraData _lastData;
-        private VerticalPanData _vData;
+        private ParallelPanData _vData;
 
-        public VerticalCameraPan(ActorBase owner) : base(owner)
+        public ParallelCameraPan(ActorBase owner) : base(owner)
         {
             
         }
@@ -62,7 +62,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
             _stateMachine.PitchAuto = 0;
         }
 
-        public void SetData(VerticalPanData data)
+        public void SetData(ParallelPanData data)
         {
             _vData = data;
             _stateMachine.CurrentData = data;

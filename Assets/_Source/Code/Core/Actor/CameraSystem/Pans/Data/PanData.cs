@@ -14,7 +14,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans.Data
     }
 
     [Serializable]
-    public class VerticalPanData : PanData
+    public class ParallelPanData : PanData
     {
         public float distance = 4f;
         public float yOffset = 0.25f;

@@ -3,7 +3,7 @@ using UnityEditor;
 
 namespace SurgeEngine._Source.Editor.CameraEditor
 {
-    [CustomEditor(typeof(ObjVerticalCameraPan))]
+    [CustomEditor(typeof(ObjCameraParallel))]
     public class CameraVerticalPanEditor : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
