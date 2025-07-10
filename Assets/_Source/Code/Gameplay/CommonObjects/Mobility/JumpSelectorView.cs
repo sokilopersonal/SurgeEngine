@@ -12,12 +12,16 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
         private const string _bB = "_BUTTON_B";
         private const string _uB = "_BUTTON_U";
 
-        private void Update()
+        private void Awake()
         {
             if (_renderer != null && _jumpSelector != null)
             {
                 Material mat = _renderer.materials[4];
-                int button = (int)_jumpSelector.button;
+                int button = (int)_jumpSelector.Button;
+                mat.DisableKeyword(_aB);
+                mat.DisableKeyword(_xB);
+                mat.DisableKeyword(_bB);
+                mat.DisableKeyword(_uB);
                 switch (button)
                 {
                     case 0:

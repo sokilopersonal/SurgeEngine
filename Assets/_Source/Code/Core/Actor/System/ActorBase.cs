@@ -106,6 +106,7 @@ namespace SurgeEngine.Code.Core.Actor.System
             StateMachine.AddState(new FStateRailSwitch(this));
             StateMachine.AddState(new FStateJumpSelector(this));
             StateMachine.AddState(new FStateJumpSelectorLaunch(this));
+            StateMachine.AddState(new FStateJumpSelectorMissLand(this));
             StateMachine.AddState(new FStateSwing(this));
             StateMachine.AddState(new FStateSwingJump(this));
             StateMachine.AddState(new FStateDamage(this));

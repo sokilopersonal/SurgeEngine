@@ -24,7 +24,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects
             int mask = GetMask(target);
             var hits = Physics.OverlapBox(transform.position + offset, size, transform.rotation, mask);
             
-            DebugExtensions.DrawCube(Matrix4x4.TRS(transform.position + offset, transform.rotation, Vector3.one), size, Color.red, 1f);
+            DebugExtensions.DrawCube(Matrix4x4.TRS(transform.position + offset, transform.rotation, Vector3.one), size, Color.red);
 
             foreach (var hit in hits)
             {

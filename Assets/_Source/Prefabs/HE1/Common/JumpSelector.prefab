@@ -46,10 +46,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 499543ae06804240aa040c7b0ddf0773, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forwardForce: 25
-  upForce: 15
-  keepVelocityTime: 1
-  outOfControl: 1
+  downShotForce: 10
+  downShotOutOfControl: 0.5
+  forwardShotForce: 15
+  forwardShotOutOfControl: 0.25
+  upShotForce: 20
+  upShotOutOfControl: 0.75
+  upShotPitch: 0
+  inputTime: 0.8
   button: 3
 --- !u!65 &2696917520608540346
 BoxCollider:

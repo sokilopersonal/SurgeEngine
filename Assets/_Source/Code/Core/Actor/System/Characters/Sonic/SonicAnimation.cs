@@ -158,6 +158,7 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
                     FStateGrindJump => 0.1f,
                     FStateJump or FStateHoming => 0f,
                     FStateRailSwitch => 0.5f,
+                    FStateJumpSelectorLaunch => 0.3f,
                     _ => 0.2f
                 });
             }
@@ -253,24 +254,6 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
                 
                 StateAnimator.SetCurrentAnimationState(Drift);
             }
-            /*if (obj is FStateSpecialJump specialJump)
-            {
-                switch (specialJump.SpecialJumpData.type)
-                {
-                    case SpecialJumpType.JumpBoard:
-                        StateAnimator.TransitionToState(!specialJump.IsDelux ? "Jump Standard" : "Jump Delux", 0);
-                        break;
-                    case SpecialJumpType.TrickJumper:
-                        StateAnimator.TransitionToState("Jump Spring", 0.2f);
-                        break;
-                    case SpecialJumpType.Spring:
-                        StateAnimator.TransitionToState("Jump Spring", 0);
-                        break;
-                    case SpecialJumpType.DashRing:
-                        StateAnimator.TransitionToState("Dash Ring", 0);
-                        break;
-                }
-            }*/
             if (obj is FStateJumpPanel jumpPanel)
             {
                 StateAnimator.TransitionToState(!jumpPanel.IsDelux ? "Jump Standard" : "Jump Delux", 0);
@@ -300,9 +283,9 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
             {
                 StateAnimator.TransitionToState("GrindLoop", 0.25f);
             }
-            if (obj is FStateJumpSelectorLaunch)
+            if (obj is FStateJumpSelector)
             {
-                
+                StateAnimator.TransitionToState("Ball", 0);
             }
             if (obj is FStateBrake)
             {
