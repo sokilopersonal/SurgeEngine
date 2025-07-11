@@ -59,11 +59,18 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
             
             if (_time >= 1f)
             {
-                _stateMachine.CurrentData = new PanData
+                if (_stateMachine.VolumeCount == 0)
                 {
-                    easeTimeExit = _actor.GetStartData().startType == StartType.Standing ? 0.5f : 0.25f
-                };
-                _stateMachine.SetState<RestoreCameraPawn>();
+                    _stateMachine.CurrentData = new PanData
+                    {
+                        easeTimeExit = _actor.GetStartData().startType == StartType.Standing ? 0.5f : 0.25f
+                    };
+                    _stateMachine.SetState<RestoreCameraPawn>();
+                }
+                else
+                {
+                    _stateMachine.ApplyTop();
+                }
             }
         }
     }

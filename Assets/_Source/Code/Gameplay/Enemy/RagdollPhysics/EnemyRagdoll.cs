@@ -16,8 +16,8 @@ namespace SurgeEngine.Code.Gameplay.Enemy.RagdollPhysics
         [SerializeField] private float limbMassScale = 1f;
         public LayerMask collideLayers;
 
-        [HideInInspector]
-        public float timer;
+        private float timer;
+        public float Timer => timer;
 
         private bool _hit;
         private bool _isInRagdoll;
@@ -34,8 +34,8 @@ namespace SurgeEngine.Code.Gameplay.Enemy.RagdollPhysics
             
             foreach (EnemyRagdollLimb limb in limbs)
             {
-                limb.ragdoll = this;
-                limb.rb.mass *= limbMassScale;
+                limb.SetRagdoll(this);
+                limb.Rigidbody.mass *= limbMassScale;
             }
         }
 

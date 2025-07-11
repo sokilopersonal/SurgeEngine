@@ -37,10 +37,8 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
         private Vector3 _contactPoint;
         private float _attachTimer;
 
-        protected override void Awake()
+        private void Awake()
         {
-            base.Awake();
-            
             _localStartPosition = model.localPosition;
             _eventInstance = RuntimeManager.CreateInstance(sound);
             _eventInstance.set3DAttributes(transform.To3DAttributes());
@@ -49,10 +47,8 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             box.center = new Vector3(box.center.x, model.localPosition.y + 0.15f, box.center.z);
         }
 
-        protected override void Update()
+        private void Update()
         {
-            base.Update();
-
             rope.SetPosition(1, new Vector3(0, model.localPosition.y + 0.45f, 0));
             
             if (_isPlayerAttached)
@@ -75,10 +71,8 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             }
         }
 
-        protected override void FixedUpdate()
+        private void FixedUpdate()
         {
-            base.FixedUpdate();
-
             if (_isPlayerAttached)
             {
                 var ctx = _attachedActor;

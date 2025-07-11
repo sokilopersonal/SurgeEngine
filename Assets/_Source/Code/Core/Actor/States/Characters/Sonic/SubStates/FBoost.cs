@@ -8,6 +8,7 @@ using SurgeEngine.Code.Gameplay.Inputs;
 using SurgeEngine.Code.Infrastructure.Config.SonicSpecific;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using NotImplementedException = System.NotImplementedException;
 
 namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates
 {
@@ -71,15 +72,6 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates
 
         private void OnStateAssign(FState obj)
         {
-            /*if (obj is IBoostHandler casted)
-            {
-                _boostHandler = casted;
-            }
-            else
-            {
-                _boostHandler = null;
-            }*/
-
             _boostHandler = obj switch
             {
                 FStateIdle or FStateGround or FStateDrift or FStateGrind => new BoostGroundHandle(),
@@ -174,9 +166,33 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates
         public override void OnFixedTick(float dt)
         {
             base.OnFixedTick(dt);
-            
+
             if (Active)
-                HurtBox.CreateAttached(Actor, Actor.transform, new Vector3(0f, 0f, -0.1f), new Vector3(0.75f, 1f, 1.15f), HurtBoxTarget.Enemy | HurtBoxTarget.Breakable);
+            {
+                CreateDamage();
+                FindRings();
+            }
+        }
+
+        private void CreateDamage()
+        {
+            HurtBox.CreateAttached(Actor, Actor.transform, new Vector3(0f, 0f, -0.1f), new Vector3(0.75f, 1f, 1.15f), 
+                HurtBoxTarget.Enemy | HurtBoxTarget.Breakable);
+        }
+
+        private void FindRings()
+        {
+            var mask = _config.MagnetRingMask;
+            var radius = _config.MagnetRadius;
+            
+            var col = Physics.OverlapSphere(Actor.transform.position, radius, mask);
+            if (col.Length > 0)
+            {
+                for (int i = 0; i < col.Length; i++)
+                {
+                    col[i].GetComponent<Ring>().StartMagnet(Actor);
+                }
+            }
         }
 
         public bool CanBoost() => BoostEnergy > 0 && _boostHandler != null;

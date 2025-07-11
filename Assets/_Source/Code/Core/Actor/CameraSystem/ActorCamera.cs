@@ -163,5 +163,16 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
         {
             StateMachine.SetState<NewModernState>();
         }
+
+        private void OnGUI()
+        {
+            /*var list = StateMachine.Volumes;
+            for (int i = 0; i < list.Count; i++)
+            {
+                var rect = new Rect(600, 20 + i * 20, 200, 50);
+                GUIStyle style = new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleRight, fontSize = 16, normal = { textColor = Color.black } };
+                GUI.Label(rect, list[i].Target.name, style);
+            }*/
+        }
     }
 }

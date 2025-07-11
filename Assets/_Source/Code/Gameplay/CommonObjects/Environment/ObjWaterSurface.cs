@@ -26,7 +26,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Environment
 
         private Transform _camera;
 
-        protected override void Awake()
+        private void Awake()
         {
             _collider = GetComponent<Collider>();
             _collider.isTrigger = true;
@@ -34,7 +34,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Environment
             _camera = Camera.main.transform;
         }
 
-        protected override void Update()
+        private void Update()
         {
             if (_isActorOnSurface)
             {
@@ -53,7 +53,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Environment
             }
         }
 
-        protected override void FixedUpdate()
+        private void FixedUpdate()
         {
             ActorBase actor = ActorContext.Context;
             if (_isActorOnSurface)

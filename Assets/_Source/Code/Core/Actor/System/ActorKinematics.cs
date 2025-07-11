@@ -261,10 +261,11 @@ namespace SurgeEngine.Code.Core.Actor.System
 
         public void SlopePhysics()
         {
-            if (Speed < _config.slopeMinSpeed && Angle >= _config.slopeDeslopeAngle)
+            if (mode == KinematicsMode.Free && Speed < _config.slopeMinSpeed && Angle >= _config.slopeDeslopeAngle)
             {
                 _rigidbody.AddForce(Normal * _config.slopeDeslopeForce, ForceMode.Impulse);
-                Actor.StateMachine.SetState<FStateAir>(_config.slopeInactiveDuration);
+                Actor.StateMachine.SetState<FStateAir>();
+                SetDetachTime(_config.slopeInactiveDuration);
             }
 
             if (Angle > _config.slopeMinAngle && Speed > _config.slopeMinForceSpeed)

@@ -13,6 +13,7 @@ namespace SurgeEngine.Code.Infrastructure.Config.SonicSpecific
         [SerializeField] private float maxSpeedMultiplier = 1.2f;
         [SerializeField] private float maxBoostSpeed = 45f;
         [SerializeField] private float magnetRadius = 2.75f;
+        [SerializeField] private LayerMask magnetRingMask;
         [SerializeField] private float acceleration = 45f;
         [SerializeField, Range(25, 100)] private float boostCapacity = 100;
         [SerializeField] private float ringEnergyAddition = 1.5f;
@@ -27,6 +28,7 @@ namespace SurgeEngine.Code.Infrastructure.Config.SonicSpecific
         public float MaxSpeedMultiplier => maxSpeedMultiplier;
         public float MaxBoostSpeed => maxBoostSpeed;
         public float MagnetRadius => magnetRadius;
+        public LayerMask MagnetRingMask => magnetRingMask;
         public float Acceleration => acceleration;
         public float BoostCapacity => boostCapacity;
         public float RingEnergyAddition => ringEnergyAddition;

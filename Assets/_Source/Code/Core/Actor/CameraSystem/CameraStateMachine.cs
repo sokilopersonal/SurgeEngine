@@ -54,6 +54,8 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
         public float blendFactor { get; private set; }
         public float interpolatedBlendFactor { get; private set; }
         private List<ChangeCameraVolume> _volumes;
+        public IReadOnlyList<ChangeCameraVolume> Volumes => _volumes;
+        public int VolumeCount => _volumes.Count;
 
         private Vector3 LateOffset { get; set; }
         
@@ -173,17 +175,31 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
         
         public void RegisterVolume(ChangeCameraVolume vol)
         {
-            _volumes.Add(vol);
-            ApplyTop();
+            if (!_volumes.Contains(vol))
+            {
+                _volumes.Add(vol);
+                
+                if (CurrentState is not CameraAnimState)
+                {
+                    ApplyTop();
+                }
+            }
         }
 
         public void UnregisterVolume(ChangeCameraVolume vol)
         {
-            _volumes.Remove(vol);
-            ApplyTop();
+            if (_volumes.Contains(vol))
+            {
+                _volumes.Remove(vol);
+                
+                if (CurrentState is not CameraAnimState)
+                {
+                    ApplyTop();
+                }
+            }
         }
 
-        private void ApplyTop()
+        public void ApplyTop()
         {
             var top = _volumes.OrderByDescending(v=>v.Priority).FirstOrDefault();
             if (top != null) top.Target.SetPan(_actor);

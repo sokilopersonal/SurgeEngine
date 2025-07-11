@@ -5,7 +5,6 @@ using SurgeEngine.Code.Gameplay.CommonObjects.System;
 using SurgeEngine.Code.Infrastructure.Custom;
 using SurgeEngine.Code.Infrastructure.Tools;
 using UnityEngine;
-using NotImplementedException = System.NotImplementedException;
 
 namespace SurgeEngine.Code.Gameplay.CommonObjects.Collectables
 {
@@ -18,8 +17,8 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Collectables
         
         [SerializeField] private EventReference ringSound;
 
-        private ActorBase _actor => ActorContext.Context;
-        private bool _magneted;
+        private ActorBase _actor;
+        private bool _inMagnet;
         private Vector3 _initialPosition;
         private float _factor;
         private Vector3 _targetPosition;
@@ -27,7 +26,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Collectables
 
         private Vector3 _startPosition;
 
-        private void Start()
+        private void Awake()
         {
             _startPosition = transform.position;
             
@@ -37,24 +36,16 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Collectables
             }
         }
 
-        protected override void Update()
+        private void Update()
         {
+            transform.rotation *= Quaternion.AngleAxis(rotationSpeed * Time.deltaTime, Vector3.up);
+            
             if (_actor == null)
             {
                 return;
             }
             
-            transform.rotation *= Quaternion.AngleAxis(rotationSpeed * Time.deltaTime, Vector3.up);
-            
-            if ((transform.position - _actor.transform.position).magnitude < _actor.StateMachine.GetSubState<FBoost>().GetConfig().MagnetRadius
-                && SonicTools.IsBoost() && !_magneted)
-            {
-                _initialPosition = transform.position;
-                _magneted = true;
-                _elapsedTime = 0f;
-            }
-            
-            if (_magneted)
+            if (_inMagnet)
             {
                 _elapsedTime += Time.deltaTime;
                 _factor = Mathf.Clamp01(_elapsedTime / flyDuration);
@@ -81,6 +72,18 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Collectables
             Collect();
         }
 
+        public void StartMagnet(ActorBase actor)
+        {
+            if (!_inMagnet)
+            {
+                _inMagnet = true;
+                
+                _actor = actor;
+                _initialPosition = transform.position;
+                _elapsedTime = 0f;
+            }
+        }
+
         private void Collect()
         {
             RuntimeManager.PlayOneShot(ringSound);
@@ -93,7 +96,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Collectables
 
         public void Load(Vector3 loadPosition, Quaternion loadRotation)
         {
-            _magneted = false;
+            _inMagnet = false;
             _elapsedTime = 0f;
 
             transform.position = _startPosition;

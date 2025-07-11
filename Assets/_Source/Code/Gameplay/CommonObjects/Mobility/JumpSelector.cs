@@ -35,10 +35,8 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
         private Transform _model;
         private Sequence _sequence;
 
-        protected override void Awake()
+        private void Awake()
         {
-            base.Awake();
-
             _model = transform.GetChild(0);
         }
 

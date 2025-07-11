@@ -1,4 +1,5 @@
-﻿using SurgeEngine.Code.Core.Actor.System;
+﻿using System;
+using SurgeEngine.Code.Core.Actor.System;
 using UnityEngine;
 
 namespace SurgeEngine.Code.Gameplay.CommonObjects.CameraObjects
@@ -9,10 +10,11 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.CameraObjects
         public ObjCameraBase Target => target;
         [SerializeField] private int priority;
         public int Priority => priority;
-        
+
+        private ActorBase _actor;
         private BoxCollider _boxCollider;
 
-        protected override void Awake()
+        private void Awake()
         {
             _boxCollider = GetComponent<BoxCollider>();
             
@@ -22,21 +24,30 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.CameraObjects
             }
         }
 
+        private void OnTriggerStay(Collider other)
+        {
+            if (target && other.transform.TryGetComponent(out ActorBase actor))
+            {
+                _actor = actor;
+                _actor.Camera.StateMachine.RegisterVolume(this);
+            }
+        }
+
         public override void Contact(Collider msg, ActorBase context)
         {
             base.Contact(msg, context);
 
             if (target)
             {
-                context.Camera.StateMachine.RegisterVolume(this);
+                //context.Camera.StateMachine.RegisterVolume(this);
             }
         }
         
         private void OnTriggerExit(Collider other)
         {
-            if (other.transform.TryGetComponent(out ActorBase actor))
+            if (target && _actor)
             {
-                actor.Camera.StateMachine.UnregisterVolume(this);
+                _actor.Camera.StateMachine.UnregisterVolume(this);
             }
         }
 

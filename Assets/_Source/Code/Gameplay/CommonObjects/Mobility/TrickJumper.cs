@@ -36,7 +36,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
         [SerializeField] private EventReference qteFailSound;
         [SerializeField] private EventReference qteFailVoiceSound;
         
-        private const float TargetTimeScale = 0.045f;
+        private const float TargetTimeScale = 0.01f;
         private const float TimeScaleDuration = 1.125f;
         private Vector3 StartPosition => transform.position + Vector3.up;
 
@@ -50,7 +50,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
         private float _timer;
         private ActorBase _actor;
 
-        protected override void Awake()
+        private void Awake()
         {
             _qteSequences = new List<QTESequence>();
         }
@@ -65,7 +65,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             OnQTEResultReceived -= HandleQTEResult;
         }
 
-        protected override void Update()
+        private void Update()
         {
             if (_qteSequences.Count > 0)
             {

@@ -7,7 +7,7 @@ using UnityEngine;
 namespace SurgeEngine.Code.Gameplay.CommonObjects
 {
     [SelectionBase]
-    public abstract class ContactBase : Entity
+    public abstract class ContactBase : MonoBehaviour
     {
         public Action<ContactBase> OnContact;
         public Action<ContactBase> OnDetach;

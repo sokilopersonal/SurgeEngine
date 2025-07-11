@@ -8,7 +8,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
     {
         private Rail _rail;
 
-        protected override void Awake()
+        private void Awake()
         {
             _rail = GetComponentInParent<Rail>();
         }

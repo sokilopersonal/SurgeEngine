@@ -40,8 +40,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4329672422156967065}
-  - component: {fileID: 6141278191269444847}
   - component: {fileID: 4180008215581436072}
+  - component: {fileID: 7611775714164771635}
   m_Layer: 14
   m_Name: JumpPanel_15S
   m_TagString: Untagged
@@ -68,23 +68,6 @@ Transform:
   - {fileID: 2476150941025625182}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6141278191269444847
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3989563150705411619}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 16824cb9c3674819841f6c0cfdef76b3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  impulse: 25
-  pitch: 55
-  outOfControl: 0.5
-  isDelux: 0
-  startPoint: {fileID: 2476150941025625182}
 --- !u!114 &4180008215581436072
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -104,6 +87,21 @@ MonoBehaviour:
       Data3: -970028388
       Data4: -1059937011
     Path: event:/CommonObjects/JumpPanel
+--- !u!114 &7611775714164771635
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3989563150705411619}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5180a07d9c9a40e2b0e68afe2d9cd752, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  impulse: 30
+  outOfControl: 0.5
+  pitch: 15
 --- !u!1 &5463824363371194974
 GameObject:
   m_ObjectHideFlags: 0

@@ -24,10 +24,8 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.System
 
         private PointMarkerLoadingScreen _loadCanvas;
 
-        protected override void Awake()
+        private void Awake()
         {
-            base.Awake();
-
             _soundEvent = RuntimeManager.PathToEventReference("event:/CommonObjects/PointMarker");
             _loadCanvas = Addressables.LoadAssetAsync<GameObject>("PointMarkerCanvas").WaitForCompletion().GetComponent<PointMarkerLoadingScreen>();
 

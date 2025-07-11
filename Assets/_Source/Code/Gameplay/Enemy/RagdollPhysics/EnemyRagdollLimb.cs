@@ -5,11 +5,9 @@ namespace SurgeEngine.Code.Gameplay.Enemy.RagdollPhysics
     [RequireComponent(typeof(Collider), typeof(Rigidbody))]
     public class EnemyRagdollLimb : MonoBehaviour
     {
-        [HideInInspector]
-        public EnemyRagdoll ragdoll;
-
-        [HideInInspector]
-        public Rigidbody rb;
+        private EnemyRagdoll _ragdoll;
+        private Rigidbody _rb;
+        public Rigidbody Rigidbody => _rb;
 
         private Collider _col;
         private bool _active;
@@ -17,7 +15,7 @@ namespace SurgeEngine.Code.Gameplay.Enemy.RagdollPhysics
         private void Awake()
         {
             _col = GetComponent<Collider>();
-            rb = GetComponent<Rigidbody>();
+            _rb = GetComponent<Rigidbody>();
             SetActive(_active);
         }
         
@@ -25,31 +23,37 @@ namespace SurgeEngine.Code.Gameplay.Enemy.RagdollPhysics
         {
             _active = set;
             _col.enabled = _active;
-            rb.isKinematic = !_active;
+            _rb.isKinematic = !_active;
         }
         
         public void AddForce(Vector3 force, ForceMode mode)
         {
             if (!_active)
                 return;
-            rb.AddForce(force, mode);
+            
+            _rb.AddForce(force, mode);
+        }
+
+        public void SetRagdoll(EnemyRagdoll ragdoll)
+        {
+            _ragdoll = ragdoll;
         }
         
         public void OnCollisionEnter(Collision collision)
         {
-            if (_active && ragdoll != null && ragdoll.timer > ragdoll.minimumLifeTime && ragdoll.collideLayers == (ragdoll.collideLayers | (1 << collision.gameObject.layer)))
-                ragdoll.Explode();
+            if (_active && _ragdoll != null && _ragdoll.Timer > _ragdoll.minimumLifeTime && _ragdoll.collideLayers == (_ragdoll.collideLayers | (1 << collision.gameObject.layer)))
+                _ragdoll.Explode();
         }
         
         public void OnCollisionStay(Collision collision)
         {
-            if (_active && ragdoll != null && ragdoll.timer > ragdoll.minimumLifeTime && ragdoll.collideLayers == (ragdoll.collideLayers | (1 << collision.gameObject.layer)))
-                ragdoll.Explode();
+            if (_active && _ragdoll != null && _ragdoll.Timer > _ragdoll.minimumLifeTime && _ragdoll.collideLayers == (_ragdoll.collideLayers | (1 << collision.gameObject.layer)))
+                _ragdoll.Explode();
         }
 
         public void ResetVelocity()
         {
-            rb.linearVelocity = Vector3.zero;
+            _rb.linearVelocity = Vector3.zero;
         }
     }
 }

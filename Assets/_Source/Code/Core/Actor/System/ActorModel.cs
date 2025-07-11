@@ -158,7 +158,7 @@ namespace SurgeEngine.Code.Core.Actor.System
             float currentSpeed = currentVelocity.magnitude;
             float speedThreshold = 3.5f;
 
-            if (rawInput.sqrMagnitude > 0.01f)
+            if (rawInput.sqrMagnitude > 0.02f)
             {
                 Vector3 targetDir = inputDir.normalized;
 
