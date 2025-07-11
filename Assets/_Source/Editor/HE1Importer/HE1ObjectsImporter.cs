@@ -56,7 +56,7 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                     float pitch = GetFloatWithMultiSetParam(elem, "AngleType");
                     float impulseNormal = GetFloatWithMultiSetParam(elem, "ImpulseSpeedOnNormal");
                     float outOfControl = GetFloatWithMultiSetParam(elem, "OutOfControl");
-                    var jumpPanel = go.GetComponent<JumpPanel3D>();
+                    var jumpPanel = go.GetComponent<JumpPanel>();
                     SetFloatReflection(jumpPanel, "impulse", impulseNormal);
                     SetFloatReflection(jumpPanel, "outOfControl", outOfControl);
                 },

@@ -5,8 +5,8 @@ namespace SurgeEngine.Code.Core.Actor.States
 {
     public abstract class FStateAirObject : FStateObject
     {
-        private float _keepVelocityDistance;
-        private float _travelledDistance;
+        protected float _keepVelocityDistance;
+        protected float _travelledDistance;
         
         protected FStateAirObject(ActorBase owner) : base(owner) { }
 

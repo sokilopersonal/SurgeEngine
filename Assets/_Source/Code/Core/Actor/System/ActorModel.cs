@@ -70,7 +70,7 @@ namespace SurgeEngine.Code.Core.Actor.System
             {
                 if (_airRestoring)
                 {
-                    VelocityRotation(_tUp);
+                    VelocityRotation(Actor.Kinematics.Velocity.normalized);
                     
                     _airRestoreTimer -= Time.deltaTime;
                     
@@ -193,10 +193,9 @@ namespace SurgeEngine.Code.Core.Actor.System
             Actor.Kinematics.Rigidbody.rotation *= flipRotation;
         }
 
-        public void VelocityRotation(Vector3 dir)
+        public void VelocityRotation(Vector3 vel)
         {
-            Vector3 vel = Actor.Kinematics.Velocity.normalized;
-            float dot = Vector3.Dot(dir, Vector3.up);
+            float dot = Vector3.Dot(vel, Vector3.up);
             Vector3 left = Vector3.Cross(vel, Vector3.up);
 
             if (dot >= 0.99f)

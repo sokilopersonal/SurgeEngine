@@ -12,21 +12,25 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
         [SerializeField] protected float keepVelocityDistance = 5;
         [SerializeField] protected float outOfControl = 0.5f;
         [SerializeField] private bool cancelBoost;
+        public float Speed => speed;
+        public float KeepVelocityDistance => keepVelocityDistance;
 
         public override void Contact(Collider msg, ActorBase context)
         {
             base.Contact(msg, context);
             
+            var springState = context.StateMachine.GetState<FStateSpring>();
+            if (springState.SpringObject == this) return;
+            
+            context.Rigidbody.isKinematic = true;
+
             if (cancelBoost) 
                 context.StateMachine.GetSubState<FBoost>().Active = false;
-
-            var stateSpring = context.StateMachine.GetState<FStateSpring>();
-            stateSpring.SetKeepVelocityDistance(keepVelocityDistance);
-            context.StateMachine.SetState<FStateSpring>(allowSameState: true);
             
-            context.Rigidbody.position = transform.position;
-
-            context.Kinematics.Rigidbody.linearVelocity = transform.up * speed;
+            springState.SetKeepVelocityDistance(keepVelocityDistance);
+            springState.SetSpringObject(this);
+            context.StateMachine.SetState<FStateSpring>();
+            
             context.Flags.AddFlag(new Flag(FlagType.OutOfControl, 
                 null, true, Mathf.Abs(outOfControl)));
         }

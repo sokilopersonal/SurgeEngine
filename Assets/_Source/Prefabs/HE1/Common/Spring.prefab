@@ -309,10 +309,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 25
-  keepVelocity: 0.25
+  keepVelocityDistance: 5
   outOfControl: 0.25
-  yOffset: 0.25
-  center: 1
   cancelBoost: 0
 --- !u!114 &3870915650241184016
 MonoBehaviour:
@@ -365,8 +363,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.185, y: 0.75, z: 1.185}
-  m_Center: {x: 0, y: 0.35, z: 0}
+  m_Size: {x: 1.185, y: 1.1, z: 1.185}
+  m_Center: {x: 0, y: 0.2, z: 0}
 --- !u!1 &8497731207516475806
 GameObject:
   m_ObjectHideFlags: 0
