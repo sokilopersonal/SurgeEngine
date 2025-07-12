@@ -52,10 +52,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 25
-  keepVelocity: 0.25
+  keepVelocityDistance: 5
   outOfControl: 0.25
-  yOffset: 0.25
-  center: 1
   cancelBoost: 0
 --- !u!114 &7407914638876503210
 MonoBehaviour:
@@ -199,7 +197,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 404425438090005545, guid: 3b70cb163981183418d82ab7ac572639, type: 3}
       propertyPath: m_StaticShadowCaster
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 404425438090005545, guid: 3b70cb163981183418d82ab7ac572639, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -211,7 +209,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: a4d9ba2bad9da60499bdc32c69eecb32, type: 2}
     - target: {fileID: 585546903054482554, guid: 3b70cb163981183418d82ab7ac572639, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 2147483647
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 3b70cb163981183418d82ab7ac572639, type: 3}
       propertyPath: m_Name
@@ -219,7 +217,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 3b70cb163981183418d82ab7ac572639, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 2147483647
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1428878814088259070, guid: 3b70cb163981183418d82ab7ac572639, type: 3}
       propertyPath: m_ReceiveGI
@@ -231,7 +229,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1428878814088259070, guid: 3b70cb163981183418d82ab7ac572639, type: 3}
       propertyPath: m_StaticShadowCaster
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1428878814088259070, guid: 3b70cb163981183418d82ab7ac572639, type: 3}
       propertyPath: 'm_Materials.Array.data[1]'
@@ -243,7 +241,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 94bf17fff33439945bae5b566449b623, type: 2}
     - target: {fileID: 3594181744008968659, guid: 3b70cb163981183418d82ab7ac572639, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 2147483647
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

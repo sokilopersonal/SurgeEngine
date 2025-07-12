@@ -51,10 +51,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 25
-  keepVelocity: 0.25
+  keepVelocityDistance: 5
   outOfControl: 0.5
-  yOffset: 0.5
-  center: 1
   cancelBoost: 1
 --- !u!114 &12930831207903161
 MonoBehaviour:
@@ -238,7 +236,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 547291f1a2a83f0408bd5eaa8aaa9eb4, type: 3}
       propertyPath: m_StaticShadowCaster
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 547291f1a2a83f0408bd5eaa8aaa9eb4, type: 3}
       propertyPath: m_Name
@@ -246,7 +244,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 547291f1a2a83f0408bd5eaa8aaa9eb4, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 2147483647
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
