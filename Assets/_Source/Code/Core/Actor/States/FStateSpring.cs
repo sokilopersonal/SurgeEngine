@@ -13,7 +13,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         private float _snapTimer;
 
         public FStateSpring(ActorBase owner) : base(owner) { }
-
+ 
         public override void OnEnter()
         {
             base.OnEnter();

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
 {
@@ -6,6 +7,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
     {
         [SerializeField] private Renderer _renderer;
         [SerializeField] private JumpSelector _jumpSelector;
+        private Animator _animator;
         
         private const string _aB = "_BUTTON_A";
         private const string _xB = "_BUTTON_X";
@@ -14,6 +16,8 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
 
         private void Awake()
         {
+            _animator = GetComponent<Animator>();
+            
             if (_renderer != null && _jumpSelector != null)
             {
                 Material mat = _renderer.materials[4];
@@ -37,6 +41,24 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
                         mat.EnableKeyword(_uB);
                         break;
                 }
+            }
+        }
+
+        private void OnEnable()
+        {
+            _jumpSelector.OnJumpSelectorResult += OnResult;
+        }
+
+        private void OnDisable()
+        {
+            _jumpSelector.OnJumpSelectorResult -= OnResult;
+        }
+
+        private void OnResult(JumpSelectorResultType obj)
+        {
+            if (obj == JumpSelectorResultType.OK)
+            {
+                _animator.SetTrigger("Trigger");
             }
         }
     }
