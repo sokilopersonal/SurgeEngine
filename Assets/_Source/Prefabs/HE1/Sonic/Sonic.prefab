@@ -30996,7 +30996,7 @@ Camera:
     height: 1
   near clip plane: 0.02
   far clip plane: 10000
-  field of view: 60
+  field of view: 50
   orthographic: 0
   orthographic size: 5
   m_Depth: 1
@@ -31181,20 +31181,20 @@ MonoBehaviour:
   sensitivity: 0.75
   maxSensitivitySpeed: 1
   minSensitivitySpeed: 0.75
-  distance: 2.9
-  yOffset: 0.075
-  pitchAutoLookAmplitude: 7
+  distance: 2.45
+  yOffset: 0.04
+  pitchAutoLookAmplitude: 5.5
   pitchAutoLookMinAmplitude: 0
-  yawDefaultAmplitude: 12
+  yawDefaultAmplitude: 13
   yawMinAmplitude: -10
   yawMaxAmplitude: 10
   yawMinLerpSpeed: 0.5
   yawLerpSpeed: 1.25
-  zLagMax: 0.35
-  zLagTime: 0.3
-  yLagMin: -0.55
-  yLagMax: 0.75
-  yLagTime: 0.125
+  zLagMax: 0.5
+  zLagTime: 0.45
+  yLagMin: -0.8
+  yLagMax: 1.25
+  yLagTime: 0.12
   lateralOffsetSpeedCurve:
     serializedVersion: 2
     m_Curve:
@@ -31231,7 +31231,7 @@ MonoBehaviour:
   collisionMask:
     serializedVersion: 2
     m_Bits: 1
-  collisionRadius: 0.02
+  collisionRadius: 0.05
   baseCameraModifiers:
   - {fileID: 2320466941561731443}
   - {fileID: 1523363318728454528}
@@ -70231,13 +70231,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   root: {fileID: 4638284470361493281}
-  Root: {fileID: 4638284470361493281}
   modelTransform: {fileID: 4638284470361493281}
-  collision: {fileID: 6497409939340660902}
   verticalOffset: -1
-  horizontalSpeed: 14
-  verticalSpeed: 7.5
-  flipDuration: 0.75
+  collision: {fileID: 6497409939340660902}
+  horizontalRotationSpeed: 14
+  verticalRotationSpeed: 7.5
   flipAngle: 360
 --- !u!1 &8211910728176193756
 GameObject:

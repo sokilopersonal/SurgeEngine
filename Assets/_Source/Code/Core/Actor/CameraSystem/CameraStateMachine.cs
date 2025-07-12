@@ -33,7 +33,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
         public float ForwardLag { get; set; }
         public float ForwardLagVelocity;
 
-        public float BaseFov => 55f;
+        public float BaseFov => 50f;
         public float FOV { get; set; }
 
         public Vector3 Position { get; set; }
