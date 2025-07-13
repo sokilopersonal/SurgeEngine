@@ -15,6 +15,7 @@ namespace SurgeEngine.Code.Infrastructure.Config.SonicSpecific
         [SerializeField] private float magnetRadius = 2.75f;
         [SerializeField] private LayerMask magnetRingMask;
         [SerializeField] private float acceleration = 45f;
+        [SerializeField, Range(0, 1)] private float startBoostCapacity = 1;
         [SerializeField, Range(25, 100)] private float boostCapacity = 100;
         [SerializeField] private float ringEnergyAddition = 1.5f;
         [SerializeField] private float driftEnergyAddition = 6.75f;
@@ -30,6 +31,7 @@ namespace SurgeEngine.Code.Infrastructure.Config.SonicSpecific
         public float MagnetRadius => magnetRadius;
         public LayerMask MagnetRingMask => magnetRingMask;
         public float Acceleration => acceleration;
+        public float StartBoostCapacity => startBoostCapacity;
         public float BoostCapacity => boostCapacity;
         public float RingEnergyAddition => ringEnergyAddition;
         public float DriftEnergyAddition => driftEnergyAddition;

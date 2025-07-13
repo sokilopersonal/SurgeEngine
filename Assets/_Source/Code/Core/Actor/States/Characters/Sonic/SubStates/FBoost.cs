@@ -32,6 +32,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates
 
         private float _boostCancelTimer;
         private float _boostLowSpeedCancelTimer;
+        private float _boostNoEnergyCancelTimer;
         private const float EnemyEnergyAddition = 10;
 
         public FBoost(ActorBase owner) : base(owner)
@@ -39,7 +40,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates
             owner.TryGetConfig(out _config);
             
             CanAirBoost = true;
-            BoostEnergy = MaxBoostEnergy;
+            BoostEnergy = MaxBoostEnergy * _config.StartBoostCapacity;
             
             owner.Input.XAction += BoostAction;
             Actor.StateMachine.OnStateAssign += OnStateAssign;
@@ -154,10 +155,23 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates
                 }
                 else
                 {
-                    Active = false;
+                    if (_boostNoEnergyCancelTimer >= 1f)
+                    {
+                        Active = false;
+                        _boostNoEnergyCancelTimer = 0;
+                    }
+                }
+
+                if (BoostEnergy <= 0)
+                {
+                    _boostNoEnergyCancelTimer += dt / 0.1f;
                 }
                 
                 Actor.Kinematics.TurnRate *= _config.TurnSpeedMultiplier;
+            }
+            else
+            {
+                _boostNoEnergyCancelTimer = 0;
             }
             
             BoostEnergy = Mathf.Clamp(BoostEnergy, 0, 100);
