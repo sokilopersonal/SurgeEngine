@@ -1,7 +1,6 @@
 ﻿using SurgeEngine.Code.Core.Actor.States;
 using SurgeEngine.Code.Core.Actor.System;
 using SurgeEngine.Code.Gameplay.Inputs;
-using SurgeEngine.Code.Infrastructure.Custom;
 using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
 
@@ -32,8 +31,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             body.rotation = Quaternion.LookRotation(transform.forward, transform.up);
             context.Model.root.rotation = body.rotation;
 
-            context.Flags.AddFlag(new Flag(FlagType.OutOfControl, 
-                new [] { Tags.AllowBoost }, true, Mathf.Abs(outOfControl)));
+            context.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, Mathf.Abs(outOfControl)));
             
             new Rumble().Vibrate(0.7f, 0.9f, 0.5f);
         }

@@ -3,22 +3,37 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
 {
-    public class AutorunCollision : ModeCollision
+    public class AutorunCollision : ContactBase
     {
+        [SerializeField, Tooltip("How long should this trigger keep the autorun?" +
+                                 "It's useful in cases where a player somehow passes through a trigger with some weird way. " +
+                                 "Value less than 0 means infinity.")] 
+        private float keepTime = 5;
+        [SerializeField, Tooltip("How fast the player should move.")] 
+        private float speed = 40f;
+        [SerializeField, Tooltip("How fast the player will reach the speed.")] 
+        private float easeTime = 0.5f;
+        [SerializeField, Tooltip("Should this trigger end the autorun?")] 
+        private bool isFinish;
+        
         private BoxCollider _boxCollider;
         
         public override void Contact(Collider msg, ActorBase context)
         {
             base.Contact(msg, context);
-            
-            if (!CheckFacing(context.transform.forward))
-                return;
 
             var flags = context.Flags;
-            if (!flags.HasFlag(FlagType.Autorun))
+            
+            float dot = Vector3.Dot(context.transform.forward, transform.forward);
+            if (dot < 0) return;
+            
+            if (!isFinish)
             {
-                flags.AddFlag(new Flag(FlagType.Autorun, null, false));
-                flags.AddFlag(new Flag(FlagType.OutOfControl, null, false));
+                if (!flags.HasFlag(FlagType.Autorun))
+                {
+                    flags.AddFlag(new AutorunFlag(FlagType.Autorun, keepTime > 0, keepTime, speed, easeTime, context.Kinematics.Speed));
+                    flags.AddFlag(new Flag(FlagType.OutOfControl, keepTime > 0, keepTime));
+                }
             }
             else
             {

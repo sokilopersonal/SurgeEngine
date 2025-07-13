@@ -108,10 +108,6 @@ namespace SurgeEngine.Code.Core.Actor.System
                 _inputDir = GetMovementDirectionProjectedOnPlane(orientedInput, Normal, _cameraTransform.up)
                             * Actor.Input.moveVector.magnitude;
             }
-            else
-            {
-                _inputDir = Actor.transform.forward;
-            }
         }
 
         private void CalculateMovementStats()

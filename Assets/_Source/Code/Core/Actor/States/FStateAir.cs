@@ -22,7 +22,7 @@ namespace SurgeEngine.Code.Core.Actor.States
             
             if (Mathf.Abs(Kinematics.Angle - 90) < 0.05f && Kinematics.Velocity.y > 3f)
             {
-                Actor.Flags.AddFlag(new Flag(FlagType.OutOfControl, null, true, 0.5f));
+                Actor.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, 0.5f));
             }
             
             Kinematics.Normal = Vector3.up;

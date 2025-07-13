@@ -46,7 +46,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
                         body.linearVelocity = Vector3.ClampMagnitude(body.linearVelocity, impulse);
                     }
                 
-                    context.Flags.AddFlag(new Flag(FlagType.OutOfControl, null, true, outOfControl));
+                    context.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, outOfControl));
                 }
             }
         }

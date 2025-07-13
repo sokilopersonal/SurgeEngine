@@ -148,7 +148,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Environment
             DestroyRunSplash();
             _currentRunSplash = Instantiate(runSplash);
 
-            _surfaceActor.Flags.AddFlag(new Flag(FlagType.OnWater, null, false));
+            _surfaceActor.Flags.AddFlag(new Flag(FlagType.OnWater, false));
         }
 
         private void OnTriggerExit(Collider other)

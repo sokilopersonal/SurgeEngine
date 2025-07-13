@@ -27,8 +27,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             body.linearVelocity = transform.up * speed;
             body.linearVelocity = Vector3.ClampMagnitude(body.linearVelocity, speed);
             
-            context.Flags.AddFlag(new Flag(FlagType.OutOfControl, 
-                null, true, Mathf.Abs(outOfControl)));
+            context.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, Mathf.Abs(outOfControl)));
         }
 
         protected override void OnDrawGizmos()

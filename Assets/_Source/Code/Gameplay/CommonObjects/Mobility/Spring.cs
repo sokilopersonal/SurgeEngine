@@ -31,8 +31,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             springState.SetSpringObject(this);
             context.StateMachine.SetState<FStateSpring>();
             
-            context.Flags.AddFlag(new Flag(FlagType.OutOfControl, 
-                null, true, Mathf.Abs(outOfControl)));
+            context.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, Mathf.Abs(outOfControl)));
         }
 
         protected override void OnDrawGizmos()

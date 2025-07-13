@@ -31,7 +31,7 @@ namespace SurgeEngine.Code.Core.Actor.System
                 list.Remove(existingFlag);
             }
             flagType |= flag.type;
-            flag.actorFlags = this;
+            flag.SetActor(Actor);
             list.Add(flag);
         }
 
@@ -53,31 +53,64 @@ namespace SurgeEngine.Code.Core.Actor.System
     
     public class Flag
     {
-        public readonly FlagType type;
-        public ActorFlags actorFlags;
-        private readonly bool isTemporary;
-        private readonly float time;
-        private float timer;
-        public string[] tags;
+        public FlagType type;
+        protected ActorBase actor;
+        protected readonly bool isTemporary;
+        protected readonly float time;
+        protected float timer;
 
-        public Flag(FlagType type, string[] tags, bool isTemporary = true, float time = 1)
+        public Flag(FlagType type, bool isTemporary = true, float time = 1)
         {
             this.type = type;
-            this.tags = tags;
             this.isTemporary = isTemporary;
             this.time = time;
         }
 
-        public void Count(float dt)
+        public virtual void Count(float dt)
         {
             if (isTemporary)
             {
                 timer += dt;
                 if (timer >= time)
                 {
-                    actorFlags.RemoveFlag(type);
+                    actor.Flags.RemoveFlag(type);
                 }
             }
+        }
+        
+        public void SetActor(ActorBase actor) => this.actor = actor;
+    }
+
+    public class AutorunFlag : Flag
+    {
+        private float _speed;
+        private float _easeTime;
+        private float _startSpeed;
+        private float _elapsed;
+        
+        public AutorunFlag(FlagType type, bool isTemporary, float time, float speed, float easeTime, float startSpeed) : base(type,
+            isTemporary, time)
+        {
+            this.type = FlagType.Autorun;
+            
+            _speed = speed;
+            _easeTime = easeTime;
+            _startSpeed = startSpeed;
+        }
+
+        public override void Count(float dt)
+        {
+            base.Count(dt);
+
+            _elapsed += dt;
+            float t = Mathf.Clamp01(_elapsed / _easeTime);
+            float currentSpeed = Mathf.Lerp(_startSpeed, _speed, t);
+
+            var k = actor.Kinematics;
+            var rb = k.Rigidbody;
+            var normal = k.Normal;
+            Vector3 vertical = Vector3.Project(rb.linearVelocity, normal);
+            rb.linearVelocity = actor.transform.forward * currentSpeed + vertical;
         }
     }
 

@@ -105,7 +105,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             _attachTimer = 0;
             _eventInstance.stop(STOP_MODE.ALLOWFADEOUT);
             model.DOLocalMove(_localStartPosition, 1f).SetEase(Ease.InSine).SetDelay(0.5f).SetLink(gameObject);
-            ctx.Flags.AddFlag(new Flag(FlagType.OutOfControl, null, true, Mathf.Abs(outOfControl)));
+            ctx.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, Mathf.Abs(outOfControl)));
 
             _attachedActor = null;
         }

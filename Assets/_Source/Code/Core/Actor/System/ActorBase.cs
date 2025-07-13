@@ -218,7 +218,7 @@ namespace SurgeEngine.Code.Core.Actor.System
                 }
                 
                 damageable.TakeDamage(this, 1);
-                Flags.AddFlag(new Flag(FlagType.Invincible, null, true, DamageKickConfig.invincibleTime));
+                Flags.AddFlag(new Flag(FlagType.Invincible, true, DamageKickConfig.invincibleTime));
             }
         }
 
@@ -229,7 +229,7 @@ namespace SurgeEngine.Code.Core.Actor.System
             Rigidbody.rotation = loadRotation;
             if (Model) Model.root.rotation = loadRotation;
             if (Animation) Animation.StateAnimator.TransitionToState("Idle", 0f);
-            if (Flags) Flags.AddFlag(new Flag(FlagType.OutOfControl, null, true, 0.5f));
+            if (Flags) Flags.AddFlag(new Flag(FlagType.OutOfControl, true, 0.5f));
             if (Input) Input.playerInput.enabled = true;
             
             IsDead = false;
