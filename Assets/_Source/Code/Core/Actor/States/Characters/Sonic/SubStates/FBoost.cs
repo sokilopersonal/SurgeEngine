@@ -174,7 +174,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates
                 _boostNoEnergyCancelTimer = 0;
             }
             
-            BoostEnergy = Mathf.Clamp(BoostEnergy, 0, 100);
+            BoostEnergy = Mathf.Clamp(BoostEnergy, 0, MaxBoostEnergy);
         }
 
         public override void OnFixedTick(float dt)

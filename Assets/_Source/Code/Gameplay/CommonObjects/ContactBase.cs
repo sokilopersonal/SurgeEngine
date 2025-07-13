@@ -12,11 +12,9 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects
         public Action<ContactBase> OnContact;
         public Action<ContactBase> OnDetach;
 
-        private bool _canBeTriggered;
-
         private void Awake()
         {
-            _canBeTriggered = true;
+            
         }
 
         private void OnTriggerEnter(Collider other)
@@ -35,7 +33,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects
             }
         }
 
-        public virtual void Contact([NotNull] Collider msg, ActorBase context)
+        public virtual void Contact(Collider msg, ActorBase context)
         {
             ObjectEvents.OnObjectCollected?.Invoke(this);
             

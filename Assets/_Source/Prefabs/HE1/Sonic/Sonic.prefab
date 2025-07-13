@@ -31181,20 +31181,20 @@ MonoBehaviour:
   sensitivity: 0.75
   maxSensitivitySpeed: 1
   minSensitivitySpeed: 0.75
-  distance: 2.7
+  distance: 2.6
   yOffset: 0.015
-  pitchAutoLookAmplitude: 4.25
+  pitchAutoLookAmplitude: 5
   pitchAutoLookMinAmplitude: 0
-  yawDefaultAmplitude: 13
-  yawMinAmplitude: -6
-  yawMaxAmplitude: 6
+  yawDefaultAmplitude: 9
+  yawMinAmplitude: -7
+  yawMaxAmplitude: 7
   yawMinLerpSpeed: 0.5
-  yawLerpSpeed: 1.25
+  yawLerpSpeed: 0.8
   zLagMax: 0.5
-  zLagTime: 0.45
-  yLagMin: -0.6
-  yLagMax: 1
-  yLagTime: 0.1
+  zLagTime: 0.3
+  yLagMin: -1.5
+  yLagMax: 1.5
+  yLagTime: 0.105
   lateralOffsetSpeedCurve:
     serializedVersion: 2
     m_Curve:
@@ -31231,7 +31231,7 @@ MonoBehaviour:
   collisionMask:
     serializedVersion: 2
     m_Bits: 1
-  collisionRadius: 0.05
+  collisionRadius: 0.1
   baseCameraModifiers:
   - {fileID: 2320466941561731443}
   - {fileID: 1523363318728454528}

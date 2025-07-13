@@ -60,7 +60,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Collectables
                 
                 if (_factor >= 1f)
                 {
-                    Collect();
+                    Contact(null, null);
                 }
             }
         }
