@@ -172,8 +172,11 @@ namespace SurgeEngine.Code.Core.Actor.System
 
                 float rotSpeed = angleDelta * (currentSpeed > speedThreshold ? Mathf.Lerp(1f, 0.15f, Mathf.Pow((currentSpeed - speedThreshold) / (config.topSpeed - speedThreshold), 0.5f)) : 1f);
 
-                var targetRot = Quaternion.LookRotation(targetDir, normal);
-                kinematics.Rigidbody.rotation = Quaternion.RotateTowards(kinematics.Rigidbody.rotation, targetRot, rotSpeed * Time.fixedDeltaTime);
+                if (targetDir != Vector3.zero)
+                {
+                    var targetRot = Quaternion.LookRotation(targetDir, normal);
+                    kinematics.Rigidbody.rotation = Quaternion.RotateTowards(kinematics.Rigidbody.rotation, targetRot, rotSpeed * Time.fixedDeltaTime);
+                }
             }
             else
             {
