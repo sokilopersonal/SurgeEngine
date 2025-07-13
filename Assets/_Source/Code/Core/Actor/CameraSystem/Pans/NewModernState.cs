@@ -131,6 +131,9 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
             float targetYLag = _actor.StateMachine.CurrentState is FStateAir or FStateSpecialJump or FStateRailSwitch
                 ? Mathf.Clamp(vel.y * YLagVelocityFactor, _master.YLagMin, _master.YLagMax) 
                 : 0f;
+            
+            float progression = Mathf.Clamp01(1 - Mathf.Abs(vel.y) / _actor.Config.topSpeed);
+            targetYLag = Mathf.Lerp(_stateMachine.VerticalLag, targetYLag, progression);
             _stateMachine.VerticalLag = Mathf.SmoothDamp(_stateMachine.VerticalLag, targetYLag, ref _stateMachine.VerticalLagVelocity, _master.YLagTime);
 
             float adjustedYLag = targetYLag * (targetYLag > 0 ? YLagRisingFactor : YLagFallingFactor);
