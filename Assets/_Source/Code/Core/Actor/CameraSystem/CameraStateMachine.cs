@@ -55,6 +55,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
         public float interpolatedBlendFactor { get; private set; }
         private List<ChangeCameraVolume> _volumes;
         public IReadOnlyList<ChangeCameraVolume> Volumes => _volumes;
+        private ChangeCameraVolume _lastTop;
         public int VolumeCount => _volumes.Count;
 
         private Vector3 LateOffset { get; set; }
@@ -80,10 +81,10 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
             DefaultDirection = GetCameraDirection();
             ActualDirection = DefaultDirection;
 
-            OnStateEarlyAssign += _ =>
+            /*OnStateAssign += state =>
             {
                 ResetBlendFactor();
-            };
+            };*/
             
             actor.Kinematics.OnModeChange += mode =>
             {
@@ -201,7 +202,10 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
 
         public void ApplyTop()
         {
-            var top = _volumes.OrderByDescending(v=>v.Priority).FirstOrDefault();
+            var top = _volumes.OrderByDescending(v => v.Priority).FirstOrDefault();
+            if (top == _lastTop) return;
+            _lastTop = top;
+            ResetBlendFactor();
             if (top != null) top.Target.SetPan(_actor);
             else
             {

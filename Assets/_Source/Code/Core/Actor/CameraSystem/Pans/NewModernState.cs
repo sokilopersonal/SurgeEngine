@@ -128,7 +128,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
         private void YLag()
         {
             Vector3 vel = _actor.Kinematics.Velocity;
-            float targetYLag = _actor.StateMachine.CurrentState is FStateAir or FStateSpecialJump or FStateRailSwitch
+            float targetYLag = !_actor.Kinematics.CheckForGround(out _) // In the air
                 ? Mathf.Clamp(vel.y * YLagVelocityFactor, _master.YLagMin, _master.YLagMax) 
                 : 0f;
             
