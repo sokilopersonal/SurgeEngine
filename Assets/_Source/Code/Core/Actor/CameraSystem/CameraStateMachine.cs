@@ -148,8 +148,20 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
             if (CurrentData != null)
             {
                 PanData baseData = CurrentData;
-                float easeTime = !isExit ? baseData.easeTimeEnter : baseData.easeTimeExit;
-                blendFactor += dt / easeTime;
+                float enterTime = baseData.easeTimeEnter;
+                float exitTime = baseData.easeTimeExit;
+                
+                float easeTime = !isExit ? enterTime : exitTime;
+
+                if (easeTime > 0)
+                {
+                    blendFactor += dt / easeTime;
+                }
+                else
+                {
+                    blendFactor = 1f;
+                }
+                
                 blendFactor = Mathf.Clamp01(blendFactor);
                 interpolatedBlendFactor = Easings.Get(Easing.Gens, blendFactor);
 
