@@ -86,7 +86,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Collectables
 
         private void Collect()
         {
-            RuntimeManager.PlayOneShot(ringSound);
+            RuntimeManager.PlayOneShot(ringSound, transform.position);
 
             Utility.AddScore(10);
             var p = Instantiate(particle, transform.position, Quaternion.identity);
