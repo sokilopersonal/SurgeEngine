@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using SurgeEngine.Code.Core.Actor.CameraSystem.Pans;
 using SurgeEngine.Code.Core.Actor.CameraSystem.Pans.Data;
@@ -7,7 +7,6 @@ using SurgeEngine.Code.Core.StateMachine;
 using SurgeEngine.Code.Gameplay.CommonObjects.CameraObjects;
 using SurgeEngine.Code.Infrastructure.Custom;
 using UnityEngine;
-using UnityEngine.Internal;
 
 namespace SurgeEngine.Code.Core.Actor.CameraSystem
 {
@@ -20,18 +19,8 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
         public float Yaw { get; set; }
         public float Pitch { get; set; }
 
-        public float StartDistance { get; }
-        public float StartVerticalOffset { get; }
-        public float Distance { get; set; }
-        public float VerticalOffset { get; set; }
-
         public float YawAuto { get; set; }
         public float PitchAuto { get; set; }
-
-        public float VerticalLag { get; set; }
-        public float VerticalLagVelocity;
-        public float ForwardLag { get; set; }
-        public float ForwardLagVelocity;
 
         public float BaseFov => 50f;
         public float FOV { get; set; }
@@ -58,6 +47,8 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
         private ChangeCameraVolume _lastTop;
         public int VolumeCount => _volumes.Count;
 
+        private LastCameraData _lastData;
+
         private Vector3 LateOffset { get; set; }
         
         private readonly ActorBase _actor;
@@ -71,20 +62,15 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
             _actor = actor;
             Master = actor.Camera;
 
-            StartDistance = master.Distance;
-            StartVerticalOffset = master.YOffset;
-            Distance = StartDistance;
-            VerticalOffset = StartVerticalOffset;
-            
             FOV = BaseFov;
+            
+            RememberLastData();
             
             DefaultDirection = GetCameraDirection();
             ActualDirection = DefaultDirection;
 
-            /*OnStateAssign += state =>
-            {
-                ResetBlendFactor();
-            };*/
+            blendFactor = 1f;
+            interpolatedBlendFactor = 1f;
             
             actor.Kinematics.OnModeChange += mode =>
             {
@@ -103,6 +89,27 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
             Setup(dt);
 
             base.Tick(dt);
+            
+            if (CurrentState is CameraState currentCameraState)
+            {
+                Vector3 pos = currentCameraState.StatePosition;
+                Quaternion rot = currentCameraState.StateRotation;
+
+                if (!_lastData.isRelative)
+                {
+                    Position = Vector3.Lerp(_lastData.position, pos, interpolatedBlendFactor);
+                }
+                else
+                {
+                    Vector3 center = ActorPosition;
+                    Vector3 diff = pos - center;
+                    Position = Vector3.Lerp(_lastData.position, diff, interpolatedBlendFactor);
+                    Position += center;
+                }
+
+                Rotation = Quaternion.Lerp(_lastData.rotation, rot, interpolatedBlendFactor);
+                FOV = Mathf.Lerp(_lastData.fov, currentCameraState.StateFOV, interpolatedBlendFactor);
+            }
             
             Transform.position = Position;
             Transform.rotation = Rotation;
@@ -144,13 +151,12 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
 
         private void PanBlend(float dt)
         {
-            bool isExit = IsExact<RestoreCameraPawn>();
+            bool isExit = IsExact<NewModernState>();
             if (CurrentData != null)
             {
                 PanData baseData = CurrentData;
                 float enterTime = baseData.easeTimeEnter;
                 float exitTime = baseData.easeTimeExit;
-                
                 float easeTime = !isExit ? enterTime : exitTime;
 
                 if (easeTime > 0)
@@ -174,7 +180,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
             }
             else
             {
-                PanLookOffset = Vector3.Lerp(PanLookOffset, Vector3.zero, 12f * dt);;
+                PanLookOffset = Vector3.Lerp(PanLookOffset, Vector3.zero, 12f * dt);
             }
 
             if (isExit)
@@ -221,13 +227,13 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
             if (top != null) top.Target.SetPan(_actor);
             else
             {
-                SetState<RestoreCameraPawn>();
+                SetState<NewModernState>();
             }
         }
         
         private Vector3 GetActorWorldPosition()
         {
-            Vector3 basePosition = _actor.transform.position + LateOffset + Vector3.up * VerticalOffset + Vector3.up * VerticalLag;
+            Vector3 basePosition = _actor.transform.position + LateOffset;
 
             return basePosition;
         }
@@ -266,7 +272,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
             return side;
         }
 
-        private void ResetBlendFactor()
+        public void ResetBlendFactor()
         {
             blendFactor = 0f;
             interpolatedBlendFactor = 0f;
@@ -288,27 +294,15 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
             Pitch = pitch;
         }
 
-        public void SetRotation(Vector3 from, Vector3 to)
-        {
-            Quaternion look = Quaternion.LookRotation(from + GetOffset() - to);
-            Rotation = look;
-        }
-
         public void SetRotation(Vector3 from)
         {
-            Quaternion look = Quaternion.LookRotation(from + GetOffset() - Position);
+            Quaternion look = Quaternion.LookRotation(from - Position);
             Rotation = look;
-        }
-
-        public void SetRotationInterpolated(Vector3 from, Vector3 to, Quaternion last)
-        {
-            Quaternion look = Quaternion.LookRotation(from + GetOffset() - to);
-            Rotation = Quaternion.Lerp(last, look, interpolatedBlendFactor);
         }
         
         public void SetRotationInterpolated(Vector3 from, Quaternion last)
         {
-            Quaternion look = Quaternion.LookRotation(from + GetOffset() - Position);
+            Quaternion look = Quaternion.LookRotation(from - Position);
             Rotation = Quaternion.Lerp(last, look, interpolatedBlendFactor);
         }
 
@@ -328,27 +322,28 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
 
         public LastCameraData RememberLastData()
         {
-            return new LastCameraData
+            _lastData = new LastCameraData
             {
                 position = Position,
                 rotation = Rotation,
-                fov = FOV,
-                distance = Distance,
-                yOffset = VerticalOffset
+                fov = Camera.fieldOfView,
             };
+
+            return _lastData;
         }
         
         public LastCameraData RememberRelativeLastData()
         {
             Vector3 center = ActorPosition; // Player
-            return new LastCameraData
+            _lastData = new LastCameraData
             {
                 position = Position - center,
                 rotation = Rotation,
-                fov = FOV,
-                distance = Distance,
-                yOffset = VerticalOffset
+                fov = Camera.fieldOfView,
+                isRelative = true
             };
+            
+            return _lastData;
         }
         
         public LastCameraData GetLastData()
@@ -369,5 +364,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
         public float fov;
         public float distance;
         public float yOffset;
+
+        public bool isRelative;
     }
 }

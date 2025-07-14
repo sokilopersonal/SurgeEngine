@@ -51,9 +51,10 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
             Vector3 startCenter = _data.start - center;
             Vector3 endCenter = _data.end - center;
             
-            _stateMachine.Position = Vector3.Slerp(startCenter, endCenter, Easings.Get(Easing.Gens, _time));
-            _stateMachine.Position += center;
-            _stateMachine.SetRotation(_playerCenter);
+            StatePosition = Vector3.Slerp(startCenter, endCenter, Easings.Get(Easing.Gens, _time));
+            StatePosition += center;
+            StateRotation = Quaternion.LookRotation(_playerCenter - StatePosition);
+            StateFOV = 50;
 
             _time += dt / _data.duration;
             
@@ -61,11 +62,14 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
             {
                 if (_stateMachine.VolumeCount == 0)
                 {
+                    _stateMachine.ResetBlendFactor();
+                    
                     _stateMachine.CurrentData = new PanData
                     {
+                        easeTimeEnter = _actor.GetStartData().startType == StartType.Standing ? 0.5f : 0.25f,
                         easeTimeExit = _actor.GetStartData().startType == StartType.Standing ? 0.5f : 0.25f
                     };
-                    _stateMachine.SetState<RestoreCameraPawn>();
+                    _stateMachine.SetState<NewModernState>();
                 }
                 else
                 {

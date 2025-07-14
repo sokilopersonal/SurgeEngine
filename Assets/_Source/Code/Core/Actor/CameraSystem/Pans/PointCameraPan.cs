@@ -6,7 +6,6 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
 {
     public class PointCameraPan : NewModernState, IPanState<PointPanData>
     {
-        private LastCameraData _lastData;
         private PointPanData _pData;
 
         public PointCameraPan(ActorBase owner) : base(owner) { }
@@ -15,7 +14,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
         {
             base.OnEnter();
             
-            _lastData = _stateMachine.RememberRelativeLastData();
+            _stateMachine.RememberRelativeLastData();
         }
 
         public override void OnExit()
@@ -31,26 +30,17 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
             
             _stateMachine.SetDirection(_pData.Forward);
             
-            _stateMachine.Distance = Mathf.Lerp(_lastData.distance, _pData.distance, _stateMachine.interpolatedBlendFactor);
-            _stateMachine.VerticalOffset = Mathf.Lerp(_lastData.yOffset, _pData.yOffset, _stateMachine.interpolatedBlendFactor);
-            
-            _stateMachine.FOV = Mathf.Lerp(_lastData.fov, _pData.fov, _stateMachine.interpolatedBlendFactor);
+            StateFOV = _pData.fov;
         }
         
         protected override void SetPosition(Vector3 targetPosition)
         {
-            Vector3 center = _stateMachine.ActorPosition;
-            Vector3 diff = targetPosition + _stateMachine.Transform.TransformDirection(_pData.offset) - center;
-            _stateMachine.Position = Vector3.Lerp(_lastData.position, diff, _stateMachine.interpolatedBlendFactor);
-            _stateMachine.Position += center;
+            StatePosition = targetPosition + _stateMachine.Transform.TransformDirection(_pData.offset);
         }
         
         protected override void SetRotation(Vector3 actorPosition)
         {
-            _stateMachine.SetRotationInterpolated(actorPosition
-                                                  + _stateMachine.Transform.TransformDirection(_pData.localLookOffset)
-                                                  + _stateMachine.Transform.TransformDirection(_pData.offset), _lastData.rotation);
-
+            StateRotation = Quaternion.LookRotation(actorPosition + _stateMachine.Transform.TransformDirection(_pData.offset) + _stateMachine.Transform.TransformDirection(_pData.localLookOffset) - StatePosition );
         }
 
         protected override void LookAxis()
@@ -63,5 +53,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
             _pData = data;
             _stateMachine.CurrentData = data;
         }
+        
+        protected override float GetDistance() => _pData.distance;
     }
 }

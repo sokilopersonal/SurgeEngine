@@ -6,7 +6,6 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
 {
     public class NormalCameraPan : NewModernState, IPanState<NormalPanData>
     {
-        private LastCameraData _lastData;
         private NormalPanData _nData;
         
         public NormalCameraPan(ActorBase owner) : base(owner)
@@ -17,17 +16,14 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
         {
             base.OnEnter();
             
-            _lastData = _stateMachine.RememberRelativeLastData();
+            _stateMachine.RememberRelativeLastData();
         }
 
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
             
-            _stateMachine.Distance = Mathf.Lerp(_lastData.distance, _nData.distance, _stateMachine.interpolatedBlendFactor);
-            _stateMachine.VerticalOffset = Mathf.Lerp(_lastData.yOffset, _nData.yOffset, _stateMachine.interpolatedBlendFactor);
-            
-            _stateMachine.FOV = Mathf.Lerp(_lastData.fov, _nData.fov, _stateMachine.interpolatedBlendFactor);
+            StateFOV = _nData.fov;
         }
 
         public void SetData(NormalPanData data)
@@ -35,5 +31,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
             _nData = data;
             _stateMachine.CurrentData = data;
         }
+
+        protected override float GetDistance() => _nData.distance;
     }
 }

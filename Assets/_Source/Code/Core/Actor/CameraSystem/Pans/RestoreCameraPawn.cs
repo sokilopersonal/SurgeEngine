@@ -21,9 +21,6 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
         {
             base.OnTick(dt);
             
-            _stateMachine.Distance = Mathf.Lerp(_lastData.distance, _stateMachine.StartDistance, _stateMachine.interpolatedBlendFactor);
-            _stateMachine.VerticalOffset = Mathf.Lerp(_lastData.yOffset, _stateMachine.StartVerticalOffset, _stateMachine.interpolatedBlendFactor);
-            
             _stateMachine.FOV = Mathf.Lerp(_lastData.fov, _stateMachine.FOV, _stateMachine.interpolatedBlendFactor);
             if (_stateMachine.blendFactor >= 1f)
             {
@@ -33,15 +30,12 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
 
         protected override void SetPosition(Vector3 targetPosition)
         {
-            Vector3 center = _stateMachine.ActorPosition;
-            Vector3 diff = targetPosition - center;
-            _stateMachine.Position = Vector3.Lerp(_lastData.position, diff, _stateMachine.interpolatedBlendFactor);
-            _stateMachine.Position += center;
+            StatePosition = targetPosition;
         }
 
         protected override void SetRotation(Vector3 actorPosition)
         {
-            _stateMachine.SetRotationInterpolated(actorPosition, _lastData.rotation);
+            StateRotation = Quaternion.LookRotation(actorPosition - StatePosition);
         }
 
         protected override void AutoLook(float multiplier)

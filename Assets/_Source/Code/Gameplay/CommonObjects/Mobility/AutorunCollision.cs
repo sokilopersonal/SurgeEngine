@@ -31,7 +31,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             {
                 if (!flags.HasFlag(FlagType.Autorun))
                 {
-                    flags.AddFlag(new AutorunFlag(FlagType.Autorun, keepTime > 0, keepTime, speed, easeTime, context.Kinematics.Speed));
+                    flags.AddFlag(new AutorunFlag(FlagType.Autorun, keepTime > 0, keepTime, speed, easeTime));
                     flags.AddFlag(new Flag(FlagType.OutOfControl, keepTime > 0, keepTime));
                 }
             }

@@ -29,9 +29,10 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
         {
             base.OnTick(dt);
 
-            _stateMachine.Position = Vector3.Lerp(_lastData.position, _panData.position, _stateMachine.interpolatedBlendFactor);
-            _stateMachine.SetRotationInterpolated(_actor.transform.position, _lastData.rotation);
-            _stateMachine.FOV = Mathf.Lerp(_lastData.fov, _panData.fov, _stateMachine.interpolatedBlendFactor);
+            StatePosition = _panData.position;
+            StateRotation = Quaternion.LookRotation(_actor.transform.position - _panData.position);
+            StateFOV = _panData.fov;
+            //_stateMachine.FOV = Mathf.Lerp(_lastData.fov, _panData.fov, _stateMachine.interpolatedBlendFactor);
         }
     }
 }
