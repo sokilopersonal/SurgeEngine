@@ -76,7 +76,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
                 
                 Vector3 direction = Vector3.Cross(Actor.transform.right, Vector3.up);
                 Rigidbody.linearVelocity = direction * (_config.jumpDashDistance *
-                                                         _config.JumpDashCurve.Evaluate(_timer));
+                                                        _config.JumpDashCurve.Evaluate(_timer));
                 Rigidbody.rotation = Quaternion.LookRotation(direction, Vector3.up);
                 
                 _timer += dt / _config.jumpDashTime;
@@ -96,6 +96,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
 
         public void SetTarget(HomingTarget target)
         {
+            _timer = 0;
             _target = target;
         }
 
