@@ -15,7 +15,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
         {
             base.OnEnter();
             
-            _lastData = _stateMachine.RememberLastData();
+            _stateMachine.RememberLastData();
         }
 
         public override void OnTick(float dt)
