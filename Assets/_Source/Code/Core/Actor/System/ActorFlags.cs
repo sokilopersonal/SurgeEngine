@@ -83,34 +83,60 @@ namespace SurgeEngine.Code.Core.Actor.System
 
     public class AutorunFlag : Flag
     {
-        private float _speed;
+        private float _targetSpeed;
         private float _easeTime;
-        private float _startSpeed;
-        private float _elapsed;
+        private float _currentEaseTime;
+        private float _initialSpeed;
+        private bool _accelerationStarted;
         
-        public AutorunFlag(FlagType type, bool isTemporary, float time, float speed, float easeTime, float startSpeed) : base(type,
+        public AutorunFlag(FlagType type, bool isTemporary, float time, float speed, float easeTime) : base(type,
             isTemporary, time)
         {
             this.type = FlagType.Autorun;
             
-            _speed = speed;
+            _targetSpeed = speed;
             _easeTime = easeTime;
-            _startSpeed = startSpeed;
+            _currentEaseTime = 0f;
+            _accelerationStarted = false;
         }
 
         public override void Count(float dt)
         {
             base.Count(dt);
 
-            _elapsed += dt;
-            float t = Mathf.Clamp01(_elapsed / _easeTime);
-            float currentSpeed = Mathf.Lerp(_startSpeed, _speed, t);
+            var kinematics = actor.Kinematics;
 
-            var k = actor.Kinematics;
-            var rb = k.Rigidbody;
-            var normal = k.Normal;
-            Vector3 vertical = Vector3.Project(rb.linearVelocity, normal);
-            rb.linearVelocity = actor.transform.forward * currentSpeed + vertical;
+            if (!_accelerationStarted)
+            {
+                _initialSpeed = kinematics.HorizontalSpeed;
+                _accelerationStarted = true;
+            }
+
+            _currentEaseTime += dt;
+
+            float progress = Mathf.Clamp01(_currentEaseTime / _easeTime);
+            float currentTargetSpeed = Mathf.Lerp(_initialSpeed, _targetSpeed, progress);
+
+            kinematics.SetInputDir(actor.transform.forward);
+
+            if (kinematics.Speed < currentTargetSpeed)
+            {
+                Vector3 currentVelocity = kinematics.Velocity;
+                Vector3 planarVelocity = Vector3.ProjectOnPlane(currentVelocity, kinematics.Normal);
+                Vector3 verticalVelocity = currentVelocity - planarVelocity;
+
+                Vector3 newPlanarVelocity = actor.transform.forward * currentTargetSpeed;
+
+                kinematics.Rigidbody.linearVelocity = newPlanarVelocity + verticalVelocity;
+
+                var path = kinematics.GetPath();
+                if (path != null)
+                {
+                    path.EvaluateWorld(out _, out var tg, out var up, out var right);
+                    
+                    kinematics.Project(right);
+                }
+            }
         }
     }
 

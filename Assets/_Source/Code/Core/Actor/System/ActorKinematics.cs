@@ -216,7 +216,7 @@ namespace SurgeEngine.Code.Core.Actor.System
                     endPos.y = _rigidbody.position.y;
                 
                     _rigidbody.position = Vector3.MoveTowards(_rigidbody.position, endPos, Mathf.Min(Speed / 64f, 1) * 16f * Time.fixedDeltaTime);
-                    _splineData.Time += Vector3.Dot(Velocity, Vector3.ProjectOnPlane(tg, Normal)) * Time.fixedDeltaTime;
+                    _splineData.Time += Vector3.Dot(Velocity, Vector3.ProjectOnPlane(tg, up)) * Time.fixedDeltaTime;
 
                     float distance = Vector3.Distance(_rigidbody.position, pos);
                     if (distance > 5f)
@@ -430,7 +430,7 @@ namespace SurgeEngine.Code.Core.Actor.System
         public void RotateSnapNormal(Vector3 targetNormal)
         {
             float minSpeed = normalSpeedThreshold * 0.5f;
-            float maxSpeed = normalSpeedThreshold * 2f;
+            float maxSpeed = normalSpeedThreshold * 3f;
             float t = Mathf.Clamp01((Speed - minSpeed) / (maxSpeed - minSpeed));
     
             Vector3 goal = Vector3.Slerp(Vector3.up, targetNormal, t);
