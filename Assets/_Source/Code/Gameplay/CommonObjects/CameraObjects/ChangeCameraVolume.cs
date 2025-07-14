@@ -53,6 +53,12 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.CameraObjects
 
         protected override void OnDrawGizmos()
         {
+            if (target != null)
+            {
+                Gizmos.color = Color.red;
+                Gizmos.DrawLine(transform.position, target.transform.position);
+            }
+            
             if (_boxCollider == null)
                 _boxCollider = GetComponent<BoxCollider>();
             

@@ -4,7 +4,7 @@ using UnityEditor;
 namespace SurgeEngine._Source.Editor.CameraEditor
 {
     [CustomEditor(typeof(ObjCameraFix))]
-    public class CameraFixEditor : UnityEditor.Editor
+    public class CameraFixEditor : CameraBaseEditor
     {
         public override void OnInspectorGUI()
         {
