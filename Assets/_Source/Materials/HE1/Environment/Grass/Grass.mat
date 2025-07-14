@@ -29,11 +29,11 @@ Material:
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - _ALPHATEST_ON
-  m_InvalidKeywords:
   - _DISABLE_DECALS
   - _DISABLE_SSR
   - _DISABLE_SSR_TRANSPARENT
   - _DOUBLESIDED_ON
+  m_InvalidKeywords:
   - _NORMALMAP_TANGENT_SPACE
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
@@ -48,7 +48,7 @@ Material:
   - TransparentDepthPostpass
   - TransparentBackface
   - RayTracingPrepass
-  m_LockedProperties: _WindStrength
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -110,6 +110,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _NormalMapOS:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_740d415ea53c408ba0b08b449a869536_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: b519ce227d4192d42a97263d9dd23eb1, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecularColorMap:
@@ -263,15 +267,15 @@ Material:
     - _SpecularOcclusionMode: 1
     - _SrcBlend: 1
     - _StencilRef: 0
-    - _StencilRefDepth: 1
+    - _StencilRefDepth: 0
     - _StencilRefDistortionVec: 4
     - _StencilRefGBuffer: 2
-    - _StencilRefMV: 33
+    - _StencilRefMV: 32
     - _StencilWriteMask: 6
     - _StencilWriteMaskDepth: 9
     - _StencilWriteMaskDistortionVec: 4
     - _StencilWriteMaskGBuffer: 15
-    - _StencilWriteMaskMV: 43
+    - _StencilWriteMaskMV: 41
     - _SubsurfaceMask: 1
     - _SupportDecals: 0
     - _SurfaceType: 0
@@ -292,10 +296,11 @@ Material:
     - _UVEmissive: 0
     - _UseEmissiveIntensity: 0
     - _UseShadowThreshold: 0
-    - _WindOffsetPower: 8
-    - _WindScale: 1
+    - _WindEnable: 1
+    - _WindOffsetPower: 1
+    - _WindScale: 0.4
     - _WindSpeed: 2
-    - _WindStrength: 0.5
+    - _WindStrength: 0.3
     - _ZTestDepthEqualForOpaque: 3
     - _ZTestGBuffer: 3
     - _ZTestModeDistortion: 4
@@ -311,7 +316,7 @@ Material:
     - _EmissiveColorLDR: {r: 0, g: 0, b: 0, a: 1}
     - _InvPrimScale: {r: 1, g: 1, b: 0, a: 0}
     - _IridescenceThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
-    - _Offset: {r: 0, g: 0.5, b: 0, a: 0}
+    - _Offset: {r: 0, g: 0, b: 0, a: 0}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
     - _ThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
     - _TipColor: {r: 0.6, g: 0.9, b: 0.6, a: 1}
@@ -320,6 +325,6 @@ Material:
     - _UVMappingMask: {r: 1, g: 0, b: 0, a: 0}
     - _UVMappingMaskEmissive: {r: 1, g: 0, b: 0, a: 0}
     - _UnlitColor: {r: 1, g: 1, b: 1, a: 1}
-    - _WindMovement: {r: 0.66, g: 0, b: 0, a: 0}
+    - _WindMovement: {r: -1, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
