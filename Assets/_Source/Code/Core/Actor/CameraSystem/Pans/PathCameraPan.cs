@@ -22,7 +22,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
         {
             base.OnExit();
             
-            _stateMachine.SetDirection(_actor.transform.forward);
+            _stateMachine.SetDirection(_stateMachine.Transform.forward);
         }
 
         public override void OnTick(float dt)
