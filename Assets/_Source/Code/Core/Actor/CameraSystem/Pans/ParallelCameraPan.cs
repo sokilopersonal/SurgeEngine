@@ -31,7 +31,6 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
             base.OnTick(dt);
             
             _stateMachine.SetDirection(_vData.forward);
-
             StateFOV = _vData.fov;
         }
 
@@ -63,5 +62,6 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
         }
 
         protected override float GetDistance() => _vData.distance;
+        protected override float GetVerticalOffset() => _vData.yOffset;
     }
 }

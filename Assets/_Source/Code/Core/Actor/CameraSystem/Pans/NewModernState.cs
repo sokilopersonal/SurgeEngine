@@ -18,8 +18,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
         private float _lookYTime;
         private float _xAutoLookVelocity;
         private float _yAutoLookVelocity;
-
-        private float verticalOffset;
+        
         private float _verticalLag;
         private float _verticalLagVelocity;
         private float _forwardLag;
@@ -67,8 +66,6 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
-
-            verticalOffset = _master.YOffset;
             
             LookAxis();
             ModernSetup();
@@ -99,10 +96,15 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
 
         protected Vector3 CalculateTarget(out Vector3 targetPosition, Vector3 dir, float distance)
         {
-            Vector3 actorPosition = _actor.transform.position + Vector3.up * verticalOffset + Vector3.up * _verticalLag;
+            Vector3 actorPosition = _actor.transform.position + Vector3.up * GetVerticalOffset() + Vector3.up * _verticalLag;
             Vector3 initialTargetPosition = actorPosition + dir * (distance + _forwardLag);
             targetPosition = HandleCameraCollision(actorPosition, initialTargetPosition, distance);
             return actorPosition;
+        }
+
+        protected virtual float GetVerticalOffset()
+        {
+            return _master.YOffset;
         }
 
         private Vector3 HandleCameraCollision(Vector3 actorPosition, Vector3 targetPosition, float originalDistance)

@@ -33,5 +33,6 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
         }
 
         protected override float GetDistance() => _nData.distance;
+        protected override float GetVerticalOffset() => _nData.yOffset;
     }
 }
