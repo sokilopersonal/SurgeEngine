@@ -19,7 +19,9 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
             base.OnEnter();
 
             _stateMachine.CurrentData = _panData;
-            _lastData = _stateMachine.RememberLastData();
+            _stateMachine.RememberLastData();
+            
+            StatePosition = _stateMachine.Transform.position;
         }
 
         public override void OnExit()
@@ -33,8 +35,8 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
         {
             base.OnTick(dt);
             
-            _stateMachine.SetRotationInterpolated(_actor.transform.position, _lastData.rotation);
-            _stateMachine.FOV = Mathf.Lerp(_lastData.fov, 50, _stateMachine.interpolatedBlendFactor);
+            StateRotation = Quaternion.LookRotation(_actor.transform.position - StatePosition);
+            StateFOV = _panData.fov;
         }
     }
 }
