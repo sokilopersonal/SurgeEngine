@@ -108,6 +108,8 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
             StateMachine.AddState(new RestoreCameraPawn(Actor));
             StateMachine.AddState(new FallCameraState(Actor));
             StateMachine.AddState(new PointCameraPan(Actor));
+            StateMachine.AddState(new PathCameraPan(Actor));
+            StateMachine.AddState(new PathTargetCameraPan(Actor));
 
             var start = Actor.GetStartData();
             if (start.startType == StartType.None || start.startType == StartType.Dash)

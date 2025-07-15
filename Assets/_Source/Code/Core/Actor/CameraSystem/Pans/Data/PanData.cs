@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Splines;
 
 namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans.Data
 {
@@ -42,6 +43,13 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans.Data
         public Vector3 offset;
         public Vector2 localLookOffset;
         public Vector3 Forward { get; set; }
+    }
+
+    [Serializable]
+    public class PathPanData : PanData
+    {
+        public SplineContainer container;
+        public float offsetOnEye = -10f;
     }
 
     public enum RestoreType

@@ -10,7 +10,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
         
         protected CameraBasePan(ActorBase owner) : base(owner) { }
 
-        public void SetData(T data)
+        public virtual void SetData(T data)
         {
             _panData = data;
             _stateMachine.CurrentData = data;
