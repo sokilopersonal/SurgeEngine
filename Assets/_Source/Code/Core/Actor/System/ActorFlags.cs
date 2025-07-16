@@ -108,7 +108,7 @@ namespace SurgeEngine.Code.Core.Actor.System
 
             if (!_accelerationStarted)
             {
-                _initialSpeed = kinematics.HorizontalSpeed;
+                _initialSpeed = kinematics.Speed;
                 _accelerationStarted = true;
             }
 
@@ -119,7 +119,7 @@ namespace SurgeEngine.Code.Core.Actor.System
 
             kinematics.SetInputDir(actor.transform.forward);
 
-            if (kinematics.Speed < currentTargetSpeed)
+            if (kinematics.Speed < currentTargetSpeed || _targetSpeed == 0)
             {
                 Vector3 currentVelocity = kinematics.Velocity;
                 Vector3 planarVelocity = Vector3.ProjectOnPlane(currentVelocity, kinematics.Normal);

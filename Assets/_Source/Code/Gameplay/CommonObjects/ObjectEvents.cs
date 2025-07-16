@@ -6,7 +6,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects
 {
     public static class ObjectEvents
     {
-        public static Action<ContactBase> OnObjectCollected;
+        public static Action<ContactBase> OnObjectTriggered;
         public static Action<EnemyBase> OnEnemyDied;
 
         public static Action<TrickJumper> OnTrickJumperTriggered;

@@ -35,7 +35,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects
 
         public virtual void Contact(Collider msg, ActorBase context)
         {
-            ObjectEvents.OnObjectCollected?.Invoke(this);
+            ObjectEvents.OnObjectTriggered?.Invoke(this);
             
             OnContact?.Invoke(this);
         }

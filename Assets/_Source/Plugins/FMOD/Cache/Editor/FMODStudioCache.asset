@@ -1160,6 +1160,7 @@ MonoBehaviour:
   - {fileID: 5439632411226267763}
   - {fileID: 8836162866289641660}
   - {fileID: -9191286061163524759}
+  - {fileID: 9003022446317602941}
   EditorParameters:
   - {fileID: 5995610635198282250}
   - {fileID: -8328794580217013048}
@@ -1171,7 +1172,7 @@ MonoBehaviour:
   - {fileID: 2004410931106567551}
   StringsBanks:
   - {fileID: 2584338381920338702}
-  cacheTime: 638881912493802112
+  cacheTime: 638881914704125867
   cacheVersion: 131619
 --- !u!114 &573100900434683461
 MonoBehaviour:
@@ -1323,7 +1324,7 @@ MonoBehaviour:
   Path: FMOD/SurgeEngine/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638881911590505623
+  lastModified: 638881914596879673
   FileSizes:
   - Name: Desktop
     Value: 5220
@@ -1424,10 +1425,10 @@ MonoBehaviour:
   Path: FMOD/SurgeEngine/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638881911590538043
+  lastModified: 638881914596910207
   FileSizes:
   - Name: Desktop
-    Value: 4560
+    Value: 4602
   Exists: 1
 --- !u!114 &2630509824030196603
 MonoBehaviour:
@@ -1795,10 +1796,10 @@ MonoBehaviour:
   Path: FMOD/SurgeEngine/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 638881912493802112
+  lastModified: 638881914704125867
   FileSizes:
   - Name: Desktop
-    Value: 1385344
+    Value: 1399424
   Exists: 1
 --- !u!114 &5321302748100636959
 MonoBehaviour:
@@ -2440,6 +2441,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 4692
+--- !u!114 &9003022446317602941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/CommonObjects/GoalRing/GoalRing
+  m_EditorClassIdentifier: 
+  Path: event:/CommonObjects/GoalRing/GoalRing
+  Guid:
+    Data1: -1655884721
+    Data2: 1312674492
+    Data3: -1938277975
+    Data4: 618343041
+  Banks:
+  - {fileID: 5254960618264887086}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 1418
 --- !u!114 &9126713525473972173
 MonoBehaviour:
   m_ObjectHideFlags: 0

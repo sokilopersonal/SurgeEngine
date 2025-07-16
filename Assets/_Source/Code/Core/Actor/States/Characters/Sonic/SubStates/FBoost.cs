@@ -45,7 +45,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates
             owner.Input.XAction += BoostAction;
             Actor.StateMachine.OnStateAssign += OnStateAssign;
 
-            ObjectEvents.OnObjectCollected += OnRingCollected;
+            ObjectEvents.OnObjectTriggered += OnRingCollected;
             ObjectEvents.OnEnemyDied += OnEnemyDied;
         }
         
@@ -54,7 +54,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates
             Actor.Input.XAction -= BoostAction;
             Actor.StateMachine.OnStateAssign -= OnStateAssign;
 
-            ObjectEvents.OnObjectCollected -= OnRingCollected;
+            ObjectEvents.OnObjectTriggered -= OnRingCollected;
             ObjectEvents.OnEnemyDied -= OnEnemyDied;
         }
 

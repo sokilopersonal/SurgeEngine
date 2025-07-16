@@ -4,8 +4,10 @@ using SurgeEngine.Code.Core.Actor.System;
 using SurgeEngine.Code.Core.Actor.System.Characters.Sonic;
 using SurgeEngine.Code.Gameplay.CommonObjects;
 using SurgeEngine.Code.Gameplay.CommonObjects.Collectables;
+using SurgeEngine.Code.Gameplay.CommonObjects.GoalRing;
 using SurgeEngine.Code.Gameplay.CommonObjects.HUD;
 using SurgeEngine.Code.Gameplay.CommonObjects.System;
+using SurgeEngine.Code.Gameplay.UI;
 using SurgeEngine.Code.Infrastructure.Custom;
 using TMPro;
 using UnityEngine;
@@ -42,6 +44,7 @@ namespace SurgeEngine.Code.Core.Actor.HUD
         [SerializeField] private BoostBarController boostBarController;
 
         [Inject] private ActorBase _actor;
+        [Inject] private DiContainer _instantiator;
         
         private Camera _camera;
 
@@ -52,13 +55,13 @@ namespace SurgeEngine.Code.Core.Actor.HUD
 
         private void OnEnable()
         {
-            ObjectEvents.OnObjectCollected += OnRingCollected;
+            ObjectEvents.OnObjectTriggered += OnObjectTriggered;
             _actor.OnRingLoss += OnRingLoss;
         }
 
         private void OnDisable()
         {
-            ObjectEvents.OnObjectCollected -= OnRingCollected;
+            ObjectEvents.OnObjectTriggered -= OnObjectTriggered;
             _actor.OnRingLoss -= OnRingLoss;
         }
 
@@ -96,12 +99,19 @@ namespace SurgeEngine.Code.Core.Actor.HUD
             }
         }
 
-        private void OnRingCollected(ContactBase obj)
+        private void OnObjectTriggered(ContactBase obj)
         {
             if (obj is Ring)
             {
                 RingHUD ringHUDInstance = Instantiate(ringHUDPrefab, obj.transform.position, obj.transform.rotation);
+                _instantiator.InjectGameObject(ringHUDInstance.gameObject);
                 ringHUDInstance.Initialize(this);
+            }
+
+            if (obj is GoalRing goalRing)
+            {
+                var screen = goalRing.CurrentGoalScreen;
+                screen.OnFlashEnd += () => gameObject.SetActive(false);
             }
         }
 

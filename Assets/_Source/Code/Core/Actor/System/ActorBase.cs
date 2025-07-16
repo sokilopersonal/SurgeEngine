@@ -118,6 +118,7 @@ namespace SurgeEngine.Code.Core.Actor.System
             StateMachine.AddState(new FStateJumpPanel(this));
             StateMachine.AddState(new FStateDashRing(this));
             StateMachine.AddState(new FStateDead(this));
+            StateMachine.AddState(new FStateGoal(this));
         }
 
         public void SetStart(StartData data)

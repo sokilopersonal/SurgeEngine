@@ -2,6 +2,7 @@
 using SurgeEngine.Code.Core.Actor.System;
 using SurgeEngine.Code.Infrastructure.Custom;
 using UnityEngine;
+using Zenject;
 
 namespace SurgeEngine.Code.Gameplay.CommonObjects.HUD
 {
@@ -16,8 +17,9 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.HUD
         private Vector3 _startScale;
 
         private float _distance;
-        
-        private Camera _camera => ActorContext.Context.Camera.GetCamera();
+
+        [Inject] private ActorBase _actor;
+        private Camera _camera => _actor.Camera.GetCamera();
         private ActorStageHUD _actorStageHUD;
 
         public void Initialize(ActorStageHUD hud)

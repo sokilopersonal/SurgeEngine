@@ -2,6 +2,8 @@ using System;
 using DG.Tweening;
 using SurgeEngine.Code.Core.Actor.States;
 using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine.Code.Gameplay.CommonObjects;
+using SurgeEngine.Code.Gameplay.CommonObjects.GoalRing;
 using SurgeEngine.Code.Infrastructure.Custom;
 using SurgeEngine.Code.Infrastructure.Tools.Managers;
 using SurgeEngine.Code.UI.Pages.Baseline;
@@ -48,14 +50,18 @@ namespace SurgeEngine.Code.UI
             
             pauseActionReference.action.Enable();
             pauseActionReference.action.performed += OnPauseAction;
+
+            ObjectEvents.OnObjectTriggered += OnObjectTriggered;
         }
-        
+
         protected override void OnDisable()
         {
             base.OnDisable();
             
             pauseActionReference.action.Disable();
             pauseActionReference.action.performed -= OnPauseAction;
+            
+            ObjectEvents.OnObjectTriggered -= OnObjectTriggered;
         }
 
         private void Update()
@@ -187,6 +193,14 @@ namespace SurgeEngine.Code.UI
                 isPaused ? 0f : 1f, isPaused ? 0f : 0.25f));
             _pauseFadeTween.SetLink(gameObject);
             _pauseFadeTween.SetUpdate(true);
+        }
+
+        private void OnObjectTriggered(ContactBase obj)
+        {
+            if (obj is GoalRing)
+            {
+                enabled = false;
+            }
         }
 
         private void OnApplicationFocus(bool hasFocus)
