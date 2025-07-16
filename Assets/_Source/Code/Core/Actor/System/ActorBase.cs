@@ -197,7 +197,7 @@ namespace SurgeEngine.Code.Core.Actor.System
                 IsDead = false;
                 
                 // Imagine it's over
-                if (Stage.Instance.data.RingCount <= 0)
+                if (Stage.Instance.Data.RingCount <= 0)
                 {
                     if (damageable is GeneralDamage) StateMachine.GetState<FStateDamage>()?.SetState(DamageState.Dead);
 
@@ -208,12 +208,11 @@ namespace SurgeEngine.Code.Core.Actor.System
                     // Lose rings
                     const int min = 15;
 
-                    var data = Stage.Instance.data;
+                    var data = Stage.Instance.Data;
                     var ringCount = data.RingCount;
 
                     int value = Mathf.CeilToInt(Mathf.Max(min, ringCount * Random.Range(0.5f, 0.8f)));
                     data.RingCount -= Mathf.Clamp(value, 0, ringCount);
-                    Stage.Instance.data = data;
                     
                     OnRingLoss?.Invoke();
                 }

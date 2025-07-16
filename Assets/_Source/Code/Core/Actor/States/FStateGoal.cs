@@ -1,6 +1,8 @@
-﻿using SurgeEngine.Code.Core.Actor.States.BaseStates;
+﻿using System;
+using SurgeEngine.Code.Core.Actor.States.BaseStates;
 using SurgeEngine.Code.Core.Actor.System;
 using SurgeEngine.Code.Gameplay.CommonObjects.GoalRing;
+using SurgeEngine.Code.Gameplay.CommonObjects.System;
 using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.States
@@ -14,7 +16,7 @@ namespace SurgeEngine.Code.Core.Actor.States
             base.OnEnter();
         }
 
-        public void SetGoal(GoalRing goal)
+        public void SetGoal(GoalRing goal, GoalRank rank)
         {
             Rigidbody.transform.position = goal.transform.position;
             Rigidbody.transform.rotation = Quaternion.Euler(0, goal.transform.rotation.eulerAngles.y, 0);
@@ -34,9 +36,33 @@ namespace SurgeEngine.Code.Core.Actor.States
             const string ReactionD = "ReactionD";
             const string ReactionE = "ReactionE";
 
+            string reaction = ReactionE;
+
+            switch (rank)
+            {
+                case GoalRank.S:
+                    reaction = ReactionS;
+                    break;
+                case GoalRank.A:
+                    reaction = ReactionA;
+                    break;
+                case GoalRank.B:
+                    reaction = ReactionB;
+                    break;
+                case GoalRank.C:
+                    reaction = ReactionC;
+                    break;
+                case GoalRank.D:
+                    reaction = ReactionD;
+                    break;
+                case GoalRank.E:
+                    reaction = ReactionE;
+                    break;
+            }
+
             var animator = Animation.StateAnimator;
             animator.TransitionToStateDelayed(ResultLook, 1.5f)
-                .Then(() => animator.TransitionToState(ReactionS));
+                .Then(() => animator.TransitionToState(reaction));
         }
     }
 }

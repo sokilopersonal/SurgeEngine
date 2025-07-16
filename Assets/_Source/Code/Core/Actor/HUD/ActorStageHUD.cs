@@ -70,12 +70,12 @@ namespace SurgeEngine.Code.Core.Actor.HUD
             UpdateRingCount();
             boostBarController.UpdateBoostBar();
             UpdateHomingTarget();
-            UpdateHUDText(Stage.Instance.data);
+            UpdateHUDText(Stage.Instance.Data);
         }
 
         private void UpdateRingCount()
         {
-            ringCountText.text = $"{Stage.Instance.data.RingCount:000}";
+            ringCountText.text = $"{Stage.Instance.Data.RingCount:000}";
         }
 
         private void UpdateHUDText(StageData stageData)

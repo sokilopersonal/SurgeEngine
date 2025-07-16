@@ -261,7 +261,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
 
         protected virtual void SetRotation(Vector3 actorPosition)
         {
-            StateRotation = Quaternion.LookRotation(actorPosition + _stateMachine.Transform.TransformDirection(_stateMachine.LookOffset) - StatePosition);
+            StateRotation = Quaternion.LookRotation(actorPosition + _stateMachine.GetOffset() - StatePosition);
         }
 
         private float GetAutoAngle()

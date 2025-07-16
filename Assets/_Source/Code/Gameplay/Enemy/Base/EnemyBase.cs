@@ -50,7 +50,7 @@ namespace SurgeEngine.Code.Gameplay.Enemy.Base
 
         private void AddScore()
         {
-            Stage.Instance.data.AddScore(300);
+            Stage.Instance.Data.AddScore(300);
         }
     }
 }

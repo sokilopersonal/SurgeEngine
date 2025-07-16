@@ -12,7 +12,7 @@ namespace SurgeEngine.Code.Infrastructure.Custom
             int abs = Mathf.Abs(score);
             if (abs > 0)
             {
-                Stage.Instance.data.AddScore(abs);
+                Stage.Instance.Data.AddScore(abs);
                 return true;
             }
             
