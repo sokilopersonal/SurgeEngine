@@ -132,6 +132,7 @@ namespace SurgeEngine.Code.Core.Actor.System
             Vector3 vel = _rigidbody.linearVelocity;
             Vector3 dir = _inputDir;
             SurgeMath.SplitPlanarVector(vel, normal, out Vector3 planar, out var vertical);
+            //vertical = Vector3.ClampMagnitude(vertical, _config.maxVerticalSpeed);
             
             WriteMovementVector(planar);
             _planarVelocity = planar;

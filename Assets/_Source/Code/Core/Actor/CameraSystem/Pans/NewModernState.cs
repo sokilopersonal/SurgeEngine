@@ -160,7 +160,8 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
                 excludedStates.Any(state => state.IsAssignableFrom(_actor.StateMachine.CurrentState.GetType()));
             
             Vector3 vel = _actor.Kinematics.Velocity;
-            float targetYLag = !_actor.Kinematics.CheckForGround(out _) && !isExcludedState // In the air
+            bool allowLag = !_actor.Kinematics.CheckForGround(out _) && !isExcludedState; // In the air
+            float targetYLag = allowLag
                 ? Mathf.Clamp(vel.y * YLagVelocityFactor, _master.YLagMin, _master.YLagMax) 
                 : 0f;
             
@@ -174,7 +175,14 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
                 : RestoreSmoothingTime * (1 - _actor.Kinematics.Speed * SpeedModFactor);
 
             _lookYTime = Mathf.Lerp(_lookYTime, targetLookYTime, Time.deltaTime * LerpSpeed);
-            _stateMachine.LookOffset.y = Mathf.SmoothDamp(_stateMachine.LookOffset.y, -adjustedYLag * YLagMultiplier, ref _lookVelocity, _lookYTime);
+            if (allowLag)
+            {
+                _stateMachine.LookOffset.y = Mathf.SmoothDamp(_stateMachine.LookOffset.y, -adjustedYLag * YLagMultiplier, ref _lookVelocity, _lookYTime);
+            }
+            else
+            {
+                _stateMachine.LookOffset.y = Mathf.SmoothDamp(_stateMachine.LookOffset.y, 0, ref _lookVelocity, 0.5f);
+            }
         }
 
         protected virtual void AutoLookDirection()
