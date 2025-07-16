@@ -40,6 +40,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
             base.OnExit();
 
             Model.ResetCollisionToDefault();
+            Model.collision.isTrigger = false;
             _target = null;
         }
 
@@ -98,6 +99,11 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
         {
             _timer = 0;
             _target = target;
+
+            if (_target != null)
+            {
+                Model.collision.isTrigger = true;
+            }
         }
 
         public float Timeout { get; set; }
