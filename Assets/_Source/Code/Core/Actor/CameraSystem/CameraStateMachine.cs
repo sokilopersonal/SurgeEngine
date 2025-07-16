@@ -294,18 +294,6 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
             Pitch = pitch;
         }
 
-        public void SetRotation(Vector3 from)
-        {
-            Quaternion look = Quaternion.LookRotation(from - Position);
-            Rotation = look;
-        }
-        
-        public void SetRotationInterpolated(Vector3 from, Quaternion last)
-        {
-            Quaternion look = Quaternion.LookRotation(from - Position);
-            Rotation = Quaternion.Lerp(last, look, interpolatedBlendFactor);
-        }
-
         public void SetLateOffset(Vector3 offset)
         {
             LateOffset = offset;
@@ -319,6 +307,8 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
             cameraSpaceSideOffset = Transform.TransformDirection(cameraSpaceSideOffset);
             return globalVerticalOffset + cameraSpaceSideOffset + Transform.TransformDirection(PanLookOffset);
         }
+
+        public void ClearVolumes() => _volumes.Clear();
 
         public LastCameraData RememberLastData()
         {

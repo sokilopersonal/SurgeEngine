@@ -46,6 +46,8 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.GoalRing
                     fixedPanData.target = target.rotation;
                     fixedPanData.fov = 45;
                     
+                    context.Camera.StateMachine.ClearVolumes();
+                    
                     context.Camera.StateMachine.SetState<FixedCameraPan>().SetData(fixedPanData);
                 };
             }
