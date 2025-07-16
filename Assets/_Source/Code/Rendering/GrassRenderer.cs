@@ -129,7 +129,7 @@ namespace SurgeEngine.Code.Rendering
                 _visibleMatrices,
                 _visibleInstanceCount,
                 _propertyBlock,
-                UnityEngine.Rendering.ShadowCastingMode.On,
+                UnityEngine.Rendering.ShadowCastingMode.Off,
                 false
             );
         }
