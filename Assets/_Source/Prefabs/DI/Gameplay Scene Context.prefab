@@ -44,7 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23b517f6ac874775bb1d486a44fb4f23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pageController: {fileID: 5286319803471583851, guid: 73d011082188d8a4084c801ec9beb62d, type: 3}
   pauseHandlerPrefab: {fileID: 3527368928707079476, guid: 73d011082188d8a4084c801ec9beb62d, type: 3}
 --- !u!1 &872356385269658859
 GameObject:
@@ -55,6 +54,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 34729244501969428}
+  - component: {fileID: 5054113536844244027}
   - component: {fileID: 885359228151966984}
   m_Layer: 0
   m_Name: SpawnPoint
@@ -78,6 +78,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 922834922717481319}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5054113536844244027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 872356385269658859}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b23f94eb2a31488983ee826229ba1560, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startData:
+    startType: 1
+    speed: 0
+    time: 0
 --- !u!114 &885359228151966984
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -150,6 +166,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac7f4cfc26d24c059d1b279c11d7c307, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+    <RingCount>k__BackingField: 0
+    <Time>k__BackingField: 0
+    <State>k__BackingField: 0
 --- !u!114 &3773654207124443349
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -199,11 +219,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stage: {fileID: 1035884821754579409}
   actorPrefab: {fileID: 8308832228826993834, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
-  spawnPoint: {fileID: 34729244501969428}
-  data:
-    <startType>k__BackingField: 0
-    <speed>k__BackingField: 0
-    <time>k__BackingField: 0
+  spawnPoint: {fileID: 5054113536844244027}
   hudPrefab: {fileID: 3385306912846119046, guid: 40eb2ac93111d8341ab7e53e36f77359, type: 3}
 --- !u!1 &8480475637925241772
 GameObject:

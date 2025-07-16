@@ -3,6 +3,7 @@ using NaughtyAttributes;
 using SurgeEngine.Code.Core.Actor.HUD;
 using SurgeEngine.Code.Core.Actor.States;
 using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine.Code.Gameplay.CommonObjects;
 using SurgeEngine.Code.Gameplay.CommonObjects.System;
 using UnityEngine;
 using Zenject;
@@ -16,8 +17,7 @@ namespace SurgeEngine.Code.Infrastructure.DI
         
         [Header("Actor")]
         [SerializeField] private Transform actorPrefab;
-        [SerializeField] private Transform spawnPoint;
-        [SerializeField] private StartData data;
+        [SerializeField] private ActorSpawn spawnPoint;
         
         [Header("HUD")]
         [SerializeField] private ActorStageHUD hudPrefab;
@@ -43,8 +43,9 @@ namespace SurgeEngine.Code.Infrastructure.DI
                 throw new NullReferenceException("Spawn Point is not assigned, please do it in ActorInstaller under GameplaySceneContext. Stopping play mode...");
 #endif
             }
-            
-            data.StartTransform = spawnPoint;
+
+            var data = spawnPoint.StartData;
+            data.StartTransform = spawnPoint.transform;
 
             var instance = Container.InstantiatePrefabForComponent<ActorBase>(actorPrefab, data.StartTransform.position, data.StartTransform.rotation, null);
 
