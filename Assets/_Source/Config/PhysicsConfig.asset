@@ -40,13 +40,13 @@ MonoBehaviour:
   castLayer:
     serializedVersion: 2
     m_Bits: 67585
-  topSpeed: 40
-  maxSpeed: 60
-  minParaloopSpeed: 35
+  topSpeed: 46
+  maxSpeed: 80
+  minParaloopSpeed: 40
   minVerticalSpeed: 30
-  maxVerticalSpeed: 44
+  maxVerticalSpeed: 50
   airControl: 0.3
-  accelerationRate: 12
+  accelerationRate: 14
   accelerationCurve:
     serializedVersion: 2
     m_Curve:
@@ -71,10 +71,10 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  minDecelerationRate: 18
-  maxDecelerationRate: 15
-  airDecelerationRate: 24
-  minSkiddingRate: 28
+  minDecelerationRate: 16
+  maxDecelerationRate: 26
+  airDecelerationRate: 28
+  minSkiddingRate: 38
   maxSkiddingRate: 55
   skiddingThreshold: -0.7
   skiddingSpeedThreshold: 15
@@ -105,7 +105,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   turnSmoothing: 7
   jumpForce: 2.7
-  jumpHoldForce: 39
+  jumpHoldForce: 41
   jumpStartTime: 0.3
   jumpCollisionHeight: 1
   jumpCollisionCenter: -0.5
@@ -115,8 +115,8 @@ MonoBehaviour:
   slopeDeslopeAngle: 75
   slopeMinForceSpeed: 10
   slopeInactiveDuration: 0.15
-  slopeUphillForce: 14
-  slopeDownhillForce: 16
+  slopeUphillForce: 12
+  slopeDownhillForce: 9
   slopeMinAngle: 10
   slopeMinSpeed: 6
   railMask:

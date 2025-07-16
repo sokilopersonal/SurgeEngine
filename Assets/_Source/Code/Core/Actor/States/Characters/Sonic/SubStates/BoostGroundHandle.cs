@@ -17,10 +17,17 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates
             if (boost.Active)
             {
                 if (actor.Input.moveVector == Vector3.zero) actor.Kinematics.SetInputDir(actor.transform.forward);
-                float maxSpeed = config.MaxBoostSpeed;
+                float maxSpeed = actor.Config.topSpeed * config.TopSpeedMultiplier;
                 if (speed < maxSpeed)
                 {
                     body.AddForce(body.transform.forward * (config.Acceleration * dt), ForceMode.Impulse);
+                }
+                else
+                {
+                    if (actor.Flags.HasFlag(FlagType.Autorun)) return;
+                    
+                    Vector3 target = body.linearVelocity.normalized * maxSpeed;
+                    body.linearVelocity = Vector3.MoveTowards(body.linearVelocity, target, 8f * dt);
                 }
             }
         }

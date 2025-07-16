@@ -22,7 +22,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates
 
         public float MaxBoostEnergy => _config.BoostCapacity;
 
-        public bool CanAirBoost ;
+        public bool CanAirBoost;
 
         private float _boostEnergy;
         private IBoostHandler _boostHandler;

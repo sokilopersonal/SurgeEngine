@@ -40,11 +40,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
             FBoost boost = StateMachine.GetSubState<FBoost>();
             if (boost.CanAirBoost)
             {
-                Vector3 direction = Vector3.Cross(Rigidbody.transform.right, Vector3.up);
-                Vector3 force = direction * _config.AirBoostSpeed;
-
-                Rigidbody.linearVelocity = force;
-                Model.RotateBody(Vector3.up);
+                
             }
             
             if (Utility.TickTimer(ref _timer, 0.3f))

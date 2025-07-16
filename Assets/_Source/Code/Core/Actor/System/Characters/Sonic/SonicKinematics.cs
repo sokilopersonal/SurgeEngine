@@ -20,7 +20,7 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
 
         private void FindHomingTarget()
         {
-            if (Actor.StateMachine.CurrentState is FStateAir)
+            if (Actor.StateMachine.CurrentState is FStateAir && !Actor.Flags.HasFlag(FlagType.OutOfControl))
             {
                 HomingTarget = SonicTools.FindHomingTarget();
             }

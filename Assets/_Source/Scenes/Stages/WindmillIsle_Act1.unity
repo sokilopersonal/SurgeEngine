@@ -5,7 +5,7 @@ OcclusionCullingSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_OcclusionBakeSettings:
-    smallestOccluder: 5
+    smallestOccluder: 4
     smallestHole: 0.2
     backfaceThreshold: 100
   m_SceneGUID: 49a4dae96d0dade48945b9fcef3aed65
@@ -385,7 +385,7 @@ MonoBehaviour:
   m_VolumetricShadowDimmer: 1
   m_ShadowFadeDistance: 10000
   m_UseContactShadow:
-    m_Override: 1
+    m_Override: 0
     m_UseOverride: 1
     m_Level: 2
   m_RayTracedContactShadow: 0
@@ -481,7 +481,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 10139
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 5.0760764e+31, y: 0.00087524165, z: 1.2190934e-32, w: 1.7086692e+19}
+  m_BoundingSphereOverride: {x: 9.6229e-41, y: 2.524355e-29, z: 0, w: 1.1754944e-38}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
@@ -5677,12 +5677,28 @@ PrefabInstance:
     m_TransformParent: {fileID: 339070711}
     m_Modifications:
     - target: {fileID: 1967743550613760045, guid: 8da811d51baa9f343bbdd4264c8598ea, type: 3}
+      propertyPath: m_Size.x
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1967743550613760045, guid: 8da811d51baa9f343bbdd4264c8598ea, type: 3}
       propertyPath: m_Size.y
-      value: 8.254219
+      value: 10.254219
+      objectReference: {fileID: 0}
+    - target: {fileID: 1967743550613760045, guid: 8da811d51baa9f343bbdd4264c8598ea, type: 3}
+      propertyPath: m_Size.z
+      value: 0.39857954
+      objectReference: {fileID: 0}
+    - target: {fileID: 1967743550613760045, guid: 8da811d51baa9f343bbdd4264c8598ea, type: 3}
+      propertyPath: m_Center.x
+      value: 0.5000005
       objectReference: {fileID: 0}
     - target: {fileID: 1967743550613760045, guid: 8da811d51baa9f343bbdd4264c8598ea, type: 3}
       propertyPath: m_Center.y
-      value: 1.1271095
+      value: 2.1271095
+      objectReference: {fileID: 0}
+    - target: {fileID: 1967743550613760045, guid: 8da811d51baa9f343bbdd4264c8598ea, type: 3}
+      propertyPath: m_Center.z
+      value: 0.099289626
       objectReference: {fileID: 0}
     - target: {fileID: 6906530688644862864, guid: 8da811d51baa9f343bbdd4264c8598ea, type: 3}
       propertyPath: isFinish
@@ -73897,7 +73913,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6906530688644862864, guid: 8da811d51baa9f343bbdd4264c8598ea, type: 3}
       propertyPath: speed
-      value: 70
+      value: 65
       objectReference: {fileID: 0}
     - target: {fileID: 6906530688644862864, guid: 8da811d51baa9f343bbdd4264c8598ea, type: 3}
       propertyPath: easeTime
@@ -89089,11 +89105,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2434895846924912876, guid: 7df9f771860145f408b10d041d05d40a, type: 3}
       propertyPath: m_Size.x
-      value: 10
+      value: 10.966415
       objectReference: {fileID: 0}
     - target: {fileID: 2434895846924912876, guid: 7df9f771860145f408b10d041d05d40a, type: 3}
       propertyPath: m_Size.y
       value: 21
+      objectReference: {fileID: 0}
+    - target: {fileID: 2434895846924912876, guid: 7df9f771860145f408b10d041d05d40a, type: 3}
+      propertyPath: m_Size.z
+      value: 0.7999878
+      objectReference: {fileID: 0}
+    - target: {fileID: 2434895846924912876, guid: 7df9f771860145f408b10d041d05d40a, type: 3}
+      propertyPath: m_Center.x
+      value: 0.4832077
+      objectReference: {fileID: 0}
+    - target: {fileID: 2434895846924912876, guid: 7df9f771860145f408b10d041d05d40a, type: 3}
+      propertyPath: m_Center.z
+      value: 0.02346617
       objectReference: {fileID: 0}
     - target: {fileID: 3340561544493559877, guid: 7df9f771860145f408b10d041d05d40a, type: 3}
       propertyPath: pitch
