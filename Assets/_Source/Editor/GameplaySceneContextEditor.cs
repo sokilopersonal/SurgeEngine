@@ -33,10 +33,12 @@ namespace SurgeEngine._Source.Editor
                 var spawnSO = new SerializedObject(_spawnPointField.objectReferenceValue);
                 spawnSO.Update();
                 
-                EditorGUILayout.Space(5);
-                
                 using (new GUILayout.VerticalScope("box"))
                 {
+                    var style = new GUIStyle(EditorStyles.boldLabel);
+                    style.alignment = TextAnchor.MiddleCenter;
+                    EditorGUILayout.LabelField("Attached Spawn", style);
+                    
                     var data = spawnSO.FindProperty("startData");
                     EditorGUILayout.PropertyField(data.FindPropertyRelative("startType"));
                     EditorGUILayout.PropertyField(data.FindPropertyRelative("speed"));
