@@ -4,7 +4,7 @@ using UnityEngine;
 namespace SurgeEngine.Code.Gameplay.CommonObjects
 {
     [ExecuteAlways]
-    public class ActorModelRenderer : MonoBehaviour
+    public class ActorModelRendererGizmos : MonoBehaviour
     {
         [Space(10)]
         [InfoBox("Assign the mesh and materials per sub mesh. Project contains an editor preset with Sonic mesh and materials configured.")]
@@ -23,7 +23,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects
             }
 
             int submeshCount = meshToRender.subMeshCount;
-            Matrix4x4 matrix = Matrix4x4.TRS(transform.position + Vector3.down, transform.rotation, transform.lossyScale);
+            Matrix4x4 matrix = Matrix4x4.TRS(transform.position, transform.rotation, transform.lossyScale);
 
             for (int subMeshIndex = 0; subMeshIndex < submeshCount; subMeshIndex++)
             {

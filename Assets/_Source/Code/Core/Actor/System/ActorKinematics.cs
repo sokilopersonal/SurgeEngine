@@ -431,7 +431,7 @@ namespace SurgeEngine.Code.Core.Actor.System
         public void RotateSnapNormal(Vector3 targetNormal)
         {
             float minSpeed = normalSpeedThreshold * 0.5f;
-            float maxSpeed = normalSpeedThreshold * 3f;
+            float maxSpeed = normalSpeedThreshold * 1.5f;
             float t = Mathf.Clamp01((Speed - minSpeed) / (maxSpeed - minSpeed));
     
             Vector3 goal = Vector3.Slerp(Vector3.up, targetNormal, t);
