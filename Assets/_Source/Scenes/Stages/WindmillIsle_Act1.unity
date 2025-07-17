@@ -5,7 +5,7 @@ OcclusionCullingSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_OcclusionBakeSettings:
-    smallestOccluder: 4
+    smallestOccluder: 3
     smallestHole: 0.2
     backfaceThreshold: 100
   m_SceneGUID: 49a4dae96d0dade48945b9fcef3aed65
@@ -71067,7 +71067,7 @@ PrefabInstance:
     - target: {fileID: 7719288847048677561, guid: 17fe1b2335965bf458073bda81e475b5, type: 3}
       propertyPath: spawnPoint
       value: 
-      objectReference: {fileID: 256201006}
+      objectReference: {fileID: 1008670823}
     - target: {fileID: 7719288847048677561, guid: 17fe1b2335965bf458073bda81e475b5, type: 3}
       propertyPath: data.<startType>k__BackingField
       value: 1
@@ -71080,6 +71080,17 @@ PrefabInstance:
       addedObject: {fileID: 256201004}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 17fe1b2335965bf458073bda81e475b5, type: 3}
+--- !u!114 &1008670823 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5054113536844244027, guid: 17fe1b2335965bf458073bda81e475b5, type: 3}
+  m_PrefabInstance: {fileID: 1008670820}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b23f94eb2a31488983ee826229ba1560, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1010865861
 PrefabInstance:
   m_ObjectHideFlags: 0
