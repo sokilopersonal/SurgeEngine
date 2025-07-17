@@ -160,14 +160,14 @@ namespace SurgeEngine.Code.Core.Actor.System
 
             if (rawInput.sqrMagnitude > 0.02f)
             {
-                Vector3 targetDir = inputDir.normalized;
+                Vector3 targetDir = Vector3.ProjectOnPlane(inputDir.normalized, Vector3.up);
 
                 if (currentSpeed > speedThreshold)
                 {
                     var velDir = Vector3.ProjectOnPlane(currentVelocity.normalized, normal);
                     float t = Mathf.Clamp01((currentSpeed - speedThreshold) / (config.topSpeed - speedThreshold));
                     t = Mathf.Sqrt(t);
-                    targetDir = Vector3.Slerp(inputDir.normalized, velDir, t * 8f).normalized;
+                    targetDir = Vector3.Slerp(inputDir.normalized, velDir, t * 16f).normalized;
                 }
 
                 float rotSpeed = angleDelta * (currentSpeed > speedThreshold ? Mathf.Lerp(1f, 0.15f, Mathf.Pow((currentSpeed - speedThreshold) / (config.topSpeed - speedThreshold), 0.5f)) : 1f);
@@ -185,9 +185,10 @@ namespace SurgeEngine.Code.Core.Actor.System
                     Vector3 velocityDir = currentVelocity.normalized;
                     Quaternion targetRotation = Quaternion.LookRotation(velocityDir, normal);
                     rb.rotation = Quaternion.RotateTowards(rb.rotation, targetRotation, (32f + currentSpeed / 2) * Time.fixedDeltaTime);
-                    rb.rotation = Quaternion.FromToRotation(rb.transform.up, kinematics.Normal) * rb.rotation;
                 }
             }
+            
+            rb.rotation = Quaternion.FromToRotation(rb.transform.up, kinematics.Normal) * rb.rotation;
         }
 
         private void Flip()
