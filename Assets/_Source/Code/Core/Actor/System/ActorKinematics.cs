@@ -423,22 +423,23 @@ namespace SurgeEngine.Code.Core.Actor.System
             if (instant) _rigidbody.position = point + normal;
             else
             {
-                Quaternion slopeRotation = Quaternion.FromToRotation(transform.up, normal) * _rigidbody.rotation;
+                Quaternion slopeRotation = Quaternion.FromToRotation(_rigidbody.transform.up, normal) * _rigidbody.rotation;
                 _rigidbody.position = Vector3.Lerp(_rigidbody.position, goal, Time.fixedDeltaTime * (Mathf.Abs(Quaternion.Dot(_rigidbody.rotation, slopeRotation) + 1f) / 2f * _rigidbody.linearVelocity.magnitude + 10f));
             }
         }
 
         public void RotateSnapNormal(Vector3 targetNormal)
         {
-            float minSpeed = normalSpeedThreshold * 0.5f;
-            float maxSpeed = normalSpeedThreshold * 1.5f;
-            float t = Mathf.Clamp01((Speed - minSpeed) / (maxSpeed - minSpeed));
-    
-            Vector3 goal = Vector3.Slerp(Vector3.up, targetNormal, t);
-            float smoothTime = 1f / (normalLerpSpeed + Speed * t);
-            Normal = Vector3
-                .SmoothDamp(Normal, goal, ref _normalSmoothVelocity, smoothTime, Mathf.Infinity, Time.fixedDeltaTime)
-                .normalized;
+            if (Speed > normalSpeedThreshold)
+            {
+                float t = Speed / 2;
+                Normal = Vector3.Slerp(Normal, targetNormal, t * Time.fixedDeltaTime);
+            }
+            else
+            {
+                float t = normalLerpSpeed;
+                Normal = Vector3.Slerp(Normal, Vector3.up, t * Time.fixedDeltaTime);
+            }
         }
 
         public void Deceleration(float min, float max)

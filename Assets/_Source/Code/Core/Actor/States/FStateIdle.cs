@@ -49,11 +49,10 @@ namespace SurgeEngine.Code.Core.Actor.States
                 Kinematics.Point = hit.point;
                 Kinematics.Normal = Vector3.up;
                 
-                Vector3 forward = Vector3.Cross(Actor.transform.right, Vector3.up);
-                Actor.transform.rotation = Quaternion.LookRotation(forward);
-                Model.root.rotation = Quaternion.LookRotation(forward);
+                Quaternion target = Quaternion.FromToRotation(Rigidbody.transform.up, Vector3.up) * Rigidbody.rotation;
+                Rigidbody.rotation = Quaternion.Lerp(Rigidbody.rotation, target, Time.fixedDeltaTime * 8f);
                 
-                Kinematics.Snap(Kinematics.Point, Kinematics.Normal, true);
+                Kinematics.Snap(Kinematics.Point, Vector3.up, true);
                 Kinematics.SlopePhysics();
             }
             else
