@@ -94,36 +94,23 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
             Setup(targetPosition, actorPosition);
         }
 
-        protected Vector3 CalculateTarget(out Vector3 targetPosition, Vector3 dir, float distance)
+        protected Vector3 CalculateTarget(out Vector3 targetPosition, Vector3 dir, float originalDistance)
         {
-            Vector3 actorPosition = _actor.transform.position + Vector3.up * GetVerticalOffset() + Vector3.up * _verticalLag;
-            Vector3 initialTargetPosition = actorPosition + dir * (distance + _forwardLag);
-            targetPosition = HandleCameraCollision(actorPosition, initialTargetPosition, distance);
-            return actorPosition;
-        }
-
-        protected virtual float GetVerticalOffset()
-        {
-            return _master.YOffset;
-        }
-
-        private Vector3 HandleCameraCollision(Vector3 actorPosition, Vector3 targetPosition, float originalDistance)
-        {
-            Vector3 cameraDirection = (targetPosition - actorPosition).normalized;
+            Vector3 actorPos = _actor.transform.position 
+                               + Vector3.up * GetVerticalOffset() 
+                               + Vector3.up * _verticalLag;
             
-            float distance = 1;
-            if (_stateMachine.Master.GetModifier(out BoostDistanceCameraModifier boostDistance))
-            {
-                distance = boostDistance.Value;
-            }
-            float actualDistance = originalDistance * distance;
+            float maxDist = originalDistance * (_stateMachine.Master.GetModifier<BoostDistanceCameraModifier>(out var m) ? m.Value : 1f);
+            float collDist = CalculateCollisionDistance(actorPos, dir, maxDist);
+            targetPosition = actorPos + dir * (collDist + _forwardLag);
+            return actorPos;
+        }
 
-            if (Physics.SphereCast(actorPosition, _master.CollisionRadius, cameraDirection, out RaycastHit hit, actualDistance, _master.CollisionMask))
-            {
-                float adjustedDistance = Mathf.Max(hit.distance - _master.CollisionRadius, MinCollisionDistance);
-                return actorPosition + cameraDirection * adjustedDistance;
-            }
-            return targetPosition;
+        protected virtual float CalculateCollisionDistance(Vector3 origin, Vector3 direction, float baseDistance)
+        {
+            if (Physics.SphereCast(origin, _master.CollisionRadius, direction, out var hit, baseDistance, _master.CollisionMask))
+                return Mathf.Max(hit.distance, MinCollisionDistance);
+            return baseDistance;
         }
 
         protected virtual void LookAxis()
@@ -135,7 +122,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
             else
             {
                 _sensSpeedMod = 1f;
-                _stateMachine.YawAuto = Mathf.Lerp(_stateMachine.YawAuto, 0, Time.deltaTime * DefaultSensitivityResetSpeed);
+                _stateMachine.YawAuto =  0;
             }
 
             Vector2 lookInput = _actor.Input.lookVector * (_master.Sensitivity * _sensSpeedMod);
@@ -144,6 +131,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
         }
 
         protected virtual float GetDistance() => _master.Distance;
+        protected virtual float GetVerticalOffset() => _master.YOffset;
 
         private void ZLag()
         {

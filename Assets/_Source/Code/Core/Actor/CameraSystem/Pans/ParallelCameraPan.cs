@@ -44,6 +44,11 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
             StateRotation = Quaternion.LookRotation(actorPosition - StatePosition);
         }
 
+        protected override float CalculateCollisionDistance(Vector3 origin, Vector3 direction, float baseDistance)
+        {
+            return baseDistance;
+        }
+
         protected override void LookAxis()
         {
             
