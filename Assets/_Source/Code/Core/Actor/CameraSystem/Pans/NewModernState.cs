@@ -101,7 +101,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
                                + Vector3.up * _verticalLag;
             
             float maxDist = originalDistance * (_stateMachine.Master.GetModifier<BoostDistanceCameraModifier>(out var m) ? m.Value : 1f);
-            float collDist = CalculateCollisionDistance(actorPos, dir, maxDist);
+            float collDist = CalculateCollisionDistance(actorPos, StatePosition - actorPos, maxDist);
             targetPosition = actorPos + dir * (collDist + _forwardLag);
             return actorPos;
         }
@@ -178,14 +178,14 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
             float speed = _actor.Kinematics.Speed;
             float lookMod = speed / _actor.Config.topSpeed;
             _sensSpeedMod = Mathf.Lerp(_master.MaxSensitivitySpeed, _master.MinSensitivitySpeed, lookMod);
-
-            if (speed > MinSpeedThreshold)
+            
+            if (speed > MinSpeedThreshold || _actor.StateMachine.CurrentState is FStateObject)
             {
                 Vector3 vel = _actor.Kinematics.Velocity;
                 _velocity = Vector3.Lerp(_velocity, vel, Time.deltaTime * VelocityLerpSpeed);
                 float yAutoLook = Mathf.Clamp(-vel.y, _master.YawMinAmplitude, _master.YawMaxAmplitude);
                 _stateMachine.PitchAuto = yAutoLook + _master.YawDefaultAmplitude;
-                _stateMachine.Pitch = Mathf.SmoothDamp(_stateMachine.Pitch, _stateMachine.PitchAuto, ref _yAutoLookVelocity, YAutoLookSmoothTime, Mathf.Infinity, Time.deltaTime);
+                _stateMachine.Pitch = Mathf.SmoothDamp(_stateMachine.Pitch, _stateMachine.PitchAuto, ref _yAutoLookVelocity, YAutoLookSmoothTime);
 
                 float multiplier = _master.PitchAutoLookAmplitude * Mathf.Max(_master.PitchAutoLookMinAmplitude, Mathf.Clamp01(lookMod));
                 AutoLook(multiplier);
