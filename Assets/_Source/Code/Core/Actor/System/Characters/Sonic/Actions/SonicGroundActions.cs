@@ -31,7 +31,7 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic.Actions
             {
                 if (!SonicTools.IsBoost())
                 {
-                    if (Kinematics.Skidding && Kinematics.HorizontalSpeed > 15f)
+                    if (Kinematics.Skidding && Kinematics.Speed > 15f)
                     {
                         StateMachine.SetState<FStateBrake>();
                     }

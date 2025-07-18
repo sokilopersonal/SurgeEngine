@@ -28,7 +28,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
         {
             base.OnEnter();
 
-            Timeout = 0.75f;
+            Timeout = 0.5f;
             _ignoreTimer = 0;
         }
 
@@ -44,26 +44,23 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
             }
             
             bool driftHeld = ((SonicInput)Input).DriftHeld;
-            if (!driftHeld || Rigidbody.linearVelocity.magnitude < _config.minSpeed|| _ignoreTimer > 0.15f)
+            if (!driftHeld || _ignoreTimer > 0.15f)
                 StateMachine.SetState<FStateGround>(0.1f);
         }
 
         public override void OnFixedTick(float dt)
         {
             base.OnFixedTick(dt);
-
-            Vector3 prevNormal = Kinematics.Normal;
+            
             var transform = Rigidbody.transform;
             var offset = -transform.up * 0.75f;
             HurtBox.CreateAttached(Actor, transform, offset, new Vector3(0.75f, 0.3f, 0.75f), HurtBoxTarget.Enemy | HurtBoxTarget.Breakable);
             
-            if (Kinematics.CheckForGround(out RaycastHit hit))
+            var physicsConfig = Actor.Config;
+            float distance = physicsConfig.castDistance * physicsConfig.castDistanceCurve.Evaluate(Kinematics.Speed / physicsConfig.topSpeed);
+            if (Kinematics.CheckForGround(out RaycastHit hit, castDistance: distance))
             {
                 bool predictedGround = Kinematics.CheckForPredictedGround(dt, Actor.Config.castDistance, 4);
-                if (predictedGround)
-                {
-                    Kinematics.Normal = prevNormal;
-                }
                 
                 Vector3 point = hit.point;
                 Vector3 normal = hit.normal;
@@ -80,8 +77,8 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
                 Quaternion angle = Quaternion.AngleAxis(_driftXDirection * _config.centrifugalForce * boostForce, Kinematics.Normal);
                 Vector3 driftVelocity = angle * Rigidbody.linearVelocity;
                 Rigidbody.linearVelocity = driftVelocity;
-                if (Kinematics.HorizontalSpeed < _config.maxSpeed) Rigidbody.linearVelocity += Rigidbody.linearVelocity.normalized *
-                    (0.05f * Mathf.Lerp(4f, 1f, Kinematics.HorizontalSpeed / _config.maxSpeed));
+                if (Kinematics.Speed < _config.maxSpeed) Rigidbody.linearVelocity += Rigidbody.linearVelocity.normalized *
+                    (0.05f * Mathf.Lerp(4f, 1f, Kinematics.Speed / _config.maxSpeed));
 
                 if (!predictedGround) Kinematics.Snap(point, normal);
                 Kinematics.Project();

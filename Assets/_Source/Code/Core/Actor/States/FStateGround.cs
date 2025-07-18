@@ -45,8 +45,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         public override void OnFixedTick(float dt)
         {
             base.OnFixedTick(dt);
-            
-            Vector3 prevNormal = Kinematics.Normal;
+
             PhysicsConfig config = Actor.Config;
             float distance = config.EvaluateCastDistance(Kinematics.Speed / config.topSpeed);
             bool ground = Kinematics.CheckForGround(out RaycastHit data, castDistance: distance);

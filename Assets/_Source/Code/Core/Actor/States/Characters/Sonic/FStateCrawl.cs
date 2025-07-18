@@ -87,11 +87,10 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
 
             // how the hell do i make him move
             // you did it!!
-
             Vector3 prevNormal = Kinematics.Normal;
             PhysicsConfig config = Actor.Config;
             float distance = config.castDistance * config.castDistanceCurve
-                .Evaluate(Kinematics.HorizontalSpeed / _crawlConfig.topSpeed);
+                .Evaluate(Kinematics.Speed / _crawlConfig.topSpeed);
             if (Kinematics.CheckForGroundWithDirection(out RaycastHit data, Vector3.down, distance))
             {
                 Kinematics.Point = data.point;
@@ -100,7 +99,8 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
                 Vector3 stored = Vector3.ClampMagnitude(Rigidbody.linearVelocity, _crawlConfig.maxSpeed);
                 Rigidbody.linearVelocity = Quaternion.FromToRotation(Rigidbody.transform.up, prevNormal) * stored;
 
-                Kinematics.BasePhysics(data.normal);
+                Kinematics.BasePhysics(Kinematics.Normal);
+                Kinematics.Project(Kinematics.Normal);
                 
                 Kinematics.Snap(Kinematics.Point, Vector3.up, true);
                 Model.RotateBody(Vector3.up);

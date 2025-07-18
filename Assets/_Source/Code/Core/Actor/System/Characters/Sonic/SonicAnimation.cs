@@ -351,7 +351,7 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
         
         private IEnumerator PlayHop()
         {
-            bool hop = Actor.Kinematics.HorizontalSpeed > 5;
+            bool hop = Actor.Kinematics.Speed > 5;
             _hopAnimation = _hopAnimation == "HopL" ? "HopR" : "HopL";
             StateAnimator.TransitionToState(hop ? _hopAnimation : "JumpStart", 0f);
             

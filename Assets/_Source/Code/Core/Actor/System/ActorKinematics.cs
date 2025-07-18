@@ -14,6 +14,9 @@ namespace SurgeEngine.Code.Core.Actor.System
     public class ActorKinematics : ActorComponent
     {
         public Rigidbody Rigidbody => _rigidbody;
+        
+        [Header("Physics")]
+        [SerializeField] private float baseSpeedRestorationDelta = 16f;
 
         [Header("Gravity")] 
         [SerializeField] private float initialGravity;
@@ -23,6 +26,8 @@ namespace SurgeEngine.Code.Core.Actor.System
         
         [Header("Prediction")]
         [SerializeField, Range(25, 90)] public float maxAngleDifference = 80;
+        
+        [Header("Mode")]
         public KinematicsMode mode = KinematicsMode.Free;
 
         [Header("Normal")] 
@@ -33,23 +38,12 @@ namespace SurgeEngine.Code.Core.Actor.System
         public event Action<KinematicsMode> OnModeChange;
 
         public float Speed => _rigidbody.linearVelocity.magnitude;
-        public float HorizontalSpeed
-        {
-            get
-            {
-                Vector3 vel = _rigidbody.linearVelocity;
-                Vector3 projected = Vector3.ProjectOnPlane(vel, Normal);
-                return projected.magnitude;
-            }
-        }
 
         public Vector3 Point { get; set; }
         public Vector3 Normal { get; set; }
         public float Angle => Vector3.Angle(Normal, Vector3.up);
         public Vector3 Velocity => _rigidbody.linearVelocity;
-        public Vector3 MovementVector => _movementVector;
         public Vector3 PlanarVelocity => _planarVelocity;
-        public Vector3 Vertical => _vertical;
         public float TurnRate { get; set; }
         public bool Skidding => _moveDot < _config.skiddingThreshold;
         public float MoveDot => _moveDot;
@@ -59,8 +53,6 @@ namespace SurgeEngine.Code.Core.Actor.System
         private Transform _cameraTransform;
         private Vector3 _movementVector;
         private Vector3 _planarVelocity;
-        private Vector3 _vertical;
-        private Vector3 _normalSmoothVelocity;
 
         private SplineData _splineData;
         private Vector3 _lastTangent;
@@ -70,14 +62,12 @@ namespace SurgeEngine.Code.Core.Actor.System
         private bool _canAttach;
 
         private PhysicsConfig _config;
-        private float _maxSpeedMultiplier = 1f;
 
         private void Awake()
         {
             _rigidbody = Actor.Rigidbody;
             _config = Actor.Config;
-            _maxSpeedMultiplier = 1f;
-            
+
             if (initialGravity == 0) initialGravity = Mathf.Abs(Physics.gravity.y);
             Gravity = initialGravity;
 
@@ -107,6 +97,8 @@ namespace SurgeEngine.Code.Core.Actor.System
                 Vector3 orientedInput = Quaternion.FromToRotation(_cameraTransform.up, Normal) * rawInput;
                 _inputDir = GetMovementDirectionProjectedOnPlane(orientedInput, Normal, _cameraTransform.up)
                             * Actor.Input.moveVector.magnitude;
+                
+                Debug.DrawRay(transform.position, _inputDir, Color.blue);
             }
         }
 
@@ -132,9 +124,8 @@ namespace SurgeEngine.Code.Core.Actor.System
             Vector3 vel = _rigidbody.linearVelocity;
             Vector3 dir = _inputDir;
             SurgeMath.SplitPlanarVector(vel, normal, out Vector3 planar, out var vertical);
-            //vertical = Vector3.ClampMagnitude(vertical, _config.maxVerticalSpeed);
             
-            WriteMovementVector(planar);
+            _movementVector = planar;
             _planarVelocity = planar;
 
             if (movementType == MovementType.Ground)
@@ -148,7 +139,7 @@ namespace SurgeEngine.Code.Core.Actor.System
                         if (_planarVelocity.magnitude < _config.topSpeed)
                             _planarVelocity += dir * (_config.accelerationRate * accelRateMod * Time.fixedDeltaTime);
                         else if (CanReturnToBaseSpeed())
-                            _planarVelocity = Vector3.MoveTowards(_planarVelocity, _planarVelocity.normalized * _config.topSpeed, 6f * Time.fixedDeltaTime);
+                            _planarVelocity = Vector3.MoveTowards(_planarVelocity, _planarVelocity.normalized * _config.topSpeed, baseSpeedRestorationDelta * Time.fixedDeltaTime);
                         
                         BaseGroundPhysics();
                     }
@@ -493,11 +484,6 @@ namespace SurgeEngine.Code.Core.Actor.System
         public void SetInputDir(Vector3 dir)
         {
             _inputDir = dir;
-        }
-
-        public void WriteMovementVector(Vector3 vector)
-        {
-            _movementVector = vector;
         }
 
         public bool IsHardAngle(Vector3 normal) => Vector3.Angle(normal, Vector3.up) > hardAngle;
