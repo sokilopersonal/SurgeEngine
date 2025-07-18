@@ -36,7 +36,7 @@ namespace SurgeEngine.Code.Core.Actor.States
             base.OnTick(dt);
             
             Vector3 dir = _springObject.transform.up;
-            Vector3 pos = _springObject.transform.position + dir * Mathf.Max(1f, _travelledDistance);
+            Vector3 pos = _springObject.transform.position + dir * (1.2f * (Mathf.Max(1f, _travelledDistance)));
             Rigidbody.position = Vector3.Lerp(_startPos, pos, _snapTimer);
             _travelledDistance += _springObject.Speed * Time.deltaTime;
             _snapTimer += Time.deltaTime / 0.1f;
