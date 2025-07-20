@@ -97,9 +97,9 @@ namespace SurgeEngine.Code.Core.Actor.System
                 Vector3 orientedInput = Quaternion.FromToRotation(_cameraTransform.up, Normal) * rawInput;
                 _inputDir = GetMovementDirectionProjectedOnPlane(orientedInput, Normal, _cameraTransform.up)
                             * Actor.Input.moveVector.magnitude;
-                
-                Debug.DrawRay(transform.position, _inputDir, Color.blue);
             }
+            
+            Debug.DrawRay(transform.position, _inputDir, Color.red);
         }
 
         private void CalculateMovementStats()
@@ -123,7 +123,9 @@ namespace SurgeEngine.Code.Core.Actor.System
         {
             Vector3 vel = _rigidbody.linearVelocity;
             Vector3 dir = _inputDir;
-            SurgeMath.SplitPlanarVector(vel, normal, out Vector3 planar, out var vertical);
+            
+            Vector3 planar = Vector3.ProjectOnPlane(vel, normal);
+            Vector3 vertical = Vector3.Project(vel, normal);
             
             _movementVector = planar;
             _planarVelocity = planar;
@@ -181,6 +183,23 @@ namespace SurgeEngine.Code.Core.Actor.System
             }
         }
 
+        private void BaseGroundPhysics()
+        {
+            // why the fuck I've put the projected inputDir on vec3.up??
+            Vector3 newVelocity = Quaternion.FromToRotation(_planarVelocity.normalized, _inputDir) * _planarVelocity;
+            float handling = TurnRate;
+            handling *= _config.turnCurve.Evaluate(Speed / _config.topSpeed);
+            _movementVector = Vector3.Slerp(_planarVelocity, newVelocity, handling * Time.fixedDeltaTime);
+        }
+
+        private void BaseAirPhysics()
+        {
+            float handling = TurnRate;
+            handling *= _config.airControl;
+            _movementVector = Vector3.Lerp(_planarVelocity, _inputDir.normalized * _planarVelocity.magnitude, 
+                handling * Time.fixedDeltaTime);
+        }
+
         private void SplineCalculation()
         {
             if (_splineData != null)
@@ -229,22 +248,6 @@ namespace SurgeEngine.Code.Core.Actor.System
             {
                 SetPath(null);
             }
-        }
-
-        private void BaseGroundPhysics()
-        {
-            Vector3 newVelocity = Quaternion.FromToRotation(_planarVelocity.normalized, Vector3.ProjectOnPlane(_inputDir.normalized, Vector3.up)) * _planarVelocity;
-            float handling = TurnRate;
-            handling *= _config.turnCurve.Evaluate(Speed / _config.topSpeed);
-            _movementVector = Vector3.Slerp(_planarVelocity, newVelocity, handling * Time.fixedDeltaTime);
-        }
-
-        private void BaseAirPhysics()
-        {
-            float handling = TurnRate;
-            handling *= _config.airControl;
-            _movementVector = Vector3.Lerp(_planarVelocity, _inputDir.normalized * _planarVelocity.magnitude, 
-                handling * Time.fixedDeltaTime);
         }
 
         public void SlopePhysics()
