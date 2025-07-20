@@ -63,8 +63,8 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
             Master = actor.Camera;
 
             FOV = BaseFov;
-            
-            RememberLastData();
+
+            OnStateEarlyAssign += _ => RememberRelativeLastData();
             
             DefaultDirection = GetCameraDirection();
             ActualDirection = DefaultDirection;
@@ -95,17 +95,10 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
                 Vector3 pos = currentCameraState.StatePosition;
                 Quaternion rot = currentCameraState.StateRotation;
 
-                if (!_lastData.isRelative)
-                {
-                    Position = Vector3.Lerp(_lastData.position, pos, interpolatedBlendFactor);
-                }
-                else
-                {
-                    Vector3 center = ActorPosition;
-                    Vector3 diff = pos - center;
-                    Position = Vector3.Lerp(_lastData.position, diff, interpolatedBlendFactor);
-                    Position += center;
-                }
+                Vector3 center = ActorPosition;
+                Vector3 diff = pos - center;
+                Position = Vector3.Slerp(_lastData.position, diff, interpolatedBlendFactor);
+                Position += center;
 
                 Rotation = Quaternion.Lerp(_lastData.rotation, rot, interpolatedBlendFactor);
                 FOV = Mathf.Lerp(_lastData.fov, currentCameraState.StateFOV, interpolatedBlendFactor);
@@ -310,39 +303,14 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
 
         public void ClearVolumes() => _volumes.Clear();
 
-        public LastCameraData RememberLastData()
+        private void RememberRelativeLastData()
         {
-            _lastData = new LastCameraData
-            {
-                position = Position,
-                rotation = Rotation,
-                fov = Camera.fieldOfView,
-            };
-
-            return _lastData;
-        }
-        
-        public LastCameraData RememberRelativeLastData()
-        {
-            Vector3 center = ActorPosition; // Player
+            Vector3 center = ActorPosition;
             _lastData = new LastCameraData
             {
                 position = Position - center,
                 rotation = Rotation,
                 fov = Camera.fieldOfView,
-                isRelative = true
-            };
-            
-            return _lastData;
-        }
-        
-        public LastCameraData GetLastData()
-        {
-            return new LastCameraData
-            {
-                position = Position,
-                rotation = Rotation,
-                fov = FOV
             };
         }
     }
@@ -352,9 +320,5 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
         public Vector3 position;
         public Quaternion rotation;
         public float fov;
-        public float distance;
-        public float yOffset;
-
-        public bool isRelative;
     }
 }

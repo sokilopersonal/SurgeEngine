@@ -19,7 +19,6 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
             base.OnEnter();
 
             _stateMachine.CurrentData = _panData;
-            _stateMachine.RememberLastData();
             
             StatePosition = _stateMachine.Transform.position;
         }

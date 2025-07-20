@@ -11,13 +11,6 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
             
         }
 
-        public override void OnEnter()
-        {
-            base.OnEnter();
-            
-            _lastData = _stateMachine.RememberLastData();
-        }
-
         public override void OnExit()
         {
             base.OnExit();
@@ -32,7 +25,6 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
             StatePosition = _panData.position;
             StateRotation = Quaternion.LookRotation(_actor.transform.position - _panData.position);
             StateFOV = _panData.fov;
-            //_stateMachine.FOV = Mathf.Lerp(_lastData.fov, _panData.fov, _stateMachine.interpolatedBlendFactor);
         }
     }
 }

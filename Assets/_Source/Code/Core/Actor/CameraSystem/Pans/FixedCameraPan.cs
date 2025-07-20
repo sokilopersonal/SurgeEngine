@@ -10,14 +10,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
         {
             
         }
-
-        public override void OnEnter()
-        {
-            base.OnEnter();
-            
-            _stateMachine.RememberLastData();
-        }
-
+        
         public override void OnTick(float dt)
         {
             base.OnTick(dt);

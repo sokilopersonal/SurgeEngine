@@ -59,8 +59,6 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
             StateFOV = 55f;
             
             ModernSetup();
-
-            _stateMachine.RememberRelativeLastData();
         }
 
         public override void OnTick(float dt)

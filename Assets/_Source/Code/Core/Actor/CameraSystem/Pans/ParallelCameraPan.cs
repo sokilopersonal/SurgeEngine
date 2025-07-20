@@ -6,17 +6,11 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
 {
     public class ParallelCameraPan : NewModernState, IPanState<ParallelPanData>
     {
-        private LastCameraData _lastData;
         private ParallelPanData _vData;
 
         public ParallelCameraPan(ActorBase owner) : base(owner)
         {
             
-        }
-
-        public override void OnEnter()
-        {
-            _lastData = _stateMachine.RememberRelativeLastData();
         }
 
         public override void OnExit()
@@ -43,12 +37,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
         {
             StateRotation = Quaternion.LookRotation(actorPosition - StatePosition);
         }
-
-        protected override float CalculateCollisionDistance(Vector3 origin, Vector3 direction, float baseDistance)
-        {
-            return baseDistance;
-        }
-
+        
         protected override void LookAxis()
         {
             
