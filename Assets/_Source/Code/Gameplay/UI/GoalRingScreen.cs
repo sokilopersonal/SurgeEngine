@@ -1,7 +1,11 @@
 ﻿using System;
+using FMODUnity;
 using SurgeEngine.Code.Gameplay.CommonObjects.System;
+using SurgeEngine.Code.Infrastructure.Tools.Managers;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Zenject;
 
@@ -16,6 +20,7 @@ namespace SurgeEngine.Code.Gameplay.UI
         [SerializeField] private TMP_Text totalScoreText;
         [SerializeField] private Slider rankProgressBar;
         [SerializeField] private TMP_Text rankText;
+        [SerializeField] private GameObject objectToSelect;
 
         [Inject] private Stage _stage;
 
@@ -28,6 +33,12 @@ namespace SurgeEngine.Code.Gameplay.UI
 
         public event Action OnFlashEnd;
 
+        private void Start()
+        {
+            rankText.text = "";
+            rankProgressBar.value = 0f;
+        }
+
         private void Update()
         {
             float duration = 1f;
@@ -36,6 +47,9 @@ namespace SurgeEngine.Code.Gameplay.UI
                 float time = Mathf.Lerp(0, _stage.Data.Time, _timeAnimationElapsed);
                 timeText.text = GetTimeInString(time);
                 
+                float timeBonus = Mathf.Lerp(0, _stage.Data.TimeBonus, _timeAnimationElapsed);
+                timeBonusText.text = timeBonus.ToString("000000");
+                
                 _timeAnimationElapsed += Time.deltaTime / duration;
             }   
             
@@ -43,9 +57,6 @@ namespace SurgeEngine.Code.Gameplay.UI
             {
                 float score = Mathf.Lerp(0, _stage.Data.Score, _scoreAnimationElapsed);
                 scoreText.text = score.ToString("000000");
-                
-                float time = Mathf.Lerp(0, _stage.Data.TimeBonus, _scoreAnimationElapsed);
-                timeBonusText.text = time.ToString("000000");
                 
                 float ring = Mathf.Lerp(0, _stage.Data.RingBonus, _scoreAnimationElapsed);
                 ringBonusText.text = ring.ToString("000000");
@@ -92,9 +103,22 @@ namespace SurgeEngine.Code.Gameplay.UI
         {
             OnFlashEnd?.Invoke();
         }
+        
+        public void Unlock()
+        {
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+        }
 
-        public void SetGoalRank(GoalRank rank)
-        { }
+        public void SelectOnEnd()
+        {
+            EventSystem.current.SetSelectedGameObject(objectToSelect);
+        }
+
+        public void Restart()
+        {
+            SceneLoader.LoadScene(SceneManager.GetActiveScene().name);
+        }
 
         private static string GetTimeInString(float time)
         {

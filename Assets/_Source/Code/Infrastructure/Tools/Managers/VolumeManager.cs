@@ -1,4 +1,5 @@
 using System;
+using DG.Tweening;
 using FMODUnity;
 using SurgeEngine.Code.Infrastructure.Tools.Services;
 using UnityEngine;
@@ -7,10 +8,10 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers
 {
     public class VolumeManager : JsonStorageService<VolumeData>
     {
-        private const string GameVolumeKey = "GameVolume";
-        private const string MasterVolumeKey = "MasterVolume";
-        private const string MusicVolumeKey = "MusicVolume";
-        private const string SFXVolumeKey = "SFXVolume";
+        private const string MasterVolumeKey = "Master";
+        private const string MusicVolumeKey = "Music";
+        private const string SFXVolumeKey = "SFX";
+        private const string MenuDistortKey = "MenuDistort";
 
         public VolumeManager()
         {
@@ -18,7 +19,7 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers
             SetMusicVolume(Data.MusicVolume);
             SetSFXVolume(Data.SfxVolume);
             
-            ToggleGameGroup(true);
+            ToggleMenuDistortion(false);
         }
         
         public void SetMasterVolume(float value)
@@ -42,14 +43,15 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers
             RuntimeManager.StudioSystem.setParameterByName(SFXVolumeKey, Data.SfxVolume);
         }
 
+        public void ToggleMenuDistortion(bool value)
+        {
+            float val = value ? 1 : 0;
+            RuntimeManager.StudioSystem.setParameterByName(MenuDistortKey, val);
+        }
+
         public void SetDistortion(bool value)
         {
             Data.BoostDistortionEnabled = value;
-        }
-
-        public void ToggleGameGroup(bool value)
-        {
-            RuntimeManager.StudioSystem.setParameterByName(GameVolumeKey, value ? 1f : 0f);
         }
     }
 

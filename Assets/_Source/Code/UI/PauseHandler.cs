@@ -40,8 +40,6 @@ namespace SurgeEngine.Code.UI
             _canvasGroup.alpha = 0f;
             _canvasGroup.interactable = false;
             Time.timeScale = 1f;
-            
-            _volumeManager.ToggleGameGroup(true);
         }
 
         protected override void OnEnable()
@@ -159,7 +157,7 @@ namespace SurgeEngine.Code.UI
             
             if (Active)
             {
-                _volumeManager.ToggleGameGroup(false);
+                _volumeManager.ToggleMenuDistortion(true);
                 
                 if (initial)
                 {
@@ -168,8 +166,8 @@ namespace SurgeEngine.Code.UI
             }
             else
             {
-                _volumeManager.ToggleGameGroup(true);
-
+                _volumeManager.ToggleMenuDistortion(false);
+                
                 if (initial)
                 {
                     PopAllPages();

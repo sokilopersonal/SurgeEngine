@@ -27,6 +27,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.GoalRing
             if (!_triggered)
             {
                 _triggered = true;
+
                 
                 RuntimeManager.PlayOneShot(goalRingSound, transform.position);
 
@@ -42,8 +43,6 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.GoalRing
                 var stage = Stage.Instance;
                 
                 var rank = stage.Data.GoalRank;
-                CurrentGoalScreen.SetGoalRank(rank);
-                
                 CurrentGoalScreen.OnFlashEnd += () =>
                 {
                     model.SetActive(false);

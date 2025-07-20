@@ -19,23 +19,22 @@ namespace SurgeEngine.Code.UI.Animated
         private void Awake()
         {
             targetGraphic.color = baseColor;
-
-            _colorTween = targetGraphic.DOColor(highlightColor, duration)
-                .SetAutoKill(false)
-                .SetUpdate(true)
-                .Pause();
         }
 
         public override void OnSelect(BaseEventData eventData)
         {
             base.OnSelect(eventData);
-            _colorTween.PlayForward();
+            
+            _colorTween?.Kill(true);
+            _colorTween = targetGraphic.DOColor(highlightColor, duration).SetUpdate(true);
         }
 
         public override void OnDeselect(BaseEventData eventData)
         {
             base.OnDeselect(eventData);
-            _colorTween.PlayBackwards();
+            
+            _colorTween?.Kill(true);
+            _colorTween = targetGraphic.DOColor(baseColor, duration).SetUpdate(true);
         }
     }
 }
