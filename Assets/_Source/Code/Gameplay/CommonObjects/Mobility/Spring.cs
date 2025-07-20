@@ -17,10 +17,10 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
 
         public override void Contact(Collider msg, ActorBase context)
         {
-            base.Contact(msg, context);
-            
             var springState = context.StateMachine.GetState<FStateSpring>();
             if (springState.SpringObject == this) return;
+            
+            base.Contact(msg, context);
             
             context.Rigidbody.isKinematic = true;
 
