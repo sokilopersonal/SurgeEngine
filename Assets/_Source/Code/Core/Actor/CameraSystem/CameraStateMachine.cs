@@ -47,7 +47,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
         private ChangeCameraVolume _lastTop;
         public int VolumeCount => _volumes.Count;
 
-        private LastCameraData _lastData;
+        private CameraData _data;
 
         private Vector3 LateOffset { get; set; }
         
@@ -64,7 +64,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
 
             FOV = BaseFov;
 
-            OnStateEarlyAssign += _ => RememberRelativeLastData();
+            OnStateEarlyAssign += _ => RememberRelativeData();
             
             DefaultDirection = GetCameraDirection();
             ActualDirection = DefaultDirection;
@@ -97,11 +97,11 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
 
                 Vector3 center = ActorPosition;
                 Vector3 diff = pos - center;
-                Position = Vector3.Slerp(_lastData.position, diff, interpolatedBlendFactor);
+                Position = Vector3.Slerp(_data.position, diff, interpolatedBlendFactor);
                 Position += center;
 
-                Rotation = Quaternion.Lerp(_lastData.rotation, rot, interpolatedBlendFactor);
-                FOV = Mathf.Lerp(_lastData.fov, currentCameraState.StateFOV, interpolatedBlendFactor);
+                Rotation = Quaternion.Lerp(_data.rotation, rot, interpolatedBlendFactor);
+                FOV = Mathf.Lerp(_data.fov, currentCameraState.StateFOV, interpolatedBlendFactor);
             }
             
             Transform.position = Position;
@@ -303,10 +303,10 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
 
         public void ClearVolumes() => _volumes.Clear();
 
-        private void RememberRelativeLastData()
+        private void RememberRelativeData()
         {
             Vector3 center = ActorPosition;
-            _lastData = new LastCameraData
+            _data = new CameraData
             {
                 position = Position - center,
                 rotation = Rotation,
@@ -315,7 +315,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
         }
     }
 
-    public class LastCameraData
+    public class CameraData
     {
         public Vector3 position;
         public Quaternion rotation;

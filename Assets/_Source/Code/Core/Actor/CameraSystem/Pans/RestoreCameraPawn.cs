@@ -5,7 +5,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
 {
     public class RestoreCameraPawn : NewModernState
     {
-        private LastCameraData _lastData;
+        private CameraData _data;
         
         public RestoreCameraPawn(ActorBase owner) : base(owner)
         {
@@ -16,7 +16,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
         {
             base.OnTick(dt);
             
-            _stateMachine.FOV = Mathf.Lerp(_lastData.fov, _stateMachine.FOV, _stateMachine.interpolatedBlendFactor);
+            _stateMachine.FOV = Mathf.Lerp(_data.fov, _stateMachine.FOV, _stateMachine.interpolatedBlendFactor);
             if (_stateMachine.blendFactor >= 1f)
             {
                 _stateMachine.SetState<NewModernState>();

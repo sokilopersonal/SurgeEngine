@@ -6,7 +6,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
     public class CameraBasePan<T> : CameraState, IPanState<T> where T : PanData
     {
         protected T _panData;
-        protected LastCameraData _lastData;
+        protected CameraData Data;
         
         protected CameraBasePan(ActorBase owner) : base(owner) { }
 
