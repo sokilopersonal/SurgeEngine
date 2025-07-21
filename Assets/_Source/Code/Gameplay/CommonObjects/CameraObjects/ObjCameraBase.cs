@@ -31,7 +31,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.CameraObjects
 
         public override void RemovePan(ActorBase ctx)
         {
-            ctx.Camera.StateMachine.SetState<RestoreCameraPawn>();
+            ctx.Camera.StateMachine.SetState<NewModernState>();
         }
 
         private void OnDrawGizmos()

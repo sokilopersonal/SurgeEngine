@@ -12,6 +12,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans.Data
         public float easeTimeExit = 1f;
         public float fov = 60f;
         public bool allowRotation = true;
+        [Tooltip("Only works on cameras that are just modifications of a normal camera")] public bool isCollision = true;
     }
 
     [Serializable]

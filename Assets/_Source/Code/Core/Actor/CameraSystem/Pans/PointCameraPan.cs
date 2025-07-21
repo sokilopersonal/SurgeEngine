@@ -46,7 +46,12 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
             _pData = data;
             _stateMachine.CurrentData = data;
         }
-        
+
+        protected override float CalculateCollisionDistance(Vector3 origin, Vector3 direction, float baseDistance)
+        {
+            return _pData.isCollision ? base.CalculateCollisionDistance(origin, direction, baseDistance) : baseDistance;
+        }
+
         protected override float GetDistance() => _pData.distance;
         protected override float GetVerticalOffset() => _pData.yOffset;
     }

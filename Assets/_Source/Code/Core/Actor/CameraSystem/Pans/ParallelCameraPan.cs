@@ -43,6 +43,11 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
             
         }
 
+        protected override float CalculateCollisionDistance(Vector3 origin, Vector3 direction, float baseDistance)
+        {
+            return _vData.isCollision ? base.CalculateCollisionDistance(origin, direction, baseDistance) : baseDistance;
+        }
+
         protected override void AutoLookDirection()
         {
             _stateMachine.YawAuto = 0;
