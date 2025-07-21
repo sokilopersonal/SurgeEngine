@@ -50,25 +50,33 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                     float speed = GetFloatWithMultiSetParam(elem, "Speed");
                     float outOfControl = GetFloatWithMultiSetParam(elem, "OutOfControl");
                     var dashPanel = go.GetComponent<DashPanel>();
-                    SetFloatReflection(dashPanel, "speed", speed);
+                    SetFloatReflection(dashPanel, "speed", speed / HE1Variables.IMPULSE_DIVIDER);
                     SetFloatReflection(dashPanel, "outOfControl", outOfControl);
                 },
                 ["JumpBoard"] = (go, elem) =>
                 {
-                    float pitch = GetFloatWithMultiSetParam(elem, "AngleType");
-                    float impulseNormal = GetFloatWithMultiSetParam(elem, "ImpulseSpeedOnNormal");
+                    int angleType = (int)GetFloatWithMultiSetParam(elem, "AngleType");
+                    float impulseNormal = GetFloatWithMultiSetParam(elem, "ImpulseSpeedOnBoost");
                     float outOfControl = GetFloatWithMultiSetParam(elem, "OutOfControl");
                     var jumpPanel = go.GetComponent<JumpPanel>();
-                    SetFloatReflection(jumpPanel, "pitch", pitch);
-                    SetFloatReflection(jumpPanel, "impulse", impulseNormal);
+                    SetFloatReflection(jumpPanel, "impulse", impulseNormal / HE1Variables.IMPULSE_DIVIDER);
                     SetFloatReflection(jumpPanel, "outOfControl", outOfControl);
+
+                    if (angleType == 0)
+                    {
+                        SetFloatReflection(jumpPanel, "pitch", 15);
+                    }
+                    else
+                    {
+                        SetFloatReflection(jumpPanel, "pitch", 30);
+                    }
                 },
                 ["JumpBoard3D"] = (go, elem) =>
                 {
                     float impulseNormal = GetFloatWithMultiSetParam(elem, "ImpulseSpeedOnNormal");
                     float outOfControl = GetFloatWithMultiSetParam(elem, "OutOfControl");
                     var jumpPanel = go.GetComponent<JumpPanel3D>();
-                    SetFloatReflection(jumpPanel, "impulse", impulseNormal);
+                    SetFloatReflection(jumpPanel, "impulse", impulseNormal / HE1Variables.IMPULSE_DIVIDER);
                     SetFloatReflection(jumpPanel, "outOfControl", outOfControl);
                 },
                 ["Spring"] = (go, elem) =>
@@ -77,7 +85,7 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                     float outOfControl = GetFloatWithMultiSetParam(elem, "OutOfControl");
                     float keepVelocity = GetFloatWithMultiSetParam(elem, "KeepVelocityDistance");
                     var spring = go.GetComponent<Spring>();
-                    SetFloatReflection(spring, "speed", speed);
+                    SetFloatReflection(spring, "speed", speed / HE1Variables.IMPULSE_DIVIDER);
                     SetFloatReflection(spring, "outOfControl", outOfControl);
                     SetFloatReflection(spring, "keepVelocityDistance", keepVelocity);
                 },
@@ -87,7 +95,7 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                     float outOfControl = GetFloatWithMultiSetParam(elem, "OutOfControl");
                     float keepVelocity = GetFloatWithMultiSetParam(elem, "KeepVelocityDistance");
                     var wideSpring = go.GetComponent<WideSpring>();
-                    SetFloatReflection(wideSpring, "speed", speed);
+                    SetFloatReflection(wideSpring, "speed", speed  / HE1Variables.IMPULSE_DIVIDER);
                     SetFloatReflection(wideSpring, "outOfControl", outOfControl);
                     SetFloatReflection(wideSpring, "keepVelocityDistance", keepVelocity);
                 },
@@ -114,9 +122,9 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                     float pitchMax = GetFloatWithMultiSetParam(elem, "Pitch");
                     SetFloatReflection(jumpCollision, "speedRequired", speedMin / 2);
                     SetFloatReflection(jumpCollision, "outOfControl", outOfControl);
-                    SetFloatReflection(jumpCollision, "impulseOnNormal", impulseNormal / 2);
-                    SetFloatReflection(jumpCollision, "impulseOnBoost", impulseBoost / 2);
-                    SetFloatReflection(jumpCollision, "pitch", pitchMax + 20);
+                    SetFloatReflection(jumpCollision, "impulseOnNormal", impulseNormal / HE1Variables.IMPULSE_DIVIDER);
+                    SetFloatReflection(jumpCollision, "impulseOnBoost", impulseBoost / HE1Variables.IMPULSE_DIVIDER);
+                    SetFloatReflection(jumpCollision, "pitch", pitchMax);
                 }
             };
         }
