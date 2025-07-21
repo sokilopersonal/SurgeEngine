@@ -20,6 +20,8 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                 ["Ring"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/Ring.prefab"),
                 ["DashPanel"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/DashPanel.prefab"),
                 ["Spring"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/Spring.prefab"),
+                ["WideSpring"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/WideSpring.prefab"),
+                ["eFighter"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Enemies/EggFighter.prefab"),
                 ["eFighterTutorial"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Enemies/EggFighter.prefab"),
                 ["eAirCannonNormal"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Enemies/AeroCannon.prefab"),
                 ["ObjCameraPan"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/Camera/ObjCameraPan.prefab"),
@@ -57,6 +59,7 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                     float impulseNormal = GetFloatWithMultiSetParam(elem, "ImpulseSpeedOnNormal");
                     float outOfControl = GetFloatWithMultiSetParam(elem, "OutOfControl");
                     var jumpPanel = go.GetComponent<JumpPanel>();
+                    SetFloatReflection(jumpPanel, "pitch", pitch);
                     SetFloatReflection(jumpPanel, "impulse", impulseNormal);
                     SetFloatReflection(jumpPanel, "outOfControl", outOfControl);
                 },
@@ -77,6 +80,16 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                     SetFloatReflection(spring, "speed", speed);
                     SetFloatReflection(spring, "outOfControl", outOfControl);
                     SetFloatReflection(spring, "keepVelocityDistance", keepVelocity);
+                },
+                ["WideSpring"] = (go, elem) =>
+                {
+                    float speed = GetFloatWithMultiSetParam(elem, "FirstSpeed");
+                    float outOfControl = GetFloatWithMultiSetParam(elem, "OutOfControl");
+                    float keepVelocity = GetFloatWithMultiSetParam(elem, "KeepVelocityDistance");
+                    var wideSpring = go.GetComponent<WideSpring>();
+                    SetFloatReflection(wideSpring, "speed", speed);
+                    SetFloatReflection(wideSpring, "outOfControl", outOfControl);
+                    SetFloatReflection(wideSpring, "keepVelocityDistance", keepVelocity);
                 },
                 ["UpReel"] = (go, elem) =>
                 {
