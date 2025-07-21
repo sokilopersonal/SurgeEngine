@@ -27,7 +27,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates
                     if (actor.Flags.HasFlag(FlagType.Autorun)) return;
                     
                     Vector3 target = body.linearVelocity.normalized * maxSpeed;
-                    body.linearVelocity = Vector3.MoveTowards(body.linearVelocity, target, 8f * dt);
+                    if (!body.isKinematic) body.linearVelocity = Vector3.MoveTowards(body.linearVelocity, target, 8f * dt);
                 }
             }
         }

@@ -37,22 +37,34 @@ namespace SurgeEngine.Code.Core.Actor.System
         
         public event Action<KinematicsMode> OnModeChange;
 
-        public float Speed => _rigidbody.linearVelocity.magnitude;
+        public float Speed => Velocity.magnitude;
 
         public Vector3 Point { get; set; }
         public Vector3 Normal { get; set; }
         public float Angle => Vector3.Angle(Normal, Vector3.up);
-        public Vector3 Velocity => _rigidbody.linearVelocity;
+        public Vector3 Velocity
+        {
+            get
+            {
+                if (!_rigidbody.isKinematic)
+                    return _rigidbody.linearVelocity;
+
+                return _kinematicVelocity;
+            }
+        }
+
         public Vector3 PlanarVelocity => _planarVelocity;
         public float TurnRate { get; set; }
         public bool Skidding => _moveDot < _config.skiddingThreshold;
         public float MoveDot => _moveDot;
-
+        
         private Vector3 _inputDir;
         private Rigidbody _rigidbody;
         private Transform _cameraTransform;
         private Vector3 _movementVector;
         private Vector3 _planarVelocity;
+        private Vector3 _kinematicVelocity;
+        private Vector3 _lastPosition;
 
         private SplineData _splineData;
         private Vector3 _lastTangent;
@@ -85,6 +97,10 @@ namespace SurgeEngine.Code.Core.Actor.System
         protected virtual void FixedUpdate()
         {
             SplineCalculation();
+
+            Vector3 position = _rigidbody.position;
+            _kinematicVelocity = (position - _lastPosition) / Time.fixedDeltaTime;
+            _lastPosition = position;
         }
 
         private void CalculateInputDirection()
