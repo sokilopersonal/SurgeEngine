@@ -6,7 +6,7 @@ namespace SurgeEngine.Code.Gameplay.Enemy.Spinner
 {
     public class Spinner : EnemyBase, IDamageable
     {
-        public void TakeDamage(MonoBehaviour sender, float damage)
+        public void TakeDamage(Component sender)
         {
             view.Destroy();
         }

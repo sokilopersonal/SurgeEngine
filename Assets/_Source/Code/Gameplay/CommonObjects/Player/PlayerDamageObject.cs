@@ -9,7 +9,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Player
         {
             if (other.TryGetComponent(out ActorBase actor))
             {
-                actor.TakeDamage(this, 1f);
+                actor.TakeDamage(this);
             }
         }
     }

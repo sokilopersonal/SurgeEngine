@@ -14,6 +14,7 @@ namespace SurgeEngine.Code.Gameplay.Enemy.Base
         public FStateMachine StateMachine => _stateMachine;
 
         public Action OnDied;
+        public bool IsDead { get; protected set; }
 
         protected virtual void Awake()
         {
@@ -25,12 +26,12 @@ namespace SurgeEngine.Code.Gameplay.Enemy.Base
 
         private void OnEnable()
         {
-            OnDied += AddScore;
+            OnDied += OnDeath;
         }
         
         private void OnDisable()
         {
-            OnDied -= AddScore;
+            OnDied -= OnDeath;
         }
 
         private void Update()
@@ -48,8 +49,10 @@ namespace SurgeEngine.Code.Gameplay.Enemy.Base
             _stateMachine.LateTick(Time.deltaTime);
         }
 
-        private void AddScore()
+        private void OnDeath()
         {
+            IsDead = true;
+            
             Stage.Instance.Data.AddScore(300);
         }
     }

@@ -12,7 +12,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.PhysicsObjects
         [Header("Sound")]
         [SerializeField] private EventReference BoxDestroySound;
         
-        public void TakeDamage(MonoBehaviour sender, float damage)
+        public void TakeDamage(Component sender)
         {
             var piece = Instantiate(destroyPiece, transform.position, transform.rotation, null);
             piece.ApplyDirectionForce(sender.GetComponentInChildren<Rigidbody>().linearVelocity, 1.1f);

@@ -32,7 +32,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects
                 IDamageable damageable = hit.GetComponentInParent<IDamageable>();
                 if (hitTransform)
                 {
-                    damageable?.TakeDamage(sender, 0);
+                    damageable?.TakeDamage(sender);
                     return true;
                 }
             }

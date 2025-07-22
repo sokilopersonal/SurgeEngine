@@ -31,7 +31,7 @@ namespace SurgeEngine.Code.Gameplay.Enemy.AeroCannon
             StateMachine.SetState<ACStateIdle>().SetStartRotation(transform.rotation);
         }
 
-        public void TakeDamage(MonoBehaviour sender, float damage)
+        public void TakeDamage(Component sender)
         {
             OnDied?.Invoke();
             

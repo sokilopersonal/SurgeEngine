@@ -4,6 +4,6 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Interfaces
 {
     public interface IDamageable
     {
-        void TakeDamage(MonoBehaviour sender, float damage);
+        void TakeDamage(Component sender);
     }
 }

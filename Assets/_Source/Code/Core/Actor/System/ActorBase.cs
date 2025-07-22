@@ -184,7 +184,7 @@ namespace SurgeEngine.Code.Core.Actor.System
             return null;
         }
 
-        public void TakeDamage(MonoBehaviour sender, float damage)
+        public void TakeDamage(Component sender)
         {
             IDamageable damageable = StateMachine.CurrentState switch
             {
@@ -217,7 +217,7 @@ namespace SurgeEngine.Code.Core.Actor.System
                     OnRingLoss?.Invoke();
                 }
                 
-                damageable.TakeDamage(this, 1);
+                damageable.TakeDamage(this);
                 Flags.AddFlag(new Flag(FlagType.Invincible, true, DamageKickConfig.invincibleTime));
             }
         }
@@ -253,7 +253,7 @@ namespace SurgeEngine.Code.Core.Actor.System
 
     class GeneralDamage : IDamageable
     {
-        public void TakeDamage(MonoBehaviour sender, float damage)
+        public void TakeDamage(Component sender)
         {
             ActorBase owner = (ActorBase)sender;
             
@@ -263,7 +263,7 @@ namespace SurgeEngine.Code.Core.Actor.System
 
     class GrindDamage : IDamageable
     {
-        public void TakeDamage(MonoBehaviour sender, float damage)
+        public void TakeDamage(Component sender)
         {
             ActorBase owner = (ActorBase)sender;
         }

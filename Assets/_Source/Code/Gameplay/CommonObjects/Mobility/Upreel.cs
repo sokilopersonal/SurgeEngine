@@ -3,13 +3,14 @@ using FMOD.Studio;
 using FMODUnity;
 using SurgeEngine.Code.Core.Actor.States;
 using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine.Code.Gameplay.CommonObjects.System;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using NotImplementedException = System.NotImplementedException;
 using STOP_MODE = FMOD.Studio.STOP_MODE;
 
 namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
 {
-    public class Upreel : ContactBase
+    public class Upreel : ContactBase, IPointMarkerLoader
     {
         [Header("Transforms")]
         [SerializeField] private Transform attachPoint;
@@ -35,6 +36,9 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
         private bool _isPlayerAttached;
         private ActorBase _attachedActor;
         private EventInstance _eventInstance;
+        
+        private Vector3 _contactPoint;
+        private float _attachTimer;
 
         private void Awake()
         {
@@ -42,27 +46,22 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             _eventInstance = RuntimeManager.CreateInstance(sound);
             _eventInstance.set3DAttributes(transform.To3DAttributes());
 
-            if (!isWaitUp)
-            {
-                model.localPosition = new Vector3(model.localPosition.x, -length, model.localPosition.z);
-            }
-            else
-            {
-                model.localPosition = new Vector3(model.localPosition.x, -1, model.localPosition.z);
-            }
+            PutModel();
             
-            box.center = new Vector3(box.center.x, model.localPosition.y + 0.15f, box.center.z);
-            
-            homingTarget.gameObject.SetActive(isWaitUp);
+            homingTarget.gameObject.SetActive(!isWaitUp);
         }
 
         private void Update()
         {
             rope.SetPosition(1, new Vector3(0, model.localPosition.y + 0.45f, 0));
+            box.center = new Vector3(box.center.x, model.localPosition.y + 0.15f, box.center.z);
             
             if (_isPlayerAttached)
             {
                 var ctx = _attachedActor;
+                _attachTimer += Time.deltaTime / 0.1f;
+                _attachTimer = Mathf.Clamp01(_attachTimer);
+                
                 Vector3 target = _localStartPosition + Vector3.up * length;
                 float distance = Vector3.Distance(model.localPosition, target);
                 if (distance < 0.1f)
@@ -94,7 +93,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
                 if (_isPlayerAttached)
                 {
                     var ctx = _attachedActor;
-                    ctx.transform.position = attachPoint.position;
+                    ctx.transform.position = Vector3.Lerp(_contactPoint, attachPoint.position, _attachTimer);
                     ctx.transform.rotation = attachPoint.rotation;
                 }
             }
@@ -105,8 +104,9 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             base.Contact(msg, context);
             
             _attachedActor = context;
-
             _attachedActor.StateMachine.SetState<FStateUpreel>();
+            _contactPoint = _attachedActor.transform.position;
+            _attachTimer = 0;
             
             model.DOLocalMove(_localStartPosition + Vector3.up * length, moveTime).SetEase(Ease.InSine).SetUpdate(UpdateType.Fixed).SetLink(gameObject);
             _isPlayerAttached = true;
@@ -116,9 +116,22 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             _eventInstance.start();
         }
 
+        private void PutModel()
+        {
+            if (!isWaitUp)
+            {
+                model.localPosition = new Vector3(model.localPosition.x, -length, model.localPosition.z);
+            }
+            else
+            {
+                model.localPosition = new Vector3(model.localPosition.x, -1, model.localPosition.z);
+            }
+        }
+
         private void Cancel(ActorBase ctx)
         {
             _isPlayerAttached = false;
+            _attachTimer = 0;
             _eventInstance.stop(STOP_MODE.ALLOWFADEOUT);
             Lower();
             ctx.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, Mathf.Abs(outOfControl)));
@@ -128,7 +141,17 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
 
         public void Lower(float delay = 0.5f)
         {
-            model.DOLocalMove(_localStartPosition, 1f).SetEase(Ease.Linear).SetDelay(delay).SetLink(gameObject).onComplete += () => homingTarget.gameObject.SetActive(true);
+            model.DOLocalMove(_localStartPosition, 0.5f).SetEase(Ease.Linear).SetDelay(delay).SetLink(gameObject).onComplete += () => homingTarget.gameObject.SetActive(true);
+        }
+
+        public void Load(Vector3 loadPosition, Quaternion loadRotation)
+        {
+            PutModel();
+            
+            homingTarget.gameObject.SetActive(isWaitUp);
+            _isPlayerAttached = false;
+            _attachTimer = 0;
+            _attachedActor = null;
         }
     }
 }

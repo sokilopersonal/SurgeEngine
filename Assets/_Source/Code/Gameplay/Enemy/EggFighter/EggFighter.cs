@@ -76,28 +76,37 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter
             StateMachine.SetState<EGStateIdle>();
         }
 
-        public void TakeDamage(MonoBehaviour sender, float damage)
+        public void TakeDamage(Component sender)
         {
-            Vector3 force = sender.GetComponent<ActorBase>().Kinematics.Rigidbody.linearVelocity * 1.25f;
-            force += Vector3.up * (force.magnitude * 0.15f);
-            StateMachine.SetState<EGStateDead>(0f, true, true).ApplyKnockback(force, ragdollPrefab);
+            if (!IsDead)
+            {
+                Vector3 force = sender.GetComponentInChildren<Rigidbody>().linearVelocity;
+                force += Vector3.up * (force.magnitude * 0.1f);
+                Kill(force);
             
-            OnDied?.Invoke();
+                OnDied?.Invoke();
+            }
         }
 
         private void OnCollisionEnter(Collision other)
         {
             if (other.gameObject.layer == ragdollLayer)
             {
-                StateMachine.SetState<EGStateDead>(0f, true, true).ApplyKnockback(other.rigidbody.linearVelocity, ragdollPrefab);
-                OnDied?.Invoke();
+                TakeDamage(other.rigidbody);
             }
+        }
+
+        private void Kill(Vector3 force)
+        {
+            StateMachine.SetState<EGStateDead>(0f, true, true).ApplyKnockback(force, ragdollPrefab);
         }
 
         public void Load(Vector3 loadPosition, Quaternion loadRotation)
         {
             Agent.Warp(_startPosition);
             transform.rotation = _startRotation;
+
+            IsDead = false;
         }
     }
 }
