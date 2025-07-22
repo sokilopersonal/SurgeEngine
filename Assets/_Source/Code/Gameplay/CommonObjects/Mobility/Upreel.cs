@@ -3,8 +3,8 @@ using FMOD.Studio;
 using FMODUnity;
 using SurgeEngine.Code.Core.Actor.States;
 using SurgeEngine.Code.Core.Actor.System;
-using SurgeEngine.Code.Core.StateMachine.Base;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using STOP_MODE = FMOD.Studio.STOP_MODE;
 
 namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
@@ -16,15 +16,17 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
         [SerializeField] private Transform model;
         [SerializeField] private LineRenderer rope;
         [SerializeField] private BoxCollider box;
+        [SerializeField] private HomingTarget homingTarget;
         
-        [Header("Upreel Movement")]
-        [SerializeField, Tooltip("How long it takes to move to the target position")] private float moveTime = 2;
-        [SerializeField, Min(1)] private float length = 25;
+        [Header("Upreel")]
+        [SerializeField, Tooltip("How long it takes to move to the target position")] private float moveTime = 1;
+        [SerializeField, Min(1)] private float length = 10;
         [SerializeField, Tooltip("Out Of Control time when player exits the Upreel.")] private float outOfControl = 0.5f;
+        [SerializeField] private bool isWaitUp;
         
         [Header("After Speed")]
-        [SerializeField] private float forwardPushForce = 7;
-        [SerializeField] private float upPushForce = 10;
+        [SerializeField] private float forwardPushForce = 5;
+        [SerializeField] private float upPushForce = 14;
         
         [Header("Sound")]
         [SerializeField] private EventReference sound;
@@ -34,17 +36,24 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
         private ActorBase _attachedActor;
         private EventInstance _eventInstance;
 
-        private Vector3 _contactPoint;
-        private float _attachTimer;
-
         private void Awake()
         {
             _localStartPosition = model.localPosition;
             _eventInstance = RuntimeManager.CreateInstance(sound);
             _eventInstance.set3DAttributes(transform.To3DAttributes());
+
+            if (!isWaitUp)
+            {
+                model.localPosition = new Vector3(model.localPosition.x, -length, model.localPosition.z);
+            }
+            else
+            {
+                model.localPosition = new Vector3(model.localPosition.x, -1, model.localPosition.z);
+            }
             
-            model.localPosition = new Vector3(model.localPosition.x, -length, model.localPosition.z);
             box.center = new Vector3(box.center.x, model.localPosition.y + 0.15f, box.center.z);
+            
+            homingTarget.gameObject.SetActive(isWaitUp);
         }
 
         private void Update()
@@ -54,9 +63,6 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             if (_isPlayerAttached)
             {
                 var ctx = _attachedActor;
-                _attachTimer += Time.deltaTime / 0.1f;
-                _attachTimer = Mathf.Clamp01(_attachTimer);
-                
                 Vector3 target = _localStartPosition + Vector3.up * length;
                 float distance = Vector3.Distance(model.localPosition, target);
                 if (distance < 0.1f)
@@ -71,13 +77,26 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             }
         }
 
+        private void OnValidate()
+        {
+            if (model && box && rope)
+            {
+                model.localPosition = new Vector3(model.localPosition.x, -length, model.localPosition.z);
+                box.center = new Vector3(box.center.x, model.localPosition.y + 0.15f, box.center.z);
+                rope.SetPosition(1, new Vector3(0, model.localPosition.y + 0.45f, 0));
+            }
+        }
+
         private void FixedUpdate()
         {
-            if (_isPlayerAttached)
+            if (Application.isPlaying)
             {
-                var ctx = _attachedActor;
-                ctx.transform.position = Vector3.Lerp(_contactPoint, attachPoint.position, _attachTimer);
-                ctx.transform.rotation = attachPoint.rotation;
+                if (_isPlayerAttached)
+                {
+                    var ctx = _attachedActor;
+                    ctx.transform.position = attachPoint.position;
+                    ctx.transform.rotation = attachPoint.rotation;
+                }
             }
         }
 
@@ -88,8 +107,6 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             _attachedActor = context;
 
             _attachedActor.StateMachine.SetState<FStateUpreel>();
-            _contactPoint = _attachedActor.transform.position;
-            _attachTimer = 0;
             
             model.DOLocalMove(_localStartPosition + Vector3.up * length, moveTime).SetEase(Ease.InSine).SetUpdate(UpdateType.Fixed).SetLink(gameObject);
             _isPlayerAttached = true;
@@ -102,35 +119,16 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
         private void Cancel(ActorBase ctx)
         {
             _isPlayerAttached = false;
-            _attachTimer = 0;
             _eventInstance.stop(STOP_MODE.ALLOWFADEOUT);
-            model.DOLocalMove(_localStartPosition, 1f).SetEase(Ease.InSine).SetDelay(0.5f).SetLink(gameObject);
+            Lower();
             ctx.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, Mathf.Abs(outOfControl)));
 
             _attachedActor = null;
         }
 
-        protected override void OnDrawGizmos()
+        public void Lower(float delay = 0.5f)
         {
-            base.OnDrawGizmos();
-
-            if (!Application.isPlaying)
-            {
-                if (model)
-                {
-                    model.localPosition = new Vector3(model.localPosition.x, -length, model.localPosition.z);
-                }
-
-                if (box)
-                {
-                    box.center = new Vector3(box.center.x, model.localPosition.y + 0.15f, box.center.z);
-                }
-
-                if (rope)
-                {
-                    rope.SetPosition(1, new Vector3(0, model.localPosition.y + 0.45f, 0));
-                }
-            }
+            model.DOLocalMove(_localStartPosition, 1f).SetEase(Ease.Linear).SetDelay(delay).SetLink(gameObject).onComplete += () => homingTarget.gameObject.SetActive(true);
         }
     }
 }

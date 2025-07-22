@@ -71,7 +71,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             RuntimeManager.PlayOneShot(_toggled ? onReference : offReference, transform.position + Vector3.up);
         }
 
-        protected override void OnDrawGizmos()
+        private void OnDrawGizmosSelected()
         {
             if (_collider == null)
                 _collider = GetComponent<BoxCollider>();

@@ -39,7 +39,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             context.StateMachine.SetState<FStateSwing>();
         }
 
-        protected override void OnDrawGizmos()
+        private void OnDrawGizmosSelected()
         {
             TrajectoryDrawer.DrawTrajectory(transform.position, (transform.up + transform.forward).normalized, Color.green, shotVelSuccess);
             TrajectoryDrawer.DrawTrajectory(transform.position, (transform.up + transform.forward).normalized, Color.red, shotVelFail);

@@ -19,7 +19,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Environment
             }
         }
 
-        protected override void OnDrawGizmos()
+        private void OnDrawGizmosSelected()
         {
             if (_collider == null)
                 _collider = GetComponent<BoxCollider>();

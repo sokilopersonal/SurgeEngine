@@ -36,7 +36,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             new Rumble().Vibrate(0.7f, 0.9f, 0.5f);
         }
 
-        protected override void OnDrawGizmos()
+        private void OnDrawGizmosSelected()
         {
             Debug.DrawRay(transform.position, transform.forward * speed * outOfControl, Color.green);
         }

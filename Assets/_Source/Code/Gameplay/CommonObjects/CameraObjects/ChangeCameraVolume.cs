@@ -51,7 +51,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.CameraObjects
             }
         }
 
-        protected override void OnDrawGizmos()
+        private void OnDrawGizmosSelected()
         {
             if (target != null)
             {

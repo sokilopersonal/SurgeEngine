@@ -28,7 +28,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.ChangeModes
             }
         }
 
-        protected override void OnDrawGizmos()
+        private void OnDrawGizmosSelected()
         {
             if (_boxCollider == null)
                 _boxCollider = GetComponent<BoxCollider>();

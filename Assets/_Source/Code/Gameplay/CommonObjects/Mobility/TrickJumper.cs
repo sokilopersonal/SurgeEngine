@@ -283,10 +283,8 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             return _qteSequences[_sequenceId];
         }
 
-        protected override void OnDrawGizmos()
+        private void OnDrawGizmosSelected()
         {
-            base.OnDrawGizmos();
-            
             TrajectoryDrawer.DrawTrickTrajectory(
                 StartPosition,
                 Utility.GetCross(transform, initialPitch, true),

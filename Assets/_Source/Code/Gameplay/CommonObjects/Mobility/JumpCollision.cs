@@ -49,10 +49,8 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             }
         }
 
-        protected override void OnDrawGizmos()
+        private void OnDrawGizmosSelected()
         {
-            base.OnDrawGizmos();
-            
             if (_box == null)
                 _box = GetComponent<BoxCollider>();
             

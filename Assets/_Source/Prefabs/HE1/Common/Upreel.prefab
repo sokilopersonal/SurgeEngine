@@ -50,8 +50,11 @@ MonoBehaviour:
   model: {fileID: 473179200346883634}
   rope: {fileID: 445130071561011803}
   box: {fileID: 6685599997905561494}
+  homingTarget: {fileID: 6740386162000565331}
   moveTime: 1.5
   length: 10
+  outOfControl: 0.5
+  isWaitUp: 0
   forwardPushForce: 4
   upPushForce: 14
   sound:
@@ -387,3 +390,14 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1448946874739534833, guid: b82b82b8cfacd2548b382b4f38f3ce43, type: 3}
   m_PrefabInstance: {fileID: 5636058055660426313}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6740386162000565331 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1422545327962898458, guid: b82b82b8cfacd2548b382b4f38f3ce43, type: 3}
+  m_PrefabInstance: {fileID: 5636058055660426313}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46022b2824fb426cad002d19b84515a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -34,7 +34,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             context.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, Mathf.Abs(outOfControl)));
         }
 
-        protected override void OnDrawGizmos()
+        private void OnDrawGizmosSelected()
         {
             TrajectoryDrawer.DrawTrajectory(transform.position, transform.up, Color.green, speed, keepVelocityDistance);
         }

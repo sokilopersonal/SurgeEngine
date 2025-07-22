@@ -17,7 +17,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             Launch(context, Pitch);
         }
 
-        protected override void OnDrawGizmos()
+        private void OnDrawGizmosSelected()
         {
             TrajectoryDrawer.DrawTrajectory(StartPosition, Utility.GetImpulseWithPitch(-transform.forward, transform.right, Pitch, impulse), Color.green, impulse);
         }

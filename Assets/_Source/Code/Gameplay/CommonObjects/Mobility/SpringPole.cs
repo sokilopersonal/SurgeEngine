@@ -41,9 +41,8 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             context.Kinematics.Rigidbody.linearVelocity = transform.up * finalSpeed;
         }
 
-        protected override void OnDrawGizmos()
+        private void OnDrawGizmosSelected()
         {
-            base.OnDrawGizmos();
             Gizmos.color = Color.green;
             Gizmos.DrawLine(point.position, point.position + point.up * speed);
         }

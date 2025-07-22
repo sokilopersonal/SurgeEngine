@@ -11,12 +11,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects
     {
         public Action<ContactBase> OnContact;
         public Action<ContactBase> OnDetach;
-
-        private void Awake()
-        {
-            
-        }
-
+        
         private void OnTriggerEnter(Collider other)
         {
             if (other.TryGetActor(out ActorBase ctx))
@@ -38,11 +33,6 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects
             ObjectEvents.OnObjectTriggered?.Invoke(this);
             
             OnContact?.Invoke(this);
-        }
-        
-        protected virtual void OnDrawGizmos()
-        {
-            
         }
     }
 }
