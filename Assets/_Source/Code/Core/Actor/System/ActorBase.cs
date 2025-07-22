@@ -140,7 +140,6 @@ namespace SurgeEngine.Code.Core.Actor.System
 
         public void PutIn(Vector3 position)
         {
-            Camera.StateMachine.SetLateOffset(transform.position - position);
             transform.position = position;
         }
 

@@ -50,12 +50,6 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
             return _vData.isCollision ? base.CalculateCollisionDistance(origin, direction, baseDistance) : baseDistance;
         }
 
-        protected override void AutoLookDirection()
-        {
-            _stateMachine.YawAuto = 0;
-            _stateMachine.PitchAuto = 0;
-        }
-
         public void SetData(ParallelPanData data)
         {
             _vData = data;

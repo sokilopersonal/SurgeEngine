@@ -111,8 +111,6 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             model.DOLocalMove(_localStartPosition + Vector3.up * length, moveTime).SetEase(Ease.InSine).SetUpdate(UpdateType.Fixed).SetLink(gameObject);
             _isPlayerAttached = true;
             
-            _attachedActor.Camera.StateMachine.SetLateOffset(_attachedActor.transform.position - attachPoint.position);
-            
             _eventInstance.start();
         }
 

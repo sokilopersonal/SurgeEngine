@@ -97,7 +97,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
 
         public void Start()
         {
-            StateMachine = new CameraStateMachine(_camera, _cameraTransform, Actor, this);
+            StateMachine = new CameraStateMachine(_camera, _cameraTransform, Actor);
             
             StateMachine.AddState(new CameraAnimState(Actor));
             StateMachine.AddState(new NewModernState(Actor));

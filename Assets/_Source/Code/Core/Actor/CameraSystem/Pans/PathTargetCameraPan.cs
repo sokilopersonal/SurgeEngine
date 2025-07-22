@@ -9,7 +9,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
 
         protected override Quaternion SetRotation(Quaternion rotation)
         {
-            return Quaternion.LookRotation(_stateMachine.ActorPosition - StatePosition);
+            return Quaternion.LookRotation(_actor.transform.position - StatePosition);
         }
     }
 }

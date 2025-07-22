@@ -23,6 +23,10 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
         private float _verticalLagVelocity;
         private float _forwardLag;
         private float _forwardLagVelocity;
+
+        private Vector3 _lookOffset;
+        private float _yawAuto;
+        private float _pitchAuto;
         
         private const float RisingSmoothingTime = 0.6f;
         private const float FallingSmoothingTime = 0.5f;
@@ -85,7 +89,12 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
 
             StateFOV = 55f * fov;
             
-            Vector3 actorPosition = CalculateTarget(out Vector3 targetPosition, _stateMachine.ActualDirection, GetDistance() * distance);
+            var horizontal = Quaternion.AngleAxis(_stateMachine.Yaw, Vector3.up);
+            var vertical = Quaternion.AngleAxis(_stateMachine.Pitch, Vector3.right);
+            
+            Vector3 dir = horizontal * vertical * Vector3.back;
+            
+            Vector3 actorPosition = CalculateTarget(out Vector3 targetPosition, dir, GetDistance() * distance);
             ZLag();
             YLag();
             LateralOffset();
@@ -113,18 +122,18 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
 
         protected virtual void LookAxis()
         {
-            if (IsAuto && !_stateMachine.Is2D)
+            if (IsAuto)
             {
                 AutoLookDirection();
             }
             else
             {
                 _sensSpeedMod = 1f;
-                _stateMachine.YawAuto =  0;
+                _yawAuto =  0;
             }
 
             Vector2 lookInput = _actor.Input.lookVector * (_master.Sensitivity * _sensSpeedMod);
-            _stateMachine.Yaw += lookInput.x + _stateMachine.YawAuto;
+            _stateMachine.Yaw += lookInput.x + _yawAuto;
             _stateMachine.Pitch = Mathf.Clamp(_stateMachine.Pitch - lookInput.y, MinPitch, MaxPitch);
         }
 
@@ -163,11 +172,11 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
             _lookYTime = Mathf.Lerp(_lookYTime, targetLookYTime, Time.deltaTime * LerpSpeed);
             if (allowLag)
             {
-                _stateMachine.LookOffset.y = Mathf.SmoothDamp(_stateMachine.LookOffset.y, -adjustedYLag * YLagMultiplier, ref _lookVelocity, _lookYTime);
+                _lookOffset.y = Mathf.SmoothDamp(_lookOffset.y, -adjustedYLag * YLagMultiplier, ref _lookVelocity, _lookYTime);
             }
             else
             {
-                _stateMachine.LookOffset.y = Mathf.SmoothDamp(_stateMachine.LookOffset.y, 0, ref _lookVelocity, 0.5f);
+                _lookOffset.y = Mathf.SmoothDamp(_lookOffset.y, 0, ref _lookVelocity, 0.5f);
             }
         }
 
@@ -177,31 +186,31 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
             float lookMod = speed / _actor.Config.topSpeed;
             _sensSpeedMod = Mathf.Lerp(_master.MaxSensitivitySpeed, _master.MinSensitivitySpeed, lookMod);
             
-            if (speed > MinSpeedThreshold || _actor.StateMachine.CurrentState is FStateObject)
+            if (speed > MinSpeedThreshold)
             {
                 Vector3 vel = _actor.Kinematics.Velocity;
                 _velocity = Vector3.Lerp(_velocity, vel, Time.deltaTime * VelocityLerpSpeed);
                 float yAutoLook = Mathf.Clamp(-vel.y, _master.YawMinAmplitude, _master.YawMaxAmplitude);
-                _stateMachine.PitchAuto = yAutoLook + _master.YawDefaultAmplitude;
-                _stateMachine.Pitch = Mathf.SmoothDamp(_stateMachine.Pitch, _stateMachine.PitchAuto, ref _yAutoLookVelocity, YAutoLookSmoothTime);
+                _pitchAuto = yAutoLook + _master.YawDefaultAmplitude;
+                _stateMachine.Pitch = Mathf.SmoothDamp(_stateMachine.Pitch, _pitchAuto, ref _yAutoLookVelocity, YAutoLookSmoothTime);
 
                 float multiplier = _master.PitchAutoLookAmplitude * Mathf.Max(_master.PitchAutoLookMinAmplitude, Mathf.Clamp01(lookMod));
                 AutoLook(multiplier);
             }
             else
             {
-                _stateMachine.YawAuto = Mathf.Lerp(_stateMachine.YawAuto, 0, Time.deltaTime * AutoLookResetSpeed);
-                _stateMachine.PitchAuto = Mathf.Lerp(_stateMachine.PitchAuto, 0, Time.deltaTime * AutoLookResetSpeed);
+                _yawAuto = Mathf.Lerp(_yawAuto, 0, Time.deltaTime * AutoLookResetSpeed);
+                _pitchAuto = Mathf.Lerp(_pitchAuto, 0, Time.deltaTime * AutoLookResetSpeed);
             }
         }
 
         protected virtual void AutoLook(float multiplier)
         {
-            float angle = GetAutoAngle() * (1 - _stateMachine.SideBlendFactor) * Time.deltaTime;
+            float angle = GetAutoAngle() * Time.deltaTime;
             float dot = Vector3.Dot(_actor.transform.forward, Vector3.up);
             if (1 - Mathf.Abs(dot) > 0.05f)
             {
-                _stateMachine.YawAuto = angle * multiplier;
+                _yawAuto = angle * multiplier;
             }
         }
 
@@ -224,16 +233,16 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
 
                 if (viewDot >= 0.9f)
                 {
-                    _stateMachine.LookOffset.x = Mathf.Lerp(_stateMachine.LookOffset.x, 0, Time.deltaTime * LateralOffsetResetSpeed * 4);
+                    _lookOffset.x = Mathf.Lerp(_lookOffset.x, 0, Time.deltaTime * LateralOffsetResetSpeed * 4);
                 }
                 else
                 {
-                    _stateMachine.LookOffset.x = Mathf.Lerp(_stateMachine.LookOffset.x, x * 0.6f * curve.Evaluate(time) * modifier, Time.deltaTime * LateralOffsetLerpSpeed);
+                    _lookOffset.x = Mathf.Lerp(_lookOffset.x, x * 0.6f * curve.Evaluate(time) * modifier, Time.deltaTime * LateralOffsetLerpSpeed);
                 }
             }
             else
             {
-                _stateMachine.LookOffset.x = Mathf.Lerp(_stateMachine.LookOffset.x, 0, Time.deltaTime * LateralOffsetResetSpeed);
+                _lookOffset.x = Mathf.Lerp(_lookOffset.x, 0, Time.deltaTime * LateralOffsetResetSpeed);
             }
         }
         
@@ -247,7 +256,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
 
         protected virtual void SetRotation(Vector3 actorPosition)
         {
-            StateRotation = Quaternion.LookRotation(actorPosition + _stateMachine.GetOffset() - StatePosition);
+            StateRotation = Quaternion.LookRotation(actorPosition + _stateMachine.Transform.TransformDirection(_lookOffset) - StatePosition);
         }
 
         private float GetAutoAngle()
