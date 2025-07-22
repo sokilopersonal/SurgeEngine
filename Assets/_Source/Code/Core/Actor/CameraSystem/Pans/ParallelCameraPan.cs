@@ -31,6 +31,8 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
         protected override void SetPosition(Vector3 targetPosition)
         {
             StatePosition = targetPosition;
+            
+            Debug.DrawLine(targetPosition, _actor.transform.position);
         }
         
         protected override void SetRotation(Vector3 actorPosition)

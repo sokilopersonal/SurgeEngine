@@ -23,13 +23,6 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
             StatePosition = _stateMachine.Transform.position;
         }
 
-        public override void OnExit()
-        {
-            base.OnExit();
-
-            _stateMachine.CurrentData = null;
-        }
-
         public override void OnTick(float dt)
         {
             base.OnTick(dt);

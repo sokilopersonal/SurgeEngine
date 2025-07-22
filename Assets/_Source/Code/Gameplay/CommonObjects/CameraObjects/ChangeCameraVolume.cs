@@ -51,14 +51,17 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.CameraObjects
             }
         }
 
-        private void OnDrawGizmosSelected()
+        private void OnDrawGizmos()
         {
             if (target != null)
             {
                 Gizmos.color = Color.red;
                 Gizmos.DrawLine(transform.position, target.transform.position);
             }
-            
+        }
+
+        private void OnDrawGizmosSelected()
+        {
             if (_boxCollider == null)
                 _boxCollider = GetComponent<BoxCollider>();
             

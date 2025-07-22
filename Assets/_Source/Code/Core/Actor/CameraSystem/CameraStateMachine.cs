@@ -5,12 +5,14 @@ using SurgeEngine.Code.Core.Actor.CameraSystem.Pans.Data;
 using SurgeEngine.Code.Core.Actor.System;
 using SurgeEngine.Code.Core.StateMachine;
 using SurgeEngine.Code.Gameplay.CommonObjects.CameraObjects;
+using SurgeEngine.Code.Gameplay.CommonObjects.System;
 using SurgeEngine.Code.Infrastructure.Custom;
 using UnityEngine;
+using NotImplementedException = System.NotImplementedException;
 
 namespace SurgeEngine.Code.Core.Actor.CameraSystem
 {
-    public class CameraStateMachine : FStateMachine
+    public class CameraStateMachine : FStateMachine, IPointMarkerLoader
     {
         public ActorCamera Master { get; }
         public Camera Camera { get; }
@@ -42,6 +44,8 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
         public PanData CurrentData { get; set; }
         public float blendFactor { get; private set; }
         public float interpolatedBlendFactor { get; private set; }
+        
+        private bool _initialSnapDone;
         private List<ChangeCameraVolume> _volumes;
         public IReadOnlyList<ChangeCameraVolume> Volumes => _volumes;
         private ChangeCameraVolume _lastTop;
@@ -187,41 +191,34 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
         
         public void RegisterVolume(ChangeCameraVolume vol)
         {
-            if (!_volumes.Contains(vol))
-            {
-                _volumes.Add(vol);
-                
-                if (CurrentState is not CameraAnimState)
-                {
-                    ApplyTop();
-                }
-            }
+            if (_volumes.Contains(vol)) return;
+            bool isFirst = _volumes.Count == 0;
+            _volumes.Add(vol);
+            ApplyTop(isFirst);
         }
 
         public void UnregisterVolume(ChangeCameraVolume vol)
         {
-            if (_volumes.Contains(vol))
-            {
-                _volumes.Remove(vol);
-                
-                if (CurrentState is not CameraAnimState)
-                {
-                    ApplyTop();
-                }
-            }
+            if (!_volumes.Remove(vol)) return;
+            ApplyTop();
         }
 
-        public void ApplyTop()
+        public void ApplyTop(bool requestInstant = false)
         {
             var top = _volumes.OrderByDescending(v => v.Priority).FirstOrDefault();
             if (top == _lastTop) return;
             _lastTop = top;
-            ResetBlendFactor();
-            if (top != null) top.Target.SetPan(_actor);
-            else
+
+            bool instantly = requestInstant && !_initialSnapDone;
+            if (instantly)
             {
-                SetState<NewModernState>();
+                blendFactor = interpolatedBlendFactor = 1f;
+                _initialSnapDone = true;
             }
+            else ResetBlendFactor();
+
+            if (top != null) top.Target.SetPan(_actor);
+            else SetState<NewModernState>();
         }
         
         private Vector3 GetActorWorldPosition()
@@ -312,6 +309,11 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
                 rotation = Rotation,
                 fov = Camera.fieldOfView,
             };
+        }
+
+        public void Load(Vector3 loadPosition, Quaternion loadRotation)
+        {
+            _initialSnapDone = false;
         }
     }
 
