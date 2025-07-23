@@ -244,20 +244,6 @@ namespace SurgeEngine.Code.Core.Actor.System
                 
                     _rigidbody.position = Vector3.MoveTowards(_rigidbody.position, endPos, Mathf.Min(Speed / 64f, 1) * 16f * Time.fixedDeltaTime);
                     _splineData.Time += Vector3.Dot(Velocity, Vector3.ProjectOnPlane(tg, up)) * Time.fixedDeltaTime;
-
-                    float distance = Vector3.Distance(_rigidbody.position, pos);
-                    if (distance > 5f)
-                    {
-                        Debug.Log("Too far away from the point. Resetting path.");
-                        
-                        var flags = Actor.Flags;
-                        if (flags.HasFlag(FlagType.Autorun))
-                        {
-                            flags.RemoveFlag(FlagType.Autorun);
-                        }
-                        
-                        SetPath(null);
-                    }
                 }
             }
             else

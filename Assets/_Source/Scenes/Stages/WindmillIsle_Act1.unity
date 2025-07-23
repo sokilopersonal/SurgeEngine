@@ -40144,6 +40144,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 63d746f270eb67349b9f5d2854889351, type: 3}
+--- !u!114 &596214744 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5054113536844244027, guid: 17fe1b2335965bf458073bda81e475b5, type: 3}
+  m_PrefabInstance: {fileID: 1008670820}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b23f94eb2a31488983ee826229ba1560, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &601515984 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3608609915363134172, guid: 878ef4ab3bfc2b940a2e809d965d0bb5, type: 3}
@@ -71263,12 +71274,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5054113536844244027, guid: 17fe1b2335965bf458073bda81e475b5, type: 3}
       propertyPath: startData.startType
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7719288847048677561, guid: 17fe1b2335965bf458073bda81e475b5, type: 3}
       propertyPath: spawnPoint
       value: 
-      objectReference: {fileID: 612862161}
+      objectReference: {fileID: 596214744}
     - target: {fileID: 7719288847048677561, guid: 17fe1b2335965bf458073bda81e475b5, type: 3}
       propertyPath: data.<startType>k__BackingField
       value: 1

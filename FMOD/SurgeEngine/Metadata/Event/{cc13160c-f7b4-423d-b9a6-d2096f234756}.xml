@@ -56,7 +56,11 @@
 			<destination>{1d8f20e8-7f01-406b-aede-b1a50c623f5e}</destination>
 		</relationship>
 	</object>
-	<object class="EventAutomatableProperties" id="{1a26c0fc-0557-4301-9cf9-54d7bf9ae481}" />
+	<object class="EventAutomatableProperties" id="{1a26c0fc-0557-4301-9cf9-54d7bf9ae481}">
+		<property name="maxVoices">
+			<value>5</value>
+		</property>
+	</object>
 	<object class="MarkerTrack" id="{a8d941d2-06a3-4a8d-9741-11871badde95}" />
 	<object class="GroupTrack" id="{59b214de-03b6-4e27-bcb9-34bf888a2485}">
 		<relationship name="modules">
@@ -161,7 +165,10 @@
 	<object class="MixerBusFader" id="{74d8c304-e544-463b-a299-d83e5bfca17d}" />
 	<object class="LimiterEffect" id="{99a40130-5620-4d2e-8f77-882bb65185e5}">
 		<property name="ceiling">
-			<value>-5.5</value>
+			<value>-12</value>
+		</property>
+		<property name="release">
+			<value>60</value>
 		</property>
 	</object>
 </objects>

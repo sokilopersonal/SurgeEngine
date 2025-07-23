@@ -19,10 +19,8 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Collectables
 
         private ActorBase _actor;
         private bool _inMagnet;
-        private Vector3 _initialPosition;
         private float _factor;
-        private Vector3 _targetPosition;
-        private float _elapsedTime;
+        private Vector3 _velocity;
 
         private Vector3 _startPosition;
 
@@ -47,21 +45,25 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Collectables
             
             if (_inMagnet)
             {
-                _elapsedTime += Time.deltaTime;
-                _factor = Mathf.Clamp01(_elapsedTime / flyDuration);
-                _targetPosition = _actor.transform.position - _actor.transform.up * 0.5f;
-                
-                Vector3 flatPosition = Vector3.Lerp(_initialPosition, _targetPosition, _factor);
-                
-                float heightOffset = heightCurve.Evaluate(_factor);
-                flatPosition.y += heightOffset;
+                float stiffnessRampTime = 0.5f;
+                float baseStiffness = 12f;
+                float baseDamping = 5f;
+                float baseSpeed = 36f;
 
-                transform.position = flatPosition;
-                
-                if (_factor >= 1f)
-                {
-                    Contact(null, null);
-                }
+                _factor = Mathf.Clamp01(_factor + Time.deltaTime / stiffnessRampTime);
+
+                Vector3 target = _actor.transform.position - Vector3.up * 0.9f;
+
+                float stiffness = baseStiffness * (baseSpeed * _factor);
+                float damping = baseDamping;
+
+                Vector3 dir = (target - transform.position).normalized;
+                Vector3 springForce = dir * stiffness;
+                Vector3 dampForce = _velocity * damping;
+                Vector3 force = springForce - dampForce;
+
+                _velocity += force * Time.deltaTime;
+                transform.position += _velocity * Time.deltaTime;
             }
         }
 
@@ -79,8 +81,6 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Collectables
                 _inMagnet = true;
                 
                 _actor = actor;
-                _initialPosition = transform.position;
-                _elapsedTime = 0f;
             }
         }
 
@@ -97,7 +97,6 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Collectables
         public void Load(Vector3 loadPosition, Quaternion loadRotation)
         {
             _inMagnet = false;
-            _elapsedTime = 0f;
 
             transform.position = _startPosition;
             gameObject.SetActive(true);
