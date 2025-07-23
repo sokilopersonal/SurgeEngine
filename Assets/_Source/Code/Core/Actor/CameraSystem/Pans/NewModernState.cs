@@ -11,8 +11,6 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
 {
     public class NewModernState : CameraState
     {
-        private float _sensSpeedMod;
-        private Vector3 _velocity;
         private float _lookVelocity;
         private float _currentCollisionDistance;
         private float _lookYTime;
@@ -39,10 +37,8 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
         private const float ZLagFactor = 0.075f;
         private const float YLagVelocityFactor = -0.125f;
         private const float MinSpeedThreshold = 0.1f;
-        private const float VelocityLerpSpeed = 8f;
         private const float YAutoLookSmoothTime = 0.25f;
         private const float AutoLookResetSpeed = 12f;
-        private const float DefaultSensitivityResetSpeed = 6f;
         private const float MinPitch = -75f;
         private const float MaxPitch = 85f;
         private const float LateralOffsetLerpSpeed = 1.6f;
@@ -91,7 +87,6 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
             
             var horizontal = Quaternion.AngleAxis(_stateMachine.Yaw, Vector3.up);
             var vertical = Quaternion.AngleAxis(_stateMachine.Pitch, Vector3.right);
-            
             Vector3 dir = horizontal * vertical * Vector3.back;
             
             Vector3 actorPosition = CalculateTarget(out Vector3 targetPosition, dir, GetDistance() * distance);
@@ -128,11 +123,10 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
             }
             else
             {
-                _sensSpeedMod = 1f;
                 _yawAuto =  0;
             }
 
-            Vector2 lookInput = _actor.Input.lookVector * (_master.Sensitivity * _sensSpeedMod);
+            Vector2 lookInput = _actor.Input.lookVector * _master.Sensitivity;
             _stateMachine.Yaw += lookInput.x + _yawAuto;
             _stateMachine.Pitch = Mathf.Clamp(_stateMachine.Pitch - lookInput.y, MinPitch, MaxPitch);
         }
@@ -180,16 +174,14 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
             }
         }
 
-        protected virtual void AutoLookDirection()
+        private void AutoLookDirection()
         {
             float speed = _actor.Kinematics.Speed;
             float lookMod = speed / _actor.Config.topSpeed;
-            _sensSpeedMod = Mathf.Lerp(_master.MaxSensitivitySpeed, _master.MinSensitivitySpeed, lookMod);
             
             if (speed > MinSpeedThreshold)
             {
                 Vector3 vel = _actor.Kinematics.Velocity;
-                _velocity = Vector3.Lerp(_velocity, vel, Time.deltaTime * VelocityLerpSpeed);
                 float yAutoLook = Mathf.Clamp(-vel.y, _master.YawMinAmplitude, _master.YawMaxAmplitude);
                 _pitchAuto = yAutoLook + _master.YawDefaultAmplitude;
                 _stateMachine.Pitch = Mathf.SmoothDamp(_stateMachine.Pitch, _pitchAuto, ref _yAutoLookVelocity, YAutoLookSmoothTime);
@@ -204,7 +196,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
             }
         }
 
-        protected virtual void AutoLook(float multiplier)
+        private void AutoLook(float multiplier)
         {
             float angle = GetAutoAngle() * Time.deltaTime;
             float dot = Vector3.Dot(_actor.transform.forward, Vector3.up);
@@ -214,7 +206,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
             }
         }
 
-        protected void LateralOffset()
+        private void LateralOffset()
         {
             float x = _actor.Input.moveVector.x;
             float time = _actor.Kinematics.Speed / _actor.Config.topSpeed;
@@ -237,7 +229,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
                 }
                 else
                 {
-                    _lookOffset.x = Mathf.Lerp(_lookOffset.x, x * 0.6f * curve.Evaluate(time) * modifier, Time.deltaTime * LateralOffsetLerpSpeed);
+                    _lookOffset.x = Mathf.Lerp(_lookOffset.x, x * 0.6f * curve.Evaluate(time) * modifier, Time.deltaTime * 1.25f);
                 }
             }
             else
@@ -252,11 +244,19 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
             SetRotation(actorPosition);
         }
 
-        protected virtual void SetPosition(Vector3 targetPosition) => StatePosition = targetPosition;
+        protected virtual void SetPosition(Vector3 targetPosition)
+        {
+            StatePosition = targetPosition;
+        }
 
         protected virtual void SetRotation(Vector3 actorPosition)
         {
-            StateRotation = Quaternion.LookRotation(actorPosition + _stateMachine.Transform.TransformDirection(_lookOffset) - StatePosition);
+            float yOffset = _lookOffset.y;
+            
+            Vector3 vertical = Vector3.up * yOffset;
+            Vector3 horizontal = new Vector3(_lookOffset.x, 0, 0);
+            
+            StateRotation = Quaternion.LookRotation(actorPosition + vertical + _stateMachine.Transform.TransformDirection(horizontal) - StatePosition);
         }
 
         private float GetAutoAngle()

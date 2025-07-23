@@ -17,8 +17,6 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
         {
             base.ChangeAnimationState(obj);
             
-            const string Drift = "Drift";
-            
             FStateMachine machine = Actor.StateMachine;
             FState prev = machine.PreviousState;
             Animator animator = StateAnimator.Animator;
@@ -43,24 +41,12 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
             
             if (obj is FStateIdle)
             {
-                string[] idleAnims = 
-                {
-                    "sonic_idle_A",
-                    "sonic_idle_B",
-                    "sonic_idle_C",
-                    "sonic_idle_D",
-                    "sonic_idle_E_start",
-                };
-                    
-                int idleIndex = Random.Range(0, idleAnims.Length);
-                AnimationHandle idleHandle = null;
-                
                 if (prev is not FStateDamageLand)
                 {
                     switch (prev)
                     {
                         case FStateGround:
-                            idleHandle = StateAnimator.TransitionToState("Idle", 0.1f);
+                            StateAnimator.TransitionToState("Idle", 0.1f);
                             break;
                         case FStateAir:
                             StateAnimator.TransitionToState("Landing", 0f).After(0.4f, () => StateAnimator.TransitionToState("Idle", 1f));
@@ -71,19 +57,17 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
                         case FStateStompLand:
                             StateAnimator.TransitionToStateDelayed("SitExit", 0.7f, 0.1f).Then(() =>
                             {
-                                idleHandle = StateAnimator.TransitionToState("Idle", 0f);
+                                StateAnimator.TransitionToState("Idle", 0f);
                             });
                             break;
                         case FStateSweepKick:
                             StateAnimator.TransitionToStateDelayed("SitExit", 0.25f, 0.1f).Then(() => StateAnimator.TransitionToState("Idle", 0f));
                             break;
                         case FStateBrakeTurn:
-                            idleHandle = StateAnimator.TransitionToState("Idle", 0.1f);
+                            StateAnimator.TransitionToState("Idle", 0.1f);
                             break;
                     }
                 }
-
-                idleHandle?.AfterThen(2f, () => StateAnimator.TransitionToState(idleAnims[idleIndex], 0.1f).Then(() => StateAnimator.TransitionToState("Idle", 0f)));
             }
             if (obj is FStateGround)
             {
@@ -252,7 +236,7 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
                     StateAnimator.TransitionToState("Drift_SR", 0.2f);
                 }
                 
-                StateAnimator.SetCurrentAnimationState(Drift);
+                StateAnimator.SetCurrentAnimationState("Drift");
             }
             if (obj is FStateJumpPanel jumpPanel)
             {

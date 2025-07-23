@@ -26,10 +26,10 @@ namespace SurgeEngine.Code.Core.Actor.System
         protected virtual void Update()
         {
             var animator = StateAnimator.Animator;
-            animator.SetFloat(AnimatorParams.GroundSpeed, Mathf.Clamp(Actor.Kinematics.Speed, 4, 30f));
+            animator.SetFloat(AnimatorParams.GroundSpeed, Mathf.Clamp(Actor.Kinematics.Speed, 0, 30f));
             animator.SetFloat(AnimatorParams.VerticalSpeed, Actor.Kinematics.Velocity.y);
             
-            float targetSpeedPercent = Mathf.Clamp(Actor.Kinematics.Speed / Actor.Config.topSpeed, 0.02f, 1.25f);
+            float targetSpeedPercent = Mathf.Clamp(Actor.Kinematics.Speed / Actor.Config.topSpeed, 0.02f, 1.1f);
             float currentSpeedPercent = animator.GetFloat("SpeedPercent");
             animator.SetFloat("SpeedPercent", Mathf.Lerp(currentSpeedPercent, targetSpeedPercent, 10f * Time.deltaTime));
 
@@ -62,8 +62,10 @@ namespace SurgeEngine.Code.Core.Actor.System
     
     public static class AnimatorParams
     {
-        public static readonly int VerticalSpeed = Animator.StringToHash("VerticalSpeed");
+        public static readonly int IdleTrigger = Animator.StringToHash("Idle");
+        public static readonly int IdleIndex = Animator.StringToHash("IdleIndex");
         public static readonly int GroundSpeed = Animator.StringToHash("GroundSpeed");
+        public static readonly int VerticalSpeed = Animator.StringToHash("VerticalSpeed");
         public static readonly int TurnAngle = Animator.StringToHash("LocalTurnAngle");
         public static readonly int SmoothTurnAngle = Animator.StringToHash("SmoothTurnAngle");
         public static readonly string RunCycle = "Run Cycle";
