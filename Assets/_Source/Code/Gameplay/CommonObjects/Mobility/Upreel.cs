@@ -21,6 +21,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
         
         [Header("Upreel")]
         [SerializeField, Tooltip("How long it takes to move to the target position")] private float moveTime = 1;
+        [SerializeField, Tooltip("How long it takes to lower the upreel")] private float lowerTime = 1.25f;
         [SerializeField, Min(1)] private float length = 10;
         [SerializeField, Tooltip("Out Of Control time when player exits the Upreel.")] private float outOfControl = 0.5f;
         [SerializeField] private bool isWaitUp;
@@ -36,6 +37,8 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
         private bool _isPlayerAttached;
         private ActorBase _attachedActor;
         private EventInstance _eventInstance;
+
+        private Tween _modelTween;
         
         private Vector3 _contactPoint;
         private float _attachTimer;
@@ -108,7 +111,8 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             _contactPoint = _attachedActor.transform.position;
             _attachTimer = 0;
             
-            model.DOLocalMove(_localStartPosition + Vector3.up * length, moveTime).SetEase(Ease.InSine).SetUpdate(UpdateType.Fixed).SetLink(gameObject);
+            _modelTween?.Kill();
+            _modelTween = model.DOLocalMove(_localStartPosition + Vector3.up * length, moveTime).SetEase(Ease.InSine).SetUpdate(UpdateType.Fixed).SetLink(gameObject).From(model.transform.localPosition);
             _isPlayerAttached = true;
             
             _eventInstance.start();
@@ -139,7 +143,10 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
 
         public void Lower(float delay = 0.5f)
         {
-            model.DOLocalMove(_localStartPosition, 0.5f).SetEase(Ease.Linear).SetDelay(delay).SetLink(gameObject).onComplete += () => homingTarget.gameObject.SetActive(true);
+            homingTarget.gameObject.SetActive(true);
+            
+            _modelTween?.Kill();
+            _modelTween = model.DOLocalMove(_localStartPosition, lowerTime).SetEase(Ease.Linear).SetDelay(delay).SetLink(gameObject);
         }
 
         public void Load(Vector3 loadPosition, Quaternion loadRotation)

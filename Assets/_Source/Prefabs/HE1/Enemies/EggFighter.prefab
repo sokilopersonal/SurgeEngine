@@ -242,7 +242,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1134928124351879982}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 9e656a94fa8a4e44086ab61b0430c6af, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -742,7 +742,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 483560082084050141}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 9e656a94fa8a4e44086ab61b0430c6af, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -822,13 +822,13 @@ CharacterJoint:
     limit: 0
     bounciness: 0
     contactDistance: 0
-  m_EnableProjection: 0
-  m_ProjectionDistance: 0.1
+  m_EnableProjection: 1
+  m_ProjectionDistance: 0.25
   m_ProjectionAngle: 180
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
   m_EnableCollision: 0
-  m_EnablePreprocessing: 0
+  m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
 --- !u!114 &1955592102626321908
@@ -843,8 +843,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e16ec38504519dc429143afd11c36b20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ragdoll: {fileID: 0}
-  rb: {fileID: 0}
 --- !u!1 &788087261022351302 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6442749109187492485, guid: efc2ce8db1f28fa4eba27cea4d948f68, type: 3}
@@ -857,7 +855,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 788087261022351302}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 9e656a94fa8a4e44086ab61b0430c6af, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -937,13 +935,13 @@ CharacterJoint:
     limit: 0
     bounciness: 0
     contactDistance: 0
-  m_EnableProjection: 0
-  m_ProjectionDistance: 0.1
+  m_EnableProjection: 1
+  m_ProjectionDistance: 0.25
   m_ProjectionAngle: 180
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
   m_EnableCollision: 0
-  m_EnablePreprocessing: 0
+  m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
 --- !u!114 &9037437529325791340
@@ -958,8 +956,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e16ec38504519dc429143afd11c36b20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ragdoll: {fileID: 0}
-  rb: {fileID: 0}
 --- !u!137 &1203498004719646549 stripped
 SkinnedMeshRenderer:
   m_CorrespondingSourceObject: {fileID: 4842856219945099798, guid: efc2ce8db1f28fa4eba27cea4d948f68, type: 3}
@@ -977,7 +973,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1683400757008911639}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 9e656a94fa8a4e44086ab61b0430c6af, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -1057,13 +1053,13 @@ CharacterJoint:
     limit: 0
     bounciness: 0
     contactDistance: 0
-  m_EnableProjection: 0
-  m_ProjectionDistance: 0.1
+  m_EnableProjection: 1
+  m_ProjectionDistance: 0.25
   m_ProjectionAngle: 180
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
   m_EnableCollision: 0
-  m_EnablePreprocessing: 0
+  m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
 --- !u!114 &5947124138291365150
@@ -1078,8 +1074,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e16ec38504519dc429143afd11c36b20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ragdoll: {fileID: 0}
-  rb: {fileID: 0}
 --- !u!1 &1774475281391400150 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -3808122513106312811, guid: efc2ce8db1f28fa4eba27cea4d948f68, type: 3}
@@ -1092,7 +1086,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1774475281391400150}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 9e656a94fa8a4e44086ab61b0430c6af, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -1172,13 +1166,13 @@ CharacterJoint:
     limit: 0
     bounciness: 0
     contactDistance: 0
-  m_EnableProjection: 0
-  m_ProjectionDistance: 0.1
+  m_EnableProjection: 1
+  m_ProjectionDistance: 0.25
   m_ProjectionAngle: 180
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
   m_EnableCollision: 0
-  m_EnablePreprocessing: 0
+  m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
 --- !u!114 &8066615653428147428
@@ -1193,8 +1187,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e16ec38504519dc429143afd11c36b20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ragdoll: {fileID: 0}
-  rb: {fileID: 0}
 --- !u!4 &3074218167582573965 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -491114188204863282, guid: efc2ce8db1f28fa4eba27cea4d948f68, type: 3}
@@ -1212,7 +1204,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4212560264372484015}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 9e656a94fa8a4e44086ab61b0430c6af, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -1292,13 +1284,13 @@ CharacterJoint:
     limit: 0
     bounciness: 0
     contactDistance: 0
-  m_EnableProjection: 0
-  m_ProjectionDistance: 0.1
+  m_EnableProjection: 1
+  m_ProjectionDistance: 0.25
   m_ProjectionAngle: 180
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
   m_EnableCollision: 0
-  m_EnablePreprocessing: 0
+  m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
 --- !u!114 &1800752842177719480
@@ -1313,8 +1305,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e16ec38504519dc429143afd11c36b20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ragdoll: {fileID: 0}
-  rb: {fileID: 0}
 --- !u!1 &4450030723491288380 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -1276972527969697665, guid: efc2ce8db1f28fa4eba27cea4d948f68, type: 3}
@@ -1327,7 +1317,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4450030723491288380}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 9e656a94fa8a4e44086ab61b0430c6af, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -1405,13 +1395,13 @@ CharacterJoint:
     limit: 0
     bounciness: 0
     contactDistance: 0
-  m_EnableProjection: 0
-  m_ProjectionDistance: 0.1
+  m_EnableProjection: 1
+  m_ProjectionDistance: 0.25
   m_ProjectionAngle: 180
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
   m_EnableCollision: 0
-  m_EnablePreprocessing: 0
+  m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
 --- !u!114 &6756692250476014448
@@ -1426,8 +1416,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e16ec38504519dc429143afd11c36b20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ragdoll: {fileID: 0}
-  rb: {fileID: 0}
 --- !u!1 &4465965900091295881 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -1261945440604398134, guid: efc2ce8db1f28fa4eba27cea4d948f68, type: 3}
@@ -1440,7 +1428,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4465965900091295881}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 9e656a94fa8a4e44086ab61b0430c6af, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -1520,13 +1508,13 @@ CharacterJoint:
     limit: 0
     bounciness: 0
     contactDistance: 0
-  m_EnableProjection: 0
-  m_ProjectionDistance: 0.1
+  m_EnableProjection: 1
+  m_ProjectionDistance: 0.25
   m_ProjectionAngle: 180
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
   m_EnableCollision: 0
-  m_EnablePreprocessing: 0
+  m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
 --- !u!114 &7751814787767170272
@@ -1541,8 +1529,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e16ec38504519dc429143afd11c36b20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ragdoll: {fileID: 0}
-  rb: {fileID: 0}
 --- !u!1 &4947539373632500475 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1670791228401477560, guid: efc2ce8db1f28fa4eba27cea4d948f68, type: 3}
@@ -1555,7 +1541,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4947539373632500475}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 9e656a94fa8a4e44086ab61b0430c6af, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -1608,8 +1594,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e16ec38504519dc429143afd11c36b20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ragdoll: {fileID: 0}
-  rb: {fileID: 0}
 --- !u!1 &5600452851952208519 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2179224553795198916, guid: efc2ce8db1f28fa4eba27cea4d948f68, type: 3}
@@ -1622,7 +1606,7 @@ SphereCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5600452851952208519}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 9e656a94fa8a4e44086ab61b0430c6af, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -1700,13 +1684,13 @@ CharacterJoint:
     limit: 0
     bounciness: 0
     contactDistance: 0
-  m_EnableProjection: 0
-  m_ProjectionDistance: 0.1
+  m_EnableProjection: 1
+  m_ProjectionDistance: 0.25
   m_ProjectionAngle: 180
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
   m_EnableCollision: 0
-  m_EnablePreprocessing: 0
+  m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
 --- !u!114 &6200274446369697083
@@ -1721,8 +1705,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e16ec38504519dc429143afd11c36b20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ragdoll: {fileID: 0}
-  rb: {fileID: 0}
 --- !u!1 &5644299927648244908 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2148907502171210223, guid: efc2ce8db1f28fa4eba27cea4d948f68, type: 3}
@@ -1735,7 +1717,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5644299927648244908}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 9e656a94fa8a4e44086ab61b0430c6af, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -1815,13 +1797,13 @@ CharacterJoint:
     limit: 0
     bounciness: 0
     contactDistance: 0
-  m_EnableProjection: 0
-  m_ProjectionDistance: 0.1
+  m_EnableProjection: 1
+  m_ProjectionDistance: 0.25
   m_ProjectionAngle: 180
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
   m_EnableCollision: 0
-  m_EnablePreprocessing: 0
+  m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
 --- !u!114 &3988790615546101452
@@ -1836,8 +1818,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e16ec38504519dc429143afd11c36b20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ragdoll: {fileID: 0}
-  rb: {fileID: 0}
 --- !u!4 &6056319368497181352 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: efc2ce8db1f28fa4eba27cea4d948f68, type: 3}
@@ -1909,8 +1889,7 @@ MonoBehaviour:
   collideLayers:
     serializedVersion: 2
     m_Bits: 4097
-  timer: 0
-  minimumLifeTime: 0.25
+  minimumLifeTime: 0.75
   maximumLifeTime: 4
 --- !u!114 &334434458288507473
 MonoBehaviour:
@@ -1962,7 +1941,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8354536993242243361}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 9e656a94fa8a4e44086ab61b0430c6af, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -2042,13 +2021,13 @@ CharacterJoint:
     limit: 0
     bounciness: 0
     contactDistance: 0
-  m_EnableProjection: 0
-  m_ProjectionDistance: 0.1
+  m_EnableProjection: 1
+  m_ProjectionDistance: 0.25
   m_ProjectionAngle: 180
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
   m_EnableCollision: 0
-  m_EnablePreprocessing: 0
+  m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
 --- !u!114 &1826816164405126867
@@ -2063,8 +2042,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e16ec38504519dc429143afd11c36b20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ragdoll: {fileID: 0}
-  rb: {fileID: 0}
 --- !u!1001 &6396058292089601397
 PrefabInstance:
   m_ObjectHideFlags: 0

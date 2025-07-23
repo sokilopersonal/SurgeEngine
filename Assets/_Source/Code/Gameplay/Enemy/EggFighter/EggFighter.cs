@@ -81,8 +81,12 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter
             if (!IsDead)
             {
                 Vector3 force = sender.GetComponentInChildren<Rigidbody>().linearVelocity;
-                force += Vector3.up * (force.magnitude * 0.1f);
-                Kill(force);
+                
+                Vector3 horizontal = Vector3.ProjectOnPlane(force, Vector3.up);
+                Vector3 vertical = Vector3.Project(force, Vector3.up);
+                vertical = Vector3.ClampMagnitude(vertical, 2f);
+                
+                Kill(horizontal + vertical);
             
                 OnDied?.Invoke();
             }
