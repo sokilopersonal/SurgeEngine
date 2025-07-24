@@ -14,9 +14,11 @@ namespace SurgeEngine.Code.Core.Actor.States
         public override void OnEnter()
         {
             base.OnEnter();
+            
+            Animation.StateAnimator.TransitionToState("Idle");
         }
 
-        public void SetGoal(GoalRing goal, GoalRank rank)
+        public void SetGoal(GoalRing goal)
         {
             Rigidbody.transform.position = goal.transform.position;
             Rigidbody.transform.rotation = Quaternion.Euler(0, goal.transform.rotation.eulerAngles.y, 0);
@@ -27,7 +29,10 @@ namespace SurgeEngine.Code.Core.Actor.States
             }
             
             Rigidbody.isKinematic = true;
-            
+        }
+
+        public void LookAnimation(GoalRank rank)
+        {
             const string ResultLook = "ResultLook";
             const string ReactionS = "ReactionS";
             const string ReactionA = "ReactionA";
@@ -61,7 +66,7 @@ namespace SurgeEngine.Code.Core.Actor.States
             }
 
             var animator = Animation.StateAnimator;
-            animator.TransitionToStateDelayed(ResultLook, 1.5f)
+            animator.TransitionToState(ResultLook)
                 .Then(() => animator.TransitionToState(reaction));
         }
     }

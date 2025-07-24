@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using SurgeEngine.Code.Core.Actor.States;
 using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.System
@@ -135,6 +136,17 @@ namespace SurgeEngine.Code.Core.Actor.System
                     path.EvaluateWorld(out _, out var tg, out var up, out var right);
                     
                     kinematics.Project(right);
+                }
+
+                if (_targetSpeed == 0)
+                {
+                    if (_currentEaseTime >= _easeTime)
+                    {
+                        if (kinematics.CheckForGround(out _))
+                        {
+                            actor.StateMachine.SetState<FStateIdle>();
+                        }
+                    }
                 }
             }
         }

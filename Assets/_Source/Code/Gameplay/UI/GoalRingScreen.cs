@@ -1,5 +1,7 @@
 ﻿using System;
 using FMODUnity;
+using SurgeEngine.Code.Core.Actor.States;
+using SurgeEngine.Code.Core.Actor.System;
 using SurgeEngine.Code.Gameplay.CommonObjects.System;
 using SurgeEngine.Code.Infrastructure.Tools.Managers;
 using TMPro;
@@ -21,8 +23,12 @@ namespace SurgeEngine.Code.Gameplay.UI
         [SerializeField] private Slider rankProgressBar;
         [SerializeField] private TMP_Text rankText;
         [SerializeField] private GameObject objectToSelect;
+        [SerializeField] private RawImage playerRenderImage;
 
         [Inject] private Stage _stage;
+        [Inject] private ActorBase _actor;
+
+        private Action OnResultLook;
 
         private bool _isAnimatingTimeText;
         private float _timeAnimationElapsed;
@@ -30,18 +36,17 @@ namespace SurgeEngine.Code.Gameplay.UI
         private float _scoreAnimationElapsed;
         private bool _isAnimatingRank;
         private float _rankAnimationElapsed;
-
         public event Action OnFlashEnd;
 
         private void Start()
         {
-            rankText.text = "";
+            rankText.text = "E";
             rankProgressBar.value = 0f;
         }
 
         private void Update()
         {
-            float duration = 1f;
+            float duration = 0.75f;
             if (_isAnimatingTimeText)
             {
                 float time = Mathf.Lerp(0, _stage.Data.Time, _timeAnimationElapsed);
@@ -69,13 +74,13 @@ namespace SurgeEngine.Code.Gameplay.UI
                 int currentScore = _stage.Data.TotalScore;
                 int requiredScore = _stage.Data.Result.RequiredScore;
                 float rank = Mathf.Lerp(0, currentScore / (float)requiredScore, _rankAnimationElapsed);
-                rankProgressBar.value = Mathf.Lerp(rankProgressBar.value, rank, Time.deltaTime * 7f);
+                rankProgressBar.value = rank;
                 rankText.text = _stage.Data.Result.GetRank(Mathf.RoundToInt(rank * requiredScore)).ToString();
                 
                 float total = Mathf.Lerp(0, _stage.Data.TotalScore, _rankAnimationElapsed);
                 totalScoreText.text = total.ToString("000000");
                 
-                _rankAnimationElapsed += Time.deltaTime / duration * 0.5f;
+                _rankAnimationElapsed += Time.deltaTime / 0.65f;
             }
         }
 
@@ -108,6 +113,16 @@ namespace SurgeEngine.Code.Gameplay.UI
         {
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
+        }
+
+        public void SetRenderTexture(RenderTexture rt)
+        {
+            playerRenderImage.texture = rt;
+        }
+        
+        public void ResultLook()
+        {
+            _actor.StateMachine.GetState<FStateGoal>().LookAnimation(_stage.Data.Result.GetRank(_stage.Data.TotalScore));
         }
 
         public void SelectOnEnd()
