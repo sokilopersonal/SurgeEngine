@@ -65,11 +65,11 @@ namespace SurgeEngine.Code.Core.Actor.States
 
             if (Actor.Flags.HasFlag(FlagType.OutOfControl)) return;
             if (!Input.AHeld || _released) return;
-            if (!(_jumpTime < _config.jumpStartTime)) return;
+            if (!(_jumpTime < _config.jumpHoldTime)) return;
 
             Vector3 horizontal = Kinematics.HorizontalVelocity;
             
-            _jumpVelocity.y += _config.jumpHoldForce * dt;
+            _jumpVelocity.y += _config.jumpHoldSpeed * dt;
 
             float min = Mathf.Min(_jumpVelocity.y, _config.jumpMaxSpeed);
             _jumpVelocity.y = min; // Clamping
@@ -105,12 +105,12 @@ namespace SurgeEngine.Code.Core.Actor.States
             if (!bounce)
             {
                 Vector3 horizontalVelocity = new Vector3(Rigidbody.linearVelocity.x, 0, Rigidbody.linearVelocity.z);
-                _jumpVelocity = Vector3.up * _config.jumpForce;
+                _jumpVelocity = Vector3.up * _config.jumpFirstSpeed;
                 Rigidbody.linearVelocity = horizontalVelocity + _jumpVelocity;
             }
             
             if (bounce)
-                Rigidbody.linearVelocity = new Vector3(Rigidbody.linearVelocity.x, _config.jumpForce * 4, Rigidbody.linearVelocity.z);
+                Rigidbody.linearVelocity = new Vector3(Rigidbody.linearVelocity.x, _config.jumpFirstSpeed * 4, Rigidbody.linearVelocity.z);
         }
     }
 }

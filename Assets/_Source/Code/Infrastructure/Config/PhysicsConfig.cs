@@ -19,6 +19,7 @@ namespace SurgeEngine.Code.Infrastructure.Config
         public float minVerticalSpeed = 30;
         public float maxVerticalSpeed = 40;
         [Range(0.1f, 1)] public float airControl = 0.4f;
+        public float landingSpeed = 5f;
         
         [Header("Acceleration")]
         public float accelerationRate = 7.5f;
@@ -33,7 +34,6 @@ namespace SurgeEngine.Code.Infrastructure.Config
         public float minSkiddingRate = 10;
         public float maxSkiddingRate = 15;
         public float skiddingThreshold = 0.5f;
-        public float skiddingSpeedThreshold = 15f;
         
         [Header("Turn")]
         public float turnSpeed = 8;
@@ -41,10 +41,11 @@ namespace SurgeEngine.Code.Infrastructure.Config
         public float turnSmoothing = 10;
 
         [Header("Jump")]
-        public float jumpForce = 16;
-        public float jumpHoldForce = 12;
+        public float jumpFirstSpeed = 2.75f;
+        public float jumpHoldSpeed = 45;
         public float jumpMaxSpeed = 18;
-        public float jumpStartTime = 0.15f;
+        public float jumpMaxShortTime = 0.117f;
+        public float jumpHoldTime = 0.15f;
         public float jumpCollisionHeight = 0.6f;
         public float jumpCollisionCenter = 0.2f;
         public float jumpCollisionRadius = 0.5f;

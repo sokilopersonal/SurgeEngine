@@ -339,28 +339,39 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
             _hopAnimation = _hopAnimation == "HopL" ? "HopR" : "HopL";
             StateAnimator.TransitionToState(hop ? _hopAnimation : "JumpStart", 0f);
             
-            yield return new WaitForSeconds(0.117f);
+            float hopTime = Actor.Config.jumpMaxShortTime;
 
-            if (Actor.StateMachine.CurrentState is not FStateJump)
-                yield break;
-            
-            if (Actor.Input.AHeld)
+            while (true)
             {
-                StateAnimator.TransitionToState("Ball", 0f);
-            }
-            else
-            {
-                if (hop)
+                var current = Actor.StateMachine.CurrentState;
+                if (current is not FStateJump)
+                    yield break;
+
+                var jumpTime = Actor.Kinematics.AirTime;
+                Debug.Log(jumpTime);
+                if (jumpTime > hopTime)
                 {
-                    StateAnimator.TransitionToStateDelayed(AnimatorParams.AirCycle, 0.277f, 0.25f);
-                }
-                else
-                {
+                    if (Actor.Input.AHeld)
+                    {
+                        StateAnimator.TransitionToState("Ball", 0f);
+                        yield break;
+                    }
+
+                    if (hop)
+                    {
+                        StateAnimator.TransitionToStateDelayed(AnimatorParams.AirCycle, 0.277f, 0.25f);
+                        yield break;
+                    }
+
                     StateAnimator.TransitionToState("JumpLow").After(0.25f, () =>
                     {
                         StateAnimator.TransitionToState(AnimatorParams.AirCycle);
                     });
+                    
+                    yield break;
                 }
+                
+                yield return null;
             }
         }
     }

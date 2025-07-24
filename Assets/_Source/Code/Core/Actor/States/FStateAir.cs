@@ -58,7 +58,8 @@ namespace SurgeEngine.Code.Core.Actor.States
                 {
                     if (!Kinematics.IsHardAngle(hit.normal))
                     {
-                        StateMachine.SetState<FStateGround>();
+                        if (Kinematics.Speed > Actor.Config.landingSpeed) StateMachine.SetState<FStateGround>();
+                        else StateMachine.SetState<FStateIdle>();
                     }
                     else
                     {

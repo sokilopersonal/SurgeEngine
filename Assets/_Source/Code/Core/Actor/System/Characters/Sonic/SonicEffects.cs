@@ -100,9 +100,25 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
         
         private IEnumerator PlayJumpball()
         {
-            yield return new WaitForSeconds(0.117f);
-            if (Actor.StateMachine.CurrentState is FStateJump && Actor.Input.AHeld)
-                spinball.Toggle(true);
+            var current = Actor.StateMachine.CurrentState;
+            float hopTime = Actor.Config.jumpMaxShortTime;
+
+            while (true)
+            {
+                if (current is not FStateJump) yield break;
+                
+                var airTime = Actor.Kinematics.AirTime;
+                if (airTime > hopTime)
+                {
+                    if (Actor.Input.AHeld)
+                    {
+                        spinball.Toggle(true);
+                        yield break;
+                    }
+                }
+                
+                yield return null;
+            }
         }
     }
 }
