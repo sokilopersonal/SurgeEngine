@@ -37,7 +37,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
         
         protected override void SetRotation(Vector3 actorPosition)
         {
-            StateRotation = Quaternion.LookRotation(actorPosition - StatePosition);
+            StateRotation = Quaternion.LookRotation(actorPosition + GetOffset() - StatePosition);
         }
         
         protected override void LookAxis()

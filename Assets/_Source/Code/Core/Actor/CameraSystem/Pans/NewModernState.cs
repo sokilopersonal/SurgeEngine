@@ -251,12 +251,9 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
 
         protected virtual void SetRotation(Vector3 actorPosition)
         {
-            float yOffset = _lookOffset.y;
             
-            Vector3 vertical = Vector3.up * yOffset;
-            Vector3 horizontal = new Vector3(_lookOffset.x, 0, 0);
             
-            StateRotation = Quaternion.LookRotation(actorPosition + vertical + _stateMachine.Transform.TransformDirection(horizontal) - StatePosition);
+            StateRotation = Quaternion.LookRotation(actorPosition + GetOffset() - StatePosition);
         }
 
         private float GetAutoAngle()
@@ -265,6 +262,16 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
             Vector3 camForward = Vector3.ProjectOnPlane(_stateMachine.Transform.forward, Vector3.up);
             float angle = Vector3.SignedAngle(forward, camForward, -Vector3.up);
             return angle;
+        }
+
+        protected Vector3 GetOffset()
+        {
+            float yOffset = _lookOffset.y;
+            
+            Vector3 vertical = Vector3.up * yOffset;
+            Vector3 horizontal = new Vector3(_lookOffset.x, 0, 0);
+            
+            return vertical + _stateMachine.Transform.TransformDirection(horizontal);
         }
     }
 }

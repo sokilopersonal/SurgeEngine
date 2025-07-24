@@ -10,7 +10,8 @@ namespace SurgeEngine.Code.Core.Actor.States
     {
         private float _jumpTime;
         private PhysicsConfig _config;
-        protected float _maxAirTime;
+        private readonly float _maxAirTime;
+        private Vector3 _lastNormal;
 
         private bool _released;
 
@@ -23,7 +24,8 @@ namespace SurgeEngine.Code.Core.Actor.States
         public override void OnEnter()
         {
             base.OnEnter();
-            
+
+            _lastNormal = Kinematics.Normal;
             ExecuteJump();
 
             _jumpTime = 0;
@@ -64,18 +66,13 @@ namespace SurgeEngine.Code.Core.Actor.States
             if (!Input.AHeld || _released) return;
             if (!(_jumpTime < _config.jumpStartTime)) return;
 
-            if (Kinematics.Velocity.y > 0 || Kinematics.Speed >= Actor.Config.topSpeed / 2)
-            {
-                Vector3 horizontal = Kinematics.HorizontalVelocity;
-                Vector3 vertical = Kinematics.VerticalVelocity;
+            Vector3 horizontal = Kinematics.HorizontalVelocity;
+            Vector3 vertical = Kinematics.VerticalVelocity;
                 
-                vertical.y += _config.jumpHoldForce * dt;
-                Rigidbody.linearVelocity = horizontal + vertical;
-            }
+            vertical.y += _config.jumpHoldForce * dt;
+            vertical.y = Mathf.Min(vertical.y, _config.jumpMaxSpeed);
             
-            var lv = Rigidbody.linearVelocity;
-            lv.y = Mathf.Min(lv.y, _config.jumpHoldForce / 4);
-            Rigidbody.linearVelocity = lv;
+            Rigidbody.linearVelocity = horizontal + vertical;
             
             _jumpTime += dt;
         }
@@ -83,6 +80,16 @@ namespace SurgeEngine.Code.Core.Actor.States
         public override void OnFixedTick(float dt)
         {
             base.OnFixedTick(dt);
+
+            float drag = 1f;
+            Vector3 horizontal = Kinematics.HorizontalVelocity;
+            Vector3 vertical = Kinematics.VerticalVelocity;
+
+            if (_jumpTime > 0.128f)
+            {
+                horizontal *= Mathf.Exp(-drag * dt);
+                Rigidbody.linearVelocity = horizontal + vertical;
+            }
             
             if (Actor.Animation.StateAnimator.GetCurrentAnimationState() == "Ball" 
                 && HurtBox.CreateAttached(Actor, Actor.transform, new Vector3(0f, -0.45f, 0f), new Vector3(0.6f, 0.6f, 0.6f), 
@@ -94,7 +101,12 @@ namespace SurgeEngine.Code.Core.Actor.States
 
         private void ExecuteJump(bool bounce = false)
         {
-            if (!bounce) Rigidbody.linearVelocity += Actor.transform.up * _config.jumpForce;
+            if (!bounce)
+            {
+                Vector3 horizontalVelocity = new Vector3(Rigidbody.linearVelocity.x, 0, Rigidbody.linearVelocity.z);
+                Vector3 jumpVelocity = _lastNormal * _config.jumpForce;
+                Rigidbody.linearVelocity = horizontalVelocity + jumpVelocity;
+            }
             
             if (bounce)
                 Rigidbody.linearVelocity = new Vector3(Rigidbody.linearVelocity.x, _config.jumpForce * 4, Rigidbody.linearVelocity.z);
