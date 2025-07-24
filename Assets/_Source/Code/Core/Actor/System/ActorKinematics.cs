@@ -53,6 +53,9 @@ namespace SurgeEngine.Code.Core.Actor.System
             }
         }
 
+        public Vector3 KinematicVelocity => _kinematicVelocity;
+        public Vector3 HorizontalVelocity => Vector3.ProjectOnPlane(Velocity, _rigidbody.transform.up);
+        public Vector3 VerticalVelocity => Vector3.Project(Velocity, _rigidbody.transform.up);
         public Vector3 PlanarVelocity => _planarVelocity;
         public float TurnRate { get; set; }
         public bool Skidding => _moveDot < _config.skiddingThreshold;

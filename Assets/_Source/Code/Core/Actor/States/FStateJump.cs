@@ -63,20 +63,26 @@ namespace SurgeEngine.Code.Core.Actor.States
             if (Actor.Flags.HasFlag(FlagType.OutOfControl)) return;
             if (!Input.AHeld || _released) return;
             if (!(_jumpTime < _config.jumpStartTime)) return;
+
+            if (Kinematics.Velocity.y > 0 || Kinematics.Speed >= Actor.Config.topSpeed / 2)
+            {
+                Vector3 horizontal = Kinematics.HorizontalVelocity;
+                Vector3 vertical = Kinematics.VerticalVelocity;
+                
+                vertical.y += _config.jumpHoldForce * dt;
+                Rigidbody.linearVelocity = horizontal + vertical;
+            }
             
-            if (Kinematics.Velocity.y > 0 || Kinematics.Speed >= Actor.Config.topSpeed / 2) 
-                Rigidbody.linearVelocity += Actor.transform.up * (_config.jumpHoldForce * dt);
+            var lv = Rigidbody.linearVelocity;
+            lv.y = Mathf.Min(lv.y, _config.jumpHoldForce / 4);
+            Rigidbody.linearVelocity = lv;
+            
             _jumpTime += dt;
         }
 
         public override void OnFixedTick(float dt)
         {
             base.OnFixedTick(dt);
-            
-            SurgeMath.SplitPlanarVector(Kinematics.Velocity, Vector3.up, out var planar, out var vertical);
-            var physicsConfig = Actor.Config;
-            vertical.y = Mathf.Clamp(vertical.y, -physicsConfig.minVerticalSpeed, physicsConfig.maxVerticalSpeed);
-            Rigidbody.linearVelocity = planar + vertical;
             
             if (Actor.Animation.StateAnimator.GetCurrentAnimationState() == "Ball" 
                 && HurtBox.CreateAttached(Actor, Actor.transform, new Vector3(0f, -0.45f, 0f), new Vector3(0.6f, 0.6f, 0.6f), 
