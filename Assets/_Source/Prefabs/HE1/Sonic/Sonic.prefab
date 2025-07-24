@@ -5468,24 +5468,24 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 1
-      inSlope: 0.020015838
-      outSlope: 0.020015838
+      inSlope: -0.007981702
+      outSlope: -0.007981702
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 1
+      outWeight: 0.8080009
     - serializedVersion: 3
-      time: 0.030000001
+      time: 0.1
       value: 0.8500117
-      inSlope: -12.114189
+      inSlope: -4.378938
       outSlope: 4.339938
       tangentMode: 1
       weightedMode: 0
-      inWeight: 0.031508192
+      inWeight: 0.058362335
       outWeight: 0.058462102
     - serializedVersion: 3
-      time: 0.19999999
-      value: 1.35
+      time: 0.25
+      value: 1.65
       inSlope: -0.020642677
       outSlope: -0.020642677
       tangentMode: 0
@@ -5494,12 +5494,12 @@ MonoBehaviour:
       outWeight: 0.069048874
     - serializedVersion: 3
       time: 1
-      value: 1.2
-      inSlope: 0.00096451637
-      outSlope: 0.00096451637
+      value: 1.425
+      inSlope: 0.009153256
+      outSlope: 0.009153256
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.055835806
+      inWeight: 0.15361023
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -5510,12 +5510,12 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 2
-      outSlope: 2
+      inSlope: 2.7641878
+      outSlope: 2.7641878
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0
+      outWeight: 0.026113672
     - serializedVersion: 3
       time: 1
       value: 1
@@ -5528,7 +5528,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  blendTime: 2.6
+  blendTime: 2
   unBlendTime: 1.2
 --- !u!1 &454357435906805082
 GameObject:
@@ -26050,7 +26050,7 @@ MonoBehaviour:
       outWeight: 0.049750227
     - serializedVersion: 3
       time: 0.16499999
-      value: 1.2000003
+      value: 1.3
       inSlope: 0.006109357
       outSlope: 0.006109357
       tangentMode: 0
@@ -26075,12 +26075,12 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 2
-      outSlope: 2
+      inSlope: 2.6360917
+      outSlope: 2.6360917
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0
+      outWeight: 0.030721966
     - serializedVersion: 3
       time: 1
       value: 1
@@ -26093,7 +26093,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  blendTime: 2.6
+  blendTime: 2
   unBlendTime: 1.2
 --- !u!1 &2157541934726974392
 GameObject:
@@ -31282,15 +31282,15 @@ MonoBehaviour:
   sensitivity: 0.75
   maxSensitivitySpeed: 1
   minSensitivitySpeed: 0.75
-  distance: 2.45
-  yOffset: 0.01
+  distance: 2.6
+  yOffset: -0.05
   pitchAutoLookAmplitude: 5
   pitchAutoLookMinAmplitude: 0
-  yawDefaultAmplitude: 9
-  yawMinAmplitude: -7
-  yawMaxAmplitude: 7
+  yawDefaultAmplitude: 12
+  yawMinAmplitude: -13
+  yawMaxAmplitude: 13
   yawMinLerpSpeed: 0.5
-  yawLerpSpeed: 0.8
+  yawLerpSpeed: 0.5
   zLagMax: 0.5
   zLagTime: 0.3
   yLagMin: -1.75
@@ -31332,7 +31332,7 @@ MonoBehaviour:
   collisionMask:
     serializedVersion: 2
     m_Bits: 1
-  collisionRadius: 0.175
+  collisionRadius: 0.2
   baseCameraModifiers:
   - {fileID: 2320466941561731443}
   - {fileID: 1523363318728454528}

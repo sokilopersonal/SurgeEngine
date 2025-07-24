@@ -198,6 +198,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 8a0967078a77b5341879df0e225f2272, type: 3}
       insertIndex: -1
       addedObject: {fileID: 445130071561011803}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 8a0967078a77b5341879df0e225f2272, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2097077457454238189}
   m_SourcePrefab: {fileID: 100100000, guid: 8a0967078a77b5341879df0e225f2272, type: 3}
 --- !u!4 &473179200346883634 stripped
 Transform:
@@ -316,9 +319,40 @@ LineRenderer:
   m_UseWorldSpace: 0
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
+--- !u!205 &2097077457454238189
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1434265948370971465}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: 0, y: -4.8380895, z: 0.74932677}
+  m_Size: 10.710261
+  m_FadeMode: 1
+  m_AnimateCrossFading: 1
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0.040293716
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 8242516433506318588}
+    - renderer: {fileID: 8893456509124676052}
+    - renderer: {fileID: 445130071561011803}
+  m_Enabled: 1
 --- !u!4 &1777894820713820659 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8a0967078a77b5341879df0e225f2272, type: 3}
+  m_PrefabInstance: {fileID: 2244728399309968920}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &8242516433506318588 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 7873890359668682468, guid: 8a0967078a77b5341879df0e225f2272, type: 3}
+  m_PrefabInstance: {fileID: 2244728399309968920}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &8893456509124676052 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -1995931340291629108, guid: 8a0967078a77b5341879df0e225f2272, type: 3}
   m_PrefabInstance: {fileID: 2244728399309968920}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5636058055660426313
