@@ -11,7 +11,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         private float _jumpTime;
         private PhysicsConfig _config;
         private readonly float _maxAirTime;
-        private Vector3 _lastNormal;
+        private Vector3 _jumpVelocity;
 
         private bool _released;
 
@@ -24,8 +24,9 @@ namespace SurgeEngine.Code.Core.Actor.States
         public override void OnEnter()
         {
             base.OnEnter();
+            
+            _jumpVelocity = Vector3.zero;
 
-            _lastNormal = Kinematics.Normal;
             ExecuteJump();
 
             _jumpTime = 0;
@@ -67,12 +68,12 @@ namespace SurgeEngine.Code.Core.Actor.States
             if (!(_jumpTime < _config.jumpStartTime)) return;
 
             Vector3 horizontal = Kinematics.HorizontalVelocity;
-            Vector3 vertical = Kinematics.VerticalVelocity;
-                
-            vertical.y += _config.jumpHoldForce * dt;
-            vertical.y = Mathf.Min(vertical.y, _config.jumpMaxSpeed);
             
-            Rigidbody.linearVelocity = horizontal + vertical;
+            _jumpVelocity.y += _config.jumpHoldForce * dt;
+
+            float min = Mathf.Min(_jumpVelocity.y, _config.jumpMaxSpeed);
+            _jumpVelocity.y = min; // Clamping
+            Rigidbody.linearVelocity = horizontal + _jumpVelocity;
             
             _jumpTime += dt;
         }
@@ -81,7 +82,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         {
             base.OnFixedTick(dt);
 
-            float drag = 1f;
+            float drag = 1.5f;
             Vector3 horizontal = Kinematics.HorizontalVelocity;
             Vector3 vertical = Kinematics.VerticalVelocity;
 
@@ -104,8 +105,8 @@ namespace SurgeEngine.Code.Core.Actor.States
             if (!bounce)
             {
                 Vector3 horizontalVelocity = new Vector3(Rigidbody.linearVelocity.x, 0, Rigidbody.linearVelocity.z);
-                Vector3 jumpVelocity = _lastNormal * _config.jumpForce;
-                Rigidbody.linearVelocity = horizontalVelocity + jumpVelocity;
+                _jumpVelocity = Vector3.up * _config.jumpForce;
+                Rigidbody.linearVelocity = horizontalVelocity + _jumpVelocity;
             }
             
             if (bounce)
