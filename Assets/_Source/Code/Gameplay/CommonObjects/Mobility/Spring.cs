@@ -22,14 +22,14 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             
             base.Contact(msg, context);
             
-            context.Rigidbody.isKinematic = true;
-
             if (cancelBoost) 
                 context.StateMachine.GetSubState<FBoost>().Active = false;
             
             springState.SetKeepVelocityDistance(keepVelocityDistance);
             springState.SetSpringObject(this);
             context.StateMachine.SetState<FStateSpring>();
+            
+            context.Rigidbody.isKinematic = true;
             
             context.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, Mathf.Abs(outOfControl)));
         }
