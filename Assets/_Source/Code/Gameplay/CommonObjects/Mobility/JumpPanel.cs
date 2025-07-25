@@ -21,6 +21,5 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
         {
             TrajectoryDrawer.DrawTrajectory(StartPosition, Utility.GetImpulseWithPitch(-transform.forward, transform.right, pitch, impulse), Color.green, impulse);
         }
-
     }
 }

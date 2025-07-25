@@ -71,36 +71,6 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates
             BoostEnergy += EnemyEnergyAddition;
         }
 
-        private void OnStateAssign(FState obj)
-        {
-            _boostHandler = obj switch
-            {
-                FStateIdle or FStateGround or FStateDrift or FStateGrind => new BoostGroundHandle(),
-                FStateAir => new BoostAirHandle(),
-                FStateDamage => null,
-                _ => _boostHandler
-            };
-
-            if (obj is FStateGround)
-            {
-                CanAirBoost = true;
-            }
-
-            if (obj is FStateAir)
-            {
-                if (CanAirBoost)
-                {
-                    _boostCancelTimer = 0;
-                }
-            }
-            
-            if (obj is FStateGrind)
-            {
-                if (_cancelBoostCoroutine != null)
-                    Actor.StopCoroutine(_cancelBoostCoroutine);
-            }
-        }
-
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
@@ -175,6 +145,35 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates
             }
             
             BoostEnergy = Mathf.Clamp(BoostEnergy, 0, MaxBoostEnergy);
+        }
+
+        private void OnStateAssign(FState obj)
+        {
+            _boostHandler = obj switch
+            {
+                FStateIdle or FStateGround or FStateDrift or FStateGrind => new BoostGroundHandle(),
+                FStateAir => new BoostAirHandle(),
+                _ => null
+            };
+
+            if (obj is FStateGround)
+            {
+                CanAirBoost = true;
+            }
+
+            if (obj is FStateAir)
+            {
+                if (CanAirBoost)
+                {
+                    _boostCancelTimer = 0;
+                }
+            }
+            
+            if (obj is FStateGrind)
+            {
+                if (_cancelBoostCoroutine != null)
+                    Actor.StopCoroutine(_cancelBoostCoroutine);
+            }
         }
 
         public override void OnFixedTick(float dt)

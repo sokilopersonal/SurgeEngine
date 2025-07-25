@@ -19,8 +19,6 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
                 bool boosted = SonicTools.IsBoost();
                 if (boosted)
                     context.Effects.JumpDeluxEffect.Toggle(true);
-
-                context.StateMachine.GetSubState<FBoost>().Active = false;
                 
                 context.transform.forward = Vector3.Cross(-transform.right, Vector3.up);
                 context.Kinematics.Rigidbody.linearVelocity = Utility.GetImpulseWithPitch(-transform.forward, transform.right, pitch, impulse);
