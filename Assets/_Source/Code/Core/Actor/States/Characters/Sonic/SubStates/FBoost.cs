@@ -241,7 +241,5 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates
                 new Rumble().Vibrate(0.7f, 0.8f, 0.5f);
             }
         }
-
-        public BoostConfig GetConfig() => _config;
     }
 }

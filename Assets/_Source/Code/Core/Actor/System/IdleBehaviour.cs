@@ -31,7 +31,7 @@ namespace SurgeEngine.Code.Core.Actor.System
                 if (_time >= idleTime)
                 {
                     int index = Random.Range(0, idleAnimations.Length);
-                    animator.CrossFadeInFixedTime(idleAnimations[index], 0.2f);
+                    animator.CrossFadeInFixedTime(idleAnimations[index], 0.1f);
                     _time = 0;
                 }
             }

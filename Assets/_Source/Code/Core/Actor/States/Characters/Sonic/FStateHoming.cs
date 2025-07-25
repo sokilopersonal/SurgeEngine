@@ -3,6 +3,7 @@ using SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates;
 using SurgeEngine.Code.Core.Actor.System;
 using SurgeEngine.Code.Core.StateMachine.Interfaces;
 using SurgeEngine.Code.Gameplay.CommonObjects;
+using SurgeEngine.Code.Gameplay.CommonObjects.PhysicsObjects;
 using SurgeEngine.Code.Infrastructure.Config;
 using SurgeEngine.Code.Infrastructure.Config.SonicSpecific;
 using SurgeEngine.Code.Infrastructure.Custom;
@@ -48,7 +49,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
         {
             base.OnFixedTick(dt);
             
-            if (_target != null)
+            if (_target != null && _target.gameObject.activeInHierarchy)
             {
                 Vector3 direction = (_target.transform.position - Rigidbody.position + Rigidbody.transform.up * 0.5f).normalized;
                 Rigidbody.linearVelocity = direction * _config.speed;
@@ -70,9 +71,14 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
             }
             else
             {
-                if (Kinematics.CheckForGround(out _, CheckGroundType.PredictJump))
+                if (Kinematics.CheckForGround(out var predictHit, CheckGroundType.PredictJump, 1f))
                 {
-                    //StateMachine.SetState<FStateAir>();
+                    if (!predictHit.transform.GetComponent<BreakableObject>())
+                    {
+                        StateMachine.SetState<FStateAir>();
+                        Rigidbody.linearVelocity = Vector3.ClampMagnitude(Rigidbody.linearVelocity, 10f);
+                        return;
+                    }
                 }
                 
                 Vector3 direction = Vector3.Cross(Actor.transform.right, Vector3.up);
