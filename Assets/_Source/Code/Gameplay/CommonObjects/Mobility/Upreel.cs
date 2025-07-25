@@ -2,6 +2,7 @@
 using FMOD.Studio;
 using FMODUnity;
 using SurgeEngine.Code.Core.Actor.States;
+using SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates;
 using SurgeEngine.Code.Core.Actor.System;
 using SurgeEngine.Code.Gameplay.CommonObjects.System;
 using UnityEngine;
@@ -110,6 +111,11 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             _attachedActor.StateMachine.SetState<FStateUpreel>();
             _contactPoint = _attachedActor.transform.position;
             _attachTimer = 0;
+
+            if (_attachedActor.StateMachine.GetState(out FBoost boost))
+            {
+                boost.Active = false;
+            }
             
             _modelTween?.Kill();
             _modelTween = model.DOLocalMove(_localStartPosition + Vector3.up * length, moveTime).SetEase(Ease.InSine).SetUpdate(UpdateType.Fixed).SetLink(gameObject).From(model.transform.localPosition);

@@ -101,6 +101,28 @@ namespace SurgeEngine.Code.Core.StateMachine
             Type type = typeof(T);
             return _states[type] as T;
         }
+
+        public bool GetState<T>(out T state) where T : FState
+        {
+            Type type = typeof(T);
+            if (_states.TryGetValue(type, out var st))
+            {
+                state = st as T;
+            }
+            else
+            {
+                if (_subStates.TryGetValue(type, out var subState))
+                {
+                    state = subState as T;
+                }
+                else
+                {
+                    state = null;
+                }
+            }
+            
+            return state != null;
+        }
         
         public T[] GetAllStatesOfType<T>() where T : FState
         {

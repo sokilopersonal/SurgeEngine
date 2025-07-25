@@ -217,7 +217,14 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates
             
             if (CanBoost())
             {
-                Active = obj.started && !Actor.Flags.HasFlag(FlagType.OutOfControl);
+                if (obj.started && !Actor.Flags.HasFlag(FlagType.OutOfControl))
+                {
+                    Active = true;
+                }
+                else if (obj.canceled)
+                {
+                    Active = false;
+                }
             }
             
             if (Active)
