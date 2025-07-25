@@ -88,9 +88,7 @@ namespace SurgeEngine.Code.Core.Actor.States
             Vector3 horizontal = Kinematics.HorizontalVelocity;
             Vector3 vertical = Kinematics.VerticalVelocity;
             
-            Debug.Log("1123k12389138791");
-
-            if (_jumpTime > 0.128f)
+            if (_jumpTime > _config.jumpMaxShortTime)
             {
                 horizontal *= Mathf.Exp(-drag * dt);
                 Rigidbody.linearVelocity = horizontal + vertical;
