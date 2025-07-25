@@ -12,6 +12,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         private PhysicsConfig _config;
         private readonly float _maxAirTime;
         private Vector3 _jumpVelocity;
+        private Vector3 _jumpNormal;
 
         private bool _released;
 
@@ -24,7 +25,8 @@ namespace SurgeEngine.Code.Core.Actor.States
         public override void OnEnter()
         {
             base.OnEnter();
-            
+
+            _jumpNormal = Vector3.up;
             _jumpVelocity = Vector3.zero;
 
             ExecuteJump();
@@ -68,12 +70,12 @@ namespace SurgeEngine.Code.Core.Actor.States
             if (!(_jumpTime < _config.jumpHoldTime)) return;
 
             Vector3 horizontal = Kinematics.HorizontalVelocity;
-            
-            _jumpVelocity.y += _config.jumpHoldSpeed * dt;
+            Vector3 vertical = Kinematics.VerticalVelocity;
+            vertical += _jumpNormal * (_config.jumpHoldSpeed * dt);
 
-            float min = Mathf.Min(_jumpVelocity.y, _config.jumpMaxSpeed);
-            _jumpVelocity.y = min; // Clamping
-            Rigidbody.linearVelocity = horizontal + _jumpVelocity;
+            float min = Mathf.Min(vertical.y, _config.jumpMaxSpeed);
+            vertical.y = min; // Clamping
+            Rigidbody.linearVelocity = horizontal + vertical;
             
             _jumpTime += dt;
         }
@@ -82,9 +84,11 @@ namespace SurgeEngine.Code.Core.Actor.States
         {
             base.OnFixedTick(dt);
 
-            float drag = 1.5f;
+            float drag = 0.75f;
             Vector3 horizontal = Kinematics.HorizontalVelocity;
             Vector3 vertical = Kinematics.VerticalVelocity;
+            
+            Debug.Log("1123k12389138791");
 
             if (_jumpTime > 0.128f)
             {
@@ -104,8 +108,9 @@ namespace SurgeEngine.Code.Core.Actor.States
         {
             if (!bounce)
             {
-                Vector3 horizontalVelocity = new Vector3(Rigidbody.linearVelocity.x, 0, Rigidbody.linearVelocity.z);
-                _jumpVelocity = Vector3.up * _config.jumpFirstSpeed;
+                Vector3 horizontalVelocity = Kinematics.HorizontalVelocity;
+                _jumpVelocity = _jumpNormal * _config.jumpFirstSpeed;
+                
                 Rigidbody.linearVelocity = horizontalVelocity + _jumpVelocity;
             }
             
