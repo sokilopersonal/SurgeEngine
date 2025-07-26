@@ -22,7 +22,6 @@ namespace SurgeEngine._Source.Editor.GrassRendering
         private SerializedProperty _maxHeightProperty;
         private SerializedProperty _minWidthProperty;
         private SerializedProperty _maxWidthProperty;
-        private SerializedProperty _densityProperty;
         private SerializedProperty _maxRenderDistanceProperty;
         private SerializedProperty _useRenderDistanceProperty;
     
@@ -41,7 +40,6 @@ namespace SurgeEngine._Source.Editor.GrassRendering
             _maxHeightProperty = serializedObject.FindProperty("maxHeight");
             _minWidthProperty = serializedObject.FindProperty("minWidth");
             _maxWidthProperty = serializedObject.FindProperty("maxWidth");
-            _densityProperty = serializedObject.FindProperty("density");
             _maxRenderDistanceProperty = serializedObject.FindProperty("maxRenderDistance");
             _useRenderDistanceProperty = serializedObject.FindProperty("useRenderDistance");
         
@@ -76,7 +74,6 @@ namespace SurgeEngine._Source.Editor.GrassRendering
             EditorGUILayout.PropertyField(_maxHeightProperty);
             EditorGUILayout.PropertyField(_minWidthProperty);
             EditorGUILayout.PropertyField(_maxWidthProperty);
-            EditorGUILayout.PropertyField(_densityProperty);
             
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Performance Settings", _boldLabelStyle);
@@ -118,14 +115,14 @@ namespace SurgeEngine._Source.Editor.GrassRendering
             EditorGUILayout.BeginHorizontal();
         
             GUI.backgroundColor = _isPainting ? Color.green : Color.white;
-            if (GUILayout.Button("Paint (Shift+Click)"))
+            if (GUILayout.Button("Paint"))
             {
                 _isPainting = !_isPainting;
                 _isErasing = false;
             }
         
             GUI.backgroundColor = _isErasing ? Color.red : Color.white;
-            if (GUILayout.Button("Erase (Ctrl+Click)"))
+            if (GUILayout.Button("Erase"))
             {
                 _isErasing = !_isErasing;
                 _isPainting = false;
@@ -133,7 +130,7 @@ namespace SurgeEngine._Source.Editor.GrassRendering
             }
             
             GUI.backgroundColor = _isRandomizing ? Color.yellow : Color.white;
-            if (GUILayout.Button("Randomize (Alt+Click)"))
+            if (GUILayout.Button("Randomize"))
             {
                 _isRandomizing = !_isRandomizing;
                 _isPainting = false;
@@ -323,7 +320,7 @@ namespace SurgeEngine._Source.Editor.GrassRendering
         {
             Undo.RecordObject(_grassRenderer, "Paint Grass");
 
-            int instanceCount = Mathf.RoundToInt(_brushSize * _brushSize * _brushDensity * _densityProperty.floatValue * 0.1f);
+            int instanceCount = Mathf.RoundToInt(Mathf.Pow(_brushSize, 2) * _brushDensity * 0.2f);
 
             Quaternion surfaceRotation = Quaternion.FromToRotation(Vector3.up, surfaceNormal);
         

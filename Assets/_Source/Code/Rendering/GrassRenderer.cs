@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace SurgeEngine.Code.Rendering
@@ -25,7 +26,6 @@ namespace SurgeEngine.Code.Rendering
         [SerializeField] private float maxHeight = 1.2f;
         [SerializeField] private float minWidth = 0.7f;
         [SerializeField] private float maxWidth = 1.3f;
-        [SerializeField] private float density = 1f;
         [Tooltip("Maximum distance from camera at which grass will be rendered")]
         [SerializeField] private float maxRenderDistance = 100f;
         
