@@ -74,7 +74,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
                 {
                     Vector3 center = _actorPosition;
                     Vector3 diff = pos - center;
-                    _position = Vector3.Slerp(_data.position, diff, _interpolatedBlendFactor);
+                    _position = Vector3.Lerp(_data.position, diff, _interpolatedBlendFactor);
                     _position += center;
                     
                     _rotation = Quaternion.Lerp(_data.rotation, rot, _interpolatedBlendFactor);

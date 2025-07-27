@@ -31,18 +31,21 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
         protected override void SetPosition(Vector3 targetPosition)
         {
             StatePosition = targetPosition;
-            
-            Debug.DrawLine(targetPosition, _actor.transform.position);
         }
         
         protected override void SetRotation(Vector3 actorPosition)
         {
-            StateRotation = Quaternion.LookRotation(actorPosition + GetOffset() - StatePosition);
+            StateRotation = Quaternion.LookRotation(actorPosition - StatePosition);
         }
         
         protected override void LookAxis()
         {
             
+        }
+
+        protected override void YLag(float min, float max)
+        {
+            base.YLag(-0.4f, 0.4f);
         }
 
         protected override float CalculateCollisionDistance(Vector3 origin, Vector3 direction, float baseDistance)

@@ -91,7 +91,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
             
             Vector3 actorPosition = CalculateTarget(out Vector3 targetPosition, dir, GetDistance() * distance);
             ZLag();
-            YLag();
+            YLag(_master.YLagMin, _master.YLagMax);
             LateralOffset();
             Setup(targetPosition, actorPosition);
         }
@@ -142,7 +142,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
             _forwardLag = Mathf.SmoothDamp(_forwardLag, zLag, ref _forwardLagVelocity, _master.ZLagTime);
         }
 
-        private void YLag()
+        protected virtual void YLag(float min, float max)
         {
             Type[] excludedStates = new [] { typeof(FStateAfterHoming), typeof(FStateGrind), typeof(FStateGrindSquat) };
             bool isExcludedState =
@@ -151,7 +151,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
             Vector3 vel = _actor.Kinematics.Velocity;
             bool allowLag = !_actor.Kinematics.CheckForGround(out _) && !isExcludedState; // In the air
             float targetYLag = allowLag
-                ? Mathf.Clamp(vel.y * YLagVelocityFactor, _master.YLagMin, _master.YLagMax) 
+                ? Mathf.Clamp(vel.y * YLagVelocityFactor, min, max) 
                 : 0f;
             
             float progression = Mathf.Clamp01(1 - Mathf.Abs(vel.y) / _actor.Config.topSpeed);
