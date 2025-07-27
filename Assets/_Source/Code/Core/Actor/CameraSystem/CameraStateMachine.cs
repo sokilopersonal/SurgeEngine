@@ -70,13 +70,23 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
                 Vector3 pos = currentCameraState.StatePosition;
                 Quaternion rot = currentCameraState.StateRotation;
 
-                Vector3 center = _actorPosition;
-                Vector3 diff = pos - center;
-                _position = Vector3.Lerp(_data.position, diff, _interpolatedBlendFactor);
-                _position += center;
-
-                _rotation = Quaternion.Lerp(_data.rotation, rot, _interpolatedBlendFactor);
-                _fovY = Mathf.Lerp(_data.fov, currentCameraState.StateFOV, _interpolatedBlendFactor);
+                if (_blendFactor < 1)
+                {
+                    Vector3 center = _actorPosition;
+                    Vector3 diff = pos - center;
+                    _position = Vector3.Slerp(_data.position, diff, _interpolatedBlendFactor);
+                    _position += center;
+                    
+                    _rotation = Quaternion.Lerp(_data.rotation, rot, _interpolatedBlendFactor);
+                    _fovY = Mathf.Lerp(_data.fov, currentCameraState.StateFOV, _interpolatedBlendFactor);
+                }
+                
+                if (_blendFactor >= 1)
+                {
+                    _position = pos;
+                    _rotation = rot;
+                    _fovY = currentCameraState.StateFOV;
+                }
             }
             
             Transform.position = _position;
@@ -164,15 +174,6 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
             Yaw = yaw;
             Pitch = pitch;
         }
-
-        /*public Vector3 GetOffset()
-        {
-            Vector3 lookOffset = LookOffset;
-            Vector3 globalVerticalOffset = new Vector3(0, lookOffset.y, 0);
-            Vector3 cameraSpaceSideOffset = new Vector3(lookOffset.x, 0, lookOffset.z);
-            cameraSpaceSideOffset = Transform.TransformDirection(cameraSpaceSideOffset);
-            return globalVerticalOffset + cameraSpaceSideOffset + Transform.TransformDirection(PanLookOffset);
-        }*/
 
         public void ClearVolumes() => _volumes.Clear();
 
