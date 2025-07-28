@@ -8,8 +8,6 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.ChangeModes
     {
         [SerializeField] private SplineContainer path;
         
-        private BoxCollider _collider;
-        
         public override void Contact(Collider msg, ActorBase context)
         {
             base.Contact(msg, context);
@@ -26,16 +24,6 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.ChangeModes
             {
                 kinematics.SetPath(null);
             }
-        }
-
-        private void OnDrawGizmosSelected()
-        {
-            if (_collider == null)
-                _collider = GetComponent<BoxCollider>();
-            
-            Gizmos.matrix = transform.localToWorldMatrix;
-            Gizmos.color = new Color(0.61f, 1f, 0.18f, 0.1f);
-            Gizmos.DrawCube(_collider.center, _collider.size);
         }
     }
 }

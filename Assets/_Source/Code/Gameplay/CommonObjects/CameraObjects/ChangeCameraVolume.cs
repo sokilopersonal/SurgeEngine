@@ -12,12 +12,9 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.CameraObjects
         public int Priority => priority;
 
         private ActorBase _actor;
-        private BoxCollider _boxCollider;
 
         private void Awake()
         {
-            _boxCollider = GetComponent<BoxCollider>();
-            
             if (target == null)
             {
                 target = GetComponentInChildren<ObjCameraBase>();
@@ -58,16 +55,6 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.CameraObjects
                 Gizmos.color = Color.red;
                 Gizmos.DrawLine(transform.position, target.transform.position);
             }
-        }
-
-        private void OnDrawGizmosSelected()
-        {
-            if (_boxCollider == null)
-                _boxCollider = GetComponent<BoxCollider>();
-            
-            Gizmos.color = new Color(0.15f, 1f, 0f, 0.1f);
-            Gizmos.matrix = transform.localToWorldMatrix;
-            Gizmos.DrawCube(_boxCollider.center, _boxCollider.size);
         }
     }
 }

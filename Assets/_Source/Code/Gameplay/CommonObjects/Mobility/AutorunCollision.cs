@@ -16,8 +16,6 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
         [SerializeField, Tooltip("Should this trigger end the autorun?")] 
         private bool isFinish;
         
-        private BoxCollider _boxCollider;
-        
         public override void Contact(Collider msg, ActorBase context)
         {
             base.Contact(msg, context);
@@ -40,16 +38,6 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
                 flags.RemoveFlag(FlagType.Autorun);
                 flags.RemoveFlag(FlagType.OutOfControl);
             }
-        }
-
-        private void OnDrawGizmosSelected()
-        {
-            if (_boxCollider == null)
-                _boxCollider = GetComponent<BoxCollider>();
-            
-            Gizmos.color = new Color(0.76f, 1f, 0f, 0.39f);
-            Gizmos.matrix = transform.localToWorldMatrix;
-            Gizmos.DrawCube(_boxCollider.center, _boxCollider.size);
         }
     }
 }
