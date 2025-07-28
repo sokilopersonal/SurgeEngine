@@ -1,6 +1,7 @@
 ﻿using SurgeEngine.Code.Core.Actor.States.BaseStates;
 using SurgeEngine.Code.Core.Actor.System;
 using SurgeEngine.Code.Gameplay.CommonObjects.System;
+using SurgeEngine.Code.Infrastructure.Custom;
 using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.States
@@ -49,6 +50,17 @@ namespace SurgeEngine.Code.Core.Actor.States
                 }
                 
                 Kinematics.ApplyGravity(gravity);
+
+                if (Kinematics.mode == KinematicsMode.Forward)
+                {
+                    if (Kinematics.CheckForGround(out var predictHit, CheckGroundType.Predict))
+                    {
+                        Kinematics.Normal = predictHit.normal;
+                        Kinematics.Snap(predictHit.point, predictHit.normal, true);
+                        Rigidbody.rotation = Quaternion.FromToRotation(Vector3.up, predictHit.normal) * Rigidbody.rotation;
+                        StateMachine.SetState<FStateGround>();
+                    }
+                }
             }
             else
             {
@@ -56,7 +68,8 @@ namespace SurgeEngine.Code.Core.Actor.States
                 {
                     if (!Kinematics.IsHardAngle(hit.normal))
                     {
-                        if (Kinematics.Speed > Actor.Config.landingSpeed) StateMachine.SetState<FStateGround>();
+                        float speed = Kinematics.HorizontalVelocity.magnitude;
+                        if (speed > Actor.Config.landingSpeed) StateMachine.SetState<FStateGround>();
                         else StateMachine.SetState<FStateIdle>();
                     }
                     else

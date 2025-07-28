@@ -49,7 +49,9 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
                             StateAnimator.TransitionToState("Idle", 0.1f);
                             break;
                         case FStateAir:
-                            StateAnimator.TransitionToState("Landing", 0f).After(0.4f, () => StateAnimator.TransitionToState("Idle", 1f));
+                            float verticalSpeed = Actor.Kinematics.VerticalVelocity.magnitude;
+                            bool hard = verticalSpeed > Actor.Config.landingSpeed * 3;
+                            StateAnimator.TransitionToState(!hard ? "Landing" : "LandingL", 0f).After(0.4f, () => StateAnimator.TransitionToState("Idle", 1f));
                             break;
                         case FStateSit:
                             StateAnimator.TransitionToState("SitExit", 0f).After(0.167f, () => StateAnimator.TransitionToState("Idle", 0f));

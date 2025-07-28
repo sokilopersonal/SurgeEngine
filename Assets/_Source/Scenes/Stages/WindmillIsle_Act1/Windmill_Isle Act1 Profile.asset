@@ -60,11 +60,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   active: 1
   indirectDiffuseLightingMultiplier:
-    m_OverrideState: 1
-    m_Value: 1
+    m_OverrideState: 0
+    m_Value: 0.8
   indirectDiffuseLightingLayers:
     m_OverrideState: 0
-    m_Value: -1
+    m_Value: 2
   reflectionLightingMultiplier:
     m_OverrideState: 1
     m_Value: 0
@@ -139,7 +139,7 @@ MonoBehaviour:
     m_Value: {x: 0.96, y: 0.96, z: 1, w: -0.04}
   gain:
     m_OverrideState: 1
-    m_Value: {x: 0.7144748, y: 0.7441719, z: 1, w: 0.15}
+    m_Value: {x: 0.828346, y: 0.87196195, z: 1, w: 0.051112503}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -228,7 +228,7 @@ MonoBehaviour:
     m_Value: 0
   exposure:
     m_OverrideState: 1
-    m_Value: 14
+    m_Value: 13.5
   multiplier:
     m_OverrideState: 1
     m_Value: 200000
@@ -252,13 +252,13 @@ MonoBehaviour:
     m_Value: 0
   top:
     m_OverrideState: 1
-    m_Value: {r: 0.21048418, g: 0.246355, b: 0.8113208, a: 1}
+    m_Value: {r: 0.10849059, g: 0.24885595, b: 1, a: 1}
   middle:
     m_OverrideState: 1
-    m_Value: {r: 0.21223079, g: 0.2462014, b: 0.8148468, a: 1}
+    m_Value: {r: 0.10946172, g: 0.25015837, b: 1, a: 1}
   bottom:
     m_OverrideState: 1
-    m_Value: {r: 0.21223079, g: 0.2462014, b: 0.8148468, a: 1}
+    m_Value: {r: 0.10946172, g: 0.25015837, b: 1, a: 1}
   gradientDiffusion:
     m_OverrideState: 1
     m_Value: 100000

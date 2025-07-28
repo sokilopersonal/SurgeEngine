@@ -15,6 +15,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         private Vector3 _jumpNormal;
 
         private bool _released;
+        private bool _reachedMaxHeight;
 
         public FStateJump(ActorBase owner) : base(owner)
         {
@@ -28,6 +29,8 @@ namespace SurgeEngine.Code.Core.Actor.States
 
             _jumpNormal = Kinematics.Normal;
             _jumpVelocity = Vector3.zero;
+            
+            _reachedMaxHeight = false;
 
             ExecuteJump();
 
@@ -65,20 +68,27 @@ namespace SurgeEngine.Code.Core.Actor.States
             if (Input.AReleased && !_released)
                 _released = true;
 
-            if (Actor.Flags.HasFlag(FlagType.OutOfControl)) return;
-            if (!Input.AHeld || _released) return;
-            
+            _jumpTime += dt;
+
+            if (Actor.Flags.HasFlag(FlagType.OutOfControl) || !Input.AHeld || _released)
+                return;
+
+            if (_jumpTime < _config.jumpMaxShortTime)
+                return;
+
             Vector3 horizontal = Kinematics.HorizontalVelocity;
             Vector3 vertical = Kinematics.VerticalVelocity;
-            if (_jumpTime < _config.jumpHoldTime)
+
+            if (vertical.magnitude < _config.jumpMaxSpeed && !_reachedMaxHeight)
             {
                 vertical += _jumpNormal * (_config.jumpHoldSpeed * dt);
             }
+            else
+            {
+                _reachedMaxHeight = true;
+            }
 
-            vertical.y = Mathf.Lerp(vertical.y, Mathf.Min(vertical.y, _config.jumpMaxSpeed), 12f * dt);
-            
             Rigidbody.linearVelocity = horizontal + vertical;
-            _jumpTime += dt;
         }
 
         public override void OnFixedTick(float dt)
@@ -88,7 +98,7 @@ namespace SurgeEngine.Code.Core.Actor.States
             float drag = 1.2f;
             Vector3 horizontal = Kinematics.HorizontalVelocity;
             Vector3 vertical = Kinematics.VerticalVelocity;
-            
+
             if (_jumpTime > _config.jumpMaxShortTime)
             {
                 horizontal *= Mathf.Exp(-drag * dt);
