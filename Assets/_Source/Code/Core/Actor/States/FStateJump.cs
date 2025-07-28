@@ -26,7 +26,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         {
             base.OnEnter();
 
-            _jumpNormal = Vector3.up;
+            _jumpNormal = Kinematics.Normal;
             _jumpVelocity = Vector3.zero;
 
             ExecuteJump();
@@ -67,16 +67,17 @@ namespace SurgeEngine.Code.Core.Actor.States
 
             if (Actor.Flags.HasFlag(FlagType.OutOfControl)) return;
             if (!Input.AHeld || _released) return;
-            if (!(_jumpTime < _config.jumpHoldTime)) return;
-
+            
             Vector3 horizontal = Kinematics.HorizontalVelocity;
             Vector3 vertical = Kinematics.VerticalVelocity;
-            vertical += _jumpNormal * (_config.jumpHoldSpeed * dt);
+            if (_jumpTime < _config.jumpHoldTime)
+            {
+                vertical += _jumpNormal * (_config.jumpHoldSpeed * dt);
+            }
 
-            float min = Mathf.Min(vertical.y, _config.jumpMaxSpeed);
-            vertical.y = min; // Clamping
-            Rigidbody.linearVelocity = horizontal + vertical;
+            vertical.y = Mathf.Lerp(vertical.y, Mathf.Min(vertical.y, _config.jumpMaxSpeed), 12f * dt);
             
+            Rigidbody.linearVelocity = horizontal + vertical;
             _jumpTime += dt;
         }
 
@@ -84,7 +85,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         {
             base.OnFixedTick(dt);
 
-            float drag = 0.75f;
+            float drag = 1.2f;
             Vector3 horizontal = Kinematics.HorizontalVelocity;
             Vector3 vertical = Kinematics.VerticalVelocity;
             
@@ -106,7 +107,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         {
             if (!bounce)
             {
-                Vector3 horizontalVelocity = Kinematics.HorizontalVelocity;
+                Vector3 horizontalVelocity = Rigidbody.linearVelocity;
                 _jumpVelocity = _jumpNormal * _config.jumpFirstSpeed;
                 
                 Rigidbody.linearVelocity = horizontalVelocity + _jumpVelocity;

@@ -25,7 +25,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         public override void OnEnter()
         {
             base.OnEnter();
-            
+
             Kinematics.SetDetachTime(0f);
         }
 
@@ -53,7 +53,7 @@ namespace SurgeEngine.Code.Core.Actor.States
             {
                 bool predictedGround = Kinematics.CheckForPredictedGround(dt, distance, 8);
                 Kinematics.Point = data.point;
-                if (!predictedGround) Kinematics.RotateSnapNormal(data.normal);
+                Kinematics.RotateSnapNormal(data.normal);
                 
                 Kinematics.ClampVelocityToMax();
                 
