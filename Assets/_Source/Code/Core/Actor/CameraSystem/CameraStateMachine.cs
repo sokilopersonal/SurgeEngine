@@ -35,6 +35,8 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
         private readonly List<ChangeCameraVolume> _volumes;
         private ChangeCameraVolume _lastTop;
         public int VolumeCount => _volumes.Count;
+        public ChangeCameraVolume LastTop => _lastTop;
+        public ChangeCameraVolume Top => _volumes.OrderByDescending(v => v.Priority).FirstOrDefault();
 
         private CameraData _data;
         
@@ -146,7 +148,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
 
         public void ApplyTop()
         {
-            var top = _volumes.OrderByDescending(v => v.Priority).FirstOrDefault();
+            var top = Top;
             if (top == _lastTop) return;
             _lastTop = top;
 

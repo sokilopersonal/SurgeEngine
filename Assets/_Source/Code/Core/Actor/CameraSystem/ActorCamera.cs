@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using SurgeEngine.Code.Core.Actor.CameraSystem.Modifiers;
 using SurgeEngine.Code.Core.Actor.CameraSystem.Pans;
 using SurgeEngine.Code.Core.Actor.States;
 using SurgeEngine.Code.Core.Actor.System;
 using SurgeEngine.Code.Gameplay.CommonObjects.System;
+using UnityEditor;
 using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.CameraSystem
@@ -50,6 +52,8 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
         [Header("Modifiers")] 
         [SerializeField] private List<BaseCameraModifier> baseCameraModifiers;
         private readonly Dictionary<Type, BaseCameraModifier> _modifiersDictionary = new();
+
+        [SerializeField] private bool showDebugText;
 
         public float Sensitivity => sensitivity;
         public float MaxSensitivitySpeed => maxSensitivitySpeed;
@@ -167,13 +171,39 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
 
         private void OnGUI()
         {
-            /*var list = StateMachine.Volumes;
-            for (int i = 0; i < list.Count; i++)
+            if (showDebugText && StateMachine != null && StateMachine.CurrentState != null)
             {
-                var rect = new Rect(600, 20 + i * 20, 200, 50);
-                GUIStyle style = new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleRight, fontSize = 16, normal = { textColor = Color.black } };
-                GUI.Label(rect, list[i].Target.name, style);
-            }*/
+                var style = new GUIStyle();
+                style.stretchWidth = true;
+                style.stretchHeight = true;
+                style.normal.background = new Texture2D(1, 1);
+                style.normal.background.SetPixel(0, 0, new Color(0.8f, 0.8f, 0.8f, 0.75f));
+                style.normal.background.Apply();
+
+                var labelStyle = new GUIStyle(EditorStyles.boldLabel);
+                labelStyle.fontSize = 16; 
+                labelStyle.normal.textColor = Color.black;
+                
+                using (new GUILayout.VerticalScope(style))
+                {
+                    GUILayout.BeginVertical();
+                    
+                    var blendFactor = (float)StateMachine.GetType().GetField("_interpolatedBlendFactor",
+                        BindingFlags.Instance | BindingFlags.NonPublic)?.GetValue(StateMachine)!;
+                    
+                    string mCameraLabel = $"SE Camera: {StateMachine.CurrentState.GetType().Name}";
+                    if (StateMachine.Top)
+                    {
+                        if (blendFactor < 1) mCameraLabel = $"SE Camera currently blending to: {StateMachine.Top.Target.name}";
+                        else mCameraLabel = $"SE Camera: {StateMachine.Top.Target.name}";
+                    }
+                    
+                    GUILayout.Label(mCameraLabel, labelStyle);
+                    if (blendFactor < 1) GUILayout.Label($"Blend Progress %{Mathf.RoundToInt(blendFactor * 100)}", labelStyle);
+                    GUILayout.Label($"Field Of View: {Mathf.RoundToInt(_camera.fieldOfView)}", labelStyle);
+                    GUILayout.EndVertical();
+                }
+            }
         }
     }
 }
