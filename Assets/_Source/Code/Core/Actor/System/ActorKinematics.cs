@@ -240,13 +240,20 @@ namespace SurgeEngine.Code.Core.Actor.System
                         _inputDir = Vector3.ProjectOnPlane(_inputDir, tg);
                         Project(right);
                     }
-                    
+
                     Vector3 endPos = pos;
                     endPos += up;
                     endPos.y = _rigidbody.position.y;
-                
+
                     _rigidbody.position = Vector3.MoveTowards(_rigidbody.position, endPos, Mathf.Min(Speed / 64f, 1) * 16f * Time.fixedDeltaTime);
                     _splineData.Time += Vector3.Dot(Velocity, Vector3.ProjectOnPlane(tg, up)) * Time.fixedDeltaTime;
+                    
+                    if (_splineData.Time > _splineData.Length || _splineData.Time < 0)
+                    {
+                        SetPath(null);
+                        
+                        Actor.Flags.RemoveFlag(FlagType.Autorun);
+                    }
                 }
             }
             else
@@ -549,7 +556,7 @@ namespace SurgeEngine.Code.Core.Actor.System
     public class SplineData
     {
         public float Time { get; set; }
-        public float Length { get; private set; }
+        public float Length => _container.Spline.GetLength();
         public float NormalizedTime => Time / Length;
         public SplineContainer Container => _container;
 
@@ -560,9 +567,8 @@ namespace SurgeEngine.Code.Core.Actor.System
             _container = container;
             
             SplineUtility.GetNearestPoint(container.Spline, _container.transform.InverseTransformPoint(position), 
-                out _, out var f, 8, 3);
+                out _, out var f, 8, 4);
             
-            Length = container.Spline.GetLength();
             Time = f * Length;
         }
 
