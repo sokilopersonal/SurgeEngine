@@ -23,31 +23,33 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.CameraObjects
 
         private void OnDisable()
         {
-            Unregister();
+            if (_actor != null)
+            {
+                _actor.Camera.StateMachine.UnregisterVolume(this);
+                _actor = null;
+            }
         }
 
         private void OnTriggerStay(Collider other)
         {
-            if (other.transform.TryGetComponent(out _actor))
+            if (target && other.transform.TryGetComponent(out ActorBase actor))
             {
-                Register();
-            }
-        }
-
-        private void OnTriggerExit(Collider other)
-        {
-            Unregister();
-        }
-
-        private void Register()
-        {
-            if (target)
-            {
+                _actor = actor;
                 _actor.Camera.StateMachine.RegisterVolume(this);
             }
         }
 
-        private void Unregister()
+        public override void Contact(Collider msg, ActorBase context)
+        {
+            base.Contact(msg, context);
+
+            if (target)
+            {
+                //context.Camera.StateMachine.RegisterVolume(this);
+            }
+        }
+        
+        private void OnTriggerExit(Collider other)
         {
             if (target && _actor)
             {
