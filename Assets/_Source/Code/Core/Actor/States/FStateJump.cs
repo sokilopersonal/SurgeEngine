@@ -79,7 +79,7 @@ namespace SurgeEngine.Code.Core.Actor.States
             Vector3 horizontal = Kinematics.HorizontalVelocity;
             Vector3 vertical = Kinematics.VerticalVelocity;
 
-            if (vertical.magnitude < _config.jumpMaxSpeed && !_reachedMaxHeight)
+            if (vertical.y > 0f && vertical.magnitude < _config.jumpMaxSpeed && !_reachedMaxHeight)
             {
                 vertical += _jumpNormal * (_config.jumpHoldSpeed * dt);
             }
