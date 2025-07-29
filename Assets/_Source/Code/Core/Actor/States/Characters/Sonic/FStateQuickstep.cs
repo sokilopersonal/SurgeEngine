@@ -90,16 +90,14 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
                 var rot = Quaternion.LookRotation(tg, up);
                 Rigidbody.MoveRotation(rot);
                 
-                var v = Rigidbody.linearVelocity;
-                var tNorm = tg.normalized;
-                var alongT = Vector3.Dot(v, tNorm);
-                var alongUp = Vector3.Dot(v, up);
-                Rigidbody.linearVelocity = tNorm * alongT + up * alongUp;
-                
                 Kinematics.RotateSnapNormal(up);
 
                 if (t >= 1f)
                 {
+                    var vel = Rigidbody.linearVelocity;
+                    float horizSpeed = Vector3.Dot(vel, tg.normalized);
+                    Rigidbody.linearVelocity = tg.normalized * horizSpeed + Vector3.Project(vel, up);
+                    
                     _isSnapping = false;
                 }
                 return;
