@@ -31,6 +31,8 @@ Material:
   - _ALPHATEST_ON
   - _DISABLE_SSR_TRANSPARENT
   - _DOUBLESIDED_ON
+  - _MATERIAL_FEATURE_SUBSURFACE_SCATTERING
+  - _MATERIAL_FEATURE_TRANSMISSION
   m_InvalidKeywords:
   - _NORMALMAP_TANGENT_SPACE
   m_LightmapFlags: 4
@@ -184,7 +186,7 @@ Material:
     - _DisplacementMode: 0
     - _DoubleSidedEnable: 1
     - _DoubleSidedGIMode: 0
-    - _DoubleSidedNormalMode: 2
+    - _DoubleSidedNormalMode: 0
     - _DstBlend: 0
     - _DstBlend2: 0
     - _EmissiveColorMode: 1
@@ -213,7 +215,7 @@ Material:
     - _IridescenceMask: 1
     - _IridescenceThickness: 1
     - _LinkDetailsWithBase: 1
-    - _MaterialID: 1
+    - _MaterialID: 0
     - _MaterialTypeMask: 3
     - _Metallic: 0
     - _MetallicRemapMax: 1
@@ -247,10 +249,10 @@ Material:
     - _SpecularHighlights: 1
     - _SpecularOcclusionMode: 1
     - _SrcBlend: 1
-    - _StencilRef: 0
+    - _StencilRef: 4
     - _StencilRefDepth: 8
     - _StencilRefDistortionVec: 4
-    - _StencilRefGBuffer: 10
+    - _StencilRefGBuffer: 14
     - _StencilRefMV: 40
     - _StencilWriteMask: 6
     - _StencilWriteMaskDepth: 9
@@ -262,7 +264,7 @@ Material:
     - _SurfaceType: 0
     - _TexWorldScale: 1
     - _TexWorldScaleEmissive: 1
-    - _Thickness: 1
+    - _Thickness: 0.5
     - _TransmissionEnable: 1
     - _TransmissionMask: 1
     - _TransparentBackfaceEnable: 0
@@ -290,7 +292,7 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _DiffusionProfileAsset: {r: 0, g: 0, b: 0, a: 0}
     - _Diffusion_Profile_Asset: {r: 20471054, g: 5.37996e+12, b: -3.2952789e+31, a: -1.8038083e+36}
-    - _DoubleSidedConstants: {r: 1, g: 1, b: 1, a: 0}
+    - _DoubleSidedConstants: {r: -1, g: -1, b: -1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissiveColorLDR: {r: 0, g: 0, b: 0, a: 1}

@@ -19,8 +19,7 @@ namespace SurgeEngine.Code.Core.Actor.States
             base.OnEnter();
             
             Kinematics.SetDetachTime(0.1f);
-            
-            Rigidbody.isKinematic = true;
+            Rigidbody.linearVelocity = Vector3.zero;
             
             Model.SetLowerCollision();
         }
@@ -49,7 +48,6 @@ namespace SurgeEngine.Code.Core.Actor.States
 
             if (_travelledDistance >= _springObject.KeepVelocityDistance)
             {
-                Rigidbody.isKinematic = false;
                 Rigidbody.linearVelocity = dir * _springObject.Speed;
                 StateMachine.SetState<FStateAir>();
             }
@@ -59,7 +57,6 @@ namespace SurgeEngine.Code.Core.Actor.States
 
         public void SetSpringObject(Spring springObject)
         {
-            Rigidbody.isKinematic = true;
             _travelledDistance = 0;
             _snapTimer = 0;
             _springObject = springObject;

@@ -130,7 +130,7 @@ namespace SurgeEngine.Code.Rendering
                 _visibleInstanceCount,
                 _propertyBlock,
                 UnityEngine.Rendering.ShadowCastingMode.Off,
-                false
+                true
             );
         }
 

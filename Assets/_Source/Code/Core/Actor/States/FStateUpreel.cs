@@ -15,14 +15,6 @@ namespace SurgeEngine.Code.Core.Actor.States
             base.OnEnter();
             
             Rigidbody.linearVelocity = Vector3.zero;
-            Rigidbody.isKinematic = true;
-        }
-
-        public override void OnExit()
-        {
-            base.OnExit();
-
-            Rigidbody.isKinematic = false;
         }
     }
 }
