@@ -223,37 +223,40 @@ namespace SurgeEngine.Code.Core.Actor.System
         {
             if (_splineData != null)
             {
-                if (mode == KinematicsMode.Forward || mode == KinematicsMode.Side)
+                if (mode != KinematicsMode.Free)
                 {
                     _splineData.EvaluateWorld(out var pos, out var tg, out var up, out var right);
-
-                    if (_lastTangent != Vector3.zero)
-                    {
-                        Rigidbody.linearVelocity = Quaternion.FromToRotation(_lastTangent, tg) * Rigidbody.linearVelocity;
-                    }
-
-                    _lastTangent = tg;
-
-                    if (right != Vector3.zero)
-                    {
-                        _inputDir = Vector3.ProjectOnPlane(_inputDir, right);
-                        _inputDir = Vector3.ProjectOnPlane(_inputDir, tg);
-                        Project(right);
-                    }
-
-                    Vector3 endPos = pos;
-                    endPos += up;
-                    endPos.y = _rigidbody.position.y;
-
-                    _rigidbody.position = Vector3.MoveTowards(_rigidbody.position, endPos, Mathf.Min(Speed / 64f, 1) * 16f * Time.fixedDeltaTime);
-                    _splineData.Time += Vector3.Dot(Velocity, Vector3.ProjectOnPlane(tg, up)) * Time.fixedDeltaTime;
                     
-                    if (_splineData.Time > _splineData.Length || _splineData.Time < 0)
+                    if (mode == KinematicsMode.Forward || mode == KinematicsMode.Side)
                     {
-                        SetPath(null);
+                        if (_lastTangent != Vector3.zero)
+                        {
+                            Rigidbody.linearVelocity = Quaternion.FromToRotation(_lastTangent, tg) * Rigidbody.linearVelocity;
+                        }
+
+                        _lastTangent = tg;
+
+                        if (right != Vector3.zero)
+                        {
+                            _inputDir = Vector3.ProjectOnPlane(_inputDir, right);
+                            _inputDir = Vector3.ProjectOnPlane(_inputDir, tg);
+                            Project(right);
+                        }
+
+                        Vector3 endPos = pos;
+                        endPos += up;
+                        endPos.y = _rigidbody.position.y;
+
+                        _rigidbody.position = Vector3.MoveTowards(_rigidbody.position, endPos, Mathf.Min(Speed / 64f, 1) * 16f * Time.fixedDeltaTime);
+                        if (_splineData.Time > _splineData.Length || _splineData.Time < 0)
+                        {
+                            SetPath(null);
                         
-                        Actor.Flags.RemoveFlag(FlagType.Autorun);
+                            Actor.Flags.RemoveFlag(FlagType.Autorun);
+                        }
                     }
+                    
+                    _splineData.Time += Vector3.Dot(Velocity, Vector3.ProjectOnPlane(tg, up)) * Time.fixedDeltaTime;
                 }
             }
             else
@@ -426,11 +429,12 @@ namespace SurgeEngine.Code.Core.Actor.System
             if (!_canAttach) return;
             
             Vector3 goal = point + normal;
-            if (instant) _rigidbody.position = point + normal;
+            if (instant) _rigidbody.MovePosition(point + normal);
             else
             {
                 Quaternion slopeRotation = Quaternion.FromToRotation(_rigidbody.transform.up, normal) * _rigidbody.rotation;
-                _rigidbody.position = Vector3.Lerp(_rigidbody.position, goal, Time.fixedDeltaTime * (Mathf.Abs(Quaternion.Dot(_rigidbody.rotation, slopeRotation) + 1f) / 2f * _rigidbody.linearVelocity.magnitude + 10f));
+                Vector3 interpolatedGoal = Vector3.Lerp(_rigidbody.position, goal, Time.fixedDeltaTime * (Quaternion.Dot(_rigidbody.rotation, slopeRotation) + 1f) / 2f * _rigidbody.linearVelocity.magnitude + 10f);
+                _rigidbody.MovePosition(interpolatedGoal);
             }
         }
 

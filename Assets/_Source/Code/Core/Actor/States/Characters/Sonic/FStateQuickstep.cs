@@ -2,6 +2,7 @@ using SurgeEngine.Code.Core.Actor.States.BaseStates;
 using SurgeEngine.Code.Core.Actor.System;
 using SurgeEngine.Code.Core.StateMachine.Interfaces;
 using SurgeEngine.Code.Infrastructure.Config.SonicSpecific;
+using SurgeEngine.Code.Infrastructure.Custom;
 using UnityEngine;
 using UnityEngine.Splines;
 
@@ -16,6 +17,11 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
         private bool _isRun;
         public bool IsRun => _isRun;
 
+        private Vector3 _snapStartPos;
+        private Vector3 _snapTargetPos;
+        private Vector3 _snapVelocity;
+        private bool _isSnapping;
+
         private readonly QuickStepConfig _config;
 
         public FStateQuickstep(ActorBase owner) : base(owner)
@@ -28,16 +34,26 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
             base.OnEnter();
 
             _timer = 0;
+            _isSnapping = false;
             
             Timeout = _config.delay;
-
-            float speed = !IsRun ? _config.force : _config.runForce;
-            var sideDir = _direction == QuickstepDirection.Left ? -speed : speed;
-            SetSideVelocity(sideDir);
+            
+            if (Kinematics.mode == KinematicsMode.Free || Kinematics.mode == KinematicsMode.Forward)
+            {
+                float speed = !IsRun ? _config.force : _config.runForce;
+                var sideDir = _direction == QuickstepDirection.Left ? -speed : speed;
+                SetSideVelocity(sideDir);
+            }
 
             if (Kinematics.mode == KinematicsMode.Dash)
             {
-                SnapToNearestSpline();
+                bool snapped = SnapToSpline();
+                if (!snapped)
+                {
+                    float speed = !IsRun ? _config.force : _config.runForce;
+                    var sideDir = _direction == QuickstepDirection.Left ? -speed : speed;
+                    SetSideVelocity(sideDir);
+                }
             }
             
             if (StateMachine.PreviousState is FStateSlide)
@@ -49,15 +65,83 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
-
+            
             _timer += dt / (!IsRun ? _config.duration : _config.runDuration);
+            
+            if (_isSnapping)
+            {
+                float t = Mathf.Clamp01(_timer);
+                _snapStartPos += _snapVelocity * dt;
+                _snapTargetPos += _snapVelocity * dt;
+                
+                if (Kinematics.CheckForGround(out var hit))
+                {
+                    Kinematics.GetPath().Evaluate(out _, out _, out var up, out _);
+                    
+                    var pos = Vector3.Lerp(_snapStartPos, _snapTargetPos, Easings.Get(Easing.InOutSine, t));
+                    pos += up;
+                    pos.y = Rigidbody.position.y;
+                    Rigidbody.MovePosition(pos);
+                    
+                    Kinematics.RotateSnapNormal(up);
+                }
+                
+                if (t >= 1f) _isSnapping = false;
+                return;
+            }
+            
             if (_timer >= 1f)
             {
                 SetSideVelocity(0);
-                StateMachine.SetState<FStateGround>();
+                if (_isRun) StateMachine.SetState<FStateGround>();
+                else StateMachine.SetState<FStateIdle>();
             }
         }
 
+        private bool SnapToSpline()
+        {
+            var container = Kinematics.GetPath().Container;
+            var splines = container.Splines;
+            if (splines.Count == 0) return false;
+
+            float ignoreDistance = 1f;
+            float ignoreSqr = ignoreDistance * ignoreDistance;
+            Vector3 worldPos = Rigidbody.position - Rigidbody.transform.up * 0.5f;;
+            Vector3 localPos = container.transform.InverseTransformPoint(worldPos);
+
+            float minDist = float.MaxValue;
+            Spline bestSpline = null;
+            float bestT = 0f;
+            float dirSign = _direction == QuickstepDirection.Right ? 1f : -1f;
+            Vector3 rightAxis = Rigidbody.transform.right;
+
+            foreach (var spline in splines)
+            {
+                SplineUtility.GetNearestPoint(spline, localPos, out _, out var t);
+                Vector3 nearestWorld = container.transform.TransformPoint(spline.EvaluatePosition(t));
+                Vector3 toNearest = nearestWorld - worldPos;
+                if (Vector3.Dot(toNearest, rightAxis) * dirSign <= 0f) continue;
+                float dSqr = toNearest.sqrMagnitude;
+                if (dSqr < ignoreSqr) continue;
+                if (dSqr < minDist)
+                {
+                    minDist = dSqr;
+                    bestSpline = spline;
+                    bestT = t;
+                }
+            }
+
+            if (bestSpline == null) return false;
+
+            _snapStartPos = worldPos;
+            _snapTargetPos = container.transform.TransformPoint(bestSpline.EvaluatePosition(bestT));
+            Debug.DrawLine(worldPos, _snapTargetPos, Color.red, 10);
+            _snapVelocity = Kinematics.Velocity;
+            _timer = 0;
+            _isSnapping = true;
+            return true;
+        }
+        
         public override void OnFixedTick(float dt)
         {
             base.OnFixedTick(dt);
@@ -67,9 +151,8 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
             if (Kinematics.CheckForGround(out var hit, castDistance: distance))
             {
                 bool predicted = Kinematics.CheckForPredictedGround(dt, distance, 4);
-                Kinematics.RotateSnapNormal(hit.normal);
                 
-                if (predicted) Kinematics.Snap(hit.point, Kinematics.Normal, true);
+                if (!predicted) Kinematics.Snap(hit.point, Kinematics.Normal, true);
                 Kinematics.Project();
             }
             else
@@ -85,34 +168,6 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
             Rigidbody.linearVelocity = Rigidbody.transform.TransformDirection(localVel);
         }
         
-        private void SnapToNearestSpline()
-        {
-            var container = Kinematics.GetPath();
-            if (container == null) return;
-
-            float bestDist = float.MaxValue;
-            Vector3 bestPos = Actor.transform.position;
-            Vector3 bestTangent = Actor.transform.forward;
-
-            for (int i = 0; i < container.Container.Splines.Count; i++)
-            {
-                var spline = container.Container.Splines[i];
-                SplineUtility.GetNearestPoint(spline, container.Container.transform.InverseTransformPoint(Rigidbody.position), out _, out float t);
-                Vector3 pos = spline.EvaluatePosition(t);
-                Vector3 tangent = spline.EvaluateTangent(t);
-                float d = Vector3.Distance(Rigidbody.position, pos);
-                if (d < bestDist)
-                {
-                    bestDist = d;
-                    bestPos = pos;
-                    bestTangent = tangent;
-                }
-            }
-
-            Actor.transform.position = bestPos;
-            Actor.transform.rotation = Quaternion.LookRotation(bestTangent, Actor.transform.up);
-        }
-
         public FStateQuickstep SetDirection(QuickstepDirection direction)
         {
             _direction = direction;

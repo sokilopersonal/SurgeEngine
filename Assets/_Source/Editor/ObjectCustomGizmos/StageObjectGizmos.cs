@@ -33,11 +33,12 @@ namespace SurgeEngine._Source.Editor.ObjectCustomGizmos
         {
             Gizmos.matrix = type.transform.localToWorldMatrix;
             Gizmos.color = Color.clear;
-            Gizmos.DrawCube(Vector3.up, new Vector3(0.9f, 2.25f, 0.9f));
-            
+
             var mesh = AssetDatabase.LoadAssetAtPath<Mesh>("Assets/EditorMeshes/Arrow.fbx");
             if (mesh == null)
                 return;
+            
+            Gizmos.DrawCube(mesh.bounds.center, mesh.bounds.size);
             
             GetEditorMaterial();
             Graphics.DrawMeshNow(mesh, type.transform.localToWorldMatrix);
@@ -78,11 +79,12 @@ namespace SurgeEngine._Source.Editor.ObjectCustomGizmos
         {
             Gizmos.matrix = type.transform.localToWorldMatrix;
             Gizmos.color = Color.clear;
-            Gizmos.DrawCube(Vector3.zero, Vector3.one * 1.25f);
             
             var mesh = AssetDatabase.LoadAssetAtPath<Mesh>("Assets/EditorMeshes/CameraMesh.fbx");
             if (mesh == null)
                 return;
+            
+            Gizmos.DrawCube(mesh.bounds.center, mesh.bounds.size);
             
             GetEditorMaterial();
             Graphics.DrawMeshNow(mesh, type.transform.localToWorldMatrix);

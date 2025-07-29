@@ -51,9 +51,10 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.CameraObjects
         
         private void OnTriggerExit(Collider other)
         {
-            if (target && _actor)
+            if (target && other.transform.TryGetComponent(out ActorBase actor))
             {
-                _actor.Camera.StateMachine.UnregisterVolume(this);
+                actor.Camera.StateMachine.UnregisterVolume(this);
+                _actor = null;
             }
         }
 

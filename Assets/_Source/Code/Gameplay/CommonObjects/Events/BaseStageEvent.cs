@@ -15,20 +15,24 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Events
         private void OnDrawGizmos()
         {
 #if UNITY_EDITOR
-            var cam = SceneView.lastActiveSceneView.camera;
-            if (cam != null)
+            var view = SceneView.lastActiveSceneView;
+            if (view != null)
             {
-                Handles.color = Color.white;
-                float distance = Vector3.Distance(transform.position, cam.transform.position);
-
-                if (distance < 40f)
+                var cam = SceneView.lastActiveSceneView.camera;
+                if (cam != null)
                 {
-                    var style = new GUIStyle(EditorStyles.boldLabel);
-                    style.alignment = TextAnchor.MiddleCenter;
-                    style.fontSize = 16;
-                    Handles.Label(transform.position, GetType().Name, style);
+                    Handles.color = Color.white;
+                    float distance = Vector3.Distance(transform.position, cam.transform.position);
+
+                    if (distance < 40f)
+                    {
+                        var style = new GUIStyle(EditorStyles.boldLabel);
+                        style.alignment = TextAnchor.MiddleCenter;
+                        style.fontSize = 16;
+                        Handles.Label(transform.position, GetType().Name, style);
                 
-                    Gizmos.DrawWireSphere(transform.position, 0.5f);
+                        Gizmos.DrawWireSphere(transform.position, 0.5f);
+                    }
                 }
             }
 #endif

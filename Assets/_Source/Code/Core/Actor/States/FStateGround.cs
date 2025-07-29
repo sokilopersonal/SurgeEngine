@@ -5,8 +5,6 @@ using SurgeEngine.Code.Infrastructure.Config;
 using SurgeEngine.Code.Infrastructure.Custom;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
-using Quaternion = UnityEngine.Quaternion;
-using Vector3 = UnityEngine.Vector3;
 
 namespace SurgeEngine.Code.Core.Actor.States
 {
@@ -37,7 +35,8 @@ namespace SurgeEngine.Code.Core.Actor.States
             {
                 if (Input.APressed)
                 {
-                    StateMachine.SetState<FStateJump>(0.1f);
+                    Kinematics.SetDetachTime(0.1f);
+                    StateMachine.SetState<FStateJump>();
                 }
             }
         }
@@ -90,20 +89,6 @@ namespace SurgeEngine.Code.Core.Actor.States
             {
                 _surfaceTag = newTag;
                 OnSurfaceTagChanged?.Invoke(newTag);
-            }
-        }
-
-        private void ConvertAirToGroundVelocity()
-        {
-            if (Physics.Raycast(Actor.transform.position, Rigidbody.linearVelocity.normalized, out RaycastHit velocityFix, Rigidbody.linearVelocity.magnitude, Actor.Config.castLayer))
-            {
-                float nextGroundAngle = Vector3.Angle(velocityFix.normal, Vector3.up);
-                if (nextGroundAngle <= Kinematics.maxAngleDifference)
-                {
-                    Vector3 fixedVelocity = Vector3.ProjectOnPlane(Rigidbody.linearVelocity, Kinematics.Normal);
-                    fixedVelocity = Quaternion.FromToRotation(Actor.transform.up, velocityFix.normal) * fixedVelocity;
-                    Rigidbody.linearVelocity = fixedVelocity;
-                }
             }
         }
 

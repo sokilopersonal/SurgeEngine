@@ -4,15 +4,15 @@ namespace SurgeEngine.Code.Core.StateMachine.Base
 {
     public abstract class FSubState : FState
     {
-        private bool active;
+        private bool _active;
 
         public bool Active
         {
-            get { return active; }
+            get => _active;
             set
             {
-                if (active != value) OnActiveChanged?.Invoke(this, value);
-                active = value;
+                if (_active != value) OnActiveChanged?.Invoke(this, value);
+                _active = value;
             }
         }
         

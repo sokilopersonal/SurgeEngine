@@ -136,12 +136,7 @@ namespace SurgeEngine.Code.Core.Actor.System
             if (vel.sqrMagnitude > 0.01f)
             {
                 Quaternion targetRotation = Quaternion.LookRotation(vel, normal);
-                Actor.Kinematics.Rigidbody.rotation = targetRotation;
-            }
-            else
-            {
-                Quaternion targetRotation = Quaternion.LookRotation(Actor.transform.forward, normal);
-                Actor.Kinematics.Rigidbody.rotation = targetRotation;
+                Actor.Kinematics.Rigidbody.MoveRotation(targetRotation);
             }
         }
 
@@ -175,7 +170,8 @@ namespace SurgeEngine.Code.Core.Actor.System
                 if (targetDir != Vector3.zero)
                 {
                     var targetRot = Quaternion.LookRotation(targetDir, normal);
-                    kinematics.Rigidbody.rotation = Quaternion.RotateTowards(kinematics.Rigidbody.rotation, targetRot, rotSpeed * Time.fixedDeltaTime);
+                    var towards = Quaternion.RotateTowards(rb.rotation, targetRot, rotSpeed * Time.fixedDeltaTime);
+                    rb.MoveRotation(towards);
                 }
             }
             else
@@ -184,17 +180,20 @@ namespace SurgeEngine.Code.Core.Actor.System
                 {
                     Vector3 velocityDir = currentVelocity.normalized;
                     Quaternion targetRotation = Quaternion.LookRotation(velocityDir, normal);
-                    rb.rotation = Quaternion.RotateTowards(rb.rotation, targetRotation, (32f + currentSpeed / 2) * Time.fixedDeltaTime);
+                    var towards = Quaternion.RotateTowards(rb.rotation, targetRotation, (32f + currentSpeed / 2) * Time.fixedDeltaTime);
+                    rb.MoveRotation(towards);
                 }
             }
             
-            rb.rotation = Quaternion.FromToRotation(rb.transform.up, kinematics.Normal) * rb.rotation;
+            Quaternion upRotation = Quaternion.FromToRotation(rb.transform.up, normal) * rb.rotation;
+            rb.MoveRotation(upRotation);
         }
 
         private void Flip()
         {
+            var rb = Actor.Kinematics.Rigidbody;
             Quaternion flipRotation = Quaternion.AngleAxis(flipAngle * Time.deltaTime, Vector3.left);
-            Actor.Kinematics.Rigidbody.rotation *= flipRotation;
+            rb.MoveRotation(rb.rotation * flipRotation);
         }
 
         public void VelocityRotation(Vector3 vel)
@@ -204,14 +203,14 @@ namespace SurgeEngine.Code.Core.Actor.System
 
             if (dot >= 0.99f)
             {
-                Actor.Kinematics.Rigidbody.rotation = Quaternion.FromToRotation(Actor.transform.up, Vector3.up) * Actor.Kinematics.Rigidbody.rotation;
+                Actor.Kinematics.Rigidbody.MoveRotation(Quaternion.FromToRotation(Actor.transform.up, Vector3.up) * Actor.Kinematics.Rigidbody.rotation);
             }
             else
             {
                 if (vel.sqrMagnitude > 0.1f)
                 {
-                    Vector3 forward = Vector3.Cross(vel, left); 
-                    Actor.Kinematics.Rigidbody.rotation = Quaternion.LookRotation(forward, vel);
+                    Vector3 forward = Vector3.Cross(vel, left);
+                    Actor.Kinematics.Rigidbody.MoveRotation(Quaternion.LookRotation(forward, vel));
                 }
             }
             

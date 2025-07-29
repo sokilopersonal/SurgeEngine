@@ -29,8 +29,6 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             springState.SetSpringObject(this);
             context.StateMachine.SetState<FStateSpring>();
             
-            context.Rigidbody.isKinematic = true;
-            
             context.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, Mathf.Abs(outOfControl)));
         }
 

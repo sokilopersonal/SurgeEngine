@@ -32,7 +32,7 @@ namespace SurgeEngine.Code.Core.Actor.States
             {
                 if (Input.APressed)
                 {
-                    Kinematics.SetDetachTime(0.2f);
+                    Kinematics.SetDetachTime(0.1f);
                     StateMachine.SetState<FStateJump>();
                 }
             }

@@ -18,6 +18,10 @@ namespace SurgeEngine.Code.Core.Actor.States
         {
             base.OnEnter();
             
+            Kinematics.SetDetachTime(0.1f);
+            
+            Rigidbody.isKinematic = true;
+            
             Model.SetLowerCollision();
         }
 
@@ -37,7 +41,9 @@ namespace SurgeEngine.Code.Core.Actor.States
             
             Vector3 dir = _springObject.transform.up;
             Vector3 pos = _springObject.transform.position + dir * Mathf.Max(1f, _travelledDistance);
-            Rigidbody.position = Vector3.Lerp(_startPos, pos, _snapTimer);
+            Vector3 endPos = Vector3.Lerp(_startPos, pos, _snapTimer);
+            
+            Rigidbody.MovePosition(endPos);
             _travelledDistance += _springObject.Speed * Time.deltaTime;
             _snapTimer += Time.deltaTime / 0.1f;
 

@@ -208,23 +208,23 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates
             }
         }
 
-        public bool CanBoost() => BoostEnergy > 0 && _boostHandler != null;
+        public bool CanBoost() => BoostEnergy > 0;
 
         private void BoostAction(InputAction.CallbackContext obj)
         {
             if (Actor.StateMachine.CurrentState is FStateAir && !CanAirBoost) return;
-            if (Actor.StateMachine.CurrentState is FStateUpreel) return;
+
+            if (_boostHandler == null)
+            {
+                if (Active)
+                    Active = false;
+                
+                return;
+            }
             
             if (CanBoost())
             {
-                if (obj.started && !Actor.Flags.HasFlag(FlagType.OutOfControl))
-                {
-                    Active = true;
-                }
-                else if (obj.canceled)
-                {
-                    Active = false;
-                }
+                Active = obj.started && !Actor.Flags.HasFlag(FlagType.OutOfControl);
             }
             
             if (Active)
