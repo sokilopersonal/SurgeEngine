@@ -19,6 +19,10 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
 
         private Vector3 _snapStartPos;
         private Vector3 _snapTargetPos;
+        private Vector3 _snapTangent;
+        private Vector3 _lastTangent;
+        private float _snapDot;
+        
         private Vector3 _snapVelocity;
         private bool _isSnapping;
 
@@ -74,19 +78,30 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
                 _snapStartPos += _snapVelocity * dt;
                 _snapTargetPos += _snapVelocity * dt;
                 
-                if (Kinematics.CheckForGround(out var hit))
-                {
-                    Kinematics.GetPath().Evaluate(out _, out _, out var up, out _);
+                Kinematics.GetPath().Evaluate(out _, out _, out var up, out _);
                     
-                    var pos = Vector3.Lerp(_snapStartPos, _snapTargetPos, Easings.Get(Easing.InOutSine, t));
-                    pos += up;
-                    pos.y = Rigidbody.position.y;
-                    Rigidbody.MovePosition(pos);
+                var pos = Vector3.Lerp(_snapStartPos, _snapTargetPos, Easings.Get(Easing.InOutSine, t));
+                pos.y = Rigidbody.position.y;
+                Rigidbody.MovePosition(pos);
                     
-                    Kinematics.RotateSnapNormal(up);
-                }
+                var tg = _snapTangent;
+                tg *= Mathf.Sign(_snapDot);
+                    
+                var rot = Quaternion.LookRotation(tg, up);
+                Rigidbody.MoveRotation(rot);
                 
-                if (t >= 1f) _isSnapping = false;
+                var v = Rigidbody.linearVelocity;
+                var tNorm = tg.normalized;
+                var alongT = Vector3.Dot(v, tNorm);
+                var alongUp = Vector3.Dot(v, up);
+                Rigidbody.linearVelocity = tNorm * alongT + up * alongUp;
+                
+                Kinematics.RotateSnapNormal(up);
+
+                if (t >= 1f)
+                {
+                    _isSnapping = false;
+                }
                 return;
             }
             
@@ -135,6 +150,9 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
 
             _snapStartPos = worldPos;
             _snapTargetPos = container.transform.TransformPoint(bestSpline.EvaluatePosition(bestT));
+            _snapTangent = container.transform.TransformDirection(bestSpline.EvaluateTangent(bestT));
+            _snapDot = Vector3.Dot(Rigidbody.transform.forward, _snapTangent);
+            
             Debug.DrawLine(worldPos, _snapTargetPos, Color.red, 10);
             _snapVelocity = Kinematics.Velocity;
             _timer = 0;
