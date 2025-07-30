@@ -40,7 +40,7 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter.States
             }
             else
             {
-                eggFighter.StateMachine.SetState<EGStateIdle>(2f);
+                eggFighter.StateMachine.SetState<EGStateIdle>();
             }
         }
 

@@ -34,7 +34,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             RuntimeManager.PlayOneShot(soundEffect, transform.position);
 
             context.StateMachine.GetState<FStateSpecialJump>().SetSpecialData(new SpecialJumpData(SpecialJumpType.Spring, transform, 0)).SetKeepVelocity(keepVelocity);
-            context.StateMachine.SetState<FStateSpecialJump>(0f, true, true);
+            context.StateMachine.SetState<FStateSpecialJump>(true);
 
             float finalSpeed = Mathf.Lerp(speed, speed * 0.5f, pointDistance);
 

@@ -14,8 +14,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
         
         private QuickstepDirection _direction;
         private float _timer;
-        private bool _isRun;
-        public bool IsRun => _isRun;
+        public bool IsRun { get; private set; }
 
         private Vector3 _snapStartPos;
         private Vector3 _snapTargetPos;
@@ -106,7 +105,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
             if (_timer >= 1f)
             {
                 SetSideVelocity(0);
-                if (_isRun) StateMachine.SetState<FStateGround>();
+                if (IsRun) StateMachine.SetState<FStateGround>();
                 else StateMachine.SetState<FStateIdle>();
             }
         }
@@ -192,7 +191,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
 
         public FStateQuickstep SetRun(bool isRun)
         {
-            _isRun = isRun;
+            IsRun = isRun;
             return this;
         }
 

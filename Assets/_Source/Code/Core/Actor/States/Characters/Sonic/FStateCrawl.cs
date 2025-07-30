@@ -56,7 +56,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
 
             if (Input.APressed)
             {
-                StateMachine.SetState<FStateJump>(0.1f);
+                StateMachine.SetState<FStateJump>();
             }
 
             if (Input.moveVector.magnitude < 0.1)

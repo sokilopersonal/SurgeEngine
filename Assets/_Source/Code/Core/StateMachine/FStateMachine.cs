@@ -13,10 +13,10 @@ namespace SurgeEngine.Code.Core.StateMachine
         public FState PreviousState { get; private set; }
         public string currentStateName;
         
-        private readonly Dictionary<Type, FState> _states = new Dictionary<Type, FState>();
-        private readonly Dictionary<Type, FSubState> _subStates = new Dictionary<Type, FSubState>();
-        private readonly List<FSubState> _subStatesList = new List<FSubState>();
-        private readonly List<IStateTimeout> _stateTimeouts = new List<IStateTimeout>();
+        private readonly Dictionary<Type, FState> _states = new();
+        private readonly Dictionary<Type, FSubState> _subStates = new();
+        private readonly List<FSubState> _subStatesList = new();
+        private readonly List<IStateTimeout> _stateTimeouts = new();
         
         /// <summary>
         /// Called after the previous state ends and before the next state is set.
@@ -28,8 +28,6 @@ namespace SurgeEngine.Code.Core.StateMachine
         /// Called after the previous state ends and after the next state is set.
         /// </summary>
         public event Action<FState> OnStateAssign;
-        
-        private float _inactiveDelay = 0f;
         
         public void AddState(FState state)
         {
@@ -52,10 +50,8 @@ namespace SurgeEngine.Code.Core.StateMachine
             return !isSubState ? _states.ContainsKey(typeof(T)) : _subStates.ContainsKey(typeof(T));
         }
         
-        public T SetState<T>(float inactiveDelay = 0, bool ignoreInactiveDelay = false, bool allowSameState = false) where T : FState
+        public T SetState<T>(bool allowSameState = false) where T : FState
         {
-            if (_inactiveDelay > 0f && !ignoreInactiveDelay) return null;
-
             Type type = typeof(T);
 
             if (CurrentState != null && CurrentState.GetType() == type && !allowSameState)
@@ -76,9 +72,7 @@ namespace SurgeEngine.Code.Core.StateMachine
                 {
                     EnterState(newState);
                 }
-
-                _inactiveDelay = inactiveDelay;
-                
+ 
                 return CurrentState as T;
             }
             
@@ -156,11 +150,6 @@ namespace SurgeEngine.Code.Core.StateMachine
 
         public virtual void Tick(float dt)
         {
-            if (_inactiveDelay > 0f)
-            {
-                _inactiveDelay -= dt;
-            }
-            
             CurrentState?.OnTick(dt);
 
             foreach (FSubState subState in _subStatesList)

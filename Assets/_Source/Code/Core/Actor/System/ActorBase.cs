@@ -238,7 +238,7 @@ namespace SurgeEngine.Code.Core.Actor.System
                 stateLoader.Load(loadPosition, loadRotation);
             }
             
-            StateMachine.SetState<FStateIdle>(ignoreInactiveDelay: true);
+            StateMachine.SetState<FStateIdle>();
         }
 
         public virtual void OnDiedInvoke(ActorBase obj, bool isMarkedForDeath)

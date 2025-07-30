@@ -26,7 +26,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
                 var jumpPanelState = context.StateMachine.GetState<FStateJumpPanel>();
                 jumpPanelState.SetDelux(boosted);
                 jumpPanelState.SetKeepVelocity(outOfControl);
-                context.StateMachine.SetState<FStateJumpPanel>(0f, true, true);
+                context.StateMachine.SetState<FStateJumpPanel>(true);
                     
                 context.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, Mathf.Abs(outOfControl)));
             }

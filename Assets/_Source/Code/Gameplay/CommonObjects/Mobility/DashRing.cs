@@ -20,7 +20,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             if (cancelBoost) context.StateMachine.GetSubState<FBoost>().Active = false;
             
             context.StateMachine.GetState<FStateDashRing>().SetKeepVelocityDistance(keepVelocityDistance);
-            context.StateMachine.SetState<FStateDashRing>(0f, true, true);
+            context.StateMachine.SetState<FStateDashRing>(true);
 
             Rigidbody body = context.Kinematics.Rigidbody;
             body.position = transform.position;

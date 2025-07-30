@@ -102,7 +102,7 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter
 
         private void Kill(Vector3 force)
         {
-            StateMachine.SetState<EGStateDead>(0f, true, true).ApplyKnockback(force, ragdollPrefab);
+            StateMachine.SetState<EGStateDead>(true).ApplyKnockback(force, ragdollPrefab);
         }
 
         public void Load(Vector3 loadPosition, Quaternion loadRotation)

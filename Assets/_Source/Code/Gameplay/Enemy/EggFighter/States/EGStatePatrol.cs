@@ -55,7 +55,7 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter.States
             _patrolTimer += dt;
             if (_patrolTimer > eggFighter.patrolTime + 3.5f)
             {
-                eggFighter.StateMachine.SetState<EGStateIdle>(2f);
+                eggFighter.StateMachine.SetState<EGStateIdle>();
             }
             
             ActorBase context = ActorContext.Context;

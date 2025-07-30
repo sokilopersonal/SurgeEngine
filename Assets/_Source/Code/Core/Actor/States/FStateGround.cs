@@ -45,6 +45,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         {
             base.OnFixedTick(dt);
 
+            Vector3 prevNormal = Kinematics.Normal;
             PhysicsConfig config = Actor.Config;
             float distance = config.EvaluateCastDistance(Kinematics.Speed / config.topSpeed);
             bool ground = Kinematics.CheckForGround(out RaycastHit data, castDistance: distance);
@@ -55,6 +56,9 @@ namespace SurgeEngine.Code.Core.Actor.States
                 Kinematics.RotateSnapNormal(data.normal);
                 
                 Kinematics.ClampVelocityToMax();
+
+                Vector3 stored = Rigidbody.linearVelocity;
+                //Rigidbody.linearVelocity = Quaternion.FromToRotation(Rigidbody.transform.up, prevNormal) * stored;
                 
                 Kinematics.BasePhysics(Kinematics.Normal);
                 if (!predictedGround) Kinematics.Snap(Kinematics.Point, Kinematics.Normal, true);

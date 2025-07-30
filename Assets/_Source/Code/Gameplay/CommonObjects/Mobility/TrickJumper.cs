@@ -109,7 +109,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
                 );
                 
                 _actor.Kinematics.Rigidbody.linearVelocity = impulse;
-                _actor.StateMachine.SetState<FStateTrickJump>(0, true, true);
+                _actor.StateMachine.SetState<FStateTrickJump>(true);
                 _actor.Flags.AddFlag(new Flag(FlagType.OutOfControl, false));
 
                 yield return SetTime(TargetTimeScale, TimeScaleDuration);

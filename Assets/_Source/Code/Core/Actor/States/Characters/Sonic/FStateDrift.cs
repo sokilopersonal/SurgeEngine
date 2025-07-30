@@ -45,7 +45,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
             
             bool driftHeld = ((SonicInput)Input).DriftHeld;
             if (!driftHeld || _ignoreTimer > 0.15f)
-                StateMachine.SetState<FStateGround>(0.1f);
+                StateMachine.SetState<FStateGround>();
         }
 
         public override void OnFixedTick(float dt)
@@ -85,7 +85,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
             }
             else
             {
-                StateMachine.SetState<FStateAir>(0.1f);
+                StateMachine.SetState<FStateAir>();
             }
         }
 
