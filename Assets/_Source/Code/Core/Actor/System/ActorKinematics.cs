@@ -247,16 +247,19 @@ namespace SurgeEngine.Code.Core.Actor.System
                         endPos += up;
                         endPos.y = _rigidbody.position.y;
 
-                        _rigidbody.position = Vector3.MoveTowards(_rigidbody.position, endPos, Mathf.Min(Speed / 64f, 1) * 16f * Time.fixedDeltaTime);
+                        Vector3 target = Vector3.MoveTowards(_rigidbody.position, endPos,
+                            Mathf.Min(Speed / 64f, 1) * 16f * Time.fixedDeltaTime);
+                        _rigidbody.MovePosition(target);
+                        
                         if (_splineData.Time > _splineData.Length || _splineData.Time < 0)
                         {
                             SetPath(null);
                         
                             Actor.Flags.RemoveFlag(FlagType.Autorun);
                         }
+                        
+                        _splineData.CalculateTime(Velocity);
                     }
-                    
-                    _splineData.Time += Vector3.Dot(Velocity, Vector3.ProjectOnPlane(tg, up)) * Time.fixedDeltaTime;
                 }
             }
             else
@@ -296,12 +299,11 @@ namespace SurgeEngine.Code.Core.Actor.System
             return (rotation * movement).normalized;
         }
 
-        public bool CheckForPredictedGround(float deltaTime, float distance, int steps)
+        public bool CheckForPredictedGround(Vector3 normal, float deltaTime, float distance, int steps)
         {
             bool willBeGrounded = false;
             Vector3 velocity = Velocity;
             Vector3 initialVelocity = velocity;
-            Vector3 normal = Normal;
             Vector3 predictedNormal = normal;
             Vector3 predictedPos = _rigidbody.position;
             for (int i = 0; i < steps; i++)
@@ -312,7 +314,7 @@ namespace SurgeEngine.Code.Core.Actor.System
                 if (Physics.Raycast(ray, out RaycastHit hit, distance, _config.castLayer))
                 {
                     var angle = Vector3.Angle(predictedNormal, hit.normal);
-                    if (angle > maxAngleDifference)
+                    if (angle > maxAngleDifference || Mathf.Approximately(angle, 90f))
                     {
                         predictedPos = hit.point + hit.normal;
                         predictedNormal = hit.normal;
@@ -415,12 +417,12 @@ namespace SurgeEngine.Code.Core.Actor.System
             _rigidbody.linearVelocity = Vector3.ProjectOnPlane(_rigidbody.linearVelocity, normal);
         }
 
-        public void ClampVelocityToMax()
+        public void ClampVelocityToMax(float max = default)
         {
             var flags = Actor.Flags;
             if (!flags.HasFlag(FlagType.OutOfControl) && !flags.HasFlag(FlagType.Autorun))
             {
-                Rigidbody.linearVelocity = Vector3.ClampMagnitude(Rigidbody.linearVelocity, _config.maxSpeed);
+                Rigidbody.linearVelocity = Vector3.ClampMagnitude(Rigidbody.linearVelocity, Mathf.Approximately(max, 0) ? _config.maxSpeed : max);
             }
         }
 
@@ -620,6 +622,8 @@ namespace SurgeEngine.Code.Core.Actor.System
             EvaluateWorld(out _, out var tg, out _, out _);
             return tg;
         }
+        
+        public void CalculateTime(Vector3 velocity) => Time += Vector3.Dot(velocity, EvaluateTangent()) * UnityEngine.Time.fixedDeltaTime;
     }
 
     public struct SplineSample

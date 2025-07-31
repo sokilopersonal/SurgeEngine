@@ -87,7 +87,6 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
 
             // how the hell do i make him move
             // you did it!!
-            Vector3 prevNormal = Kinematics.Normal;
             PhysicsConfig config = Actor.Config;
             float distance = config.castDistance * config.castDistanceCurve
                 .Evaluate(Kinematics.Speed / _crawlConfig.topSpeed);
@@ -96,8 +95,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
                 Kinematics.Point = data.point;
                 Kinematics.Normal = Vector3.up;
 
-                Vector3 stored = Vector3.ClampMagnitude(Rigidbody.linearVelocity, _crawlConfig.maxSpeed);
-                Rigidbody.linearVelocity = Quaternion.FromToRotation(Rigidbody.transform.up, prevNormal) * stored;
+                Kinematics.ClampVelocityToMax(_crawlConfig.maxSpeed);
 
                 Kinematics.BasePhysics(Kinematics.Normal);
                 Kinematics.Project(Kinematics.Normal);
@@ -112,8 +110,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
                 StateMachine.SetState<FStateAir>();
             }
         }
-
-        public GroundTag GetSurfaceTag() => _surfaceTag;
+        
         public float Timeout { get; set; }
     }
 }

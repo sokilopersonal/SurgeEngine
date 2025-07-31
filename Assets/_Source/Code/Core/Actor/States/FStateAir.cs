@@ -53,7 +53,11 @@ namespace SurgeEngine.Code.Core.Actor.States
 
                 if (Kinematics.mode == KinematicsMode.Forward)
                 {
-                    if (Kinematics.CheckForGround(out var predictHit, CheckGroundType.Predict))
+                    var path = Kinematics.GetPath();
+                    var pos = path.EvaluatePosition();
+                    
+                    var ray = new Ray(Rigidbody.position, pos - Rigidbody.position);
+                    if (Physics.Raycast(ray, out var predictHit, 1.5f, Actor.Config.castLayer, QueryTriggerInteraction.Ignore))
                     {
                         Kinematics.Normal = predictHit.normal;
                         Kinematics.Snap(predictHit.point, predictHit.normal, true);

@@ -90,7 +90,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.165
+  m_Radius: 0.15
   m_Height: 0.7
   m_Direction: 1
   m_Center: {x: 0, y: -0.25, z: 0}
@@ -135,11 +135,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseSpeedRestorationDelta: 16
   initialGravity: 0
-  maxAngleDifference: 70
+  maxAngleDifference: 40
   mode: 0
   normalLerpSpeed: 7
   normalSpeedThreshold: 10
-  hardAngle: 80
+  hardAngle: 50
 --- !u!1 &104865943220000739
 GameObject:
   m_ObjectHideFlags: 0
@@ -6177,10 +6177,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.25
-  m_Height: 1.25
+  m_Radius: 0.17658862
+  m_Height: 1.1022054
   m_Direction: 1
-  m_Center: {x: 0, y: -0.4, z: 0}
+  m_Center: {x: 0, y: -0.44743758, z: 0}
 --- !u!114 &4796167892535069552
 MonoBehaviour:
   m_ObjectHideFlags: 0

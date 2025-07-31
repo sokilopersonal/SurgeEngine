@@ -41,10 +41,10 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
             
             Timeout = _config.delay;
             
+            float speed = !IsRun ? _config.force : _config.runForce;
+            var sideDir = _direction == QuickstepDirection.Left ? -speed : speed;
             if (Kinematics.mode == KinematicsMode.Free || Kinematics.mode == KinematicsMode.Forward)
             {
-                float speed = !IsRun ? _config.force : _config.runForce;
-                var sideDir = _direction == QuickstepDirection.Left ? -speed : speed;
                 SetSideVelocity(sideDir);
             }
 
@@ -53,8 +53,6 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
                 bool snapped = SnapToSpline();
                 if (!snapped)
                 {
-                    float speed = !IsRun ? _config.force : _config.runForce;
-                    var sideDir = _direction == QuickstepDirection.Left ? -speed : speed;
                     SetSideVelocity(sideDir);
                 }
             }
@@ -76,16 +74,15 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
                 float t = Mathf.Clamp01(_timer);
                 _snapStartPos += _snapVelocity * dt;
                 _snapTargetPos += _snapVelocity * dt;
+                Vector3 up = Rigidbody.transform.up;
                 
-                Kinematics.GetPath().Evaluate(out _, out _, out var up, out _);
-                    
                 var pos = Vector3.Lerp(_snapStartPos, _snapTargetPos, Easings.Get(Easing.InOutSine, t));
                 pos.y = Rigidbody.position.y;
                 Rigidbody.MovePosition(pos);
                     
                 var tg = _snapTangent;
                 tg *= Mathf.Sign(_snapDot);
-                    
+                
                 var rot = Quaternion.LookRotation(tg, up);
                 Rigidbody.MoveRotation(rot);
                 
@@ -165,7 +162,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
             float distance = config.EvaluateCastDistance(config.castDistanceCurve.Evaluate(Kinematics.Speed / config.topSpeed));
             if (Kinematics.CheckForGround(out var hit, castDistance: distance))
             {
-                bool predicted = Kinematics.CheckForPredictedGround(dt, distance, 4);
+                bool predicted = Kinematics.CheckForPredictedGround(new Vector3(), dt, distance, 4);
                 
                 if (!predicted) Kinematics.Snap(hit.point, Kinematics.Normal, true);
                 Kinematics.Project();

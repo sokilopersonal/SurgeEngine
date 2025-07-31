@@ -60,28 +60,33 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
             float distance = physicsConfig.castDistance * physicsConfig.castDistanceCurve.Evaluate(Kinematics.Speed / physicsConfig.topSpeed);
             if (Kinematics.CheckForGround(out RaycastHit hit, castDistance: distance))
             {
-                bool predictedGround = Kinematics.CheckForPredictedGround(dt, Actor.Config.castDistance, 4);
-                
+                bool predictedGround = Kinematics.CheckForPredictedGround(hit.normal, dt, Actor.Config.castDistance, 4);
                 Vector3 point = hit.point;
-                Vector3 normal = hit.normal;
-                if (!predictedGround) Kinematics.RotateSnapNormal(normal);
+                Vector3 targetNormal = hit.normal;
+                if (predictedGround)
+                {
+                    targetNormal = Vector3.up;
+                    Kinematics.Normal = targetNormal;
+                }
+                
+                if (!predictedGround) Kinematics.RotateSnapNormal(targetNormal);
                 
                 Vector3 dir = Input.moveVector;
                 _driftXDirection = Mathf.Sign(dir.x);
 
-                Model.RotateBody(Kinematics.Velocity, Kinematics.Normal, 1600);
+                Model.RotateBody(Kinematics.Velocity, targetNormal, 1600);
                 
                 Kinematics.SlopePhysics();
                 
                 float boostForce = SonicTools.IsBoost() ? 0.5f : 1f;
-                Quaternion angle = Quaternion.AngleAxis(_driftXDirection * _config.centrifugalForce * boostForce, Kinematics.Normal);
+                Quaternion angle = Quaternion.AngleAxis(_driftXDirection * _config.centrifugalForce * boostForce, targetNormal);
                 Vector3 driftVelocity = angle * Rigidbody.linearVelocity;
                 Rigidbody.linearVelocity = driftVelocity;
                 if (Kinematics.Speed < _config.maxSpeed) Rigidbody.linearVelocity += Rigidbody.linearVelocity.normalized *
                     (0.05f * Mathf.Lerp(4f, 1f, Kinematics.Speed / _config.maxSpeed));
 
-                if (!predictedGround) Kinematics.Snap(point, normal);
-                Kinematics.Project();
+                Kinematics.Snap(point, targetNormal);
+                Kinematics.Project(targetNormal);
             }
             else
             {

@@ -153,7 +153,7 @@ namespace SurgeEngine.Code.Core.Actor.System
             float currentSpeed = currentVelocity.magnitude;
             float speedThreshold = 3.5f;
 
-            if (rawInput.sqrMagnitude > 0.02f)
+            if (inputDir.sqrMagnitude > 0.02f)
             {
                 Vector3 targetDir = Vector3.ProjectOnPlane(inputDir.normalized, Vector3.up);
 

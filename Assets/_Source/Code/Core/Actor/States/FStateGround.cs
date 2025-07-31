@@ -45,28 +45,31 @@ namespace SurgeEngine.Code.Core.Actor.States
         {
             base.OnFixedTick(dt);
 
-            Vector3 prevNormal = Kinematics.Normal;
             PhysicsConfig config = Actor.Config;
             float distance = config.EvaluateCastDistance(Kinematics.Speed / config.topSpeed);
             bool ground = Kinematics.CheckForGround(out RaycastHit data, castDistance: distance);
             if (ground)
             {
-                bool predictedGround = Kinematics.CheckForPredictedGround(dt, distance, 8);
+                bool predictedGround = Kinematics.CheckForPredictedGround(data.normal, dt, distance, 8);
+                Vector3 targetNormal = data.normal;
+                if (predictedGround)
+                {
+                    targetNormal = Vector3.up;
+                    Kinematics.Normal = targetNormal;
+                }
+                
                 Kinematics.Point = data.point;
-                Kinematics.RotateSnapNormal(data.normal);
+                Kinematics.RotateSnapNormal(targetNormal);
                 
                 Kinematics.ClampVelocityToMax();
-
-                Vector3 stored = Rigidbody.linearVelocity;
-                //Rigidbody.linearVelocity = Quaternion.FromToRotation(Rigidbody.transform.up, prevNormal) * stored;
                 
                 Kinematics.BasePhysics(Kinematics.Normal);
-                if (!predictedGround) Kinematics.Snap(Kinematics.Point, Kinematics.Normal, true);
+                Kinematics.Snap(Kinematics.Point, Kinematics.Normal, true);
                 Model.RotateBody(Kinematics.Velocity, Kinematics.Normal);
-                Kinematics.Project(Kinematics.Normal);
+
+                Rigidbody.linearVelocity -= Vector3.Project(Rigidbody.linearVelocity, Kinematics.Normal);
                 
-                bool hit = Physics.Raycast(Rigidbody.position, Rigidbody.transform.forward, 0.5f, config.castLayer);
-                if (Kinematics.Speed < config.topSpeed / 4 && !hit && Kinematics.IsHardAngle(data.normal) && Kinematics.mode == KinematicsMode.Free)
+                if (Kinematics.Speed < config.topSpeed / 4 && Kinematics.IsHardAngle(targetNormal) && Kinematics.mode == KinematicsMode.Free)
                 {
                     StateMachine.SetState<FStateSlip>();
                 }

@@ -27,7 +27,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         {
             base.OnEnter();
 
-            _jumpNormal = Kinematics.Normal;
+            _jumpNormal = Vector3.up;
             _jumpVelocity = Vector3.zero;
             
             _reachedMaxHeight = false;
@@ -68,10 +68,10 @@ namespace SurgeEngine.Code.Core.Actor.States
             if (Input.AReleased && !_released)
                 _released = true;
 
-            _jumpTime += dt;
-
             if (Actor.Flags.HasFlag(FlagType.OutOfControl) || !Input.AHeld || _released)
                 return;
+            
+            _jumpTime += dt;
 
             if (_jumpTime < _config.jumpMaxShortTime)
                 return;
@@ -95,7 +95,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         {
             base.OnFixedTick(dt);
 
-            float drag = 1.2f;
+            float drag = _config.jumpDrag;
             Vector3 horizontal = Kinematics.HorizontalVelocity;
             Vector3 vertical = Kinematics.VerticalVelocity;
 
@@ -117,14 +117,14 @@ namespace SurgeEngine.Code.Core.Actor.States
         {
             if (!bounce)
             {
-                Vector3 horizontalVelocity = Rigidbody.linearVelocity;
+                Vector3 horizontalVelocity = Kinematics.HorizontalVelocity;
                 _jumpVelocity = _jumpNormal * _config.jumpFirstSpeed;
                 
                 Rigidbody.linearVelocity = horizontalVelocity + _jumpVelocity;
             }
             
             if (bounce)
-                Rigidbody.linearVelocity = new Vector3(Rigidbody.linearVelocity.x, _config.jumpFirstSpeed * 4, Rigidbody.linearVelocity.z);
+                Rigidbody.linearVelocity = new Vector3(Rigidbody.linearVelocity.x, _config.jumpFirstSpeed, Rigidbody.linearVelocity.z);
         }
     }
 }

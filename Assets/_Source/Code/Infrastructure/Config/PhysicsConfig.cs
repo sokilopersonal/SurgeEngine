@@ -45,7 +45,7 @@ namespace SurgeEngine.Code.Infrastructure.Config
         public float jumpHoldSpeed = 45;
         public float jumpMaxSpeed = 18;
         public float jumpMaxShortTime = 0.117f;
-        public float jumpHoldTime = 0.15f;
+        public float jumpDrag = 1.2f;
         public float jumpCollisionHeight = 0.6f;
         public float jumpCollisionCenter = 0.2f;
         public float jumpCollisionRadius = 0.5f;
