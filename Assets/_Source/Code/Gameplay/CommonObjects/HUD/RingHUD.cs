@@ -49,11 +49,11 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.HUD
             }
         }
 
-        private void Update()
+        private void FixedUpdate()
         {
             Align();
             
-            _factor += Time.deltaTime / 0.375f;
+            _factor += Time.deltaTime / 0.45f;
             if (_factor >= 1f)
             {
                 _actorStageHUD.RingCounterAnimator.Play("RingBump", 0);
@@ -70,7 +70,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.HUD
                     _distance);
 
             float easedFactor = easingCurve.Evaluate(_factor);
-            var context = ActorContext.Context;
+            var context = _actor;
             float speedT = context.Kinematics.Speed / context.Config.topSpeed;
             
             Vector3 targetLocalPos = transform.parent.InverseTransformPoint(worldPos);

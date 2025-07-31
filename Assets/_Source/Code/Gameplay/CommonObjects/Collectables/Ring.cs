@@ -10,12 +10,10 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Collectables
 {
     public class Ring : ContactBase, IPointMarkerLoader
     {
-        [SerializeField] private float rotationSpeed = 360f;
-        [SerializeField] private float flyDuration = 1f;
-        [SerializeField] private AnimationCurve heightCurve;
         [SerializeField] private ParticleSystem particle;
-        
         [SerializeField] private EventReference ringSound;
+        
+        private const float RotationSpeed = 240f;
 
         private ActorBase _actor;
         private bool _inMagnet;
@@ -27,16 +25,11 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Collectables
         private void Awake()
         {
             _startPosition = transform.position;
-            
-            if (heightCurve == null)
-            {
-                heightCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
-            }
         }
 
         private void Update()
         {
-            transform.rotation *= Quaternion.AngleAxis(rotationSpeed * Time.deltaTime, Vector3.up);
+            transform.rotation *= Quaternion.AngleAxis(RotationSpeed * Time.deltaTime, Vector3.up);
             
             if (_actor == null)
             {
