@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.Sound
 {
-    public class HomingSound : ActorSound
+    public class HomingSound : CharacterSound
     {
         [SerializeField] private EventReference homingSound;
         

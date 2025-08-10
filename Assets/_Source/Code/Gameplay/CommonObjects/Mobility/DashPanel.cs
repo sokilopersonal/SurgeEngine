@@ -11,7 +11,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
         [SerializeField] private float speed = 35f;
         [SerializeField] private float outOfControl = 0.5f;
 
-        public override void Contact(Collider msg, ActorBase context)
+        public override void Contact(Collider msg, CharacterBase context)
         {
             base.Contact(msg, context);
             

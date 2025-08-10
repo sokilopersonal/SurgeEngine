@@ -5,14 +5,14 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.States
 {
-    public class FStateBrakeTurn : FActorState, IDamageableState
+    public class FStateBrakeTurn : FCharacterState, IDamageableState
     {
         private float _timer;
 
         private Quaternion _startRotation;
         private Quaternion _endRotation;
         
-        public FStateBrakeTurn(ActorBase owner) : base(owner)
+        public FStateBrakeTurn(CharacterBase owner) : base(owner)
         {
             
         }

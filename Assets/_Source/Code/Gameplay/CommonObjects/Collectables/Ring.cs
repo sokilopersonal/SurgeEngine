@@ -15,7 +15,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Collectables
         
         private const float RotationSpeed = 240f;
 
-        private ActorBase _actor;
+        private CharacterBase _character;
         private bool _inMagnet;
         private float _factor;
         private Vector3 _velocity;
@@ -31,7 +31,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Collectables
         {
             transform.rotation *= Quaternion.AngleAxis(RotationSpeed * Time.deltaTime, Vector3.up);
             
-            if (_actor == null)
+            if (_character == null)
             {
                 return;
             }
@@ -45,7 +45,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Collectables
 
                 _factor = Mathf.Clamp01(_factor + Time.deltaTime / stiffnessRampTime);
 
-                Vector3 target = _actor.transform.position - Vector3.up * 0.9f;
+                Vector3 target = _character.transform.position - Vector3.up * 0.9f;
 
                 float stiffness = baseStiffness * (baseSpeed * _factor);
                 float damping = baseDamping;
@@ -60,20 +60,20 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Collectables
             }
         }
 
-        public override void Contact(Collider msg, ActorBase context)
+        public override void Contact(Collider msg, CharacterBase context)
         {
             base.Contact(msg, context);
 
             Collect();
         }
 
-        public void StartMagnet(ActorBase actor)
+        public void StartMagnet(CharacterBase character)
         {
             if (!_inMagnet)
             {
                 _inMagnet = true;
                 
-                _actor = actor;
+                _character = character;
             }
         }
 

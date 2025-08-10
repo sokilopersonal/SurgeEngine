@@ -5,9 +5,9 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic.Actions
 {
-    public class SonicIdleActions : ActorActions
+    public class SonicIdleActions : CharacterActions
     {
-        public SonicIdleActions(ActorBase actor) : base(actor) { }
+        public SonicIdleActions(CharacterBase character) : base(character) { }
 
         protected override void Connect(FStateMachine stateMachine)
         {

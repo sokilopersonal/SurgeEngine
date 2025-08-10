@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.System
 {
-    public class ActorStats : ActorComponent
+    public class CharacterStats : CharacterComponent
     {
         public StompParameters stompParameters;
         public float turnRate;
@@ -44,9 +44,9 @@ namespace SurgeEngine.Code.Core.Actor.System
             currentSpeed = _rigidbody.linearVelocity.magnitude;
             currentVerticalSpeed = _rigidbody.linearVelocity.y;
             
-            moveDot = Vector3.Dot(Actor.Kinematics.GetInputDir().normalized, _rigidbody.linearVelocity.normalized);
+            moveDot = Vector3.Dot(character.Kinematics.GetInputDir().normalized, _rigidbody.linearVelocity.normalized);
 
-            FState state = Actor.StateMachine.CurrentState;
+            FState state = character.StateMachine.CurrentState;
             isGrounded = state is FStateGround;
             isInAir = state is FStateAir or FStateAirBoost or FStateJump or FStateSpecialJump;
             
@@ -62,17 +62,17 @@ namespace SurgeEngine.Code.Core.Actor.System
 
         public float GetForwardSignedAngle()
         {
-            Vector3 forward = Actor.transform.forward;
+            Vector3 forward = character.transform.forward;
             Vector3 f = Vector3.ProjectOnPlane(forward, Vector3.up).normalized;
-            Vector3 c = Vector3.ProjectOnPlane(Actor.Camera.GetCameraTransform().forward, Vector3.up).normalized;
-            float dot = Vector3.Dot(Actor.transform.up, Vector3.down);
+            Vector3 c = Vector3.ProjectOnPlane(character.Camera.GetCameraTransform().forward, Vector3.up).normalized;
+            float dot = Vector3.Dot(character.transform.up, Vector3.down);
             return f.SignedAngleByAxis(c, dot > 0 ? Vector3.up : Vector3.down);
         }
 
         public float GetUpwardSignedAngle()
         {
-            Vector3 f = Vector3.ProjectOnPlane(Actor.transform.up, Vector3.up).normalized;
-            Vector3 c = Vector3.ProjectOnPlane(Actor.Camera.GetCameraTransform().up, Vector3.up).normalized;
+            Vector3 f = Vector3.ProjectOnPlane(character.transform.up, Vector3.up).normalized;
+            Vector3 c = Vector3.ProjectOnPlane(character.Camera.GetCameraTransform().up, Vector3.up).normalized;
             return Vector3.SignedAngle(f, c, -Vector3.up);
         }
 

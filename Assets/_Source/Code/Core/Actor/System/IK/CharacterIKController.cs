@@ -5,7 +5,7 @@ using UnityEngine.Animations.Rigging;
 
 namespace SurgeEngine.Code.Core.Actor.System.IK
 {
-    public class ActorIKController : MonoBehaviour
+    public class CharacterIKController : MonoBehaviour
     {
         [Header("Data")] 
         [SerializeField] private IKData leftFoot;

@@ -14,7 +14,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects
         
         private void OnTriggerEnter(Collider other)
         {
-            if (other.TryGetActor(out ActorBase ctx))
+            if (other.TryGetActor(out CharacterBase ctx))
             {
                 Contact(other, ctx);
             }
@@ -22,13 +22,13 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects
 
         private void OnTriggerExit(Collider other)
         {
-            if (other.TryGetActor(out ActorBase ctx))
+            if (other.TryGetActor(out CharacterBase ctx))
             {
                 OnDetach?.Invoke(this);
             }
         }
 
-        public virtual void Contact(Collider msg, ActorBase context)
+        public virtual void Contact(Collider msg, CharacterBase context)
         {
             ObjectEvents.OnObjectTriggered?.Invoke(this);
             

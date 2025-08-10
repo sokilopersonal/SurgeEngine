@@ -12,14 +12,14 @@ using Vector3 = UnityEngine.Vector3;
 
 namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
 {
-    public class FStateDrift : FActorState, IStateTimeout, IDamageableState
+    public class FStateDrift : FCharacterState, IStateTimeout, IDamageableState
     {
         private float _driftXDirection;
         private float _ignoreTimer;
 
         private readonly DriftConfig _config;
 
-        public FStateDrift(ActorBase owner) : base(owner)
+        public FStateDrift(CharacterBase owner) : base(owner)
         {
             owner.TryGetConfig(out _config);
         }
@@ -54,13 +54,13 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
             
             var transform = Rigidbody.transform;
             var offset = -transform.up * 0.75f;
-            HurtBox.CreateAttached(Actor, transform, offset, new Vector3(0.75f, 0.3f, 0.75f), HurtBoxTarget.Enemy | HurtBoxTarget.Breakable);
+            HurtBox.CreateAttached(character, transform, offset, new Vector3(0.75f, 0.3f, 0.75f), HurtBoxTarget.Enemy | HurtBoxTarget.Breakable);
             
-            var physicsConfig = Actor.Config;
+            var physicsConfig = character.Config;
             float distance = physicsConfig.castDistance * physicsConfig.castDistanceCurve.Evaluate(Kinematics.Speed / physicsConfig.topSpeed);
             if (Kinematics.CheckForGround(out RaycastHit hit, castDistance: distance))
             {
-                bool predictedGround = Kinematics.CheckForPredictedGround(hit.normal, dt, Actor.Config.castDistance, 4);
+                bool predictedGround = Kinematics.CheckForPredictedGround(hit.normal, dt, character.Config.castDistance, 4);
                 Vector3 point = hit.point;
                 Vector3 targetNormal = hit.normal;
                 if (predictedGround)

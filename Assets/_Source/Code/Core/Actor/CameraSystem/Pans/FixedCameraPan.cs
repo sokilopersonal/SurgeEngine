@@ -6,7 +6,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
 {
     public class FixedCameraPan : CameraBasePan<FixPanData>
     {
-        public FixedCameraPan(ActorBase owner) : base(owner)
+        public FixedCameraPan(CharacterBase owner) : base(owner)
         {
             
         }

@@ -20,7 +20,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility.Rails
         private bool _wereSplineAssigned;
 #endif
 
-        public override void Contact(Collider msg, ActorBase context)
+        public override void Contact(Collider msg, CharacterBase context)
         {
             base.Contact(msg, context);
 

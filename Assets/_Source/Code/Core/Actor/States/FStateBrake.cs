@@ -5,11 +5,11 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.States
 {
-    public class FStateBrake : FActorState, IDamageableState
+    public class FStateBrake : FCharacterState, IDamageableState
     {
         private readonly PhysicsConfig _config;
         
-        public FStateBrake(ActorBase owner) : base(owner)
+        public FStateBrake(CharacterBase owner) : base(owner)
         {
             owner.TryGetConfig(out _config);
         }
@@ -28,7 +28,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         {
             base.OnFixedTick(dt);
 
-            var config = Actor.Config;
+            var config = character.Config;
             var curve = config.castDistanceCurve;
             var curveDistance = curve.Evaluate(Kinematics.Speed / _config.topSpeed);
             float distance = config.castDistance * curveDistance;

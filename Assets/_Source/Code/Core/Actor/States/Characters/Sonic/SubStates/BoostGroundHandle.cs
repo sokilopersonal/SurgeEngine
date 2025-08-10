@@ -7,24 +7,24 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates
 {
     public class BoostGroundHandle : IBoostHandler
     {
-        public void BoostHandle(ActorBase actor, BoostConfig config)
+        public void BoostHandle(CharacterBase character, BoostConfig config)
         {
             float dt = Time.deltaTime;
-            var body = actor.Kinematics.Rigidbody;
-            float speed = actor.Kinematics.Speed;
+            var body = character.Kinematics.Rigidbody;
+            float speed = character.Kinematics.Speed;
 
-            var boost = actor.StateMachine.GetSubState<FBoost>();
+            var boost = character.StateMachine.GetSubState<FBoost>();
             if (boost.Active)
             {
-                if (actor.Input.moveVector == Vector3.zero) actor.Kinematics.SetInputDir(actor.transform.forward);
-                float maxSpeed = actor.Config.topSpeed * config.TopSpeedMultiplier;
+                if (character.Input.moveVector == Vector3.zero) character.Kinematics.SetInputDir(character.transform.forward);
+                float maxSpeed = character.Config.topSpeed * config.TopSpeedMultiplier;
                 if (speed < maxSpeed)
                 {
                     body.AddForce(body.transform.forward * (config.Acceleration * dt), ForceMode.Impulse);
                 }
                 else
                 {
-                    if (actor.Flags.HasFlag(FlagType.Autorun)) return;
+                    if (character.Flags.HasFlag(FlagType.Autorun)) return;
                     
                     Vector3 target = body.linearVelocity.normalized * maxSpeed;
                     if (!body.isKinematic) body.linearVelocity = Vector3.MoveTowards(body.linearVelocity, target, 8f * dt);

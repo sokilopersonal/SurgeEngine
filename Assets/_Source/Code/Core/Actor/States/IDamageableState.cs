@@ -4,7 +4,7 @@ namespace SurgeEngine.Code.Core.Actor.States
 {
     public interface IDamageableState
     {
-        void TakeDamage(ActorBase owner)
+        void TakeDamage(CharacterBase owner)
         {
         }
     }

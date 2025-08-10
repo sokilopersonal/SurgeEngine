@@ -18,20 +18,20 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.HUD
 
         private float _distance;
 
-        [Inject] private ActorBase _actor;
-        private Camera _camera => _actor.Camera.GetCamera();
-        private ActorStageHUD _actorStageHUD;
+        [Inject] private CharacterBase _character;
+        private Camera _camera => _character.Camera.GetCamera();
+        private CharacterStageHUD _characterStageHUD;
 
-        public void Initialize(ActorStageHUD hud)
+        public void Initialize(CharacterStageHUD hud)
         {
-            _actorStageHUD = hud;
+            _characterStageHUD = hud;
             
             transform.SetParent(_camera.transform, true);
             _startPosition = transform.localPosition;
             _startRotation = transform.localRotation;
             _startScale = transform.localScale;
 
-            var context = ActorContext.Context;
+            var context = CharacterContext.Context;
             float t = context.Kinematics.Speed / context.Config.topSpeed;
             _startScale *= Mathf.Lerp(1f, Random.Range(1.2f, 1.6f), t);
             _startPosition += Vector3.up * (Random.Range(-0.175f, 0.175f) * t);
@@ -56,8 +56,8 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.HUD
             _factor += Time.deltaTime / 0.45f;
             if (_factor >= 1f)
             {
-                _actorStageHUD.RingCounterAnimator.Play("RingBump", 0);
-                _actorStageHUD.RingBumpAnimator.Play("RingBump", 0);
+                _characterStageHUD.RingCounterAnimator.Play("RingBump", 0);
+                _characterStageHUD.RingBumpAnimator.Play("RingBump", 0);
                 
                 Destroy(gameObject);
             }
@@ -66,11 +66,11 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.HUD
         private void Align()
         {
             Vector3 worldPos =
-                MatrixHelper.GetMatrixRectTransformPosition(_actorStageHUD.RingCounterRect.rectTransform, _camera,
+                MatrixHelper.GetMatrixRectTransformPosition(_characterStageHUD.RingCounterRect.rectTransform, _camera,
                     _distance);
 
             float easedFactor = easingCurve.Evaluate(_factor);
-            var context = _actor;
+            var context = _character;
             float speedT = context.Kinematics.Speed / context.Config.topSpeed;
             
             Vector3 targetLocalPos = transform.parent.InverseTransformPoint(worldPos);

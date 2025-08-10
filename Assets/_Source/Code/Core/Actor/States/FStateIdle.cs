@@ -6,11 +6,11 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.States
 {
-    public class FStateIdle : FActorState, IDamageableState
+    public class FStateIdle : FCharacterState, IDamageableState
     {
         private float _angle;
         
-        public FStateIdle(ActorBase owner) : base(owner)
+        public FStateIdle(CharacterBase owner) : base(owner)
         {
         }
 
@@ -28,7 +28,7 @@ namespace SurgeEngine.Code.Core.Actor.States
                 StateMachine.SetState<FStateGround>();
             }
 
-            if (!Actor.Flags.HasFlag(FlagType.OutOfControl))
+            if (!character.Flags.HasFlag(FlagType.OutOfControl))
             {
                 if (Input.APressed)
                 {

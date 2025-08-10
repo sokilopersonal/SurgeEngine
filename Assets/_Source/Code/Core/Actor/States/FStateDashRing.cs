@@ -7,7 +7,7 @@ namespace SurgeEngine.Code.Core.Actor.States
     {
         private Vector3 _direction;
         
-        public FStateDashRing(ActorBase owner) : base(owner) { }
+        public FStateDashRing(CharacterBase owner) : base(owner) { }
 
         public override void OnExit()
         {

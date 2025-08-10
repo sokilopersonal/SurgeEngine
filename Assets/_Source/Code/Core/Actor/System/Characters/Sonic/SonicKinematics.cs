@@ -7,7 +7,7 @@ using SurgeEngine.Code.Infrastructure.Tools;
 
 namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
 {
-    public class SonicKinematics : ActorKinematics
+    public class SonicKinematics : CharacterKinematics
     {
         public HomingTarget HomingTarget { get; private set; }
         
@@ -20,7 +20,7 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
 
         private void FindHomingTarget()
         {
-            if (Actor.StateMachine.CurrentState is FStateAir && !Actor.Flags.HasFlag(FlagType.OutOfControl))
+            if (character.StateMachine.CurrentState is FStateAir && !character.Flags.HasFlag(FlagType.OutOfControl))
             {
                 HomingTarget = SonicTools.FindHomingTarget();
             }
@@ -32,7 +32,7 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
         
         protected override bool CanReturnToBaseSpeed()
         {
-            var boost = Actor.StateMachine.GetSubState<FBoost>();
+            var boost = character.StateMachine.GetSubState<FBoost>();
             var boostActive = boost.Active;
             
             if (!boostActive)
@@ -43,7 +43,7 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
 
         protected override bool CanDecelerate()
         {
-            return base.CanDecelerate() && !Actor.StateMachine.GetSubState<FBoost>().Active;
+            return base.CanDecelerate() && !character.StateMachine.GetSubState<FBoost>().Active;
         }
 
         protected override void SetStateOnZeroSpeed(FState state)

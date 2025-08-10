@@ -22,7 +22,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.System
         
         public PointMarker CurrentPointMarker { get; private set; }
 
-        [Inject] private ActorBase _actor;
+        [Inject] private CharacterBase _character;
 
         [Inject]
         private void Initialize(Stage stage)
@@ -39,7 +39,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.System
             }
 
             data.RingCount = 0;
-            data.State = _actor.GetStartData().startType == StartType.None ? StageState.Playing : StageState.Start;
+            data.State = _character.GetStartData().startType == StartType.None ? StageState.Playing : StageState.Start;
         }
 
         private void Update()
@@ -54,13 +54,13 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.System
         {
             ObjectEvents.OnObjectTriggered += OnObjectTriggered;
 
-            _actor.StateMachine.OnStateAssign += OnActorState;
-            _actor.OnDied += OnActorDied;
+            _character.StateMachine.OnStateAssign += OnActorState;
+            _character.OnDied += OnCharacterDied;
         }
 
         private void OnActorState(FState obj)
         {
-            if (_actor.StateMachine.PreviousState is FStateStart)
+            if (_character.StateMachine.PreviousState is FStateStart)
             {
                 Data.State = StageState.Playing;
             }
@@ -70,10 +70,10 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.System
         {
             ObjectEvents.OnObjectTriggered -= OnObjectTriggered;
             
-            _actor.OnDied -= OnActorDied;
+            _character.OnDied -= OnCharacterDied;
         }
 
-        private void OnActorDied(ActorBase obj)
+        private void OnCharacterDied(CharacterBase obj)
         {
             StartCoroutine(LoadCurrentPointMarker());
         }

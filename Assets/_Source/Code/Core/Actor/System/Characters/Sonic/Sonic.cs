@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
 {
-    public class Sonic : ActorBase
+    public class Sonic : CharacterBase
     {
         [SerializeField] private BoostConfig boostConfig;
         [SerializeField] private DriftConfig driftConfig;

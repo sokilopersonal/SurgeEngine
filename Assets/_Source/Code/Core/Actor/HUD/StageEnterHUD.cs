@@ -14,7 +14,7 @@ namespace SurgeEngine.Code.Core.Actor.HUD
         
         [SerializeField] private EventReference readyVoice;
         
-        [Inject] private ActorBase _actor;
+        [Inject] private CharacterBase _character;
 
         private Sequence _sequence;
 

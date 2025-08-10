@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
 {
-    public class FStateSwing : FActorState
+    public class FStateSwing : FCharacterState
     {
         public Transform poleGrip;
         private float _rotationAngle;
@@ -14,7 +14,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
         private bool _swingSound;
         private readonly SwingSound soundReference;
         
-        public FStateSwing(ActorBase owner) : base(owner)
+        public FStateSwing(CharacterBase owner) : base(owner)
         {
             soundReference = owner.Sounds.GetComponent<SwingSound>();
         }
@@ -42,7 +42,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
         {
             base.OnTick(dt);
 
-            _rotationAngle = Actor.Animation.StateAnimator.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime % 1;
+            _rotationAngle = character.Animation.StateAnimator.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime % 1;
 
             if (_rotationAngle > 0.9f && !_swingSound)
             {
@@ -57,8 +57,8 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
             if(Input.APressed)
                 Jump();
             
-            Actor.transform.position = poleGrip.position;
-            Actor.transform.rotation = poleGrip.rotation;
+            character.transform.position = poleGrip.position;
+            character.transform.rotation = poleGrip.rotation;
         }
     }
 }

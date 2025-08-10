@@ -3,12 +3,12 @@ using SurgeEngine.Code.Core.Actor.System;
 
 namespace SurgeEngine.Code.Core.Actor.States
 {
-    public abstract class FStateObject : FActorState
+    public abstract class FStateObject : FCharacterState
     {
         private float _ignoranceTime;
         protected bool Ignore => _ignoranceTime > 0;
         
-        public FStateObject(ActorBase owner) : base(owner) { }
+        public FStateObject(CharacterBase owner) : base(owner) { }
 
         public override void OnEnter()
         {

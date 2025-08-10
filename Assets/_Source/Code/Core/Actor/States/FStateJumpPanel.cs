@@ -10,7 +10,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         
         private float _outOfControlTimer;
         
-        public FStateJumpPanel(ActorBase owner) : base(owner) { }
+        public FStateJumpPanel(CharacterBase owner) : base(owner) { }
 
         public override void OnTick(float dt)
         {

@@ -29,7 +29,7 @@ namespace SurgeEngine.Code.UI
 
         [Inject] private GameSettings _gameSettings;
         [Inject] private VolumeManager _volumeManager;
-        [Inject] private ActorBase _actor;
+        [Inject] private CharacterBase _character;
 
         protected override void Awake()
         {
@@ -114,7 +114,7 @@ namespace SurgeEngine.Code.UI
 
         private void OnPauseAction(InputAction.CallbackContext obj)
         {
-            var context = _actor;
+            var context = _character;
             if (context != null && context.StateMachine.IsExact<FStateSpecialJump>() && context.StateMachine.GetState<FStateSpecialJump>().SpecialJumpData.type ==
                 SpecialJumpType.TrickJumper) return;
             
@@ -182,7 +182,7 @@ namespace SurgeEngine.Code.UI
             
             _canvasGroup.interactable = isPaused;
             
-            var context = _actor;
+            var context = _character;
             if (context)
             {
                 PlayerInput playerInput = context.Input.playerInput;

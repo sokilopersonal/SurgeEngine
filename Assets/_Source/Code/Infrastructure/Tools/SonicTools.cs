@@ -19,7 +19,7 @@ namespace SurgeEngine.Code.Infrastructure.Tools
     /// </summary>
     public static class SonicTools
     {
-        private static Sonic _sonic => ActorContext.Context as Sonic;
+        private static Sonic _sonic => CharacterContext.Context as Sonic;
         
         public static bool IsBoost()
         {

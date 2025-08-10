@@ -8,19 +8,19 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic.Actions
 {
-    public class SonicGroundActions : ActorActions
+    public class SonicGroundActions : CharacterActions
     {
         private SlideConfig _slideConfig;
         private QuickStepConfig _quickstepConfig;
 
-        public SonicGroundActions(ActorBase actor) : base(actor) { }
+        public SonicGroundActions(CharacterBase character) : base(character) { }
 
         protected override void Connect(FStateMachine stateMachine)
         {
             stateMachine.GetState<FStateGround>().SetActions(this);
             
-            Actor.TryGetConfig(out _slideConfig);
-            Actor.TryGetConfig(out _quickstepConfig);
+            Character.TryGetConfig(out _slideConfig);
+            Character.TryGetConfig(out _quickstepConfig);
         }
 
         public override void Execute()

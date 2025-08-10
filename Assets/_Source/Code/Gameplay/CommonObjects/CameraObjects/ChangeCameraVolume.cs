@@ -11,7 +11,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.CameraObjects
         [SerializeField] private int priority;
         public int Priority => priority;
 
-        private ActorBase _actor;
+        private CharacterBase _character;
 
         private void Awake()
         {
@@ -23,23 +23,23 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.CameraObjects
 
         private void OnDisable()
         {
-            if (_actor != null)
+            if (_character != null)
             {
-                _actor.Camera.StateMachine.UnregisterVolume(this);
-                _actor = null;
+                _character.Camera.StateMachine.UnregisterVolume(this);
+                _character = null;
             }
         }
 
         private void OnTriggerStay(Collider other)
         {
-            if (target && other.transform.TryGetComponent(out ActorBase actor))
+            if (target && other.transform.TryGetComponent(out CharacterBase actor))
             {
-                _actor = actor;
-                _actor.Camera.StateMachine.RegisterVolume(this);
+                _character = actor;
+                _character.Camera.StateMachine.RegisterVolume(this);
             }
         }
 
-        public override void Contact(Collider msg, ActorBase context)
+        public override void Contact(Collider msg, CharacterBase context)
         {
             base.Contact(msg, context);
 
@@ -51,10 +51,10 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.CameraObjects
         
         private void OnTriggerExit(Collider other)
         {
-            if (target && other.transform.TryGetComponent(out ActorBase actor))
+            if (target && other.transform.TryGetComponent(out CharacterBase actor))
             {
                 actor.Camera.StateMachine.UnregisterVolume(this);
-                _actor = null;
+                _character = null;
             }
         }
 

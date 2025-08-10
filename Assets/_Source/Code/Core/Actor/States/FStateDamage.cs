@@ -14,7 +14,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         Dead
     }
     
-    public class FStateDamage : FActorState
+    public class FStateDamage : FCharacterState
     {
         private readonly DamageKickConfig _config;
         private float _timer;
@@ -22,7 +22,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         private DamageState _state;
         public DamageState State => _state;
 
-        public FStateDamage(ActorBase owner) : base(owner)
+        public FStateDamage(CharacterBase owner) : base(owner)
         {
             owner.TryGetConfig(out _config);
         }
@@ -35,7 +35,7 @@ namespace SurgeEngine.Code.Core.Actor.States
             Kinematics.ResetVelocity();
             _timer = 0.4f;
             
-            Rigidbody.AddForce(-Actor.transform.forward * _config.directionalForce, ForceMode.VelocityChange);
+            Rigidbody.AddForce(-character.transform.forward * _config.directionalForce, ForceMode.VelocityChange);
         }
 
         public override void OnFixedTick(float dt)

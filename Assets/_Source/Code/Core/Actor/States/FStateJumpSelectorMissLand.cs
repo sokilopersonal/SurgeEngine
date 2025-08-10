@@ -4,9 +4,9 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.States
 {
-    public class FStateJumpSelectorMissLand : FActorState
+    public class FStateJumpSelectorMissLand : FCharacterState
     {
-        public FStateJumpSelectorMissLand(ActorBase owner) : base(owner) { }
+        public FStateJumpSelectorMissLand(CharacterBase owner) : base(owner) { }
 
         public override void OnEnter()
         {

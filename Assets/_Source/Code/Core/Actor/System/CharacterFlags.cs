@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.System
 {
-    public sealed class ActorFlags : ActorComponent
+    public sealed class CharacterFlags : CharacterComponent
     {
         private HashSet<Flag> list;
         public FlagType flagType;
@@ -32,7 +32,7 @@ namespace SurgeEngine.Code.Core.Actor.System
                 list.Remove(existingFlag);
             }
             flagType |= flag.type;
-            flag.SetActor(Actor);
+            flag.SetActor(character);
             list.Add(flag);
         }
 
@@ -55,7 +55,7 @@ namespace SurgeEngine.Code.Core.Actor.System
     public class Flag
     {
         public FlagType type;
-        protected ActorBase actor;
+        protected CharacterBase Character;
         protected readonly bool isTemporary;
         protected readonly float time;
         protected float timer;
@@ -74,12 +74,12 @@ namespace SurgeEngine.Code.Core.Actor.System
                 timer += dt;
                 if (timer >= time)
                 {
-                    actor.Flags.RemoveFlag(type);
+                    Character.Flags.RemoveFlag(type);
                 }
             }
         }
         
-        public void SetActor(ActorBase actor) => this.actor = actor;
+        public void SetActor(CharacterBase character) => this.Character = character;
     }
 
     public class AutorunFlag : Flag
@@ -105,7 +105,7 @@ namespace SurgeEngine.Code.Core.Actor.System
         {
             base.Count(dt);
 
-            var kinematics = actor.Kinematics;
+            var kinematics = Character.Kinematics;
 
             if (!_accelerationStarted)
             {
@@ -118,7 +118,7 @@ namespace SurgeEngine.Code.Core.Actor.System
             float progress = Mathf.Clamp01(_currentEaseTime / _easeTime);
             float currentTargetSpeed = Mathf.Lerp(_initialSpeed, _targetSpeed, progress);
 
-            kinematics.SetInputDir(actor.transform.forward);
+            kinematics.SetInputDir(Character.transform.forward);
 
             if (kinematics.Speed < currentTargetSpeed || _targetSpeed == 0)
             {
@@ -126,7 +126,7 @@ namespace SurgeEngine.Code.Core.Actor.System
                 Vector3 planarVelocity = Vector3.ProjectOnPlane(currentVelocity, kinematics.Normal);
                 Vector3 verticalVelocity = currentVelocity - planarVelocity;
 
-                Vector3 newPlanarVelocity = actor.transform.forward * currentTargetSpeed;
+                Vector3 newPlanarVelocity = Character.transform.forward * currentTargetSpeed;
 
                 kinematics.Rigidbody.linearVelocity = newPlanarVelocity + verticalVelocity;
 
@@ -144,7 +144,7 @@ namespace SurgeEngine.Code.Core.Actor.System
                     {
                         if (kinematics.CheckForGround(out _))
                         {
-                            actor.StateMachine.SetState<FStateIdle>();
+                            Character.StateMachine.SetState<FStateIdle>();
                         }
                     }
                 }

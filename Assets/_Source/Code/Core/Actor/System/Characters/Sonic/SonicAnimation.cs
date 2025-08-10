@@ -9,7 +9,7 @@ using Random = UnityEngine.Random;
 
 namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
 {
-    public class SonicAnimation : ActorAnimation
+    public class SonicAnimation : CharacterAnimation
     {
         private string _hopAnimation = "HopL";
 
@@ -17,13 +17,13 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
         {
             base.ChangeAnimationState(obj);
             
-            FStateMachine machine = Actor.StateMachine;
+            FStateMachine machine = character.StateMachine;
             FState prev = machine.PreviousState;
             Animator animator = StateAnimator.Animator;
 
             if (obj is FStateStart)
             {
-                var data = Actor.GetStartData();
+                var data = character.GetStartData();
                 AnimationHandle startHandle = null;
                 if (data.startType == StartType.Standing)
                 {
@@ -49,8 +49,8 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
                             StateAnimator.TransitionToState("Idle", 0.1f);
                             break;
                         case FStateAir:
-                            float verticalSpeed = Actor.Kinematics.VerticalVelocity.magnitude;
-                            bool hard = verticalSpeed > Actor.Config.landingSpeed * 3;
+                            float verticalSpeed = character.Kinematics.VerticalVelocity.magnitude;
+                            bool hard = verticalSpeed > character.Config.landingSpeed * 3;
                             StateAnimator.TransitionToState(!hard ? "Landing" : "LandingL", 0f).After(0.4f, () => StateAnimator.TransitionToState("Idle", 1f));
                             break;
                         case FStateSit:
@@ -337,7 +337,7 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
         
         private IEnumerator PlayHop()
         {
-            var actor = Actor;
+            var actor = character;
             bool hop = actor.Kinematics.Speed > 5;
             _hopAnimation = _hopAnimation == "HopL" ? "HopR" : "HopL";
             StateAnimator.TransitionToState(hop ? _hopAnimation : "JumpStart", 0f);

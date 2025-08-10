@@ -7,7 +7,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Player
     {
         private void OnTriggerEnter(Collider other)
         {
-            if (other.TryGetComponent(out ActorBase actor))
+            if (other.TryGetComponent(out CharacterBase actor))
             {
                 actor.TakeDamage(this);
             }

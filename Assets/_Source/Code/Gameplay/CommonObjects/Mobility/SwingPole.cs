@@ -7,23 +7,19 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
 {
     public class SwingPole : ContactBase
     {
-        [SerializeField] float shotVelSuccess;
-        [SerializeField] float shotVelFail;
-        [SerializeField] Transform grip;
-        [SerializeField] bool trail2D;
+        [SerializeField] private float shotVelSuccess = 17;
+        [SerializeField] private float shotVelFail = 10;
+        [SerializeField] private Transform grip;
+        [SerializeField] private bool trail2D;
         
-        public override void Contact(Collider msg, ActorBase context)
+        public override void Contact(Collider msg, CharacterBase context)
         {
             base.Contact(msg, context);
-            
-            context.PutIn(grip.position);
+
+            context.Rigidbody.position = grip.position;
             context.Effects.SwingTrail.trail2D = trail2D;
 
             float lookDot = Vector3.Dot(context.transform.forward, transform.forward);
-            float lookAngle = Vector3.Angle(context.transform.forward, transform.forward);
-
-            //Debug.Log("Look Dot: " + lookDot);
-            //Debug.Log("Look Angle: " + lookAngle);
 
             if (lookDot < 0f)
                 grip.localEulerAngles = new Vector3(grip.localEulerAngles.x, 180, grip.localEulerAngles.z);
@@ -32,8 +28,9 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
 
             context.transform.rotation = grip.rotation;
 
-            context.StateMachine.GetState<FStateSwingJump>().successVel = shotVelSuccess;
-            context.StateMachine.GetState<FStateSwingJump>().failVel = shotVelFail;
+            var state = context.StateMachine.GetState<FStateSwingJump>();
+            state.successVel = shotVelSuccess;
+            state.failVel = shotVelFail;
 
             context.StateMachine.GetState<FStateSwing>().poleGrip = grip;
             context.StateMachine.SetState<FStateSwing>();

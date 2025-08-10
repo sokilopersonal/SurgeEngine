@@ -5,11 +5,11 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.States
 {
-    public class FStateSlip : FActorState
+    public class FStateSlip : FCharacterState
     {
         private float _timer;
         
-        public FStateSlip(ActorBase owner) : base(owner) { }
+        public FStateSlip(CharacterBase owner) : base(owner) { }
 
         public override void OnTick(float dt)
         {

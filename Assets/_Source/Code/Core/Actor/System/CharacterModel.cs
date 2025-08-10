@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.System
 {
-    public class ActorModel : ActorComponent
+    public class CharacterModel : CharacterComponent
     {
         public Transform root;
         [SerializeField] private Transform modelTransform;
@@ -42,35 +42,35 @@ namespace SurgeEngine.Code.Core.Actor.System
             _collisionStartHeight = collision.height;
             _collisionStartRadius = collision.radius;
             
-            root.rotation = Actor.transform.rotation;
+            root.rotation = character.transform.rotation;
             
             modelTransform.localPosition = new Vector3(0, verticalOffset, 0);
         }
 
         private void OnEnable()
         {
-            Actor.StateMachine.OnStateAssign += OnStateAssign;
+            character.StateMachine.OnStateAssign += OnStateAssign;
         }
         
         private void OnDisable()
         {
-            Actor.StateMachine.OnStateAssign -= OnStateAssign;
+            character.StateMachine.OnStateAssign -= OnStateAssign;
         }
 
         private void Update()
         {
-            root.localPosition = Actor.transform.localPosition;
+            root.localPosition = character.transform.localPosition;
             
-            FState prev = Actor.StateMachine.PreviousState;
-            _forwardVector = Vector3.Slerp(root.forward, Actor.transform.forward, Time.deltaTime * horizontalRotationSpeed);
-            _upVector = Vector3.Slerp(root.up, Actor.transform.up, Time.deltaTime * verticalRotationSpeed
-                * Mathf.Lerp(1f, 2f, Actor.Kinematics.Speed / Actor.Config.topSpeed));
+            FState prev = character.StateMachine.PreviousState;
+            _forwardVector = Vector3.Slerp(root.forward, character.transform.forward, Time.deltaTime * horizontalRotationSpeed);
+            _upVector = Vector3.Slerp(root.up, character.transform.up, Time.deltaTime * verticalRotationSpeed
+                * Mathf.Lerp(1f, 2f, character.Kinematics.Speed / character.Config.topSpeed));
 
             if (prev is FStateObject)
             {
                 if (_airRestoring)
                 {
-                    VelocityRotation(Actor.Kinematics.Velocity.normalized);
+                    VelocityRotation(character.Kinematics.Velocity.normalized);
                     
                     _airRestoreTimer -= Time.deltaTime;
                     
@@ -88,7 +88,7 @@ namespace SurgeEngine.Code.Core.Actor.System
                     {
                         float dt = Time.deltaTime;
                         _upRestoreTimer += dt / 5f;
-                        _upVector = Vector3.Slerp(root.up, Actor.transform.up, _upRestoreTimer);
+                        _upVector = Vector3.Slerp(root.up, character.transform.up, _upRestoreTimer);
                         
                         if (_upRestoreTimer >= 1)
                         {
@@ -132,11 +132,11 @@ namespace SurgeEngine.Code.Core.Actor.System
         
         public void RotateBody(Vector3 normal)
         {
-            Vector3 vel = Actor.Kinematics.Velocity;
+            Vector3 vel = character.Kinematics.Velocity;
             if (vel.sqrMagnitude > 0.01f)
             {
                 Quaternion targetRotation = Quaternion.LookRotation(vel, normal);
-                Actor.Kinematics.Rigidbody.MoveRotation(targetRotation);
+                character.Kinematics.Rigidbody.MoveRotation(targetRotation);
             }
         }
 
@@ -144,11 +144,11 @@ namespace SurgeEngine.Code.Core.Actor.System
         {
             if (_airRestoring || _isFlipping) return;
             
-            var kinematics = Actor.Kinematics;
+            var kinematics = character.Kinematics;
             var rb = kinematics.Rigidbody;
-            Vector3 rawInput = Actor.Input.moveVector;
+            Vector3 rawInput = character.Input.moveVector;
             Vector3 inputDir = kinematics.GetInputDir();
-            var config = Actor.Config;
+            var config = character.Config;
             Vector3 currentVelocity = Vector3.ProjectOnPlane(vector, normal);
             float currentSpeed = currentVelocity.magnitude;
             float speedThreshold = 3.5f;
@@ -191,7 +191,7 @@ namespace SurgeEngine.Code.Core.Actor.System
 
         private void Flip()
         {
-            var rb = Actor.Kinematics.Rigidbody;
+            var rb = character.Kinematics.Rigidbody;
             Quaternion flipRotation = Quaternion.AngleAxis(flipAngle * Time.deltaTime, Vector3.left);
             rb.MoveRotation(rb.rotation * flipRotation);
         }
@@ -203,25 +203,25 @@ namespace SurgeEngine.Code.Core.Actor.System
 
             if (dot >= 0.99f)
             {
-                Actor.Kinematics.Rigidbody.MoveRotation(Quaternion.FromToRotation(Actor.transform.up, Vector3.up) * Actor.Kinematics.Rigidbody.rotation);
+                character.Kinematics.Rigidbody.MoveRotation(Quaternion.FromToRotation(character.transform.up, Vector3.up) * character.Kinematics.Rigidbody.rotation);
             }
             else
             {
                 if (vel.sqrMagnitude > 0.1f)
                 {
                     Vector3 forward = Vector3.Cross(vel, left);
-                    Actor.Kinematics.Rigidbody.MoveRotation(Quaternion.LookRotation(forward, vel));
+                    character.Kinematics.Rigidbody.MoveRotation(Quaternion.LookRotation(forward, vel));
                 }
             }
             
-            root.rotation = Actor.Kinematics.Rigidbody.rotation;
+            root.rotation = character.Kinematics.Rigidbody.rotation;
         }
 
         private void OnStateAssign(FState obj)
         {
             if (obj is FStateAir)
             {
-                if (Mathf.Abs(Actor.Kinematics.Angle - 90) < 0.05f && Actor.Kinematics.Velocity.y > 3f)
+                if (Mathf.Abs(character.Kinematics.Angle - 90) < 0.05f && character.Kinematics.Velocity.y > 3f)
                 {
                     _isFlipping = true;
                     _flipTimer = 0.75f;
@@ -280,7 +280,7 @@ namespace SurgeEngine.Code.Core.Actor.System
         {
             _airRestoreTimer = time;
             _airRestoring = true;
-            _tUp = Actor.Kinematics.Velocity.normalized;
+            _tUp = character.Kinematics.Velocity.normalized;
         }
 
         public void StopAirRestore()

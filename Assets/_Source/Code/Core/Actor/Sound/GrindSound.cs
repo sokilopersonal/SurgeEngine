@@ -8,16 +8,16 @@ using STOP_MODE = FMOD.Studio.STOP_MODE;
 
 namespace SurgeEngine.Code.Core.Actor.Sound
 {
-    public class GrindSound : ActorSound
+    public class GrindSound : CharacterSound
     {
         [SerializeField] private EventReference grindStart;
         [SerializeField] private EventReference grindLoop;
         
         private EventInstance _grindLoopInstance;
 
-        public override void Initialize(ActorBase actor)
+        public override void Initialize(CharacterBase character)
         {
-            base.Initialize(actor);
+            base.Initialize(character);
             
             _grindLoopInstance = RuntimeManager.CreateInstance(grindLoop);
         }
@@ -29,7 +29,7 @@ namespace SurgeEngine.Code.Core.Actor.Sound
 
         protected override void SoundState(FState obj)
         {
-            FState prev = Actor.StateMachine.PreviousState;
+            FState prev = Character.StateMachine.PreviousState;
             if (obj is FStateGrind and not FStateGrindSquat && prev is not FStateGrindSquat)
             {
                 RuntimeManager.PlayOneShotAttached(grindStart, gameObject);

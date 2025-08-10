@@ -6,7 +6,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
 {
     public class FallCameraState : CameraBasePan<PanData>
     {
-        public FallCameraState(ActorBase owner) : base(owner)
+        public FallCameraState(CharacterBase owner) : base(owner)
         {
             _panData = new PanData
             {
@@ -27,7 +27,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
         {
             base.OnTick(dt);
             
-            StateRotation = Quaternion.LookRotation(_actor.transform.position - StatePosition);
+            StateRotation = Quaternion.LookRotation(Character.transform.position - StatePosition);
             StateFOV = _panData.fov;
         }
     }

@@ -7,13 +7,13 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
 {
-    public class FStateSweepKick : FActorState
+    public class FStateSweepKick : FCharacterState
     {
         private float timer;
 
         private readonly SweepConfig _config;
 
-        public FStateSweepKick(ActorBase owner) : base(owner)
+        public FStateSweepKick(CharacterBase owner) : base(owner)
         {
             owner.TryGetConfig(out _config);
         }
@@ -91,7 +91,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
             {
                 var offset = -Rigidbody.transform.up * 0.65f;
                 var size = new Vector3(1.4f, 0.4f, 1.4f);
-                HurtBox.CreateAttached(Actor, Rigidbody.transform, offset, size, HurtBoxTarget.Enemy | HurtBoxTarget.Breakable);
+                HurtBox.CreateAttached(character, Rigidbody.transform, offset, size, HurtBoxTarget.Enemy | HurtBoxTarget.Breakable);
             }
         }
     }

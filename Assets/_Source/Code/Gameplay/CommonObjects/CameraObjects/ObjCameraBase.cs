@@ -12,8 +12,8 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.CameraObjects
 {
     public abstract class ObjCameraBase : MonoBehaviour
     {
-        public abstract void SetPan(ActorBase ctx);
-        public abstract void RemovePan(ActorBase context);
+        public abstract void SetPan(CharacterBase ctx);
+        public abstract void RemovePan(CharacterBase context);
     }
     
     public abstract class ObjCameraBase<TState,TData> : ObjCameraBase
@@ -22,14 +22,14 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.CameraObjects
     {
         [SerializeField] protected TData data;
 
-        public override void SetPan(ActorBase ctx)
+        public override void SetPan(CharacterBase ctx)
         {
             var st = ctx.Camera.StateMachine.GetState<TState>();
             st?.SetData(data);
             ctx.Camera.StateMachine.SetState<TState>(allowSameState: true);
         }
 
-        public override void RemovePan(ActorBase ctx)
+        public override void RemovePan(CharacterBase ctx)
         {
             ctx.Camera.StateMachine.SetState<NewModernState>();
         }

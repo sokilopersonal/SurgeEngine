@@ -4,15 +4,15 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.Sound
 {
-    [RequireComponent(typeof(VoiceHandler), typeof(ActorSounds))]
-    public abstract class ActorSound : MonoBehaviour
+    [RequireComponent(typeof(VoiceHandler), typeof(CharacterSounds))]
+    public abstract class CharacterSound : MonoBehaviour
     {
-        protected ActorBase Actor;
+        protected CharacterBase Character;
         protected VoiceHandler Voice;
         
-        public virtual void Initialize(ActorBase actor)
+        public virtual void Initialize(CharacterBase character)
         {
-            Actor = actor;
+            Character = character;
         }
 
         private void Awake()
@@ -22,14 +22,14 @@ namespace SurgeEngine.Code.Core.Actor.Sound
 
         protected virtual void OnEnable()
         {
-            var stateMachine = Actor.StateMachine;
+            var stateMachine = Character.StateMachine;
             stateMachine.OnStateAssign += SoundState;
             stateMachine.OnStateEarlyAssign += EarlySoundState;
         }
 
         protected virtual void OnDisable()
         {
-            var stateMachine = Actor.StateMachine;
+            var stateMachine = Character.StateMachine;
             stateMachine.OnStateAssign -= SoundState;
             stateMachine.OnStateEarlyAssign -= EarlySoundState;
         }

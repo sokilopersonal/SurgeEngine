@@ -15,7 +15,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
         public float Speed => speed;
         public float KeepVelocityDistance => keepVelocityDistance;
 
-        public override void Contact(Collider msg, ActorBase context)
+        public override void Contact(Collider msg, CharacterBase context)
         {
             var springState = context.StateMachine.GetState<FStateSpring>();
             if (springState.SpringObject == this) return;

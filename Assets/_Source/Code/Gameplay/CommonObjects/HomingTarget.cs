@@ -9,7 +9,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects
         [SerializeField] private float distanceThreshold = 0.7f;
         public float DistanceThreshold => distanceThreshold;
         
-        public UnityEvent<ActorBase> OnTargetReached;
+        public UnityEvent<CharacterBase> OnTargetReached;
 
         public void SetDistanceThreshold(float threshold)
         {

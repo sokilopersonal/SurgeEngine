@@ -8,11 +8,11 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Modifiers
     {
         public float Value { get; set; }
 
-        public override void Set(ActorBase actor)
+        public override void Set(CharacterBase character)
         {
-            base.Set(actor);
+            base.Set(character);
             
-            Actor.StateMachine.OnStateAssign += OnDrift;
+            Character.StateMachine.OnStateAssign += OnDrift;
         }
 
         private void OnDrift(FState obj)

@@ -19,7 +19,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
         [SerializeField, Min(0)] private float impulseOnBoost = 15f;
         [SerializeField] private float outOfControl = 0.5f;
 
-        public override void Contact(Collider msg, ActorBase context)
+        public override void Contact(Collider msg, CharacterBase context)
         {
             base.Contact(msg, context);
             

@@ -8,7 +8,7 @@ using UnityEngine.InputSystem.XInput;
 
 namespace SurgeEngine.Code.Core.Actor.System
 {
-    public class ActorInput : ActorComponent
+    public class CharacterInput : CharacterComponent
     {
         public Vector3 moveVector;
         public Vector2 lookVector;
@@ -152,7 +152,7 @@ namespace SurgeEngine.Code.Core.Actor.System
                 lookVector = Vector2.zero;
             }
             
-            if (Actor.Flags.HasFlag(FlagType.OutOfControl))
+            if (character.Flags.HasFlag(FlagType.OutOfControl))
             {
                 moveVector = Vector3.zero;
             }
@@ -162,7 +162,7 @@ namespace SurgeEngine.Code.Core.Actor.System
         {
             if (obj.started) OnButtonPressed?.Invoke(ButtonType.A);
             
-            if (Actor.Flags.HasFlag(FlagType.OutOfControl))
+            if (character.Flags.HasFlag(FlagType.OutOfControl))
             {
                 return;
             }

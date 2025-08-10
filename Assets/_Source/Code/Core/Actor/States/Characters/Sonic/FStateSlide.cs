@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
 {
-    public class FStateSlide : FActorState, IStateTimeout, IDamageableState
+    public class FStateSlide : FCharacterState, IStateTimeout, IDamageableState
     {
         public float Timeout { get; set; }
         
@@ -17,7 +17,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
 
         private bool _released;
         
-        public FStateSlide(ActorBase owner) : base(owner)
+        public FStateSlide(CharacterBase owner) : base(owner)
         {
             owner.TryGetConfig(out _config);
             owner.TryGetConfig(out _quickstepConfig);
@@ -93,7 +93,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
         {
             base.OnFixedTick(dt);
             
-            var config = Actor.Config;
+            var config = character.Config;
             float distance = config.castDistance *
                              config.castDistanceCurve.Evaluate(Kinematics.Speed / config.topSpeed);
             if (Kinematics.CheckForGround(out RaycastHit hit, castDistance: distance))
@@ -116,7 +116,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
             var transform = Rigidbody.transform;
             var offset = -transform.up * 0.6f;
             offset += transform.forward * 0.2f;
-            HurtBox.CreateAttached(Actor, transform, offset, new Vector3(0.5f, 0.5f, 0.75f), HurtBoxTarget.Enemy | HurtBoxTarget.Breakable);
+            HurtBox.CreateAttached(character, transform, offset, new Vector3(0.5f, 0.5f, 0.75f), HurtBoxTarget.Enemy | HurtBoxTarget.Breakable);
         }
     }
 }

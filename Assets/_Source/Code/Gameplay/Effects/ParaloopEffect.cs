@@ -7,7 +7,7 @@ namespace SurgeEngine.Code.Gameplay.Effects
     public class ParaloopEffect : Effect
     {
         [SerializeField] private TrailRenderer trail1, trail2;
-        [HideInInspector] public ActorBase sonicContext;
+        [HideInInspector] public CharacterBase sonicContext;
         [HideInInspector] public Vector3 startPoint;
         
         private bool toggled;

@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.Sound
 {
-    public class SwingSound : ActorSound
+    public class SwingSound : CharacterSound
     {
         [SerializeField] private EventReference catchSound;
         [SerializeField] private EventReference swingSound;

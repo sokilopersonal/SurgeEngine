@@ -53,8 +53,8 @@ namespace SurgeEngine.Code.Core.Actor.HUD
         public void CreateButtonIcon(QTESequence sequence)
         {
             _buttons.Capacity = sequence.buttons.Count;
-            ActorBase context = ActorContext.Context;
-            ActorInput input = context.Input;
+            CharacterBase context = CharacterContext.Context;
+            CharacterInput input = context.Input;
             for (int i = 0; i < sequence.buttons.Count; i++)
             {
                 ButtonType buttonType = sequence.buttons[i].type;

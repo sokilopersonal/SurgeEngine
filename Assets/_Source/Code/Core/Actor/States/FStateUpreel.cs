@@ -4,9 +4,9 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.States
 {
-    public class FStateUpreel : FActorState
+    public class FStateUpreel : FCharacterState
     {
-        public FStateUpreel(ActorBase owner) : base(owner)
+        public FStateUpreel(CharacterBase owner) : base(owner)
         {
         }
 

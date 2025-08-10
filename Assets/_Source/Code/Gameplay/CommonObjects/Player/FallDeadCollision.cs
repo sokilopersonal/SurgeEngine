@@ -9,11 +9,11 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Player
     {
         private BoxCollider _collider;
 
-        public override void Contact(Collider msg, ActorBase context)
+        public override void Contact(Collider msg, CharacterBase context)
         {
             base.Contact(msg, context);
 
-            ActorInput input = context.Input;
+            CharacterInput input = context.Input;
             input.playerInput.enabled = false;
             
             context.Camera.StateMachine.SetState<FallCameraState>();

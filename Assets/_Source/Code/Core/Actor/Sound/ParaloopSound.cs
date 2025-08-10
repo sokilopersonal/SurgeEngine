@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.Sound
 {
-    public class ParaloopSound : ActorSound
+    public class ParaloopSound : CharacterSound
     {
         [SerializeField] private EventReference paraloopSound;
         [SerializeField] private ParaloopEffect paraloopEffect;

@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.CameraSystem
 {
-    public class ActorCamera : ActorComponent, IPointMarkerLoader
+    public class CharacterCamera : CharacterComponent, IPointMarkerLoader
     {
         public CameraStateMachine StateMachine { get; private set; }
         
@@ -88,33 +88,33 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
             _cameraTransform = _camera.transform;
         }
 
-        internal override void Set(ActorBase actor)
+        internal override void Set(CharacterBase character)
         {
-            base.Set(actor);
+            base.Set(character);
             
             foreach (var modifier in baseCameraModifiers)
             {
-                modifier.Set(Actor);
+                modifier.Set(base.character);
                 _modifiersDictionary.Add(modifier.GetType(), modifier);
             }
         }
 
         public void Start()
         {
-            StateMachine = new CameraStateMachine(_camera, _cameraTransform, Actor);
+            StateMachine = new CameraStateMachine(_camera, _cameraTransform, character);
             
-            StateMachine.AddState(new CameraAnimState(Actor));
-            StateMachine.AddState(new NewModernState(Actor));
-            StateMachine.AddState(new CameraPan(Actor));
-            StateMachine.AddState(new ParallelCameraPan(Actor));
-            StateMachine.AddState(new FixedCameraPan(Actor));
-            StateMachine.AddState(new NormalCameraPan(Actor));
-            StateMachine.AddState(new FallCameraState(Actor));
-            StateMachine.AddState(new PointCameraPan(Actor));
-            StateMachine.AddState(new PathCameraPan(Actor));
-            StateMachine.AddState(new PathTargetCameraPan(Actor));
+            StateMachine.AddState(new CameraAnimState(character));
+            StateMachine.AddState(new NewModernState(character));
+            StateMachine.AddState(new CameraPan(character));
+            StateMachine.AddState(new ParallelCameraPan(character));
+            StateMachine.AddState(new FixedCameraPan(character));
+            StateMachine.AddState(new NormalCameraPan(character));
+            StateMachine.AddState(new FallCameraState(character));
+            StateMachine.AddState(new PointCameraPan(character));
+            StateMachine.AddState(new PathCameraPan(character));
+            StateMachine.AddState(new PathTargetCameraPan(character));
 
-            var start = Actor.GetStartData();
+            var start = character.GetStartData();
             if (start.startType == StartType.None || start.startType == StartType.Dash)
             {
                 StateMachine.SetState<NewModernState>();
@@ -124,7 +124,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
                 StateMachine.SetState<CameraAnimState>();
             }
 
-            Vector3 dir = Quaternion.LookRotation(Actor.transform.forward).eulerAngles;
+            Vector3 dir = Quaternion.LookRotation(character.transform.forward).eulerAngles;
             dir.x = yawDefaultAmplitude;
             StateMachine.SetDirection(dir.y, dir.x);
         }

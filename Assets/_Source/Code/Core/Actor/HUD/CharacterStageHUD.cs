@@ -16,7 +16,7 @@ using Zenject;
 
 namespace SurgeEngine.Code.Core.Actor.HUD
 {
-    public class ActorStageHUD : MonoBehaviour
+    public class CharacterStageHUD : MonoBehaviour
     {
         private const string TimeFormat = "<mspace=0.7em>";
         private const string ScoreFormat = "<mspace=1.0em>";
@@ -43,26 +43,26 @@ namespace SurgeEngine.Code.Core.Actor.HUD
         [Header("Boost Bar")]
         [SerializeField] private BoostBarController boostBarController;
 
-        [Inject] private ActorBase _actor;
+        [Inject] private CharacterBase _character;
         [Inject] private DiContainer _instantiator;
         
         private Camera _camera;
 
         private void Awake()
         {
-            _camera = _actor.Camera.GetCamera();
+            _camera = _character.Camera.GetCamera();
         }
 
         private void OnEnable()
         {
             ObjectEvents.OnObjectTriggered += OnObjectTriggered;
-            _actor.OnRingLoss += OnRingLoss;
+            _character.OnRingLoss += OnRingLoss;
         }
 
         private void OnDisable()
         {
             ObjectEvents.OnObjectTriggered -= OnObjectTriggered;
-            _actor.OnRingLoss -= OnRingLoss;
+            _character.OnRingLoss -= OnRingLoss;
         }
 
         private void Update()
@@ -86,7 +86,7 @@ namespace SurgeEngine.Code.Core.Actor.HUD
 
         private void UpdateHomingTarget()
         {
-            HomingTarget target = (_actor.Kinematics as SonicKinematics)?.HomingTarget;
+            HomingTarget target = (_character.Kinematics as SonicKinematics)?.HomingTarget;
             if (target)
             {
                 if (_camera.IsObjectInView(target.transform)) homingIcon.gameObject.SetActive(true);

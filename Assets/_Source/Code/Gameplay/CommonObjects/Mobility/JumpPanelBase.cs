@@ -12,7 +12,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
         [SerializeField] protected float impulse = 30;
         [SerializeField] protected float outOfControl = 0.5f;
         
-        protected void Launch(ActorBase context, float pitch)
+        protected void Launch(CharacterBase context, float pitch)
         {
             if (impulse > 0)
             {

@@ -12,7 +12,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
         private readonly CameraAnimStateData _data;
         private float _time;
 
-        public CameraAnimState(ActorBase owner) : base(owner)
+        public CameraAnimState(CharacterBase owner) : base(owner)
         {
             var startData = owner.GetStartData();
             _playerCenter = owner.transform.position;
@@ -46,7 +46,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
             base.OnTick(dt);
             
             Vector3 center = (_data.start + _data.end) * 0.5f;
-            center -= _actor.transform.right;
+            center -= Character.transform.right;
             
             Vector3 startCenter = _data.start - center;
             Vector3 endCenter = _data.end - center;
@@ -66,8 +66,8 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
                     
                     _stateMachine.CurrentData = new PanData
                     {
-                        easeTimeEnter = _actor.GetStartData().startType == StartType.Standing ? 0.5f : 0.25f,
-                        easeTimeExit = _actor.GetStartData().startType == StartType.Standing ? 0.5f : 0.25f
+                        easeTimeEnter = Character.GetStartData().startType == StartType.Standing ? 0.5f : 0.25f,
+                        easeTimeExit = Character.GetStartData().startType == StartType.Standing ? 0.5f : 0.25f
                     };
                     _stateMachine.SetState<NewModernState>();
                 }

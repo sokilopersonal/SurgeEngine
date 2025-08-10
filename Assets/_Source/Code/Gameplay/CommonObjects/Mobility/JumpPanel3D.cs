@@ -10,7 +10,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
         private Vector3 StartPosition => transform.position + Vector3.up;
         private float Pitch => 36f;
         
-        public override void Contact(Collider msg, ActorBase context)
+        public override void Contact(Collider msg, CharacterBase context)
         {
             base.Contact(msg, context);
             

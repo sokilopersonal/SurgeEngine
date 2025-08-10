@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.Sound
 {
-    public class DamageSound : ActorSound
+    public class DamageSound : CharacterSound
     {
         [SerializeField] private EventReference damageVoice;
         [SerializeField] private EventReference deathSound;
@@ -13,19 +13,19 @@ namespace SurgeEngine.Code.Core.Actor.Sound
         {
             base.OnEnable();
             
-            Actor.OnDied += OnDied;
+            Character.OnDied += OnDied;
         }
 
         protected override void OnDisable()
         {
             base.OnDisable();
             
-            Actor.OnDied -= OnDied;
+            Character.OnDied -= OnDied;
         }
 
-        private void OnDied(ActorBase actor)
+        private void OnDied(CharacterBase character)
         {
-            Voice.Play(actor.IsDead ? deathSound : damageVoice, true);
+            Voice.Play(character.IsDead ? deathSound : damageVoice, true);
         }
     }
 }

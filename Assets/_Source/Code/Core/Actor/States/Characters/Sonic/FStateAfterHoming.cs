@@ -5,11 +5,11 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
 {
-    public class FStateAfterHoming : FActorState
+    public class FStateAfterHoming : FCharacterState
     {
         private readonly HomingConfig _config;
         
-        public FStateAfterHoming(ActorBase owner) : base(owner)
+        public FStateAfterHoming(CharacterBase owner) : base(owner)
         {
             owner.TryGetConfig(out _config);
         }

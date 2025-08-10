@@ -4,9 +4,9 @@ using SurgeEngine.Code.Infrastructure.Custom;
 
 namespace SurgeEngine.Code.Core.Actor.States
 {
-    public class FStateTrick : FActorState
+    public class FStateTrick : FCharacterState
     {
-        public FStateTrick(ActorBase owner) : base(owner) { }
+        public FStateTrick(CharacterBase owner) : base(owner) { }
         
         private float _timer;
         private float _outOfControl;

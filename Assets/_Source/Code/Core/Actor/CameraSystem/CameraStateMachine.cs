@@ -14,7 +14,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
 {
     public class CameraStateMachine : FStateMachine, IPointMarkerLoader
     {
-        public ActorCamera Master { get; }
+        public CharacterCamera Master { get; }
         public Camera Camera { get; }
         public Transform Transform { get; }
 
@@ -40,16 +40,16 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
 
         private CameraData _data;
         
-        private readonly ActorBase _actor;
+        private readonly CharacterBase _character;
 
-        public CameraStateMachine(Camera camera, Transform transform, ActorBase actor)
+        public CameraStateMachine(Camera camera, Transform transform, CharacterBase character)
         {
             _volumes = new();
             
             Camera = camera;
             Transform = transform;
-            _actor = actor;
-            Master = actor.Camera;
+            _character = character;
+            Master = character.Camera;
 
             _fovY = BaseFov;
 
@@ -63,7 +63,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
         {
             PanBlend(dt);
             
-            _actorPosition = _actor.transform.position;
+            _actorPosition = _character.transform.position;
 
             base.Tick(dt);
             
@@ -154,7 +154,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
 
             ResetBlendFactor();
 
-            if (top != null) top.Target.SetPan(_actor);
+            if (top != null) top.Target.SetPan(_character);
             else SetState<NewModernState>();
         }
         

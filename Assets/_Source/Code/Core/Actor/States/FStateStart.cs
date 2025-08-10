@@ -5,12 +5,12 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.States
 {
-    public class FStateStart : FActorState
+    public class FStateStart : FCharacterState
     {
         private StartData _startData;
         private float _timer;
         
-        public FStateStart(ActorBase owner) : base(owner)
+        public FStateStart(CharacterBase owner) : base(owner)
         {
             
         }
@@ -43,7 +43,7 @@ namespace SurgeEngine.Code.Core.Actor.States
                         if (_startData.speed > 0)
                         {
                             Rigidbody.linearVelocity = Rigidbody.transform.forward * _startData.speed;
-                            Actor.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, _startData.time));
+                            character.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, _startData.time));
                         }
                     }
 
@@ -61,7 +61,7 @@ namespace SurgeEngine.Code.Core.Actor.States
             {
                 Rigidbody.linearVelocity = Rigidbody.transform.forward * _startData.speed;
                 Input.enabled = true;
-                Actor.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, _startData.time));
+                character.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, _startData.time));
                 StateMachine.SetState<FStateGround>();
             }
         }

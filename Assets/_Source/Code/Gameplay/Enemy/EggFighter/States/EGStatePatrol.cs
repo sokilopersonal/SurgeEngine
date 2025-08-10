@@ -58,7 +58,7 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter.States
                 eggFighter.StateMachine.SetState<EGStateIdle>();
             }
             
-            ActorBase context = ActorContext.Context;
+            CharacterBase context = CharacterContext.Context;
             if (Vector3.Distance(context.transform.position, transform.position) < eggFighter.findDistance)
             {
                 eggFighter.StateMachine.SetState<EGStateChase>();

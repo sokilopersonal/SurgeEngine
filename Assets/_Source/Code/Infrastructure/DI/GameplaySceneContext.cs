@@ -15,12 +15,12 @@ namespace SurgeEngine.Code.Infrastructure.DI
         [Header("Stage")]
         [SerializeField] private Stage stage;
         
-        [Header("Actor")]
+        [Header("Character")]
         [SerializeField] private Transform actorPrefab;
-        [SerializeField] private ActorSpawn spawnPoint;
+        [SerializeField] private CharacterSpawn spawnPoint;
         
         [Header("HUD")]
-        [SerializeField] private ActorStageHUD hudPrefab;
+        [SerializeField] private CharacterStageHUD hudPrefab;
         
         public override void InstallBindings()
         {
@@ -47,21 +47,22 @@ namespace SurgeEngine.Code.Infrastructure.DI
             var data = spawnPoint.StartData;
             data.StartTransform = spawnPoint.transform;
 
-            var instance = Container.InstantiatePrefabForComponent<ActorBase>(actorPrefab, data.StartTransform.position, data.StartTransform.rotation, null);
+            var instance = Container.InstantiatePrefabForComponent<CharacterBase>(actorPrefab, data.StartTransform.position, data.StartTransform.rotation, null);
 
-            Container.Bind<ActorBase>().FromInstance(instance).AsSingle().NonLazy();
-            Quaternion par = instance.Parent.rotation;
-            instance.Parent.rotation = Quaternion.identity;
+            Container.Bind<CharacterBase>().FromInstance(instance).AsSingle().NonLazy();
+            var parent = instance.transform.parent;
+            Quaternion par = parent.rotation;
+            parent.rotation = Quaternion.identity;
             instance.transform.rotation = par;
             
-            Container.Bind<ActorContext>().FromNew().AsSingle().NonLazy();
+            Container.Bind<CharacterContext>().FromNew().AsSingle().NonLazy();
             
             instance.SetStart(data);
         }
 
         private void SetupHUD()
         {
-            Container.InstantiatePrefabForComponent<ActorStageHUD>(hudPrefab);
+            Container.InstantiatePrefabForComponent<CharacterStageHUD>(hudPrefab);
         }
     }
 }

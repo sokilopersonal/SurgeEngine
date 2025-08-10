@@ -9,7 +9,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates
     {
         private readonly SweepConfig _config;
         
-        public FSweepKick(ActorBase owner) : base(owner)
+        public FSweepKick(CharacterBase owner) : base(owner)
         {
             owner.TryGetConfig(out _config);
             owner.Input.OnButtonPressed += ButtonPressed;
@@ -17,9 +17,9 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates
 
         private void ButtonPressed(ButtonType button)
         {
-            if (button != ButtonType.B || !_config.eligibleAnimationStates.Contains(Actor.Animation.StateAnimator.GetCurrentAnimationState()))
+            if (button != ButtonType.B || !_config.eligibleAnimationStates.Contains(character.Animation.StateAnimator.GetCurrentAnimationState()))
                 return;
-            Actor.StateMachine.SetState<FStateSweepKick>();
+            character.StateMachine.SetState<FStateSweepKick>();
         }
     }
 }

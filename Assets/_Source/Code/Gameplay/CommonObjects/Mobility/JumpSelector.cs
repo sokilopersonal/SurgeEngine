@@ -40,7 +40,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             _model = transform.GetChild(0);
         }
 
-        public override void Contact(Collider msg, ActorBase context)
+        public override void Contact(Collider msg, CharacterBase context)
         {
             var state = context.StateMachine.GetState<FStateJumpSelector>();
             state.AttachJumpSelector(this);

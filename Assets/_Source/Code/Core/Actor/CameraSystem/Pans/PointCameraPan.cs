@@ -8,7 +8,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
     {
         private PointPanData _pData;
 
-        public PointCameraPan(ActorBase owner) : base(owner) { }
+        public PointCameraPan(CharacterBase owner) : base(owner) { }
         
         public override void OnExit()
         {

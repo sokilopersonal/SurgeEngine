@@ -8,14 +8,14 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.ChangeModes
     {
         [SerializeField] private SplineContainer path;
         
-        public override void Contact(Collider msg, ActorBase context)
+        public override void Contact(Collider msg, CharacterBase context)
         {
             base.Contact(msg, context);
 
             if (!CheckFacing(context.transform.forward))
                 return;
             
-            ActorKinematics kinematics = context.Kinematics;
+            CharacterKinematics kinematics = context.Kinematics;
             if (!kinematics.IsPathValid())
             {
                 kinematics.SetPath(path, KinematicsMode.Dash);

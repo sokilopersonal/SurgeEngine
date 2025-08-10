@@ -13,7 +13,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
         [SerializeField] private float outOfControl = 0.5f;
         [SerializeField] private bool cancelBoost;
 
-        public override void Contact(Collider msg, ActorBase context)
+        public override void Contact(Collider msg, CharacterBase context)
         {
             base.Contact(msg, context);
 

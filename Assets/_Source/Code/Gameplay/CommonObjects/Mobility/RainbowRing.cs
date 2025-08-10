@@ -12,7 +12,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
 
         private bool _triggered;
 
-        public override void Contact(Collider msg, ActorBase context)
+        public override void Contact(Collider msg, CharacterBase context)
         {
             base.Contact(msg, context);
 

@@ -7,9 +7,9 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.States
 {
-    public class FStateGoal : FActorState
+    public class FStateGoal : FCharacterState
     {
-        public FStateGoal(ActorBase owner) : base(owner) { }
+        public FStateGoal(CharacterBase owner) : base(owner) { }
 
         public override void OnEnter()
         {

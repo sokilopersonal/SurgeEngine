@@ -6,7 +6,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
 {
     public class CameraPan : CameraBasePan<PanData>
     {
-        public CameraPan(ActorBase owner) : base(owner)
+        public CameraPan(CharacterBase owner) : base(owner)
         {
             
         }
@@ -23,7 +23,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
             base.OnTick(dt);
 
             StatePosition = _panData.position;
-            StateRotation = Quaternion.LookRotation(_actor.transform.position - _panData.position);
+            StateRotation = Quaternion.LookRotation(Character.transform.position - _panData.position);
             StateFOV = _panData.fov;
         }
     }

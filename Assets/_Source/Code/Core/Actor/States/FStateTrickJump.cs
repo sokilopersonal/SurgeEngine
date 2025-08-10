@@ -5,7 +5,7 @@ namespace SurgeEngine.Code.Core.Actor.States
 {
     public class FStateTrickJump : FStateObject
     {
-        public FStateTrickJump(ActorBase owner) : base(owner) { }
+        public FStateTrickJump(CharacterBase owner) : base(owner) { }
 
         public override void OnFixedTick(float dt)
         {

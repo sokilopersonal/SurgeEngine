@@ -16,7 +16,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
         [SerializeField, Tooltip("Should this trigger end the autorun?")] 
         private bool isFinish;
         
-        public override void Contact(Collider msg, ActorBase context)
+        public override void Contact(Collider msg, CharacterBase context)
         {
             base.Contact(msg, context);
 

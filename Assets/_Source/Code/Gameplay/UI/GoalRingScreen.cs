@@ -26,7 +26,7 @@ namespace SurgeEngine.Code.Gameplay.UI
         [SerializeField] private RawImage playerRenderImage;
 
         [Inject] private Stage _stage;
-        [Inject] private ActorBase _actor;
+        [Inject] private CharacterBase _character;
 
         private Action OnResultLook;
 
@@ -122,7 +122,7 @@ namespace SurgeEngine.Code.Gameplay.UI
         
         public void ResultLook()
         {
-            _actor.StateMachine.GetState<FStateGoal>().LookAnimation(_stage.Data.Result.GetRank(_stage.Data.TotalScore));
+            _character.StateMachine.GetState<FStateGoal>().LookAnimation(_stage.Data.Result.GetRank(_stage.Data.TotalScore));
         }
 
         public void SelectOnEnd()

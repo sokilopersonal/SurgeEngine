@@ -6,14 +6,14 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.States
 {
-    public class FStateJumpSelector : FActorState
+    public class FStateJumpSelector : FCharacterState
     {
         private JumpSelector _attachedJumpSelector;
         private float _timer;
         private float _fallTimer;
         private bool _willBeLaunched;
         
-        public FStateJumpSelector(ActorBase owner) : base(owner)
+        public FStateJumpSelector(CharacterBase owner) : base(owner)
         {
             
         }
@@ -31,7 +31,7 @@ namespace SurgeEngine.Code.Core.Actor.States
             Rigidbody.rotation = _attachedJumpSelector.transform.rotation;
             Model.root.rotation = _attachedJumpSelector.transform.rotation;
             
-            Actor.Flags.AddFlag(new Flag(FlagType.OutOfControl, false));
+            character.Flags.AddFlag(new Flag(FlagType.OutOfControl, false));
             
             _attachedJumpSelector.OnJumpSelectorResult?.Invoke(JumpSelectorResultType.Start);
         }
@@ -70,7 +70,7 @@ namespace SurgeEngine.Code.Core.Actor.States
             if (_fallTimer >= fallTime)
             {
                 _attachedJumpSelector.OnJumpSelectorResult?.Invoke(JumpSelectorResultType.Fall);
-                Actor.Flags.RemoveFlag(FlagType.OutOfControl);
+                character.Flags.RemoveFlag(FlagType.OutOfControl);
                 StateMachine.SetState<FStateJumpSelectorLaunch>().SetData(0.5f, default, JumpSelectorResultType.Fall);
                 return;
             }
@@ -99,7 +99,7 @@ namespace SurgeEngine.Code.Core.Actor.States
             void Launch(float speed, float outOfControl, Vector3 forward, Vector3 right, JumpSelectorButton button, float pitch = 0)
             {
                 Rigidbody.linearVelocity = Utility.GetImpulseWithPitch(forward, right, pitch, speed);
-                Actor.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, outOfControl));
+                character.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, outOfControl));
                 
                 StateMachine.SetState<FStateJumpSelectorLaunch>().SetData(outOfControl, button, JumpSelectorResultType.OK);
             }

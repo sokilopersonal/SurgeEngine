@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace SurgeEngine._Source.Editor
 {
-    [CustomEditor(typeof(ActorSpawn))]
-    public class ActorSpawnEditor : UnityEditor.Editor
+    [CustomEditor(typeof(CharacterSpawn))]
+    public class CharacterSpawnEditor : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
         {

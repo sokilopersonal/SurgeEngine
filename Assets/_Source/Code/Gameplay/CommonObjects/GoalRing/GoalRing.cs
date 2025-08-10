@@ -25,7 +25,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.GoalRing
 
         [Inject] private DiContainer _container;
 
-        public override void Contact(Collider msg, ActorBase context)
+        public override void Contact(Collider msg, CharacterBase context)
         {
             if (!_triggered)
             {

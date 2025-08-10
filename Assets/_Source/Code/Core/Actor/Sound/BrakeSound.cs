@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.Sound
 {
-    public class BrakeSound : ActorSound
+    public class BrakeSound : CharacterSound
     {
         [SerializeField] private EventReference brakeSound;
 
@@ -15,7 +15,7 @@ namespace SurgeEngine.Code.Core.Actor.Sound
             
             if (obj is FStateBrake)
             {
-                RuntimeManager.PlayOneShotAttached(brakeSound, Actor.gameObject);
+                RuntimeManager.PlayOneShotAttached(brakeSound, Character.gameObject);
             }
         }
     }

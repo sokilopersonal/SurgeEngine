@@ -7,16 +7,16 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.Sound
 {
-    public class SweepKickSound : ActorSound
+    public class SweepKickSound : CharacterSound
     {
         [SerializeField] private EventReference sweepKickSound;
         [SerializeField] private EventReference sweepKickVoice;
 
         private EventInstance _sweep;
 
-        public override void Initialize(ActorBase actor)
+        public override void Initialize(CharacterBase character)
         {
-            base.Initialize(actor);
+            base.Initialize(character);
 
             _sweep = RuntimeManager.CreateInstance(sweepKickSound);
             _sweep.set3DAttributes(transform.To3DAttributes());

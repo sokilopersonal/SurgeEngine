@@ -11,7 +11,7 @@ namespace SurgeEngine.Code.Core.Actor.System
     /// <summary>
     /// Base actor class for a movement physics.
     /// </summary>
-    public class ActorKinematics : ActorComponent
+    public class CharacterKinematics : CharacterComponent
     {
         public Rigidbody Rigidbody => _rigidbody;
         
@@ -80,8 +80,8 @@ namespace SurgeEngine.Code.Core.Actor.System
 
         private void Awake()
         {
-            _rigidbody = Actor.Rigidbody;
-            _config = Actor.Config;
+            _rigidbody = character.Rigidbody;
+            _config = character.Config;
 
             if (initialGravity == 0) initialGravity = Mathf.Abs(Physics.gravity.y);
             Gravity = initialGravity;
@@ -108,14 +108,14 @@ namespace SurgeEngine.Code.Core.Actor.System
 
         private void CalculateInputDirection()
         {
-            _cameraTransform = Actor.Camera.GetCameraTransform();
+            _cameraTransform = character.Camera.GetCameraTransform();
 
-            if (!Actor.Flags.HasFlag(FlagType.Autorun))
+            if (!character.Flags.HasFlag(FlagType.Autorun))
             {
-                Vector3 rawInput = _cameraTransform.rotation * Actor.Input.moveVector;
+                Vector3 rawInput = _cameraTransform.rotation * character.Input.moveVector;
                 Vector3 orientedInput = Quaternion.FromToRotation(_cameraTransform.up, Normal) * rawInput;
                 _inputDir = GetMovementDirectionProjectedOnPlane(orientedInput, Normal, _cameraTransform.up)
-                            * Actor.Input.moveVector.magnitude;
+                            * character.Input.moveVector.magnitude;
             }
             
             Debug.DrawRay(transform.position, _inputDir, Color.red);
@@ -123,7 +123,7 @@ namespace SurgeEngine.Code.Core.Actor.System
 
         private void CalculateMovementStats()
         {
-            _moveDot = Vector3.Dot(Actor.Kinematics.GetInputDir().normalized, Velocity.normalized);
+            _moveDot = Vector3.Dot(character.Kinematics.GetInputDir().normalized, Velocity.normalized);
         }
 
         private void CheckIfIsInAir()
@@ -255,7 +255,7 @@ namespace SurgeEngine.Code.Core.Actor.System
                         {
                             SetPath(null);
                         
-                            Actor.Flags.RemoveFlag(FlagType.Autorun);
+                            character.Flags.RemoveFlag(FlagType.Autorun);
                         }
                         
                         _splineData.CalculateTime(Velocity);
@@ -273,7 +273,7 @@ namespace SurgeEngine.Code.Core.Actor.System
             if (mode == KinematicsMode.Free && Speed < _config.slopeMinSpeed && Angle >= _config.slopeDeslopeAngle)
             {
                 _rigidbody.AddForce(Normal * _config.slopeDeslopeForce, ForceMode.Impulse);
-                Actor.StateMachine.SetState<FStateAir>();
+                character.StateMachine.SetState<FStateAir>();
                 SetDetachTime(_config.slopeInactiveDuration);
             }
 
@@ -285,7 +285,7 @@ namespace SurgeEngine.Code.Core.Actor.System
                 _rigidbody.AddForce(slopeDir * (forceMag * Time.fixedDeltaTime), ForceMode.Impulse);
             }
 
-            float rDot = Vector3.Dot(Vector3.up, Actor.transform.right);
+            float rDot = Vector3.Dot(Vector3.up, character.transform.right);
             if (Mathf.Abs(rDot) > 0.1f && Mathf.Approximately(Angle, 90f))
                 _rigidbody.linearVelocity += Vector3.down * (4f * Time.fixedDeltaTime);
         }
@@ -350,28 +350,28 @@ namespace SurgeEngine.Code.Core.Actor.System
             switch (type)
             {
                 case CheckGroundType.Normal:
-                    origin = Actor.transform.position;
-                    direction = -Actor.Kinematics.Normal;
+                    origin = character.transform.position;
+                    direction = -character.Kinematics.Normal;
                     break;
                 case CheckGroundType.DefaultDown:
-                    origin = Actor.transform.position;
-                    direction = -Actor.transform.up;
+                    origin = character.transform.position;
+                    direction = -character.transform.up;
                     break;
                 case CheckGroundType.Predict:
-                    origin = Actor.transform.position;
-                    direction = Actor.Kinematics.Rigidbody.linearVelocity.normalized;
+                    origin = character.transform.position;
+                    direction = character.Kinematics.Rigidbody.linearVelocity.normalized;
                     break;
                 case CheckGroundType.PredictJump:
-                    origin = Actor.transform.position - Actor.transform.up * 0.5f;
-                    direction = Actor.Kinematics.Rigidbody.linearVelocity.normalized;
+                    origin = character.transform.position - character.transform.up * 0.5f;
+                    direction = character.Kinematics.Rigidbody.linearVelocity.normalized;
                     break;
                 case CheckGroundType.PredictOnRail:
-                    origin = Actor.transform.position + Actor.transform.forward;
-                    direction = -Actor.Kinematics.Normal;
+                    origin = character.transform.position + character.transform.forward;
+                    direction = -character.Kinematics.Normal;
                     break;
                 case CheckGroundType.PredictEdge:
-                    origin = Actor.transform.position + Vector3.ClampMagnitude(PlanarVelocity * 0.075f, 1f);
-                    direction = -Actor.Kinematics.Normal;
+                    origin = character.transform.position + Vector3.ClampMagnitude(PlanarVelocity * 0.075f, 1f);
+                    direction = -character.Kinematics.Normal;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
@@ -379,7 +379,7 @@ namespace SurgeEngine.Code.Core.Actor.System
             
             Ray ray = new Ray(origin, direction);
             if (castDistance == 0) castDistance = _config.castDistance;
-            LayerMask castMask = Actor.Config.castLayer;
+            LayerMask castMask = character.Config.castLayer;
 
             bool hit = Physics.Raycast(ray, out result,
                 castDistance, castMask, QueryTriggerInteraction.Ignore);
@@ -390,19 +390,19 @@ namespace SurgeEngine.Code.Core.Actor.System
         public bool CheckForGroundWithDirection(out RaycastHit result, Vector3 direction,
             float castDistance = 0f)
         {
-            Vector3 origin = Actor.transform.position;
+            Vector3 origin = character.transform.position;
             
-            if (castDistance == 0) castDistance = Actor.Config.castDistance;
+            if (castDistance == 0) castDistance = character.Config.castDistance;
             
             Ray ray = new Ray(origin, direction);
-            LayerMask castMask = Actor.Config.castLayer;
+            LayerMask castMask = character.Config.castLayer;
             bool hit = Physics.Raycast(ray, out result, castDistance, castMask, QueryTriggerInteraction.Ignore);
             return hit;
         }
         
         public bool CheckForCeiling(out RaycastHit result)
         {
-            bool hit = Physics.Raycast(Actor.transform.position - Actor.transform.up * 0.5f, Actor.transform.up, out result, Actor.Config.castDistance * 0.5f, Actor.Config.castLayer, QueryTriggerInteraction.Ignore);
+            bool hit = Physics.Raycast(character.transform.position - character.transform.up * 0.5f, character.transform.up, out result, character.Config.castDistance * 0.5f, character.Config.castLayer, QueryTriggerInteraction.Ignore);
             return hit;
         }
         
@@ -419,7 +419,7 @@ namespace SurgeEngine.Code.Core.Actor.System
 
         public void ClampVelocityToMax(float max = default)
         {
-            var flags = Actor.Flags;
+            var flags = character.Flags;
             if (!flags.HasFlag(FlagType.OutOfControl) && !flags.HasFlag(FlagType.Autorun))
             {
                 Rigidbody.linearVelocity = Vector3.ClampMagnitude(Rigidbody.linearVelocity, Mathf.Approximately(max, 0) ? _config.maxSpeed : max);
@@ -466,7 +466,7 @@ namespace SurgeEngine.Code.Core.Actor.System
             else
             {
                 _movementVector = Vector3.zero;
-                SetStateOnZeroSpeed(Actor.StateMachine.CurrentState);
+                SetStateOnZeroSpeed(character.StateMachine.CurrentState);
             }
         }
 
@@ -477,7 +477,7 @@ namespace SurgeEngine.Code.Core.Actor.System
                 case FStateAir:
                     break;
                 default:
-                    Actor.StateMachine.SetState<FStateIdle>();
+                    character.StateMachine.SetState<FStateIdle>();
                     break;
             }
         }
@@ -489,7 +489,7 @@ namespace SurgeEngine.Code.Core.Actor.System
 
         protected virtual bool CanDecelerate()
         {
-            var flags = Actor.Flags;
+            var flags = character.Flags;
             bool canDecelerate = !flags.HasFlag(FlagType.OutOfControl) && !flags.HasFlag(FlagType.Autorun);
             return canDecelerate;
         }
@@ -532,7 +532,7 @@ namespace SurgeEngine.Code.Core.Actor.System
             return _inputDir;
         }
 
-        public virtual bool InAir() => Actor.StateMachine.CurrentState is FStateAir;
+        public virtual bool InAir() => character.StateMachine.CurrentState is FStateAir;
         
         public void SetPath(SplineContainer path, KinematicsMode desiredMode = KinematicsMode.Free)
         {

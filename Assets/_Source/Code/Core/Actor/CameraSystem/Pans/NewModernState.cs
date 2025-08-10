@@ -45,9 +45,9 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
         private const float LateralOffsetResetSpeed = 3.25f;
         private const float MinCollisionDistance = 0.1f;
 
-        private bool IsAuto => _actor.Input.IsAutoCamera();
+        private bool IsAuto => Character.Input.IsAutoCamera();
 
-        public NewModernState(ActorBase owner) : base(owner)
+        public NewModernState(CharacterBase owner) : base(owner)
         {
             
         }
@@ -98,7 +98,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
 
         protected Vector3 CalculateTarget(out Vector3 targetPosition, Vector3 dir, float originalDistance)
         {
-            Vector3 actorPos = _actor.transform.position 
+            Vector3 actorPos = Character.transform.position 
                                + Vector3.up * GetVerticalOffset() 
                                + Vector3.up * _verticalLag;
             
@@ -126,7 +126,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
                 _yawAuto =  0;
             }
 
-            Vector2 lookInput = _actor.Input.lookVector * _master.Sensitivity;
+            Vector2 lookInput = Character.Input.lookVector * _master.Sensitivity;
             _stateMachine.Yaw += lookInput.x + _yawAuto;
             _stateMachine.Pitch = Mathf.Clamp(_stateMachine.Pitch - lookInput.y, MinPitch, MaxPitch);
         }
@@ -136,8 +136,8 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
 
         private void ZLag()
         {
-            Vector3 vel = _actor.Kinematics.Rigidbody.linearVelocity;
-            Vector3 localVel = _actor.transform.InverseTransformDirection(vel);
+            Vector3 vel = Character.Kinematics.Rigidbody.linearVelocity;
+            Vector3 localVel = Character.transform.InverseTransformDirection(vel);
             float zLag = Mathf.Clamp(localVel.z * ZLagFactor, 0, _master.ZLagMax);
             _forwardLag = Mathf.SmoothDamp(_forwardLag, zLag, ref _forwardLagVelocity, _master.ZLagTime);
         }
@@ -146,22 +146,22 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
         {
             Type[] excludedStates = new [] { typeof(FStateAfterHoming), typeof(FStateGrind), typeof(FStateGrindSquat) };
             bool isExcludedState =
-                excludedStates.Any(state => state.IsAssignableFrom(_actor.StateMachine.CurrentState.GetType()));
+                excludedStates.Any(state => state.IsAssignableFrom(Character.StateMachine.CurrentState.GetType()));
             
-            Vector3 vel = _actor.Kinematics.Velocity;
-            bool allowLag = !_actor.Kinematics.CheckForGround(out _) && !isExcludedState; // In the air
+            Vector3 vel = Character.Kinematics.Velocity;
+            bool allowLag = !Character.Kinematics.CheckForGround(out _) && !isExcludedState; // In the air
             float targetYLag = allowLag
                 ? Mathf.Clamp(vel.y * YLagVelocityFactor, min, max) 
                 : 0f;
             
-            float progression = Mathf.Clamp01(1 - Mathf.Abs(vel.y) / _actor.Config.topSpeed);
+            float progression = Mathf.Clamp01(1 - Mathf.Abs(vel.y) / Character.Config.topSpeed);
             targetYLag = Mathf.Lerp(_verticalLag, targetYLag, progression);
             _verticalLag = Mathf.SmoothDamp(_verticalLag, targetYLag, ref _verticalLagVelocity, _master.YLagTime);
 
             float adjustedYLag = targetYLag * (targetYLag > 0 ? YLagRisingFactor : YLagFallingFactor);
             float targetLookYTime = adjustedYLag < 0 ? RisingSmoothingTime 
                 : adjustedYLag > 0 ? FallingSmoothingTime 
-                : RestoreSmoothingTime * (1 - _actor.Kinematics.Speed * SpeedModFactor);
+                : RestoreSmoothingTime * (1 - Character.Kinematics.Speed * SpeedModFactor);
 
             _lookYTime = Mathf.Lerp(_lookYTime, targetLookYTime, Time.deltaTime * LerpSpeed);
             if (allowLag)
@@ -176,12 +176,12 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
 
         private void AutoLookDirection()
         {
-            float speed = _actor.Kinematics.Speed;
-            float lookMod = speed / _actor.Config.topSpeed;
+            float speed = Character.Kinematics.Speed;
+            float lookMod = speed / Character.Config.topSpeed;
             
             if (speed > MinSpeedThreshold)
             {
-                Vector3 vel = _actor.Kinematics.Velocity;
+                Vector3 vel = Character.Kinematics.Velocity;
                 float yAutoLook = Mathf.Clamp(-vel.y, _master.YawMinAmplitude, _master.YawMaxAmplitude);
                 _pitchAuto = yAutoLook + _master.YawDefaultAmplitude;
                 _stateMachine.Pitch = Mathf.SmoothDamp(_stateMachine.Pitch, _pitchAuto, ref _yAutoLookVelocity, YAutoLookSmoothTime);
@@ -199,7 +199,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
         private void AutoLook(float multiplier)
         {
             float angle = GetAutoAngle() * Time.deltaTime;
-            float dot = Vector3.Dot(_actor.transform.forward, Vector3.up);
+            float dot = Vector3.Dot(Character.transform.forward, Vector3.up);
             if (1 - Mathf.Abs(dot) > 0.05f)
             {
                 _yawAuto = angle * multiplier;
@@ -208,8 +208,8 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
 
         private void LateralOffset()
         {
-            float x = _actor.Input.moveVector.x;
-            float time = _actor.Kinematics.Speed / _actor.Config.topSpeed;
+            float x = Character.Input.moveVector.x;
+            float time = Character.Kinematics.Speed / Character.Config.topSpeed;
             AnimationCurve curve = _master.LateralOffsetSpeedCurve;
             float modifier = 0;
 
@@ -220,7 +220,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
             
             if (Mathf.Abs(x) > 0)
             {
-                float viewDot = Vector3.Dot(_stateMachine.Transform.forward, -_master.Actor.transform.up);
+                float viewDot = Vector3.Dot(_stateMachine.Transform.forward, -_master.character.transform.up);
                 viewDot = Mathf.Abs(viewDot);
 
                 if (viewDot >= 0.9f)
@@ -256,7 +256,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
 
         private float GetAutoAngle()
         {
-            Vector3 forward = Vector3.ProjectOnPlane(_actor.Rigidbody.transform.forward, Vector3.up);
+            Vector3 forward = Vector3.ProjectOnPlane(Character.Rigidbody.transform.forward, Vector3.up);
             Vector3 camForward = Vector3.ProjectOnPlane(_stateMachine.Transform.forward, Vector3.up);
             float angle = Vector3.SignedAngle(forward, camForward, -Vector3.up);
             return angle;

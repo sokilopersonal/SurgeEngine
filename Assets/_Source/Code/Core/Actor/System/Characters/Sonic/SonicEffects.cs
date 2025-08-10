@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
 {
-    public class SonicEffects : ActorEffects
+    public class SonicEffects : CharacterEffects
     {
         [Header("Trail")]
         [SerializeField] private VolumeTrailRenderer trailRenderer;
@@ -35,21 +35,21 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
         {
             base.OnEnable();
             
-            Actor.StateMachine.GetSubState<FBoost>().OnActiveChanged += OnBoostActivate;
+            character.StateMachine.GetSubState<FBoost>().OnActiveChanged += OnBoostActivate;
         }
 
         protected override void OnDisable()
         {
             base.OnDisable();
             
-            Actor.StateMachine.GetSubState<FBoost>().OnActiveChanged -= OnBoostActivate;
+            character.StateMachine.GetSubState<FBoost>().OnActiveChanged -= OnBoostActivate;
         }
 
         protected override void OnStateAssign(FState obj)
         {
             base.OnStateAssign(obj);
             
-            FState prev = Actor.StateMachine.PreviousState;
+            FState prev = character.StateMachine.PreviousState;
             
             if (obj is FStateHoming or FStateStomp or FStateSwingJump)
                 trailRenderer.Emit(0.6f);
@@ -93,14 +93,14 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
         {
             if (obj is not FBoost) return;
             boostAura.Toggle(value);
-            var viewport = Actor.Camera.GetCamera().WorldToViewportPoint(Actor.transform.position);
+            var viewport = character.Camera.GetCamera().WorldToViewportPoint(character.transform.position);
             viewport.y *= 0.8f;
             if (value) boostDistortion.Play(viewport);
         }
         
         private IEnumerator PlayJumpball()
         {
-            var actor = Actor;
+            var actor = character;
             yield return new WaitForSeconds(actor.Config.jumpMaxShortTime);
             if (actor.StateMachine.CurrentState is FStateJump && actor.Input.AHeld)
                 spinball.Toggle(true);

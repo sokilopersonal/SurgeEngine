@@ -5,11 +5,11 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
 {
-    public class FStateSit : FActorState, IDamageableState
+    public class FStateSit : FCharacterState, IDamageableState
     {
         private QuickStepConfig _quickstepConfig;
         
-        public FStateSit(ActorBase owner) : base(owner)
+        public FStateSit(CharacterBase owner) : base(owner)
         {
             owner.TryGetConfig(out _quickstepConfig);
         }

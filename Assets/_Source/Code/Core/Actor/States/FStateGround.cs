@@ -8,14 +8,14 @@ using UnityEngine.Animations.Rigging;
 
 namespace SurgeEngine.Code.Core.Actor.States
 {
-    public sealed class FStateGround : FActorState, IDamageableState
+    public sealed class FStateGround : FCharacterState, IDamageableState
     {
         private GroundTag _surfaceTag;
         private float _hardAngleTimer;
 
         public event Action<GroundTag> OnSurfaceTagChanged;
         
-        public FStateGround(ActorBase owner) : base(owner)
+        public FStateGround(CharacterBase owner) : base(owner)
         {
             
         }
@@ -31,7 +31,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         {
             base.OnTick(dt);
 
-            if (!Actor.Flags.HasFlag(FlagType.OutOfControl))
+            if (!character.Flags.HasFlag(FlagType.OutOfControl))
             {
                 if (Input.APressed)
                 {
@@ -45,7 +45,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         {
             base.OnFixedTick(dt);
 
-            PhysicsConfig config = Actor.Config;
+            PhysicsConfig config = character.Config;
             float distance = config.EvaluateCastDistance(Kinematics.Speed / config.topSpeed);
             bool ground = Kinematics.CheckForGround(out RaycastHit data, castDistance: distance);
             if (ground)

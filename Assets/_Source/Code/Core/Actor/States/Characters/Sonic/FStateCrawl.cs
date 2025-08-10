@@ -9,14 +9,14 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
 {
-    public class FStateCrawl : FActorState, IStateTimeout, IDamageableState
+    public class FStateCrawl : FCharacterState, IStateTimeout, IDamageableState
     {
         private GroundTag _surfaceTag;
 
         private readonly CrawlConfig _crawlConfig;
         private readonly QuickStepConfig _quickstepConfig;
         
-        public FStateCrawl(ActorBase owner) : base(owner)
+        public FStateCrawl(CharacterBase owner) : base(owner)
         {
             owner.TryGetConfig(out _crawlConfig);
             owner.TryGetConfig(out _quickstepConfig);
@@ -87,7 +87,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
 
             // how the hell do i make him move
             // you did it!!
-            PhysicsConfig config = Actor.Config;
+            PhysicsConfig config = character.Config;
             float distance = config.castDistance * config.castDistanceCurve
                 .Evaluate(Kinematics.Speed / _crawlConfig.topSpeed);
             if (Kinematics.CheckForGroundWithDirection(out RaycastHit data, Vector3.down, distance))

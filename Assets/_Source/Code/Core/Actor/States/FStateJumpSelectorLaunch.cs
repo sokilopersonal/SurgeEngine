@@ -5,12 +5,12 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.States
 {
-    public class FStateJumpSelectorLaunch : FActorState
+    public class FStateJumpSelectorLaunch : FCharacterState
     {
         private float _timer;
         private bool _isFailed;
         
-        public FStateJumpSelectorLaunch(ActorBase owner) : base(owner)
+        public FStateJumpSelectorLaunch(CharacterBase owner) : base(owner)
         {
             
         }

@@ -36,7 +36,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
 
         private Vector3 _localStartPosition;
         private bool _isPlayerAttached;
-        private ActorBase _attachedActor;
+        private CharacterBase _attachedCharacter;
         private EventInstance _eventInstance;
 
         private Tween _modelTween;
@@ -62,7 +62,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             
             if (_isPlayerAttached)
             {
-                var ctx = _attachedActor;
+                var ctx = _attachedCharacter;
                 _attachTimer += Time.deltaTime / 0.1f;
                 _attachTimer = Mathf.Clamp01(_attachTimer);
                 
@@ -96,23 +96,23 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             {
                 if (_isPlayerAttached)
                 {
-                    var ctx = _attachedActor;
+                    var ctx = _attachedCharacter;
                     ctx.transform.position = Vector3.Lerp(_contactPoint, attachPoint.position, _attachTimer);
                     ctx.transform.rotation = attachPoint.rotation;
                 }
             }
         }
 
-        public override void Contact(Collider msg, ActorBase context)
+        public override void Contact(Collider msg, CharacterBase context)
         {
             base.Contact(msg, context);
             
-            _attachedActor = context;
-            _attachedActor.StateMachine.SetState<FStateUpreel>();
-            _contactPoint = _attachedActor.transform.position;
+            _attachedCharacter = context;
+            _attachedCharacter.StateMachine.SetState<FStateUpreel>();
+            _contactPoint = _attachedCharacter.transform.position;
             _attachTimer = 0;
 
-            if (_attachedActor.StateMachine.GetState(out FBoost boost))
+            if (_attachedCharacter.StateMachine.GetState(out FBoost boost))
             {
                 boost.Active = false;
             }
@@ -136,7 +136,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             }
         }
 
-        private void Cancel(ActorBase ctx)
+        private void Cancel(CharacterBase ctx)
         {
             _isPlayerAttached = false;
             _attachTimer = 0;
@@ -144,7 +144,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             Lower();
             ctx.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, Mathf.Abs(outOfControl)));
 
-            _attachedActor = null;
+            _attachedCharacter = null;
         }
 
         public void Lower(float delay = 0.5f)
@@ -162,7 +162,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             homingTarget.gameObject.SetActive(isWaitUp);
             _isPlayerAttached = false;
             _attachTimer = 0;
-            _attachedActor = null;
+            _attachedCharacter = null;
         }
     }
 }

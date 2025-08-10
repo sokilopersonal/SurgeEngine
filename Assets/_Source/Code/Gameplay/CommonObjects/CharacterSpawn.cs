@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Gameplay.CommonObjects
 {
-    public class ActorSpawn : MonoBehaviour
+    public class CharacterSpawn : MonoBehaviour
     {
         [SerializeField] private StartData startData;
         public StartData StartData => startData;

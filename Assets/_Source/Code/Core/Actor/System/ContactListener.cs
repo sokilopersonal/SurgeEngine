@@ -8,7 +8,7 @@ namespace SurgeEngine.Code.Core.Actor.System
     /// <summary>
     /// Listens for collisions
     /// </summary>
-    public class ContactListener : ActorComponent
+    public class ContactListener : CharacterComponent
     {
         private void OnTriggerEnter(Collider other)
         {

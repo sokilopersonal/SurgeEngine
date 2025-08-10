@@ -8,7 +8,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         protected float _keepVelocityDistance;
         protected float _travelledDistance;
         
-        protected FStateAirObject(ActorBase owner) : base(owner) { }
+        protected FStateAirObject(CharacterBase owner) : base(owner) { }
 
         public override void OnEnter()
         {

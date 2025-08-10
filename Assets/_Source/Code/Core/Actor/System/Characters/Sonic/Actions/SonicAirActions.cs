@@ -5,9 +5,9 @@ using SurgeEngine.Code.Gameplay.CommonObjects;
 
 namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic.Actions
 {
-    public class SonicAirActions : ActorActions
+    public class SonicAirActions : CharacterActions
     {
-        public SonicAirActions(ActorBase actor) : base(actor) { }
+        public SonicAirActions(CharacterBase character) : base(character) { }
 
         protected override void Connect(FStateMachine stateMachine)
         {

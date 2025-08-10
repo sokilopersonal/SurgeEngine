@@ -6,23 +6,23 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates
 {
     public class BoostAirHandle : IBoostHandler
     {
-        public void BoostHandle(ActorBase actor, BoostConfig config)
+        public void BoostHandle(CharacterBase character, BoostConfig config)
         {
-            if (!actor.Flags.HasFlag(FlagType.OutOfControl))
+            if (!character.Flags.HasFlag(FlagType.OutOfControl))
             {
-                FBoost boost = actor.StateMachine.GetSubState<FBoost>();
-                if (actor.Input.XPressed && boost.CanBoost() && boost.CanAirBoost)
+                FBoost boost = character.StateMachine.GetSubState<FBoost>();
+                if (character.Input.XPressed && boost.CanBoost() && boost.CanAirBoost)
                 {
                     boost.CanAirBoost = false;
-                    actor.StateMachine.SetState<FStateAirBoost>();
+                    character.StateMachine.SetState<FStateAirBoost>();
 
-                    var body = actor.Rigidbody;
+                    var body = character.Rigidbody;
                     
                     Vector3 direction = Vector3.Cross(body.transform.right, Vector3.up);
                     Vector3 force = direction * config.AirBoostSpeed;
 
                     body.linearVelocity = force;
-                    actor.Model.RotateBody(Vector3.up);
+                    character.Model.RotateBody(Vector3.up);
                 }
             }
         }

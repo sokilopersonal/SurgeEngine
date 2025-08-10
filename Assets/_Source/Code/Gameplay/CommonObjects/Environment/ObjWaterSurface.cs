@@ -55,10 +55,10 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Environment
 
         private void FixedUpdate()
         {
-            ActorBase actor = ActorContext.Context;
+            CharacterBase character = CharacterContext.Context;
             if (_isActorOnSurface)
             {
-                Rigidbody actorRigidbody = actor.Kinematics.Rigidbody;
+                Rigidbody actorRigidbody = character.Kinematics.Rigidbody;
                 Vector3 vel = actorRigidbody.linearVelocity;
                 float currentSpeed = vel.magnitude;
                 float horizontalSpeed = actorRigidbody.GetHorizontalMagnitude();
@@ -71,12 +71,12 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Environment
                 
                 _collider.isTrigger = !_isRunningOnWater;
 
-                if (actor.StateMachine.CurrentState is FStateStomp)
+                if (character.StateMachine.CurrentState is FStateStomp)
                 {
                     _collider.isTrigger = true; // Trigger collision for stomp so Sonic doesn't get hit when stomping
                 }
                 
-                float diff = actor.transform.position.y - _initialPoint.y;
+                float diff = character.transform.position.y - _initialPoint.y;
                 _isUnderwater = diff <= underwaterThreshold;
 
                 if (currentSpeed > waterResistSpeed)
@@ -91,7 +91,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Environment
                         counter = vel.normalized * (currentSpeed * (_isUnderwater ? underwaterResistance : resistance) * Time.fixedDeltaTime);
                     }
 
-                    if (actor.StateMachine.CurrentState is not FStateDrift)
+                    if (character.StateMachine.CurrentState is not FStateDrift)
                     {
                         actorRigidbody.linearVelocity -= counter;
                     }
@@ -99,17 +99,17 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Environment
 
                 if (_isUnderwater)
                 {
-                    float underwaterGravity = actor.Kinematics.InitialGravity * gravityMultiplier;
-                    actor.Kinematics.Gravity = underwaterGravity;
+                    float underwaterGravity = character.Kinematics.InitialGravity * gravityMultiplier;
+                    character.Kinematics.Gravity = underwaterGravity;
                 }
                 else
                 {
-                    actor.Kinematics.Gravity = actor.Kinematics.InitialGravity;
+                    character.Kinematics.Gravity = character.Kinematics.InitialGravity;
                 }
             }
         }
 
-        public override void Contact(Collider msg, ActorBase context)
+        public override void Contact(Collider msg, CharacterBase context)
         {
             base.Contact(msg, context);
             
@@ -122,7 +122,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Environment
         
         private void OnTriggerExit(Collider other)
         {
-            ActorBase context = ActorContext.Context;
+            CharacterBase context = CharacterContext.Context;
             
             if (context.gameObject == other.transform.parent.gameObject)
             {

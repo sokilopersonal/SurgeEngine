@@ -16,7 +16,7 @@ namespace SurgeEngine.Code.Gameplay.Enemy.AeroCannon.States
         
         protected bool IsInSight(out Transform target)
         {
-            ActorBase context = ActorContext.Context;
+            CharacterBase context = CharacterContext.Context;
             float viewDistance = aeroCannon.ViewDistance;
             LayerMask mask = aeroCannon.Mask;
 

@@ -29,19 +29,19 @@ namespace SurgeEngine.Code.Infrastructure.Custom.Drawers
             
             if (!_active) return;
             
-            ActorBase actor = ActorContext.Context;
+            CharacterBase character = CharacterContext.Context;
             string[] text = 
             {
-                $"Position: {actor.transform.position}",
-                $"Euler Angles: {actor.transform.rotation.eulerAngles}",
-                $"Move Dot: {actor.Kinematics.MoveDot}",
-                $"Current Speed: {actor.Kinematics.Speed}",
-                $"Current Vertical Speed: {actor.Kinematics.Velocity.y}",
-                $"Body Velocity: {actor.Kinematics.Velocity}",
-                $"Planar Velocity: {actor.Kinematics.PlanarVelocity}",
-                $"State: {actor.StateMachine.currentStateName}",
-                $"Animation: {actor.Animation.StateAnimator.GetCurrentAnimationState()}",
-                $"Camera State: {actor.Camera.StateMachine.currentStateName}"
+                $"Position: {character.transform.position}",
+                $"Euler Angles: {character.transform.rotation.eulerAngles}",
+                $"Move Dot: {character.Kinematics.MoveDot}",
+                $"Current Speed: {character.Kinematics.Speed}",
+                $"Current Vertical Speed: {character.Kinematics.Velocity.y}",
+                $"Body Velocity: {character.Kinematics.Velocity}",
+                $"Planar Velocity: {character.Kinematics.PlanarVelocity}",
+                $"State: {character.StateMachine.currentStateName}",
+                $"Animation: {character.Animation.StateAnimator.GetCurrentAnimationState()}",
+                $"Camera State: {character.Camera.StateMachine.currentStateName}"
             };
             
             holder.text = string.Join("\n", text);

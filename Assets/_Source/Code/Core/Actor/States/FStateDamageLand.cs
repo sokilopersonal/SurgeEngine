@@ -4,11 +4,11 @@ using SurgeEngine.Code.Infrastructure.Custom;
 
 namespace SurgeEngine.Code.Core.Actor.States
 {
-    public class FStateDamageLand : FActorState
+    public class FStateDamageLand : FCharacterState
     {
         private float _timer;
         
-        public FStateDamageLand(ActorBase owner) : base(owner)
+        public FStateDamageLand(CharacterBase owner) : base(owner)
         {
         }
 

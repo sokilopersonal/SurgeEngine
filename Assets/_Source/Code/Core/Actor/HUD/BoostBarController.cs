@@ -19,11 +19,11 @@ namespace SurgeEngine.Code.Core.Actor.HUD
         [SerializeField] private BoostBarSize minBoostBarSize;
         [SerializeField] private BoostBarSize maxBoostBarSize;
 
-        [Inject] private ActorBase _actor;
+        [Inject] private CharacterBase _character;
 
         public void UpdateBoostBar()
         {
-            FBoost boost = _actor.StateMachine.GetSubState<FBoost>();
+            FBoost boost = _character.StateMachine.GetSubState<FBoost>();
             float amount = boost.BoostEnergy / boost.MaxBoostEnergy;;
             SetBoostBarFill(amount, energyDivider);
             

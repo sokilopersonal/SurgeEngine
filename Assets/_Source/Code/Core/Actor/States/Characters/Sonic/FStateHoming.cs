@@ -11,14 +11,14 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
 {
-    public class FStateHoming : FActorState, IStateTimeout
+    public class FStateHoming : FCharacterState, IStateTimeout
     {
         private HomingTarget _target;
         private float _timer;
 
         private readonly HomingConfig _config;
 
-        public FStateHoming(ActorBase owner) : base(owner)
+        public FStateHoming(CharacterBase owner) : base(owner)
         {
             owner.TryGetConfig(out _config);
         }
@@ -32,7 +32,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
             _timer = 0f;
             Timeout = _config.delay;
 
-            PhysicsConfig config = Actor.Config;
+            PhysicsConfig config = character.Config;
             Model.SetCollisionParam(config.jumpCollisionHeight, config.jumpCollisionCenter, config.jumpCollisionRadius);
         }
 
@@ -58,7 +58,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
                 float distance = Vector3.Distance(Rigidbody.position, _target.transform.position);
                 if (distance <= _target.DistanceThreshold)
                 {
-                    _target.OnTargetReached.Invoke(Actor);
+                    _target.OnTargetReached.Invoke(character);
                 }
                 
                 // If for some reason Sonic get stuck
@@ -81,7 +81,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
                     }
                 }
                 
-                Vector3 direction = Vector3.Cross(Actor.transform.right, Vector3.up);
+                Vector3 direction = Vector3.Cross(character.transform.right, Vector3.up);
                 Rigidbody.linearVelocity = direction * (_config.jumpDashDistance *
                                                         _config.JumpDashCurve.Evaluate(_timer));
                 Rigidbody.rotation = Quaternion.LookRotation(direction, Vector3.up);
@@ -94,7 +94,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
                 }
             }
             
-            bool foundDamageable = HurtBox.CreateAttached(Actor, Actor.transform, Vector3.zero, Vector3.one * 0.5f, HurtBoxTarget.Enemy | HurtBoxTarget.Breakable);
+            bool foundDamageable = HurtBox.CreateAttached(character, character.transform, Vector3.zero, Vector3.one * 0.5f, HurtBoxTarget.Enemy | HurtBoxTarget.Breakable);
             if (foundDamageable)
             {
                 StateMachine.SetState<FStateAfterHoming>();

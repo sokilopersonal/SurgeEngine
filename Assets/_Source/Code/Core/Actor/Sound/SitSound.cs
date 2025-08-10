@@ -6,13 +6,13 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.Sound
 {
-    public class SitSound : ActorSound
+    public class SitSound : CharacterSound
     {
         [SerializeField] private EventReference sitVoice;
 
         protected override void SoundState(FState obj)
         {
-            if (obj is FStateSit && Actor.StateMachine.PreviousState is FStateIdle)
+            if (obj is FStateSit && Character.StateMachine.PreviousState is FStateIdle)
             {
                 Voice.Play(sitVoice);
             }

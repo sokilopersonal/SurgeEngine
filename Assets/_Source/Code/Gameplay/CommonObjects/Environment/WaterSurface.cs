@@ -19,7 +19,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Environment
         [SerializeField] private ParticleSystem runSplash;
         private ParticleSystem _currentRunSplash;
         
-        private ActorBase _surfaceActor;
+        private CharacterBase _surfaceCharacter;
         private Rigidbody _surfaceRigidbody;
         private Collider _collider;
         private Transform _camera;
@@ -93,9 +93,9 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Environment
                 
                 _collider.isTrigger = !_isRunning;
 
-                if (_surfaceActor.StateMachine.Exists<FStateStomp>())
+                if (_surfaceCharacter.StateMachine.Exists<FStateStomp>())
                 {
-                    if (_surfaceActor.StateMachine.IsExact<FStateStomp>())
+                    if (_surfaceCharacter.StateMachine.IsExact<FStateStomp>())
                     {
                         _collider.isTrigger = true;
                     }
@@ -113,9 +113,9 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Environment
                         counterForce = velocity.normalized * (speed * resistance * Time.fixedDeltaTime);
                     }
 
-                    if (_surfaceActor.StateMachine.Exists<FStateDrift>())
+                    if (_surfaceCharacter.StateMachine.Exists<FStateDrift>())
                     {
-                        if (_surfaceActor.StateMachine.IsExact<FStateDrift>())
+                        if (_surfaceCharacter.StateMachine.IsExact<FStateDrift>())
                         {
                             counterForce = Vector3.zero;
                         }
@@ -135,8 +135,8 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Environment
 
         public void OnContact(Collider msg)
         {
-            _surfaceActor = msg.transform.root.GetComponentInChildren<ActorBase>(); ;
-            _surfaceRigidbody = _surfaceActor.Kinematics.Rigidbody;
+            _surfaceCharacter = msg.transform.root.GetComponentInChildren<CharacterBase>(); ;
+            _surfaceRigidbody = _surfaceCharacter.Kinematics.Rigidbody;
             _contactPoint = msg.ClosestPoint(_surfaceRigidbody.transform.position);
             
             RuntimeManager.PlayOneShot(_splashSound, _contactPoint);
@@ -148,14 +148,14 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Environment
             DestroyRunSplash();
             _currentRunSplash = Instantiate(runSplash);
 
-            _surfaceActor.Flags.AddFlag(new Flag(FlagType.OnWater, false));
+            _surfaceCharacter.Flags.AddFlag(new Flag(FlagType.OnWater, false));
         }
 
         private void OnTriggerExit(Collider other)
         {
             if (_surfaceRigidbody)
             {
-                if (other.TryGetComponent(out ActorBase _))
+                if (other.TryGetComponent(out CharacterBase _))
                 {
                     Vector3 splashPoint = _surfaceRigidbody.position;
                     splashPoint.y -= 0.75f;
@@ -163,10 +163,10 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Environment
                     
                     RuntimeManager.PlayOneShot(_splashSound, _surfaceRigidbody.position);
                     
-                    _surfaceActor.Flags.RemoveFlag(FlagType.OnWater);
+                    _surfaceCharacter.Flags.RemoveFlag(FlagType.OnWater);
                     
                     _surfaceRigidbody = null;
-                    _surfaceActor = null;
+                    _surfaceCharacter = null;
 
                     DestroyRunSplash();
                 }

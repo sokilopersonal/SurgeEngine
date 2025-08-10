@@ -5,13 +5,13 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Modifiers
 {
     public abstract class BaseCameraModifier : MonoBehaviour
     {
-        protected ActorBase Actor;
+        protected CharacterBase Character;
         
         [SerializeField] protected float multiplier = 2;
         
-        public virtual void Set(ActorBase actor)
+        public virtual void Set(CharacterBase character)
         {
-            Actor = actor;
+            Character = character;
         }
     }
 }

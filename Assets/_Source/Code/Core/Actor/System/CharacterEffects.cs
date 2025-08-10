@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.System
 {
-    public class ActorEffects : ActorComponent
+    public class CharacterEffects : CharacterComponent
     {
         [Header("Ground Smoke")] 
         [SerializeField] private Step step;
@@ -37,14 +37,14 @@ namespace SurgeEngine.Code.Core.Actor.System
 
         protected virtual void OnEnable()
         {
-            Actor.StateMachine.GetState<FStateGround>().OnSurfaceTagChanged += OnSurfaceTagChanged;
-            Actor.StateMachine.OnStateAssign += OnStateAssign;
+            character.StateMachine.GetState<FStateGround>().OnSurfaceTagChanged += OnSurfaceTagChanged;
+            character.StateMachine.OnStateAssign += OnStateAssign;
         }
 
         protected virtual void OnDisable()
         {
-            Actor.StateMachine.GetState<FStateGround>().OnSurfaceTagChanged -= OnSurfaceTagChanged;
-            Actor.StateMachine.OnStateAssign -= OnStateAssign;
+            character.StateMachine.GetState<FStateGround>().OnSurfaceTagChanged -= OnSurfaceTagChanged;
+            character.StateMachine.OnStateAssign -= OnStateAssign;
         }
 
         protected virtual void OnStateAssign(FState obj)
@@ -68,7 +68,7 @@ namespace SurgeEngine.Code.Core.Actor.System
                 {
                     _currentStep?.Stop();
                 }
-                else if (_stepMap.TryGetValue(Actor.StateMachine.GetState<FStateGround>().GetSurfaceTag(), out var ps))
+                else if (_stepMap.TryGetValue(character.StateMachine.GetState<FStateGround>().GetSurfaceTag(), out var ps))
                 {
                     _currentStep = ps;
                     _currentStep?.Play();
@@ -102,8 +102,8 @@ namespace SurgeEngine.Code.Core.Actor.System
 
         public void CreateParaloop()
         {
-            paraloopEffect.startPoint = Actor.Kinematics.Rigidbody.position;
-            paraloopEffect.sonicContext = Actor;
+            paraloopEffect.startPoint = character.Kinematics.Rigidbody.position;
+            paraloopEffect.sonicContext = character;
             paraloopEffect.Toggle(true);
         }
     }

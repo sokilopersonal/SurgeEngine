@@ -9,7 +9,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
         private float _timer;
         private SplineData _splineData;
 
-        public PathCameraPan(ActorBase owner) : base(owner) { }
+        public PathCameraPan(CharacterBase owner) : base(owner) { }
         
         public override void OnExit()
         {
@@ -29,7 +29,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
             StateRotation = SetRotation(Quaternion.LookRotation(tg));
             StateFOV = _panData.fov;
             
-            _splineData.Time += Vector3.Dot(_actor.Kinematics.Velocity, tg) * dt;
+            _splineData.Time += Vector3.Dot(Character.Kinematics.Velocity, tg) * dt;
         }
 
         protected virtual Quaternion SetRotation(Quaternion rotation)
@@ -41,7 +41,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
         {
             base.SetData(data);
             
-            _splineData = new SplineData(data.container, _actor.Rigidbody.position);
+            _splineData = new SplineData(data.container, Character.Rigidbody.position);
         }
     }
 }

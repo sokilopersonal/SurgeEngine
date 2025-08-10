@@ -8,7 +8,7 @@ using UnityEngine.Splines;
 
 namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
 {
-    public class FStateQuickstep : FActorState, IStateTimeout
+    public class FStateQuickstep : FCharacterState, IStateTimeout
     {
         public float Timeout { get; set; }
         
@@ -27,7 +27,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
 
         private readonly QuickStepConfig _config;
 
-        public FStateQuickstep(ActorBase owner) : base(owner)
+        public FStateQuickstep(CharacterBase owner) : base(owner)
         {
             owner.TryGetConfig(out _config);
         }
@@ -158,7 +158,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
         {
             base.OnFixedTick(dt);
 
-            var config = Actor.Config;
+            var config = character.Config;
             float distance = config.EvaluateCastDistance(config.castDistanceCurve.Evaluate(Kinematics.Speed / config.topSpeed));
             if (Kinematics.CheckForGround(out var hit, castDistance: distance))
             {

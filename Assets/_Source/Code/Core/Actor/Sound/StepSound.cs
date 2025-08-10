@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.Sound
 {
-    public class StepSound : ActorSound
+    public class StepSound : CharacterSound
     {
         [SerializeField] private EventReference stepSound;
         [SerializeField] private EventReference crawlSound;
@@ -21,9 +21,9 @@ namespace SurgeEngine.Code.Core.Actor.Sound
         
         private const float LandSoundActivationThreshold = -5;
 
-        public override void Initialize(ActorBase actor)
+        public override void Initialize(CharacterBase character)
         {
-            base.Initialize(actor);
+            base.Initialize(character);
             
             _stepSoundInstance = RuntimeManager.CreateInstance(stepSound);
             _stepSoundInstance.set3DAttributes(transform.To3DAttributes());
@@ -38,13 +38,13 @@ namespace SurgeEngine.Code.Core.Actor.Sound
 
         public void PlaySound()
         {
-            if (_stepSoundInstance.isValid() && Actor.StateMachine.CurrentState is FStateGround)
+            if (_stepSoundInstance.isValid() && Character.StateMachine.CurrentState is FStateGround)
             {
                 RuntimeManager.AttachInstanceToGameObject(_stepSoundInstance, transform);
-                _stepSoundInstance.setParameterByNameWithLabel("GroundTag", Actor.StateMachine.GetState<FStateGround>().GetSurfaceTag().ToString());
+                _stepSoundInstance.setParameterByNameWithLabel("GroundTag", Character.StateMachine.GetState<FStateGround>().GetSurfaceTag().ToString());
                 _stepSoundInstance.start();
             }
-            if (_crawlSoundInstance.isValid() && Actor.StateMachine.CurrentState is FStateCrawl)
+            if (_crawlSoundInstance.isValid() && Character.StateMachine.CurrentState is FStateCrawl)
             {
                 RuntimeManager.AttachInstanceToGameObject(_crawlSoundInstance, transform);
                 _crawlSoundInstance.start();
@@ -53,13 +53,13 @@ namespace SurgeEngine.Code.Core.Actor.Sound
 
         protected override void SoundState(FState obj)
         {
-            FStateMachine machine = Actor.StateMachine;
+            FStateMachine machine = Character.StateMachine;
             RuntimeManager.AttachInstanceToGameObject(_landSoundInstance, transform);
             if (machine.IsExact<FStateGround>() || machine.IsExact<FStateIdle>())
             {
                 FState prev = machine.PreviousState;
 
-                if (prev is FStateAir && Actor.Kinematics.Velocity.y < LandSoundActivationThreshold)
+                if (prev is FStateAir && Character.Kinematics.Velocity.y < LandSoundActivationThreshold)
                 {
                     _landSoundInstance.start();
                 }

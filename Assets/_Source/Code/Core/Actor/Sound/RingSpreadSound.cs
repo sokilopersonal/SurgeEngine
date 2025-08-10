@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.Sound
 {
-    public class RingSpreadSound : ActorSound
+    public class RingSpreadSound : CharacterSound
     {
         [SerializeField] private EventReference ringSpreadEvent;
 
@@ -11,14 +11,14 @@ namespace SurgeEngine.Code.Core.Actor.Sound
         {
             base.OnEnable();
             
-            Actor.OnRingLoss += OnRingLoss;
+            Character.OnRingLoss += OnRingLoss;
         }
 
         protected override void OnDisable()
         {
             base.OnDisable();
             
-            Actor.OnRingLoss -= OnRingLoss;
+            Character.OnRingLoss -= OnRingLoss;
         }
 
         private void OnRingLoss()

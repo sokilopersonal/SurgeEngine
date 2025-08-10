@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.Sound
 {
-    public class QuickstepSound : ActorSound
+    public class QuickstepSound : CharacterSound
     {
         [SerializeField] private EventReference quickstepSound;
         [SerializeField] private EventReference quickstepVoice;

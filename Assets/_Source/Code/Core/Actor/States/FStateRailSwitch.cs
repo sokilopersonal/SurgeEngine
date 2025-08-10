@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.States
 {
-    public class FStateRailSwitch : FActorState
+    public class FStateRailSwitch : FCharacterState
     {
         private Vector3 _start;
         private Vector3 _end;
@@ -18,7 +18,7 @@ namespace SurgeEngine.Code.Core.Actor.States
 
         public bool IsLeft { get; private set; }
         
-        public FStateRailSwitch(ActorBase owner) : base(owner) { }
+        public FStateRailSwitch(CharacterBase owner) : base(owner) { }
 
         public override void OnEnter()
         {
@@ -60,7 +60,7 @@ namespace SurgeEngine.Code.Core.Actor.States
             Vector3 midPoint = (_start + _end) * 0.5f + Vector3.up * 4f;
             Vector3 p1 = Vector3.Lerp(_start, midPoint, t);
             Vector3 p2 = Vector3.Lerp(midPoint, _end, t);
-            Rigidbody.position = Vector3.Lerp(p1, p2, Actor.Config.railSwitchCurve.Evaluate(t));
+            Rigidbody.position = Vector3.Lerp(p1, p2, character.Config.railSwitchCurve.Evaluate(t));
             Rigidbody.rotation = Quaternion.LookRotation(tg * dot, up);
 
             _lastTangent = tg;
@@ -73,7 +73,7 @@ namespace SurgeEngine.Code.Core.Actor.States
             if (_switchTimer >= 1f)
             {
                 Rigidbody.isKinematic = false;
-                if (!Physics.Raycast(new Ray(Rigidbody.position, Vector3.down), out var hit, 2f, Actor.Config.railMask))
+                if (!Physics.Raycast(new Ray(Rigidbody.position, Vector3.down), out var hit, 2f, character.Config.railMask))
                 {
                     Vector3 vertical = p2 - p1;
                     vertical.x *= 2f;

@@ -12,7 +12,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         private Vector3 _startPos;
         private float _snapTimer;
 
-        public FStateSpring(ActorBase owner) : base(owner) { }
+        public FStateSpring(CharacterBase owner) : base(owner) { }
  
         public override void OnEnter()
         {

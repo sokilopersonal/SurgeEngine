@@ -8,7 +8,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
     {
         private ParallelPanData _vData;
 
-        public ParallelCameraPan(ActorBase owner) : base(owner)
+        public ParallelCameraPan(CharacterBase owner) : base(owner)
         {
             
         }

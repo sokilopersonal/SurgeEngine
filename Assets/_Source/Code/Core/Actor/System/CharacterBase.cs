@@ -13,29 +13,28 @@ using Random = UnityEngine.Random;
 
 namespace SurgeEngine.Code.Core.Actor.System
 {
-    public class ActorBase : MonoBehaviour, IDamageable, IPointMarkerLoader
+    public class CharacterBase : MonoBehaviour, IDamageable, IPointMarkerLoader
     {
-        [field: SerializeField] public Transform Parent { get; private set; }
         public new Transform transform => Rigidbody.transform;
         
         [Header("Components")]
-        [SerializeField, Required] private ActorInput input;
-        [SerializeField, Required] private ActorSounds sounds; 
-        [SerializeField, Required] private new ActorCamera camera;
-        [SerializeField, Required] private new ActorAnimation animation;
-        [SerializeField, Required] private ActorEffects effects;
-        [SerializeField, Required] private ActorModel model;
-        [SerializeField, Required] private ActorFlags flags;
-        [SerializeField, Required] private ActorKinematics kinematics;
-        public ActorInput Input => input;
-        public ActorSounds Sounds => sounds;
-        public ActorCamera Camera => camera; 
-        public ActorAnimation Animation => animation;
-        public ActorEffects Effects => effects;
-        public ActorModel Model => model;
-        public ActorFlags Flags => flags;
-        public ActorKinematics Kinematics => kinematics;
-        private readonly Dictionary<Type, ActorComponent> _components = new();
+        [SerializeField, Required] private CharacterInput input;
+        [SerializeField, Required] private CharacterSounds sounds; 
+        [SerializeField, Required] private new CharacterCamera camera;
+        [SerializeField, Required] private new CharacterAnimation animation;
+        [SerializeField, Required] private CharacterEffects effects;
+        [SerializeField, Required] private CharacterModel model;
+        [SerializeField, Required] private CharacterFlags flags;
+        [SerializeField, Required] private CharacterKinematics kinematics;
+        public CharacterInput Input => input;
+        public CharacterSounds Sounds => sounds;
+        public CharacterCamera Camera => camera; 
+        public CharacterAnimation Animation => animation;
+        public CharacterEffects Effects => effects;
+        public CharacterModel Model => model;
+        public CharacterFlags Flags => flags;
+        public CharacterKinematics Kinematics => kinematics;
+        private readonly Dictionary<Type, CharacterComponent> _components = new();
 
         [Header("Config")]
         [SerializeField] private PhysicsConfig config;
@@ -44,7 +43,7 @@ namespace SurgeEngine.Code.Core.Actor.System
         public DamageKickConfig DamageKickConfig => damageKickConfig;
 
         public bool IsDead { get; set; }
-        public event Action<ActorBase> OnDied;
+        public event Action<CharacterBase> OnDied;
         public event Action OnRingLoss;
         
         private readonly Dictionary<Type, ScriptableObject> _configs = new();
@@ -59,14 +58,12 @@ namespace SurgeEngine.Code.Core.Actor.System
             StateMachine = new FStateMachine();
             Rigidbody = GetComponent<Rigidbody>();
             
-            Parent = transform.parent;
-            
-            ActorContext.Set(this);
+            CharacterContext.Set(this);
             
             InitializeConfigs();
             AddStates();
             
-            foreach (var component in Parent.GetComponentsInChildren<ActorComponent>())
+            foreach (var component in transform.parent.GetComponentsInChildren<CharacterComponent>())
             {
                 _components.Add(component.GetType(), component);
                 component.Set(this);
@@ -143,11 +140,6 @@ namespace SurgeEngine.Code.Core.Actor.System
             transform.position = position;
         }
 
-        public void AddIn(Vector3 position)
-        {
-            transform.position += position;
-        }
-
         protected virtual void InitializeConfigs()
         {
             AddConfig(Config);
@@ -168,19 +160,6 @@ namespace SurgeEngine.Code.Core.Actor.System
             }
 
             request = null;
-        }
-
-        public T Get<T>() where T : ActorComponent
-        {
-            foreach (var pair in _components)
-            {
-                if (typeof(T).IsAssignableFrom(pair.Key))
-                {
-                    return (T)pair.Value;
-                }
-            }
-            
-            return null;
         }
 
         public void TakeDamage(Component sender)
@@ -241,7 +220,7 @@ namespace SurgeEngine.Code.Core.Actor.System
             StateMachine.SetState<FStateIdle>();
         }
 
-        public virtual void OnDiedInvoke(ActorBase obj, bool isMarkedForDeath)
+        public virtual void OnDiedInvoke(CharacterBase obj, bool isMarkedForDeath)
         {
             IsDead = isMarkedForDeath;
             OnDied?.Invoke(obj);
@@ -254,7 +233,7 @@ namespace SurgeEngine.Code.Core.Actor.System
     {
         public void TakeDamage(Component sender)
         {
-            ActorBase owner = (ActorBase)sender;
+            CharacterBase owner = (CharacterBase)sender;
             
             owner.StateMachine.SetState<FStateDamage>()?.SetState(owner.IsDead ? DamageState.Dead : DamageState.Alive);
         }
@@ -264,7 +243,7 @@ namespace SurgeEngine.Code.Core.Actor.System
     {
         public void TakeDamage(Component sender)
         {
-            ActorBase owner = (ActorBase)sender;
+            CharacterBase owner = (CharacterBase)sender;
         }
     }
 }

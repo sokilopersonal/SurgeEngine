@@ -8,14 +8,14 @@ using Vector3 = UnityEngine.Vector3;
 
 namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
 {
-    public class FStateStomp : FActorState
+    public class FStateStomp : FCharacterState
     {
         private float _timer;
 
         private bool _released;
         private readonly StompConfig _config;
 
-        public FStateStomp(ActorBase owner) : base(owner)
+        public FStateStomp(CharacterBase owner) : base(owner)
         {
             owner.TryGetConfig(out _config);
         }
@@ -46,7 +46,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
         {
             base.OnFixedTick(dt);
             
-            HurtBox.CreateAttached(Actor, Rigidbody.transform, new Vector3(0f, -0.1f, 0f),
+            HurtBox.CreateAttached(character, Rigidbody.transform, new Vector3(0f, -0.1f, 0f),
                 new Vector3(1.1f, 2f, 1.1f), HurtBoxTarget.Enemy | HurtBoxTarget.Breakable);
 
             Vector3 vel = Rigidbody.linearVelocity;

@@ -6,7 +6,7 @@ namespace SurgeEngine.Code.Gameplay.Inputs
 {
     public static class SonicInputLayout
     {
-        private static Sonic _sonic => (Sonic)ActorContext.Context;
+        private static Sonic _sonic => (Sonic)CharacterContext.Context;
         private static PlayerInput _input => _sonic.Input.playerInput;
     }
 }

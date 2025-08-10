@@ -8,7 +8,7 @@ using STOP_MODE = FMOD.Studio.STOP_MODE;
 
 namespace SurgeEngine.Code.Core.Actor.Sound
 {
-    public class BoostSound : ActorSound
+    public class BoostSound : CharacterSound
     {
         [SerializeField] private EventReference boostSound;
         [SerializeField] private EventReference boostLoopSound;
@@ -21,15 +21,15 @@ namespace SurgeEngine.Code.Core.Actor.Sound
         
         private float _lastBoostVoiceTime;
 
-        public override void Initialize(ActorBase actor)
+        public override void Initialize(CharacterBase character)
         {
-            base.Initialize(actor);
+            base.Initialize(character);
             
             _boostSoundInstance = RuntimeManager.CreateInstance(boostSound);
             _boostLoopInstance = RuntimeManager.CreateInstance(boostLoopSound);
             _boostVoiceInstance = RuntimeManager.CreateInstance(boostVoiceSound);
             
-            Actor.StateMachine.GetSubState<FBoost>().OnActiveChanged += OnBoostActivate;
+            Character.StateMachine.GetSubState<FBoost>().OnActiveChanged += OnBoostActivate;
         }
 
         private void OnBoostActivate(FSubState arg1, bool arg2)

@@ -8,7 +8,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
     {
         private NormalPanData _nData;
         
-        public NormalCameraPan(ActorBase owner) : base(owner)
+        public NormalCameraPan(CharacterBase owner) : base(owner)
         {
         }
 

@@ -8,7 +8,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Environment
     {
         private BoxCollider _collider;
 
-        public override void Contact(Collider msg, ActorBase context)
+        public override void Contact(Collider msg, CharacterBase context)
         {
             base.Contact(msg, context);
             

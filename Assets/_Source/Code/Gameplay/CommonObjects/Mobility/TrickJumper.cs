@@ -48,7 +48,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
         private int _sequenceId;
         private QuickTimeEventUI _currentQTEUI;
         private float _timer;
-        private ActorBase _actor;
+        private CharacterBase _character;
 
         private void Awake()
         {
@@ -82,24 +82,24 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             }
         }
         
-        public override void Contact(Collider msg, ActorBase context)
+        public override void Contact(Collider msg, CharacterBase context)
         {
             base.Contact(msg, context);
-            _actor = context;
+            _character = context;
             StartCoroutine(PerformTrickContact());
             ObjectEvents.OnTrickJumperTriggered?.Invoke(this);
         }
 
         private IEnumerator PerformTrickContact()
         {
-            if (_actor.StateMachine.CurrentState is FStateTrickJump) yield break;
+            if (_character.StateMachine.CurrentState is FStateTrickJump) yield break;
             if (initialSpeed > 0)
             {
-                _actor.StateMachine.GetSubState<FBoost>().Active = false;
-                _actor.Kinematics.ResetVelocity();
-                _actor.Rigidbody.position = StartPosition;
-                _actor.transform.forward = Vector3.Cross(-transform.right, Vector3.up);
-                _actor.Model.root.forward = Vector3.Cross(-transform.right, Vector3.up);
+                _character.StateMachine.GetSubState<FBoost>().Active = false;
+                _character.Kinematics.ResetVelocity();
+                _character.Rigidbody.position = StartPosition;
+                _character.transform.forward = Vector3.Cross(-transform.right, Vector3.up);
+                _character.Model.root.forward = Vector3.Cross(-transform.right, Vector3.up);
 
                 Vector3 impulse = Utility.GetImpulseWithPitch(
                     -transform.forward,
@@ -108,9 +108,9 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
                     initialSpeed
                 );
                 
-                _actor.Kinematics.Rigidbody.linearVelocity = impulse;
-                _actor.StateMachine.SetState<FStateTrickJump>(true);
-                _actor.Flags.AddFlag(new Flag(FlagType.OutOfControl, false));
+                _character.Kinematics.Rigidbody.linearVelocity = impulse;
+                _character.StateMachine.SetState<FStateTrickJump>(true);
+                _character.Flags.AddFlag(new Flag(FlagType.OutOfControl, false));
 
                 yield return SetTime(TargetTimeScale, TimeScaleDuration);
 
@@ -135,7 +135,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
                 CreateSequence(trickCounts[i], trickTimes[i]);
             }
 
-            _actor.Input.OnButtonPressed += HandleButtonPressed;
+            _character.Input.OnButtonPressed += HandleButtonPressed;
         }
 
         private IEnumerator SetTime(float target, float duration)
@@ -219,19 +219,19 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             _buttonId = 0;
             _sequenceId = 0;
             
-            Rigidbody body = _actor.Kinematics.Rigidbody;
+            Rigidbody body = _character.Kinematics.Rigidbody;
             if (result.success)
             {
-                _actor.Flags.RemoveFlag(FlagType.OutOfControl);
-                _actor.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, finalOutOfControl));
-                _actor.Kinematics.ResetVelocity();
+                _character.Flags.RemoveFlag(FlagType.OutOfControl);
+                _character.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, finalOutOfControl));
+                _character.Kinematics.ResetVelocity();
 
                 Vector3 arcPeak = Trajectory.GetArcPosition(
                     StartPosition,
                     Utility.GetCross(transform, initialPitch, true),
                     initialSpeed
                 );
-                _actor.StateMachine.SetState<FStateTrick>().SetTimer(finalOutOfControl);
+                _character.StateMachine.SetState<FStateTrick>().SetTimer(finalOutOfControl);
                 yield return MoveRigidbodyToArc(body, arcPeak);
 
                 Vector3 impulse = Utility.GetImpulseWithPitch(
@@ -240,20 +240,20 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
                     finalPitch,
                     finalSpeed
                 );
-                _actor.Kinematics.Rigidbody.linearVelocity = impulse;
+                _character.Kinematics.Rigidbody.linearVelocity = impulse;
             }
             else
             {
-                _actor.Flags.RemoveFlag(FlagType.OutOfControl);
-                _actor.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, initialOutOfControl));
-                _actor.StateMachine.SetState<FStateAir>();
+                _character.Flags.RemoveFlag(FlagType.OutOfControl);
+                _character.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, initialOutOfControl));
+                _character.StateMachine.SetState<FStateAir>();
                 
                 RuntimeManager.PlayOneShot(qteFailSound);
                 RuntimeManager.PlayOneShot(qteFailVoiceSound);
             }
 
-            _actor.Input.OnButtonPressed -= HandleButtonPressed;
-            _actor = null;
+            _character.Input.OnButtonPressed -= HandleButtonPressed;
+            _character = null;
             
             yield return SetTime(1f, 0.1f);
         }

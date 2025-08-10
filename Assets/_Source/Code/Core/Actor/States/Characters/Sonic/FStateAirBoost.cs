@@ -7,12 +7,12 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
 {
-    public class FStateAirBoost : FActorState
+    public class FStateAirBoost : FCharacterState
     {
         private float _timer;
         private readonly BoostConfig _config;
         
-        public FStateAirBoost(ActorBase owner) : base(owner)
+        public FStateAirBoost(CharacterBase owner) : base(owner)
         {
             owner.TryGetConfig(out _config);
         }
@@ -48,7 +48,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
                 StateMachine.SetState<FStateAir>();
             }
 
-            if (!Actor.Flags.HasFlag(FlagType.OutOfControl))
+            if (!character.Flags.HasFlag(FlagType.OutOfControl))
             {
                 if (Input.BPressed)
                 {

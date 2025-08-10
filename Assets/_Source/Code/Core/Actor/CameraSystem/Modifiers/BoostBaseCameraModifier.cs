@@ -17,11 +17,11 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Modifiers
         private Coroutine BoostBlendCoroutine { get; set; }
         public float Value { get; set; }
 
-        public override void Set(ActorBase actor)
+        public override void Set(CharacterBase character)
         {
-            base.Set(actor);
+            base.Set(character);
 
-            Actor.StateMachine.GetSubState<FBoost>().OnActiveChanged += OnBoostActivate;
+            Character.StateMachine.GetSubState<FBoost>().OnActiveChanged += OnBoostActivate;
             Value = 1;
         }
 

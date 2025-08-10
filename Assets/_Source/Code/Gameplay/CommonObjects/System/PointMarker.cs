@@ -34,7 +34,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.System
                 .ToList();
         }
 
-        public override void Contact(Collider msg, ActorBase context)
+        public override void Contact(Collider msg, CharacterBase context)
         {
             var currentMarker = Stage.Instance.CurrentPointMarker;
             if (currentMarker != null && ID < currentMarker.ID)

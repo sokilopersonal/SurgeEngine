@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.Sound
 {
-    public class JumpSound : ActorSound
+    public class JumpSound : CharacterSound
     {
         [SerializeField] private EventReference _jumpSound;
         [SerializeField] private EventReference _spinSound;
@@ -17,7 +17,7 @@ namespace SurgeEngine.Code.Core.Actor.Sound
             if (obj is FStateJump)
             {
                 Voice.Play(_voiceSound);
-                if (Actor.StateMachine.IsPrevExact<FStateJump>())
+                if (Character.StateMachine.IsPrevExact<FStateJump>())
                     RuntimeManager.PlayOneShot(_spinSound);
                 else
                     StartCoroutine(SpinSound());
@@ -28,7 +28,7 @@ namespace SurgeEngine.Code.Core.Actor.Sound
         {
             RuntimeManager.PlayOneShot(_jumpSound);
             yield return new WaitForSeconds(0.117f);
-            if (Actor.Input.AHeld)
+            if (Character.Input.AHeld)
             {
                 RuntimeManager.PlayOneShot(_spinSound);
             }

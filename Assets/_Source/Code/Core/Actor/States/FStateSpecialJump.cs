@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.States
 {
-    public class FStateSpecialJump : FActorState
+    public class FStateSpecialJump : FCharacterState
     {
         private const float DefaultJumpTime = 0.2f;
 
@@ -17,7 +17,7 @@ namespace SurgeEngine.Code.Core.Actor.States
 
         public bool IsDelux { get; private set; }
 
-        public FStateSpecialJump(ActorBase owner) : base(owner)
+        public FStateSpecialJump(CharacterBase owner) : base(owner)
         {
         }
 
@@ -90,7 +90,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         private void HandleSpringOrDashRing()
         {
             Model.SetRestoreUp(SpecialJumpData.transform.up);
-            Model.VelocityRotation(Actor.Kinematics.Velocity.normalized);
+            Model.VelocityRotation(character.Kinematics.Velocity.normalized);
         }
 
         private void UpdateKeepVelocityTimer(float dt)
