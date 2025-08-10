@@ -1,17 +1,18 @@
-﻿using NaughtyAttributes;
+﻿using System;
+using NaughtyAttributes;
 using UnityEngine;
 
 namespace SurgeEngine.Code.Gameplay.CommonObjects
 {
     [ExecuteAlways]
-    public class CharacterModelRendererGizmos : MonoBehaviour
+    public class CharacterModelRenderer : MonoBehaviour
     {
         [Space(10)]
         [InfoBox("Assign the mesh and materials per sub mesh. Project contains an editor preset with Sonic mesh and materials configured.")]
         [Space(10)]
         [SerializeField] private Mesh meshToRender;
-        [SerializeField] private Material[] m_Materials; // Copying doesn't work :(
-        
+        [SerializeField] private Material[] m_Materials;
+
         private void Update()
         {
             if (Application.isPlaying || !Application.isEditor)
