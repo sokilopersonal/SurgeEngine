@@ -2494,10 +2494,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2093728701531676745, guid: 878ef4ab3bfc2b940a2e809d965d0bb5, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1250577509}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 878ef4ab3bfc2b940a2e809d965d0bb5, type: 3}
 --- !u!4 &75408233 stripped
 Transform:
@@ -3771,6 +3768,10 @@ PrefabInstance:
     - target: {fileID: 429887859882323179, guid: a4be8a2f4d3bf334d80635828f72b451, type: 3}
       propertyPath: speed
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 27863606147665323, guid: d26830aafc8508a4d9c4f66a3ae0c7e8, type: 3}
+      propertyPath: m_MeshLodSelectionBias
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 5957124819982976523, guid: d26830aafc8508a4d9c4f66a3ae0c7e8, type: 3}
       propertyPath: m_Name
@@ -23076,35 +23077,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6769180083104733751, guid: 63d746f270eb67349b9f5d2854889351, type: 3}
   m_PrefabInstance: {fileID: 2137888384}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1250577507 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2093728701531676745, guid: 878ef4ab3bfc2b940a2e809d965d0bb5, type: 3}
-  m_PrefabInstance: {fileID: 62953803}
-  m_PrefabAsset: {fileID: 0}
---- !u!205 &1250577509
-LODGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1250577507}
-  serializedVersion: 2
-  m_LocalReferencePoint: {x: 0, y: 0, z: 0}
-  m_Size: 1
-  m_FadeMode: 0
-  m_AnimateCrossFading: 0
-  m_LastLODIsBillboard: 0
-  m_LODs:
-  - screenRelativeHeight: 0.015436556
-    fadeTransitionWidth: 0
-    renderers:
-    - renderer: {fileID: 1250577510}
-  m_Enabled: 1
---- !u!23 &1250577510 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 6425453400377505471, guid: 878ef4ab3bfc2b940a2e809d965d0bb5, type: 3}
-  m_PrefabInstance: {fileID: 62953803}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1254088193
 GameObject:
   m_ObjectHideFlags: 0
@@ -27499,6 +27471,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1992793257}
     m_Modifications:
+    - target: {fileID: 2360022767083184925, guid: 81e57284e17251641a1e0046e958cefb, type: 3}
+      propertyPath: m_ForceMeshLod
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2360022767083184925, guid: 81e57284e17251641a1e0046e958cefb, type: 3}
+      propertyPath: m_MeshLodSelectionBias
+      value: 0.25
+      objectReference: {fileID: 0}
     - target: {fileID: 3989563150705411619, guid: 81e57284e17251641a1e0046e958cefb, type: 3}
       propertyPath: m_Name
       value: JumpPanel_15S
@@ -38949,6 +38929,10 @@ PrefabInstance:
     - target: {fileID: 2449747089548627488, guid: a4be8a2f4d3bf334d80635828f72b451, type: 3}
       propertyPath: m_Name
       value: DashRing_3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8574308288790030180, guid: a4be8a2f4d3bf334d80635828f72b451, type: 3}
+      propertyPath: m_MeshLodSelectionBias
+      value: 0.4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

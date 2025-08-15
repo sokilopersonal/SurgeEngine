@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 6456499320986310005}
   - component: {fileID: 5281021975958356809}
   - component: {fileID: 6425453400377505471}
-  - component: {fileID: 7022981515192440205}
   m_Layer: 0
   m_Name: Model
   m_TagString: Untagged
@@ -62,6 +61,8 @@ MeshRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -87,29 +88,11 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!205 &7022981515192440205
-LODGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2093728701531676745}
-  serializedVersion: 2
-  m_LocalReferencePoint: {x: 0, y: 0.55964136, z: 0.00000023841858}
-  m_Size: 2.422008
-  m_FadeMode: 0
-  m_AnimateCrossFading: 0
-  m_LastLODIsBillboard: 0
-  m_LODs:
-  - screenRelativeHeight: 0.015623156
-    fadeTransitionWidth: 0
-    renderers:
-    - renderer: {fileID: 6425453400377505471}
-  m_Enabled: 1
 --- !u!1 &2321859287166195143
 GameObject:
   m_ObjectHideFlags: 0
