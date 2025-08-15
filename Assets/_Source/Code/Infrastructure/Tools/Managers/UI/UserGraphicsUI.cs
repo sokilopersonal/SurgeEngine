@@ -8,6 +8,7 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers.UI
     public class UserGraphicsUI : OptionUI
     {
         [SerializeField] private OptionBar textureBar;
+        [SerializeField] private OptionBar meshBar;
         [SerializeField] private OptionBar sunShadowsQualityBar;
         [SerializeField] private OptionBar punctualShadowsQualityBar;
         [SerializeField] private OptionBar contactShadowsQualityBar;
@@ -30,6 +31,12 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers.UI
             textureBar.OnChanged += b =>
             {
                 _graphics.SetTextureQuality((TextureQuality)b.Index);
+                _graphics.Apply();
+            };
+
+            meshBar.OnChanged += b =>
+            {
+                _graphics.SetMeshQuality((MeshQuality)b.Index);
                 _graphics.Apply();
             };
             
@@ -98,6 +105,7 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers.UI
             };
             
             textureBar.Set((int)data.textureQuality);
+            meshBar.Set((int)data.meshQuality);
             sunShadowsQualityBar.Set((int)data.sunShadowsQuality);
             punctualShadowsQualityBar.Set((int)data.additionalShadowsQuality);
             contactShadowsQualityBar.Set((int)data.contactShadowsQuality);
@@ -124,6 +132,7 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers.UI
             _graphics.Load(data =>
             {
                 textureBar.Set((int)data.textureQuality);
+                meshBar.Set((int)data.meshQuality);
                 sunShadowsQualityBar.Set((int)data.sunShadowsQuality);
                 punctualShadowsQualityBar.Set((int)data.additionalShadowsQuality);
                 contactShadowsQualityBar.Set((int)data.contactShadowsQuality);

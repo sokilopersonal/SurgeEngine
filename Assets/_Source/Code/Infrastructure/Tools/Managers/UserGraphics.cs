@@ -25,6 +25,13 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers
             "_REFRACTIONQUALITY_MEDIUM", 
             "_REFRACTIONQUALITY_NATIVE",
         };
+
+        private readonly Dictionary<MeshQuality, float> _meshQualityLods = new()
+        {
+            [MeshQuality.Medium] = 8f,
+            [MeshQuality.High] = 6f,
+            [MeshQuality.VeryHigh] = 2f
+        };
         
         public UserGraphics()
         {
@@ -69,6 +76,11 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers
         public void SetTextureQuality(TextureQuality value)
         {
             Data.textureQuality = value;
+        }
+
+        public void SetMeshQuality(MeshQuality value)
+        {
+            Data.meshQuality = value;
         }
 
         public void SetSunShadowsQuality(ShadowsQuality value)
@@ -148,6 +160,7 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers
             
             // Texture quality
             QualitySettings.globalTextureMipmapLimit = MaxTextureQuality - (int)Data.textureQuality;
+            QualitySettings.meshLodThreshold = _meshQualityLods[Data.meshQuality];
             
             // Sun Shadows
             var sunData = RenderSettings.sun.GetComponent<HDAdditionalLightData>();
@@ -271,6 +284,7 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers
         public MotionBlurState motionBlur = MotionBlurState.On;
         public MotionBlurQuality motionBlurQuality = MotionBlurQuality.High;
         public TextureQuality textureQuality = TextureQuality.High;
+        public MeshQuality meshQuality = MeshQuality.VeryHigh;
         public RefractionQuality refractionQuality = RefractionQuality.Native;
         public ScreenSpaceReflectionQuality screenSpaceReflectionQuality = ScreenSpaceReflectionQuality.Medium;
         public ContactShadowsQuality contactShadowsQuality = ContactShadowsQuality.Medium;
@@ -283,6 +297,13 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers
         Medium = 1,
         High = 2,
         VeryHigh = 3,
+    }
+    
+    public enum MeshQuality
+    {
+        Medium = 0,
+        High = 1,
+        VeryHigh = 2,
     }
 
     public enum ShadowsQuality
