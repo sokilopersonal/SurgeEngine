@@ -107,7 +107,7 @@ namespace FMODUnity
             {
                 RuntimeUtils.DebugLogWarning(string.Format(("[FMOD] {0} : {1}"), (string)func, (string)message));
             }
-            else if (flags == FMOD.DEBUG_FLAGS.LOG)
+            else if (flags == FMOD.DEBUG_FLAGS.LOG || flags == FMOD.DEBUG_FLAGS.TYPE_VIRTUAL)
             {
                 RuntimeUtils.DebugLog(string.Format(("[FMOD] {0} : {1}"), (string)func, (string)message));
             }
@@ -117,11 +117,11 @@ namespace FMODUnity
         [AOT.MonoPInvokeCallback(typeof(FMOD.SYSTEM_CALLBACK))]
         private static FMOD.RESULT ERROR_CALLBACK(IntPtr system, FMOD.SYSTEM_CALLBACK_TYPE type, IntPtr commanddata1, IntPtr commanddata2, IntPtr userdata)
         {
-            FMOD.ERRORCALLBACK_INFO callbackInfo = (FMOD.ERRORCALLBACK_INFO)FMOD.MarshalHelper.PtrToStructure(commanddata1, typeof(FMOD.ERRORCALLBACK_INFO));
+            FMOD.ERRORCALLBACK_INFO callbackInfo = Marshal.PtrToStructure<FMOD.ERRORCALLBACK_INFO>(commanddata1);
 
             // Filter out benign expected errors.
             if ((callbackInfo.instancetype == FMOD.ERRORCALLBACK_INSTANCETYPE.CHANNEL || callbackInfo.instancetype == FMOD.ERRORCALLBACK_INSTANCETYPE.CHANNELCONTROL)
-                && callbackInfo.result == FMOD.RESULT.ERR_INVALID_HANDLE)
+                && (callbackInfo.result == FMOD.RESULT.ERR_INVALID_HANDLE || callbackInfo.result == FMOD.RESULT.ERR_CHANNEL_STOLEN))
             {
                 return FMOD.RESULT.OK;
             }
@@ -182,6 +182,11 @@ namespace FMODUnity
                     try
                     {
                         RuntimeUtils.EnforceLibraryOrder();
+
+                        #if UNITY_OPENHARMONY && !UNITY_EDITOR
+                        OpenHarmonyJSObject openHarmonyJSObject = new OpenHarmonyJSObject("ClassFMOD" + FMOD.VERSION.dllSuffix);
+                        openHarmonyJSObject.Call("init");
+                        #endif
 
                         #if UNITY_ANDROID && !UNITY_EDITOR
                         // First, obtain the current activity context
@@ -524,9 +529,9 @@ retry:
                     {
                         FMOD.ATTRIBUTES_3D attribs;
                         eventPositionWarnings[i].get3DAttributes(out attribs);
-                        if (attribs.position.x == 1e+18F &&
-                            attribs.position.y == 1e+18F &&
-                            attribs.position.z == 1e+18F)
+                        if (attribs.position.x == 1e+17F &&
+                            attribs.position.y == 1e+17F &&
+                            attribs.position.z == 1e+17F)
                         {
                             string path;
                             FMOD.Studio.EventDescription desc;
@@ -579,6 +584,18 @@ retry:
             return attachedInstance;
         }
 
+        public static void AttachInstanceToGameObject(FMOD.Studio.EventInstance instance, GameObject gameObject, bool nonRigidbodyVelocity = false)
+        {
+            AttachedInstance attachedInstance = FindOrAddAttachedInstance(instance, gameObject.transform, RuntimeUtils.To3DAttributes(gameObject.transform));
+
+            if (nonRigidbodyVelocity)
+            {
+                attachedInstance.nonRigidbodyVelocity = nonRigidbodyVelocity;
+                attachedInstance.lastFramePosition = gameObject.transform.position;
+            }
+        }
+
+        [Obsolete("This overload has been deprecated in favor of passing a GameObject instead of a Transform.", false)]
         public static void AttachInstanceToGameObject(FMOD.Studio.EventInstance instance, Transform transform, bool nonRigidbodyVelocity = false)
         {
             AttachedInstance attachedInstance = FindOrAddAttachedInstance(instance, transform, RuntimeUtils.To3DAttributes(transform));
@@ -591,6 +608,14 @@ retry:
         }
 
 #if UNITY_PHYSICS_EXIST
+        public static void AttachInstanceToGameObject(FMOD.Studio.EventInstance instance, GameObject gameObject, Rigidbody rigidBody)
+        {
+            AttachedInstance attachedInstance = FindOrAddAttachedInstance(instance, gameObject.transform, RuntimeUtils.To3DAttributes(gameObject.transform, rigidBody));
+
+            attachedInstance.rigidBody = rigidBody;
+        }
+
+        [Obsolete("This overload has been deprecated in favor of passing a GameObject instead of a Transform.", false)]
         public static void AttachInstanceToGameObject(FMOD.Studio.EventInstance instance, Transform transform, Rigidbody rigidBody)
         {
             AttachedInstance attachedInstance = FindOrAddAttachedInstance(instance, transform, RuntimeUtils.To3DAttributes(transform, rigidBody));
@@ -600,6 +625,14 @@ retry:
 #endif
 
 #if UNITY_PHYSICS2D_EXIST
+        public static void AttachInstanceToGameObject(FMOD.Studio.EventInstance instance, GameObject gameObject, Rigidbody2D rigidBody2D)
+        {
+            AttachedInstance attachedInstance = FindOrAddAttachedInstance(instance, gameObject.transform, RuntimeUtils.To3DAttributes(gameObject.transform, rigidBody2D));
+
+            attachedInstance.rigidBody2D = rigidBody2D;
+        }
+
+        [Obsolete("This overload has been deprecated in favor of passing a GameObject instead of a Transform.", false)]
         public static void AttachInstanceToGameObject(FMOD.Studio.EventInstance instance, Transform transform, Rigidbody2D rigidBody2D)
         {
             AttachedInstance attachedInstance = FindOrAddAttachedInstance(instance, transform, RuntimeUtils.To3DAttributes(transform, rigidBody2D));
@@ -1194,8 +1227,8 @@ retry:
             eventDesc.is3D(out is3D);
             if (is3D)
             {
-                // Set position to 1e+18F, set3DAttributes should be called by the dev after this.
-                newInstance.set3DAttributes(RuntimeUtils.To3DAttributes(new Vector3(1e+18F, 1e+18F, 1e+18F)));
+                // Set position to 1e+17F, set3DAttributes should be called by the dev after this.
+                newInstance.set3DAttributes(RuntimeUtils.To3DAttributes(new Vector3(1e+17F, 1e+17F, 1e+17F)));
                 instance.eventPositionWarnings.Add(newInstance);
             }
             #endif
@@ -1229,10 +1262,12 @@ retry:
 
         public static void PlayOneShot(FMOD.GUID guid, Vector3 position = new Vector3())
         {
-            var instance = CreateInstance(guid);
-            instance.set3DAttributes(RuntimeUtils.To3DAttributes(position));
-            instance.start();
-            instance.release();
+            if (CreateInstanceWithinMaxDistance(guid, position, out FMOD.Studio.EventInstance instance))
+            {
+                instance.set3DAttributes(RuntimeUtils.To3DAttributes(position));
+                instance.start();
+                instance.release();
+            }
         }
 
         public static void PlayOneShotAttached(EventReference eventReference, GameObject gameObject)
@@ -1261,16 +1296,39 @@ retry:
 
         public static void PlayOneShotAttached(FMOD.GUID guid, GameObject gameObject)
         {
-            var instance = CreateInstance(guid);
-            #if UNITY_PHYSICS_EXIST
-            AttachInstanceToGameObject(instance, gameObject.transform, gameObject.GetComponent<Rigidbody>());
-            #elif UNITY_PHYSICS2D_EXIST
-            AttachInstanceToGameObject(instance, gameObject.transform, gameObject.GetComponent<Rigidbody2D>());
-            #else
-            AttachInstanceToGameObject(instance, gameObject.transform);
-            #endif
-            instance.start();
-            instance.release();
+            if (CreateInstanceWithinMaxDistance(guid, gameObject.transform.position, out FMOD.Studio.EventInstance instance))
+            {
+                #if UNITY_PHYSICS_EXIST
+                AttachInstanceToGameObject(instance, gameObject, gameObject.GetComponent<Rigidbody>());
+                #elif UNITY_PHYSICS2D_EXIST
+                AttachInstanceToGameObject(instance, gameObject, gameObject.GetComponent<Rigidbody2D>());
+                #else
+                AttachInstanceToGameObject(instance, gameObject);
+                #endif
+                instance.start();
+                instance.release();
+            }
+        }
+
+        private static bool CreateInstanceWithinMaxDistance(FMOD.GUID guid, Vector3 position, out FMOD.Studio.EventInstance instance)
+        {
+            FMOD.Studio.EventDescription description = GetEventDescription(guid);
+            if (Settings.Instance.StopEventsOutsideMaxDistance)
+            {
+                description.is3D(out bool is3D);
+                if (is3D)
+                {
+                    description.getMinMaxDistance(out float min, out float max);
+                    if (StudioListener.DistanceSquaredToNearestListener(position) > (max * max))
+                    {
+                        instance = new FMOD.Studio.EventInstance();
+                        return false;
+                    }
+                }
+            }
+
+            description.createInstance(out instance);
+            return true;
         }
 
         public static FMOD.Studio.EventDescription GetEventDescription(EventReference eventReference)
@@ -1358,6 +1416,18 @@ retry:
             }
         }
 #endif
+
+        public static void SetListenerLocation(int listenerIndex, GameObject gameObject, GameObject attenuationObject = null, Vector3 velocity = new Vector3())
+        {
+            if (attenuationObject)
+            {
+                Instance.studioSystem.setListenerAttributes(listenerIndex, RuntimeUtils.To3DAttributes(gameObject.transform, velocity), RuntimeUtils.ToFMODVector(attenuationObject.transform.position));
+            }
+            else
+            {
+                Instance.studioSystem.setListenerAttributes(listenerIndex, RuntimeUtils.To3DAttributes(gameObject.transform, velocity));
+            }
+        }
 
         public static void SetListenerLocation(GameObject gameObject, GameObject attenuationObject = null)
         {

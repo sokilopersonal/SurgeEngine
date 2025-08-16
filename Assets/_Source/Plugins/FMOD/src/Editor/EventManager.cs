@@ -25,6 +25,8 @@ namespace FMODUnity
         private const string StringBankExtension = "strings.bank";
         private const string BankExtension = "bank";
 
+        private static HashSet<string> newBankPaths = new HashSet<string>();
+
 #if UNITY_EDITOR
         [MenuItem("FMOD/Refresh Banks", priority = 1)]
         public static void RefreshBanks()
@@ -49,6 +51,7 @@ namespace FMODUnity
             eventCache.CacheTime = DateTime.MinValue;
             eventCache.EditorBanks.Clear();
             eventCache.EditorEvents.Clear();
+            eventCache.EditorEventsDict.Clear();
             eventCache.EditorParameters.Clear();
             eventCache.StringsBanks.Clear();
             eventCache.MasterBanks.Clear();
@@ -95,6 +98,13 @@ namespace FMODUnity
             var settings = Settings.Instance;
             var editorSettings = EditorSettings.Instance;
 
+            EditorUtils.ValidateSource(out bool isValid, out string reason);
+            if (!isValid)
+            {
+                ClearCache();
+                return reason;
+            }
+
             if (string.IsNullOrEmpty(settings.SourceBankPath))
             {
                 ClearCache();
@@ -126,8 +136,23 @@ namespace FMODUnity
                 bankFolders[i] = RuntimeUtils.GetCommonPlatformPath(Path.Combine(settings.SourceBankPath, bankPlatforms[i]));
             }
 
+            if (!Directory.Exists(defaultBankFolder))
+            {
+                ClearCache();
+                return string.Format("Directory {0} doesn't exist. Please confirm project directory in the settings.", defaultBankFolder);
+            }
+
+
+
             // Get all banks and set cache time to most recent write time
             List<string> bankFileNames = new List<string>(Directory.GetFiles(defaultBankFolder, "*.bank", SearchOption.AllDirectories));
+
+            if (bankFileNames.Count == 0)
+            {
+                ClearCache();
+                return string.Format("Directory {0} doesn't contain any banks.\nBuild the banks in Studio or check the path in the settings.", defaultBankFolder);
+            }
+
             DateTime lastWriteTime = bankFileNames.Max(fileName => File.GetLastWriteTime(fileName));
 
             // Exit early if cache is up to date
@@ -354,6 +379,7 @@ namespace FMODUnity
                 });
                 eventCache.EditorParameters.RemoveAll((x) => x == null);
 
+                eventCache.BuildDictionary();
                 AssetDatabase.SaveAssets();
             }
             finally
@@ -380,6 +406,7 @@ namespace FMODUnity
 
         private static void ShowEventsRenamedDialog()
         {
+#if !FMOD_SERIALIZE_GUID_ONLY
             bool runUpdater = EditorUtility.DisplayDialog("Events Renamed",
                 string.Format("Some events have been renamed in FMOD Studio. Do you want to run {0} " +
                 "to find and update any references to them?", EventReferenceUpdater.MenuPath), "Yes", "No");
@@ -388,6 +415,7 @@ namespace FMODUnity
             {
                 EventReferenceUpdater.ShowWindow();
             }
+#endif
         }
 
         private static void UpdateCacheBank(EditorBankRef bankRef, ref bool renameOccurred)
@@ -418,7 +446,7 @@ namespace FMODUnity
                         FMOD.GUID guid;
                         eventDesc.getID(out guid);
 
-                        EditorEventRef eventRef = eventCache.EditorEvents.Find((x) => x.Path == path);
+                        EditorEventRef eventRef = eventCache.EditorEvents.Find((x) => string.Compare(x.Path, path, StringComparison.CurrentCultureIgnoreCase) == 0);
                         if (eventRef == null)
                         {
                             eventRef = ScriptableObject.CreateInstance<EditorEventRef>();
@@ -569,6 +597,7 @@ namespace FMODUnity
             BuildStatusWatcher.OnBuildStarted += () => {
                 BuildTargetChanged();
                 CopyToStreamingAssets(EditorUserBuildSettings.activeBuildTarget);
+                ApplyFMODLabel();
             };
             BuildStatusWatcher.OnBuildEnded += () => {
                 UpdateBankStubAssets(EditorUserBuildSettings.activeBuildTarget);
@@ -653,7 +682,7 @@ namespace FMODUnity
 #pragma warning restore 0618
                 {
                     RuntimeUtils.DebugLogWarningFormat("FMOD: A component of type {0} in scene '{1}' on GameObject '{2}' has an "
-                        + "obsolete [EventRef] attribute on field {3}. {4}",
+                        + "obsolete [FMODUnity.EventRef] attribute on field {3}. {4}",
                         type.Name, scene.name, EditorUtils.GameObjectPath(behaviour), field.Name,
                         UpdaterInstructions);
                 }
@@ -841,8 +870,7 @@ namespace FMODUnity
 
                         string assetString = targetPathFull.Replace(Application.dataPath, "Assets");
                         AssetDatabase.ImportAsset(assetString);
-                        UnityEngine.Object obj = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(assetString);
-                        AssetDatabase.SetLabels(obj, new string[] { FMODLabel });
+                        newBankPaths.Add(assetString);
                     }
                 }
 
@@ -1222,7 +1250,13 @@ namespace FMODUnity
         public static EditorEventRef EventFromString(string path)
         {
             AffirmEventCache();
-            return eventCache.EditorEvents.Find((x) => x.Path.Equals(path, StringComparison.CurrentCultureIgnoreCase));
+
+            if (eventCache.EditorEventsDict.TryGetValue(path, out int index))
+            {
+                return eventCache.EditorEvents[index];
+            }
+
+            return null;
         }
 
         public static EditorEventRef EventFromGUID(FMOD.GUID guid)
@@ -1363,6 +1397,20 @@ namespace FMODUnity
                     AssetDatabase.MoveAssetToTrash(assetPath);
                 }
             }
+        }
+
+        private static void ApplyFMODLabel()
+        {
+            foreach (string assetPath in newBankPaths)
+            {
+                if (!AssetHasLabel(assetPath, FMODLabel))
+                {
+                    UnityEngine.Object obj = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(assetPath);
+                    AssetDatabase.SetLabels(obj, new string[] { FMODLabel });
+                }
+            }
+
+            newBankPaths.Clear();
         }
     }
 }

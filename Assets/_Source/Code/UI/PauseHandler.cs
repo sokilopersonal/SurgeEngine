@@ -20,12 +20,10 @@ namespace SurgeEngine.Code.UI
 
         [Header("Input")]
         [SerializeField] private InputActionReference pauseActionReference;
-        [SerializeField] private float pauseDelay = 0.2f;
         
         private bool _canPause;
         
         private Sequence _pauseFadeTween;
-        private InputDevice _device;
 
         [Inject] private GameSettings _gameSettings;
         [Inject] private VolumeManager _volumeManager;
@@ -121,8 +119,7 @@ namespace SurgeEngine.Code.UI
             if (!_canPause || context.IsDead) return;
             
             Active = !Active;
-
-            _device = obj.control.device;
+            
             SetPause(Active);
         }
 

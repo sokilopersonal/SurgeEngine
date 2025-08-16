@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<objects serializationModel="Studio.02.02.00">
+<objects serializationModel="Studio.02.03.00">
 	<object class="Event" id="{70497cbd-75f0-4dbb-b6dd-cdfe191c7164}">
 		<property name="name">
 			<value>DriftLoop</value>
@@ -85,8 +85,8 @@
 	</object>
 	<object class="Timeline" id="{4c1f389a-99f6-466f-9f59-a82eca1ea648}">
 		<relationship name="modules">
-			<destination>{7b2d8ff2-8125-4cc4-aedb-a5e2dd65017c}</destination>
 			<destination>{e9dc2d44-c37c-487e-95e0-b5afa8da1d83}</destination>
+			<destination>{7b2d8ff2-8125-4cc4-aedb-a5e2dd65017c}</destination>
 		</relationship>
 		<relationship name="markers">
 			<destination>{7ca39023-f2fc-4e1c-a362-25058a1babbb}</destination>
@@ -297,8 +297,8 @@
 			<destination>{0e83af7e-3894-413f-b87b-d057df05d688}</destination>
 		</relationship>
 		<relationship name="automationPoints">
-			<destination>{63ed59ed-c2c6-4572-91cf-e32c172a20e9}</destination>
 			<destination>{ce72bd96-4548-4ae4-a2b7-64e1463fb201}</destination>
+			<destination>{63ed59ed-c2c6-4572-91cf-e32c172a20e9}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{d8803b02-77a7-40a6-820e-74baf3bb3447}" />
@@ -318,20 +318,20 @@
 			<value>3.81469727e-06</value>
 		</property>
 	</object>
-	<object class="AutomationPoint" id="{63ed59ed-c2c6-4572-91cf-e32c172a20e9}">
-		<property name="position">
-			<value>0</value>
-		</property>
-		<property name="value">
-			<value>-80</value>
-		</property>
-	</object>
 	<object class="AutomationPoint" id="{ce72bd96-4548-4ae4-a2b7-64e1463fb201}">
 		<property name="position">
 			<value>1</value>
 		</property>
 		<property name="value">
 			<value>0</value>
+		</property>
+	</object>
+	<object class="AutomationPoint" id="{63ed59ed-c2c6-4572-91cf-e32c172a20e9}">
+		<property name="position">
+			<value>0</value>
+		</property>
+		<property name="value">
+			<value>-80</value>
 		</property>
 	</object>
 </objects>
