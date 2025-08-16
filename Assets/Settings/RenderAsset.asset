@@ -19,6 +19,7 @@ MonoBehaviour:
     supportSSAO: 1
     supportSSGI: 0
     supportSubsurfaceScattering: 1
+    subsurfaceScatteringAttenuation: 1
     sssSampleBudget:
       m_Values: 100000002000000040000000
       m_SchemaId:
@@ -34,6 +35,7 @@ MonoBehaviour:
     supportWater: 0
     waterSimulationResolution: 128
     supportWaterExclusion: 1
+    supportWaterHorizontalDeformation: 0
     supportWaterDecals: 1
     waterDecalAtlasSize: 1024
     maximumWaterDecalCount: 48
@@ -50,8 +52,9 @@ MonoBehaviour:
     supportTransparentDepthPostpass: 0
     colorBufferFormat: 48
     supportCustomPass: 1
+    supportVariableRateShading: 1
     customBufferFormat: 8
-    supportedLitShaderMode: 3
+    supportedLitShaderMode: 2
     planarReflectionResolution:
       m_Values: 000100000002000000040000
       m_SchemaId:
@@ -163,11 +166,11 @@ MonoBehaviour:
       lutFormat: 48
       bufferFormat: 74
     dynamicResolutionSettings:
-      enabled: 0
-      useMipBias: 0
-      advancedUpscalersByPriority: 000102
+      enabled: 1
+      useMipBias: 1
+      advancedUpscalersByPriority: 0001
       DLSSPerfQualitySetting: 2
-      DLSSInjectionPoint: 0
+      DLSSInjectionPoint: 1
       TAAUInjectionPoint: 0
       STPInjectionPoint: 0
       defaultInjectionPoint: 0
@@ -177,7 +180,7 @@ MonoBehaviour:
       FSR2Sharpness: 0
       FSR2UseOptimalSettings: 0
       FSR2QualitySetting: 0
-      FSR2InjectionPoint: 0
+      FSR2InjectionPoint: 1
       fsrOverrideSharpness: 0
       fsrSharpness: 1
       maxPercentage: 100
@@ -543,4 +546,5 @@ MonoBehaviour:
   m_ObsoleteShaderVariantLogLevel: 0
   m_ObsoleteLensAttenuation: 0
   m_ObsoleteDiffusionProfileSettingsList: []
-  m_PrefilterUseLegacyLightmaps: 1
+  m_PrefilterUseLegacyLightmaps: 0
+  m_PrefilterUseLightmapBicubicSampling: 0

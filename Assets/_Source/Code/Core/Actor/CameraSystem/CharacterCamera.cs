@@ -6,7 +6,6 @@ using SurgeEngine.Code.Core.Actor.CameraSystem.Pans;
 using SurgeEngine.Code.Core.Actor.States;
 using SurgeEngine.Code.Core.Actor.System;
 using SurgeEngine.Code.Gameplay.CommonObjects.System;
-using UnityEditor;
 using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.CameraSystem
@@ -180,7 +179,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
                 style.normal.background.SetPixel(0, 0, new Color(0.8f, 0.8f, 0.8f, 0.75f));
                 style.normal.background.Apply();
 
-                var labelStyle = new GUIStyle(EditorStyles.boldLabel);
+                var labelStyle = new GUIStyle();
                 labelStyle.fontSize = 16; 
                 labelStyle.normal.textColor = Color.black;
                 
