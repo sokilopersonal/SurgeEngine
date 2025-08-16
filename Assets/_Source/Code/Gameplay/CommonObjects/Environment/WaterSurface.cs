@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Gameplay.CommonObjects.Environment
 {
-    public class WaterSurface : MonoBehaviour, IPlayerContactable
+    public class WaterSurface : ContactBase
     {
         [Header("Water")]
         [SerializeField] private float minimumSpeed = 20f;
@@ -133,10 +133,12 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Environment
             }
         }
 
-        public void OnContact(Collider msg)
+        public override void Contact(Collider msg, CharacterBase context)
         {
-            _surfaceCharacter = msg.transform.root.GetComponentInChildren<CharacterBase>(); ;
-            _surfaceRigidbody = _surfaceCharacter.Kinematics.Rigidbody;
+            base.Contact(msg, context);
+            
+            _surfaceCharacter = context;
+            _surfaceRigidbody = context.Rigidbody;
             _contactPoint = msg.ClosestPoint(_surfaceRigidbody.transform.position);
             
             RuntimeManager.PlayOneShot(_splashSound, _contactPoint);

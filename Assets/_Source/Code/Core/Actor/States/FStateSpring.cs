@@ -47,7 +47,6 @@ namespace SurgeEngine.Code.Core.Actor.States
 
             if (_travelledDistance >= _springObject.KeepVelocityDistance)
             {
-                Rigidbody.isKinematic = false;
                 Rigidbody.linearVelocity = dir * _springObject.Speed;
                 StateMachine.SetState<FStateAir>();
             }
@@ -63,7 +62,6 @@ namespace SurgeEngine.Code.Core.Actor.States
             _startPos = Rigidbody.position;
 
             Rigidbody.linearVelocity = Vector3.zero;
-            Rigidbody.isKinematic = true;
         }
     }
 }

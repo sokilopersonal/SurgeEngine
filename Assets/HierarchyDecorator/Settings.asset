@@ -291,7 +291,7 @@ MonoBehaviour:
     clickToToggleComponent: 0
     showMissingScriptWarning: 1
     showAll: 3
-    stackDuplicateIcons: 1
+    stackDuplicateIcons: 0
     unityGroups:
     - name: General
       components:
@@ -5226,6 +5226,162 @@ MonoBehaviour:
         excluded: 0
         isBuiltIn: 0
         script: {fileID: 11500000, guid: 12c9d26b95d44654b15203d1206cb0dc, type: 3}
+        hasToggle: 1
+      - displayName: SonicInput
+        name: SurgeEngine.Code.Core.Actor.System.Characters.Sonic.SonicInput, Assembly-CSharp,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        content:
+          m_Text: SonicInput
+          m_Image: {fileID: -8204150473280056172, guid: 0000000000000000d000000000000000, type: 0}
+          m_Tooltip: SonicInput
+          m_TextWithWhitespace: "SonicInput\u200B"
+        shown: 0
+        excluded: 0
+        isBuiltIn: 0
+        script: {fileID: 11500000, guid: daaf94f2b73d48f49533d8449fe6b6f1, type: 3}
+        hasToggle: 1
+      - displayName: CharacterFlags
+        name: SurgeEngine.Code.Core.Actor.System.CharacterFlags, Assembly-CSharp,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        content:
+          m_Text: CharacterFlags
+          m_Image: {fileID: -8204150473280056172, guid: 0000000000000000d000000000000000, type: 0}
+          m_Tooltip: CharacterFlags
+          m_TextWithWhitespace: "CharacterFlags\u200B"
+        shown: 0
+        excluded: 0
+        isBuiltIn: 0
+        script: {fileID: 11500000, guid: 10537bbdaf744484a584312d63000c13, type: 3}
+        hasToggle: 1
+      - displayName: CharacterLife
+        name: SurgeEngine.Code.Core.Actor.System.CharacterLife, Assembly-CSharp,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        content:
+          m_Text: CharacterLife
+          m_Image: {fileID: -8204150473280056172, guid: 0000000000000000d000000000000000, type: 0}
+          m_Tooltip: CharacterLife
+          m_TextWithWhitespace: "CharacterLife\u200B"
+        shown: 0
+        excluded: 0
+        isBuiltIn: 0
+        script: {fileID: 11500000, guid: ed76de6d8199464485eb939cb244a342, type: 3}
+        hasToggle: 1
+      - displayName: CharacterStageHUD
+        name: SurgeEngine.Code.Core.Actor.HUD.CharacterStageHUD, Assembly-CSharp,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        content:
+          m_Text: CharacterStageHUD
+          m_Image: {fileID: -8204150473280056172, guid: 0000000000000000d000000000000000, type: 0}
+          m_Tooltip: CharacterStageHUD
+          m_TextWithWhitespace: "CharacterStageHUD\u200B"
+        shown: 0
+        excluded: 0
+        isBuiltIn: 0
+        script: {fileID: 11500000, guid: 464542615e0a42e58269d93d680220b4, type: 3}
+        hasToggle: 1
+      - displayName: TrickJumperUI
+        name: SurgeEngine.Code.Core.Actor.HUD.TrickJumperUI, Assembly-CSharp, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+        content:
+          m_Text: TrickJumperUI
+          m_Image: {fileID: -8204150473280056172, guid: 0000000000000000d000000000000000, type: 0}
+          m_Tooltip: TrickJumperUI
+          m_TextWithWhitespace: "TrickJumperUI\u200B"
+        shown: 0
+        excluded: 0
+        isBuiltIn: 0
+        script: {fileID: 11500000, guid: 363cf2df722ab6e4caa52afcfe96db06, type: 3}
+        hasToggle: 1
+      - displayName: BoostBarController
+        name: SurgeEngine.Code.Core.Actor.HUD.BoostBarController, Assembly-CSharp,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        content:
+          m_Text: BoostBarController
+          m_Image: {fileID: -8204150473280056172, guid: 0000000000000000d000000000000000, type: 0}
+          m_Tooltip: BoostBarController
+          m_TextWithWhitespace: "BoostBarController\u200B"
+        shown: 0
+        excluded: 0
+        isBuiltIn: 0
+        script: {fileID: 11500000, guid: 94b9c601efcc4a72b117634c343db9e0, type: 3}
+        hasToggle: 1
+      - displayName: MenuNavigationSystem
+        name: SurgeEngine.Code.UI.Navigation.MenuNavigationSystem, Assembly-CSharp,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        content:
+          m_Text: MenuNavigationSystem
+          m_Image: {fileID: -8204150473280056172, guid: 0000000000000000d000000000000000, type: 0}
+          m_Tooltip: MenuNavigationSystem
+          m_TextWithWhitespace: "MenuNavigationSystem\u200B"
+        shown: 0
+        excluded: 0
+        isBuiltIn: 0
+        script: {fileID: 11500000, guid: 6232bfa8a1c74777a9c4093d6b07bc09, type: 3}
+        hasToggle: 1
+      - displayName: GrassRenderer
+        name: SurgeEngine.Code.Rendering.GrassRenderer, Assembly-CSharp, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+        content:
+          m_Text: GrassRenderer
+          m_Image: {fileID: -8204150473280056172, guid: 0000000000000000d000000000000000, type: 0}
+          m_Tooltip: GrassRenderer
+          m_TextWithWhitespace: "GrassRenderer\u200B"
+        shown: 0
+        excluded: 0
+        isBuiltIn: 0
+        script: {fileID: 11500000, guid: d2f9c7931e6d4b1f9a2c24361a3cbe45, type: 3}
+        hasToggle: 1
+      - displayName: DestroyedPiece
+        name: SurgeEngine.Code.Gameplay.CommonObjects.PhysicsObjects.DestroyedPiece,
+          Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        content:
+          m_Text: DestroyedPiece
+          m_Image: {fileID: -8204150473280056172, guid: 0000000000000000d000000000000000, type: 0}
+          m_Tooltip: DestroyedPiece
+          m_TextWithWhitespace: "DestroyedPiece\u200B"
+        shown: 0
+        excluded: 0
+        isBuiltIn: 0
+        script: {fileID: 11500000, guid: 1640cca5740c4c0aa868de78ef2f562b, type: 3}
+        hasToggle: 1
+      - displayName: WaterSurface
+        name: SurgeEngine.Code.Gameplay.CommonObjects.Environment.WaterSurface, Assembly-CSharp,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        content:
+          m_Text: WaterSurface
+          m_Image: {fileID: -8204150473280056172, guid: 0000000000000000d000000000000000, type: 0}
+          m_Tooltip: WaterSurface
+          m_TextWithWhitespace: "WaterSurface\u200B"
+        shown: 0
+        excluded: 0
+        isBuiltIn: 0
+        script: {fileID: 11500000, guid: a67c8315a0874ad8a84e0981b0f6b670, type: 3}
+        hasToggle: 1
+      - displayName: WideSpring
+        name: SurgeEngine.Code.Gameplay.CommonObjects.Mobility.WideSpring, Assembly-CSharp,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        content:
+          m_Text: WideSpring
+          m_Image: {fileID: -8204150473280056172, guid: 0000000000000000d000000000000000, type: 0}
+          m_Tooltip: WideSpring
+          m_TextWithWhitespace: "WideSpring\u200B"
+        shown: 0
+        excluded: 0
+        isBuiltIn: 0
+        script: {fileID: 11500000, guid: 7e54367f2d87469983db73c75930d118, type: 3}
+        hasToggle: 1
+      - displayName: Ring
+        name: SurgeEngine.Code.Gameplay.CommonObjects.Collectables.Ring, Assembly-CSharp,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        content:
+          m_Text: Ring
+          m_Image: {fileID: -8204150473280056172, guid: 0000000000000000d000000000000000, type: 0}
+          m_Tooltip: Ring
+          m_TextWithWhitespace: "Ring\u200B"
+        shown: 0
+        excluded: 0
+        isBuiltIn: 0
+        script: {fileID: 11500000, guid: 09af42e98110490c9542b074a33e2c21, type: 3}
         hasToggle: 1
     unityVersion: 6000.2.0f1
     unityCount: 352

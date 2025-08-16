@@ -67,6 +67,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
                 {
                     targetNormal = Vector3.up;
                     Kinematics.Normal = targetNormal;
+                    StateMachine.SetState<FStateAir>();
                 }
                 
                 if (!predictedGround) Kinematics.RotateSnapNormal(targetNormal);

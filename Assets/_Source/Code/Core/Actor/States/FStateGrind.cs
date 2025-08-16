@@ -74,15 +74,8 @@ namespace SurgeEngine.Code.Core.Actor.States
                 Debug.DrawRay(pos, targetUp, Color.green);
                 Debug.DrawRay(pos, right, Color.yellow);
                 
-                if (_lastTangent != Vector3.zero)
-                {
-                    Rigidbody.linearVelocity = Quaternion.FromToRotation(_lastTangent, tg) * Rigidbody.linearVelocity;
-                }
-                
                 Rigidbody.linearVelocity = Vector3.ProjectOnPlane(Rigidbody.linearVelocity, targetUp);
                 Rigidbody.linearVelocity = Vector3.ProjectOnPlane(Rigidbody.linearVelocity, right);
-                
-                _lastTangent = tg;
                 
                 Vector3 downForce = Vector3.ProjectOnPlane(Vector3.down, targetUp) * gravityPower;
                 Rigidbody.AddForce(downForce * dt, ForceMode.Impulse);
@@ -102,8 +95,8 @@ namespace SurgeEngine.Code.Core.Actor.States
                 {
                     if (IsRailCooldown()) return;
 
-                    const float THRESHOLD = 0.00075f;
-                    bool outOfTime = 1 - _data.NormalizedTime < THRESHOLD || _data.NormalizedTime < THRESHOLD;
+                    const float THRESHOLD = 0.0002f;
+                    bool outOfTime = _data.Time > _data.Length || _data.Time < 0f;
                     
                     if (outOfTime)
                     {
@@ -120,7 +113,7 @@ namespace SurgeEngine.Code.Core.Actor.States
             _data = new SplineData(rail.Container, pos);
             _data.EvaluateWorld(out _, out Vector3 tg, out var up, out var right);
             
-            float dot = Vector3.Dot(Rigidbody.transform.forward, tg);
+            float dot = Vector3.Dot(Kinematics.Velocity.normalized, tg);
             _isForward = dot > 0;
             
             _rail = rail;

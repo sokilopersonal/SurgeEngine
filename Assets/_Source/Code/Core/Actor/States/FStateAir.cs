@@ -46,7 +46,10 @@ namespace SurgeEngine.Code.Core.Actor.States
                 float gravity = Kinematics.Gravity;
                 if (character.Flags.HasFlag(FlagType.OnWater))
                 {
-                    gravity /= 4f;
+                    if (Kinematics.VerticalVelocity.y < 2f)
+                    {
+                        gravity /= 6f;
+                    }
                 }
                 
                 Kinematics.ApplyGravity(gravity);
