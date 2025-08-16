@@ -79,6 +79,21 @@ namespace SurgeEngine.Code.UI.OptionBars
         {
             Index = index;
         }
+        
+        public void AddOption(string value)
+        {
+            definition.Values.Add(value);
+        }
+
+        public void RemoveOption(string value)
+        {
+            definition.Values.Remove(value);
+        }
+        
+        public void ClearOptions()
+        {
+            definition.Values.Clear();
+        }
 
         public override void OnMove(AxisEventData eventData)
         {

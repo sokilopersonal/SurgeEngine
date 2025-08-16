@@ -68,7 +68,7 @@ namespace SurgeEngine.Code.UI.Pages.Baseline.AnimatedPages
             base.Show();
 
             _currentSubPage = 0;
-            sequence.Join(background.DOFade(0.2f, enterDuration));
+            sequence.Join(background.DOFade(0f, enterDuration));
         }
 
         protected override void Hide()

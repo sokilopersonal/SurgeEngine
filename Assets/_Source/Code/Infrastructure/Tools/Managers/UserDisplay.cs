@@ -1,6 +1,7 @@
 ﻿using System;
 using SurgeEngine.Code.Infrastructure.Tools.Services;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.Rendering.HighDefinition;
 using UnityEngine.SceneManagement;
 using Zenject;
@@ -49,6 +50,17 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers
         {
             Data.sharpness = Mathf.Clamp(value, 0, 2);
         }
+        
+        public void SetUpscalingMode(UpscalingMode mode)
+        {
+            Data.upscaleMode = mode;
+           
+        }
+        
+        public void SetUpscalingQuality(UpscalingQuality quality)
+        {
+            Data.upscaleQuality = quality;
+        }
 
         public void SetResolution(Vector2 value)
         {
@@ -75,6 +87,50 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers
             }
             
             _hdCameraData.taaSharpenStrength = Data.sharpness;
+            _hdCameraData.allowDynamicResolution = true;
+            
+            _hdCameraData.deepLearningSuperSamplingUseCustomAttributes = false;
+            _hdCameraData.deepLearningSuperSamplingUseCustomQualitySettings = false;
+            _hdCameraData.deepLearningSuperSamplingUseOptimalSettings = false;
+
+            _hdCameraData.fidelityFX2SuperResolutionUseCustomAttributes = false;
+            _hdCameraData.fidelityFX2SuperResolutionUseCustomQualitySettings = false;
+            _hdCameraData.fidelityFX2SuperResolutionUseOptimalSettings = false;
+            
+            switch (Data.upscaleMode)
+            {
+                case UpscalingMode.TAA:
+                    _hdCameraData.allowDeepLearningSuperSampling = false;
+                    _hdCameraData.allowFidelityFX2SuperResolution = false;
+                    break;
+                case UpscalingMode.FSR:
+                    _hdCameraData.allowFidelityFX2SuperResolution = true;
+                    _hdCameraData.allowDeepLearningSuperSampling = false;
+                    break;
+                case UpscalingMode.DLSS:
+                    _hdCameraData.allowDeepLearningSuperSampling = true;
+                    _hdCameraData.allowFidelityFX2SuperResolution = false;
+                    break;
+            }
+
+            switch (Data.upscaleQuality)
+            {
+                case UpscalingQuality.UltraPerformance:
+                    DynamicResolutionHandler.SetDynamicResScaler(() => 0.33f);
+                    break;
+                case UpscalingQuality.Performance:
+                    DynamicResolutionHandler.SetDynamicResScaler(() => 0.5f);
+                    break;
+                case UpscalingQuality.Balanced:
+                    DynamicResolutionHandler.SetDynamicResScaler(() => 0.58f);
+                    break;
+                case UpscalingQuality.Quality:
+                    DynamicResolutionHandler.SetDynamicResScaler(() => 0.66f);
+                    break;
+                case UpscalingQuality.Native:
+                    DynamicResolutionHandler.SetDynamicResScaler(() => 1f);
+                    break;
+            }
             
             Screen.SetResolution(Data.screenWidth, Data.screenHeight, Data.fullscreen ? FullScreenMode.FullScreenWindow : FullScreenMode.Windowed);
         }
@@ -88,6 +144,8 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers
         public bool fullscreen = true;
         public AntiAliasingQuality antiAliasingQuality = AntiAliasingQuality.High;
         public float sharpness = 0.25f;
+        public UpscalingMode upscaleMode = UpscalingMode.TAA;
+        public UpscalingQuality upscaleQuality = UpscalingQuality.Native;
     }
     
     public enum AntiAliasingQuality
@@ -95,5 +153,21 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers
         Low = 0,
         Medium = 1,
         High = 2
+    }
+
+    public enum UpscalingMode
+    {
+        TAA,
+        DLSS,
+        FSR,
+    }
+
+    public enum UpscalingQuality
+    {
+        UltraPerformance,
+        Performance,
+        Balanced,
+        Quality,
+        Native
     }
 }

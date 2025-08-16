@@ -20,7 +20,7 @@ namespace SurgeEngine.Code.Core.Actor.Sound
             base.Initialize(character);
             
             _stompLoopInstance = RuntimeManager.CreateInstance(stompLoopSound);
-            RuntimeManager.AttachInstanceToGameObject(_stompLoopInstance, transform);
+            RuntimeManager.AttachInstanceToGameObject(_stompLoopInstance, gameObject);
         }
 
         protected override void SoundState(FState obj)
