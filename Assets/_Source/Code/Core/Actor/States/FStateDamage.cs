@@ -42,7 +42,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         {
             base.OnFixedTick(dt);
 
-            Kinematics.ApplyGravity(-Physics.gravity.y);
+            Kinematics.ApplyGravity(Kinematics.Gravity);
             
             if (Kinematics.CheckForGround(out var hit))
             {
@@ -64,8 +64,6 @@ namespace SurgeEngine.Code.Core.Actor.States
                         Rigidbody.linearVelocity = Vector3.zero;
                     }
                 }
-                
-                Model.RotateBody(-Rigidbody.GetHorizontalVelocity(), hit.normal);
             }
         }
         
