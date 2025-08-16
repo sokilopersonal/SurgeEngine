@@ -1,4 +1,5 @@
 ﻿using SurgeEngine.Code.Gameplay.Enemy.Base;
+using SurgeEngine.Code.Infrastructure.Custom;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -6,6 +7,8 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter.States
 {
     public class EGStateIdle : EGState
     {
+        private float _stayTimer;
+        
         public EGStateIdle(EnemyBase enemy) : base(enemy)
         {
         }
@@ -19,22 +22,28 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter.States
         {
             base.OnTick(dt);
 
-            var agent = eggFighter.Agent;
-            agent.velocity = Vector3.zero;
+            Utility.TickTimer(ref _stayTimer, _stayTimer, false);
 
-            var path = new NavMeshPath();
-            Debug.DrawRay(agent.destination, Vector3.up, Color.red, 2);
-            if (sensor.FindVisibleTargets(out var pos))
+            if (_stayTimer <= 0)
             {
-                if (!agent.hasPath)
-                    stateMachine.SetState<EGStateChase>();
-                else
+                var agent = eggFighter.Agent;
+                agent.velocity = Vector3.zero;
+
+                var path = new NavMeshPath();
+                if (sensor.FindVisibleTargets(out var pos))
                 {
-                    agent.CalculatePath(pos, path);
-                    if (path.status == NavMeshPathStatus.PathComplete)
+                    if (!agent.hasPath)
                         stateMachine.SetState<EGStateChase>();
+                    else
+                    {
+                        agent.CalculatePath(pos, path);
+                        if (path.status == NavMeshPathStatus.PathComplete)
+                            stateMachine.SetState<EGStateChase>();
+                    }
                 }
             }
         }
+        
+        public void SetStayTimer(float timer) => _stayTimer = timer;
     }
 }

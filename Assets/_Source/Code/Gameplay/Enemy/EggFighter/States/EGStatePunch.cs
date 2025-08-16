@@ -33,14 +33,13 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter.States
             base.OnTick(dt);
 
             eggFighter.Agent.velocity = Vector3.zero;
-            
             if (_stayTimer < 1f)
             {
                 _stayTimer += Time.deltaTime;
             }
             else
             {
-                eggFighter.StateMachine.SetState<EGStateIdle>();
+                eggFighter.StateMachine.SetState<EGStateIdle>().SetStayTimer(2.5f);
             }
         }
 
