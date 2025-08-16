@@ -13,19 +13,19 @@ namespace SurgeEngine.Code.Core.Actor.Sound
         {
             base.OnEnable();
             
-            Character.OnDied += OnDied;
+            Character.Life.OnDied += OnDied;
         }
 
         protected override void OnDisable()
         {
             base.OnDisable();
             
-            Character.OnDied -= OnDied;
+            Character.Life.OnDied -= OnDied;
         }
 
         private void OnDied(CharacterBase character)
         {
-            Voice.Play(character.IsDead ? deathSound : damageVoice, true);
+            Voice.Play(character.Life.IsDead ? deathSound : damageVoice, true);
         }
     }
 }

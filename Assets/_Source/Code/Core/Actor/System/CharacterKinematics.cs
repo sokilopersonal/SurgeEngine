@@ -81,6 +81,7 @@ namespace SurgeEngine.Code.Core.Actor.System
         private void Awake()
         {
             _rigidbody = character.Rigidbody;
+            _rigidbody.sleepThreshold = -1;
             _config = character.Config;
 
             if (initialGravity == 0) initialGravity = Mathf.Abs(Physics.gravity.y);

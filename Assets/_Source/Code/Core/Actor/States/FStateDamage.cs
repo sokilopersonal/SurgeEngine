@@ -1,9 +1,7 @@
 ﻿using SurgeEngine.Code.Core.Actor.States.BaseStates;
 using SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates;
 using SurgeEngine.Code.Core.Actor.System;
-using SurgeEngine.Code.Infrastructure.Config;
 using SurgeEngine.Code.Infrastructure.Custom;
-using SurgeEngine.Code.Infrastructure.Custom.Extensions;
 using UnityEngine;
 
 namespace SurgeEngine.Code.Core.Actor.States
@@ -16,15 +14,13 @@ namespace SurgeEngine.Code.Core.Actor.States
     
     public class FStateDamage : FCharacterState
     {
-        private readonly DamageKickConfig _config;
         private float _timer;
 
         private DamageState _state;
-        public DamageState State => _state;
 
         public FStateDamage(CharacterBase owner) : base(owner)
         {
-            owner.TryGetConfig(out _config);
+            
         }
 
         public override void OnEnter()
@@ -34,8 +30,8 @@ namespace SurgeEngine.Code.Core.Actor.States
             StateMachine.GetSubState<FBoost>().Active = false;
             Kinematics.ResetVelocity();
             _timer = 0.4f;
-            
-            Rigidbody.AddForce(-character.transform.forward * _config.directionalForce, ForceMode.VelocityChange);
+
+            Rigidbody.linearVelocity = -character.transform.forward * character.Life.DirectionalForce;
         }
 
         public override void OnFixedTick(float dt)

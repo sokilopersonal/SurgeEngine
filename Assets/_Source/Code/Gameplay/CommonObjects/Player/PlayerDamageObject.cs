@@ -5,11 +5,11 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Player
 {
     public class PlayerDamageObject : Entity
     {
-        private void OnTriggerEnter(Collider other)
+        private void OnTriggerStay(Collider other)
         {
-            if (other.TryGetComponent(out CharacterBase actor))
+            if (other.TryGetComponent(out CharacterBase character))
             {
-                actor.TakeDamage(this);
+                character.Life.TakeDamage(this);
             }
         }
     }

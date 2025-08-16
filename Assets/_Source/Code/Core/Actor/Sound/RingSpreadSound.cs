@@ -11,14 +11,14 @@ namespace SurgeEngine.Code.Core.Actor.Sound
         {
             base.OnEnable();
             
-            Character.OnRingLoss += OnRingLoss;
+            Character.Life.OnRingLoss += OnRingLoss;
         }
 
         protected override void OnDisable()
         {
             base.OnDisable();
             
-            Character.OnRingLoss -= OnRingLoss;
+            Character.Life.OnRingLoss -= OnRingLoss;
         }
 
         private void OnRingLoss()

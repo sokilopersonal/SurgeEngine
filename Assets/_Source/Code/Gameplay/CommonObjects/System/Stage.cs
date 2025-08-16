@@ -55,7 +55,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.System
             ObjectEvents.OnObjectTriggered += OnObjectTriggered;
 
             _character.StateMachine.OnStateAssign += OnActorState;
-            _character.OnDied += OnCharacterDied;
+            _character.Life.OnDied += OnCharacterDied;
         }
 
         private void OnActorState(FState obj)
@@ -70,7 +70,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.System
         {
             ObjectEvents.OnObjectTriggered -= OnObjectTriggered;
             
-            _character.OnDied -= OnCharacterDied;
+            _character.Life.OnDied -= OnCharacterDied;
         }
 
         private void OnCharacterDied(CharacterBase obj)

@@ -59,7 +59,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Sensors
                 Mathf.Cos(deg * Mathf.Deg2Rad));
         }
 
-        private void OnDrawGizmos()
+        private void OnDrawGizmosSelected()
         {
 #if UNITY_EDITOR
             Handles.color = Color.white;

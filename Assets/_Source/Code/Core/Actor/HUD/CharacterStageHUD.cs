@@ -56,13 +56,13 @@ namespace SurgeEngine.Code.Core.Actor.HUD
         private void OnEnable()
         {
             ObjectEvents.OnObjectTriggered += OnObjectTriggered;
-            _character.OnRingLoss += OnRingLoss;
+            _character.Life.OnRingLoss += OnRingLoss;
         }
 
         private void OnDisable()
         {
             ObjectEvents.OnObjectTriggered -= OnObjectTriggered;
-            _character.OnRingLoss -= OnRingLoss;
+            _character.Life.OnRingLoss -= OnRingLoss;
         }
 
         private void Update()

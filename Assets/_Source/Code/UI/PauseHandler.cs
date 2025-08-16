@@ -116,7 +116,7 @@ namespace SurgeEngine.Code.UI
             if (context != null && context.StateMachine.IsExact<FStateSpecialJump>() && context.StateMachine.GetState<FStateSpecialJump>().SpecialJumpData.type ==
                 SpecialJumpType.TrickJumper) return;
             
-            if (!_canPause || context.IsDead) return;
+            if (!_canPause || context.Life.IsDead) return;
             
             Active = !Active;
             

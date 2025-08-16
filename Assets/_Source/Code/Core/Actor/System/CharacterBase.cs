@@ -13,7 +13,7 @@ using Random = UnityEngine.Random;
 
 namespace SurgeEngine.Code.Core.Actor.System
 {
-    public class CharacterBase : MonoBehaviour, IDamageable, IPointMarkerLoader
+    public class CharacterBase : MonoBehaviour, IPointMarkerLoader
     {
         public new Transform transform => Rigidbody.transform;
         
@@ -26,6 +26,7 @@ namespace SurgeEngine.Code.Core.Actor.System
         [SerializeField, Required] private CharacterModel model;
         [SerializeField, Required] private CharacterFlags flags;
         [SerializeField, Required] private CharacterKinematics kinematics;
+        [SerializeField, Required] private CharacterLife life;
         public CharacterInput Input => input;
         public CharacterSounds Sounds => sounds;
         public CharacterCamera Camera => camera; 
@@ -34,17 +35,12 @@ namespace SurgeEngine.Code.Core.Actor.System
         public CharacterModel Model => model;
         public CharacterFlags Flags => flags;
         public CharacterKinematics Kinematics => kinematics;
+        public CharacterLife Life => life;
         private readonly Dictionary<Type, CharacterComponent> _components = new();
 
         [Header("Config")]
         [SerializeField] private PhysicsConfig config;
-        [SerializeField] private DamageKickConfig damageKickConfig;
         public PhysicsConfig Config => config;
-        public DamageKickConfig DamageKickConfig => damageKickConfig;
-
-        public bool IsDead { get; set; }
-        public event Action<CharacterBase> OnDied;
-        public event Action OnRingLoss;
         
         private readonly Dictionary<Type, ScriptableObject> _configs = new();
         
@@ -63,11 +59,15 @@ namespace SurgeEngine.Code.Core.Actor.System
             InitializeConfigs();
             AddStates();
             
-            foreach (var component in transform.parent.GetComponentsInChildren<CharacterComponent>())
-            {
-                _components.Add(component.GetType(), component);
-                component.Set(this);
-            }
+            Input.Set(this);
+            Sounds.Set(this);
+            Camera.Set(this);
+            Animation.Set(this);
+            Effects.Set(this);
+            Model.Set(this);
+            Flags.Set(this);
+            Kinematics.Set(this);
+            Life.Set(this);
         }
 
         private void Update()
@@ -135,15 +135,9 @@ namespace SurgeEngine.Code.Core.Actor.System
             Model.root.forward = transform.forward;
         }
 
-        public void PutIn(Vector3 position)
-        {
-            transform.position = position;
-        }
-
         protected virtual void InitializeConfigs()
         {
             AddConfig(Config);
-            AddConfig(DamageKickConfig);
         }
         
         protected void AddConfig(ScriptableObject obj)
@@ -161,56 +155,16 @@ namespace SurgeEngine.Code.Core.Actor.System
 
             request = null;
         }
-
-        public void TakeDamage(Component sender)
-        {
-            IDamageable damageable = StateMachine.CurrentState switch
-            {
-                FStateGrind or FStateGrindSquat => new GrindDamage(),
-                _ => new GeneralDamage()
-            };
-            
-            if (!Flags.HasFlag(FlagType.Invincible))
-            {
-                IsDead = false;
-                
-                // Imagine it's over
-                if (Stage.Instance.Data.RingCount <= 0)
-                {
-                    if (damageable is GeneralDamage) StateMachine.GetState<FStateDamage>()?.SetState(DamageState.Dead);
-
-                    OnDiedInvoke(this, true);
-                }
-                else
-                {
-                    // Lose rings
-                    const int min = 15;
-
-                    var data = Stage.Instance.Data;
-                    var ringCount = data.RingCount;
-
-                    int value = Mathf.CeilToInt(Mathf.Max(min, ringCount * Random.Range(0.5f, 0.8f)));
-                    data.RingCount -= Mathf.Clamp(value, 0, ringCount);
-                    
-                    OnRingLoss?.Invoke();
-                }
-                
-                damageable.TakeDamage(this);
-                Flags.AddFlag(new Flag(FlagType.Invincible, true, DamageKickConfig.invincibleTime));
-            }
-        }
-
+        
         public virtual void Load(Vector3 loadPosition, Quaternion loadRotation)
         {
             Rigidbody.linearVelocity = Vector3.zero;
             Rigidbody.position = loadPosition;
             Rigidbody.rotation = loadRotation;
-            if (Model) Model.root.rotation = loadRotation;
-            if (Animation) Animation.StateAnimator.TransitionToState("Idle", 0f);
-            if (Flags) Flags.AddFlag(new Flag(FlagType.OutOfControl, true, 0.5f));
-            if (Input) Input.playerInput.enabled = true;
-            
-            IsDead = false;
+            Model.root.rotation = loadRotation;
+            Animation.StateAnimator.TransitionToState("Idle", 0f);
+            Flags.AddFlag(new Flag(FlagType.OutOfControl, true, 0.5f));
+            Input.playerInput.enabled = true;
 
             if (StateMachine.CurrentState is IPointMarkerLoader stateLoader)
             {
@@ -220,30 +174,6 @@ namespace SurgeEngine.Code.Core.Actor.System
             StateMachine.SetState<FStateIdle>();
         }
 
-        public virtual void OnDiedInvoke(CharacterBase obj, bool isMarkedForDeath)
-        {
-            IsDead = isMarkedForDeath;
-            OnDied?.Invoke(obj);
-        }
-
         public StartData GetStartData() => _startData;
-    }
-
-    class GeneralDamage : IDamageable
-    {
-        public void TakeDamage(Component sender)
-        {
-            CharacterBase owner = (CharacterBase)sender;
-            
-            owner.StateMachine.SetState<FStateDamage>()?.SetState(owner.IsDead ? DamageState.Dead : DamageState.Alive);
-        }
-    }
-
-    class GrindDamage : IDamageable
-    {
-        public void TakeDamage(Component sender)
-        {
-            CharacterBase owner = (CharacterBase)sender;
-        }
     }
 }

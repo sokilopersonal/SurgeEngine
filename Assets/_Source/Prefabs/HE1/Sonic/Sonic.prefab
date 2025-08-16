@@ -60,8 +60,8 @@ MonoBehaviour:
   model: {fileID: 5145428566104149761}
   flags: {fileID: 1864723795084560094}
   kinematics: {fileID: 8700610860562053351}
+  life: {fileID: 6153096792341166635}
   config: {fileID: 11400000, guid: 4943dea0e9db112488453fa3fc70581d, type: 2}
-  damageKickConfig: {fileID: 11400000, guid: 0d35e45a1e8c5774a86dd443e1656b72, type: 2}
   boostConfig: {fileID: 11400000, guid: cefe272c9833c134599bdf98dc172d8f, type: 2}
   driftConfig: {fileID: 11400000, guid: 3963394ce6d7cbc4981f7467b1f4aa59, type: 2}
   homingConfig: {fileID: 11400000, guid: 26d8aa117f8802940838f20a3156f005, type: 2}
@@ -6046,6 +6046,7 @@ GameObject:
   - component: {fileID: 2384592327911562782}
   - component: {fileID: 8699919761573115592}
   - component: {fileID: 1864723795084560094}
+  - component: {fileID: 6153096792341166635}
   m_Layer: 0
   m_Name: Sonic
   m_TagString: Untagged
@@ -6129,6 +6130,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   flagType: 0
+--- !u!114 &6153096792341166635
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 930709539082581898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed76de6d8199464485eb939cb244a342, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SurgeEngine.Code.Core.Actor.System.CharacterLife
+  invincibleTime: 5
+  directionalForce: 5
 --- !u!1 &1259358529721517514
 GameObject:
   m_ObjectHideFlags: 0
