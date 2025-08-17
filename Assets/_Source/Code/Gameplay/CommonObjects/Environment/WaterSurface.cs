@@ -1,7 +1,7 @@
+using System;
 using FMODUnity;
 using SurgeEngine.Code.Core.Actor.States.Characters.Sonic;
 using SurgeEngine.Code.Core.Actor.System;
-using SurgeEngine.Code.Gameplay.CommonObjects.Interfaces;
 using SurgeEngine.Code.Infrastructure.Custom.Extensions;
 using UnityEngine;
 
@@ -18,11 +18,11 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Environment
         [SerializeField] private ParticleSystem splash;
         [SerializeField] private ParticleSystem runSplash;
         private ParticleSystem _currentRunSplash;
-        
+
+        private bool _isInWater;
         private CharacterBase _surfaceCharacter;
         private Rigidbody _surfaceRigidbody;
         private Collider _collider;
-        private Transform _camera;
         private Vector3 _contactPoint;
         private bool _isUnderwater;
         private bool _isRunning;
@@ -34,7 +34,6 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Environment
         {
             _collider = GetComponent<Collider>();
             _collider.isTrigger = true;
-            _camera = Camera.main.transform;
             
             _splashSound = RuntimeManager.PathToEventReference(SplashEventPath);
             
@@ -45,24 +44,9 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Environment
             }
         }
 
-        private void Update()
-        {
-            if (_surfaceRigidbody)
-            {
-                if (_isUnderwater)
-                {
-                    RuntimeManager.StudioSystem.setParameterByName("Underwater", 1);
-                }
-                else
-                {
-                    RuntimeManager.StudioSystem.setParameterByName("Underwater", 0);
-                }
-            }
-        }
-
         private void FixedUpdate()
         {
-            if (_surfaceRigidbody)
+            if (_isInWater)
             {
                 Vector3 velocity = new Vector3(_surfaceRigidbody.linearVelocity.x, 0, _surfaceRigidbody.linearVelocity.z);
                 float speed = velocity.magnitude;
@@ -139,6 +123,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Environment
             
             _surfaceCharacter = context;
             _surfaceRigidbody = context.Rigidbody;
+            _isInWater = true;
             _contactPoint = msg.ClosestPoint(_surfaceRigidbody.transform.position);
             
             RuntimeManager.PlayOneShot(_splashSound, _contactPoint);
@@ -155,23 +140,21 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Environment
 
         private void OnTriggerExit(Collider other)
         {
-            if (_surfaceRigidbody)
+            if (other.TryGetComponent(out CharacterBase character))
             {
-                if (other.TryGetComponent(out CharacterBase _))
-                {
-                    Vector3 splashPoint = _surfaceRigidbody.position;
-                    splashPoint.y -= 0.75f;
-                    SpawnSplash(splashPoint);
+                Vector3 splashPoint = character.Rigidbody.position;
+                splashPoint.y -= 0.75f;
+                SpawnSplash(splashPoint);
                     
-                    RuntimeManager.PlayOneShot(_splashSound, _surfaceRigidbody.position);
+                RuntimeManager.PlayOneShot(_splashSound, character.Rigidbody.position);
                     
-                    _surfaceCharacter.Flags.RemoveFlag(FlagType.OnWater);
+                character.Flags.RemoveFlag(FlagType.OnWater);
                     
-                    _surfaceRigidbody = null;
-                    _surfaceCharacter = null;
+                _surfaceRigidbody = null;
+                _surfaceCharacter = null;
+                _isInWater = false;
 
-                    DestroyRunSplash();
-                }
+                DestroyRunSplash();
             }
         }
 

@@ -104,10 +104,11 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   turnSmoothing: 7
-  jumpFirstSpeed: 6
-  jumpHoldSpeed: 80
-  jumpMaxSpeed: 10.5
-  jumpMaxShortTime: 0.117
+  jumpFirstSpeed: 3
+  jumpHoldSpeed: 70
+  jumpMinTime: 0.1
+  jumpMaxTime: 0.2
+  jumpMaxShortTime: 0.1
   jumpDrag: 1.5
   jumpCollisionHeight: 1
   jumpCollisionCenter: -0.5
