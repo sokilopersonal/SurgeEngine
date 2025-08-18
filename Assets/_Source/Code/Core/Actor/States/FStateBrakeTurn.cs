@@ -38,7 +38,7 @@ namespace SurgeEngine.Code.Core.Actor.States
                 Kinematics.Point = result.point;
                 Kinematics.Normal = Vector3.up;
                 
-                Kinematics.Snap(result.point, Kinematics.Normal, true);
+                Kinematics.Snap(result.point, Kinematics.Normal);
                 
                 float duration = 0.45f;
                 if (_timer < duration)

@@ -100,7 +100,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
                 Kinematics.BasePhysics(Kinematics.Normal);
                 Kinematics.Project(Kinematics.Normal);
                 
-                Kinematics.Snap(Kinematics.Point, Vector3.up, true);
+                Kinematics.Snap(Kinematics.Point, Vector3.up);
                 Model.RotateBody(Vector3.up);
 
                 _surfaceTag = data.transform.gameObject.GetGroundTag();

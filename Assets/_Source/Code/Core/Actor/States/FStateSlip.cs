@@ -39,7 +39,7 @@ namespace SurgeEngine.Code.Core.Actor.States
                     }
                 }
                 
-                Kinematics.Snap(hit.point, Vector3.up, true);
+                Kinematics.Snap(hit.point, Vector3.up);
                 Rigidbody.linearVelocity = Vector3.ProjectOnPlane(Rigidbody.linearVelocity, hit.normal);
             }
             else

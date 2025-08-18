@@ -72,7 +72,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
                 Kinematics.Point = data.point;
                 Kinematics.Normal = Vector3.up;
                 
-                Kinematics.Snap(Kinematics.Point, Vector3.up, true);
+                Kinematics.Snap(Kinematics.Point, Vector3.up);
             }
             else
             {

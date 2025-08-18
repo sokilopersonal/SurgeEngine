@@ -36,7 +36,7 @@ namespace SurgeEngine.Code.Core.Actor.States
             if (Kinematics.CheckForGroundWithDirection(out var hit, Vector3.down, distance))
             {
                 Kinematics.Normal = Vector3.up;
-                Kinematics.Snap(hit.point, Vector3.up, true);
+                Kinematics.Snap(hit.point, Vector3.up);
                 
                 float f = Mathf.Lerp(_config.maxSkiddingRate, _config.minSkiddingRate, Kinematics.Speed / _config.topSpeed);
                 Rigidbody.linearVelocity = Vector3.MoveTowards(Rigidbody.linearVelocity, Vector3.zero,

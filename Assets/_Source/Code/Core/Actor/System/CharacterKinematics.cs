@@ -60,6 +60,7 @@ namespace SurgeEngine.Code.Core.Actor.System
         public float TurnRate { get; set; }
         public bool Skidding => _moveDot < _config.skiddingThreshold;
         public float MoveDot => _moveDot;
+        public bool CanAttach => _canAttach;
         
         private Vector3 _inputDir;
         private Rigidbody _rigidbody;
@@ -381,9 +382,9 @@ namespace SurgeEngine.Code.Core.Actor.System
             Ray ray = new Ray(origin, direction);
             if (castDistance == 0) castDistance = _config.castDistance;
             LayerMask castMask = character.Config.castLayer;
-
+            
             bool hit = Physics.Raycast(ray, out result,
-                castDistance, castMask, QueryTriggerInteraction.Ignore);
+                castDistance, castMask, QueryTriggerInteraction.Collide);
             
             return hit;
         }
@@ -427,18 +428,19 @@ namespace SurgeEngine.Code.Core.Actor.System
             }
         }
 
-        public void Snap(Vector3 point, Vector3 normal, bool instant = false)
+        public void Snap(Vector3 point, Vector3 normal)
         {
             if (!_canAttach) return;
             
             Vector3 goal = point + normal;
-            if (instant) _rigidbody.MovePosition(point + normal);
-            else
-            {
-                Quaternion slopeRotation = Quaternion.FromToRotation(_rigidbody.transform.up, normal) * _rigidbody.rotation;
-                Vector3 interpolatedGoal = Vector3.Lerp(_rigidbody.position, goal, Time.fixedDeltaTime * (Quaternion.Dot(_rigidbody.rotation, slopeRotation) + 1f) / 2f * _rigidbody.linearVelocity.magnitude + 10f);
-                _rigidbody.MovePosition(interpolatedGoal);
-            }
+            _rigidbody.MovePosition(goal);
+        }
+
+        public void Snap(Vector3 point)
+        {
+            if (!_canAttach) return;
+            
+            _rigidbody.MovePosition(point);
         }
 
         public void RotateSnapNormal(Vector3 targetNormal)

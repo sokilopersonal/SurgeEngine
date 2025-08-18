@@ -26,7 +26,7 @@ namespace SurgeEngine.Code.Core.Actor.States
             
             if (Kinematics.CheckForGround(out var hit))
             {
-                Kinematics.Snap(hit.point, hit.normal, true);
+                Kinematics.Snap(hit.point, hit.normal);
             }
             
             if (Utility.TickTimer(ref _timer, 2f, false))

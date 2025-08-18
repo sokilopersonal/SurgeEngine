@@ -45,7 +45,7 @@ namespace SurgeEngine.Code.Core.Actor.States
                 Kinematics.Point = hit.point;
                 Kinematics.Normal = hit.normal;
                 
-                Kinematics.Snap(hit.point, hit.normal, true);
+                Kinematics.Snap(hit.point, hit.normal);
                 Kinematics.Project();
                 Rigidbody.linearVelocity = new Vector3(Rigidbody.linearVelocity.x, 0, Rigidbody.linearVelocity.z);
                 

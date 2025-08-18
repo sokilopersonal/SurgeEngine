@@ -1,5 +1,6 @@
 ﻿using SurgeEngine.Code.Core.Actor.States.BaseStates;
 using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine.Code.Gameplay.CommonObjects.Environment;
 using SurgeEngine.Code.Gameplay.CommonObjects.System;
 using SurgeEngine.Code.Infrastructure.Custom;
 using UnityEngine;
@@ -32,7 +33,22 @@ namespace SurgeEngine.Code.Core.Actor.States
             base.OnFixedTick(dt);
 
             bool air = !Kinematics.CheckForGround(out var hit);
-            if (air)
+            bool isWater = false;
+            if (hit.transform != null)
+            {
+                isWater = hit.transform.gameObject.GetGroundTag() == GroundTag.Water;
+            }
+
+            if (isWater)
+            {
+                if (hit.transform.TryGetComponent(out WaterSurface water) && Kinematics.HorizontalVelocity.magnitude > water.MinimumSpeed && Kinematics.VerticalVelocity.y < 0)
+                {
+                    StateMachine.SetState<FStateGround>();
+                    return;
+                }
+            }
+            
+            if (air || isWater)
             {
                 Kinematics.Point = hit.point;
                 Kinematics.Normal = Vector3.up;
@@ -60,7 +76,7 @@ namespace SurgeEngine.Code.Core.Actor.States
                     if (Physics.Raycast(ray, out var predictHit, 1.5f, character.Config.castLayer, QueryTriggerInteraction.Ignore))
                     {
                         Kinematics.Normal = predictHit.normal;
-                        Kinematics.Snap(predictHit.point, predictHit.normal, true);
+                        Kinematics.Snap(predictHit.point, predictHit.normal);
                         Rigidbody.rotation = Quaternion.FromToRotation(Vector3.up, predictHit.normal) * Rigidbody.rotation;
                         StateMachine.SetState<FStateGround>();
                     }

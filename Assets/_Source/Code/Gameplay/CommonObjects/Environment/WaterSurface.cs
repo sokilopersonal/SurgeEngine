@@ -1,7 +1,9 @@
 using System;
 using FMODUnity;
 using SurgeEngine.Code.Core.Actor.States.Characters.Sonic;
+using SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates;
 using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine.Code.Core.Actor.System.Characters.Sonic;
 using SurgeEngine.Code.Infrastructure.Custom.Extensions;
 using UnityEngine;
 
@@ -13,6 +15,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Environment
         [SerializeField] private float minimumSpeed = 20f;
         [SerializeField, Range(0, 1f)] private float resistance = 0.7f;
         [SerializeField, Range(0, 1f)] private float underwaterResistance = 0.45f;
+        public float MinimumSpeed => minimumSpeed;
 
         [Header("Particles")] 
         [SerializeField] private ParticleSystem splash;
@@ -74,8 +77,6 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Environment
                 {
                     _isRunning = false;
                 }
-                
-                _collider.isTrigger = !_isRunning;
 
                 if (_surfaceCharacter.StateMachine.Exists<FStateStomp>())
                 {
@@ -84,78 +85,91 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Environment
                         _collider.isTrigger = true;
                     }
                 }
-
-                if (speed > 17f)
+                
+                Vector3 counterForce;
+                if (!_isUnderwater)
                 {
-                    Vector3 counterForce;
-                    if (_isUnderwater)
-                    {
-                        counterForce = new Vector3(velocity.normalized.x, Mathf.Clamp(velocity.normalized.y, float.NegativeInfinity, 0f), velocity.normalized.z) * (speed * underwaterResistance * Time.fixedDeltaTime);
-                    }
-                    else
-                    {
-                        counterForce = velocity.normalized * (speed * resistance * Time.fixedDeltaTime);
-                    }
+                    counterForce = velocity.normalized * (speed * resistance * Time.fixedDeltaTime);
+                }
+                else
+                {
+                    counterForce = new Vector3(velocity.normalized.x, Mathf.Clamp(velocity.normalized.y, float.NegativeInfinity, 0f), velocity.normalized.z) * (speed * underwaterResistance * Time.fixedDeltaTime);
+                }
+                
+                if (_surfaceCharacter.StateMachine.Exists<FStateDrift>() && _surfaceCharacter.StateMachine.IsExact<FStateDrift>() || _surfaceCharacter is Sonic && _surfaceCharacter.StateMachine.GetSubState<FBoost>().Active)
+                {
+                    counterForce = Vector3.zero;
+                }
+                
+                _surfaceRigidbody.linearVelocity -= counterForce;
 
-                    if (_surfaceCharacter.StateMachine.Exists<FStateDrift>())
+                if (!_isUnderwater)
+                {
+                    if (!_surfaceCharacter.Kinematics.CheckForGround(out _))
                     {
-                        if (_surfaceCharacter.StateMachine.IsExact<FStateDrift>())
-                        {
-                            counterForce = Vector3.zero;
-                        }
+                        Detach(_surfaceCharacter);
                     }
-                    
-                    _surfaceRigidbody.linearVelocity -= counterForce;
                 }
             }
             else
             {
                 _isRunning = false;
                 _isUnderwater = false;
-                
-                _collider.isTrigger = true;
             }
         }
 
         public override void Contact(Collider msg, CharacterBase context)
         {
             base.Contact(msg, context);
-            
-            _surfaceCharacter = context;
-            _surfaceRigidbody = context.Rigidbody;
-            _isInWater = true;
-            _contactPoint = msg.ClosestPoint(_surfaceRigidbody.transform.position);
-            
-            RuntimeManager.PlayOneShot(_splashSound, _contactPoint);
 
-            Vector3 splashPoint = _contactPoint;
-            splashPoint.y -= 0.75f;
-            SpawnSplash(splashPoint);
-
-            DestroyRunSplash();
-            _currentRunSplash = Instantiate(runSplash);
-
-            _surfaceCharacter.Flags.AddFlag(new Flag(FlagType.OnWater, false));
+            Attach(msg.ClosestPoint(context.transform.position), context);
         }
 
         private void OnTriggerExit(Collider other)
         {
-            if (other.TryGetComponent(out CharacterBase character))
+            if (other.TryGetActor(out CharacterBase character))
             {
-                Vector3 splashPoint = character.Rigidbody.position;
+                Detach(character);
+            }
+        }
+
+        public void Attach(Vector3 point, CharacterBase context)
+        {
+            if (_surfaceCharacter == null)
+            {
+                _surfaceCharacter = context;
+                _surfaceRigidbody = context.Rigidbody;
+                _isInWater = true;
+                _contactPoint = point;
+            
+                RuntimeManager.PlayOneShot(_splashSound, _contactPoint);
+
+                Vector3 splashPoint = _contactPoint;
                 splashPoint.y -= 0.75f;
-                SpawnSplash(splashPoint);
-                    
-                RuntimeManager.PlayOneShot(_splashSound, character.Rigidbody.position);
-                    
-                character.Flags.RemoveFlag(FlagType.OnWater);
-                    
-                _surfaceRigidbody = null;
-                _surfaceCharacter = null;
-                _isInWater = false;
+                if (Mathf.Abs(_surfaceCharacter.Kinematics.VerticalVelocity.y) > 8) SpawnSplash(splashPoint);
 
                 DestroyRunSplash();
+                _currentRunSplash = Instantiate(runSplash);
+
+                _surfaceCharacter.Flags.AddFlag(new Flag(FlagType.OnWater, false));
             }
+        }
+
+        public void Detach(CharacterBase character)
+        {
+            Vector3 splashPoint = character.Rigidbody.position;
+            splashPoint.y -= 0.75f;
+            if (Mathf.Abs(_surfaceCharacter.Kinematics.VerticalVelocity.y) > 8) SpawnSplash(splashPoint);
+                    
+            RuntimeManager.PlayOneShot(_splashSound, character.Rigidbody.position);
+                    
+            character.Flags.RemoveFlag(FlagType.OnWater);
+                    
+            _surfaceRigidbody = null;
+            _surfaceCharacter = null;
+            _isInWater = false;
+
+            DestroyRunSplash();
         }
 
         private void DestroyRunSplash()

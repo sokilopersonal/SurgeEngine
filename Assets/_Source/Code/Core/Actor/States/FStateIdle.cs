@@ -52,7 +52,7 @@ namespace SurgeEngine.Code.Core.Actor.States
                 Quaternion target = Quaternion.FromToRotation(Rigidbody.transform.up, Vector3.up) * Rigidbody.rotation;
                 Rigidbody.rotation = Quaternion.Lerp(Rigidbody.rotation, target, Time.fixedDeltaTime * 8f);
                 
-                Kinematics.Snap(Kinematics.Point, Vector3.up, true);
+                Kinematics.Snap(Kinematics.Point, Vector3.up);
                 Kinematics.SlopePhysics();
             }
             else

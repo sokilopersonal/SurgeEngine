@@ -1,6 +1,7 @@
 ﻿using System;
 using SurgeEngine.Code.Core.Actor.States.BaseStates;
 using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine.Code.Gameplay.CommonObjects.Environment;
 using SurgeEngine.Code.Infrastructure.Config;
 using SurgeEngine.Code.Infrastructure.Custom;
 using UnityEngine;
@@ -11,7 +12,9 @@ namespace SurgeEngine.Code.Core.Actor.States
     public sealed class FStateGround : FCharacterState, IDamageableState
     {
         private GroundTag _surfaceTag;
-        private float _hardAngleTimer;
+        
+        private WaterSurface _waterSurface;
+        private Vector3 _waterSnapVelocity;
 
         public event Action<GroundTag> OnSurfaceTagChanged;
         
@@ -23,7 +26,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         public override void OnEnter()
         {
             base.OnEnter();
-
+            
             Kinematics.SetDetachTime(0f);
         }
 
@@ -48,6 +51,22 @@ namespace SurgeEngine.Code.Core.Actor.States
             PhysicsConfig config = character.Config;
             float distance = config.EvaluateCastDistance(Kinematics.Speed / config.topSpeed);
             bool ground = Kinematics.CheckForGround(out RaycastHit data, castDistance: distance);
+            bool isWater = false;
+            if (data.transform != null)
+            {
+                isWater = data.transform.gameObject.GetGroundTag() == GroundTag.Water;
+                if (isWater && data.transform.TryGetComponent(out _waterSurface))
+                {
+                    _waterSurface.Attach(Rigidbody.position, character);
+                    
+                    if (Kinematics.HorizontalVelocity.magnitude < _waterSurface.MinimumSpeed)
+                    {
+                        StateMachine.SetState<FStateAir>();
+                        return;
+                    }
+                }
+            }
+            
             if (ground)
             {
                 bool predictedGround = Kinematics.CheckForPredictedGround(data.normal, dt, distance, 8);
@@ -64,10 +83,22 @@ namespace SurgeEngine.Code.Core.Actor.States
                 Kinematics.ClampVelocityToMax();
                 
                 Kinematics.BasePhysics(Kinematics.Normal);
-                Kinematics.Snap(Kinematics.Point, Kinematics.Normal, true);
+                if (!isWater)
+                {
+                    Kinematics.Snap(Kinematics.Point, Kinematics.Normal);
+                    _waterSnapVelocity = Vector3.zero;
+                }
+                else
+                {
+                    var point = data.point;
+                    point.y -= 0.1f;
+                    var normal = Kinematics.Normal;
+                    var end = Vector3.SmoothDamp(Rigidbody.position, point + normal, ref _waterSnapVelocity, 0.5f);
+                    Kinematics.Snap(end);
+                }
                 Model.RotateBody(Kinematics.Velocity, Kinematics.Normal);
 
-                Rigidbody.linearVelocity -= Vector3.Project(Rigidbody.linearVelocity, Kinematics.Normal);
+                Kinematics.Project(Kinematics.Normal);
                 
                 if (Kinematics.Speed < config.topSpeed / 4 && Kinematics.IsHardAngle(targetNormal) && Kinematics.mode == KinematicsMode.Free)
                 {

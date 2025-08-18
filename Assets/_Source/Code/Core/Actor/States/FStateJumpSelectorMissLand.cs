@@ -22,7 +22,7 @@ namespace SurgeEngine.Code.Core.Actor.States
 
             if (Kinematics.CheckForGroundWithDirection(out var hit, Vector3.down))
             {
-                Kinematics.Snap(hit.point, Vector3.up, true);
+                Kinematics.Snap(hit.point, Vector3.up);
             }
             else
             {

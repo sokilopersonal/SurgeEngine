@@ -80,7 +80,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
                 Rigidbody.linearVelocity = Vector3.ProjectOnPlane(Rigidbody.linearVelocity, Kinematics.Normal);
                 Model.RotateBody(Kinematics.Normal);
                 
-                Kinematics.Snap(Kinematics.Point, Kinematics.Normal, true);
+                Kinematics.Snap(Kinematics.Point, Kinematics.Normal);
             }
             else
             {

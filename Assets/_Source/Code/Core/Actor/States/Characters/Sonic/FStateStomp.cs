@@ -86,7 +86,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
                 else
                 {
                     Rigidbody.linearVelocity = Vector3.zero;
-                    Kinematics.Snap(point, Vector3.up, true);
+                    Kinematics.Snap(point, Vector3.up);
                     StateMachine.SetState<FStateStompLand>();
                 }
             }

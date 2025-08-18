@@ -164,7 +164,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
             {
                 bool predicted = Kinematics.CheckForPredictedGround(new Vector3(), dt, distance, 4);
                 
-                if (!predicted) Kinematics.Snap(hit.point, Kinematics.Normal, true);
+                if (!predicted) Kinematics.Snap(hit.point, Kinematics.Normal);
                 Kinematics.Project();
             }
             else

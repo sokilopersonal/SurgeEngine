@@ -100,7 +100,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
             {
                 Kinematics.Point = hit.point;
                 Kinematics.Normal = hit.normal;
-                Kinematics.Snap(hit.point, hit.normal, true);
+                Kinematics.Snap(hit.point, hit.normal);
                 
                 Rigidbody.linearVelocity = Vector3.MoveTowards(Rigidbody.linearVelocity, Vector3.zero, _config.deceleration * dt);
                 Rigidbody.linearVelocity = Vector3.ProjectOnPlane(Rigidbody.linearVelocity, hit.normal);
