@@ -79,7 +79,7 @@ GameObject:
   - component: {fileID: 4748341007409932556}
   - component: {fileID: 3970264327219042202}
   - component: {fileID: 2464395850631186747}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Sensor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4978,6 +4978,8 @@ ParticleSystemRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -4999,6 +5001,7 @@ ParticleSystemRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
@@ -5262,13 +5265,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 889321fff43881f4ca23d4c967cb137c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  onContact:
+  OnContact:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 8411806906711749652}
-        m_TargetAssemblyTypeName: SurgeEngine.StompSwitch, Assembly-CSharp
+        m_TargetAssemblyTypeName: SurgeEngine.Code.Gameplay.CommonObjects.Mobility.StompSwitch,
+          Assembly-CSharp
         m_MethodName: Activate
-        m_Mode: 0
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

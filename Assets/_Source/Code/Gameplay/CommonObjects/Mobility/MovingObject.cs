@@ -18,12 +18,13 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
         {
             if (_bodies.Count > 0)
             {
+                Vector3 delta = transform.position - _previousPosition;
                 foreach (var body in _bodies)
                 {
-                    body.position += transform.position - _previousPosition;
+                    body.MovePosition(body.position + delta);
                 }
             }
-            
+
             _previousPosition = transform.position;
         }
         

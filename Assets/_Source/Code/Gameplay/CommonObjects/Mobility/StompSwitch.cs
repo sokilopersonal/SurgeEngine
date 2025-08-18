@@ -8,32 +8,27 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
     [SelectionBase]
     public class StompSwitch : MonoBehaviour
     {
+        private static readonly int EmissiveExposureWeight = Shader.PropertyToID("_EmissiveExposureWeight");
+
         [Header("Main")]
-        [Space(10)]
-        [SerializeField] Transform switchTransform;
-        [SerializeField] MeshRenderer meshRenderer;
-        [SerializeField] ParticleSystem particle;
-
-        [Space(25)]
-
+        [SerializeField] private Transform switchTransform;
+        [SerializeField] private MeshRenderer meshRenderer;
+        [SerializeField] private ParticleSystem particle;
+        
         [Header("Switch Events")]
-        [Space(10)]
         public UnityEvent onActivated;
 
-        [Space(25)]
-
         [Header("Sounds")]
-        [Space(10)]
-        public EventReference soundReference;
-        public EventReference onReference;
+        [SerializeField] private EventReference soundReference;
+        [SerializeField] private EventReference onReference;
 
-        private readonly float _downSpeed = 0.5f;
-        private readonly Ease _downEase = Ease.OutBack;
+        private const float _downSpeed = 0.5f;
+        private const Ease _downEase = Ease.OutBack;
         private Material _buttonMaterial;
 
-        int _currentState;
+        private int _currentState;
 
-        private void Start()
+        private void Awake()
         {
             Material[] mats = meshRenderer.sharedMaterials;
             _buttonMaterial = new Material(mats[1]);
@@ -70,11 +65,11 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
 
                     float currentEmissive = startEmissive;
 
-                    _buttonMaterial.SetFloat("_EmissiveExposureWeight", startEmissive);
+                    _buttonMaterial.SetFloat(EmissiveExposureWeight, startEmissive);
 
                     DOTween.To(() => currentEmissive, x => currentEmissive = x, endEmissive, 0.25f).SetEase(Ease.OutQuad).OnUpdate(() =>
                     {
-                        _buttonMaterial.SetFloat("_EmissiveExposureWeight", currentEmissive);
+                        _buttonMaterial.SetFloat(EmissiveExposureWeight, currentEmissive);
                     });
 
                     RuntimeManager.PlayOneShot(onReference, transform.position + Vector3.up);

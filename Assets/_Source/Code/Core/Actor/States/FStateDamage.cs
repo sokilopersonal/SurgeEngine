@@ -43,7 +43,7 @@ namespace SurgeEngine.Code.Core.Actor.States
             if (Kinematics.CheckForGround(out var hit))
             {
                 Kinematics.Point = hit.point;
-                Kinematics.Normal = hit.normal;
+                Kinematics.Normal = Vector3.up;
                 
                 Kinematics.Snap(hit.point, hit.normal);
                 Kinematics.Project();

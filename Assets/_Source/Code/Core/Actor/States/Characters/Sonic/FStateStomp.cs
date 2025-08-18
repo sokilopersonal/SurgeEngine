@@ -71,6 +71,11 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
                 Kinematics.Point = point;
                 Kinematics.Normal = Vector3.up;
 
+                if (hit.transform.TryGetComponent(out IStompHandler stompHandler))
+                {
+                    stompHandler.OnStomp();
+                }
+
                 float speed = Kinematics.HorizontalVelocity.magnitude;
                 float angle = Vector3.Angle(hit.normal, Vector3.up);
                 if (angle >= 20 && Input.BHeld)
@@ -91,5 +96,10 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
                 }
             }
         }
+    }
+
+    public interface IStompHandler
+    {
+        void OnStomp();
     }
 }

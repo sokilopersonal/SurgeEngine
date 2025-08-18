@@ -1,20 +1,16 @@
 using SurgeEngine.Code.Core.Actor.States.Characters.Sonic;
-using SurgeEngine.Code.Core.Actor.System;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
 {
-    public class StompListener : ContactBase
+    public class StompListener : MonoBehaviour, IStompHandler
     {
-        public UnityEvent onContact;
+        public UnityEvent OnContact;
         
-        public override void Contact(Collider msg, CharacterBase context)
+        public void OnStomp()
         {
-            base.Contact(msg, context);
-            
-            if (context.StateMachine.PreviousState is FStateStomp)
-                onContact.Invoke();
+            OnContact.Invoke();
         }
     }
 }

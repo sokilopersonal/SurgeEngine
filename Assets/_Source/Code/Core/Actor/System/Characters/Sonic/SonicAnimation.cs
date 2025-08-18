@@ -68,6 +68,9 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
                         case FStateBrakeTurn:
                             StateAnimator.TransitionToState("Idle", 0.1f);
                             break;
+                        default:
+                            StateAnimator.TransitionToState("Idle");
+                            break;
                     }
                 }
             }
@@ -103,6 +106,12 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
                     if (machine.IsPrevExact<FStateSweepKick>())
                     {
                         StateAnimator.TransitionToState(AnimatorParams.RunCycle, 0.25f);
+                        return;
+                    }
+
+                    if (machine.IsPrevExact<FStateQuickstep>())
+                    {
+                        StateAnimator.TransitionToState(AnimatorParams.RunCycle, 0.3f);
                         return;
                     }
             
