@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &4758726478334894988
+--- !u!1 &6890289625231341354
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,51 +8,56 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4352361455683077157}
-  - component: {fileID: 3866598010147325597}
-  - component: {fileID: 9075433270876634958}
+  - component: {fileID: 7844116870790636839}
+  - component: {fileID: 5362046858602966837}
+  - component: {fileID: 6330569246120038961}
   m_Layer: 8
-  m_Name: ChangeModePath
+  m_Name: ChangeMode_3DtoForward
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4352361455683077157
+--- !u!4 &7844116870790636839
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4758726478334894988}
+  m_GameObject: {fileID: 6890289625231341354}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -91, y: -6.5, z: 16}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3866598010147325597
+--- !u!114 &5362046858602966837
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4758726478334894988}
+  m_GameObject: {fileID: 6890289625231341354}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 96f5d6321aa92064fa41a2a238001145, type: 3}
+  m_Script: {fileID: 11500000, guid: 274ee94531f64fbc96539754c6e2bb37, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::SurgeEngine.Code.Gameplay.CommonObjects.ChangeModes.ChangeModeForward
+  isChangeCamera: 0
+  isEnabledFromBack: 1
+  isEnabledFromFront: 1
+  isLimitEdge: 1
+  pathCorrectionForce: 1
   path: {fileID: 0}
---- !u!65 &9075433270876634958
+--- !u!65 &6330569246120038961
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4758726478334894988}
+  m_GameObject: {fileID: 6890289625231341354}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -65,5 +70,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 10, y: 5, z: 1}
+  m_Size: {x: 8, y: 7, z: 0.5}
   m_Center: {x: 0, y: 0, z: 0}

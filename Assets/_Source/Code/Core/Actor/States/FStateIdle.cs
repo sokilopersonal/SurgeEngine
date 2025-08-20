@@ -49,6 +49,11 @@ namespace SurgeEngine.Code.Core.Actor.States
                 Kinematics.Point = hit.point;
                 Kinematics.Normal = Vector3.up;
                 
+                if (!Kinematics.CheckForPredictedGround(dt, character.Config.castDistance, 4))
+                {
+                    StateMachine.SetState<FStateSlip>();
+                }
+                
                 Quaternion target = Quaternion.FromToRotation(Rigidbody.transform.up, Vector3.up) * Rigidbody.rotation;
                 Rigidbody.rotation = Quaternion.Lerp(Rigidbody.rotation, target, Time.fixedDeltaTime * 8f);
                 

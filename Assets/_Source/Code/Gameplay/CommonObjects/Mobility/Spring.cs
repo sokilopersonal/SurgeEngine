@@ -12,6 +12,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
         [SerializeField] protected float keepVelocityDistance = 5;
         [SerializeField] protected float outOfControl = 0.5f;
         [SerializeField] private bool cancelBoost;
+        [SerializeField] private bool isTo3D;
         public float Speed => speed;
         public float KeepVelocityDistance => keepVelocityDistance;
 
@@ -30,6 +31,12 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             context.StateMachine.SetState<FStateSpring>();
             
             context.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, Mathf.Abs(outOfControl)));
+
+            if (context.Kinematics.Path2D != null)
+            {
+                if (isTo3D)
+                    context.Kinematics.Set2DPath(null);
+            }
         }
 
         private void OnDrawGizmosSelected()

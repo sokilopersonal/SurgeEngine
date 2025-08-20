@@ -14,7 +14,6 @@ namespace SurgeEngine.Code.Core.Actor.States
         private GroundTag _surfaceTag;
         
         private WaterSurface _waterSurface;
-        private Vector3 _waterSnapVelocity;
 
         public event Action<GroundTag> OnSurfaceTagChanged;
         
@@ -67,18 +66,16 @@ namespace SurgeEngine.Code.Core.Actor.States
                 }
             }
             
+            bool predictedGround = Kinematics.CheckForPredictedGround(dt, distance, 6);
             if (ground)
             {
-                bool predictedGround = Kinematics.CheckForPredictedGround(data.normal, dt, distance, 8);
-                Vector3 targetNormal = data.normal;
-                if (predictedGround)
-                {
-                    targetNormal = Vector3.up;
-                    Kinematics.Normal = targetNormal;
-                }
-                
                 Kinematics.Point = data.point;
-                Kinematics.RotateSnapNormal(targetNormal);
+                if (predictedGround) Kinematics.RotateSnapNormal(data.normal);
+                else
+                {
+                    Kinematics.Normal = Vector3.up;
+                    StateMachine.SetState<FStateSlip>();
+                }
                 
                 Kinematics.ClampVelocityToMax();
                 
@@ -86,25 +83,14 @@ namespace SurgeEngine.Code.Core.Actor.States
                 if (!isWater)
                 {
                     Kinematics.Snap(Kinematics.Point, Kinematics.Normal);
-                    _waterSnapVelocity = Vector3.zero;
                 }
                 else
                 {
-                    var point = data.point;
-                    point.y -= 0.1f;
-                    var normal = Kinematics.Normal;
-                    var end = Vector3.SmoothDamp(Rigidbody.position, point + normal, ref _waterSnapVelocity, 0.5f);
-                    Kinematics.Snap(end);
+                    Kinematics.SnapOnWater(data.point);
                 }
                 Model.RotateBody(Kinematics.Velocity, Kinematics.Normal);
 
                 Kinematics.Project(Kinematics.Normal);
-                
-                if (Kinematics.Speed < config.topSpeed / 4 && Kinematics.IsHardAngle(targetNormal) && Kinematics.mode == KinematicsMode.Free)
-                {
-                    StateMachine.SetState<FStateSlip>();
-                }
-                
                 Kinematics.SlopePhysics();
                 
                 UpdateSurfaceTag(data.transform.gameObject.GetGroundTag());

@@ -46,14 +46,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09af42e98110490c9542b074a33e2c21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 190
-  flyDuration: 1
-  heightCurve:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
   particle: {fileID: 1814470209572932468, guid: 28f2a6b5be5fc4846ab4d5b976f05a29, type: 3}
   ringSound:
     Guid:
@@ -81,7 +73,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.35
+  m_Radius: 0.4
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &1173955681468753131
 PrefabInstance:

@@ -43,12 +43,11 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
             
             float speed = !IsRun ? _config.force : _config.runForce;
             var sideDir = _direction == QuickstepDirection.Left ? -speed : speed;
-            if (Kinematics.mode == KinematicsMode.Free || Kinematics.mode == KinematicsMode.Forward)
+            if (Kinematics.PathDash == null)
             {
                 SetSideVelocity(sideDir);
             }
-
-            if (Kinematics.mode == KinematicsMode.Dash)
+            else 
             {
                 bool snapped = SnapToSpline();
                 if (!snapped)
@@ -109,7 +108,7 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
 
         private bool SnapToSpline()
         {
-            var container = Kinematics.GetPath().Container;
+            var container = Kinematics.PathDash.Spline.Container;
             var splines = container.Splines;
             if (splines.Count == 0) return false;
 
@@ -162,9 +161,9 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
             float distance = config.EvaluateCastDistance(config.castDistanceCurve.Evaluate(Kinematics.Speed / config.topSpeed));
             if (Kinematics.CheckForGround(out var hit, castDistance: distance))
             {
-                bool predicted = Kinematics.CheckForPredictedGround(new Vector3(), dt, distance, 4);
+                bool predicted = Kinematics.CheckForPredictedGround(dt, distance, 4);
                 
-                if (!predicted) Kinematics.Snap(hit.point, Kinematics.Normal);
+                if (predicted) Kinematics.Snap(hit.point, Kinematics.Normal);
                 Kinematics.Project();
             }
             else

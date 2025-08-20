@@ -2,7 +2,9 @@
 using SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates;
 using SurgeEngine.Code.Core.Actor.System;
 using SurgeEngine.Code.Gameplay.CommonObjects;
+using SurgeEngine.Code.Gameplay.CommonObjects.Environment;
 using SurgeEngine.Code.Infrastructure.Config.SonicSpecific;
+using SurgeEngine.Code.Infrastructure.Custom;
 using UnityEngine;
 using Vector3 = UnityEngine.Vector3;
 
@@ -81,6 +83,16 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
                 if (angle >= 20 && Input.BHeld)
                 {
                     StateMachine.SetState<FStateSlide>();
+                    return;
+                }
+                
+                bool isWater = hit.transform.gameObject.GetGroundTag() == GroundTag.Water;
+
+                if (isWater)
+                {
+                    WaterSurface water = hit.transform.GetComponent<WaterSurface>();
+                    water.Attach(Rigidbody.position, character);
+                    StateMachine.SetState<FStateAir>();
                     return;
                 }
                 

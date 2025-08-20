@@ -24,9 +24,10 @@ namespace SurgeEngine.Code.Core.Actor.States
             
             Kinematics.Normal = Vector3.up;
             bool ground = Kinematics.CheckForGroundWithDirection(out var hit, Vector3.down);
+            bool predictedGround = Kinematics.CheckForPredictedGround(dt, character.Config.castDistance, 4);
             if (ground)
             {
-                if (Kinematics.IsHardAngle(hit.normal))
+                if (!predictedGround)
                 {
                     Rigidbody.linearVelocity += Vector3.down * (Kinematics.Gravity * dt);
                     _timer = 0.15f;

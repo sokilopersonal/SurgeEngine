@@ -1,6 +1,8 @@
 ﻿using System;
 using SurgeEngine.Code.Core.Actor.States;
 using SurgeEngine.Code.Core.StateMachine.Base;
+using SurgeEngine.Code.Gameplay.CommonObjects;
+using SurgeEngine.Code.Gameplay.CommonObjects.ChangeModes;
 using SurgeEngine.Code.Infrastructure.Config;
 using SurgeEngine.Code.Infrastructure.Custom;
 using UnityEngine;
@@ -28,14 +30,13 @@ namespace SurgeEngine.Code.Core.Actor.System
         [SerializeField, Range(25, 90)] public float maxAngleDifference = 80;
         
         [Header("Mode")]
-        public KinematicsMode mode = KinematicsMode.Free;
+        [SerializeField] private KinematicsMode mode = KinematicsMode.ThreeD;
+        public KinematicsMode Mode => mode;
 
         [Header("Normal")] 
         [SerializeField] private float normalLerpSpeed = 7f;
         [SerializeField] private float normalSpeedThreshold = 10f;
         [SerializeField, Range(0, 90), Tooltip("When slope angle is greater than this value, the player will slide down")] private float hardAngle = 60f;
-        
-        public event Action<KinematicsMode> OnModeChange;
 
         public float Speed => Velocity.magnitude;
 
@@ -52,15 +53,12 @@ namespace SurgeEngine.Code.Core.Actor.System
                 return _kinematicVelocity;
             }
         }
-
-        public Vector3 KinematicVelocity => _kinematicVelocity;
         public Vector3 HorizontalVelocity => Vector3.ProjectOnPlane(Velocity, _rigidbody.transform.up);
         public Vector3 VerticalVelocity => Vector3.Project(Velocity, _rigidbody.transform.up);
         public Vector3 PlanarVelocity => _planarVelocity;
         public float TurnRate { get; set; }
         public bool Skidding => _moveDot < _config.skiddingThreshold;
         public float MoveDot => _moveDot;
-        public bool CanAttach => _canAttach;
         
         private Vector3 _inputDir;
         private Rigidbody _rigidbody;
@@ -69,10 +67,12 @@ namespace SurgeEngine.Code.Core.Actor.System
         private Vector3 _planarVelocity;
         private Vector3 _kinematicVelocity;
         private Vector3 _lastPosition;
+        private Vector3 _waterSnapVelocity;
 
-        private SplineData _splineData;
-        private Vector3 _lastTangent;
-        
+        public ChangeMode2DData Path2D { get; private set; }
+        public ChangeMode3DData PathForward { get; private set; }
+        public ChangeMode3DData PathDash { get; private set; }
+
         private float _moveDot;
         private float _detachTimer;
         private bool _canAttach;
@@ -101,7 +101,20 @@ namespace SurgeEngine.Code.Core.Actor.System
 
         protected virtual void FixedUpdate()
         {
-            SplineCalculation();
+            CalculatePath2D();
+
+            if (PathDash != null)
+            {
+                PathDash.Spline.Time += Vector3.Dot(Velocity, PathDash.Spline.EvaluateTangent()) * Time.fixedDeltaTime;
+
+                if (PathDash.IsLimitEdge)
+                {
+                    if (PathDash.Spline.Time > PathDash.Spline.Length || PathDash.Spline.Time < 0)
+                    {
+                        PathDash = null;
+                    }
+                }
+            }
 
             Vector3 position = _rigidbody.position;
             _kinematicVelocity = (position - _lastPosition) / Time.fixedDeltaTime;
@@ -118,9 +131,15 @@ namespace SurgeEngine.Code.Core.Actor.System
                 Vector3 orientedInput = Quaternion.FromToRotation(_cameraTransform.up, Normal) * rawInput;
                 _inputDir = GetMovementDirectionProjectedOnPlane(orientedInput, Normal, _cameraTransform.up)
                             * character.Input.moveVector.magnitude;
+
+                if (Physics.Raycast(Rigidbody.position, _inputDir, out RaycastHit hit, _inputDir.magnitude,
+                        character.Config.castLayer))
+                {
+                    _inputDir = Vector3.ClampMagnitude(_inputDir, hit.distance);
+                }
             }
             
-            Debug.DrawRay(transform.position, _inputDir, Color.red);
+            Debug.DrawRay(transform.position, _inputDir, Color.red, 0, false);
         }
 
         private void CalculateMovementStats()
@@ -221,58 +240,46 @@ namespace SurgeEngine.Code.Core.Actor.System
                 handling * Time.fixedDeltaTime);
         }
 
-        private void SplineCalculation()
+        private void CalculatePath2D()
         {
-            if (_splineData != null)
+            if (Path2D != null)
             {
-                if (mode != KinematicsMode.Free)
-                {
-                    _splineData.EvaluateWorld(out var pos, out var tg, out var up, out var right);
+                var path = Path2D.Spline;
+                path.EvaluateWorld(out var pos, out var tg, out var up, out var right);
                     
-                    if (mode == KinematicsMode.Forward || mode == KinematicsMode.Side)
-                    {
-                        if (_lastTangent != Vector3.zero)
-                        {
-                            Rigidbody.linearVelocity = Quaternion.FromToRotation(_lastTangent, tg) * Rigidbody.linearVelocity;
-                        }
-
-                        _lastTangent = tg;
-
-                        if (right != Vector3.zero)
-                        {
-                            _inputDir = Vector3.ProjectOnPlane(_inputDir, right);
-                            _inputDir = Vector3.ProjectOnPlane(_inputDir, tg);
-                            Project(right);
-                        }
-
-                        Vector3 endPos = pos;
-                        endPos += up;
-                        endPos.y = _rigidbody.position.y;
-
-                        Vector3 target = Vector3.MoveTowards(_rigidbody.position, endPos,
-                            Mathf.Min(Speed / 64f, 1) * 16f * Time.fixedDeltaTime);
-                        _rigidbody.MovePosition(target);
-                        
-                        if (_splineData.Time > _splineData.Length || _splineData.Time < 0)
-                        {
-                            SetPath(null);
-                        
-                            character.Flags.RemoveFlag(FlagType.Autorun);
-                        }
-                        
-                        _splineData.CalculateTime(Velocity);
-                    }
+                if (right != Vector3.zero)
+                {
+                    _inputDir = Vector3.ProjectOnPlane(_inputDir, tg);
+                    Project(right);
                 }
-            }
-            else
-            {
-                SetPath(null);
+
+                Vector3 endPos = pos;
+                endPos += up;
+                endPos.y = _rigidbody.position.y;
+
+                Vector3 target = Vector3.MoveTowards(_rigidbody.position, endPos,
+                    Mathf.Min(Speed / 64f, 1) * 16f * Time.fixedDeltaTime);
+                _rigidbody.MovePosition(target);
+
+                if (Speed > 0.02f && character.Flags.HasFlag(FlagType.Autorun))
+                {
+                    float sign = Mathf.Sign(Vector3.Dot(Velocity.normalized, tg));
+                    var dir = sign * tg;
+                    _rigidbody.MoveRotation(Quaternion.LookRotation(dir, Normal));
+                }
+                        
+                if (path.Time > path.Length || path.Time < 0)
+                {
+                    Set2DPath(null);
+                }
+
+                path.Time += Vector3.Dot(Velocity, tg) * Time.fixedDeltaTime;
             }
         }
 
         public void SlopePhysics()
         {
-            if (mode == KinematicsMode.Free && Speed < _config.slopeMinSpeed && Angle >= _config.slopeDeslopeAngle)
+            if (Speed < _config.slopeMinSpeed && Angle >= _config.slopeDeslopeAngle)
             {
                 _rigidbody.AddForce(Normal * _config.slopeDeslopeForce, ForceMode.Impulse);
                 character.StateMachine.SetState<FStateAir>();
@@ -301,26 +308,25 @@ namespace SurgeEngine.Code.Core.Actor.System
             return (rotation * movement).normalized;
         }
 
-        public bool CheckForPredictedGround(Vector3 normal, float deltaTime, float distance, int steps)
+        public bool CheckForPredictedGround(float deltaTime, float distance, int steps)
         {
             bool willBeGrounded = false;
             Vector3 velocity = Velocity;
             Vector3 initialVelocity = velocity;
-            Vector3 predictedNormal = normal;
+            Vector3 predictedNormal = Normal;
             Vector3 predictedPos = _rigidbody.position;
             for (int i = 0; i < steps; i++)
             {
                 predictedPos += velocity * deltaTime / steps;
                 Ray ray = new Ray(predictedPos, -predictedNormal);
-                Debug.DrawRay(ray.origin, ray.direction * distance, Color.blue);
                 if (Physics.Raycast(ray, out RaycastHit hit, distance, _config.castLayer))
                 {
                     var angle = Vector3.Angle(predictedNormal, hit.normal);
-                    if (angle > maxAngleDifference || Mathf.Approximately(angle, 90f))
+                    if (angle < maxAngleDifference)
                     {
                         predictedPos = hit.point + hit.normal;
                         predictedNormal = hit.normal;
-                        initialVelocity = Quaternion.FromToRotation(normal, predictedNormal) * initialVelocity;
+                        initialVelocity = Quaternion.FromToRotation(Normal, predictedNormal) * initialVelocity;
                         willBeGrounded = true;
                     }
                 }
@@ -383,6 +389,8 @@ namespace SurgeEngine.Code.Core.Actor.System
             if (castDistance == 0) castDistance = _config.castDistance;
             LayerMask castMask = character.Config.castLayer;
             
+            Debug.DrawRay(origin, direction * castDistance, Color.red);
+            
             bool hit = Physics.Raycast(ray, out result,
                 castDistance, castMask, QueryTriggerInteraction.Collide);
             
@@ -441,6 +449,13 @@ namespace SurgeEngine.Code.Core.Actor.System
             if (!_canAttach) return;
             
             _rigidbody.MovePosition(point);
+        }
+
+        public void SnapOnWater(Vector3 point)
+        {
+            point.y -= 0.1f;
+            var end = Vector3.SmoothDamp(Rigidbody.position, point + Normal, ref _waterSnapVelocity, 0.5f);
+            Snap(end);
         }
 
         public void RotateSnapNormal(Vector3 targetNormal)
@@ -510,7 +525,7 @@ namespace SurgeEngine.Code.Core.Actor.System
             _inputDir = dir;
         }
 
-        public bool IsHardAngle(Vector3 normal) => Vector3.Angle(normal, Vector3.up) > hardAngle;
+        public bool IsHardAngle(Vector3 normal) => Vector3.Angle(normal, Vector3.up) < maxAngleDifference;
 
         private void CalculateDetachState()
         {
@@ -537,28 +552,36 @@ namespace SurgeEngine.Code.Core.Actor.System
 
         public virtual bool InAir() => character.StateMachine.CurrentState is FStateAir;
         
-        public void SetPath(SplineContainer path, KinematicsMode desiredMode = KinematicsMode.Free)
+        public void SetPath(SplineContainer path, KinematicsMode desiredMode = KinematicsMode.ThreeD)
         {
             Vector3 pos = Rigidbody.position - Rigidbody.transform.up * 0.5f;
-            _splineData = path != null ? new SplineData(path, pos) : null;
+            //TwoDPath = path != null ? new SplineData(path, pos) : null;
             
             mode = desiredMode;
             if (path == null)
             {
-                mode = KinematicsMode.Free;
+                mode = KinematicsMode.ThreeD;
             }
-            
-            OnModeChange?.Invoke(mode);
         }
-        
-        public bool IsPathValid()
+
+        public void Set2DPath(ChangeMode2DData data)
         {
-            return _splineData != null;
+            Path2D = data;
+        }
+
+        public void SetForwardPath(ChangeMode3DData data)
+        {
+            PathForward = data;
+        }
+
+        public void SetDashPath(ChangeMode3DData data)
+        {
+            PathDash = data;
         }
 
         public SplineData GetPath()
         {
-            return _splineData;
+            return Path2D.Spline;
         }
     }
 
@@ -625,8 +648,6 @@ namespace SurgeEngine.Code.Core.Actor.System
             EvaluateWorld(out _, out var tg, out _, out _);
             return tg;
         }
-        
-        public void CalculateTime(Vector3 velocity) => Time += Vector3.Dot(velocity, EvaluateTangent()) * UnityEngine.Time.fixedDeltaTime;
     }
 
     public struct SplineSample
@@ -641,10 +662,10 @@ namespace SurgeEngine.Code.Core.Actor.System
 
     public enum KinematicsMode
     {
-        Free,
+        ThreeD,
         Forward,
         Dash,
-        Side // 2D
+        TwoD // 2D
     }
 
     public enum MovementType

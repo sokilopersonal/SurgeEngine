@@ -30,23 +30,7 @@ namespace SurgeEngine.Code.Infrastructure.Custom.Drawers
             if (!_active) return;
             
             CharacterBase character = CharacterContext.Context;
-            /*string[] text = 
-            {
-                $"Position: {character.transform.position}",
-                $"Euler Angles: {character.transform.rotation.eulerAngles}",
-                $"Move Dot: {character.Kinematics.MoveDot}",
-                $"Current Speed: {character.Kinematics.Speed}",
-                $"Current Vertical Speed: {character.Kinematics.Velocity.y}",
-                $"Body Velocity: {character.Kinematics.Velocity}",
-                $"Planar Velocity: {character.Kinematics.PlanarVelocity}",
-                $"State: {character.StateMachine.currentStateName}",
-                $"Animation: {character.Animation.StateAnimator.GetCurrentAnimationState()}",
-                $"Camera State: {character.Camera.StateMachine.currentStateName}"
-            };
-            
-            holder.text = string.Join("\n", text);*/
-            
-            // Rewrite the text but instead of direct variables use string.Format
+            holder.fontSize = 26;
             holder.text = string.Format(
                 "Position: {0}\n" +
                 "Euler Angles: {1}\n" +
@@ -57,7 +41,11 @@ namespace SurgeEngine.Code.Infrastructure.Custom.Drawers
                 "Planar Velocity: {6}\n" +
                 "State: {7}\n" +
                 "Animation: {8}\n" +
-                "Camera State: {9}\n",
+                "Camera State: {9}\n" +
+                "Path 2D: {10}\n" +
+                "Path Forward: {11}\n" +
+                "Path Dash: {12}\n" +
+                "Is Auto Running: {13}\n",
                 character.transform.position,
                 character.transform.rotation.eulerAngles,
                 character.Kinematics.MoveDot,
@@ -67,7 +55,11 @@ namespace SurgeEngine.Code.Infrastructure.Custom.Drawers
                 character.Kinematics.PlanarVelocity,
                 character.StateMachine.currentStateName,
                 character.Animation.StateAnimator.GetCurrentAnimationState(),
-                character.Camera.StateMachine.currentStateName);
+                character.Camera.StateMachine.currentStateName,
+                character.Kinematics.Path2D != null ? "Exists" : "None",
+                character.Kinematics.PathForward != null ? "Exists" : "None",
+                character.Kinematics.PathDash != null ? "Exists" : "None", 
+                character.Flags.HasFlag(FlagType.Autorun));
         }
 
         private void ToggleWindow(InputAction.CallbackContext obj)

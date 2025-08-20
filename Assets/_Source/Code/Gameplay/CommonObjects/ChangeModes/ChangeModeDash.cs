@@ -4,7 +4,7 @@ using UnityEngine.Splines;
 
 namespace SurgeEngine.Code.Gameplay.CommonObjects.ChangeModes
 {
-    public class ChangeModeDash : ModeCollision
+    public class ChangeModeDash : ChangeMode3D
     {
         [SerializeField] private SplineContainer path;
         
@@ -15,15 +15,11 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.ChangeModes
             if (!CheckFacing(context.transform.forward))
                 return;
             
-            CharacterKinematics kinematics = context.Kinematics;
-            if (!kinematics.IsPathValid())
-            {
-                kinematics.SetPath(path, KinematicsMode.Dash);
-            }
-            else
-            {
-                kinematics.SetPath(null);
-            }
+            var kinematics = context.Kinematics;
+            kinematics.SetDashPath(kinematics.PathDash == null
+                ? new ChangeMode3DData(new SplineData(path, context.transform.position), isChangeCamera, isLimitEdge,
+                    pathCorrectionForce)
+                : null);
         }
     }
 }

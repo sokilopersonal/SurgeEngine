@@ -117,9 +117,6 @@ namespace SurgeEngine.Code.Core.Actor.System
 
             float progress = Mathf.Clamp01(_currentEaseTime / _easeTime);
             float currentTargetSpeed = Mathf.Lerp(_initialSpeed, _targetSpeed, progress);
-
-            kinematics.SetInputDir(Character.transform.forward);
-
             if (kinematics.Speed < currentTargetSpeed || _targetSpeed == 0)
             {
                 Vector3 currentVelocity = kinematics.Velocity;
@@ -130,10 +127,10 @@ namespace SurgeEngine.Code.Core.Actor.System
 
                 kinematics.Rigidbody.linearVelocity = newPlanarVelocity + verticalVelocity;
 
-                var path = kinematics.GetPath();
+                var path = kinematics.Path2D;
                 if (path != null)
                 {
-                    path.EvaluateWorld(out _, out var tg, out var up, out var right);
+                    path.Spline.EvaluateWorld(out _, out var tg, out var up, out var right);
                     
                     kinematics.Project(right);
                 }

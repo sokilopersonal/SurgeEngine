@@ -159,7 +159,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Environment
         {
             Vector3 splashPoint = character.Rigidbody.position;
             splashPoint.y -= 0.75f;
-            if (Mathf.Abs(_surfaceCharacter.Kinematics.VerticalVelocity.y) > 8) SpawnSplash(splashPoint);
+            if (Mathf.Abs(character.Kinematics.VerticalVelocity.y) > 8) SpawnSplash(splashPoint);
                     
             RuntimeManager.PlayOneShot(_splashSound, character.Rigidbody.position);
                     

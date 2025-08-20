@@ -58,16 +58,8 @@ namespace SurgeEngine.Code.Core.Actor.States
                 Vector3 vel = Kinematics.Velocity;
                 vel.y = 0;
                 Model.RotateBody(vel, Vector3.up, 360f);
-                
-                float gravity = Kinematics.Gravity;
-                if (character.Flags.HasFlag(FlagType.OnWater))
-                {
-                    gravity /= 4f;
-                }
-                
-                Kinematics.ApplyGravity(gravity);
 
-                if (Kinematics.mode == KinematicsMode.Forward)
+                /*if (Kinematics.Mode == KinematicsMode.Forward)
                 {
                     var path = Kinematics.GetPath();
                     var pos = path.EvaluatePosition();
@@ -80,24 +72,29 @@ namespace SurgeEngine.Code.Core.Actor.States
                         Rigidbody.rotation = Quaternion.FromToRotation(Vector3.up, predictHit.normal) * Rigidbody.rotation;
                         StateMachine.SetState<FStateGround>();
                     }
-                }
+                }*/
             }
             else
             {
-                if (Kinematics.GetAttachState())
+                var vertical = Kinematics.VerticalVelocity;
+                vertical.y = Mathf.Clamp(vertical.y, -40, 20);
+                Rigidbody.linearVelocity = Kinematics.HorizontalVelocity + vertical;
+                
+                bool predictedGround = Kinematics.CheckForPredictedGround(dt, character.Config.castDistance, 4);
+                if (Kinematics.GetAttachState() && predictedGround)
                 {
-                    if (!Kinematics.IsHardAngle(hit.normal))
-                    {
-                        float speed = Kinematics.HorizontalVelocity.magnitude;
-                        if (speed > character.Config.landingSpeed) StateMachine.SetState<FStateGround>();
-                        else StateMachine.SetState<FStateIdle>();
-                    }
-                    else
-                    {
-                        StateMachine.SetState<FStateSlip>();
-                    }
+                    float speed = Kinematics.HorizontalVelocity.magnitude;
+                    if (speed > character.Config.landingSpeed) StateMachine.SetState<FStateGround>();
+                    else StateMachine.SetState<FStateIdle>();
                 }
             }
+            
+            float gravity = Kinematics.Gravity;
+            if (character.Flags.HasFlag(FlagType.OnWater))
+            {
+                gravity /= 4f;
+            }
+            Kinematics.ApplyGravity(gravity);
         }
 
         public void Load(Vector3 loadPosition, Quaternion loadRotation)

@@ -3,8 +3,10 @@ using SurgeEngine.Code.Core.Actor.System;
 using SurgeEngine.Code.Core.Actor.System.Characters.Sonic;
 using SurgeEngine.Code.Core.StateMachine.Interfaces;
 using SurgeEngine.Code.Gameplay.CommonObjects;
+using SurgeEngine.Code.Gameplay.CommonObjects.Environment;
 using SurgeEngine.Code.Gameplay.Inputs;
 using SurgeEngine.Code.Infrastructure.Config.SonicSpecific;
+using SurgeEngine.Code.Infrastructure.Custom;
 using SurgeEngine.Code.Infrastructure.Tools;
 using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
@@ -58,19 +60,29 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
             
             var physicsConfig = character.Config;
             float distance = physicsConfig.castDistance * physicsConfig.castDistanceCurve.Evaluate(Kinematics.Speed / physicsConfig.topSpeed);
-            if (Kinematics.CheckForGround(out RaycastHit hit, castDistance: distance))
+            var ground = Kinematics.CheckForGround(out RaycastHit hit, castDistance: distance);
+            bool isWater = false;
+            if (hit.transform != null)
             {
-                bool predictedGround = Kinematics.CheckForPredictedGround(hit.normal, dt, character.Config.castDistance, 4);
+                isWater = hit.transform.gameObject.GetGroundTag() == GroundTag.Water;
+                if (isWater && hit.transform.TryGetComponent(out WaterSurface water))
+                {
+                    water.Attach(Rigidbody.position, character);
+                    
+                    if (Kinematics.HorizontalVelocity.magnitude < water.MinimumSpeed)
+                    {
+                        StateMachine.SetState<FStateAir>();
+                        return;
+                    }
+                }
+            }
+            
+            bool predictedGround = Kinematics.CheckForPredictedGround(dt, character.Config.castDistance, 4);
+            if (ground && predictedGround)
+            {
                 Vector3 point = hit.point;
                 Vector3 targetNormal = hit.normal;
-                if (predictedGround)
-                {
-                    targetNormal = Vector3.up;
-                    Kinematics.Normal = targetNormal;
-                    StateMachine.SetState<FStateAir>();
-                }
-                
-                if (!predictedGround) Kinematics.RotateSnapNormal(targetNormal);
+                Kinematics.RotateSnapNormal(targetNormal);
                 
                 Vector3 dir = Input.moveVector;
                 _driftXDirection = Mathf.Sign(dir.x);
@@ -85,8 +97,10 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
                 Rigidbody.linearVelocity = driftVelocity;
                 if (Kinematics.Speed < _config.maxSpeed) Rigidbody.linearVelocity += Rigidbody.linearVelocity.normalized *
                     (0.05f * Mathf.Lerp(4f, 1f, Kinematics.Speed / _config.maxSpeed));
-
-                Kinematics.Snap(point, targetNormal);
+                
+                if (!isWater) Kinematics.Snap(point, targetNormal);
+                else Kinematics.SnapOnWater(point);
+                
                 Kinematics.Project(targetNormal);
             }
             else
