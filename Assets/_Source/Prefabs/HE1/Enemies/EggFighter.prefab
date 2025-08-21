@@ -595,6 +595,15 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: efc2ce8db1f28fa4eba27cea4d948f68, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3076461262156163148}
+    - targetCorrespondingSourceObject: {fileID: 8540600727680626533, guid: efc2ce8db1f28fa4eba27cea4d948f68, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4971810834765819337}
+    - targetCorrespondingSourceObject: {fileID: 8540600727680626533, guid: efc2ce8db1f28fa4eba27cea4d948f68, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3191219659194896569}
+    - targetCorrespondingSourceObject: {fileID: 8540600727680626533, guid: efc2ce8db1f28fa4eba27cea4d948f68, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8435860025455285105}
     - targetCorrespondingSourceObject: {fileID: -3084099016405327458, guid: efc2ce8db1f28fa4eba27cea4d948f68, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6574039265407279754}
@@ -1187,6 +1196,71 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e16ec38504519dc429143afd11c36b20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &2666315703244716582 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8540600727680626533, guid: efc2ce8db1f28fa4eba27cea4d948f68, type: 3}
+  m_PrefabInstance: {fileID: 6018752067041678659}
+  m_PrefabAsset: {fileID: 0}
+--- !u!54 &4971810834765819337
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2666315703244716582}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!135 &3191219659194896569
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2666315703244716582}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.3
+  m_Center: {x: -0.2, y: 0, z: 0}
+--- !u!114 &8435860025455285105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2666315703244716582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e16ec38504519dc429143afd11c36b20, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SurgeEngine.Code.Gameplay.Enemy.RagdollPhysics.EnemyRagdollLimb
 --- !u!4 &3074218167582573965 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -491114188204863282, guid: efc2ce8db1f28fa4eba27cea4d948f68, type: 3}
@@ -1885,6 +1959,7 @@ MonoBehaviour:
   - {fileID: 1800752842177719480}
   - {fileID: 8066615653428147428}
   - {fileID: 5947124138291365150}
+  - {fileID: 8435860025455285105}
   limbMassScale: 1
   collideLayers:
     serializedVersion: 2
