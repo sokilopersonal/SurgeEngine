@@ -17,7 +17,7 @@ namespace SurgeEngine.Code.Core.Actor.System
         {
             if (other.attachedRigidbody && pushableLayers == (pushableLayers | (1 << other.gameObject.layer)))
             {
-                other.attachedRigidbody.linearVelocity = _selfRigidbody.linearVelocity * 2;
+                other.attachedRigidbody.linearVelocity = _selfRigidbody.linearVelocity;
             }
         }
     }

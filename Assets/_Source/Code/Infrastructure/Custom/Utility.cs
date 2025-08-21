@@ -54,11 +54,6 @@ namespace SurgeEngine.Code.Infrastructure.Custom
             return GroundTag.Concrete;
         }
 
-        public static bool InDelayTime(float last, float delay)
-        {
-            return last + delay < Time.time;
-        }
-        
         public static Vector3 GetCross(Transform transform, float pitch, bool inverse = false)
         {
             Vector3 cross = Vector3.Cross(Vector3.up, inverse ? transform.right : -transform.right);
@@ -79,13 +74,6 @@ namespace SurgeEngine.Code.Infrastructure.Custom
             Vector3 viewport = camera.WorldToViewportPoint(obj.position);
             return viewport.x > 0 && viewport.x < 1 && viewport.y > 0 && viewport.y < 1 && viewport.z > 0;
         }
-    }
-
-    public enum ResetVelocityType
-    {
-        Angular,
-        Linear,
-        Both
     }
 
     public enum CheckGroundType

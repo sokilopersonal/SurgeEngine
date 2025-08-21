@@ -1,6 +1,7 @@
 ﻿using SurgeEngine.Code.Core.Actor.States.BaseStates;
 using SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates;
 using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine.Code.Gameplay.CommonObjects.Environment;
 using SurgeEngine.Code.Infrastructure.Custom;
 using UnityEngine;
 
@@ -40,7 +41,18 @@ namespace SurgeEngine.Code.Core.Actor.States
 
             Kinematics.ApplyGravity(Kinematics.Gravity);
             
-            if (Kinematics.CheckForGround(out var hit))
+            bool ground = Kinematics.CheckForGround(out var hit);
+            if (hit.transform != null)
+            {
+                var isWater = hit.transform.gameObject.GetGroundTag() == GroundTag.Water;
+                if (isWater && hit.transform.TryGetComponent(out WaterSurface water))
+                {
+                    water.Attach(Rigidbody.position, character);
+                    return;
+                }
+            }
+            
+            if (ground)
             {
                 Kinematics.Point = hit.point;
                 Kinematics.Normal = Vector3.up;
