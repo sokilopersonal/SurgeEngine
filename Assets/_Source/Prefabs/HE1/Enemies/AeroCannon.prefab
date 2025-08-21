@@ -24794,6 +24794,7 @@ GameObject:
   - component: {fileID: 4904433037013026246}
   - component: {fileID: 4547457691980812445}
   - component: {fileID: 5006998213474647552}
+  - component: {fileID: 661258120053967517}
   - component: {fileID: 6170386477459605054}
   m_Layer: 12
   m_Name: Model
@@ -24861,6 +24862,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d806e6f285d4d549f8c3512189f15f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stateAnimator: {fileID: 661258120053967517}
+--- !u!114 &661258120053967517
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3804416265619641354}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da6493e362584b0ab638b59ffe29f5f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SurgeEngine.Code.Core.StateMachine.Components.StateAnimator
   animator: {fileID: 6170386477459605054}
 --- !u!95 &6170386477459605054
 Animator:
@@ -54619,7 +54633,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   view: {fileID: 4547457691980812445}
-  animation: {fileID: 0}
+  animation: {fileID: 5006998213474647552}
   viewDistance: 10
   mask:
     serializedVersion: 2

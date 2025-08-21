@@ -20,7 +20,7 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter.States
         public void ApplyKnockback(Vector3 force, EnemyRagdoll ragdoll)
         {
             ragdoll.Ragdoll(force);
-            eggFighter.animation.Animator.enabled = false;
+            eggFighter.Animation.Animator.enabled = false;
         }
     }
 }

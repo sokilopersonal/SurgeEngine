@@ -1,4 +1,5 @@
 ﻿using System;
+using NaughtyAttributes;
 using SurgeEngine.Code.Core.StateMachine;
 using SurgeEngine.Code.Gameplay.CommonObjects.System;
 using UnityEngine;
@@ -7,21 +8,18 @@ namespace SurgeEngine.Code.Gameplay.Enemy.Base
 {
     public class EnemyBase : MonoBehaviour
     {
-        public EnemyView view;
-        public new EnemyAnimation animation;
-
-        private FStateMachine _stateMachine;
-        public FStateMachine StateMachine => _stateMachine;
+        [SerializeField, Required] private EnemyView view;
+        public EnemyView View => view;
+        public FStateMachine StateMachine { get; private set; }
 
         public Action OnDied;
-        public bool IsDead { get; protected set; }
+        protected bool IsDead { get; set; }
 
         protected virtual void Awake()
         {
-            _stateMachine = new FStateMachine();
+            StateMachine = new FStateMachine();
             
-            view?.Initialize(this);
-            animation?.Initialize(this);
+            View.Initialize(this);
         }
 
         private void OnEnable()
@@ -36,17 +34,17 @@ namespace SurgeEngine.Code.Gameplay.Enemy.Base
 
         private void Update()
         {
-            _stateMachine.Tick(Time.deltaTime);
+            StateMachine.Tick(Time.deltaTime);
         }
 
         private void FixedUpdate()
         {
-            _stateMachine.FixedTick(Time.fixedDeltaTime);
+            StateMachine.FixedTick(Time.fixedDeltaTime);
         }
 
         private void LateUpdate()
         {
-            _stateMachine.LateTick(Time.deltaTime);
+            StateMachine.LateTick(Time.deltaTime);
         }
 
         private void OnDeath()

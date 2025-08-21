@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using SurgeEngine.Code.Gameplay.CommonObjects.System;
+using SurgeEngine.Code.Gameplay.Enemy.EggFighter;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -78,8 +79,8 @@ namespace SurgeEngine.Code.Gameplay.Enemy.RagdollPhysics
                 return;
 
             _hit = true;
-            
-            _eggFighter.View.Destroy();
+
+            (_eggFighter.View as EGView)?.Destroy();
         }
 
         public void Load(Vector3 loadPosition, Quaternion loadRotation)

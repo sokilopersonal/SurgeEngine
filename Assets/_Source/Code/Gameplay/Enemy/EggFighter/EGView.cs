@@ -24,7 +24,7 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter
             base.Load(loadPosition, loadRotation);
 
             eggFighter.StateMachine.SetState<EGStateIdle>();
-            eggFighter.animation.Animator.enabled = true;
+            eggFighter.Animation.Animator.enabled = true;
         }
     }
 }

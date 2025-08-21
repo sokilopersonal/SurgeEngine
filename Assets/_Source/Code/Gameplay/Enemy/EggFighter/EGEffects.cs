@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter
 {
-    public class EggFighterEffects : EnemyComponent
+    public class EGEffects : EnemyComponent
     {
         [SerializeField] private ParticleSystem hitPrefab;
         

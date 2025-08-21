@@ -13,9 +13,11 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter
 {
     public class EggFighter : EnemyBase, IDamageable, IPointMarkerLoader
     {
-        public EGView View => view as EGView;
-        public EggFighterEffects effects;
-        public EnemyRagdoll ragdollPrefab;
+        [SerializeField] private new EGAnimation animation;
+        [SerializeField] private EGEffects effects;
+        [SerializeField] private EnemyRagdoll ragdollPrefab;
+        public EGAnimation Animation => animation;
+        
         public VisionSensor Sensor { get; private set; }
         [field: SerializeField] public AnimationEventCallback PunchAnimationCallback { get; private set; }
 
@@ -24,10 +26,6 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter
         
         [Header("Idle")]
         public float findDistance;
-        
-        [Header("Chase")]
-        public float chaseSpeed;
-        public float chaseMaxDistance = 12;
         
         [Header("Punch")]
         public float punchRadius;
@@ -52,6 +50,7 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter
         {
             base.Awake();
             
+            animation.Initialize(this);
             effects.Initialize(this);
             
             _startPosition = transform.position;

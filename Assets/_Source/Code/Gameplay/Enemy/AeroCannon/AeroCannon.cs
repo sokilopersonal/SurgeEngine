@@ -7,6 +7,7 @@ namespace SurgeEngine.Code.Gameplay.Enemy.AeroCannon
 {
     public class AeroCannon : EnemyBase, IDamageable
     {
+        [SerializeField] private new AeroCannonAnimation animation;
         [SerializeField] private float viewDistance = 10;
         [SerializeField] private LayerMask mask;
         [SerializeField] private float idleTime = 1.5f;
@@ -24,6 +25,8 @@ namespace SurgeEngine.Code.Gameplay.Enemy.AeroCannon
         {
             base.Awake();
             
+            animation.Initialize(this);
+            
             StateMachine.AddState(new ACStateIdle(this));
             StateMachine.AddState(new ACStatePrepare(this));
             StateMachine.AddState(new ACStateShoot(this));
@@ -35,7 +38,7 @@ namespace SurgeEngine.Code.Gameplay.Enemy.AeroCannon
         {
             OnDied?.Invoke();
             
-            view.Destroy();
+            View.Destroy();
         }
     }
 }

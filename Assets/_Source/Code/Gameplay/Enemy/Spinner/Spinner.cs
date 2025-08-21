@@ -8,7 +8,7 @@ namespace SurgeEngine.Code.Gameplay.Enemy.Spinner
     {
         public void TakeDamage(Component sender)
         {
-            view.Destroy();
+            View.Destroy();
         }
     }
 }

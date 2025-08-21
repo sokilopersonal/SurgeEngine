@@ -8,7 +8,7 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter.States
     {
         public EGStateChase(EnemyBase enemy) : base(enemy)
         {
-            ((EGAnimation)eggFighter.animation).OnAnimatorMoveEvent += OnAnimatorMove;
+            eggFighter.Animation.OnAnimatorMoveEvent += OnAnimatorMove;
         }
 
         public override void OnTick(float dt)
