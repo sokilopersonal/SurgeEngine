@@ -5,15 +5,13 @@ namespace SurgeEngine.Code.Infrastructure.Custom
 {
     public static class SurgeMath
     {
-        public static Vector3 AxisSlerp(Vector3 from, Vector3 to, float t, Vector3 axis)
+        public static Vector3 GetMovementDirectionProjectedOnPlane(Vector3 movement, Vector3 groundNormal, Vector3 upDirection)
         {
-            axis.Normalize();
-            Vector3 projFrom = Vector3.ProjectOnPlane(from, axis).normalized;
-            Vector3 projTo   = Vector3.ProjectOnPlane(to,   axis).normalized;
-            float angle      = Vector3.SignedAngle(projFrom, projTo, axis) * t;
-            Quaternion rot   = Quaternion.AngleAxis(angle, axis);
-            float len        = Mathf.Lerp(from.magnitude, to.magnitude, t);
-            return rot * projFrom * len;
+            Vector3 movementProjectedOnPlane = Vector3.ProjectOnPlane(movement, groundNormal);
+            Vector3 axisToRotateAround = Vector3.Cross(movement, upDirection);
+            float angle = Vector3.SignedAngle(movement, movementProjectedOnPlane, axisToRotateAround);
+            Quaternion rotation = Quaternion.AngleAxis(angle, axisToRotateAround);
+            return (rotation * movement).normalized;
         }
         
         public static float SignedAngleByAxis(this Vector3 v1, Vector3 v2, Vector3 axis) 
