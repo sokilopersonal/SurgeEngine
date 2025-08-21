@@ -23,7 +23,9 @@ namespace SurgeEngine.Code.Core.Actor.States
 
         public override void OnTick(float dt)
         {
-            if (Kinematics.GetInputDir().magnitude > 0.02f || Kinematics.Speed > 0.02f)
+            base.OnTick(dt);
+            
+            if (Kinematics.GetInputDir().magnitude > 0.1f || Kinematics.HorizontalVelocity.magnitude > 0.1f)
             {
                 StateMachine.SetState<FStateGround>();
             }
@@ -36,8 +38,6 @@ namespace SurgeEngine.Code.Core.Actor.States
                     StateMachine.SetState<FStateJump>();
                 }
             }
-            
-            base.OnTick(dt);
         }
 
         public override void OnFixedTick(float dt)

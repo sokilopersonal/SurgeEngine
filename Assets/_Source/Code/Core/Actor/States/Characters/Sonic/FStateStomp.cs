@@ -66,8 +66,20 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
 
             Rigidbody.linearVelocity = vel;
             _timer += dt;
+
+            bool ground = Kinematics.CheckForGround(out RaycastHit hit);
+            bool isWater = false;
+            if (hit.transform != null)
+            {
+                isWater = hit.transform.gameObject.GetGroundTag() == GroundTag.Water;
+                if (isWater)
+                {
+                    WaterSurface water = hit.transform.GetComponent<WaterSurface>();
+                    water.Attach(Rigidbody.position, character);
+                }
+            }
             
-            if (Kinematics.CheckForGround(out RaycastHit hit))
+            if (ground && !isWater)
             {
                 Vector3 point = hit.point;
                 Kinematics.Point = point;
@@ -83,16 +95,6 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
                 if (angle >= 20 && Input.BHeld)
                 {
                     StateMachine.SetState<FStateSlide>();
-                    return;
-                }
-                
-                bool isWater = hit.transform.gameObject.GetGroundTag() == GroundTag.Water;
-
-                if (isWater)
-                {
-                    WaterSurface water = hit.transform.GetComponent<WaterSurface>();
-                    water.Attach(Rigidbody.position, character);
-                    StateMachine.SetState<FStateAir>();
                     return;
                 }
                 

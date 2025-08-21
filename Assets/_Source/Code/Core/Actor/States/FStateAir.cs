@@ -76,10 +76,6 @@ namespace SurgeEngine.Code.Core.Actor.States
             }
             else
             {
-                var vertical = Kinematics.VerticalVelocity;
-                vertical.y = Mathf.Clamp(vertical.y, -40, 20);
-                Rigidbody.linearVelocity = Kinematics.HorizontalVelocity + vertical;
-                
                 bool predictedGround = Kinematics.CheckForPredictedGround(dt, character.Config.castDistance, 4);
                 if (Kinematics.GetAttachState() && predictedGround)
                 {
