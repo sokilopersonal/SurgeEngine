@@ -30,16 +30,6 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter
             {
                 stateAnimator.TransitionToState("Punch");
             }
-        
-            if (obj is EGStateTurn)
-            {
-                stateAnimator.TransitionToState("Turn", 0f);
-            }
-        
-            if (obj is EGStateDead)
-            {
-                stateAnimator.TransitionToState("IdleDead", 0f);
-            }
         }
 
         private void OnAnimatorMove()
