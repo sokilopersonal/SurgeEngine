@@ -7,7 +7,6 @@ using SurgeEngine.Code.Gameplay.CommonObjects.ChangeModes;
 using SurgeEngine.Code.Infrastructure.Config;
 using SurgeEngine.Code.Infrastructure.Custom;
 using UnityEngine;
-using UnityEngine.Splines;
 
 namespace SurgeEngine.Code.Core.Actor.System
 {
@@ -119,12 +118,6 @@ namespace SurgeEngine.Code.Core.Actor.System
                 Vector3 orientedInput = Quaternion.FromToRotation(_cameraTransform.up, Normal) * rawInput;
                 _inputDir = SurgeMath.GetMovementDirectionProjectedOnPlane(orientedInput, Normal, _cameraTransform.up)
                             * character.Input.moveVector.magnitude;
-
-                if (Physics.Raycast(Rigidbody.position, _inputDir, out RaycastHit hit, _inputDir.magnitude,
-                        character.Config.castLayer))
-                {
-                    _inputDir = Vector3.ClampMagnitude(_inputDir, hit.distance);
-                }
             }
             
             Debug.DrawRay(transform.position, _inputDir, Color.red, 0, false);
@@ -590,71 +583,6 @@ namespace SurgeEngine.Code.Core.Actor.System
         }
 
         private static bool IsPathOutOfRange(ChangeModeData data) => data.Spline.Time > data.Spline.Length || data.Spline.Time < 0;
-    }
-
-    public class SplineData
-    {
-        public float Time { get; set; }
-        public float Length => _container.Spline.GetLength();
-        public float NormalizedTime => Time / Length;
-        public SplineContainer Container => _container;
-
-        private readonly SplineContainer _container;
-
-        public SplineData(SplineContainer container, Vector3 position)
-        {
-            _container = container;
-            
-            SplineUtility.GetNearestPoint(container.Spline, _container.transform.InverseTransformPoint(position), 
-                out _, out var f, 8, 4);
-            
-            Time = f * Length;
-        }
-
-        public void Evaluate(out Vector3 position, out Vector3 tangent, out Vector3 up, out Vector3 right)
-        {
-            var spline = _container.Spline;
-
-            spline.Evaluate(NormalizedTime, 
-                out var pos,
-                out var tg,
-                out var upVector);
-            
-            position = pos;
-            tangent = ((Vector3)tg).normalized;
-            up = upVector;
-            right = Vector3.Cross(tg, Vector3.up).normalized;
-        }
-
-        public void EvaluateWorld(out Vector3 position, out Vector3 tangent, out Vector3 up, out Vector3 right)
-        {
-            var transform = _container.transform;
-
-            float normalizedTime = Mathf.Clamp01(Mathf.Max(0.001f, Time / Length));
-            var spline = _container.Spline;
-
-            spline.Evaluate(normalizedTime, 
-                out var pos,
-                out var tg,
-                out var upVector);
-            
-            position = transform.TransformPoint(pos);
-            tangent = transform.TransformDirection(tg).normalized;
-            up = transform.TransformDirection(upVector);
-            right = Vector3.Cross(tangent, -up).normalized;
-        }
-
-        public Vector3 EvaluatePosition()
-        {
-            EvaluateWorld(out var pos, out _, out _, out _);
-            return pos;
-        }
-        
-        public Vector3 EvaluateTangent()
-        {
-            EvaluateWorld(out _, out var tg, out _, out _);
-            return tg;
-        }
     }
 
     public struct SplineSample
