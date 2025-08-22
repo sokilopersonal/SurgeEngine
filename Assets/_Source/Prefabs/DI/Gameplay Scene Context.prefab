@@ -167,9 +167,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data:
-    <RingCount>k__BackingField: 0
-    <Time>k__BackingField: 0
-    <State>k__BackingField: 0
+    ringCount: 0
+    time: 0
+    state: 0
+    score: 0
+    result:
+      requiredScore: 150000
+    bonusOptimalTime: 120
+    bonusZeroTime: 300
+    bonusMax: 100000
+  backgroundMusicEmitter: {fileID: 0}
 --- !u!114 &3773654207124443349
 MonoBehaviour:
   m_ObjectHideFlags: 0

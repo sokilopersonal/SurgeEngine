@@ -86,7 +86,7 @@ namespace SurgeEngine._Source.Editor.ObjectSet
             EditorGUILayout.LabelField("Settings", settingsStyle);
             EditorGUILayout.Space(10);
             
-            _categories = new[] { "All", "Common", "Enemies", "Ring Groups", "Cameras", "System", "Thorns" };
+            _categories = new[] { "All", "Common", "Enemies", "Ring Groups", "Cameras", "System", "Thorns", "Object Physics" };
             
             _selectedCategoryIndex = EditorGUILayout.Popup("Category", _selectedCategoryIndex, _categories);
             _normalOffset = EditorGUILayout.Slider("Normal Offset", _normalOffset, 0, 0.5f);
