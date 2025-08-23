@@ -208,7 +208,10 @@ namespace SurgeEngine.Code.UI
             {
                 if (!_gameSettings.RunInBackground)
                 {
-                    SetPause(true);
+                    if (!Active)
+                    {
+                        SetPause(true);
+                    }
                 }
             }
         }
