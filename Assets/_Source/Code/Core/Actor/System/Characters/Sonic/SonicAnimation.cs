@@ -342,6 +342,11 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
                     StateAnimator.TransitionToState("RailSwitchR", 0.4f);
                 }
             }
+
+            if (obj is FStateStumble)
+            {
+                StateAnimator.TransitionToState("StumbleC");
+            }
         }
         
         private IEnumerator PlayHop()

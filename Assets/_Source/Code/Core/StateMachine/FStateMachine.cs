@@ -137,12 +137,7 @@ namespace SurgeEngine.Code.Core.StateMachine
             Type type = typeof(T);
             return PreviousState != null && PreviousState.GetType() == type;
         }
-        
-        public bool IsPreviousState<T>() where T : FState
-        {
-            return PreviousState is T;
-        }
-        
+
         public T GetSubState<T>() where T : FSubState
         {
             return _subStates[typeof(T)] as T;

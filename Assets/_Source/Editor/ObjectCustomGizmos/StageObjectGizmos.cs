@@ -50,7 +50,7 @@ namespace SurgeEngine._Source.Editor.ObjectCustomGizmos
                     return;
                 
                 Gizmos.matrix = type.transform.localToWorldMatrix;
-                Gizmos.color = new Color(0f, 0.35f, 1f, 0.3f);
+                Gizmos.color = new Color(0f, 0.35f, 1f, 0.1f);
                 Gizmos.DrawCube(collider.center, collider.size);
             }
         }
@@ -69,7 +69,7 @@ namespace SurgeEngine._Source.Editor.ObjectCustomGizmos
                     return;
                 
                 Gizmos.matrix = type.transform.localToWorldMatrix;
-                Gizmos.color = new Color(1f, 0.94f, 0.13f, 0.3f);
+                Gizmos.color = new Color(1f, 0.94f, 0.13f, 0.1f);
                 Gizmos.DrawCube(collider.center, collider.size);
             }
         }
@@ -103,7 +103,25 @@ namespace SurgeEngine._Source.Editor.ObjectCustomGizmos
                     return;
                 
                 Gizmos.matrix = type.transform.localToWorldMatrix;
-                Gizmos.color = new Color(1f, 0f, 0f, 0.3f);
+                Gizmos.color = new Color(1f, 0f, 0f, 0.1f);
+                Gizmos.DrawCube(collider.center, collider.size);
+            }
+        }
+
+        [DrawGizmo(GizmoType.Pickable | GizmoType.Selected | GizmoType.NotInSelectionHierarchy)]
+        static void DrawGizmos(StumbleCollision type, GizmoType gizmoType)
+        {
+            Gizmos.matrix = type.transform.localToWorldMatrix;
+            Gizmos.DrawCube(Vector3.zero, Vector3.one * 0.75f);
+            
+            if ((gizmoType & GizmoType.Selected) != 0)
+            {
+                var collider = type.GetComponent<BoxCollider>();
+                if (collider == null)
+                    return;
+                
+                Gizmos.matrix = type.transform.localToWorldMatrix;
+                Gizmos.color = new Color(0f, 1f, 0f, 0.1f);
                 Gizmos.DrawCube(collider.center, collider.size);
             }
         }
