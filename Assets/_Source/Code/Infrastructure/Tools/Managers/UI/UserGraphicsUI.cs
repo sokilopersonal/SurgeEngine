@@ -11,7 +11,6 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers.UI
         [SerializeField] private OptionBar meshBar;
         [SerializeField] private OptionBar sunShadowsQualityBar;
         [SerializeField] private OptionBar punctualShadowsQualityBar;
-        [SerializeField] private OptionBar contactShadowsQualityBar;
         [SerializeField] private OptionBar bloomBar;
         [SerializeField] private OptionBar aoBar;
         [SerializeField] private OptionBar motionBlurBar;
@@ -49,12 +48,6 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers.UI
             punctualShadowsQualityBar.OnChanged += b =>
             {
                 _graphics.SetAdditionalShadowsQuality((ShadowsQuality)b.Index);
-                _graphics.Apply();
-            };
-            
-            contactShadowsQualityBar.OnChanged += b =>
-            {
-                _graphics.SetContactShadows((ContactShadowsQuality)b.Index);
                 _graphics.Apply();
             };
             
@@ -108,7 +101,6 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers.UI
             meshBar.Set((int)data.meshQuality);
             sunShadowsQualityBar.Set((int)data.sunShadowsQuality);
             punctualShadowsQualityBar.Set((int)data.additionalShadowsQuality);
-            contactShadowsQualityBar.Set((int)data.contactShadowsQuality);
             bloomBar.Set((int)data.bloomQuality);
             aoBar.Set((int)data.aoQuality);
             motionBlurBar.Set((int)data.motionBlur);
@@ -135,7 +127,6 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers.UI
                 meshBar.Set((int)data.meshQuality);
                 sunShadowsQualityBar.Set((int)data.sunShadowsQuality);
                 punctualShadowsQualityBar.Set((int)data.additionalShadowsQuality);
-                contactShadowsQualityBar.Set((int)data.contactShadowsQuality);
                 bloomBar.Set((int)data.bloomQuality);
                 aoBar.Set((int)data.aoQuality);
                 motionBlurBar.Set((int)data.motionBlur);
