@@ -50,7 +50,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.GoalRing
                 var playerRenderCamera = playerRenderCameraObject.AddComponent<Camera>();
                 playerRenderCamera.targetTexture = rt;
                 playerRenderCamera.fieldOfView = 45f;
-                playerRenderCamera.cullingMask = 1 << LayerMask.NameToLayer("Actor");
+                playerRenderCamera.cullingMask = 1 << LayerMask.NameToLayer("Character");
 
                 var hdData = playerRenderCameraObject.AddComponent<HDAdditionalCameraData>();
                 hdData.backgroundColorHDR = new Color(0, 0, 0, 0);

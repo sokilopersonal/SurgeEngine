@@ -16,10 +16,10 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
         public override void Contact(Collider msg, CharacterBase context)
         {
             base.Contact(msg, context);
-
-            if (context.Kinematics.Speed >= launchVelocity)
+            
+            if (context.Kinematics.Speed >= launchVelocity && context.Kinematics.CheckForGround(out _))
             {
-                const float StumbleSpeed = 11;
+                const float StumbleSpeed = 10;
                 
                 context.Rigidbody.linearVelocity = context.transform.forward * StumbleSpeed + 
                                                    context.transform.up * StumbleSpeed;

@@ -28,7 +28,7 @@ namespace SurgeEngine.Code.Core.Actor.HUD
             SetBoostBarFill(amount, energyDivider);
             
             float boostBarWidth = Mathf.Lerp(minBoostBarSize.width, maxBoostBarSize.width, boost.MaxBoostEnergy / 100);
-            boostBar.rectTransform.sizeDelta = new Vector2(boostBarWidth, boostBarYAspect);
+            boostBar.rectTransform.sizeDelta = new Vector2(boostBarWidth, boostBar.rectTransform.sizeDelta.y);
         }
 
         public void SetBoostBarFill(float energyAmount, float divider)
