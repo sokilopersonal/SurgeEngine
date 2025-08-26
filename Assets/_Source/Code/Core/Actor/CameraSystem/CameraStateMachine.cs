@@ -192,7 +192,12 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
 
         public void Load(Vector3 loadPosition, Quaternion loadRotation)
         {
-            
+            _data = new CameraData
+            {
+                position = _position - loadPosition,
+                rotation = _rotation,
+                fov = Camera.fieldOfView,
+            };
         }
     }
 

@@ -127,7 +127,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Environment
 
         private void OnTriggerExit(Collider other)
         {
-            if (other.TryGetActor(out CharacterBase character))
+            if (other.TryGetCharacter(out CharacterBase character))
             {
                 Detach(character);
             }

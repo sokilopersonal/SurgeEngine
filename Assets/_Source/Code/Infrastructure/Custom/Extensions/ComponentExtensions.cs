@@ -16,7 +16,7 @@ namespace SurgeEngine.Code.Infrastructure.Custom.Extensions
             return default;
         }
 
-        public static CharacterBase TryGetActor(this Component instance, out CharacterBase result)
+        public static CharacterBase TryGetCharacter(this Component instance, out CharacterBase result)
         {
             if (instance.TryGetComponentInParent(out CharacterBase actor))
             {

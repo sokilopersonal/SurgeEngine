@@ -149,6 +149,28 @@ namespace SurgeEngine.Code.Core.Actor.System
         }
     }
 
+    public class SlowdownFlag : Flag
+    {
+        private readonly float _maxSpeed;
+
+        public SlowdownFlag(FlagType type, bool isTemporary, float time, float maxSpeed) : base(type,
+            isTemporary, time)
+        {
+            _maxSpeed = maxSpeed;
+        }
+
+        public override void Count(float dt)
+        {
+            base.Count(dt);
+            
+            var kinematics = Character.Kinematics;
+            if (kinematics.CheckForGround(out _))
+            {
+                kinematics.ClampVelocityToMax(_maxSpeed);
+            }
+        }
+    }
+
     [Flags]
     public enum FlagType
     {
@@ -158,5 +180,6 @@ namespace SurgeEngine.Code.Core.Actor.System
         Underwater = 4,
         Invincible = 8,
         Autorun = 16,
+        Slowdown = 32
     }
 }

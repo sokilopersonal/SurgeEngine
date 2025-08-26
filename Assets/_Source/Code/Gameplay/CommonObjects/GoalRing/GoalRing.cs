@@ -70,6 +70,11 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.GoalRing
                 
                 CurrentGoalScreen.OnFlashEnd += () =>
                 {
+                    var emptyCamera = new GameObject("EmptyCamera").AddComponent<Camera>();
+                    emptyCamera.cullingMask = 0;
+
+                    context.Camera.GetCamera().enabled = false;
+                    
                     model.SetActive(false);
 
                     if (stage.BackgroundMusicEmitter != null)
