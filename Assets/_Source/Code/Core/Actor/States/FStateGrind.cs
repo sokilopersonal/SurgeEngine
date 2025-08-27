@@ -94,10 +94,8 @@ namespace SurgeEngine.Code.Core.Actor.States
                 if (!_rail.Container.Spline.Closed)
                 {
                     if (IsRailCooldown()) return;
-
-                    const float THRESHOLD = 0.0002f;
-                    bool outOfTime = _data.Time > _data.Length || _data.Time < 0f;
                     
+                    bool outOfTime = _data.Time > _data.Length || _data.Time < 0f;
                     if (outOfTime)
                     {
                         SetCooldown(0.1f);

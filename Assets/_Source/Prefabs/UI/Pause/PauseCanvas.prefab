@@ -1594,7 +1594,6 @@ MonoBehaviour:
   - {fileID: 7268988995674842535}
   - {fileID: 3977986637741677593}
   - {fileID: 6888687704617564376}
-  - {fileID: 8815239540563822613}
   - {fileID: 1189566644947236489}
   - {fileID: 6466205497880421843}
   - {fileID: 5984112659049878019}
@@ -3914,10 +3913,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 3977986637741677593}
     - target: {fileID: 4905830745723878732, guid: 01197430daf746d4f879b2d86da54555, type: 3}
-      propertyPath: m_Navigation.m_SelectOnDown
-      value: 
-      objectReference: {fileID: 8815239540563822613}
-    - target: {fileID: 4905830745723878732, guid: 01197430daf746d4f879b2d86da54555, type: 3}
       propertyPath: definition.Values.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -4336,10 +4331,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1189566644947236489}
     - target: {fileID: 5557945986499157198, guid: 5cdeb6632db658e41b58c7779499da67, type: 3}
-      propertyPath: refractionQualityBar
-      value: 
-      objectReference: {fileID: 8815239540563822613}
-    - target: {fileID: 5557945986499157198, guid: 5cdeb6632db658e41b58c7779499da67, type: 3}
       propertyPath: sunShadowsQualityBar
       value: 
       objectReference: {fileID: 2778908752638167798}
@@ -4394,9 +4385,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 580569636389471903, guid: 5cdeb6632db658e41b58c7779499da67, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5861855412974545306}
-    - targetCorrespondingSourceObject: {fileID: 580569636389471903, guid: 5cdeb6632db658e41b58c7779499da67, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 7123601621921275753}
     - targetCorrespondingSourceObject: {fileID: 580569636389471903, guid: 5cdeb6632db658e41b58c7779499da67, type: 3}
       insertIndex: -1
       addedObject: {fileID: 578757397648040437}
@@ -4498,7 +4486,6 @@ MonoBehaviour:
   aoBar: {fileID: 3977986637741677593}
   motionBlurBar: {fileID: 6888687704617564376}
   motionBlurQualityBar: {fileID: 8723935588201668355}
-  refractionQualityBar: {fileID: 8815239540563822613}
   ssrQualityBar: {fileID: 1189566644947236489}
   subSurfaceScatteringQualityBar: {fileID: 6466205497880421843}
 --- !u!114 &8692580365627516102 stripped
@@ -5626,10 +5613,6 @@ PrefabInstance:
       propertyPath: m_Navigation.m_SelectOnUp
       value: 
       objectReference: {fileID: 3977986637741677593}
-    - target: {fileID: 5127496100526194373, guid: 6762e9c68f33d034dbfdc0004d5dceb8, type: 3}
-      propertyPath: m_Navigation.m_SelectOnDown
-      value: 
-      objectReference: {fileID: 8815239540563822613}
     - target: {fileID: 5139922889211438898, guid: 6762e9c68f33d034dbfdc0004d5dceb8, type: 3}
       propertyPath: m_SizeDelta.x
       value: 0
@@ -5736,155 +5719,6 @@ RectTransform:
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5127496100526194373, guid: 6762e9c68f33d034dbfdc0004d5dceb8, type: 3}
   m_PrefabInstance: {fileID: 4483654191586632134}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f50ad9127f541c68a82bee30addfa2a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!1001 &4486437050232829273
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1665761978529778011}
-    m_Modifications:
-    - target: {fileID: 4905830745723878732, guid: 01197430daf746d4f879b2d86da54555, type: 3}
-      propertyPath: m_Navigation.m_Mode
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4905830745723878732, guid: 01197430daf746d4f879b2d86da54555, type: 3}
-      propertyPath: definition.DisplayName
-      value: Refraction Quality
-      objectReference: {fileID: 0}
-    - target: {fileID: 4905830745723878732, guid: 01197430daf746d4f879b2d86da54555, type: 3}
-      propertyPath: m_Navigation.m_SelectOnUp
-      value: 
-      objectReference: {fileID: 6888687704617564376}
-    - target: {fileID: 4905830745723878732, guid: 01197430daf746d4f879b2d86da54555, type: 3}
-      propertyPath: m_Navigation.m_SelectOnDown
-      value: 
-      objectReference: {fileID: 1189566644947236489}
-    - target: {fileID: 4905830745723878732, guid: 01197430daf746d4f879b2d86da54555, type: 3}
-      propertyPath: 'definition.Values.Array.data[0]'
-      value: Low
-      objectReference: {fileID: 0}
-    - target: {fileID: 4905830745723878732, guid: 01197430daf746d4f879b2d86da54555, type: 3}
-      propertyPath: 'definition.Values.Array.data[1]'
-      value: Medium
-      objectReference: {fileID: 0}
-    - target: {fileID: 4905830745723878732, guid: 01197430daf746d4f879b2d86da54555, type: 3}
-      propertyPath: 'definition.Values.Array.data[2]'
-      value: High
-      objectReference: {fileID: 0}
-    - target: {fileID: 4929516595753460923, guid: 01197430daf746d4f879b2d86da54555, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5648568439529998494, guid: 01197430daf746d4f879b2d86da54555, type: 3}
-      propertyPath: m_Name
-      value: OptionBar_7
-      objectReference: {fileID: 0}
-    - target: {fileID: 6674083224039516720, guid: 01197430daf746d4f879b2d86da54555, type: 3}
-      propertyPath: m_Pivot.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6674083224039516720, guid: 01197430daf746d4f879b2d86da54555, type: 3}
-      propertyPath: m_Pivot.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6674083224039516720, guid: 01197430daf746d4f879b2d86da54555, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6674083224039516720, guid: 01197430daf746d4f879b2d86da54555, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6674083224039516720, guid: 01197430daf746d4f879b2d86da54555, type: 3}
-      propertyPath: m_AnchorMin.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6674083224039516720, guid: 01197430daf746d4f879b2d86da54555, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6674083224039516720, guid: 01197430daf746d4f879b2d86da54555, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6674083224039516720, guid: 01197430daf746d4f879b2d86da54555, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 75
-      objectReference: {fileID: 0}
-    - target: {fileID: 6674083224039516720, guid: 01197430daf746d4f879b2d86da54555, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6674083224039516720, guid: 01197430daf746d4f879b2d86da54555, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6674083224039516720, guid: 01197430daf746d4f879b2d86da54555, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6674083224039516720, guid: 01197430daf746d4f879b2d86da54555, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6674083224039516720, guid: 01197430daf746d4f879b2d86da54555, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6674083224039516720, guid: 01197430daf746d4f879b2d86da54555, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6674083224039516720, guid: 01197430daf746d4f879b2d86da54555, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6674083224039516720, guid: 01197430daf746d4f879b2d86da54555, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6674083224039516720, guid: 01197430daf746d4f879b2d86da54555, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6674083224039516720, guid: 01197430daf746d4f879b2d86da54555, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6674083224039516720, guid: 01197430daf746d4f879b2d86da54555, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6674083224039516720, guid: 01197430daf746d4f879b2d86da54555, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8561484007775964903, guid: 01197430daf746d4f879b2d86da54555, type: 3}
-      propertyPath: m_text
-      value: Refraction Quality
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 01197430daf746d4f879b2d86da54555, type: 3}
---- !u!224 &7123601621921275753 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 6674083224039516720, guid: 01197430daf746d4f879b2d86da54555, type: 3}
-  m_PrefabInstance: {fileID: 4486437050232829273}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &8815239540563822613 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4905830745723878732, guid: 01197430daf746d4f879b2d86da54555, type: 3}
-  m_PrefabInstance: {fileID: 4486437050232829273}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
@@ -6825,10 +6659,6 @@ PrefabInstance:
       propertyPath: definition.DisplayName
       value: Screen Space Reflections
       objectReference: {fileID: 0}
-    - target: {fileID: 4905830745723878732, guid: 01197430daf746d4f879b2d86da54555, type: 3}
-      propertyPath: m_Navigation.m_SelectOnUp
-      value: 
-      objectReference: {fileID: 8815239540563822613}
     - target: {fileID: 4905830745723878732, guid: 01197430daf746d4f879b2d86da54555, type: 3}
       propertyPath: m_Navigation.m_SelectOnDown
       value: 

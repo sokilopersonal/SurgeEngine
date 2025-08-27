@@ -18,19 +18,12 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers
         private HDAdditionalCameraData _hdCameraData;
         
         private const int MaxTextureQuality = 3;
-        
-        private readonly string[] _refractionQualityKeywords =
-        {
-            "_REFRACTIONQUALITY_LOW",
-            "_REFRACTIONQUALITY_MEDIUM", 
-            "_REFRACTIONQUALITY_NATIVE",
-        };
 
         private readonly Dictionary<MeshQuality, float> _meshQualityLods = new()
         {
-            [MeshQuality.Medium] = 8f,
-            [MeshQuality.High] = 6f,
-            [MeshQuality.VeryHigh] = 2f
+            [MeshQuality.Medium] = 4f,
+            [MeshQuality.High] = 2f,
+            [MeshQuality.VeryHigh] = 0.5f
         };
         
         public UserGraphics()
@@ -111,11 +104,6 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers
         public void SetMotionBlurQuality(MotionBlurQuality value)
         {
             Data.motionBlurQuality = value;
-        }
-
-        public void SetRefractionQuality(RefractionQuality level)
-        {
-            Data.refractionQuality = level;
         }
 
         public void SetScreenSpaceReflectionsQuality(ScreenSpaceReflectionQuality level)
@@ -258,9 +246,6 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers
                 _hdCameraData.renderingPathCustomFrameSettings.SetEnabled(FrameSettingsField.Transmission, true);
                 _hdCameraData.renderingPathCustomFrameSettings.SetEnabled(FrameSettingsField.SubsurfaceScattering, true);
             }
-            
-            // Refraction Quality
-            SetKeyword(_refractionQualityKeywords, (int)Data.refractionQuality);
         }
 
         private void SetupCamera()
@@ -285,7 +270,6 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers
         public MotionBlurQuality motionBlurQuality = MotionBlurQuality.High;
         public TextureQuality textureQuality = TextureQuality.High;
         public MeshQuality meshQuality = MeshQuality.VeryHigh;
-        public RefractionQuality refractionQuality = RefractionQuality.Native;
         public ScreenSpaceReflectionQuality screenSpaceReflectionQuality = ScreenSpaceReflectionQuality.Medium;
         public ContactShadowsQuality contactShadowsQuality = ContactShadowsQuality.Medium;
         public SubSurfaceScatteringQuality subSurfaceScatteringQuality = SubSurfaceScatteringQuality.On;
@@ -342,13 +326,6 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers
         Medium = 1,
         High = 2
     }
-
-    public enum RefractionQuality
-    {
-        Low = 0,
-        Medium = 1,
-        Native = 2,
-    }
     
     public enum ScreenSpaceReflectionQuality
     {
@@ -356,13 +333,6 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers
         Low = 1,
         Medium = 2,
         High = 3,
-    }
-
-    public enum MaterialQuality
-    {
-        Low = 0,
-        Medium = 1,
-        High = 2
     }
 
     public enum ContactShadowsQuality

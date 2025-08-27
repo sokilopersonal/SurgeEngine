@@ -15,7 +15,6 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers.UI
         [SerializeField] private OptionBar aoBar;
         [SerializeField] private OptionBar motionBlurBar;
         [SerializeField] private OptionBar motionBlurQualityBar;
-        [SerializeField] private OptionBar refractionQualityBar;
         [SerializeField] private OptionBar ssrQualityBar;
         [SerializeField] private OptionBar subSurfaceScatteringQualityBar;
 
@@ -79,12 +78,6 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers.UI
                 _graphics.Apply();
             };
             
-            refractionQualityBar.OnChanged += b =>
-            {
-                _graphics.SetRefractionQuality((RefractionQuality)b.Index);
-                _graphics.Apply();
-            };
-            
             ssrQualityBar.OnChanged += b =>
             {
                 _graphics.SetScreenSpaceReflectionsQuality((ScreenSpaceReflectionQuality)b.Index);
@@ -105,7 +98,6 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers.UI
             aoBar.Set((int)data.aoQuality);
             motionBlurBar.Set((int)data.motionBlur);
             motionBlurQualityBar.Set((int)data.motionBlurQuality);
-            refractionQualityBar.Set((int)data.refractionQuality);
             ssrQualityBar.Set((int)data.screenSpaceReflectionQuality);
             subSurfaceScatteringQualityBar.Set((int)data.subSurfaceScatteringQuality);
         }
@@ -131,7 +123,6 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers.UI
                 aoBar.Set((int)data.aoQuality);
                 motionBlurBar.Set((int)data.motionBlur);
                 motionBlurQualityBar.Set((int)data.motionBlurQuality);
-                refractionQualityBar.Set((int)data.refractionQuality);
                 ssrQualityBar.Set((int)data.screenSpaceReflectionQuality);
                 subSurfaceScatteringQualityBar.Set((int)data.subSurfaceScatteringQuality);
                 
