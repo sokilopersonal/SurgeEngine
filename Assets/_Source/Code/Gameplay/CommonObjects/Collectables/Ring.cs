@@ -1,10 +1,12 @@
-﻿using FMODUnity;
+﻿using System;
+using FMODUnity;
 using SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates;
 using SurgeEngine.Code.Core.Actor.System;
 using SurgeEngine.Code.Gameplay.CommonObjects.System;
 using SurgeEngine.Code.Infrastructure.Custom;
 using SurgeEngine.Code.Infrastructure.Tools;
 using UnityEngine;
+using Zenject;
 
 namespace SurgeEngine.Code.Gameplay.CommonObjects.Collectables
 {
@@ -12,6 +14,8 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Collectables
     {
         [SerializeField] private ParticleSystem particle;
         [SerializeField] private EventReference ringSound;
+        
+        [Inject] private Stage _stage;
         
         private const float RotationSpeed = 240f;
 
@@ -64,10 +68,10 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Collectables
         {
             base.Contact(msg, context);
 
-            Collect();
+            Collect(1);
         }
 
-        public void StartMagnet(CharacterBase character)
+        public virtual void StartMagnet(CharacterBase character)
         {
             if (!_inMagnet)
             {
@@ -77,11 +81,16 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Collectables
             }
         }
 
-        private void Collect()
+        protected virtual void Collect(int count)
         {
             RuntimeManager.PlayOneShot(ringSound, transform.position);
 
-            Utility.AddScore(10);
+            for (int i = 0; i < count; i++)
+            {
+                _stage.Data.RingCount++;
+                Utility.AddScore(10);
+            }
+            
             var p = Instantiate(particle, transform.position, Quaternion.identity);
             Destroy(p.gameObject, 1f);
             gameObject.SetActive(false);
@@ -94,5 +103,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Collectables
             transform.position = _startPosition;
             gameObject.SetActive(true);
         }
+
+        public virtual bool IsSuperRing() => false;
     }
 }

@@ -59,9 +59,9 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates
 
         private void OnRingCollected(ContactBase obj)
         {
-            if (obj is Ring)
+            if (obj is Ring ring)
             {
-                BoostEnergy += _config.RingEnergyAddition;
+                BoostEnergy += _config.RingEnergyAddition * (!ring.IsSuperRing() ? 1 : 10);
             }
         }
 

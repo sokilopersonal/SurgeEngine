@@ -101,11 +101,14 @@ namespace SurgeEngine.Code.Core.Actor.HUD
 
         private void OnObjectTriggered(ContactBase obj)
         {
-            if (obj is Ring)
+            if (obj is Ring ring)
             {
-                RingHUD ringHUDInstance = Instantiate(ringHUDPrefab, obj.transform.position, obj.transform.rotation);
-                _instantiator.InjectGameObject(ringHUDInstance.gameObject);
-                ringHUDInstance.Initialize(this);
+                if (!ring.IsSuperRing())
+                {
+                    RingHUD ringHUDInstance = Instantiate(ringHUDPrefab, obj.transform.position, obj.transform.rotation);
+                    _instantiator.InjectGameObject(ringHUDInstance.gameObject);
+                    ringHUDInstance.Initialize(this);
+                }
             }
 
             if (obj is GoalRing goalRing)

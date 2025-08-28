@@ -58,19 +58,19 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.System
             _character.Life.OnDied += OnCharacterDied;
         }
 
+        private void OnDisable()
+        {
+            ObjectEvents.OnObjectTriggered -= OnObjectTriggered;
+            
+            _character.Life.OnDied -= OnCharacterDied;
+        }
+
         private void OnActorState(FState obj)
         {
             if (_character.StateMachine.PreviousState is FStateStart)
             {
                 Data.State = StageState.Playing;
             }
-        }
-
-        private void OnDisable()
-        {
-            ObjectEvents.OnObjectTriggered -= OnObjectTriggered;
-            
-            _character.Life.OnDied -= OnCharacterDied;
         }
 
         private void OnCharacterDied(CharacterBase obj)
@@ -96,11 +96,6 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.System
 
         private void OnObjectTriggered(ContactBase obj)
         {
-            if (obj is Ring)
-            {
-                Data.RingCount += 1;
-            }
-
             if (obj is PointMarker marker)
             {
                 CurrentPointMarker = marker;
@@ -125,9 +120,8 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.System
         [SerializeField] private float bonusOptimalTime = 120f;
         [SerializeField] private float bonusZeroTime = 300f;
         [SerializeField] private int bonusMax = 100_000;
-
+        
         public StageResult Result => result;
-        public GoalRank GoalRank => result.GetRank(TotalScore);
 
         public int RingCount
         {
