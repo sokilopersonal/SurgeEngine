@@ -67,7 +67,7 @@ GameObject:
   m_Component:
   - component: {fileID: 595769338678780714}
   - component: {fileID: 93192028089058108}
-  - component: {fileID: 5658204069599448470}
+  - component: {fileID: 6312781436644066100}
   m_Layer: 8
   m_Name: Trigger
   m_TagString: Untagged
@@ -84,7 +84,7 @@ Transform:
   m_GameObject: {fileID: 8164185542432670521}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -102,8 +102,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b10fc80912b45f9956ba60a4b65f0e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!136 &5658204069599448470
-CapsuleCollider:
+--- !u!65 &6312781436644066100
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -120,11 +120,9 @@ CapsuleCollider:
   m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.75
-  m_Height: 3.25
-  m_Direction: 2
-  m_Center: {x: 0, y: 0.3, z: 0}
+  serializedVersion: 3
+  m_Size: {x: 2.3035922, y: 1.3641068, z: 2.4944658}
+  m_Center: {x: 0, y: 0.1168738, z: 0}
 --- !u!1001 &2807799189731893087
 PrefabInstance:
   m_ObjectHideFlags: 0
