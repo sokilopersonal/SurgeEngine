@@ -11,15 +11,11 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
 {
     public class FStateCrawl : FCharacterState, IStateTimeout, IDamageableState
     {
-        private GroundTag _surfaceTag;
-
         private readonly CrawlConfig _crawlConfig;
-        private readonly QuickStepConfig _quickstepConfig;
         
         public FStateCrawl(CharacterBase owner) : base(owner)
         {
             owner.TryGetConfig(out _crawlConfig);
-            owner.TryGetConfig(out _quickstepConfig);
         }
 
         public override void OnEnter()
@@ -63,22 +59,6 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
             {
                 StateMachine.SetState<FStateSit>();
             }
-
-            if (_quickstepConfig)
-            {
-                if (Input.LeftBumperPressed)
-                {
-                    var qs = StateMachine.GetState<FStateQuickstep>();
-                    qs.SetDirection(QuickstepDirection.Left).SetRun(false);
-                    StateMachine.SetState<FStateQuickstep>();
-                }
-                else if (Input.RightBumperPressed)
-                {
-                    var qs = StateMachine.GetState<FStateQuickstep>();
-                    qs.SetDirection(QuickstepDirection.Right).SetRun(false);
-                    StateMachine.SetState<FStateQuickstep>();
-                }
-            }
         }
 
         public override void OnFixedTick(float dt)
@@ -102,8 +82,6 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
                 
                 Kinematics.Snap(Kinematics.Point, Vector3.up);
                 Model.RotateBody(Vector3.up);
-
-                _surfaceTag = data.transform.gameObject.GetGroundTag();
             }
             else
             {

@@ -181,6 +181,17 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
         
         public FStateQuickstep SetDirection(QuickstepDirection direction)
         {
+            // Invert QS direction if we are looking in the opposite of player's forward
+            float dot = Vector3.Dot(Rigidbody.transform.forward, character.Camera.GetCameraTransform().forward);
+            if (direction == QuickstepDirection.Left && dot < 0)
+            {
+                direction = QuickstepDirection.Right;
+            }
+            else if (direction == QuickstepDirection.Right && dot < 0)
+            {
+                direction = QuickstepDirection.Left;
+            }
+            
             _direction = direction;
             return this;
         }

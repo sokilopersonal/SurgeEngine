@@ -25,7 +25,7 @@ namespace SurgeEngine.Code.Core.Actor.States
         {
             base.OnTick(dt);
             
-            if (Kinematics.GetInputDir().magnitude > 0.1f || Kinematics.HorizontalVelocity.magnitude > 0.1f)
+            if (Kinematics.GetInputDir().magnitude > 0.1f)
             {
                 StateMachine.SetState<FStateGround>();
             }
