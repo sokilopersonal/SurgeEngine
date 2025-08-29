@@ -41,7 +41,11 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers
             var motionBlur = profile.Add<MotionBlur>();
 
             ao.quality.overrideState = true;
+            ao.rayTracing.value = true;
             ssr.quality.overrideState = true;
+            ssr.tracing.overrideState = true;
+            ssr.tracing.value = RayCastingMode.RayTracing;
+            ssr.rayLength = 450;
             contactShadows.quality.overrideState = true;
             bloom.quality.overrideState = true;
             motionBlur.quality.overrideState = true;

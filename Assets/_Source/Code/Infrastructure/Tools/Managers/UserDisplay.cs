@@ -8,7 +8,7 @@ using Zenject;
 
 namespace SurgeEngine.Code.Infrastructure.Tools.Managers
 {
-    public class UserDisplay : JsonStorageService<UserDisplaySettings>, ILateDisposable
+    public class UserDisplay : JsonStorageService<UserDisplaySettings>, IInitializable, ILateDisposable
     {
         private HDAdditionalCameraData _hdCameraData;
 
@@ -26,10 +26,15 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers
         {
             if (arg1 != LoadSceneMode.Additive)
             {
-                SetupCamera();
-
-                Apply();
+                Initialize();
             }
+        }
+
+        public void Initialize()
+        {
+            SetupCamera();
+            
+            Apply();
         }
 
         private void SetupCamera()
@@ -40,7 +45,7 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers
                 _hdCameraData = camera.GetComponent<HDAdditionalCameraData>();
             }
         }
-        
+
         public void SetAntiAliasing(AntiAliasingQuality level)
         {
             Data.antiAliasingQuality = level;
@@ -50,13 +55,13 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers
         {
             Data.sharpness = Mathf.Clamp(value, 0, 2);
         }
-        
+
         public void SetUpscalingMode(UpscalingMode mode)
         {
             Data.upscaleMode = mode;
            
         }
-        
+
         public void SetUpscalingQuality(UpscalingQuality quality)
         {
             Data.upscaleQuality = quality;

@@ -38,7 +38,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.PhysicsObjects
         private bool _hidden = false;
         private float _timer;
 
-        private void Start()
+        private void Awake()
         {
             foreach (Transform pipe in transform.Find("pipes"))
                 _pipes.Add(pipe);
