@@ -231,7 +231,7 @@ MonoBehaviour:
   Path: FMOD/SurgeEngine/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638920573026089861
+  lastModified: 638920676218535776
   FileSizes:
   - Name: Desktop
     Value: 4264
@@ -977,10 +977,10 @@ MonoBehaviour:
   Path: FMOD/SurgeEngine/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638920573026114930
+  lastModified: 638920676218545775
   FileSizes:
   - Name: Desktop
-    Value: 4896
+    Value: 4944
   Exists: 1
 --- !u!114 &-3064395595488222742
 MonoBehaviour:
@@ -1424,6 +1424,7 @@ MonoBehaviour:
   - {fileID: -1436313751496976952}
   - {fileID: -5420208837584497649}
   - {fileID: 2590157764345542557}
+  - {fileID: 2437228311410452376}
   EditorParameters:
   - {fileID: 7205006369947406295}
   - {fileID: -5359562392401140572}
@@ -1436,7 +1437,7 @@ MonoBehaviour:
   StringsBanks:
   - {fileID: -3163533322277861223}
   cacheVersion: 131849
-  cacheTime: 638920598708241818
+  cacheTime: 638920676221791820
   SerializableEventsDict:
   - key: event:/UI/Line
     index: 0
@@ -1892,6 +1893,33 @@ MonoBehaviour:
   MinDistance: 20
   MaxDistance: 60
   Length: 0
+--- !u!114 &2437228311410452376
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/CommonObjects/ObjectPhysics/Potbig
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/CommonObjects/ObjectPhysics/Potbig
+  Guid:
+    Data1: -976295039
+    Data2: 1080029663
+    Data3: -114936396
+    Data4: -577234958
+  Banks:
+  - {fileID: 6617164158718936897}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 4
+  MaxDistance: 200
+  Length: 1465
 --- !u!114 &2537480807562029704
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1988,10 +2016,10 @@ MonoBehaviour:
   Path: FMOD/SurgeEngine/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 638920598708241818
+  lastModified: 638920676221791820
   FileSizes:
   - Name: Desktop
-    Value: 1479520
+    Value: 1499520
   Exists: 1
 --- !u!114 &2961646770365126559
 MonoBehaviour:
@@ -2516,10 +2544,10 @@ MonoBehaviour:
   Path: FMOD/SurgeEngine/Build/Desktop/Music.bank
   Name: Music
   StudioPath: bank:/Music
-  lastModified: 638920094766352070
+  lastModified: 638920676219885299
   FileSizes:
   - Name: Desktop
-    Value: 15875072
+    Value: 15900864
   Exists: 1
 --- !u!114 &6718373030284113468
 MonoBehaviour:
@@ -2625,7 +2653,7 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 2
   MaxDistance: 100
-  Length: 1599
+  Length: 2032
 --- !u!114 &8005785946221709276
 MonoBehaviour:
   m_ObjectHideFlags: 0
