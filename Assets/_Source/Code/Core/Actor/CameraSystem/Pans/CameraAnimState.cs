@@ -66,8 +66,8 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
                     
                     _stateMachine.CurrentData = new PanData
                     {
-                        easeTimeEnter = Character.GetStartData().startType == StartType.Standing ? 0.5f : 0.25f,
-                        easeTimeExit = Character.GetStartData().startType == StartType.Standing ? 0.5f : 0.25f
+                        easeTimeEnter = Character.GetStartData().startType == StartType.Standing ? 0.5f : 0.75f,
+                        easeTimeExit = Character.GetStartData().startType == StartType.Standing ? 0.5f : 0
                     };
                     _stateMachine.SetState<NewModernState>();
                 }

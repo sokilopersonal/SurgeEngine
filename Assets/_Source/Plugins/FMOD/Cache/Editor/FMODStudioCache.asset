@@ -231,7 +231,7 @@ MonoBehaviour:
   Path: FMOD/SurgeEngine/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638920095197832276
+  lastModified: 638920573026089861
   FileSizes:
   - Name: Desktop
     Value: 4264
@@ -668,6 +668,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 1109
+--- !u!114 &-5420208837584497649
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Characters/Sonic/Start/Start_02
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/Characters/Sonic/Start/Start_02
+  Guid:
+    Data1: 1391541576
+    Data2: 1170648432
+    Data3: 963946920
+    Data4: 1399935486
+  Banks:
+  - {fileID: 2805792623226039733}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 892
 --- !u!114 &-5359562392401140572
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -950,10 +977,10 @@ MonoBehaviour:
   Path: FMOD/SurgeEngine/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638920095197867521
+  lastModified: 638920573026114930
   FileSizes:
   - Name: Desktop
-    Value: 4854
+    Value: 4896
   Exists: 1
 --- !u!114 &-3064395595488222742
 MonoBehaviour:
@@ -1383,7 +1410,6 @@ MonoBehaviour:
   - {fileID: -4028530053698483980}
   - {fileID: 1701501839704343594}
   - {fileID: -9082195441664493660}
-  - {fileID: 7043155063728318922}
   - {fileID: 2607203339033330184}
   - {fileID: -7079336552698144107}
   - {fileID: -5832466154654899566}
@@ -1396,6 +1422,8 @@ MonoBehaviour:
   - {fileID: 1651755047032129796}
   - {fileID: -4608016640583512732}
   - {fileID: -1436313751496976952}
+  - {fileID: -5420208837584497649}
+  - {fileID: 2590157764345542557}
   EditorParameters:
   - {fileID: 7205006369947406295}
   - {fileID: -5359562392401140572}
@@ -1408,7 +1436,7 @@ MonoBehaviour:
   StringsBanks:
   - {fileID: -3163533322277861223}
   cacheVersion: 131849
-  cacheTime: 638920095594484529
+  cacheTime: 638920598708241818
   SerializableEventsDict:
   - key: event:/UI/Line
     index: 0
@@ -1540,16 +1568,34 @@ MonoBehaviour:
     index: 63
   - key: event:/Characters/Sonic/BoostImpulse
     index: 64
-  - key: event:/Characters/Sonic/Start/StartVoice
-    index: 65
   - key: event:/Characters/Sonic/SlideVoice
-    index: 66
+    index: 65
   - key: event:/Characters/Sonic/StompLand
-    index: 67
+    index: 66
   - key: event:/Characters/Sonic/Jump
-    index: 68
+    index: 67
   - key: event:/CommonObjects/Stumble
+    index: 68
+  - key: event:/Music/ApotosDayHUD
     index: 69
+  - key: event:/Music/DevStage
+    index: 70
+  - key: event:/Music/StageClear
+    index: 71
+  - key: event:/Music/Music
+    index: 72
+  - key: event:/Music/GameLand
+    index: 73
+  - key: event:/Music/Windmill_Isle
+    index: 74
+  - key: event:/Music/UR_InstallerOST
+    index: 75
+  - key: event:/CommonObjects/SuperRing
+    index: 76
+  - key: event:/Characters/Sonic/Start/Start_02
+    index: 77
+  - key: event:/Characters/Sonic/Start/Start_01
+    index: 78
 --- !u!114 &28076501642241423
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1873,6 +1919,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 9589
+--- !u!114 &2590157764345542557
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Characters/Sonic/Start/Start_01
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/Characters/Sonic/Start/Start_01
+  Guid:
+    Data1: -2128333087
+    Data2: 1074827659
+    Data3: 117023928
+    Data4: -817461159
+  Banks:
+  - {fileID: 2805792623226039733}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 1150
 --- !u!114 &2607203339033330184
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1915,10 +1988,10 @@ MonoBehaviour:
   Path: FMOD/SurgeEngine/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 638920095594484529
+  lastModified: 638920598708241818
   FileSizes:
   - Name: Desktop
-    Value: 1478880
+    Value: 1479520
   Exists: 1
 --- !u!114 &2961646770365126559
 MonoBehaviour:
@@ -2502,33 +2575,6 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 2985
---- !u!114 &7043155063728318922
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Characters/Sonic/Start/StartVoice
-  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
-  Path: event:/Characters/Sonic/Start/StartVoice
-  Guid:
-    Data1: -2128333087
-    Data2: 1074827659
-    Data3: 117023928
-    Data4: -817461159
-  Banks:
-  - {fileID: 2805792623226039733}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 4692
 --- !u!114 &7205006369947406295
 MonoBehaviour:
   m_ObjectHideFlags: 0
