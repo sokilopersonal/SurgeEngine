@@ -8,11 +8,13 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
     public class JumpPanel : JumpPanelBase
     {
         [SerializeField] private float pitch = 15f;
-        private Vector3 StartPosition => transform.position;
+        private Vector3 StartPosition => transform.position + transform.up;
         
         public override void Contact(Collider msg, CharacterBase context)
         {
             base.Contact(msg, context);
+
+            context.Rigidbody.position = StartPosition;
             
             Launch(context, pitch);
         }
