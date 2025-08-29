@@ -87,21 +87,21 @@ namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
                 Vector3 dir = Input.moveVector;
                 _driftXDirection = Mathf.Sign(dir.x);
 
-                Model.RotateBody(Kinematics.Velocity, targetNormal, 1600);
+                Model.RotateBody(Kinematics.Velocity, Kinematics.Normal, 1600);
                 
                 Kinematics.SlopePhysics();
                 
                 float boostForce = SonicTools.IsBoost() ? 0.5f : 1f;
-                Quaternion angle = Quaternion.AngleAxis(_driftXDirection * _config.centrifugalForce * boostForce, targetNormal);
+                Quaternion angle = Quaternion.AngleAxis(_driftXDirection * _config.centrifugalForce * boostForce, Kinematics.Normal);
                 Vector3 driftVelocity = angle * Rigidbody.linearVelocity;
                 Rigidbody.linearVelocity = driftVelocity;
                 if (Kinematics.Speed < _config.maxSpeed) Rigidbody.linearVelocity += Rigidbody.linearVelocity.normalized *
                     (0.05f * Mathf.Lerp(4f, 1f, Kinematics.Speed / _config.maxSpeed));
                 
-                if (!isWater) Kinematics.Snap(point, targetNormal);
+                if (!isWater) Kinematics.Snap(point, Kinematics.Normal);
                 else Kinematics.SnapOnWater(point);
                 
-                Kinematics.Project(targetNormal);
+                Kinematics.Project(Kinematics.Normal);
             }
             else
             {
