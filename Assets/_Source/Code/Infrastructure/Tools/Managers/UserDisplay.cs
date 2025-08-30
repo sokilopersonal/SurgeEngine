@@ -121,19 +121,19 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers
             switch (Data.upscaleQuality)
             {
                 case UpscalingQuality.UltraPerformance:
-                    DynamicResolutionHandler.SetDynamicResScaler(() => 0.33f);
+                    DynamicResolutionHandler.SetDynamicResScaler(() => 33.3333f, DynamicResScalePolicyType.ReturnsPercentage);
                     break;
                 case UpscalingQuality.Performance:
-                    DynamicResolutionHandler.SetDynamicResScaler(() => 0.5f);
+                    DynamicResolutionHandler.SetDynamicResScaler(() => 50f, DynamicResScalePolicyType.ReturnsPercentage);
                     break;
                 case UpscalingQuality.Balanced:
-                    DynamicResolutionHandler.SetDynamicResScaler(() => 0.58f);
+                    DynamicResolutionHandler.SetDynamicResScaler(() => 57.88888f, DynamicResScalePolicyType.ReturnsPercentage);
                     break;
                 case UpscalingQuality.Quality:
-                    DynamicResolutionHandler.SetDynamicResScaler(() => 0.66f);
+                    DynamicResolutionHandler.SetDynamicResScaler(() => 66.666667f, DynamicResScalePolicyType.ReturnsPercentage);
                     break;
                 case UpscalingQuality.Native:
-                    DynamicResolutionHandler.SetDynamicResScaler(() => 1f);
+                    DynamicResolutionHandler.SetDynamicResScaler(() => 100f, DynamicResScalePolicyType.ReturnsPercentage);
                     break;
             }
             

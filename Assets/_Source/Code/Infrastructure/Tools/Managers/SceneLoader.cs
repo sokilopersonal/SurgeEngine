@@ -45,15 +45,10 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers
             
             Instance.screen.SetActive(true);
             
-            var scene = SceneManager.LoadSceneAsync(name);
-            if (scene != null)
+            var asyncOperation = SceneManager.LoadSceneAsync(name);
+            while (!asyncOperation.isDone)
             {
-                scene.allowSceneActivation = false;
-
-                while (scene.progress < 0.9f)
-                    yield return null;
-                
-                scene.allowSceneActivation = true;
+                yield return null;
             }
 
             Instance._groupTween = Instance.group.DOFade(0f, Instance.transitionDuration).From(1).SetDelay(Instance.fadeOutDelay).SetUpdate(true);

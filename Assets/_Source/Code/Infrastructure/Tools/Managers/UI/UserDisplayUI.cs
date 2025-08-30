@@ -3,6 +3,7 @@ using System.Text.RegularExpressions;
 using SurgeEngine.Code.UI.OptionBars;
 using UnityEngine;
 using UnityEngine.NVIDIA;
+using UnityEngine.Rendering.HighDefinition;
 using Zenject;
 
 namespace SurgeEngine.Code.Infrastructure.Tools.Managers.UI
@@ -140,6 +141,6 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers.UI
             });
         }
         
-        private bool IsDLSSCompatible => SystemInfo.graphicsDeviceName.Contains("NVIDIA Geforce RTX", StringComparison.OrdinalIgnoreCase);
+        private bool IsDLSSCompatible => HDDynamicResolutionPlatformCapabilities.DLSSDetected;
     }
 }
