@@ -18,14 +18,11 @@ namespace SurgeEngine.Code.UI.OptionBars
     public class OptionBar : Selectable, ISubmitHandler, IScrollHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
     {
         [SerializeField] protected OptionDefinition definition = new();
-        public string DisplayName => definition.DisplayName;
+        [SerializeField] private AutoScroll autoScroll;
+        private string DisplayName => definition.DisplayName;
         
         [SerializeField] protected TMP_Text title;
         [SerializeField] protected TMP_Text state;
-        
-        [SerializeField, TextArea] private string description;
-        
-        public string Description => description;
 
         private int _index;
         public int Index
@@ -42,8 +39,6 @@ namespace SurgeEngine.Code.UI.OptionBars
         public string CurrentValue => definition.Values.Count > 0 ? definition.Values[Index] : "Empty";
 
         private RectTransform _rectTransform;
-        private AutoScroll _autoScroll;
-        private ScrollRect _scrollRect;
 
         public event Action<OptionBar> OnChanged;
 
@@ -52,12 +47,6 @@ namespace SurgeEngine.Code.UI.OptionBars
             base.Awake();
             
             _rectTransform = GetComponent<RectTransform>();
-            var autoScroll = GetComponentInParent<AutoScroll>();
-            if (autoScroll)
-            {
-                _autoScroll = autoScroll;
-                _scrollRect = _autoScroll.ScrollRect;
-            }
         }
 
         protected override void OnEnable()
@@ -77,7 +66,7 @@ namespace SurgeEngine.Code.UI.OptionBars
 
         public void Set(int index)
         {
-            Index = index;
+            Index = Mathf.Clamp(index, 0, definition.Values.Count - 1);
         }
         
         public void AddOption(string value)
@@ -100,14 +89,14 @@ namespace SurgeEngine.Code.UI.OptionBars
             base.OnMove(eventData);
             
             var dir = eventData.moveDir;
-            if (dir == MoveDirection.Up || dir == MoveDirection.Down) _autoScroll?.ScrollTo(_rectTransform);
+            if (dir == MoveDirection.Up || dir == MoveDirection.Down) autoScroll?.ScrollTo(_rectTransform);
         }
 
         public override void OnSelect(BaseEventData eventData)
         {
             base.OnSelect(eventData);
 
-            _autoScroll?.ScrollTo(null);
+            autoScroll?.ScrollTo(null);
         }
 
         public void OnSubmit(BaseEventData eventData)
@@ -117,33 +106,33 @@ namespace SurgeEngine.Code.UI.OptionBars
         
         public void OnScroll(PointerEventData eventData)
         {
-            if (_scrollRect != null)
+            if (autoScroll != null)
             {
-                _autoScroll.ScrollRect.OnScroll(eventData);
+                autoScroll.ScrollRect.OnScroll(eventData);
             }
         }
         
         public void OnBeginDrag(PointerEventData eventData)
         {
-            if (_scrollRect != null)
+            if (autoScroll != null)
             {
-                _autoScroll.ScrollRect.OnBeginDrag(eventData);
+                autoScroll.ScrollRect.OnBeginDrag(eventData);
             }
         }
         
         public void OnDrag(PointerEventData eventData)
         {
-            if (_scrollRect != null)
+            if (autoScroll != null)
             {
-                _autoScroll.ScrollRect.OnDrag(eventData);
+                autoScroll.ScrollRect.OnDrag(eventData);
             }
         }
         
         public void OnEndDrag(PointerEventData eventData)
         {
-            if (_scrollRect != null)
+            if (autoScroll != null)
             {
-                _autoScroll.ScrollRect.OnEndDrag(eventData);
+                autoScroll.ScrollRect.OnEndDrag(eventData);
             }
         }
     }

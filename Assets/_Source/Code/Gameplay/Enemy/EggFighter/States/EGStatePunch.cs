@@ -45,7 +45,12 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter.States
 
         private void Punch()
         {
-            HurtBox.CreateAttached(eggFighter, eggFighter.transform, eggFighter.transform.forward + eggFighter.transform.up * 0.6f, Vector3.one * 1.5f, HurtBoxTarget.Player);
+            if (HurtBox.CreateAttached(eggFighter, eggFighter.transform,
+                    eggFighter.transform.forward + eggFighter.transform.up * 0.6f, Vector3.one * 1.5f,
+                    HurtBoxTarget.Player))
+            {
+                Debug.Log("1");
+            }
         }
     }
 }

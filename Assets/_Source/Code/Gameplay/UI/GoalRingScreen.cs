@@ -130,9 +130,14 @@ namespace SurgeEngine.Code.Gameplay.UI
             EventSystem.current.SetSelectedGameObject(objectToSelect);
         }
 
+        public void LoadToMenu()
+        {
+            SceneLoader.LoadGameScene("MainMenu");
+        }
+
         public void Restart()
         {
-            SceneLoader.LoadScene(SceneManager.GetActiveScene().name);
+            SceneLoader.LoadGameScene(SceneManager.GetActiveScene().name);
         }
 
         private static string GetTimeInString(float time)

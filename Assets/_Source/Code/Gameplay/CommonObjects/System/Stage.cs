@@ -90,7 +90,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.System
             else
             {
                 yield return new WaitForSeconds(1.75f);
-                SceneLoader.LoadScene(SceneManager.GetActiveScene().name);
+                SceneLoader.LoadGameScene(SceneManager.GetActiveScene().name);
             }
         }
 

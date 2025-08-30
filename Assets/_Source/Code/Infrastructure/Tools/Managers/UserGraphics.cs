@@ -155,8 +155,12 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers
             QualitySettings.meshLodThreshold = _meshQualityLods[Data.meshQuality];
             
             // Sun Shadows
-            var sunData = RenderSettings.sun.GetComponent<HDAdditionalLightData>();
-            sunData.shadowResolution.level = (int)Data.sunShadowsQuality;
+            var sun = RenderSettings.sun;
+            if (sun != null)
+            {
+                var sunData = sun.GetComponent<HDAdditionalLightData>();
+                sunData.shadowResolution.level = (int)Data.sunShadowsQuality;
+            }
             
             // Additional Shadows
             foreach (var light in _lightsData)

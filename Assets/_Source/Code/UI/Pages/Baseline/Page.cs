@@ -37,8 +37,11 @@ namespace SurgeEngine.Code.UI.Pages.Baseline
         public void Enter()
         {
             OnPreEnter.Invoke();
-            
-            if (firstSelectedObject) EventSystem.current.SetSelectedGameObject(firstSelectedObject);
+
+            if (firstSelectedObject)
+            {
+                EventSystem.current.SetSelectedGameObject(firstSelectedObject);
+            }
             
             Block(false);
             Show();

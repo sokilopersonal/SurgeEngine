@@ -44,7 +44,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects
         {
             int mask = 0;
             if (target.HasFlag(HurtBoxTarget.Player))
-                mask |= LayerMask.GetMask("Actor");
+                mask |= LayerMask.GetMask("Character");
             if (target.HasFlag(HurtBoxTarget.Enemy))
                 mask |= LayerMask.GetMask("Enemy");
             if (target.HasFlag(HurtBoxTarget.Breakable))

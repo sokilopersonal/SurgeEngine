@@ -1,0 +1,46 @@
+{
+    "version": 1,
+    "name": "DisclaimerInput",
+    "maps": [
+        {
+            "name": "Disclaimer",
+            "id": "5f1473a4-f077-414f-be3f-bfdd088dcc93",
+            "actions": [
+                {
+                    "name": "Start",
+                    "type": "Button",
+                    "id": "4133b5a4-cc9d-4b7b-bda3-05e590911582",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "4641c234-6ebf-40f3-8373-c805bf10c2d9",
+                    "path": "<Keyboard>/anyKey",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Start",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "24c1664e-87d1-49e2-8ac5-24b489aa9fad",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Start",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

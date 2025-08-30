@@ -27,7 +27,7 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers
             group.alpha = 0;
         }
         
-        public static void LoadScene(string name)
+        public static void LoadGameScene(string name)
         {
             if (!Instance._isLoading)
             {

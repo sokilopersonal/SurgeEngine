@@ -218,12 +218,12 @@ namespace SurgeEngine.Code.UI
 
         public void RestartAction()
         {
-            SceneLoader.LoadScene(SceneManager.GetActiveScene().name);
+            SceneLoader.LoadGameScene(SceneManager.GetActiveScene().name);
         }
 
         public void QuitAction()
         {
-            //SceneLoader.LoadScene("Scene1");
+            SceneLoader.LoadGameScene("MainMenu");
         }
     }
 }
