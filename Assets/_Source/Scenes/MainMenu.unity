@@ -1058,6 +1058,7 @@ GameObject:
   - component: {fileID: 670817494}
   - component: {fileID: 670817496}
   - component: {fileID: 670817495}
+  - component: {fileID: 670817497}
   m_Layer: 5
   m_Name: Main
   m_TagString: Untagged
@@ -1100,8 +1101,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SurgeEngine.Code.UI.Pages.Baseline.Page
   firstSelectedObject: {fileID: 0}
   exitOnNewPush: 1
-  enterDuration: 0.5
-  exitDuration: 0
+  enterDuration: 0.25
+  exitDuration: 0.25
   OnPreEnter:
     m_PersistentCalls:
       m_Calls: []
@@ -1126,6 +1127,18 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &670817497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 670817493}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eab7a9da46884d098ed8fed633a6016a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SurgeEngine._Source.Code.UI.MainMenu.MainMenuExiter
 --- !u!114 &701511077 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5863282690578997301, guid: 009c846c1b7ded44a80af7193c324419, type: 3}
@@ -2649,12 +2662,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9157942629304549155, guid: 009c846c1b7ded44a80af7193c324419, type: 3}
       propertyPath: exitDuration
-      value: 0
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 9157942629304549155, guid: 009c846c1b7ded44a80af7193c324419, type: 3}
       propertyPath: confirmWindow
       value: 
       objectReference: {fileID: 2056169649}
+    - target: {fileID: 9157942629304549155, guid: 009c846c1b7ded44a80af7193c324419, type: 3}
+      propertyPath: enterDuration
+      value: 0.25
+      objectReference: {fileID: 0}
     - target: {fileID: 9176414930011033822, guid: 009c846c1b7ded44a80af7193c324419, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -2848,8 +2865,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SurgeEngine.Code.UI.Pages.Baseline.Page
   firstSelectedObject: {fileID: 660699131}
   exitOnNewPush: 0
-  enterDuration: 0.5
-  exitDuration: 0
+  enterDuration: 0.25
+  exitDuration: 0.25
   OnPreEnter:
     m_PersistentCalls:
       m_Calls: []
@@ -3645,6 +3662,34 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3235971488958976487, guid: 51ce7cab6fcbfba40b7e0951c2a8f635, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3235971488958976487, guid: 51ce7cab6fcbfba40b7e0951c2a8f635, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3235971488958976487, guid: 51ce7cab6fcbfba40b7e0951c2a8f635, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 670817497}
+    - target: {fileID: 3235971488958976487, guid: 51ce7cab6fcbfba40b7e0951c2a8f635, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3235971488958976487, guid: 51ce7cab6fcbfba40b7e0951c2a8f635, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Quit
+      objectReference: {fileID: 0}
+    - target: {fileID: 3235971488958976487, guid: 51ce7cab6fcbfba40b7e0951c2a8f635, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: SurgeEngine._Source.Code.UI.MainMenu.MainMenuExiter, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3235971488958976487, guid: 51ce7cab6fcbfba40b7e0951c2a8f635, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3709,6 +3754,14 @@ PrefabInstance:
     - target: {fileID: 5228693526279335406, guid: 55ce6c8783fbaf94ea5ad01fa2f77764, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5977947283844396179, guid: 55ce6c8783fbaf94ea5ad01fa2f77764, type: 3}
+      propertyPath: exitDuration
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 5977947283844396179, guid: 55ce6c8783fbaf94ea5ad01fa2f77764, type: 3}
+      propertyPath: enterDuration
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 7139982728699106903, guid: 55ce6c8783fbaf94ea5ad01fa2f77764, type: 3}
       propertyPath: m_Pivot.x
@@ -4003,7 +4056,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 10
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!225 &3158795046291704234
 CanvasGroup:

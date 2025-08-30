@@ -37,8 +37,6 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers
 
         private static IEnumerator LoadSceneRoutine(string name)
         {
-            Time.timeScale = 1;
-            
             Instance._isLoading = true;
             Instance.screen.SetActive(false);
             Instance._groupTween = Instance.group.DOFade(1f, Instance.transitionDuration).From(0).SetUpdate(true);
@@ -54,9 +52,7 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers
 
                 while (scene.progress < 0.9f)
                     yield return null;
-
-                yield return new WaitForSecondsRealtime(Instance.artificialDelay);
-
+                
                 scene.allowSceneActivation = true;
             }
 
@@ -66,6 +62,8 @@ namespace SurgeEngine.Code.Infrastructure.Tools.Managers
             
             Instance.screen.SetActive(false);
             Instance._isLoading = false;
+            
+            Time.timeScale = 1;
         }
     }
 }
