@@ -170,7 +170,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
 
         private void OnGUI()
         {
-            if (showDebugText && StateMachine != null && StateMachine.CurrentState != null)
+            if (Debug.isDebugBuild && showDebugText && StateMachine != null && StateMachine.CurrentState != null)
             {
                 var style = new GUIStyle();
                 style.stretchWidth = true;

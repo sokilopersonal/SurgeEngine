@@ -46,10 +46,14 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.GoalRing
                 
                 CurrentGoalScreen.OnFlashEnd += () =>
                 {
-                    var rt = new RenderTexture(2048, 2048, GraphicsFormat.R8G8B8A8_SRGB, GraphicsFormat.None);
-                    rt.useMipMap = true;
-                    rt.autoGenerateMips = true;
-                
+                    context.Animation.enabled = false;
+                    
+                    var rt = new RenderTexture(1024, 1024, GraphicsFormat.R8G8B8A8_SRGB, GraphicsFormat.None)
+                    {
+                        useMipMap = true,
+                        autoGenerateMips = true
+                    };
+
                     var playerRenderCameraObject = new GameObject("PlayerRenderCamera");
                     var playerRenderCamera = playerRenderCameraObject.AddComponent<Camera>();
                     playerRenderCamera.targetTexture = rt;
@@ -69,9 +73,6 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.GoalRing
                     playerRenderCameraObject.transform.localRotation = Quaternion.Euler(0, -180, 0);
                 
                     CurrentGoalScreen.SetRenderTexture(rt);
-                    
-                    var emptyCamera = new GameObject("EmptyCamera").AddComponent<Camera>();
-                    emptyCamera.cullingMask = 0;
 
                     context.Camera.GetCamera().enabled = false;
                     
@@ -84,16 +85,6 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.GoalRing
                     }
                     
                     context.StateMachine.SetState<FStateGoal>().SetGoal(this);
-
-                    var fixedPanData = new FixPanData();
-                    var target = cameraTarget;
-                    fixedPanData.position = target.position;
-                    fixedPanData.target = target.rotation;
-                    fixedPanData.fov = 45;
-                    
-                    context.Camera.StateMachine.ClearVolumes();
-                    
-                    context.Camera.StateMachine.SetState<FixedCameraPan>().SetData(fixedPanData);
                 };
             }
             

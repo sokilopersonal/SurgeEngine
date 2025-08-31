@@ -64,7 +64,10 @@ namespace SurgeEngine.Code.Infrastructure.Custom.Drawers
 
         private void ToggleWindow(InputAction.CallbackContext obj)
         {
-            _active = !_active;
+            if (Debug.isDebugBuild)
+            {
+                _active = !_active;
+            }
         }
     }
 }
