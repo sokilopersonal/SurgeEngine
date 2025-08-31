@@ -294,7 +294,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff4194eda44d424cb055055c21985c9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <StateAnimator>k__BackingField: {fileID: 4489472361400553381}
+  idleTime: 6
+  idleStates:
+  - sonic_idle_A
+  - sonic_idle_B
+  - sonic_idle_C
+  - sonic_idle_D
 --- !u!114 &4489472361400553381
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6141,8 +6146,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed76de6d8199464485eb939cb244a342, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SurgeEngine.Code.Core.Actor.System.CharacterLife
-  invincibleTime: 5
-  directionalForce: 5
+  invincibleTime: 3
+  directionalForce: 4
 --- !u!1 &1259358529721517514
 GameObject:
   m_ObjectHideFlags: 0

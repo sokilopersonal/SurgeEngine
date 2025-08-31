@@ -199,8 +199,8 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
         private void AutoLook(float multiplier)
         {
             float angle = GetAutoAngle() * Time.deltaTime;
-            float dot = Vector3.Dot(Character.transform.forward, Vector3.up);
-            if (1 - Mathf.Abs(dot) > 0.05f)
+            float dot = Vector3.Dot(Vector3.Cross(_stateMachine.Transform.right, Vector3.up), Character.transform.forward);
+            if (dot > -0.95f)
             {
                 _yawAuto = angle * multiplier;
             }

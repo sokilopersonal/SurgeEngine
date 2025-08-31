@@ -1,5 +1,4 @@
-﻿using NaughtyAttributes;
-using SurgeEngine.Code.Core.StateMachine.Base;
+﻿using SurgeEngine.Code.Core.StateMachine.Base;
 using SurgeEngine.Code.Core.StateMachine.Components;
 using UnityEngine;
 
@@ -9,9 +8,19 @@ namespace SurgeEngine.Code.Core.Actor.System
     /// Base class for handling actor animations using Unity's animation system.
     /// All animation transitions must be implemented manually for each character.
     /// </summary>
+    [RequireComponent(typeof(StateAnimator))]
     public abstract class CharacterAnimation : CharacterComponent
     {
-        [field: SerializeField, Required("State Animator is required!")] public StateAnimator StateAnimator { get; private set; }
+        public StateAnimator StateAnimator { get; private set; }
+
+        [SerializeField] private float idleTime = 3f;
+        [SerializeField] private string[] idleStates;
+        private float _idleTimer;
+
+        private void Awake()
+        {
+            StateAnimator = GetComponent<StateAnimator>();
+        }
 
         private void OnEnable()
         {
@@ -48,6 +57,24 @@ namespace SurgeEngine.Code.Core.Actor.System
             animator.SetFloat("WallDot", -dot);
             animator.SetFloat("AbsWallDot", Mathf.Lerp(animator.GetFloat("AbsWallDot"), 
                 Mathf.Abs(Mathf.Approximately(character.Kinematics.Angle, 90) ? dot : 0), 1 * Time.deltaTime));
+
+            CalculateIdleState();
+        }
+
+        private void CalculateIdleState()
+        {
+            if (StateAnimator.Animator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+            {
+                _idleTimer += Time.deltaTime;
+                if (_idleTimer >= idleTime)
+                {
+                    int index = Random.Range(0, idleStates.Length);
+                    StateAnimator.Animator.SetInteger(AnimatorParams.IdleIndex, index);
+                    StateAnimator.Animator.SetTrigger(AnimatorParams.IdleTrigger);
+                    StateAnimator.SetCurrentAnimationState(idleStates[index]);
+                    _idleTimer = 0;
+                }
+            }
         }
 
         /// <summary>
