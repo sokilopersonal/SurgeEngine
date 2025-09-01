@@ -1,4 +1,5 @@
 ﻿using System;
+using SurgeEngine._Source.Code.Infrastructure.Custom;
 using SurgeEngine._Source.Code.Infrastructure.Tools.Services;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -48,40 +49,33 @@ namespace SurgeEngine._Source.Code.Infrastructure.Tools.Managers
 
         public void SetAntiAliasing(AntiAliasingQuality level)
         {
-            Data.antiAliasingQuality = level;
+            Data.antiAliasingQuality.Value = level;
         }
 
         public void SetSharpness(float value)
         {
-            Data.sharpness = Mathf.Clamp(value, 0, 2);
+            Data.sharpness.Value = Mathf.Clamp(value, 0, 2);
         }
 
         public void SetUpscalingMode(UpscalingMode mode)
         {
-            Data.upscaleMode = mode;
-           
+            Data.upscaleMode.Value = mode;
         }
 
         public void SetUpscalingQuality(UpscalingQuality quality)
         {
-            Data.upscaleQuality = quality;
-        }
-
-        public void SetResolution(Vector2 value)
-        {
-            Data.screenWidth = (int)value.x;
-            Data.screenHeight = (int)value.y;
+            Data.upscaleQuality.Value = quality;
         }
 
         public void SetFullscreen(bool value)
         {
-            Data.fullscreen = value;
+            Data.fullscreen.Value = value;
         }
 
         public void Apply()
         {
-            _hdCameraData.TAAQuality = (HDAdditionalCameraData.TAAQualityLevel)Data.antiAliasingQuality;
-            switch (Data.antiAliasingQuality)
+            _hdCameraData.TAAQuality = (HDAdditionalCameraData.TAAQualityLevel)Data.antiAliasingQuality.Value;
+            switch (Data.antiAliasingQuality.Value)
             {
                 case AntiAliasingQuality.Low:
                     _hdCameraData.taaSharpenMode = HDAdditionalCameraData.TAASharpenMode.LowQuality;
@@ -90,10 +84,10 @@ namespace SurgeEngine._Source.Code.Infrastructure.Tools.Managers
                     _hdCameraData.taaSharpenMode = HDAdditionalCameraData.TAASharpenMode.PostSharpen;
                     break;
             }
-            
-            _hdCameraData.taaSharpenStrength = Data.sharpness;
+
+            _hdCameraData.taaSharpenStrength = Data.sharpness.Value;
             _hdCameraData.allowDynamicResolution = true;
-            
+
             _hdCameraData.deepLearningSuperSamplingUseCustomAttributes = false;
             _hdCameraData.deepLearningSuperSamplingUseCustomQualitySettings = false;
             _hdCameraData.deepLearningSuperSamplingUseOptimalSettings = false;
@@ -101,8 +95,8 @@ namespace SurgeEngine._Source.Code.Infrastructure.Tools.Managers
             _hdCameraData.fidelityFX2SuperResolutionUseCustomAttributes = false;
             _hdCameraData.fidelityFX2SuperResolutionUseCustomQualitySettings = false;
             _hdCameraData.fidelityFX2SuperResolutionUseOptimalSettings = false;
-            
-            switch (Data.upscaleMode)
+
+            switch (Data.upscaleMode.Value)
             {
                 case UpscalingMode.TAA:
                     _hdCameraData.allowDeepLearningSuperSampling = false;
@@ -118,7 +112,7 @@ namespace SurgeEngine._Source.Code.Infrastructure.Tools.Managers
                     break;
             }
 
-            switch (Data.upscaleQuality)
+            switch (Data.upscaleQuality.Value)
             {
                 case UpscalingQuality.UltraPerformance:
                     DynamicResolutionHandler.SetDynamicResScaler(() => 33.3333f, DynamicResScalePolicyType.ReturnsPercentage);
@@ -136,21 +130,19 @@ namespace SurgeEngine._Source.Code.Infrastructure.Tools.Managers
                     DynamicResolutionHandler.SetDynamicResScaler(() => 100f, DynamicResScalePolicyType.ReturnsPercentage);
                     break;
             }
-            
-            Screen.SetResolution(Data.screenWidth, Data.screenHeight, Data.fullscreen ? FullScreenMode.FullScreenWindow : FullScreenMode.Windowed);
+
+            Screen.SetResolution(Screen.width, Screen.height, Data.fullscreen.Value ? FullScreenMode.FullScreenWindow : FullScreenMode.Windowed);
         }
     }
 
     [Serializable]
     public class UserDisplaySettings
     {
-        public int screenWidth = 1920;
-        public int screenHeight = 1080;
-        public bool fullscreen = true;
-        public AntiAliasingQuality antiAliasingQuality = AntiAliasingQuality.High;
-        public float sharpness = 0.25f;
-        public UpscalingMode upscaleMode = UpscalingMode.TAA;
-        public UpscalingQuality upscaleQuality = UpscalingQuality.Native;
+        public ReactiveVar<bool> fullscreen = new(true);
+        public ReactiveVar<AntiAliasingQuality> antiAliasingQuality = new(AntiAliasingQuality.High);
+        public ReactiveVar<float> sharpness = new(0.25f);
+        public ReactiveVar<UpscalingMode> upscaleMode = new(UpscalingMode.TAA);
+        public ReactiveVar<UpscalingQuality> upscaleQuality = new(UpscalingQuality.Native);
     }
     
     public enum AntiAliasingQuality

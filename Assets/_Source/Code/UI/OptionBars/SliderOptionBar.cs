@@ -10,17 +10,16 @@ namespace SurgeEngine._Source.Code.UI.OptionBars
         [SerializeField] private string format = "{0}";
         public Slider Slider => slider;
 
-        protected override void Start()
+        protected override void Awake()
         {
-            base.Start();
+            base.Awake();
             
-            Index = (int)slider.value;
             slider.onValueChanged.AddListener(Set);
         }
 
-        private void Set(float arg0)
+        private void Set(float value)
         {
-            Index = (int)arg0;
+            base.Set(Mathf.RoundToInt(value));
         }
 
         protected override void SetTextState()

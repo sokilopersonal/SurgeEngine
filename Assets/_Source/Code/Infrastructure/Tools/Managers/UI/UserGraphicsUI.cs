@@ -28,37 +28,31 @@ namespace SurgeEngine._Source.Code.Infrastructure.Tools.Managers.UI
             textureBar.OnChanged += b =>
             {
                 _graphics.SetTextureQuality((TextureQuality)b.Index);
-                _graphics.Apply();
             };
 
             meshBar.OnChanged += b =>
             {
                 _graphics.SetMeshQuality((MeshQuality)b.Index);
-                _graphics.Apply();
             };
             
             sunShadowsQualityBar.OnChanged += b =>
             {
                 _graphics.SetSunShadowsQuality((ShadowsQuality)b.Index);
-                _graphics.Apply();
             };
             
             punctualShadowsQualityBar.OnChanged += b =>
             {
                 _graphics.SetAdditionalShadowsQuality((ShadowsQuality)b.Index);
-                _graphics.Apply();
             };
             
             bloomBar.OnChanged += b =>
             {
                 _graphics.SetBloomQuality((BloomQuality)b.Index);
-                _graphics.Apply();
             };
             
             aoBar.OnChanged += b =>
             {
                 _graphics.SetAmbientOcclusionQuality((AmbientOcclusionQuality)b.Index);
-                _graphics.Apply();
             };
             
             motionBlurBar.OnChanged += b =>
@@ -66,39 +60,34 @@ namespace SurgeEngine._Source.Code.Infrastructure.Tools.Managers.UI
                 bool isEnabled = b.Index == 1;
                 
                 _graphics.SetMotionBlur(!isEnabled ? MotionBlurState.Off : MotionBlurState.On);
-                _graphics.Apply();
-                
                 motionBlurQualityBar.gameObject.SetActive(isEnabled);
             };
             
             motionBlurQualityBar.OnChanged += b =>
             {
                 _graphics.SetMotionBlurQuality((MotionBlurQuality)b.Index);
-                _graphics.Apply();
             };
             
             ssrQualityBar.OnChanged += b =>
             {
                 _graphics.SetScreenSpaceReflectionsQuality((ScreenSpaceReflectionQuality)b.Index);
-                _graphics.Apply();
             };
             
             subSurfaceScatteringQualityBar.OnChanged += b =>
             {
                 _graphics.SetSubSurfaceScattering((SubSurfaceScatteringQuality)b.Index);
-                _graphics.Apply();
             };
             
-            textureBar.Set((int)data.textureQuality);
-            meshBar.Set((int)data.meshQuality);
-            sunShadowsQualityBar.Set((int)data.sunShadowsQuality);
-            punctualShadowsQualityBar.Set((int)data.additionalShadowsQuality);
-            bloomBar.Set((int)data.bloomQuality);
-            aoBar.Set((int)data.aoQuality);
-            motionBlurBar.Set((int)data.motionBlur);
-            motionBlurQualityBar.Set((int)data.motionBlurQuality);
-            ssrQualityBar.Set((int)data.screenSpaceReflectionQuality);
-            subSurfaceScatteringQualityBar.Set((int)data.subSurfaceScatteringQuality);
+            textureBar.Set((int)data.TextureQuality.Value);
+            meshBar.Set((int)data.MeshQuality.Value);
+            sunShadowsQualityBar.Set((int)data.SunShadowsQuality.Value);
+            punctualShadowsQualityBar.Set((int)data.AdditionalShadowsQuality.Value);
+            bloomBar.Set((int)data.BloomQuality.Value);
+            aoBar.Set((int)data.AOQuality.Value);
+            motionBlurBar.Set((int)data.MotionBlur.Value);
+            motionBlurQualityBar.Set((int)data.MotionBlurQuality.Value);
+            ssrQualityBar.Set((int)data.ScreenSpaceReflectionQuality.Value);
+            subSurfaceScatteringQualityBar.Set((int)data.SubSurfaceScatteringQuality.Value);
         }
 
         public override void Save()
@@ -114,18 +103,17 @@ namespace SurgeEngine._Source.Code.Infrastructure.Tools.Managers.UI
             
             _graphics.Load(data =>
             {
-                textureBar.Set((int)data.textureQuality);
-                meshBar.Set((int)data.meshQuality);
-                sunShadowsQualityBar.Set((int)data.sunShadowsQuality);
-                punctualShadowsQualityBar.Set((int)data.additionalShadowsQuality);
-                bloomBar.Set((int)data.bloomQuality);
-                aoBar.Set((int)data.aoQuality);
-                motionBlurBar.Set((int)data.motionBlur);
-                motionBlurQualityBar.Set((int)data.motionBlurQuality);
-                ssrQualityBar.Set((int)data.screenSpaceReflectionQuality);
-                subSurfaceScatteringQualityBar.Set((int)data.subSurfaceScatteringQuality);
+                textureBar.Set((int)data.TextureQuality.Value);
+                meshBar.Set((int)data.MeshQuality.Value);
+                sunShadowsQualityBar.Set((int)data.SunShadowsQuality.Value);
+                punctualShadowsQualityBar.Set((int)data.AdditionalShadowsQuality.Value);
+                bloomBar.Set((int)data.BloomQuality.Value);
+                aoBar.Set((int)data.AOQuality.Value);
+                motionBlurBar.Set((int)data.MotionBlur.Value);
+                motionBlurQualityBar.Set((int)data.MotionBlurQuality.Value);
+                ssrQualityBar.Set((int)data.ScreenSpaceReflectionQuality.Value);
+                subSurfaceScatteringQualityBar.Set((int)data.SubSurfaceScatteringQuality.Value);
                 
-                _graphics.Apply();
                 Save();
             });
         }

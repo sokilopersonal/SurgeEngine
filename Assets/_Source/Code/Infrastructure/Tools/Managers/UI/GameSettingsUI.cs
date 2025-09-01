@@ -24,9 +24,9 @@ namespace SurgeEngine._Source.Code.Infrastructure.Tools.Managers.UI
 
         public override void Save()
         {
-            _gameSettings.Save();
-            
             base.Save();
+            
+            _gameSettings.Save();
         }
 
         public override void Revert()

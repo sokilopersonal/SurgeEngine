@@ -9,9 +9,14 @@ namespace SurgeEngine._Source.Code.Infrastructure.Tools.Managers.UI
 
         protected void Awake()
         {
-            foreach (var bar in GetComponentsInChildren<OptionBar>(false))
+            IsDirty = false;
+            
+            foreach (var bar in GetComponentsInChildren<OptionBar>(true))
             {
-                bar.OnChanged += _ => MarkDirty();
+                bar.OnChanged += _ =>
+                {
+                    MarkDirty();
+                };
             }
         }
 

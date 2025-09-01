@@ -1,9 +1,15 @@
-﻿using UnityEngine.EventSystems;
+﻿using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace SurgeEngine._Source.Code.UI.OptionBars
 {
     public class NavigationOptionBar : OptionBar
     {
+        public override void Set(int index)
+        {
+            Index = Mathf.Clamp(index, 0, definition.Values.Count - 1);
+        }
+
         public void Next()
         {
             Index = (Index + 1) % definition.Values.Count;

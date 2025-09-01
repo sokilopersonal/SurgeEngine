@@ -63,9 +63,9 @@ namespace SurgeEngine._Source.Code.UI.OptionBars
             state.text = CurrentValue;
         }
 
-        public void Set(int index)
+        public virtual void Set(int index)
         {
-            Index = Mathf.Clamp(index, 0, definition.Values.Count - 1);
+            Index = index;
         }
         
         public void AddOption(string value)
