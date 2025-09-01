@@ -47,12 +47,8 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.GoalRing
                 CurrentGoalScreen.OnFlashEnd += () =>
                 {
                     context.Animation.enabled = false;
-                    
-                    var rt = new RenderTexture(1024, 1024, GraphicsFormat.R8G8B8A8_SRGB, GraphicsFormat.None)
-                    {
-                        useMipMap = true,
-                        autoGenerateMips = true
-                    };
+
+                    var rt = new RenderTexture(1512, 1512, GraphicsFormat.R8G8B8A8_SRGB, GraphicsFormat.None);
 
                     var playerRenderCameraObject = new GameObject("PlayerRenderCamera");
                     var playerRenderCamera = playerRenderCameraObject.AddComponent<Camera>();
