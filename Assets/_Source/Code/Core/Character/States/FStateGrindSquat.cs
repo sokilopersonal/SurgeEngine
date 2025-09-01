@@ -1,6 +1,6 @@
-﻿using SurgeEngine.Code.Core.Actor.System;
+﻿using SurgeEngine._Source.Code.Core.Character.System;
 
-namespace SurgeEngine.Code.Core.Actor.States
+namespace SurgeEngine._Source.Code.Core.Character.States
 {
     public class FStateGrindSquat : FStateGrind
     {

@@ -1,8 +1,8 @@
 using DG.Tweening;
-using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine._Source.Code.Core.Character.System;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Gameplay.Effects
+namespace SurgeEngine._Source.Code.Gameplay.Effects
 {
     public class ParaloopEffect : Effect
     {

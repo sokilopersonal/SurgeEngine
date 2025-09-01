@@ -1,9 +1,9 @@
 ﻿using System;
-using SurgeEngine.Code.Gameplay.CommonObjects.Interfaces;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects.Interfaces;
+using SurgeEngine._Source.Code.Infrastructure.Custom.Extensions;
 using UnityEngine;
-using SurgeEngine.Code.Infrastructure.Custom.Extensions;
 
-namespace SurgeEngine.Code.Gameplay.CommonObjects
+namespace SurgeEngine._Source.Code.Gameplay.CommonObjects
 {
     /// <summary>
     /// A class for creating hurtboxes

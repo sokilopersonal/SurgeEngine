@@ -1,7 +1,7 @@
-﻿using SurgeEngine.Code.Gameplay.CommonObjects.Sensors;
-using SurgeEngine.Code.Gameplay.Enemy.Base;
+﻿using SurgeEngine._Source.Code.Gameplay.CommonObjects.Sensors;
+using SurgeEngine._Source.Code.Gameplay.Enemy.Base;
 
-namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter.States
+namespace SurgeEngine._Source.Code.Gameplay.Enemy.EggFighter.States
 {
     public class EGState : FEState
     {

@@ -1,8 +1,8 @@
-﻿using SurgeEngine.Code.Gameplay.CommonObjects.System;
-using SurgeEngine.Code.Gameplay.Enemy.Base;
+﻿using SurgeEngine._Source.Code.Gameplay.CommonObjects.System;
+using SurgeEngine._Source.Code.Gameplay.Enemy.Base;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Gameplay.CommonObjects.Events
+namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Events
 {
     public class EnemyDeathEvent : BaseStageEvent, IPointMarkerLoader
     {

@@ -1,8 +1,8 @@
-using SurgeEngine.Code.Core.StateMachine.Base;
-using SurgeEngine.Code.Core.StateMachine.Components;
+using SurgeEngine._Source.Code.Core.StateMachine.Base;
+using SurgeEngine._Source.Code.Core.StateMachine.Components;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Gameplay.Enemy.Base
+namespace SurgeEngine._Source.Code.Gameplay.Enemy.Base
 {
     [RequireComponent(typeof(StateAnimator))]
     public class EnemyAnimation : EnemyComponent

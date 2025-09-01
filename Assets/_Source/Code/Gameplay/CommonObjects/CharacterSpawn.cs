@@ -1,7 +1,7 @@
-﻿using SurgeEngine.Code.Core.Actor.States;
+﻿using SurgeEngine._Source.Code.Core.Character.States;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Gameplay.CommonObjects
+namespace SurgeEngine._Source.Code.Gameplay.CommonObjects
 {
     public class CharacterSpawn : MonoBehaviour
     {

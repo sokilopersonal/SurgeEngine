@@ -1,8 +1,7 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace SurgeEngine.Code.UI.Animated
+namespace SurgeEngine._Source.Code.UI.Animated
 {
     public abstract class SelectReaction : MonoBehaviour
     {

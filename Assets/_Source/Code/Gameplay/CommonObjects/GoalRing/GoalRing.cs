@@ -1,17 +1,14 @@
-﻿using System;
-using FMODUnity;
-using SurgeEngine.Code.Core.Actor.CameraSystem.Pans;
-using SurgeEngine.Code.Core.Actor.CameraSystem.Pans.Data;
-using SurgeEngine.Code.Core.Actor.States;
-using SurgeEngine.Code.Core.Actor.System;
-using SurgeEngine.Code.Gameplay.CommonObjects.System;
-using SurgeEngine.Code.Gameplay.UI;
+﻿using FMODUnity;
+using SurgeEngine._Source.Code.Core.Character.States;
+using SurgeEngine._Source.Code.Core.Character.System;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects.System;
+using SurgeEngine._Source.Code.Gameplay.UI;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering;
 using UnityEngine.Rendering.HighDefinition;
 using Zenject;
 
-namespace SurgeEngine.Code.Gameplay.CommonObjects.GoalRing
+namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.GoalRing
 {
     public class GoalRing : ContactBase
     {

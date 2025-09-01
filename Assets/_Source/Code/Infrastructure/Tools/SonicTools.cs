@@ -1,18 +1,14 @@
-﻿using SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates;
-using SurgeEngine.Code.Core.Actor.System;
-using SurgeEngine.Code.Core.Actor.System.Characters.Sonic;
-using SurgeEngine.Code.Gameplay.CommonObjects;
-using SurgeEngine.Code.Gameplay.CommonObjects.Mobility.Rails;
-using SurgeEngine.Code.Infrastructure.Config.SonicSpecific;
+﻿using SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic.SubStates;
+using SurgeEngine._Source.Code.Core.Character.System;
+using SurgeEngine._Source.Code.Core.Character.System.Characters.Sonic;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility.Rails;
+using SurgeEngine._Source.Code.Infrastructure.Config.SonicSpecific;
+using SurgeEngine._Source.Code.Infrastructure.Custom.Extensions;
 using UnityEngine;
 using UnityEngine.Splines;
 
-#if UNITY_EDITOR
-using SurgeEngine.Code.Infrastructure.Custom.Extensions;
-using UnityEditor;
-#endif
-
-namespace SurgeEngine.Code.Infrastructure.Tools
+namespace SurgeEngine._Source.Code.Infrastructure.Tools
 {
     /// <summary>
     /// A helper class with methods for Sonic

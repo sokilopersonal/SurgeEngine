@@ -1,7 +1,7 @@
-﻿using SurgeEngine.Code.Core.Actor.System;
+﻿using SurgeEngine._Source.Code.Core.Character.System;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
+namespace SurgeEngine._Source.Code.Core.Character.CameraSystem.Pans
 {
     public class PathTargetCameraPan : PathCameraPan
     {

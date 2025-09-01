@@ -1,9 +1,8 @@
 ﻿using System;
-using FMODUnity;
-using SurgeEngine.Code.Core.Actor.States;
-using SurgeEngine.Code.Core.Actor.System;
-using SurgeEngine.Code.Gameplay.CommonObjects.System;
-using SurgeEngine.Code.Infrastructure.Tools.Managers;
+using SurgeEngine._Source.Code.Core.Character.States;
+using SurgeEngine._Source.Code.Core.Character.System;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects.System;
+using SurgeEngine._Source.Code.Infrastructure.Tools.Managers;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -11,7 +10,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Zenject;
 
-namespace SurgeEngine.Code.Gameplay.UI
+namespace SurgeEngine._Source.Code.Gameplay.UI
 {
     public class GoalRingScreen : MonoBehaviour
     {

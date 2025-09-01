@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Gameplay.CommonObjects.Player
+namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Player
 {
     public class TemporaryDisableCollisionOnContact : MonoBehaviour
     {

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace SurgeEngine.Code.Core.Actor.Model
+namespace SurgeEngine._Source.Code.Core.Character.Model
 {
     public class CopyTransform : MonoBehaviour
     {

@@ -1,9 +1,9 @@
-using SurgeEngine.Code.UI;
-using SurgeEngine.Code.UI.Pages.Baseline;
+using SurgeEngine._Source.Code.UI;
+using SurgeEngine._Source.Code.UI.Pages.Baseline;
 using UnityEngine;
 using Zenject;
 
-namespace SurgeEngine.Code.Infrastructure.DI
+namespace SurgeEngine._Source.Code.Infrastructure.DI
 {
     public class PauseInstaller : MonoInstaller
     {

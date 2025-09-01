@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using FMODUnity;
-using SurgeEngine.Code.UI.Animated;
+using SurgeEngine._Source.Code.UI.Animated;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-namespace SurgeEngine.Code.UI.Navigation
+namespace SurgeEngine._Source.Code.UI.Navigation
 {
     public class MenuNavigationSystem : MonoBehaviour
     {

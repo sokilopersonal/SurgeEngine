@@ -1,8 +1,8 @@
-using SurgeEngine.Code.Core.Actor.CameraSystem.Pans;
-using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine._Source.Code.Core.Character.CameraSystem.Pans;
+using SurgeEngine._Source.Code.Core.Character.System;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Gameplay.CommonObjects.Player
+namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Player
 {
     [RequireComponent(typeof(BoxCollider))]
     public class FallDeadCollision : ContactBase

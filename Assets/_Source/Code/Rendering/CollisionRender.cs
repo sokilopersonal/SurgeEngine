@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using JetBrains.Annotations;
 using NaughtyAttributes;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Rendering
+namespace SurgeEngine._Source.Code.Rendering
 {
     [ExecuteInEditMode]
     public class CollisionRender : MonoBehaviour

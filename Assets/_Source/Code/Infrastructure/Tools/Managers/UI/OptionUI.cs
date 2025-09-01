@@ -1,8 +1,7 @@
-using System;
-using SurgeEngine.Code.UI.OptionBars;
+using SurgeEngine._Source.Code.UI.OptionBars;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Infrastructure.Tools.Managers.UI
+namespace SurgeEngine._Source.Code.Infrastructure.Tools.Managers.UI
 {
     public abstract class OptionUI : MonoBehaviour
     {

@@ -1,15 +1,14 @@
 ﻿using DG.Tweening;
 using FMOD.Studio;
 using FMODUnity;
-using SurgeEngine.Code.Core.Actor.States;
-using SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates;
-using SurgeEngine.Code.Core.Actor.System;
-using SurgeEngine.Code.Gameplay.CommonObjects.System;
+using SurgeEngine._Source.Code.Core.Character.States;
+using SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic.SubStates;
+using SurgeEngine._Source.Code.Core.Character.System;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects.System;
 using UnityEngine;
-using NotImplementedException = System.NotImplementedException;
 using STOP_MODE = FMOD.Studio.STOP_MODE;
 
-namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
+namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
 {
     public class Upreel : ContactBase, IPointMarkerLoader
     {

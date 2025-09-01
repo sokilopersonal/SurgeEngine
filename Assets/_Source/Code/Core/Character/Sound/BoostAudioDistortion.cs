@@ -1,9 +1,9 @@
 ﻿using FMODUnity;
 using UnityEngine;
 using Zenject;
-using VolumeManager = SurgeEngine.Code.Infrastructure.Tools.Managers.VolumeManager;
+using VolumeManager = SurgeEngine._Source.Code.Infrastructure.Tools.Managers.VolumeManager;
 
-namespace SurgeEngine.Code.Core.Actor.Sound
+namespace SurgeEngine._Source.Code.Core.Character.Sound
 {
     public class BoostAudioDistortion : MonoBehaviour
     {

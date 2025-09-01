@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Zenject;
 
-namespace SurgeEngine.Code.Infrastructure.DI.Discord
+namespace SurgeEngine._Source.Code.Infrastructure.DI.Discord
 {
     public sealed class SurgeRPC : IInitializable, ITickable, ILateDisposable
     {

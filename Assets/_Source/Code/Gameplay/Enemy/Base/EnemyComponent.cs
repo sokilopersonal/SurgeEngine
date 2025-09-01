@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace SurgeEngine.Code.Gameplay.Enemy.Base
+namespace SurgeEngine._Source.Code.Gameplay.Enemy.Base
 {
     public class EnemyComponent : MonoBehaviour
     {

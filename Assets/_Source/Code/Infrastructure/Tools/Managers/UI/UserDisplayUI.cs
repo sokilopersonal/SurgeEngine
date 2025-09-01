@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Text.RegularExpressions;
-using SurgeEngine.Code.UI.OptionBars;
+using SurgeEngine._Source.Code.UI.OptionBars;
 using UnityEngine;
-using UnityEngine.NVIDIA;
 using UnityEngine.Rendering.HighDefinition;
 using Zenject;
 
-namespace SurgeEngine.Code.Infrastructure.Tools.Managers.UI
+namespace SurgeEngine._Source.Code.Infrastructure.Tools.Managers.UI
 {
     public class UserDisplayUI : OptionUI
     {

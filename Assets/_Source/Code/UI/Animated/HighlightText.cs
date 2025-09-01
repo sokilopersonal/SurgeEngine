@@ -1,11 +1,9 @@
 ﻿using DG.Tweening;
-using System;
-using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace SurgeEngine.Code.UI.Animated
+namespace SurgeEngine._Source.Code.UI.Animated
 {
     public class HighlightText : SelectReaction
     {

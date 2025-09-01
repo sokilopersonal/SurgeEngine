@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using SurgeEngine.Code.Infrastructure.Custom.Extensions;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace SurgeEngine.Code.UI.OptionBars
+namespace SurgeEngine._Source.Code.UI.OptionBars
 {
     [Serializable]
     public class OptionDefinition

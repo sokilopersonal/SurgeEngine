@@ -3,7 +3,7 @@ using FMODUnity;
 using UnityEngine;
 using STOP_MODE = FMOD.Studio.STOP_MODE;
 
-namespace SurgeEngine.Code.Core.Actor.Sound
+namespace SurgeEngine._Source.Code.Core.Character.Sound
 {
     public class VoiceHandler : MonoBehaviour
     {

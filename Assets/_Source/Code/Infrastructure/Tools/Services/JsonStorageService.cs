@@ -3,7 +3,7 @@ using System.IO;
 using Newtonsoft.Json;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Infrastructure.Tools.Services
+namespace SurgeEngine._Source.Code.Infrastructure.Tools.Services
 {
     public abstract class JsonStorageService<TData> where TData : new() 
     {

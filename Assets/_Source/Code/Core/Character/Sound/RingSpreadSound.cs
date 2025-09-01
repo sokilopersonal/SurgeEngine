@@ -1,7 +1,7 @@
 using FMODUnity;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Core.Actor.Sound
+namespace SurgeEngine._Source.Code.Core.Character.Sound
 {
     public class RingSpreadSound : CharacterSound
     {

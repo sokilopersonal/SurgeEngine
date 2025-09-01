@@ -1,8 +1,8 @@
-﻿using SurgeEngine.Code.Gameplay.Enemy.Base;
-using SurgeEngine.Code.Infrastructure.Custom;
+﻿using SurgeEngine._Source.Code.Gameplay.Enemy.Base;
+using SurgeEngine._Source.Code.Infrastructure.Custom;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Gameplay.Enemy.AeroCannon.States
+namespace SurgeEngine._Source.Code.Gameplay.Enemy.AeroCannon.States
 {
     public class ACStatePrepare : ACState
     {
@@ -30,12 +30,12 @@ namespace SurgeEngine.Code.Gameplay.Enemy.AeroCannon.States
                 
                 if (Utility.TickTimer(ref timer, aeroCannon.PrepareTime, false))
                 {
-                    stateMachine.SetState<ACStateShoot>();
+                    StateMachine.SetState<ACStateShoot>();
                 }
             }
             else
             {
-                stateMachine.SetState<ACStateIdle>();
+                StateMachine.SetState<ACStateIdle>();
             }
         }
     }

@@ -1,8 +1,8 @@
-using SurgeEngine.Code.Core.Actor.States.Characters.Sonic;
+using SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
+namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
 {
     public class StompListener : MonoBehaviour, IStompHandler
     {

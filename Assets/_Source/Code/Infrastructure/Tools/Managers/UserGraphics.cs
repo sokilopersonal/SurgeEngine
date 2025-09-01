@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using SurgeEngine.Code.Gameplay.CommonObjects.Lighting;
-using SurgeEngine.Code.Infrastructure.Tools.Services;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects.Lighting;
+using SurgeEngine._Source.Code.Infrastructure.Tools.Services;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.HighDefinition;
@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 using Zenject;
 using Object = UnityEngine.Object;
 
-namespace SurgeEngine.Code.Infrastructure.Tools.Managers
+namespace SurgeEngine._Source.Code.Infrastructure.Tools.Managers
 {
     public class UserGraphics : JsonStorageService<GraphicsData>, ILateDisposable
     {

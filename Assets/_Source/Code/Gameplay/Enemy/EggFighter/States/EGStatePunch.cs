@@ -1,8 +1,8 @@
-﻿using SurgeEngine.Code.Gameplay.CommonObjects;
-using SurgeEngine.Code.Gameplay.Enemy.Base;
+﻿using SurgeEngine._Source.Code.Gameplay.CommonObjects;
+using SurgeEngine._Source.Code.Gameplay.Enemy.Base;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter.States
+namespace SurgeEngine._Source.Code.Gameplay.Enemy.EggFighter.States
 {
     public class EGStatePunch : EGState
     {

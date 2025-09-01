@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace SurgeEngine.Code.Infrastructure.Custom.Extensions
+namespace SurgeEngine._Source.Code.Infrastructure.Custom.Extensions
 {
     public static class DebugExtensions
     {

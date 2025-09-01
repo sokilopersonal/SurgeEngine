@@ -1,10 +1,10 @@
 using DG.Tweening;
 using FMODUnity;
-using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine._Source.Code.Core.Character.System;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
+namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
 {
     [SelectionBase]
     public class Switch : ContactBase

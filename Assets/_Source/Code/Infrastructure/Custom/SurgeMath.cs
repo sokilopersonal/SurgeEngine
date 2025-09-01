@@ -1,7 +1,6 @@
-﻿using Unity.Mathematics;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace SurgeEngine.Code.Infrastructure.Custom
+namespace SurgeEngine._Source.Code.Infrastructure.Custom
 {
     public static class SurgeMath
     {

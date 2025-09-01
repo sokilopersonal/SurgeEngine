@@ -1,7 +1,6 @@
-﻿using SurgeEngine.Code.Core.Actor.System;
-using UnityEngine;
+﻿using SurgeEngine._Source.Code.Core.Character.System;
 
-namespace SurgeEngine.Code.Gameplay.CommonObjects.Collectables
+namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Collectables
 {
     public class SuperRing : Ring
     {

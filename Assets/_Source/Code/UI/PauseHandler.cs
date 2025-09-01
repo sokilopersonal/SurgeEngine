@@ -1,18 +1,16 @@
-using System;
 using DG.Tweening;
-using SurgeEngine.Code.Core.Actor.States;
-using SurgeEngine.Code.Core.Actor.System;
-using SurgeEngine.Code.Gameplay.CommonObjects;
-using SurgeEngine.Code.Gameplay.CommonObjects.GoalRing;
-using SurgeEngine.Code.Infrastructure.Custom;
-using SurgeEngine.Code.Infrastructure.Tools.Managers;
-using SurgeEngine.Code.UI.Pages.Baseline;
+using SurgeEngine._Source.Code.Core.Character.States;
+using SurgeEngine._Source.Code.Core.Character.System;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects.GoalRing;
+using SurgeEngine._Source.Code.Infrastructure.Tools.Managers;
+using SurgeEngine._Source.Code.UI.Pages.Baseline;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using Zenject;
 
-namespace SurgeEngine.Code.UI
+namespace SurgeEngine._Source.Code.UI
 {
     public class PauseHandler : PageController
     {

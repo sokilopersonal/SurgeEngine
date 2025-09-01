@@ -1,9 +1,9 @@
-﻿using SurgeEngine.Code.Gameplay.CommonObjects;
-using SurgeEngine.Code.Gameplay.CommonObjects.Mobility;
+﻿using System.Collections.Generic;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility;
 using UnityEngine;
-using System.Collections.Generic;
 
-namespace SurgeEngine.Code.Core.Actor.HUD
+namespace SurgeEngine._Source.Code.Core.Character.HUD
 {
     public class TrickJumperUI : MonoBehaviour
     {

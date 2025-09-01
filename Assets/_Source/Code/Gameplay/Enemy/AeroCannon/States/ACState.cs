@@ -1,8 +1,8 @@
-﻿using SurgeEngine.Code.Core.Actor.System;
-using SurgeEngine.Code.Gameplay.Enemy.Base;
+﻿using SurgeEngine._Source.Code.Core.Character.System;
+using SurgeEngine._Source.Code.Gameplay.Enemy.Base;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Gameplay.Enemy.AeroCannon.States
+namespace SurgeEngine._Source.Code.Gameplay.Enemy.AeroCannon.States
 {
     public class ACState : FEState
     {

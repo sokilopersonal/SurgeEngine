@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Core.StateMachine.Components
+namespace SurgeEngine._Source.Code.Core.StateMachine.Components
 {
     public class StateAnimator : MonoBehaviour
     {

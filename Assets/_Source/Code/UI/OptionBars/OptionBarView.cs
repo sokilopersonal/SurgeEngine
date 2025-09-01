@@ -1,8 +1,6 @@
-﻿using System;
-using TMPro;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace SurgeEngine.Code.UI.OptionBars
+namespace SurgeEngine._Source.Code.UI.OptionBars
 {
     public class OptionBarView : MonoBehaviour
     {

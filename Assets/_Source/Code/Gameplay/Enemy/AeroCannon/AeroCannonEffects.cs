@@ -1,8 +1,8 @@
-using SurgeEngine.Code.Core.StateMachine.Base;
-using SurgeEngine.Code.Gameplay.Enemy.AeroCannon.States;
+using SurgeEngine._Source.Code.Core.StateMachine.Base;
+using SurgeEngine._Source.Code.Gameplay.Enemy.AeroCannon.States;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Gameplay.Enemy.AeroCannon
+namespace SurgeEngine._Source.Code.Gameplay.Enemy.AeroCannon
 {
     public class AeroCannonEffects : MonoBehaviour
     {

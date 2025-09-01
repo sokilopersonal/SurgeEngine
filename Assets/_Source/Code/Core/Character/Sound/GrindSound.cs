@@ -1,12 +1,12 @@
 ﻿using FMOD.Studio;
 using FMODUnity;
-using SurgeEngine.Code.Core.Actor.States;
-using SurgeEngine.Code.Core.Actor.System;
-using SurgeEngine.Code.Core.StateMachine.Base;
+using SurgeEngine._Source.Code.Core.Character.States;
+using SurgeEngine._Source.Code.Core.Character.System;
+using SurgeEngine._Source.Code.Core.StateMachine.Base;
 using UnityEngine;
 using STOP_MODE = FMOD.Studio.STOP_MODE;
 
-namespace SurgeEngine.Code.Core.Actor.Sound
+namespace SurgeEngine._Source.Code.Core.Character.Sound
 {
     public class GrindSound : CharacterSound
     {

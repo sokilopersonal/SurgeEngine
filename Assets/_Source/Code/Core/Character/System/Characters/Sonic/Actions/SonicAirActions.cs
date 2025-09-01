@@ -1,9 +1,9 @@
-﻿using SurgeEngine.Code.Core.Actor.States;
-using SurgeEngine.Code.Core.Actor.States.Characters.Sonic;
-using SurgeEngine.Code.Core.StateMachine;
-using SurgeEngine.Code.Gameplay.CommonObjects;
+﻿using SurgeEngine._Source.Code.Core.Character.States;
+using SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic;
+using SurgeEngine._Source.Code.Core.StateMachine;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects;
 
-namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic.Actions
+namespace SurgeEngine._Source.Code.Core.Character.System.Characters.Sonic.Actions
 {
     public class SonicAirActions : CharacterActions
     {

@@ -1,16 +1,15 @@
 using System.Collections.Generic;
 using System.Linq;
-using SurgeEngine.Code.Core.Actor.CameraSystem.Pans;
-using SurgeEngine.Code.Core.Actor.CameraSystem.Pans.Data;
-using SurgeEngine.Code.Core.Actor.System;
-using SurgeEngine.Code.Core.StateMachine;
-using SurgeEngine.Code.Gameplay.CommonObjects.CameraObjects;
-using SurgeEngine.Code.Gameplay.CommonObjects.System;
-using SurgeEngine.Code.Infrastructure.Custom;
+using SurgeEngine._Source.Code.Core.Character.CameraSystem.Pans;
+using SurgeEngine._Source.Code.Core.Character.CameraSystem.Pans.Data;
+using SurgeEngine._Source.Code.Core.Character.System;
+using SurgeEngine._Source.Code.Core.StateMachine;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects.CameraObjects;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects.System;
+using SurgeEngine._Source.Code.Infrastructure.Custom;
 using UnityEngine;
-using NotImplementedException = System.NotImplementedException;
 
-namespace SurgeEngine.Code.Core.Actor.CameraSystem
+namespace SurgeEngine._Source.Code.Core.Character.CameraSystem
 {
     public class CameraStateMachine : FStateMachine, IPointMarkerLoader
     {
@@ -55,8 +54,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
 
             OnStateEarlyAssign += _ => RememberRelativeData();
 
-            _blendFactor = 1f;
-            _interpolatedBlendFactor = 1f;
+            CompleteBlend();
         }
 
         public override void Tick(float dt)
@@ -157,6 +155,8 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
             if (top != null) top.Target.SetPan(_character);
             else SetState<NewModernState>();
         }
+        
+        public void CompleteBlend() => _blendFactor = 1f;
         
         public void ResetBlendFactor()
         {

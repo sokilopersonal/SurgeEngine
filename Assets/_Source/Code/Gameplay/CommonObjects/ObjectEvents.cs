@@ -1,8 +1,8 @@
 ﻿using System;
-using SurgeEngine.Code.Gameplay.CommonObjects.Mobility;
-using SurgeEngine.Code.Gameplay.Enemy.Base;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility;
+using SurgeEngine._Source.Code.Gameplay.Enemy.Base;
 
-namespace SurgeEngine.Code.Gameplay.CommonObjects
+namespace SurgeEngine._Source.Code.Gameplay.CommonObjects
 {
     public static class ObjectEvents
     {

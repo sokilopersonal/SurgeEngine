@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace SurgeEngine.Code.Music
+namespace SurgeEngine._Source.Code.Music
 {
     public class GlobalMusic : MonoBehaviour
     {

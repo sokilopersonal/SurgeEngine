@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace SurgeEngine.Code.Infrastructure.Config.SonicSpecific
+namespace SurgeEngine._Source.Code.Infrastructure.Config.SonicSpecific
 {
     [CreateAssetMenu(fileName = "BoostConfig", menuName = "SurgeEngine/Configs/Sonic/Boost", order = 0)]
     public class BoostConfig : ScriptableObject

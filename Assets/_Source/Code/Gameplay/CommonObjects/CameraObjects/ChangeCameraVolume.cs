@@ -1,9 +1,7 @@
-﻿using System;
-using SurgeEngine.Code.Core.Actor.System;
-using SurgeEngine.Code.Gameplay.CommonObjects.System;
+﻿using SurgeEngine._Source.Code.Core.Character.System;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Gameplay.CommonObjects.CameraObjects
+namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.CameraObjects
 {
     public class ChangeCameraVolume : ContactBase
     {
@@ -37,16 +35,6 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.CameraObjects
             {
                 _character = actor;
                 _character.Camera.StateMachine.RegisterVolume(this);
-            }
-        }
-
-        public override void Contact(Collider msg, CharacterBase context)
-        {
-            base.Contact(msg, context);
-
-            if (target)
-            {
-                context.Camera.StateMachine.RegisterVolume(this);
             }
         }
         

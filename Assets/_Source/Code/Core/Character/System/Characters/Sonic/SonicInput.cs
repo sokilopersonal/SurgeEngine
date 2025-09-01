@@ -1,4 +1,4 @@
-﻿namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
+﻿namespace SurgeEngine._Source.Code.Core.Character.System.Characters.Sonic
 {
     public class SonicInput : CharacterInput
     {

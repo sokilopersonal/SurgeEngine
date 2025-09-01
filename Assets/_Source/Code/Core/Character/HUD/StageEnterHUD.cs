@@ -1,10 +1,10 @@
-﻿using SurgeEngine.Code.Core.Actor.States;
-using SurgeEngine.Code.Core.Actor.System;
+﻿using SurgeEngine._Source.Code.Core.Character.States;
+using SurgeEngine._Source.Code.Core.Character.System;
 using UnityEngine;
 using UnityEngine.Playables;
 using Zenject;
 
-namespace SurgeEngine._Source.Code.Core.Actor.HUD
+namespace SurgeEngine._Source.Code.Core.Character.HUD
 {
     [RequireComponent(typeof(PlayableDirector))]
     public class StageEnterHUD : MonoBehaviour

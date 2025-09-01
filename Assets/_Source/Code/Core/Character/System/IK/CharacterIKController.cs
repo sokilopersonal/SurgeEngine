@@ -1,9 +1,9 @@
 ﻿using System;
-using SurgeEngine.Code.Core.StateMachine.Components;
+using SurgeEngine._Source.Code.Core.StateMachine.Components;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 
-namespace SurgeEngine.Code.Core.Actor.System.IK
+namespace SurgeEngine._Source.Code.Core.Character.System.IK
 {
     public class CharacterIKController : MonoBehaviour
     {

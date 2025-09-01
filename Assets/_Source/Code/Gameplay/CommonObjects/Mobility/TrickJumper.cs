@@ -2,16 +2,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using FMODUnity;
-using SurgeEngine.Code.Core.Actor.HUD;
-using SurgeEngine.Code.Core.Actor.States;
-using SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates;
-using SurgeEngine.Code.Core.Actor.System;
-using SurgeEngine.Code.Infrastructure.Custom;
-using SurgeEngine.Code.Infrastructure.Custom.Drawers;
+using SurgeEngine._Source.Code.Core.Character.HUD;
+using SurgeEngine._Source.Code.Core.Character.States;
+using SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic.SubStates;
+using SurgeEngine._Source.Code.Core.Character.System;
+using SurgeEngine._Source.Code.Infrastructure.Custom;
+using SurgeEngine._Source.Code.Infrastructure.Custom.Drawers;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
+namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
 {
     public class TrickJumper : ContactBase
     {

@@ -1,10 +1,10 @@
-﻿using SurgeEngine.Code.Core.Actor.States.BaseStates;
-using SurgeEngine.Code.Core.Actor.System;
-using SurgeEngine.Code.Gameplay.CommonObjects.Mobility.Rails;
+﻿using SurgeEngine._Source.Code.Core.Character.States.BaseStates;
+using SurgeEngine._Source.Code.Core.Character.System;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility.Rails;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
-namespace SurgeEngine.Code.Core.Actor.States
+namespace SurgeEngine._Source.Code.Core.Character.States
 {
     public class FStateGrind : FCharacterState
     {

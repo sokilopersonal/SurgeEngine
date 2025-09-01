@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace SurgeEngine.Code.UI
+namespace SurgeEngine._Source.Code.UI
 {
     public class AutoScroll : MonoBehaviour
     {

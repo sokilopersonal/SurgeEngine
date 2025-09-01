@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Zenject;
 
-namespace SurgeEngine.Code.Infrastructure.Tools.Managers
+namespace SurgeEngine._Source.Code.Infrastructure.Tools.Managers
 {
     public class SceneLoader : MonoBehaviour
     {

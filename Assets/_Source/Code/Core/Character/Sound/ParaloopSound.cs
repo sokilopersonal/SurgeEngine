@@ -1,8 +1,8 @@
 ﻿using FMODUnity;
-using SurgeEngine.Code.Gameplay.Effects;
+using SurgeEngine._Source.Code.Gameplay.Effects;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Core.Actor.Sound
+namespace SurgeEngine._Source.Code.Core.Character.Sound
 {
     public class ParaloopSound : CharacterSound
     {

@@ -1,10 +1,10 @@
-﻿using SurgeEngine.Code.Core.Actor.States.Characters.Sonic;
-using SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates;
-using SurgeEngine.Code.Core.Actor.System.Characters.Sonic.Actions;
-using SurgeEngine.Code.Infrastructure.Config.SonicSpecific;
+﻿using SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic;
+using SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic.SubStates;
+using SurgeEngine._Source.Code.Core.Character.System.Characters.Sonic.Actions;
+using SurgeEngine._Source.Code.Infrastructure.Config.SonicSpecific;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
+namespace SurgeEngine._Source.Code.Core.Character.System.Characters.Sonic
 {
     public class Sonic : CharacterBase
     {

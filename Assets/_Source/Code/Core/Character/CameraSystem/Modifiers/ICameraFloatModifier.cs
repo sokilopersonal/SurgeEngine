@@ -1,4 +1,4 @@
-namespace SurgeEngine.Code.Core.Actor.CameraSystem.Modifiers
+namespace SurgeEngine._Source.Code.Core.Character.CameraSystem.Modifiers
 {
     public interface ICameraFloatModifier
     {

@@ -1,8 +1,7 @@
-﻿using System;
-using NaughtyAttributes;
+﻿using NaughtyAttributes;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Gameplay.CommonObjects
+namespace SurgeEngine._Source.Code.Gameplay.CommonObjects
 {
     [ExecuteAlways]
     public class CharacterModelRenderer : MonoBehaviour

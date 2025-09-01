@@ -1,14 +1,14 @@
-﻿using SurgeEngine.Code.Core.Actor.States.BaseStates;
-using SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates;
-using SurgeEngine.Code.Core.Actor.System;
-using SurgeEngine.Code.Gameplay.CommonObjects;
-using SurgeEngine.Code.Gameplay.CommonObjects.Environment;
-using SurgeEngine.Code.Infrastructure.Config.SonicSpecific;
-using SurgeEngine.Code.Infrastructure.Custom;
+﻿using SurgeEngine._Source.Code.Core.Character.States.BaseStates;
+using SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic.SubStates;
+using SurgeEngine._Source.Code.Core.Character.System;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects.Environment;
+using SurgeEngine._Source.Code.Infrastructure.Config.SonicSpecific;
+using SurgeEngine._Source.Code.Infrastructure.Custom;
 using UnityEngine;
 using Vector3 = UnityEngine.Vector3;
 
-namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
+namespace SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic
 {
     public class FStateStomp : FCharacterState
     {

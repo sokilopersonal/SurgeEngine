@@ -1,7 +1,7 @@
 using System;
-using SurgeEngine.Code.Infrastructure.Tools.Services;
+using SurgeEngine._Source.Code.Infrastructure.Tools.Services;
 
-namespace SurgeEngine.Code.Infrastructure.Tools.Managers
+namespace SurgeEngine._Source.Code.Infrastructure.Tools.Managers
 {
     [Serializable]
     public class GameData

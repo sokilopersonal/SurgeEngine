@@ -2,7 +2,7 @@
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace SurgeEngine.Code.UI.OptionBars
+namespace SurgeEngine._Source.Code.UI.OptionBars
 {
     public class SliderOptionBar : OptionBar
     {

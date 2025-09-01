@@ -1,13 +1,13 @@
 ﻿using System;
-using SurgeEngine.Code.Core.Actor.States;
-using SurgeEngine.Code.Core.Actor.States.Characters.Sonic;
-using SurgeEngine.Code.Core.StateMachine.Base;
-using SurgeEngine.Code.Gameplay.CommonObjects;
-using SurgeEngine.Code.Infrastructure.Custom;
-using SurgeEngine.Code.Infrastructure.Tools;
+using SurgeEngine._Source.Code.Core.Character.States;
+using SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic;
+using SurgeEngine._Source.Code.Core.StateMachine.Base;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects;
+using SurgeEngine._Source.Code.Infrastructure.Custom;
+using SurgeEngine._Source.Code.Infrastructure.Tools;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Core.Actor.System
+namespace SurgeEngine._Source.Code.Core.Character.System
 {
     public class CharacterStats : CharacterComponent
     {

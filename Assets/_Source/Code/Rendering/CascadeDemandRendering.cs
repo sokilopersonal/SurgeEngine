@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Rendering.HighDefinition;
 
-namespace SurgeEngine.Code.Rendering
+namespace SurgeEngine._Source.Code.Rendering
 {
     public class CascadeDemandRendering : MonoBehaviour
     {

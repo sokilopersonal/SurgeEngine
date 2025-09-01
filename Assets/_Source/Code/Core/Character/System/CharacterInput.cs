@@ -1,12 +1,12 @@
 ﻿using System;
-using SurgeEngine.Code.Gameplay.CommonObjects.Mobility;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.DualShock;
 using UnityEngine.InputSystem.Utilities;
 using UnityEngine.InputSystem.XInput;
 
-namespace SurgeEngine.Code.Core.Actor.System
+namespace SurgeEngine._Source.Code.Core.Character.System
 {
     public class CharacterInput : CharacterComponent
     {

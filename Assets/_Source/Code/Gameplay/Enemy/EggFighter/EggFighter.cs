@@ -1,15 +1,16 @@
-﻿using SurgeEngine.Code.Core.Actor.System;
-using SurgeEngine.Code.Gameplay.CommonObjects.AnimationCallback;
-using SurgeEngine.Code.Gameplay.CommonObjects.Interfaces;
-using SurgeEngine.Code.Gameplay.CommonObjects.Sensors;
-using SurgeEngine.Code.Gameplay.CommonObjects.System;
-using SurgeEngine.Code.Gameplay.Enemy.Base;
-using SurgeEngine.Code.Gameplay.Enemy.EggFighter.States;
-using SurgeEngine.Code.Gameplay.Enemy.RagdollPhysics;
+﻿using SurgeEngine._Source.Code.Core.Character.System;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects.AnimationCallback;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects.Interfaces;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects.Sensors;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects.System;
+using SurgeEngine._Source.Code.Gameplay.Enemy.Base;
+using SurgeEngine._Source.Code.Gameplay.Enemy.EggFighter.States;
+using SurgeEngine._Source.Code.Gameplay.Enemy.RagdollPhysics;
 using UnityEngine;
 using UnityEngine.AI;
+using Zenject;
 
-namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter
+namespace SurgeEngine._Source.Code.Gameplay.Enemy.EggFighter
 {
     public class EggFighter : EnemyBase, IDamageable, IPointMarkerLoader
     {
@@ -23,25 +24,16 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter
 
         [Header("AI")]
         [SerializeField, Tooltip("Disabling this will disable enemy vision, meaning enemy won't notice you, but still will be functional.")] private bool enableAI = true;
-        
-        [Header("Idle")]
-        public float findDistance;
-        
-        [Header("Punch")]
-        public float punchRadius;
-        
-        [Header("Patrol")]
-        public AnimationCurve patrolSpeedCurve;
-        public float patrolTime;
-        public float patrolDistance;
-
-        [Header("Turn")]
-        public AnimationCurve turnCurve;
-        public AnimationCurve turnHeightCurve;
-        public float turnTime;
+        [SerializeField] private float punchRadius = 2f;
+        [SerializeField] private bool followPlayer = true;
+        public float PunchRadius => punchRadius;
+        public bool FollowPlayer => followPlayer;
 
         public NavMeshAgent Agent { get; private set; }
-        private int ragdollLayer = 69;
+        public CharacterBase Character => _character;
+
+        [Inject] private CharacterBase _character;
+        private int _ragdollLayer = 69;
 
         private Vector3 _startPosition;
         private Quaternion _startRotation;
@@ -56,7 +48,7 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter
             _startPosition = transform.position;
             _startRotation = transform.rotation;
 
-            ragdollLayer = LayerMask.NameToLayer("EnemyRagdoll");
+            _ragdollLayer = LayerMask.NameToLayer("EnemyRagdoll");
 
             Agent = GetComponent<NavMeshAgent>();
             Agent.updatePosition = false;
@@ -67,8 +59,6 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter
             
             StateMachine.AddState(new EGStateIdle(this));
             StateMachine.AddState(new EGStateChase(this));
-            StateMachine.AddState(new EGStatePatrol(this));
-            StateMachine.AddState(new EGStateTurn(this));
             StateMachine.AddState(new EGStatePunch(this));
             StateMachine.AddState(new EGStateDead(this));
             
@@ -93,7 +83,7 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter
 
         private void OnCollisionEnter(Collision other)
         {
-            if (other.gameObject.layer == ragdollLayer)
+            if (other.gameObject.layer == _ragdollLayer)
             {
                 TakeDamage(other.rigidbody);
             }

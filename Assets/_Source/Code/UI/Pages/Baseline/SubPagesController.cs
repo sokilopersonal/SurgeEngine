@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace SurgeEngine.Code.UI.Pages.Baseline
+namespace SurgeEngine._Source.Code.UI.Pages.Baseline
 {
     public class SubPagesController : MonoBehaviour
     {

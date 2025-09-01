@@ -1,14 +1,13 @@
 ﻿using System;
-using System.IO;
-using SurgeEngine.Code.Core.Actor.States;
-using SurgeEngine.Code.Core.StateMachine.Base;
-using SurgeEngine.Code.Gameplay.CommonObjects;
-using SurgeEngine.Code.Gameplay.CommonObjects.ChangeModes;
-using SurgeEngine.Code.Infrastructure.Config;
-using SurgeEngine.Code.Infrastructure.Custom;
+using SurgeEngine._Source.Code.Core.Character.States;
+using SurgeEngine._Source.Code.Core.StateMachine.Base;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects.ChangeModes;
+using SurgeEngine._Source.Code.Infrastructure.Config;
+using SurgeEngine._Source.Code.Infrastructure.Custom;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Core.Actor.System
+namespace SurgeEngine._Source.Code.Core.Character.System
 {
     /// <summary>
     /// Base actor class for a movement physics.

@@ -1,8 +1,8 @@
-﻿using SurgeEngine.Code.Infrastructure.Custom;
+﻿using SurgeEngine._Source.Code.Infrastructure.Custom;
 using UnityEngine;
 using UnityEngine.Rendering.HighDefinition;
 
-namespace SurgeEngine.Code.Gameplay.Effects
+namespace SurgeEngine._Source.Code.Gameplay.Effects
 {
     public class BoostDistortion : MonoBehaviour
     {

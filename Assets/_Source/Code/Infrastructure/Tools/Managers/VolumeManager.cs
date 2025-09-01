@@ -1,10 +1,8 @@
 using System;
-using DG.Tweening;
 using FMODUnity;
-using SurgeEngine.Code.Infrastructure.Tools.Services;
-using UnityEngine;
+using SurgeEngine._Source.Code.Infrastructure.Tools.Services;
 
-namespace SurgeEngine.Code.Infrastructure.Tools.Managers
+namespace SurgeEngine._Source.Code.Infrastructure.Tools.Managers
 {
     public class VolumeManager : JsonStorageService<VolumeData>
     {

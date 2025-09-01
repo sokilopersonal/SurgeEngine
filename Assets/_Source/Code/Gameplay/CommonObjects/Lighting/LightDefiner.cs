@@ -1,9 +1,9 @@
-using SurgeEngine.Code.Infrastructure.Tools.Managers;
+using SurgeEngine._Source.Code.Infrastructure.Tools.Managers;
 using UnityEngine;
 using UnityEngine.Rendering.HighDefinition;
 using Zenject;
 
-namespace SurgeEngine.Code.Gameplay.CommonObjects.Lighting
+namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Lighting
 {
     /// <summary>
     /// Component required to define a light in the graphics settings. This will be added to UserGraphics lights list to control the shadows.

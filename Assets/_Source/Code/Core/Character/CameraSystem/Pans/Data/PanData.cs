@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Splines;
 
-namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans.Data
+namespace SurgeEngine._Source.Code.Core.Character.CameraSystem.Pans.Data
 {
     [Serializable]
     public class PanData

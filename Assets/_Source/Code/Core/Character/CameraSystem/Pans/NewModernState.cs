@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Linq;
-using SurgeEngine.Code.Core.Actor.CameraSystem.Modifiers;
-using SurgeEngine.Code.Core.Actor.States;
-using SurgeEngine.Code.Core.Actor.States.BaseStates;
-using SurgeEngine.Code.Core.Actor.States.Characters.Sonic;
-using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine._Source.Code.Core.Character.CameraSystem.Modifiers;
+using SurgeEngine._Source.Code.Core.Character.States;
+using SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic;
+using SurgeEngine._Source.Code.Core.Character.System;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
+namespace SurgeEngine._Source.Code.Core.Character.CameraSystem.Pans
 {
     public class NewModernState : CameraState
     {

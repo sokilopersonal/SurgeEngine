@@ -1,10 +1,10 @@
 using System.Collections;
-using SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates;
-using SurgeEngine.Code.Core.Actor.System;
-using SurgeEngine.Code.Core.StateMachine.Base;
+using SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic.SubStates;
+using SurgeEngine._Source.Code.Core.Character.System;
+using SurgeEngine._Source.Code.Core.StateMachine.Base;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Core.Actor.CameraSystem.Modifiers
+namespace SurgeEngine._Source.Code.Core.Character.CameraSystem.Modifiers
 {
     public class BoostBaseCameraModifier : BaseCameraModifier, ICameraFloatModifier
     {

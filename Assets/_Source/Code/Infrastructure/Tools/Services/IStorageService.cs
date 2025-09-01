@@ -1,6 +1,6 @@
 using System;
 
-namespace SurgeEngine.Code.Infrastructure.Tools.Services
+namespace SurgeEngine._Source.Code.Infrastructure.Tools.Services
 {
     public interface IStorageService
     {

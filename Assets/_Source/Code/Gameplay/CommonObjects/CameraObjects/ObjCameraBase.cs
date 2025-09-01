@@ -1,14 +1,12 @@
 ﻿
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 
-using SurgeEngine.Code.Core.Actor.CameraSystem.Pans;
-using SurgeEngine.Code.Core.Actor.CameraSystem.Pans.Data;
-using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine._Source.Code.Core.Character.CameraSystem.Pans;
+using SurgeEngine._Source.Code.Core.Character.CameraSystem.Pans.Data;
+using SurgeEngine._Source.Code.Core.Character.System;
+using UnityEditor;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Gameplay.CommonObjects.CameraObjects
+namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.CameraObjects
 {
     public abstract class ObjCameraBase : MonoBehaviour
     {

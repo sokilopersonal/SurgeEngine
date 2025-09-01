@@ -1,12 +1,12 @@
 ﻿using System;
-using SurgeEngine.Code.Infrastructure.Tools.Services;
+using SurgeEngine._Source.Code.Infrastructure.Tools.Services;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.HighDefinition;
 using UnityEngine.SceneManagement;
 using Zenject;
 
-namespace SurgeEngine.Code.Infrastructure.Tools.Managers
+namespace SurgeEngine._Source.Code.Infrastructure.Tools.Managers
 {
     public class UserDisplay : JsonStorageService<UserDisplaySettings>, IInitializable, ILateDisposable
     {

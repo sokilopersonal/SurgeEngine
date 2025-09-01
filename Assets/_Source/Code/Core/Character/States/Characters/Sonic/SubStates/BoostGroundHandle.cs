@@ -1,9 +1,8 @@
-﻿using SurgeEngine.Code.Core.Actor.System;
-using SurgeEngine.Code.Infrastructure.Config;
-using SurgeEngine.Code.Infrastructure.Config.SonicSpecific;
+﻿using SurgeEngine._Source.Code.Core.Character.System;
+using SurgeEngine._Source.Code.Infrastructure.Config.SonicSpecific;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates
+namespace SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic.SubStates
 {
     public class BoostGroundHandle : IBoostHandler
     {

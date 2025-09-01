@@ -1,9 +1,10 @@
-﻿using SurgeEngine.Code.Gameplay.Enemy.Base;
-using SurgeEngine.Code.Infrastructure.Custom;
+﻿using SurgeEngine._Source.Code.Core.Character.System;
+using SurgeEngine._Source.Code.Gameplay.Enemy.Base;
+using SurgeEngine._Source.Code.Infrastructure.Custom;
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter.States
+namespace SurgeEngine._Source.Code.Gameplay.Enemy.EggFighter.States
 {
     public class EGStateIdle : EGState
     {
@@ -13,33 +14,38 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter.States
         {
         }
 
-        public override void OnEnter()
-        {
-            base.OnEnter();
-        }
-
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
 
+            bool hasTarget = sensor.FindVisibleTarget(out var pos, out var character);
             Utility.TickTimer(ref _stayTimer, _stayTimer, false);
 
-            if (_stayTimer <= 0)
+            if (_stayTimer <= 0 && eggFighter.FollowPlayer)
             {
                 var agent = eggFighter.Agent;
                 agent.velocity = Vector3.zero;
 
                 var path = new NavMeshPath();
-                if (sensor.FindVisibleTarget(out var pos, out _))
+                if (hasTarget)
                 {
                     if (!agent.hasPath)
-                        stateMachine.SetState<EGStateChase>();
+                        StateMachine.SetState<EGStateChase>();
                     else
                     {
                         agent.CalculatePath(pos, path);
-                        if (path.status == NavMeshPathStatus.PathComplete)
-                            stateMachine.SetState<EGStateChase>();
+                        if (path.status == NavMeshPathStatus.PathComplete && !character.Flags.HasFlag(FlagType.Invincible))
+                            StateMachine.SetState<EGStateChase>();
                     }
+                }
+            }
+
+            if (!eggFighter.FollowPlayer)
+            {
+                if (Vector3.Distance(transform.position, eggFighter.Character.transform.position) <=
+                    eggFighter.PunchRadius)
+                {
+                    StateMachine.SetState<EGStatePunch>();
                 }
             }
         }

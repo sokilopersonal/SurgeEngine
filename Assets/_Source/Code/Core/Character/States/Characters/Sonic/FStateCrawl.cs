@@ -1,13 +1,12 @@
-﻿using SurgeEngine.Code.Core.Actor.States.BaseStates;
-using SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates;
-using SurgeEngine.Code.Core.Actor.System;
-using SurgeEngine.Code.Core.StateMachine.Interfaces;
-using SurgeEngine.Code.Infrastructure.Config;
-using SurgeEngine.Code.Infrastructure.Config.SonicSpecific;
-using SurgeEngine.Code.Infrastructure.Custom;
+﻿using SurgeEngine._Source.Code.Core.Character.States.BaseStates;
+using SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic.SubStates;
+using SurgeEngine._Source.Code.Core.Character.System;
+using SurgeEngine._Source.Code.Core.StateMachine.Interfaces;
+using SurgeEngine._Source.Code.Infrastructure.Config;
+using SurgeEngine._Source.Code.Infrastructure.Config.SonicSpecific;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
+namespace SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic
 {
     public class FStateCrawl : FCharacterState, IStateTimeout, IDamageableState
     {

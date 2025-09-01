@@ -1,8 +1,8 @@
-﻿using SurgeEngine.Code.Core.Actor.System;
+﻿using SurgeEngine._Source.Code.Core.Character.System;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace SurgeEngine.Code.Gameplay.CommonObjects
+namespace SurgeEngine._Source.Code.Gameplay.CommonObjects
 {
     public class HomingTarget : MonoBehaviour
     {

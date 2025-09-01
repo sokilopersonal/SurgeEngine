@@ -1,11 +1,10 @@
-﻿using SurgeEngine.Code.Core.Actor.States;
-using SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates;
-using SurgeEngine.Code.Core.Actor.System;
-using SurgeEngine.Code.Infrastructure.Custom;
-using SurgeEngine.Code.Infrastructure.Tools;
+﻿using SurgeEngine._Source.Code.Core.Character.States;
+using SurgeEngine._Source.Code.Core.Character.System;
+using SurgeEngine._Source.Code.Infrastructure.Custom;
+using SurgeEngine._Source.Code.Infrastructure.Tools;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
+namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
 {
     public abstract class JumpPanelBase : ContactBase
     {

@@ -1,9 +1,9 @@
-﻿using SurgeEngine.Code.Core.Actor.States.BaseStates;
-using SurgeEngine.Code.Core.Actor.System;
-using SurgeEngine.Code.Gameplay.CommonObjects.Mobility;
+﻿using SurgeEngine._Source.Code.Core.Character.States.BaseStates;
+using SurgeEngine._Source.Code.Core.Character.System;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Core.Actor.States
+namespace SurgeEngine._Source.Code.Core.Character.States
 {
     public class FStateJumpSelectorLaunch : FCharacterState
     {

@@ -1,11 +1,11 @@
 ﻿using System;
-using SurgeEngine.Code.Core.StateMachine.Base;
-using SurgeEngine.Code.Core.StateMachine.Components;
-using SurgeEngine.Code.Gameplay.Enemy.Base;
-using SurgeEngine.Code.Gameplay.Enemy.EggFighter.States;
+using SurgeEngine._Source.Code.Core.StateMachine.Base;
+using SurgeEngine._Source.Code.Core.StateMachine.Components;
+using SurgeEngine._Source.Code.Gameplay.Enemy.Base;
+using SurgeEngine._Source.Code.Gameplay.Enemy.EggFighter.States;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter
+namespace SurgeEngine._Source.Code.Gameplay.Enemy.EggFighter
 {
     [RequireComponent(typeof(StateAnimator))]
     public class EGAnimation : EnemyAnimation
@@ -21,7 +21,7 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter
                 stateAnimator.TransitionToState("Idle");
             }
             
-            if (obj is EGStatePatrol or EGStateChase)
+            if (obj is EGStateChase)
             {
                 stateAnimator.TransitionToState("Walk", 0.1f);
             }

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SurgeEngine.Code.Infrastructure.Config.Graphics
+namespace SurgeEngine._Source.Code.Infrastructure.Config.Graphics
 {
     [Serializable]
     public class QualityData

@@ -1,14 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using SurgeEngine.Code.Core.Actor.CameraSystem.Modifiers;
-using SurgeEngine.Code.Core.Actor.CameraSystem.Pans;
-using SurgeEngine.Code.Core.Actor.States;
-using SurgeEngine.Code.Core.Actor.System;
-using SurgeEngine.Code.Gameplay.CommonObjects.System;
+using SurgeEngine._Source.Code.Core.Character.CameraSystem.Modifiers;
+using SurgeEngine._Source.Code.Core.Character.CameraSystem.Pans;
+using SurgeEngine._Source.Code.Core.Character.States;
+using SurgeEngine._Source.Code.Core.Character.System;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects.CameraObjects;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects.System;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Core.Actor.CameraSystem
+namespace SurgeEngine._Source.Code.Core.Character.CameraSystem
 {
     public class CharacterCamera : CharacterComponent, IPointMarkerLoader
     {
@@ -93,12 +94,12 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
             
             foreach (var modifier in baseCameraModifiers)
             {
-                modifier.Set(base.character);
+                modifier.Set(this.character);
                 _modifiersDictionary.Add(modifier.GetType(), modifier);
             }
         }
 
-        public void Start()
+        private void Start()
         {
             StateMachine = new CameraStateMachine(_camera, _cameraTransform, character);
             
@@ -126,6 +127,16 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
             Vector3 dir = Quaternion.LookRotation(character.transform.forward).eulerAngles;
             dir.x = yawDefaultAmplitude;
             StateMachine.SetDirection(dir.y, dir.x);
+            
+            foreach (var volume in FindObjectsByType<ChangeCameraVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+            {
+                if (volume.GetComponent<BoxCollider>().bounds.Contains(character.transform.position))
+                {
+                    StateMachine.RegisterVolume(volume);
+                }
+            }
+            
+            StateMachine.CompleteBlend();
         }
 
         private void Update()

@@ -1,14 +1,12 @@
 ﻿using System;
-using NaughtyAttributes;
-using SurgeEngine.Code.Core.Actor.HUD;
-using SurgeEngine.Code.Core.Actor.States;
-using SurgeEngine.Code.Core.Actor.System;
-using SurgeEngine.Code.Gameplay.CommonObjects;
-using SurgeEngine.Code.Gameplay.CommonObjects.System;
+using SurgeEngine._Source.Code.Core.Character.HUD;
+using SurgeEngine._Source.Code.Core.Character.System;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects.System;
 using UnityEngine;
 using Zenject;
 
-namespace SurgeEngine.Code.Infrastructure.DI
+namespace SurgeEngine._Source.Code.Infrastructure.DI
 {
     public class GameplaySceneContext : MonoInstaller
     {

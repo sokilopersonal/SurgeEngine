@@ -1,7 +1,7 @@
 ﻿using DG.Tweening;
 using UnityEngine;
 
-namespace SurgeEngine.Code.UI.Pages.Baseline.AnimatedPages
+namespace SurgeEngine._Source.Code.UI.Pages.Baseline.AnimatedPages
 {
     public class MainPage : Page
     {

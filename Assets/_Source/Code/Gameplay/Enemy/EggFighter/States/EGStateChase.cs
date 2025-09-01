@@ -1,9 +1,7 @@
-﻿using SurgeEngine.Code.Core.Actor.System;
-using SurgeEngine.Code.Gameplay.Enemy.Base;
+﻿using SurgeEngine._Source.Code.Gameplay.Enemy.Base;
 using UnityEngine;
-using UnityEngine.AI;
 
-namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter.States
+namespace SurgeEngine._Source.Code.Gameplay.Enemy.EggFighter.States
 {
     public class EGStateChase : EGState
     {
@@ -27,18 +25,18 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter.States
             if (agent.remainingDistance < agent.stoppingDistance)
             {
                 agent.velocity = Vector3.zero;
-                stateMachine.SetState<EGStateIdle>();
+                StateMachine.SetState<EGStateIdle>();
             }
             
-            if (Vector3.Distance(pos, transform.position) < eggFighter.punchRadius)
+            if (Vector3.Distance(pos, transform.position) < eggFighter.PunchRadius)
             {
-                if (hasTarget && !character.Flags.HasFlag(FlagType.Invincible))
+                if (hasTarget && !character.Life.IsDead)
                 {
-                    stateMachine.SetState<EGStatePunch>();
+                    StateMachine.SetState<EGStatePunch>();
                 }
                 else
                 {
-                    stateMachine.SetState<EGStateIdle>();
+                    StateMachine.SetState<EGStateIdle>();
                 }
             }
         }

@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter
+namespace SurgeEngine._Source.Code.Gameplay.Enemy.EggFighter
 {
     public class EGAnimationReference : MonoBehaviour
     {

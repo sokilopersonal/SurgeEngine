@@ -1,8 +1,6 @@
-﻿using SurgeEngine.Code.Gameplay.CommonObjects.Interfaces;
-using SurgeEngine.Code.Infrastructure.Custom.Extensions;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace SurgeEngine.Code.Core.Actor.System
+namespace SurgeEngine._Source.Code.Core.Character.System
 {
     /// <summary>
     /// Listens for collisions

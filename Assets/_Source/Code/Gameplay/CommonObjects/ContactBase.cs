@@ -1,10 +1,9 @@
 ﻿using System;
-using JetBrains.Annotations;
-using SurgeEngine.Code.Core.Actor.System;
-using SurgeEngine.Code.Infrastructure.Custom.Extensions;
+using SurgeEngine._Source.Code.Core.Character.System;
+using SurgeEngine._Source.Code.Infrastructure.Custom.Extensions;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Gameplay.CommonObjects
+namespace SurgeEngine._Source.Code.Gameplay.CommonObjects
 {
     [SelectionBase]
     public abstract class ContactBase : MonoBehaviour

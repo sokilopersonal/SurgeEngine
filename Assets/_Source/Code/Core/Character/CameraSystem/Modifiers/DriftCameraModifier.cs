@@ -1,8 +1,8 @@
-using SurgeEngine.Code.Core.Actor.States.Characters.Sonic;
-using SurgeEngine.Code.Core.Actor.System;
-using SurgeEngine.Code.Core.StateMachine.Base;
+using SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic;
+using SurgeEngine._Source.Code.Core.Character.System;
+using SurgeEngine._Source.Code.Core.StateMachine.Base;
 
-namespace SurgeEngine.Code.Core.Actor.CameraSystem.Modifiers
+namespace SurgeEngine._Source.Code.Core.Character.CameraSystem.Modifiers
 {
     public class DriftCameraModifier : BaseCameraModifier, ICameraFloatModifier
     {

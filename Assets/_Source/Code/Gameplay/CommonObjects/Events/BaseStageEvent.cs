@@ -1,12 +1,8 @@
-﻿using System;
+﻿using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
-
-namespace SurgeEngine.Code.Gameplay.CommonObjects.Events
+namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Events
 {
     public abstract class BaseStageEvent : MonoBehaviour
     {

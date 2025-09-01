@@ -1,18 +1,17 @@
-﻿using SurgeEngine.Code.Core.Actor.States.BaseStates;
-using SurgeEngine.Code.Core.Actor.System;
-using SurgeEngine.Code.Core.Actor.System.Characters.Sonic;
-using SurgeEngine.Code.Core.StateMachine.Interfaces;
-using SurgeEngine.Code.Gameplay.CommonObjects;
-using SurgeEngine.Code.Gameplay.CommonObjects.Environment;
-using SurgeEngine.Code.Gameplay.Inputs;
-using SurgeEngine.Code.Infrastructure.Config.SonicSpecific;
-using SurgeEngine.Code.Infrastructure.Custom;
-using SurgeEngine.Code.Infrastructure.Tools;
+﻿using SurgeEngine._Source.Code.Core.Character.States.BaseStates;
+using SurgeEngine._Source.Code.Core.Character.System;
+using SurgeEngine._Source.Code.Core.Character.System.Characters.Sonic;
+using SurgeEngine._Source.Code.Core.StateMachine.Interfaces;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects.Environment;
+using SurgeEngine._Source.Code.Infrastructure.Config.SonicSpecific;
+using SurgeEngine._Source.Code.Infrastructure.Custom;
+using SurgeEngine._Source.Code.Infrastructure.Tools;
 using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
 using Vector3 = UnityEngine.Vector3;
 
-namespace SurgeEngine.Code.Core.Actor.States.Characters.Sonic
+namespace SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic
 {
     public class FStateDrift : FCharacterState, IStateTimeout, IDamageableState
     {

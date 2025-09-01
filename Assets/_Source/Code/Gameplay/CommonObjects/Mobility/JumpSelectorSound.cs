@@ -2,7 +2,7 @@
 using FMODUnity;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
+namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
 {
     public class JumpSelectorSound : MonoBehaviour
     {

@@ -1,9 +1,9 @@
 ﻿using System;
-using SurgeEngine.Code.Core.Actor.States;
-using SurgeEngine.Code.Gameplay.CommonObjects.System;
+using SurgeEngine._Source.Code.Core.Character.States;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects.System;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Infrastructure.Custom
+namespace SurgeEngine._Source.Code.Infrastructure.Custom
 {
     public static class Utility
     {

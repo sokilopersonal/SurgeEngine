@@ -1,7 +1,7 @@
-using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine._Source.Code.Core.Character.System;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Gameplay.CommonObjects.ChangeModes
+namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.ChangeModes
 {
     public abstract class ChangeMode3D : ModeCollision
     {

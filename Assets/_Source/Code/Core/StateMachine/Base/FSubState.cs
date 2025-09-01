@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SurgeEngine.Code.Core.StateMachine.Base
+namespace SurgeEngine._Source.Code.Core.StateMachine.Base
 {
     public abstract class FSubState : FState
     {

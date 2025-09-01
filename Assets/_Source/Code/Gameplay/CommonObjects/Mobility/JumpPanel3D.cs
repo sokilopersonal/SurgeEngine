@@ -1,9 +1,9 @@
-﻿using SurgeEngine.Code.Core.Actor.System;
-using SurgeEngine.Code.Infrastructure.Custom;
-using SurgeEngine.Code.Infrastructure.Custom.Drawers;
+﻿using SurgeEngine._Source.Code.Core.Character.System;
+using SurgeEngine._Source.Code.Infrastructure.Custom;
+using SurgeEngine._Source.Code.Infrastructure.Custom.Drawers;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
+namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
 {
     public class JumpPanel3D : JumpPanelBase
     {

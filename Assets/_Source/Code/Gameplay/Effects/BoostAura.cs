@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Rendering.HighDefinition;
 using UnityEngine.VFX;
 
-namespace SurgeEngine.Code.Gameplay.Effects
+namespace SurgeEngine._Source.Code.Gameplay.Effects
 {
     public class BoostAura : Effect
     {

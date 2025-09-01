@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Splines;
 
-namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility.Rails
+namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility.Rails
 {
     [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer), typeof(SplineContainer))]
     [ExecuteInEditMode]

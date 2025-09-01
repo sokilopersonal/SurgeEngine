@@ -1,10 +1,10 @@
 ﻿using System;
 using NaughtyAttributes;
-using SurgeEngine.Code.Core.StateMachine;
-using SurgeEngine.Code.Gameplay.CommonObjects.System;
+using SurgeEngine._Source.Code.Core.StateMachine;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects.System;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Gameplay.Enemy.Base
+namespace SurgeEngine._Source.Code.Gameplay.Enemy.Base
 {
     public class EnemyBase : MonoBehaviour
     {

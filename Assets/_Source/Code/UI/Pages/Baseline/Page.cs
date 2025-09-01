@@ -1,10 +1,9 @@
-﻿using System;
-using DG.Tweening;
+﻿using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
-namespace SurgeEngine.Code.UI.Pages.Baseline
+namespace SurgeEngine._Source.Code.UI.Pages.Baseline
 {
     [RequireComponent(typeof(CanvasGroup))]
     [DisallowMultipleComponent]

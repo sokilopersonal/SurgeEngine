@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
-using JetBrains.Annotations;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Rendering
+namespace SurgeEngine._Source.Code.Rendering
 {
     [ExecuteInEditMode]
     public class GrassRenderer : MonoBehaviour

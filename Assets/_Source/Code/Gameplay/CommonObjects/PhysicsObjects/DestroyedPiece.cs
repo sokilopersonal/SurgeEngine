@@ -2,7 +2,7 @@
 using DG.Tweening;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Gameplay.CommonObjects.PhysicsObjects
+namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.PhysicsObjects
 {
     public class DestroyedPiece : MonoBehaviour
     {

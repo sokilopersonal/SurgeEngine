@@ -2,7 +2,7 @@ using System.Collections;
 using DG.Tweening;
 using UnityEngine;
 
-namespace SurgeEngine.Code.UI
+namespace SurgeEngine._Source.Code.UI
 {
     public class PointMarkerLoadingScreen : MonoBehaviour
     {

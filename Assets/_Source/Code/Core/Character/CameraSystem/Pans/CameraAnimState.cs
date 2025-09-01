@@ -1,10 +1,10 @@
-﻿using SurgeEngine.Code.Core.Actor.CameraSystem.Pans.Data;
-using SurgeEngine.Code.Core.Actor.States;
-using SurgeEngine.Code.Core.Actor.System;
-using SurgeEngine.Code.Infrastructure.Custom;
+﻿using SurgeEngine._Source.Code.Core.Character.CameraSystem.Pans.Data;
+using SurgeEngine._Source.Code.Core.Character.States;
+using SurgeEngine._Source.Code.Core.Character.System;
+using SurgeEngine._Source.Code.Infrastructure.Custom;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
+namespace SurgeEngine._Source.Code.Core.Character.CameraSystem.Pans
 {
     public class CameraAnimState : CameraState
     {

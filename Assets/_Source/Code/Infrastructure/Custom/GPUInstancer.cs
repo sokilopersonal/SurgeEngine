@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace SurgeEngine.Code.Infrastructure.Custom
+namespace SurgeEngine._Source.Code.Infrastructure.Custom
 {
     public class GPUInstancer : MonoBehaviour
     {

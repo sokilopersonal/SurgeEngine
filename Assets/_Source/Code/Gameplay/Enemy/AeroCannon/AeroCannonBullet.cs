@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace SurgeEngine.Code.Gameplay.Enemy.AeroCannon
+namespace SurgeEngine._Source.Code.Gameplay.Enemy.AeroCannon
 {
     public class AeroCannonBullet : MonoBehaviour
     {

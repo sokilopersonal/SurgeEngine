@@ -1,9 +1,8 @@
-﻿using System;
-using FMODUnity;
-using SurgeEngine.Code.Gameplay.CommonObjects.Interfaces;
+﻿using FMODUnity;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects.Interfaces;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Gameplay.CommonObjects.PhysicsObjects
+namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.PhysicsObjects
 {
     [SelectionBase, RequireComponent(typeof(Rigidbody))]
     public class BreakableObject : MonoBehaviour, IDamageable

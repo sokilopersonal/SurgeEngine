@@ -1,11 +1,11 @@
 ﻿using System;
-using SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates;
-using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic.SubStates;
+using SurgeEngine._Source.Code.Core.Character.System;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
-namespace SurgeEngine.Code.Core.Actor.HUD
+namespace SurgeEngine._Source.Code.Core.Character.HUD
 {
     public class BoostBarController : MonoBehaviour
     {

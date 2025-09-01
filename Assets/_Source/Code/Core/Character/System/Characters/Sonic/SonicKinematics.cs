@@ -1,11 +1,11 @@
-using SurgeEngine.Code.Core.Actor.States;
-using SurgeEngine.Code.Core.Actor.States.Characters.Sonic;
-using SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates;
-using SurgeEngine.Code.Core.StateMachine.Base;
-using SurgeEngine.Code.Gameplay.CommonObjects;
-using SurgeEngine.Code.Infrastructure.Tools;
+using SurgeEngine._Source.Code.Core.Character.States;
+using SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic;
+using SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic.SubStates;
+using SurgeEngine._Source.Code.Core.StateMachine.Base;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects;
+using SurgeEngine._Source.Code.Infrastructure.Tools;
 
-namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
+namespace SurgeEngine._Source.Code.Core.Character.System.Characters.Sonic
 {
     public class SonicKinematics : CharacterKinematics
     {

@@ -1,20 +1,18 @@
-﻿using System;
-using Coffee.UIExtensions;
-using SurgeEngine.Code.Core.Actor.System;
-using SurgeEngine.Code.Core.Actor.System.Characters.Sonic;
-using SurgeEngine.Code.Gameplay.CommonObjects;
-using SurgeEngine.Code.Gameplay.CommonObjects.Collectables;
-using SurgeEngine.Code.Gameplay.CommonObjects.GoalRing;
-using SurgeEngine.Code.Gameplay.CommonObjects.HUD;
-using SurgeEngine.Code.Gameplay.CommonObjects.System;
-using SurgeEngine.Code.Gameplay.UI;
-using SurgeEngine.Code.Infrastructure.Custom;
+﻿using Coffee.UIExtensions;
+using SurgeEngine._Source.Code.Core.Character.System;
+using SurgeEngine._Source.Code.Core.Character.System.Characters.Sonic;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects.Collectables;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects.GoalRing;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects.HUD;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects.System;
+using SurgeEngine._Source.Code.Infrastructure.Custom;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
-namespace SurgeEngine.Code.Core.Actor.HUD
+namespace SurgeEngine._Source.Code.Core.Character.HUD
 {
     public class CharacterStageHUD : MonoBehaviour
     {

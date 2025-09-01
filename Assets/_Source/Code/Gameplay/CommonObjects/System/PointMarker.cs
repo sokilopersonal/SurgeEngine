@@ -2,14 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using FMODUnity;
-using SurgeEngine.Code.Core.Actor.System;
-using SurgeEngine.Code.Gameplay.CommonObjects.CameraObjects;
-using SurgeEngine.Code.UI;
+using SurgeEngine._Source.Code.Core.Character.System;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects.CameraObjects;
+using SurgeEngine._Source.Code.UI;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 using Zenject;
 
-namespace SurgeEngine.Code.Gameplay.CommonObjects.System
+namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.System
 {
     [RequireComponent(typeof(BoxCollider))]
     public class PointMarker : ContactBase
@@ -70,6 +69,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.System
             _character.Rigidbody.position = transform.position;
             _character.Rigidbody.rotation = rotation;
             _character.Kinematics.Snap(transform.position, Vector3.up);
+            _character.Model.root.transform.rotation = rotation;
             
             _character.Camera.StateMachine.ClearVolumes();
             Physics.SyncTransforms();

@@ -1,13 +1,11 @@
-using System;
 using System.Linq;
 using DG.Tweening;
-using SurgeEngine.Code.Infrastructure.Tools.Managers.UI;
-using SurgeEngine.Code.UI.Animated;
+using SurgeEngine._Source.Code.Infrastructure.Tools.Managers.UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-namespace SurgeEngine.Code.UI.Pages.Baseline.AnimatedPages
+namespace SurgeEngine._Source.Code.UI.Pages.Baseline.AnimatedPages
 {
     public class SettingsPage : Page
     {

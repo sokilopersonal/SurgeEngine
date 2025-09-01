@@ -1,8 +1,8 @@
-﻿using SurgeEngine.Code.Gameplay.Enemy.Base;
-using SurgeEngine.Code.Gameplay.Enemy.RagdollPhysics;
+﻿using SurgeEngine._Source.Code.Gameplay.Enemy.Base;
+using SurgeEngine._Source.Code.Gameplay.Enemy.RagdollPhysics;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter.States
+namespace SurgeEngine._Source.Code.Gameplay.Enemy.EggFighter.States
 {
     public class EGStateDead : EGState
     {

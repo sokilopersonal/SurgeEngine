@@ -1,7 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Gameplay.Effects
+namespace SurgeEngine._Source.Code.Gameplay.Effects
 {
     public class SweepEffect : Effect
     {

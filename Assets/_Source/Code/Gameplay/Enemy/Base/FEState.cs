@@ -1,17 +1,17 @@
-﻿using SurgeEngine.Code.Core.StateMachine;
-using SurgeEngine.Code.Core.StateMachine.Base;
+﻿using SurgeEngine._Source.Code.Core.StateMachine;
+using SurgeEngine._Source.Code.Core.StateMachine.Base;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Gameplay.Enemy.Base
+namespace SurgeEngine._Source.Code.Gameplay.Enemy.Base
 {
     public class FEState : FState
     {
-        protected readonly FStateMachine stateMachine;
+        protected readonly FStateMachine StateMachine;
         protected readonly Transform transform;
 
         public FEState(EnemyBase enemy)
         {
-            stateMachine = enemy.StateMachine;
+            StateMachine = enemy.StateMachine;
             transform = enemy.transform;
         }
     }

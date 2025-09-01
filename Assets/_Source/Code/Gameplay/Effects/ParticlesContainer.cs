@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
-namespace SurgeEngine.Code.Gameplay.Effects
+namespace SurgeEngine._Source.Code.Gameplay.Effects
 {
     public class ParticlesContainer : MonoBehaviour
     {

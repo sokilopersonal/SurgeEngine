@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace SurgeEngine.Code.Core.Actor.System
+namespace SurgeEngine._Source.Code.Core.Character.System
 {
     public class CharacterComponent : MonoBehaviour
     {

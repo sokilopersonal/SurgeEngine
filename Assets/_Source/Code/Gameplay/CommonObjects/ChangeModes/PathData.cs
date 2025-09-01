@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine.Splines;
 
-namespace SurgeEngine.Code.Gameplay.CommonObjects.ChangeModes
+namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.ChangeModes
 {
     [Serializable]
     public class PathData

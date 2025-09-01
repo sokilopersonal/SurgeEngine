@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using NaughtyAttributes;
-using SurgeEngine.Code.Core.Actor.CameraSystem;
-using SurgeEngine.Code.Core.Actor.States;
-using SurgeEngine.Code.Core.Actor.States.Characters.Sonic;
-using SurgeEngine.Code.Core.StateMachine;
-using SurgeEngine.Code.Gameplay.CommonObjects.Interfaces;
-using SurgeEngine.Code.Gameplay.CommonObjects.System;
-using SurgeEngine.Code.Infrastructure.Config;
+using SurgeEngine._Source.Code.Core.Character.CameraSystem;
+using SurgeEngine._Source.Code.Core.Character.States;
+using SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic;
+using SurgeEngine._Source.Code.Core.StateMachine;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects.System;
+using SurgeEngine._Source.Code.Infrastructure.Config;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
-namespace SurgeEngine.Code.Core.Actor.System
+namespace SurgeEngine._Source.Code.Core.Character.System
 {
     public class CharacterBase : MonoBehaviour, IPointMarkerLoader
     {

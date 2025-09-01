@@ -1,12 +1,11 @@
 ﻿using System;
-using SurgeEngine.Code.Core.Actor.States;
-using SurgeEngine.Code.Gameplay.CommonObjects.Interfaces;
-using SurgeEngine.Code.Gameplay.CommonObjects.System;
-using SurgeEngine.Code.Infrastructure.Config;
+using SurgeEngine._Source.Code.Core.Character.States;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects.Interfaces;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects.System;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace SurgeEngine.Code.Core.Actor.System
+namespace SurgeEngine._Source.Code.Core.Character.System
 {
     public class CharacterLife : CharacterComponent, IDamageable, IPointMarkerLoader
     {

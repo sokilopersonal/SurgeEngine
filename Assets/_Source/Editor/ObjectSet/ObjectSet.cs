@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using Newtonsoft.Json;
-using SurgeEngine.Code.Gameplay.CommonObjects.CameraObjects;
 using UnityEditor;
 using UnityEngine;
 

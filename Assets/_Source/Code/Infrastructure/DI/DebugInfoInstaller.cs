@@ -1,8 +1,8 @@
-using SurgeEngine.Code.Infrastructure.Custom.Drawers;
+using SurgeEngine._Source.Code.Infrastructure.Custom.Drawers;
 using UnityEngine;
 using Zenject;
 
-namespace SurgeEngine.Code.Infrastructure.DI
+namespace SurgeEngine._Source.Code.Infrastructure.DI
 {
     public class DebugInfoInstaller : MonoInstaller
     {

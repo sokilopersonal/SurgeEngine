@@ -1,6 +1,6 @@
-﻿using SurgeEngine.Code.Core.Actor.Sound;
+﻿using SurgeEngine._Source.Code.Core.Character.Sound;
 
-namespace SurgeEngine.Code.Core.Actor.System
+namespace SurgeEngine._Source.Code.Core.Character.System
 {
     public class CharacterSounds : CharacterComponent
     {

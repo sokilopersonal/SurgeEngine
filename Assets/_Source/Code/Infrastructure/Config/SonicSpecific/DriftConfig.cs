@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace SurgeEngine.Code.Infrastructure.Config.SonicSpecific
+namespace SurgeEngine._Source.Code.Infrastructure.Config.SonicSpecific
 {
     [CreateAssetMenu(fileName = "DriftConfig", menuName = "SurgeEngine/Configs/Sonic/Drift", order = 0)]
     public class DriftConfig : ScriptableObject

@@ -1,7 +1,7 @@
-using SurgeEngine.Code.Gameplay.Enemy.Base;
+using SurgeEngine._Source.Code.Gameplay.Enemy.Base;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter
+namespace SurgeEngine._Source.Code.Gameplay.Enemy.EggFighter
 {
     public class EGEffects : EnemyComponent
     {

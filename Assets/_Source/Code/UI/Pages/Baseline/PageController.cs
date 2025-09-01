@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
-namespace SurgeEngine.Code.UI.Pages.Baseline
+namespace SurgeEngine._Source.Code.UI.Pages.Baseline
 {
     [RequireComponent(typeof(CanvasGroup))]
     [DisallowMultipleComponent]

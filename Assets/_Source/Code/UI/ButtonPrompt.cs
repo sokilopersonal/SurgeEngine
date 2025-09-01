@@ -1,15 +1,13 @@
-using System;
 using DG.Tweening;
-using SurgeEngine.Code.UI.Animated;
+using SurgeEngine._Source.Code.UI.Animated;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.DualShock;
-using UnityEngine.InputSystem.Users;
 using UnityEngine.InputSystem.XInput;
 using UnityEngine.UI;
 
-namespace SurgeEngine.Code.UI
+namespace SurgeEngine._Source.Code.UI
 {
     public class ButtonPrompt : SelectReaction
     {

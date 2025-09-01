@@ -1,8 +1,8 @@
-﻿using SurgeEngine.Code.UI.OptionBars;
+﻿using SurgeEngine._Source.Code.UI.OptionBars;
 using UnityEngine;
 using Zenject;
 
-namespace SurgeEngine.Code.Infrastructure.Tools.Managers.UI
+namespace SurgeEngine._Source.Code.Infrastructure.Tools.Managers.UI
 {
     public class VolumeManagerUI : OptionUI
     {

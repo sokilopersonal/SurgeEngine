@@ -1,8 +1,8 @@
-﻿using SurgeEngine.Code.Core.StateMachine.Base;
-using SurgeEngine.Code.Core.StateMachine.Components;
+﻿using SurgeEngine._Source.Code.Core.StateMachine.Base;
+using SurgeEngine._Source.Code.Core.StateMachine.Components;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Core.Actor.System
+namespace SurgeEngine._Source.Code.Core.Character.System
 {
     /// <summary>
     /// Base class for handling actor animations using Unity's animation system.

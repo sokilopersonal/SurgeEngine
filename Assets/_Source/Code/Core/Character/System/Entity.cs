@@ -1,7 +1,7 @@
-﻿using SurgeEngine.Code.Core.StateMachine;
+﻿using SurgeEngine._Source.Code.Core.StateMachine;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Core.Actor.System
+namespace SurgeEngine._Source.Code.Core.Character.System
 {
     public abstract class Entity : MonoBehaviour
     {

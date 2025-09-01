@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Animations.Rigging;
 
-namespace SurgeEngine.Code.Core.Actor.System.IK
+namespace SurgeEngine._Source.Code.Core.Character.System.IK
 {
     public class AnimationRiggingFootPlanter : MonoBehaviour
     {

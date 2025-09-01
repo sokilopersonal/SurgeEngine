@@ -1,7 +1,7 @@
-﻿using SurgeEngine.Code.Core.StateMachine;
+﻿using SurgeEngine._Source.Code.Core.StateMachine;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Core.Actor.System
+namespace SurgeEngine._Source.Code.Core.Character.System
 {
     /// <summary>
     /// Represents a base class for defining various action sets for an actor in the system.

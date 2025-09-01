@@ -1,8 +1,8 @@
-﻿using SurgeEngine.Code.Core.Actor.System;
-using SurgeEngine.Code.Core.StateMachine.Base;
+﻿using SurgeEngine._Source.Code.Core.Character.System;
+using SurgeEngine._Source.Code.Core.StateMachine.Base;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Core.Actor.CameraSystem.Pans
+namespace SurgeEngine._Source.Code.Core.Character.CameraSystem.Pans
 {
     public class CameraState : FState
     {

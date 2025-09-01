@@ -1,11 +1,11 @@
 ﻿using NaughtyAttributes;
-using SurgeEngine.Code.Core.Actor.States;
-using SurgeEngine.Code.Core.Actor.System;
-using SurgeEngine.Code.Infrastructure.Custom.Extensions;
+using SurgeEngine._Source.Code.Core.Character.States;
+using SurgeEngine._Source.Code.Core.Character.System;
+using SurgeEngine._Source.Code.Infrastructure.Custom.Extensions;
 using UnityEngine;
 using UnityEngine.Splines;
 
-namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility.Rails
+namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility.Rails
 {
     [RequireComponent(typeof(MeshCollider), typeof(SplineContainer))]
     public class Rail : MonoBehaviour

@@ -1,11 +1,11 @@
-﻿using SurgeEngine.Code.Core.Actor.States.BaseStates;
-using SurgeEngine.Code.Core.Actor.System;
-using SurgeEngine.Code.Gameplay.CommonObjects.Environment;
-using SurgeEngine.Code.Gameplay.CommonObjects.System;
-using SurgeEngine.Code.Infrastructure.Custom;
+﻿using SurgeEngine._Source.Code.Core.Character.States.BaseStates;
+using SurgeEngine._Source.Code.Core.Character.System;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects.Environment;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects.System;
+using SurgeEngine._Source.Code.Infrastructure.Custom;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Core.Actor.States
+namespace SurgeEngine._Source.Code.Core.Character.States
 {
     public class FStateAir : FCharacterState, IDamageableState, IPointMarkerLoader
     {

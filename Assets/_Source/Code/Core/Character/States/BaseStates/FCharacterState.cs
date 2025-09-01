@@ -1,9 +1,9 @@
-﻿using SurgeEngine.Code.Core.Actor.System;
-using SurgeEngine.Code.Core.StateMachine;
-using SurgeEngine.Code.Core.StateMachine.Base;
+﻿using SurgeEngine._Source.Code.Core.Character.System;
+using SurgeEngine._Source.Code.Core.StateMachine;
+using SurgeEngine._Source.Code.Core.StateMachine.Base;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Core.Actor.States.BaseStates
+namespace SurgeEngine._Source.Code.Core.Character.States.BaseStates
 {
     public abstract class FCharacterState : FState
     {

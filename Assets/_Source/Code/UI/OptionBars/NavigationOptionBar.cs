@@ -1,6 +1,6 @@
 ﻿using UnityEngine.EventSystems;
 
-namespace SurgeEngine.Code.UI.OptionBars
+namespace SurgeEngine._Source.Code.UI.OptionBars
 {
     public class NavigationOptionBar : OptionBar
     {

@@ -1,13 +1,12 @@
 ﻿using System;
-using SurgeEngine.Code.Core.Actor.States.BaseStates;
-using SurgeEngine.Code.Core.Actor.System;
-using SurgeEngine.Code.Gameplay.CommonObjects.Environment;
-using SurgeEngine.Code.Infrastructure.Config;
-using SurgeEngine.Code.Infrastructure.Custom;
+using SurgeEngine._Source.Code.Core.Character.States.BaseStates;
+using SurgeEngine._Source.Code.Core.Character.System;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects.Environment;
+using SurgeEngine._Source.Code.Infrastructure.Config;
+using SurgeEngine._Source.Code.Infrastructure.Custom;
 using UnityEngine;
-using UnityEngine.Animations.Rigging;
 
-namespace SurgeEngine.Code.Core.Actor.States
+namespace SurgeEngine._Source.Code.Core.Character.States
 {
     public sealed class FStateGround : FCharacterState, IDamageableState
     {

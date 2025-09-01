@@ -1,8 +1,8 @@
-﻿using SurgeEngine.Code.Core.Actor.System;
-using SurgeEngine.Code.Core.StateMachine.Base;
+﻿using SurgeEngine._Source.Code.Core.Character.System;
+using SurgeEngine._Source.Code.Core.StateMachine.Base;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Core.Actor.Sound
+namespace SurgeEngine._Source.Code.Core.Character.Sound
 {
     [RequireComponent(typeof(VoiceHandler), typeof(CharacterSounds))]
     public abstract class CharacterSound : MonoBehaviour

@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Gameplay.CommonObjects.AnimationCallback
+namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.AnimationCallback
 {
     public class AnimationEventCallback : MonoBehaviour
     {

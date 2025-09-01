@@ -1,12 +1,9 @@
-﻿using SurgeEngine.Code.Gameplay.CommonObjects.Mobility;
+﻿using SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
-
-namespace SurgeEngine.Code.Infrastructure.Custom.Drawers
+namespace SurgeEngine._Source.Code.Infrastructure.Custom.Drawers
 {
     public static class TrajectoryDrawer
     {

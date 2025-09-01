@@ -1,10 +1,10 @@
-﻿using SurgeEngine.Code.Core.Actor.HUD;
-using SurgeEngine.Code.Core.Actor.System;
-using SurgeEngine.Code.Infrastructure.Custom;
+﻿using SurgeEngine._Source.Code.Core.Character.HUD;
+using SurgeEngine._Source.Code.Core.Character.System;
+using SurgeEngine._Source.Code.Infrastructure.Custom;
 using UnityEngine;
 using Zenject;
 
-namespace SurgeEngine.Code.Gameplay.CommonObjects.HUD
+namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.HUD
 {
     public class RingHUD : MonoBehaviour
     {

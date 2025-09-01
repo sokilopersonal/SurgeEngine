@@ -1,13 +1,13 @@
 ﻿using System.Collections;
-using SurgeEngine.Code.Core.Actor.States;
-using SurgeEngine.Code.Core.Actor.States.Characters.Sonic;
-using SurgeEngine.Code.Core.StateMachine;
-using SurgeEngine.Code.Core.StateMachine.Base;
-using SurgeEngine.Code.Core.StateMachine.Components;
+using SurgeEngine._Source.Code.Core.Character.States;
+using SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic;
+using SurgeEngine._Source.Code.Core.StateMachine;
+using SurgeEngine._Source.Code.Core.StateMachine.Base;
+using SurgeEngine._Source.Code.Core.StateMachine.Components;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
+namespace SurgeEngine._Source.Code.Core.Character.System.Characters.Sonic
 {
     public class SonicAnimation : CharacterAnimation
     {

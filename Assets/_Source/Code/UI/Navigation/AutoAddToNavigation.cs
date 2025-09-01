@@ -1,8 +1,7 @@
-﻿using SurgeEngine.Code.Infrastructure.Custom.Extensions;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace SurgeEngine.Code.UI.Navigation
+namespace SurgeEngine._Source.Code.UI.Navigation
 {
     /// <summary>
     /// A script to automatically add a selectable instance this object has to MenuNavigationSystem.

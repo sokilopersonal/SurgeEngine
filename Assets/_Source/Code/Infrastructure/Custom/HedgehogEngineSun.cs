@@ -1,8 +1,8 @@
-﻿using SurgeEngine.Code.Core.Actor.System;
+﻿using SurgeEngine._Source.Code.Core.Character.System;
 using UnityEngine;
 using UnityEngine.Rendering.HighDefinition;
 
-namespace SurgeEngine.Code.Infrastructure.Custom
+namespace SurgeEngine._Source.Code.Infrastructure.Custom
 {
     public class HedgehogEngineSun : MonoBehaviour
     {

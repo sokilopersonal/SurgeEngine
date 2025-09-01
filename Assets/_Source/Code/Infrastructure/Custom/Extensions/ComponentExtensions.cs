@@ -1,7 +1,7 @@
-﻿using SurgeEngine.Code.Core.Actor.System;
+﻿using SurgeEngine._Source.Code.Core.Character.System;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Infrastructure.Custom.Extensions
+namespace SurgeEngine._Source.Code.Infrastructure.Custom.Extensions
 {
     public static class ComponentExtensions
     {

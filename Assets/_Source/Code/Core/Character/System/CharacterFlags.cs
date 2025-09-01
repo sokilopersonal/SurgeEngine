@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using SurgeEngine.Code.Core.Actor.States;
+using SurgeEngine._Source.Code.Core.Character.States;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Core.Actor.System
+namespace SurgeEngine._Source.Code.Core.Character.System
 {
     public sealed class CharacterFlags : CharacterComponent
     {

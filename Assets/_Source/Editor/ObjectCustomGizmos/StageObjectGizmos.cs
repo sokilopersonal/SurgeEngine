@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
-using SurgeEngine.Code.Gameplay.CommonObjects;
-using SurgeEngine.Code.Gameplay.CommonObjects.CameraObjects;
-using SurgeEngine.Code.Gameplay.CommonObjects.Mobility;
-using SurgeEngine.Code.Gameplay.CommonObjects.Player;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects.CameraObjects;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects.Player;
 using UnityEditor;
 using UnityEngine;
 using Debug = UnityEngine.Debug;

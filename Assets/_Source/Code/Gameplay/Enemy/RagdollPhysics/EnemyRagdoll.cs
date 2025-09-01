@@ -1,10 +1,10 @@
 using System.Collections.Generic;
-using SurgeEngine.Code.Gameplay.CommonObjects.System;
-using SurgeEngine.Code.Gameplay.Enemy.EggFighter;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects.System;
+using SurgeEngine._Source.Code.Gameplay.Enemy.EggFighter;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace SurgeEngine.Code.Gameplay.Enemy.RagdollPhysics
+namespace SurgeEngine._Source.Code.Gameplay.Enemy.RagdollPhysics
 {
     public class EnemyRagdoll : MonoBehaviour, IPointMarkerLoader
     {

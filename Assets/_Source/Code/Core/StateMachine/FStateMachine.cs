@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using SurgeEngine.Code.Core.StateMachine.Base;
-using SurgeEngine.Code.Core.StateMachine.Interfaces;
+using SurgeEngine._Source.Code.Core.StateMachine.Base;
+using SurgeEngine._Source.Code.Core.StateMachine.Interfaces;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Core.StateMachine
+namespace SurgeEngine._Source.Code.Core.StateMachine
 {
     public class FStateMachine
     {

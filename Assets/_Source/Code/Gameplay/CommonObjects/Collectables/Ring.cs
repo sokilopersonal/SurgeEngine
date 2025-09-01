@@ -1,14 +1,11 @@
-﻿using System;
-using FMODUnity;
-using SurgeEngine.Code.Core.Actor.States.Characters.Sonic.SubStates;
-using SurgeEngine.Code.Core.Actor.System;
-using SurgeEngine.Code.Gameplay.CommonObjects.System;
-using SurgeEngine.Code.Infrastructure.Custom;
-using SurgeEngine.Code.Infrastructure.Tools;
+﻿using FMODUnity;
+using SurgeEngine._Source.Code.Core.Character.System;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects.System;
+using SurgeEngine._Source.Code.Infrastructure.Custom;
 using UnityEngine;
 using Zenject;
 
-namespace SurgeEngine.Code.Gameplay.CommonObjects.Collectables
+namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Collectables
 {
     public class Ring : ContactBase, IPointMarkerLoader
     {

@@ -1,7 +1,7 @@
 ﻿using FMODUnity;
 using UnityEngine;
 
-namespace SurgeEngine.Code.Gameplay.CommonObjects.HUD
+namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.HUD
 {
     public class HomingIcon : MonoBehaviour
     {

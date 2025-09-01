@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace SurgeEngine.Code.Gameplay.CommonObjects.Interfaces
+namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Interfaces
 {
     public interface IDamageable
     {

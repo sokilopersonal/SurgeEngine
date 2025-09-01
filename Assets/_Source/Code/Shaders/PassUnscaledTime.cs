@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace SurgeEngine.Code.Shaders
+namespace SurgeEngine._Source.Code.Shaders
 {
     /// <summary>
     /// A component to pass unscaled time to the shader
