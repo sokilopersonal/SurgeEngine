@@ -49,12 +49,8 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.PhysicsObjects
             _lightBlock = transform.Find("lightBlock");
 
             _col = GetComponent<BoxCollider>();
-
-            if (Application.isPlaying)
-            {
-                _lightMaterial = new Material(_lightBlock.GetComponent<MeshRenderer>().sharedMaterial);
-                _lightBlock.GetComponent<MeshRenderer>().sharedMaterial = _lightMaterial;
-            }
+            _lightMaterial = new Material(_lightBlock.GetComponent<MeshRenderer>().sharedMaterial);
+            _lightBlock.GetComponent<MeshRenderer>().sharedMaterial = _lightMaterial;
 
             _hidden = startHidden;
 
@@ -185,6 +181,8 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.PhysicsObjects
         {
             if (_lightMaterial == null)
                 return;
+            
+            Debug.Log("1");
 
             float offset = 0;
             DOTween.To(() => offset, x => offset = x, -0.5f, 0.5f).SetEase(Ease.OutSine).OnUpdate(() =>
