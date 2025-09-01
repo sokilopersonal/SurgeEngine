@@ -36,18 +36,15 @@ namespace SurgeEngine._Source.Code.Infrastructure.Tools.Managers.UI
         {
             
         }
-        
-        protected void MarkDirty()
+
+        private void MarkDirty()
         {
             IsDirty = true;
         }
-        
-        protected void MarkClean()
+
+        private void MarkClean()
         {
             IsDirty = false;
         }
-
-        // Added public accessor to check dirty state from other scripts
-        public bool IsDirtyState => IsDirty;
     }
 }
