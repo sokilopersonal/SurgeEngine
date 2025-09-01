@@ -42,7 +42,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Events
             }
         }
 
-        public void Load(Vector3 loadPosition, Quaternion loadRotation)
+        public void Load()
         {
             _enemiesDied = 0;
         }

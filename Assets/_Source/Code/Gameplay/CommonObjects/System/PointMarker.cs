@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using FMODUnity;
 using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine.Code.Gameplay.CommonObjects.CameraObjects;
 using SurgeEngine.Code.UI;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using Zenject;
 
 namespace SurgeEngine.Code.Gameplay.CommonObjects.System
 {
@@ -17,17 +19,17 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.System
         public float Length => length;
         public int ID => id;
 
+        [SerializeField] private PointMarkerLoadingScreen loadingScreenPrefab;
+        [Inject] private CharacterBase _character;
+
         private EventReference _soundEvent;
         private List<IPointMarkerLoader> _loaders = new List<IPointMarkerLoader>();
 
         private bool _triggered;
 
-        private PointMarkerLoadingScreen _loadCanvas;
-
         private void Awake()
         {
             _soundEvent = RuntimeManager.PathToEventReference("event:/CommonObjects/PointMarker");
-            _loadCanvas = Addressables.LoadAssetAsync<GameObject>("PointMarkerCanvas").WaitForCompletion().GetComponent<PointMarkerLoadingScreen>();
 
             _loaders = FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include, FindObjectsSortMode.None)
                 .OfType<IPointMarkerLoader>()
@@ -58,16 +60,30 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.System
 
         private IEnumerator LoadRoutine()
         {
-            var canvas = Instantiate(_loadCanvas);
+            var canvas = Instantiate(loadingScreenPrefab);
             yield return canvas.Play();
             
             Vector3 currentRotation = transform.rotation.eulerAngles;
             Vector3 newRotation = new Vector3(0f, currentRotation.y, 0f);
             Quaternion rotation = Quaternion.Euler(newRotation);
             
+            _character.Rigidbody.position = transform.position;
+            _character.Rigidbody.rotation = rotation;
+            _character.Kinematics.Snap(transform.position, Vector3.up);
+            
+            _character.Camera.StateMachine.ClearVolumes();
+            Physics.SyncTransforms();
+            foreach (var volume in FindObjectsByType<ChangeCameraVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+            {
+                if (volume.GetComponent<Collider>().bounds.Contains(_character.Rigidbody.position))
+                {
+                    _character.Camera.StateMachine.RegisterVolume(volume);
+                }
+            }
+            
             foreach (var loader in _loaders)
             {
-                loader.Load(transform.position + transform.up, rotation);
+                loader.Load();
             }
 
             yield return canvas.Hide();
@@ -83,6 +99,6 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.System
         /// Load the player at the specified position and rotation.
         /// Make it virtual to, for example, disable boost on load.
         /// </summary>
-        void Load(Vector3 loadPosition, Quaternion loadRotation);
+        void Load();
     }
 }

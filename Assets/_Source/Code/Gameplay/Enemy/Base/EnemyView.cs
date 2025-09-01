@@ -43,7 +43,7 @@ namespace SurgeEngine.Code.Gameplay.Enemy.Base
             transform.parent.gameObject.SetActive(false);
         }
 
-        public virtual void Load(Vector3 loadPosition, Quaternion loadRotation)
+        public virtual void Load()
         {
             transform.parent.gameObject.SetActive(true);
         }

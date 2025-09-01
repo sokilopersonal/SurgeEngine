@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using SurgeEngine.Code.Core.Actor.System;
+using UnityEngine;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -21,11 +22,12 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Sensors
         [SerializeField] protected LayerMask targetMask;
         [SerializeField] protected LayerMask blockMask;
 
-        public bool FindVisibleTargets(out Vector3 targetPosition)
+        public bool FindVisibleTarget(out Vector3 targetPosition, out CharacterBase character)
         {
             if (!enabled)
             {
                 targetPosition = LastTargetPosition;
+                character = null;
                 return false;
             }
             
@@ -35,18 +37,20 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Sensors
             {
                 Vector3 pos = hit.transform.position;
                 Vector3 dir = (pos - transform.position).normalized;
-                if (Vector3.Angle(transform.forward, dir) < angle/2)
+                if (Vector3.Angle(transform.forward, dir) < angle / 2)
                 {
                     float dist = Vector3.Distance(transform.position, pos);
                     bool blocked = Physics.Raycast(transform.position, dir, dist, blockMask);
                     LastTargetPosition = pos;
                     targetPosition = pos;
                     Debug.DrawLine(transform.position, pos, blocked ? Color.red : Color.green);
+                    character = hit.GetComponent<CharacterBase>();
                     return !blocked;
                 }
             }
 
             targetPosition = LastTargetPosition;
+            character = null;
             return false;
         }
 

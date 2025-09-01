@@ -57,8 +57,7 @@ namespace SurgeEngine.Code.Core.Actor.States
                 Kinematics.Point = hit.point;
                 Kinematics.Normal = Vector3.up;
                 
-                Kinematics.Snap(hit.point, hit.normal);
-                Kinematics.Project();
+                Kinematics.Snap(hit.point, Kinematics.Normal);
                 Rigidbody.linearVelocity = new Vector3(Rigidbody.linearVelocity.x, 0, Rigidbody.linearVelocity.z);
                 
                 if (Utility.TickTimer(ref _timer, 0.6f, false))

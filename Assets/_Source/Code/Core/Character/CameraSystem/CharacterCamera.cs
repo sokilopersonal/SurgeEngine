@@ -163,9 +163,11 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
             return null;
         }
 
-        public void Load(Vector3 loadPosition, Quaternion loadRotation)
+        public void Load()
         {
-            StateMachine.Load(loadPosition, loadRotation);
+            StateMachine.SetDirection(character.transform.forward);
+            
+            StateMachine.Load();
         }
 
         private void OnGUI()

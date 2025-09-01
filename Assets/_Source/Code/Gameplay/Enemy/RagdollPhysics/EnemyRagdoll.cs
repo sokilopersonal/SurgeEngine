@@ -83,7 +83,7 @@ namespace SurgeEngine.Code.Gameplay.Enemy.RagdollPhysics
             (_eggFighter.View as EGView)?.Destroy();
         }
 
-        public void Load(Vector3 loadPosition, Quaternion loadRotation)
+        public void Load()
         {
             _isInRagdoll = false;
             _hit = false;

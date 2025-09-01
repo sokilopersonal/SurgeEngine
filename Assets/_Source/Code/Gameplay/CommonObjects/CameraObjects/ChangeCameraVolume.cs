@@ -1,5 +1,6 @@
 ﻿using System;
 using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine.Code.Gameplay.CommonObjects.System;
 using UnityEngine;
 
 namespace SurgeEngine.Code.Gameplay.CommonObjects.CameraObjects
@@ -45,7 +46,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.CameraObjects
 
             if (target)
             {
-                //context.Camera.StateMachine.RegisterVolume(this);
+                context.Camera.StateMachine.RegisterVolume(this);
             }
         }
         

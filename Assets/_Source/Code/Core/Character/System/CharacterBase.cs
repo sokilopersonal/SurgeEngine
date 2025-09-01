@@ -157,19 +157,16 @@ namespace SurgeEngine.Code.Core.Actor.System
             request = null;
         }
         
-        public virtual void Load(Vector3 loadPosition, Quaternion loadRotation)
+        public virtual void Load()
         {
             Rigidbody.linearVelocity = Vector3.zero;
-            Rigidbody.position = loadPosition;
-            Rigidbody.rotation = loadRotation;
-            Model.root.rotation = loadRotation;
             Animation.StateAnimator.TransitionToState("Idle", 0f);
             Flags.AddFlag(new Flag(FlagType.OutOfControl, true, 0.5f));
             Input.playerInput.enabled = true;
 
             if (StateMachine.CurrentState is IPointMarkerLoader stateLoader)
             {
-                stateLoader.Load(loadPosition, loadRotation);
+                stateLoader.Load();
             }
             
             StateMachine.SetState<FStateIdle>();

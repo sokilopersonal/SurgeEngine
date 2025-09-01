@@ -96,7 +96,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Collectables
             gameObject.SetActive(false);
         }
 
-        public void Load(Vector3 loadPosition, Quaternion loadRotation)
+        public void Load()
         {
             _inMagnet = false;
 

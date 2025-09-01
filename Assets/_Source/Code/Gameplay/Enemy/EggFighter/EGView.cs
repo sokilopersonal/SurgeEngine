@@ -19,9 +19,9 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter
             };   
         }
 
-        public override void Load(Vector3 loadPosition, Quaternion loadRotation)
+        public override void Load()
         {
-            base.Load(loadPosition, loadRotation);
+            base.Load();
 
             eggFighter.StateMachine.SetState<EGStateIdle>();
             eggFighter.Animation.Animator.enabled = true;

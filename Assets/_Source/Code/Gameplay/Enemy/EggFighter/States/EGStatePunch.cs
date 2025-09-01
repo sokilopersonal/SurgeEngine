@@ -49,7 +49,7 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter.States
                     eggFighter.transform.forward + eggFighter.transform.up * 0.6f, Vector3.one * 1.5f,
                     HurtBoxTarget.Player))
             {
-                Debug.Log("1");
+                
             }
         }
     }

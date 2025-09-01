@@ -155,7 +155,7 @@ namespace SurgeEngine.Code.Gameplay.CommonObjects.Mobility
             _modelTween = model.DOLocalMove(_localStartPosition, lowerTime).SetEase(Ease.Linear).SetDelay(delay).SetLink(gameObject);
         }
 
-        public void Load(Vector3 loadPosition, Quaternion loadRotation)
+        public void Load()
         {
             PutModel();
             

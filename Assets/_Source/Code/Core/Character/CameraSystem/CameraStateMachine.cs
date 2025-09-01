@@ -119,7 +119,7 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
                 _interpolatedBlendFactor = Easings.Get(Easing.Gens, _blendFactor);
             }
         }
-        
+
         public void RegisterVolume(ChangeCameraVolume vol)
         {
             if (!_volumes.Contains(vol))
@@ -190,14 +190,30 @@ namespace SurgeEngine.Code.Core.Actor.CameraSystem
             };
         }
 
-        public void Load(Vector3 loadPosition, Quaternion loadRotation)
+        public void Load()
         {
-            _data = new CameraData
+            ApplyTop();
+            
+            if (CurrentState is CameraState state)
             {
-                position = _position - loadPosition,
-                rotation = _rotation,
-                fov = Camera.fieldOfView,
-            };
+                var pos = state.StatePosition;
+                var rot = state.StateRotation;
+                var fov = state.StateFOV;
+                
+                _position = pos;
+                _rotation = rot;
+                _fovY = fov;
+                
+                _data = new CameraData
+                {
+                    position = pos - _actorPosition,
+                    rotation = rot,
+                    fov = fov,
+                };
+
+                _blendFactor = 1;
+                _interpolatedBlendFactor = 1;
+            }
         }
     }
 

@@ -1,4 +1,5 @@
-﻿using SurgeEngine.Code.Gameplay.Enemy.Base;
+﻿using SurgeEngine.Code.Core.Actor.System;
+using SurgeEngine.Code.Gameplay.Enemy.Base;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -15,7 +16,7 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter.States
         {
             base.OnTick(dt);
 
-            bool hasTarget = sensor.FindVisibleTargets(out var pos);
+            bool hasTarget = sensor.FindVisibleTarget(out var pos, out var character);
             if (!hasTarget)
             {
                 Debug.DrawLine(transform.position, pos, Color.blue);
@@ -31,7 +32,7 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter.States
             
             if (Vector3.Distance(pos, transform.position) < eggFighter.punchRadius)
             {
-                if (hasTarget)
+                if (hasTarget && !character.Flags.HasFlag(FlagType.Invincible))
                 {
                     stateMachine.SetState<EGStatePunch>();
                 }

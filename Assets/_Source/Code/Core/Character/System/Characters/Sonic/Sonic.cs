@@ -63,14 +63,14 @@ namespace SurgeEngine.Code.Core.Actor.System.Characters.Sonic
             _ = new SonicAirActions(this);
         }
 
-        public override void Load(Vector3 loadPosition, Quaternion loadRotation)
+        public override void Load()
         {
             var boost = StateMachine.GetSubState<FBoost>();
             boost.Active = false;
             boost.BoostEnergy = 0;
             (Effects as SonicEffects)?.BoostAura.Clear();
             
-            base.Load(loadPosition, loadRotation);
+            base.Load();
         }
     }
 }

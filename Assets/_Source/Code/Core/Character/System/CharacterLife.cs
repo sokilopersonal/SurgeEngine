@@ -62,7 +62,7 @@ namespace SurgeEngine.Code.Core.Actor.System
             OnDied?.Invoke(obj);
         }
 
-        public void Load(Vector3 loadPosition, Quaternion loadRotation)
+        public void Load()
         {
             IsDead = false;
         }

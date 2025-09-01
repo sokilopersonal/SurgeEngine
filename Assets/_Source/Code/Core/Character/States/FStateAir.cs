@@ -93,7 +93,7 @@ namespace SurgeEngine.Code.Core.Actor.States
             Kinematics.ApplyGravity(gravity);
         }
 
-        public void Load(Vector3 loadPosition, Quaternion loadRotation)
+        public void Load()
         {
             IsFallDeath = false;
         }

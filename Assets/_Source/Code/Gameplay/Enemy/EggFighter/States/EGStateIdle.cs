@@ -30,7 +30,7 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter.States
                 agent.velocity = Vector3.zero;
 
                 var path = new NavMeshPath();
-                if (sensor.FindVisibleTargets(out var pos))
+                if (sensor.FindVisibleTarget(out var pos, out _))
                 {
                     if (!agent.hasPath)
                         stateMachine.SetState<EGStateChase>();

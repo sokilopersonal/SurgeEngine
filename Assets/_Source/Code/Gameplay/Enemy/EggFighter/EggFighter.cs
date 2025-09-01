@@ -104,7 +104,7 @@ namespace SurgeEngine.Code.Gameplay.Enemy.EggFighter
             StateMachine.SetState<EGStateDead>(true).ApplyKnockback(force, ragdollPrefab);
         }
 
-        public void Load(Vector3 loadPosition, Quaternion loadRotation)
+        public void Load()
         {
             Agent.Warp(_startPosition);
             transform.rotation = _startRotation;
