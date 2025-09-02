@@ -40,14 +40,14 @@ namespace SurgeEngine._Source.Code.UI
 
         protected override void OnEnable()
         {
-            base.OnEnable();
-            
 #if UNITY_EDITOR
             pauseActionReference.action.ApplyBindingOverride("<Keyboard>/tab", null, "<Keyboard>/escape");
 #endif
             
             pauseActionReference.action.Enable();
             pauseActionReference.action.performed += OnPauseAction;
+            
+            base.OnEnable();
 
             ObjectEvents.OnObjectTriggered += OnObjectTriggered;
         }

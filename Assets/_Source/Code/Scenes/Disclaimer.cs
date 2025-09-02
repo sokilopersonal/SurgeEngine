@@ -13,16 +13,16 @@ namespace SurgeEngine._Source.Code.Scenes
         
         private void OnStart()
         {
-            director.Play(confirmAsset);
+            if (!_startedLoading)
+            {
+                director.Play(confirmAsset);
+                _startedLoading = true;
+            }
         }
 
         public void LoadIntoMenu()
         {
-            if (!_startedLoading)
-            {
-                SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
-                _startedLoading = true;
-            }
+            SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
         }
     }
 }
