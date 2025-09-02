@@ -65,11 +65,11 @@ namespace SurgeEngine._Source.Code.Infrastructure.Tools.Managers.UI
                 _display.SetSharpness(sharpnessSliderBar.Slider.value / 100f);
             };
 
-            fullscreenBar.Set(data.fullscreen.Value ? 1 : 0);
-            upscalingModeBar.Set((int)data.upscaleMode.Value);
-            upscalingPresetBar.Set((int)data.upscaleQuality.Value);
-            antiAliasingQualityBar.Set((int)data.antiAliasingQuality.Value);
-            sharpnessSliderBar.Slider.value = data.sharpness.Value * 100;
+            fullscreenBar.Set(data.Fullscreen.Value ? 1 : 0);
+            upscalingModeBar.Set((int)data.UpscaleMode.Value);
+            upscalingPresetBar.Set((int)data.UpscaleQuality.Value);
+            antiAliasingQualityBar.Set((int)data.AntiAliasingQuality.Value);
+            sharpnessSliderBar.Slider.value = data.Sharpness.Value * 100;
         }
 
         public override void Save()
@@ -85,11 +85,11 @@ namespace SurgeEngine._Source.Code.Infrastructure.Tools.Managers.UI
             
             _display.Load(data =>
             {
-                fullscreenBar.Set(data.fullscreen.Value ? 1 : 0);
-                upscalingModeBar.Set((int)data.upscaleMode.Value);
-                upscalingPresetBar.Set((int)data.upscaleQuality.Value);
-                antiAliasingQualityBar.Set((int)data.antiAliasingQuality.Value);
-                sharpnessSliderBar.Slider.value = data.sharpness.Value * 100;
+                fullscreenBar.Set(data.Fullscreen.Value ? 1 : 0);
+                upscalingModeBar.Set((int)data.UpscaleMode.Value);
+                upscalingPresetBar.Set((int)data.UpscaleQuality.Value);
+                antiAliasingQualityBar.Set((int)data.AntiAliasingQuality.Value);
+                sharpnessSliderBar.Slider.value = data.Sharpness.Value * 100;
                 
                 Save();
             });

@@ -19,8 +19,8 @@ namespace SurgeEngine._Source.Code.UI.Pages.Baseline
         [SerializeField] private UnityEvent onCancelEvent;
         
         public int Count => _pageStack.Count;
-        
-        private Stack<Page> _pageStack;
+
+        protected Stack<Page> _pageStack;
         protected CanvasGroup _canvasGroup;
 
         protected virtual void Awake()
@@ -42,6 +42,10 @@ namespace SurgeEngine._Source.Code.UI.Pages.Baseline
         {
             if (cancelActionReference)
             {
+#if UNITY_EDITOR
+                cancelActionReference.action.ApplyBindingOverride("<Keyboard>/tab", null, "<Keyboard>/escape");
+#endif
+                
                 cancelActionReference.action.Enable();
                 cancelActionReference.action.performed += OnCancelAction;
             }

@@ -41,7 +41,7 @@ namespace SurgeEngine._Source.Code.UI
         protected override void OnEnable()
         {
             base.OnEnable();
-
+            
 #if UNITY_EDITOR
             pauseActionReference.action.ApplyBindingOverride("<Keyboard>/tab", null, "<Keyboard>/escape");
 #endif
@@ -114,8 +114,13 @@ namespace SurgeEngine._Source.Code.UI
             if (context != null && context.StateMachine.IsExact<FStateSpecialJump>() && context.StateMachine.GetState<FStateSpecialJump>().SpecialJumpData.type ==
                 SpecialJumpType.TrickJumper) return;
             
-            if (!_canPause || context.Life.IsDead) return;
+            if (context.Life.IsDead) return;
             
+            if (Count > 1 && Active)
+            {
+                Pop();
+                return;
+            }
             Active = !Active;
             
             SetPause(Active);
@@ -123,31 +128,7 @@ namespace SurgeEngine._Source.Code.UI
 
         protected override void OnCancelAction(InputAction.CallbackContext obj)
         {
-            // Double input fix
-            if (obj.control.device is Keyboard)
-            {
-                if (Count > 1 && Active)
-                {
-                    _canPause = false;
-                    base.OnCancelAction(obj);
-                }
-                else
-                {
-                    _canPause = true;
-                }
-            }
-            else
-            {
-                if (Count == 1 && Active)
-                {
-                    _canPause = true;
-                    SetPause(false);
-                }
-                else
-                {
-                    base.OnCancelAction(obj);
-                }
-            }
+            base.OnCancelAction(obj);
         }
 
         public void SetPause(bool isPaused)
