@@ -21,6 +21,7 @@ namespace SurgeEngine._Source.Code.Infrastructure.Tools.Managers.UI
                 _volumeManager.SetMasterVolume(masterSlider.Slider.value / 100f);
             };
             
+            
             sfxSlider.OnChanged += b =>
             {
                 _volumeManager.SetSFXVolume(sfxSlider.Slider.value / 100f);

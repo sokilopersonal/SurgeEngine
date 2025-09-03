@@ -7,7 +7,9 @@ using SurgeEngine._Source.Code.Core.Character.States;
 using SurgeEngine._Source.Code.Core.Character.System;
 using SurgeEngine._Source.Code.Gameplay.CommonObjects.CameraObjects;
 using SurgeEngine._Source.Code.Gameplay.CommonObjects.System;
+using SurgeEngine._Source.Code.Infrastructure.Tools.Managers;
 using UnityEngine;
+using Zenject;
 
 namespace SurgeEngine._Source.Code.Core.Character.CameraSystem
 {
@@ -75,9 +77,12 @@ namespace SurgeEngine._Source.Code.Core.Character.CameraSystem
         public LayerMask CollisionMask => collisionMask;
         public float CollisionRadius => collisionRadius;
         public AnimationCurve LateralOffsetSpeedCurve => lateralOffsetSpeedCurve;
+        public float UserSensitivityMultiplier => _userInput.GetData().Sensitivity.Value;
         
         private Camera _camera;
         private Transform _cameraTransform;
+
+        [Inject] private UserInput _userInput;
 
         private void Awake()
         {

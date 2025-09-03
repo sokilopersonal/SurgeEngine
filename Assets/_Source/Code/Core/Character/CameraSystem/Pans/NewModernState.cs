@@ -125,7 +125,7 @@ namespace SurgeEngine._Source.Code.Core.Character.CameraSystem.Pans
                 _yawAuto =  0;
             }
 
-            Vector2 lookInput = Character.Input.lookVector * _master.Sensitivity;
+            Vector2 lookInput = Character.Input.lookVector * (_master.Sensitivity * _master.UserSensitivityMultiplier);
             _stateMachine.Yaw += lookInput.x + _yawAuto;
             _stateMachine.Pitch = Mathf.Clamp(_stateMachine.Pitch - lookInput.y, MinPitch, MaxPitch);
         }
