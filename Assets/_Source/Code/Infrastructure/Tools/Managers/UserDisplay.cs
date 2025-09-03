@@ -83,16 +83,19 @@ namespace SurgeEngine._Source.Code.Infrastructure.Tools.Managers
             _hdCameraData.TAAQuality = (HDAdditionalCameraData.TAAQualityLevel)Data.AntiAliasingQuality.Value;
             switch (Data.AntiAliasingQuality.Value)
             {
-                case AntiAliasingQuality.Low:
+                case AntiAliasingQuality.Low or AntiAliasingQuality.Medium:
                     _hdCameraData.taaSharpenMode = HDAdditionalCameraData.TAASharpenMode.LowQuality;
                     break;
-                case AntiAliasingQuality.Medium or AntiAliasingQuality.High:
+                case AntiAliasingQuality.High:
                     _hdCameraData.taaSharpenMode = HDAdditionalCameraData.TAASharpenMode.PostSharpen;
                     break;
             }
 
             _hdCameraData.taaSharpenStrength = Data.Sharpness.Value;
-            _hdCameraData.allowDynamicResolution = true;
+            _hdCameraData.deepLearningSuperSamplingSharpening = Data.Sharpness.Value;
+            _hdCameraData.fidelityFX2SuperResolutionEnableSharpening = true;
+            _hdCameraData.fidelityFX2SuperResolutionSharpening = Data.Sharpness.Value;
+            _hdCameraData.allowDynamicResolution = Data.UpscaleMode.Value != UpscalingMode.TAA;
 
             _hdCameraData.deepLearningSuperSamplingUseCustomAttributes = false;
             _hdCameraData.deepLearningSuperSamplingUseCustomQualitySettings = false;
