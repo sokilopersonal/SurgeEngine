@@ -27,10 +27,6 @@ namespace SurgeEngine._Source.Code.Core.Character.System
         
         [Header("Prediction")]
         [SerializeField, Range(25, 90)] public float maxAngleDifference = 80;
-        
-        [Header("Mode")]
-        [SerializeField] private KinematicsMode mode = KinematicsMode.ThreeD;
-        public KinematicsMode Mode => mode;
 
         [Header("Normal")] 
         [SerializeField] private float normalLerpSpeed = 7f;
@@ -40,6 +36,7 @@ namespace SurgeEngine._Source.Code.Core.Character.System
 
         public Vector3 Point { get; set; }
         public Vector3 Normal { get; set; }
+        public ReactiveVar<GroundTag> GroundTag { get; private set; } = new();
         public float Angle => Vector3.Angle(Normal, Vector3.up);
         public Vector3 Velocity
         {
@@ -592,14 +589,6 @@ namespace SurgeEngine._Source.Code.Core.Character.System
         public Vector3 right;
         
         public Vector3 ProjectOnUp(Vector3 vector) => Vector3.ProjectOnPlane(vector, Vector3.up);
-    }
-
-    public enum KinematicsMode
-    {
-        ThreeD,
-        Forward,
-        Dash,
-        TwoD // 2D
     }
 
     public enum MovementType

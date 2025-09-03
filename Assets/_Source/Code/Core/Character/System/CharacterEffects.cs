@@ -37,13 +37,13 @@ namespace SurgeEngine._Source.Code.Core.Character.System
 
         protected virtual void OnEnable()
         {
-            character.StateMachine.GetState<FStateGround>().OnSurfaceTagChanged += OnSurfaceTagChanged;
+            character.Kinematics.GroundTag.Changed += OnSurfaceTagChanged;
             character.StateMachine.OnStateAssign += OnStateAssign;
         }
 
         protected virtual void OnDisable()
         {
-            character.StateMachine.GetState<FStateGround>().OnSurfaceTagChanged -= OnSurfaceTagChanged;
+            character.Kinematics.GroundTag.Changed -= OnSurfaceTagChanged;
             character.StateMachine.OnStateAssign -= OnStateAssign;
         }
 
@@ -68,7 +68,7 @@ namespace SurgeEngine._Source.Code.Core.Character.System
                 {
                     _currentStep?.Stop();
                 }
-                else if (_stepMap.TryGetValue(character.StateMachine.GetState<FStateGround>().GetSurfaceTag(), out var ps))
+                else if (_stepMap.TryGetValue(character.Kinematics.GroundTag.Value, out var ps))
                 {
                     _currentStep = ps;
                     _currentStep?.Play();
@@ -81,9 +81,9 @@ namespace SurgeEngine._Source.Code.Core.Character.System
             }
         }
 
-        private void OnSurfaceTagChanged(GroundTag groundTag)
+        private void OnSurfaceTagChanged(GroundTag oldTag, GroundTag newTag)
         {
-            if (_stepMap.TryGetValue(groundTag, out var newParticle))
+            if (_stepMap.TryGetValue(newTag, out var newParticle))
             {
                 if (_currentStep != newParticle)
                 {

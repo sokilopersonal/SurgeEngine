@@ -10,11 +10,7 @@ namespace SurgeEngine._Source.Code.Core.Character.States
 {
     public sealed class FStateGround : FCharacterState, IDamageableState
     {
-        private GroundTag _surfaceTag;
-        
         private WaterSurface _waterSurface;
-
-        public event Action<GroundTag> OnSurfaceTagChanged;
         
         public FStateGround(CharacterBase owner) : base(owner)
         {
@@ -91,8 +87,8 @@ namespace SurgeEngine._Source.Code.Core.Character.States
 
                 Kinematics.Project(Kinematics.Normal);
                 Kinematics.SlopePhysics();
-                
-                UpdateSurfaceTag(data.transform.gameObject.GetGroundTag());
+
+                Kinematics.GroundTag.Value = data.transform.gameObject.GetGroundTag();
             }
             else
             {
@@ -105,17 +101,6 @@ namespace SurgeEngine._Source.Code.Core.Character.States
                 Kinematics.Normal = verticalHit.normal;
             }
         }
-
-        private void UpdateSurfaceTag(GroundTag newTag)
-        {
-            if (_surfaceTag != newTag)
-            {
-                _surfaceTag = newTag;
-                OnSurfaceTagChanged?.Invoke(newTag);
-            }
-        }
-
-        public GroundTag GetSurfaceTag() => _surfaceTag;
     }
 
     public enum GroundTag

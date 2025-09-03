@@ -15,17 +15,19 @@ namespace SurgeEngine._Source.Code.Core.Character.Sound
         [SerializeField] private EventReference driftVoice;
 
         private EventInstance _driftLoopInstance;
+        private bool _isWater;
 
         public override void Initialize(CharacterBase character)
         {
             base.Initialize(character);
             
             _driftLoopInstance = RuntimeManager.CreateInstance(driftLoop);
+            character.Kinematics.GroundTag.Changed += (_, newTag) => _isWater = newTag == GroundTag.Water;  
         }
 
         private void Update()
         {
-            _driftLoopInstance.setParameterByName("OnWater", Character.StateMachine.GetState<FStateGround>().GetSurfaceTag() == GroundTag.Water ? 1 : 0);
+            _driftLoopInstance.setParameterByName("OnWater", _isWater ? 1 : 0);
         }
 
         protected override void SoundState(FState obj)
