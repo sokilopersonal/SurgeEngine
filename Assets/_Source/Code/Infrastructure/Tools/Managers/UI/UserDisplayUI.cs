@@ -48,6 +48,8 @@ namespace SurgeEngine._Source.Code.Infrastructure.Tools.Managers.UI
                 UpscalingMode mode = Enum.Parse<UpscalingMode>(upscalingModeBar.CurrentValue);
                 
                 _display.SetUpscalingMode(mode);
+                
+                upscalingPresetBar.gameObject.SetActive(mode != UpscalingMode.TAA);
             };
             
             upscalingPresetBar.OnChanged += b =>

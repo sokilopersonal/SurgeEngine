@@ -11,7 +11,7 @@ namespace SurgeEngine._Source.Code.Infrastructure.Tools.Managers.UI
         {
             IsDirty = false;
             
-            foreach (var bar in GetComponentsInChildren<OptionBar>(true))
+            foreach (var bar in GetComponentsInChildren<OptionBar>(false))
             {
                 bar.OnChanged += _ =>
                 {
