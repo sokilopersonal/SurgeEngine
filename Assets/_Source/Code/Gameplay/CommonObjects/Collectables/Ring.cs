@@ -22,10 +22,12 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Collectables
         private Vector3 _velocity;
 
         private Vector3 _startPosition;
+        private Quaternion _startRotation;
 
         private void Awake()
         {
             _startPosition = transform.position;
+            _startRotation = transform.rotation;
         }
 
         private void Update()
@@ -96,8 +98,11 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Collectables
         public void Load()
         {
             _inMagnet = false;
+            _factor = 0f;
+            _velocity = Vector3.zero;
 
             transform.position = _startPosition;
+            transform.rotation = _startRotation;
             gameObject.SetActive(true);
         }
 
