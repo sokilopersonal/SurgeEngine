@@ -121,7 +121,7 @@ namespace SurgeEngine._Source.Code.Core.Character.System
 
         private void CalculateMovementStats()
         {
-            _moveDot = Vector3.Dot(character.Kinematics.GetInputDir().normalized, Velocity.normalized);
+            _moveDot = Vector3.Dot(character.Kinematics.GetInputDir().normalized, Rigidbody.transform.forward);
         }
 
         private void CheckIfIsInAir()

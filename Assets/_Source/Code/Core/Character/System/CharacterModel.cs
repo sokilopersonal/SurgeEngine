@@ -147,8 +147,10 @@ namespace SurgeEngine._Source.Code.Core.Character.System
             var kinematics = character.Kinematics;
             var rb = kinematics.Rigidbody;
             Vector3 inputDir = kinematics.GetInputDir();
+            var config = character.Config;
+            Vector3 velocity = kinematics.Velocity;
             float speed = kinematics.Speed;
-            const float speedThreshold = 5f;
+            float speedThreshold = 4f;
 
             if (inputDir.sqrMagnitude > 0.02f)
             {
@@ -156,27 +158,34 @@ namespace SurgeEngine._Source.Code.Core.Character.System
 
                 if (speed > speedThreshold)
                 {
-                    var velDir = Vector3.ProjectOnPlane(kinematics.Velocity.normalized, normal);
-                    float t = Mathf.Sqrt(Mathf.Clamp01((speed - speedThreshold) / (character.Config.topSpeed - speedThreshold)));
-                    targetDir = Vector3.Slerp(inputDir.normalized, velDir, t * 2f).normalized;
+                    var velDir = Vector3.ProjectOnPlane(velocity.normalized, normal);
+                    float t = Mathf.Clamp01((speed - speedThreshold) / (config.topSpeed - speedThreshold));
+                    t = Mathf.Sqrt(t);
+                    targetDir = Vector3.Slerp(inputDir.normalized, velDir, t * 8f).normalized;
                 }
+
+                float rotSpeed = angleDelta * (speed > speedThreshold ? Mathf.Lerp(1f, 0.15f, Mathf.Pow((speed - speedThreshold) / (config.topSpeed - speedThreshold), 0.5f)) : 1f);
 
                 if (targetDir != Vector3.zero)
                 {
-                    float rotSpeed = angleDelta * (speed > speedThreshold ? 
-                        Mathf.Lerp(1f, 0.2f, Mathf.Sqrt((speed - speedThreshold) / (character.Config.topSpeed - speedThreshold))) : 1f);
-                    
                     var targetRot = Quaternion.LookRotation(targetDir, normal);
-                    rb.MoveRotation(Quaternion.RotateTowards(rb.rotation, targetRot, rotSpeed * Time.fixedDeltaTime));
+                    var towards = Quaternion.RotateTowards(rb.rotation, targetRot, rotSpeed * Time.fixedDeltaTime);
+                    rb.MoveRotation(towards);
                 }
             }
-            else if (speed > 0.1f)
+            else
             {
-                var targetRotation = Quaternion.LookRotation(kinematics.Velocity.normalized, normal);
-                rb.MoveRotation(Quaternion.RotateTowards(rb.rotation, targetRotation, (32f + speed / 2) * Time.fixedDeltaTime));
+                if (speed > 0.1f)
+                {
+                    Vector3 velocityDir = velocity.normalized;
+                    Quaternion targetRotation = Quaternion.LookRotation(velocityDir, normal);
+                    var towards = Quaternion.RotateTowards(rb.rotation, targetRotation, (32f + speed / 2) * Time.fixedDeltaTime);
+                    rb.MoveRotation(towards);
+                }
             }
             
-            rb.MoveRotation(Quaternion.FromToRotation(rb.transform.up, normal) * rb.rotation);
+            Quaternion upRotation = Quaternion.FromToRotation(rb.transform.up, normal) * rb.rotation;
+            rb.MoveRotation(upRotation);
         }
 
         private void Flip()
