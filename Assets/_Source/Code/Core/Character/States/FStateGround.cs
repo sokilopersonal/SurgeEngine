@@ -83,7 +83,7 @@ namespace SurgeEngine._Source.Code.Core.Character.States
                 {
                     Kinematics.SnapOnWater(data.point);
                 }
-                Model.RotateBodyInput(Kinematics.Normal);
+                Model.RotateBody(Kinematics.Velocity, Kinematics.Normal);
 
                 Kinematics.Project(Kinematics.Normal);
                 Kinematics.SlopePhysics();

@@ -86,7 +86,7 @@ namespace SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic
                 Vector3 dir = Input.moveVector;
                 _driftXDirection = Mathf.Sign(dir.x);
 
-                Model.RotateBodyInput(Kinematics.Normal, 1600);
+                Model.RotateBody(Kinematics.Velocity, Kinematics.Normal, 1600);
                 
                 Kinematics.SlopePhysics();
                 

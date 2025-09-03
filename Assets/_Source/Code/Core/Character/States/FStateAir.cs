@@ -57,7 +57,7 @@ namespace SurgeEngine._Source.Code.Core.Character.States
                 
                 Vector3 vel = Kinematics.Velocity;
                 vel.y = 0;
-                Model.RotateBodyInput(Vector3.up, 360f);
+                Model.RotateBody(vel, Vector3.up, 360f);
 
                 /*if (Kinematics.Mode == KinematicsMode.Forward)
                 {
