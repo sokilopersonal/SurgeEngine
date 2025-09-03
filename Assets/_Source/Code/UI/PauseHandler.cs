@@ -118,7 +118,6 @@ namespace SurgeEngine._Source.Code.UI
             
             if (Count > 1 && Active)
             {
-                Pop();
                 return;
             }
             Active = !Active;
