@@ -75,6 +75,10 @@ namespace SurgeEngine._Source.Code.Core.Character.System
                     _idleTimer = 0;
                 }
             }
+            else
+            {
+                _idleTimer = 0;
+            }
         }
 
         /// <summary>

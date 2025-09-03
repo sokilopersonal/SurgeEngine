@@ -12,7 +12,7 @@ using Object = UnityEngine.Object;
 
 namespace SurgeEngine._Source.Code.Infrastructure.Tools.Managers
 {
-    public class UserGraphics : JsonStorageService<GraphicsData>, ILateDisposable
+    public class UserGraphics : JsonStorageService<GraphicsData>, IInitializable, ILateDisposable
     {
         private readonly VolumeProfile _volume;
         private readonly List<LightDefiner> _lightsData;
@@ -70,6 +70,11 @@ namespace SurgeEngine._Source.Code.Infrastructure.Tools.Managers
             Data.SubSurfaceScatteringQuality.Changed += (_, _) => Apply();
         }
 
+        public void Initialize()
+        {
+            Apply();
+        }
+
         public void LateDispose()
         {
             SceneManager.sceneLoaded -= OnSceneLoaded;
@@ -112,7 +117,7 @@ namespace SurgeEngine._Source.Code.Infrastructure.Tools.Managers
         {
             Data.AOQuality.Value = value;
         }
-        
+
         public void SetMotionBlur(MotionBlurState value)
         {
             Data.MotionBlur.Value = value;

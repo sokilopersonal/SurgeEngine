@@ -140,53 +140,43 @@ namespace SurgeEngine._Source.Code.Core.Character.System
             }
         }
 
-        public void RotateBody(Vector3 vector, Vector3 normal, float angleDelta = 1200f)
+        public void RotateBodyInput(Vector3 normal, float angleDelta = 1200f)
         {
             if (_airRestoring || _isFlipping) return;
             
             var kinematics = character.Kinematics;
             var rb = kinematics.Rigidbody;
-            Vector3 rawInput = character.Input.moveVector;
             Vector3 inputDir = kinematics.GetInputDir();
-            var config = character.Config;
-            Vector3 currentVelocity = Vector3.ProjectOnPlane(vector, normal);
-            float currentSpeed = currentVelocity.magnitude;
-            float speedThreshold = 3.5f;
+            float speed = kinematics.Speed;
+            const float speedThreshold = 5f;
 
             if (inputDir.sqrMagnitude > 0.02f)
             {
                 Vector3 targetDir = Vector3.ProjectOnPlane(inputDir.normalized, Vector3.up);
 
-                if (currentSpeed > speedThreshold)
+                if (speed > speedThreshold)
                 {
-                    var velDir = Vector3.ProjectOnPlane(currentVelocity.normalized, normal);
-                    float t = Mathf.Clamp01((currentSpeed - speedThreshold) / (config.topSpeed - speedThreshold));
-                    t = Mathf.Sqrt(t);
-                    targetDir = Vector3.Slerp(inputDir.normalized, velDir, t * 16f).normalized;
+                    var velDir = Vector3.ProjectOnPlane(kinematics.Velocity.normalized, normal);
+                    float t = Mathf.Sqrt(Mathf.Clamp01((speed - speedThreshold) / (character.Config.topSpeed - speedThreshold)));
+                    targetDir = Vector3.Slerp(inputDir.normalized, velDir, t * 2f).normalized;
                 }
-
-                float rotSpeed = angleDelta * (currentSpeed > speedThreshold ? Mathf.Lerp(1f, 0.15f, Mathf.Pow((currentSpeed - speedThreshold) / (config.topSpeed - speedThreshold), 0.5f)) : 1f);
 
                 if (targetDir != Vector3.zero)
                 {
+                    float rotSpeed = angleDelta * (speed > speedThreshold ? 
+                        Mathf.Lerp(1f, 0.2f, Mathf.Sqrt((speed - speedThreshold) / (character.Config.topSpeed - speedThreshold))) : 1f);
+                    
                     var targetRot = Quaternion.LookRotation(targetDir, normal);
-                    var towards = Quaternion.RotateTowards(rb.rotation, targetRot, rotSpeed * Time.fixedDeltaTime);
-                    rb.MoveRotation(towards);
+                    rb.MoveRotation(Quaternion.RotateTowards(rb.rotation, targetRot, rotSpeed * Time.fixedDeltaTime));
                 }
             }
-            else
+            else if (speed > 0.1f)
             {
-                if (currentSpeed > 0.1f)
-                {
-                    Vector3 velocityDir = currentVelocity.normalized;
-                    Quaternion targetRotation = Quaternion.LookRotation(velocityDir, normal);
-                    var towards = Quaternion.RotateTowards(rb.rotation, targetRotation, (32f + currentSpeed / 2) * Time.fixedDeltaTime);
-                    rb.MoveRotation(towards);
-                }
+                var targetRotation = Quaternion.LookRotation(kinematics.Velocity.normalized, normal);
+                rb.MoveRotation(Quaternion.RotateTowards(rb.rotation, targetRotation, (32f + speed / 2) * Time.fixedDeltaTime));
             }
             
-            Quaternion upRotation = Quaternion.FromToRotation(rb.transform.up, normal) * rb.rotation;
-            rb.MoveRotation(upRotation);
+            rb.MoveRotation(Quaternion.FromToRotation(rb.transform.up, normal) * rb.rotation);
         }
 
         private void Flip()
