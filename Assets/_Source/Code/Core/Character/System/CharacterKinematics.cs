@@ -3,6 +3,7 @@ using SurgeEngine._Source.Code.Core.Character.States;
 using SurgeEngine._Source.Code.Core.StateMachine.Base;
 using SurgeEngine._Source.Code.Gameplay.CommonObjects;
 using SurgeEngine._Source.Code.Gameplay.CommonObjects.ChangeModes;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects.System;
 using SurgeEngine._Source.Code.Infrastructure.Config;
 using SurgeEngine._Source.Code.Infrastructure.Custom;
 using UnityEngine;
@@ -12,7 +13,7 @@ namespace SurgeEngine._Source.Code.Core.Character.System
     /// <summary>
     /// Base actor class for a movement physics.
     /// </summary>
-    public class CharacterKinematics : CharacterComponent
+    public class CharacterKinematics : CharacterComponent, IPointMarkerLoader
     {
         public Rigidbody Rigidbody { get; private set; }
 
@@ -576,6 +577,13 @@ namespace SurgeEngine._Source.Code.Core.Character.System
         public void SetDashPath(ChangeMode3DData data)
         {
             PathDash = data;
+        }
+
+        public void Load()
+        {
+            Set2DPath(null);
+            SetForwardPath(null);
+            SetDashPath(null);
         }
 
         private static bool IsPathOutOfRange(ChangeModeData data) => data.Spline.Time > data.Spline.Length || data.Spline.Time < 0;

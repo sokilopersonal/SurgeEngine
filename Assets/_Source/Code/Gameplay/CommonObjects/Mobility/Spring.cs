@@ -35,7 +35,11 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
             if (context.Kinematics.Path2D != null)
             {
                 if (isTo3D)
+                {
                     context.Kinematics.Set2DPath(null);
+                    context.Kinematics.SetForwardPath(null);
+                    context.Kinematics.SetDashPath(null);
+                }
             }
         }
 
