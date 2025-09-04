@@ -23,7 +23,7 @@ namespace SurgeEngine._Source.Code.Gameplay.Enemy.AeroCannon.States
             if (Vector3.Distance(context.transform.position, transform.position) < viewDistance)
             {
                 bool result = UnityEngine.Physics.Linecast(transform.position, context.transform.position, mask);
-                if (!result) // Make sure we see the player
+                if (!result)
                 {
                     target = context.transform;
                     return true;

@@ -238,7 +238,7 @@ namespace SurgeEngine._Source.Code.Core.Character.System
                 Vector3 target = Vector3.MoveTowards(Rigidbody.position, endPos,
                     Mathf.Min(Speed / 64f, 1) * 16f * Time.fixedDeltaTime);
                 Rigidbody.MovePosition(target);
-
+                
                 if (Speed > 0.02f && character.Flags.HasFlag(FlagType.Autorun))
                 {
                     float sign = Mathf.Sign(Vector3.Dot(Velocity.normalized, tg));

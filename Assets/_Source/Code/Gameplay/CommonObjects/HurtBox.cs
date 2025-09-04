@@ -1,6 +1,7 @@
 ﻿using System;
 using SurgeEngine._Source.Code.Gameplay.CommonObjects.Interfaces;
 using SurgeEngine._Source.Code.Infrastructure.Custom.Extensions;
+using UGizmo;
 using UnityEngine;
 
 namespace SurgeEngine._Source.Code.Gameplay.CommonObjects
@@ -22,9 +23,13 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects
         public static bool CreateAttached(MonoBehaviour sender, Transform transform, Vector3 offset, Vector3 size, HurtBoxTarget target)
         {
             int mask = GetMask(target);
-            var hits = Physics.OverlapBox(transform.position + offset, size, transform.rotation, mask);
-            
-            DebugExtensions.DrawCube(Matrix4x4.TRS(transform.position + offset, transform.rotation, Vector3.one), size, Color.red);
+            var transformedOffset = transform.TransformVector(offset);
+            var hits = Physics.OverlapBox(transform.position + transformedOffset, size, transform.rotation, mask);
+
+            if (Debug.isDebugBuild)
+            {
+                UGizmos.DrawWireCube(transform.position + transformedOffset, transform.rotation, size, Color.red);
+            }
 
             foreach (var hit in hits)
             {

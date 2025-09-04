@@ -9,27 +9,6 @@ namespace SurgeEngine._Source.Code.Core.Character.System.Characters.Sonic
 {
     public class SonicKinematics : CharacterKinematics
     {
-        public HomingTarget HomingTarget { get; private set; }
-        
-        protected override void FixedUpdate()
-        {
-            base.FixedUpdate();
-            
-            FindHomingTarget();
-        }
-
-        private void FindHomingTarget()
-        {
-            if (character.StateMachine.CurrentState is FStateAir && !character.Flags.HasFlag(FlagType.OutOfControl))
-            {
-                HomingTarget = SonicTools.FindHomingTarget();
-            }
-            else
-            {
-                HomingTarget = null;
-            }
-        }
-        
         protected override bool CanReturnToBaseSpeed()
         {
             var boost = character.StateMachine.GetSubState<FBoost>();

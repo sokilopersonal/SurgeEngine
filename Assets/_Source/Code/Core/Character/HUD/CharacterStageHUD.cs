@@ -84,16 +84,19 @@ namespace SurgeEngine._Source.Code.Core.Character.HUD
 
         private void UpdateHomingTarget()
         {
-            HomingTarget target = (_character.Kinematics as SonicKinematics)?.HomingTarget;
-            if (target)
+            if (_character.TryGetComponent(out HomingTargetDetector detector))
             {
-                if (_camera.IsObjectInView(target.transform)) homingIcon.gameObject.SetActive(true);
-                homingIcon.Activate();
-                homingIcon.transform.position = _camera.WorldToScreenPoint(target.transform.position);
-            }
-            else
-            {
-                homingIcon.gameObject.SetActive(false);
+                var target = detector.Target;
+                if (target)
+                {
+                    if (_camera.IsObjectInView(target.transform)) homingIcon.gameObject.SetActive(true);
+                    homingIcon.Activate();
+                    homingIcon.transform.position = _camera.WorldToScreenPoint(target.transform.position);
+                }
+                else
+                {
+                    homingIcon.gameObject.SetActive(false);
+                }
             }
         }
 

@@ -46,7 +46,6 @@ namespace SurgeEngine._Source.Code.Infrastructure.DI
             data.StartTransform = spawnPoint.transform;
 
             var instance = Container.InstantiatePrefabForComponent<CharacterBase>(actorPrefab, data.StartTransform.position, data.StartTransform.rotation, null);
-
             Container.Bind<CharacterBase>().FromInstance(instance).AsSingle().NonLazy();
             var parent = instance.transform.parent;
             Quaternion par = parent.rotation;

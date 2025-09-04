@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6497409939340660902}
   - component: {fileID: 5828909329531261166}
   - component: {fileID: 8700610860562053351}
+  - component: {fileID: 8613770001048832797}
   m_Layer: 3
   m_Name: '- Physics'
   m_TagString: Untagged
@@ -135,9 +136,22 @@ MonoBehaviour:
   baseSpeedRestorationDelta: 16
   initialGravity: 0
   maxAngleDifference: 45
-  mode: 0
   normalLerpSpeed: 7
   normalSpeedThreshold: 10
+--- !u!114 &8613770001048832797
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100729958831981340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5943ebccb744399b0780a9b7cc3ec50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SurgeEngine._Source.Code.Core.Character.System.Characters.Sonic.HomingTargetDetector
+  config: {fileID: 11400000, guid: 26d8aa117f8802940838f20a3156f005, type: 2}
+  size: {x: 7, y: 7, z: 14}
 --- !u!1 &104865943220000739
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,7 +1,6 @@
 ﻿using SurgeEngine._Source.Code.Core.Character.States;
 using SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic;
 using SurgeEngine._Source.Code.Core.StateMachine;
-using SurgeEngine._Source.Code.Gameplay.CommonObjects;
 
 namespace SurgeEngine._Source.Code.Core.Character.System.Characters.Sonic.Actions
 {
@@ -25,19 +24,21 @@ namespace SurgeEngine._Source.Code.Core.Character.System.Characters.Sonic.Action
             {
                 if (!Flags.HasFlag(FlagType.OutOfControl))
                 {
-                    HomingTarget homingTarget = (Kinematics as SonicKinematics)?.HomingTarget;
-
-                    if (Input.APressed)
+                    if (Character.TryGetComponent(out HomingTargetDetector detector))
                     {
-                        if (StateMachine.PreviousState is not FStateHoming or FStateAirBoost)
+                        if (Input.APressed)
                         {
-                            if (homingTarget != null)
+                            if (StateMachine.PreviousState is not FStateHoming or FStateAirBoost)
                             {
-                                StateMachine.SetState<FStateHoming>()?.SetTarget(homingTarget);
-                            }
-                            else
-                            {
-                                StateMachine.SetState<FStateHoming>();
+                                var homingTarget = detector.Target;
+                                if (homingTarget != null)
+                                {
+                                    StateMachine.SetState<FStateHoming>()?.SetTarget(homingTarget);
+                                }
+                                else
+                                {
+                                    StateMachine.SetState<FStateHoming>();
+                                }
                             }
                         }
                     }
