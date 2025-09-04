@@ -1,4 +1,5 @@
 ﻿using SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility;
+using UGizmo;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -19,9 +20,7 @@ namespace SurgeEngine._Source.Code.Infrastructure.Custom.Drawers
             {
                 var dir = direction.normalized;
                 var newStartPosition = startPosition + dir * keepVelocityDistance;
-                Handles.color = Color.red;
-                Handles.zTest = CompareFunction.LessEqual;
-                Handles.DrawLine(startPosition, newStartPosition);
+                UGizmos.DrawLine(startPosition, newStartPosition, Color.red);
                 startPosition = newStartPosition;
             }
             
@@ -32,19 +31,13 @@ namespace SurgeEngine._Source.Code.Infrastructure.Custom.Drawers
 
                 if (Physics.Linecast(positions[i], positions[i + 1], out RaycastHit hit, layerMask, QueryTriggerInteraction.Ignore))
                 {
-                    Handles.color = drawColor;
-                    Handles.zTest = CompareFunction.LessEqual;
-                    Handles.DrawLine(positions[i], hit.point);
-
-                    Handles.color = new Color(0.12f, 1f, 0f, 0.59f);
-                    Handles.DrawWireCube(hit.point, Vector3.one * 0.75f);
+                    UGizmos.DrawLine(positions[i], hit.point, drawColor);
+                    UGizmos.DrawCube(hit.point, Quaternion.identity, Vector3.one * 0.75f, new Color(0.12f, 1f, 0f, 0.59f));
                     
                     break;
                 }
 
-                Handles.color = drawColor;
-                Handles.zTest = CompareFunction.LessEqual;
-                Handles.DrawLine(positions[i], positions[i + 1]);
+                UGizmos.DrawLine(positions[i], positions[i + 1], drawColor);
             }
 #endif
         }
@@ -52,8 +45,8 @@ namespace SurgeEngine._Source.Code.Infrastructure.Custom.Drawers
         public static void DrawTrickTrajectory(Vector3 startPosition, Vector3 direction, Color color, float impulse)
         {
 #if UNITY_EDITOR
-            int trajectoryPoints = 240;
-            float timeStep = 0.1f;
+            int trajectoryPoints = 120;
+            float timeStep = 0.2f;
             int layerMask = 1 << LayerMask.NameToLayer("Default");
             
             Trajectory.CalculateTrick(startPosition, direction, impulse, timeStep, trajectoryPoints, out Vector3[] positions, out Vector3[] velocities);
@@ -62,15 +55,12 @@ namespace SurgeEngine._Source.Code.Infrastructure.Custom.Drawers
             {
                 if (Physics.Linecast(positions[i], positions[i + 1], out RaycastHit hit, layerMask, QueryTriggerInteraction.Ignore))
                 {
-                    Handles.color = color;
-                    Handles.zTest = CompareFunction.LessEqual;
-                    Handles.DrawLine(positions[i], hit.point);
+                    UGizmos.DrawLine(positions[i], hit.point, color);
+                    UGizmos.DrawCube(hit.point, Quaternion.identity, Vector3.one * 0.75f, new Color(0.12f, 1f, 0f, 0.59f));;
                     break;
                 }
 
-                Handles.color = color;
-                Handles.zTest = CompareFunction.LessEqual;
-                Handles.DrawLine(positions[i], positions[i + 1]);
+                UGizmos.DrawLine(positions[i], positions[i + 1], color);
             }
 #endif
         }
