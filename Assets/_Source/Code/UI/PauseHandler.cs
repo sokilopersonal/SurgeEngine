@@ -19,8 +19,6 @@ namespace SurgeEngine._Source.Code.UI
         [Header("Input")]
         [SerializeField] private InputActionReference pauseActionReference;
         
-        private bool _canPause;
-        
         private Sequence _pauseFadeTween;
 
         [Inject] private GameSettings _gameSettings;
@@ -30,8 +28,6 @@ namespace SurgeEngine._Source.Code.UI
         protected override void Awake()
         {
             base.Awake();
-
-            _canPause = true;
             
             _canvasGroup.alpha = 0f;
             _canvasGroup.interactable = false;
@@ -123,11 +119,6 @@ namespace SurgeEngine._Source.Code.UI
             Active = !Active;
             
             SetPause(Active);
-        }
-
-        protected override void OnCancelAction(InputAction.CallbackContext obj)
-        {
-            base.OnCancelAction(obj);
         }
 
         public void SetPause(bool isPaused)

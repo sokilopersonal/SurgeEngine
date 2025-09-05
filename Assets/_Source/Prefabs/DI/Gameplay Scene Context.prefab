@@ -152,6 +152,7 @@ Transform:
   - {fileID: 34729244501969428}
   - {fileID: 9208415206152581827}
   - {fileID: 8109202362065832930}
+  - {fileID: 5483755771012281698}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1035884821754579409
@@ -194,6 +195,7 @@ MonoBehaviour:
   - {fileID: 7719288847048677561}
   - {fileID: 8033898079349639624}
   - {fileID: 787165552854265364}
+  - {fileID: 3332968131909543724}
   _installerPrefabs: []
   _findSiblingMonoInstallers: 0
   _autoRun: 1
@@ -228,6 +230,51 @@ MonoBehaviour:
   actorPrefab: {fileID: 8308832228826993834, guid: 1ef44bb57adfece47b8ce361785c15c8, type: 3}
   spawnPoint: {fileID: 5054113536844244027}
   hudPrefab: {fileID: 3385306912846119046, guid: 40eb2ac93111d8341ab7e53e36f77359, type: 3}
+--- !u!1 &3871589942425570658
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5483755771012281698}
+  - component: {fileID: 3332968131909543724}
+  m_Layer: 0
+  m_Name: DebugCameraInstaller
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5483755771012281698
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3871589942425570658}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 922834922717481319}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3332968131909543724
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3871589942425570658}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b4696c6d55c4cadb023ecaf817731be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SurgeEngine._Source.Code.Infrastructure.DI.DebugCameraInstaller
+  debugCameraPrefab: {fileID: 510963956201618939, guid: 46af5397d12f52049ae6785d2e111983, type: 3}
 --- !u!1 &8480475637925241772
 GameObject:
   m_ObjectHideFlags: 0

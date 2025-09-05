@@ -46,6 +46,12 @@ namespace SurgeEngine._Source.Code.Core.Character.System
             }
         }
 
+        public void Clear()
+        {
+            list.Clear();
+            flagType = FlagType.None;
+        }
+
         public bool HasFlag(FlagType type)
         {
             return flagType.HasFlag(type);

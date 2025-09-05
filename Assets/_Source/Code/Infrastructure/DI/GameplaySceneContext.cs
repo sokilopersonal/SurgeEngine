@@ -59,7 +59,8 @@ namespace SurgeEngine._Source.Code.Infrastructure.DI
 
         private void SetupHUD()
         {
-            Container.InstantiatePrefabForComponent<CharacterStageHUD>(hudPrefab);
+            var instance = Container.InstantiatePrefabForComponent<CharacterStageHUD>(hudPrefab);
+            Container.BindInstance(instance).AsSingle().NonLazy();
         }
     }
 }

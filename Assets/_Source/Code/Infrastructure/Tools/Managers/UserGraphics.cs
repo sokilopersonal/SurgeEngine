@@ -16,6 +16,7 @@ namespace SurgeEngine._Source.Code.Infrastructure.Tools.Managers
     {
         private readonly VolumeProfile _volume;
         private readonly List<LightDefiner> _lightsData;
+        
         private HDAdditionalCameraData _hdCameraData;
         
         private const int MaxTextureQuality = 3;
