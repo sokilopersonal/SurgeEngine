@@ -236,7 +236,7 @@ namespace SurgeEngine._Source.Code.Core.Character.System
                 endPos.y = Rigidbody.position.y;
 
                 Vector3 target = Vector3.MoveTowards(Rigidbody.position, endPos,
-                    Mathf.Min(Speed / 64f, 1) * 16f * Time.fixedDeltaTime);
+                    Mathf.Min(Speed / 16f, 1) * 16f * Time.fixedDeltaTime);
                 Rigidbody.MovePosition(target);
                 
                 if (Speed > 0.02f && character.Flags.HasFlag(FlagType.Autorun))
@@ -251,7 +251,7 @@ namespace SurgeEngine._Source.Code.Core.Character.System
                     Path2D = null;
                 }
 
-                path.Time += Vector3.Dot(Velocity, tg) * Time.fixedDeltaTime;
+                path.Time += Vector3.Dot(HorizontalVelocity, tg) * Time.fixedDeltaTime;
             }
         }
 

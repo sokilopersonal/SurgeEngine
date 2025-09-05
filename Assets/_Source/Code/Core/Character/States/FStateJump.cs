@@ -79,16 +79,9 @@ namespace SurgeEngine._Source.Code.Core.Character.States
             {
                 if (Rigidbody.linearVelocity.y > 0f)
                 {
-                    vertical.y /= 1.02f;
+                    vertical.y /= 1.04f;
                     Rigidbody.linearVelocity = horizontal + vertical;
                 }
-            }
-
-            float drag = _config.jumpDrag;
-            if (_time > _config.jumpMaxShortTime)
-            {
-                //horizontal *= Mathf.Exp(-drag * dt);
-                //Rigidbody.linearVelocity = horizontal + vertical;
             }
             
             if (character.Animation.StateAnimator.GetCurrentAnimationState() == "Ball" 

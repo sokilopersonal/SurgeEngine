@@ -45,7 +45,13 @@ namespace SurgeEngine._Source.Code.Core.Character.System
             EvaluateWorld(out var pos, out _, out _, out _);
             return pos;
         }
-        
+
+        public Vector3 EvaluateUp()
+        {
+            EvaluateWorld(out _, out _, out var up, out _);
+            return up;
+        }
+
         public Vector3 EvaluateTangent()
         {
             EvaluateWorld(out _, out var tg, out _, out _);
