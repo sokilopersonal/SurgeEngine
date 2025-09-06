@@ -2,6 +2,6 @@
 {
     public static class HE1Variables
     {
-        public const float IMPULSE_DIVIDER = 1.2f;
+        public const float ImpulseDivider = 1.2f;
     }
 }

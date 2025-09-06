@@ -8,6 +8,8 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects
     [SelectionBase]
     public abstract class ContactBase : MonoBehaviour
     {
+        [field: SerializeField, NaughtyAttributes.ReadOnly] public long SetID { get; set; }
+        
         public Action<ContactBase> OnContact;
 
         private void OnTriggerEnter(Collider other)

@@ -1,12 +1,13 @@
 ﻿using System;
 using NaughtyAttributes;
 using SurgeEngine._Source.Code.Core.StateMachine;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects;
 using SurgeEngine._Source.Code.Gameplay.CommonObjects.System;
 using UnityEngine;
 
 namespace SurgeEngine._Source.Code.Gameplay.Enemy.Base
 {
-    public class EnemyBase : MonoBehaviour
+    public class EnemyBase : ContactBase
     {
         [SerializeField, Required] private EnemyView view;
         public EnemyView View => view;

@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.CameraObjects
 {
-    public abstract class ObjCameraBase : MonoBehaviour
+    public abstract class ObjCameraBase : ContactBase
     {
         public abstract void SetPan(CharacterBase ctx);
         public abstract void RemovePan(CharacterBase context);
