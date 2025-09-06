@@ -1,4 +1,5 @@
 ﻿using System;
+using NaughtyAttributes;
 using SurgeEngine._Source.Code.Core.Character.System;
 using SurgeEngine._Source.Code.Infrastructure.Custom.Extensions;
 using UnityEngine;
@@ -8,7 +9,7 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects
     [SelectionBase]
     public class StageObject : MonoBehaviour
     {
-        [field: SerializeField, NaughtyAttributes.ReadOnly] public long SetID { get; set; }
+        [field: SerializeField, ReadOnly] public long SetID { get; set; } // SetObjectID is required for HE1Importer.
         
         public Action<StageObject> OnContact;
 
