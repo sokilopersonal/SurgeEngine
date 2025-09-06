@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
 {
-    public class SwingPole : ContactBase
+    public class SwingPole : StageObject
     {
         [SerializeField] private float shotVelSuccess = 17;
         [SerializeField] private float shotVelFail = 10;

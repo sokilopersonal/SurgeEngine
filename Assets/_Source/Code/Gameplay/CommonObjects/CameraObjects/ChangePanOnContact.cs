@@ -5,13 +5,13 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.CameraObjects
 {
     public class ChangePanOnContact : MonoBehaviour
     {
-        private ContactBase contact;
+        private StageObject contact;
         
         [SerializeField] private UnityEvent eventOnContact;
         
         private void Awake()
         {
-            contact = GetComponent<ContactBase>();
+            contact = GetComponent<StageObject>();
         }
         
         private void OnEnable()
@@ -24,7 +24,7 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.CameraObjects
             contact.OnContact -= ChangePan;
         }
 
-        private void ChangePan(ContactBase obj)
+        private void ChangePan(StageObject obj)
         {
             eventOnContact.Invoke();
         }

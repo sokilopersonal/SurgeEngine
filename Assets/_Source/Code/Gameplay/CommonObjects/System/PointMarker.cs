@@ -11,7 +11,7 @@ using Zenject;
 namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.System
 {
     [RequireComponent(typeof(BoxCollider))]
-    public class PointMarker : ContactBase
+    public class PointMarker : StageObject
     {
         [SerializeField, Min(0)] private int id;
         [SerializeField, Range(0.5f, 5f)] private float length = 2f;

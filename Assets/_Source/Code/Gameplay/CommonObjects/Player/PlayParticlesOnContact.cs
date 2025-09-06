@@ -6,11 +6,11 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Player
     {
         [SerializeField] private ParticleSystem particle;
 
-        private ContactBase contact;
+        private StageObject contact;
         
         private void Awake()
         {
-            contact = GetComponent<ContactBase>();
+            contact = GetComponent<StageObject>();
         }
 
         private void OnEnable()
@@ -23,7 +23,7 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Player
             contact.OnContact -= OnContact;
         }
 
-        private void OnContact(ContactBase obj)
+        private void OnContact(StageObject obj)
         {
             particle.Stop(true);
             particle.Play(true);

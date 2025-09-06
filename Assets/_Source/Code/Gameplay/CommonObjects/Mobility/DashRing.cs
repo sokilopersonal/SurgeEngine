@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
 {
-    public class DashRing : ContactBase
+    public class DashRing : StageObject
     {
         [SerializeField] private float speed = 30f;
         [SerializeField] private float keepVelocityDistance = 5f;

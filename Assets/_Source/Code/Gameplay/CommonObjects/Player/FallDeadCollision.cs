@@ -5,7 +5,7 @@ using UnityEngine;
 namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Player
 {
     [RequireComponent(typeof(BoxCollider))]
-    public class FallDeadCollision : ContactBase
+    public class FallDeadCollision : StageObject
     {
         private BoxCollider _collider;
 

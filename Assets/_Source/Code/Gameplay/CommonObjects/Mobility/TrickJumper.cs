@@ -13,7 +13,7 @@ using Random = UnityEngine.Random;
 
 namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
 {
-    public class TrickJumper : ContactBase
+    public class TrickJumper : StageObject
     {
         private const float MaxFrameTime = 0.33f;
         

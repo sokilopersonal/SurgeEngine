@@ -7,7 +7,7 @@ using Zenject;
 
 namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Collectables
 {
-    public class Ring : ContactBase, IPointMarkerLoader
+    public class Ring : StageObject, IPointMarkerLoader
     {
         [SerializeField] private ParticleSystem particle;
         [SerializeField] private EventReference ringSound;

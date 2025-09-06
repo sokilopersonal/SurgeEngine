@@ -8,12 +8,12 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Player
         [SerializeField] private Collider[] _colliders;
         [SerializeField] private float time = 0.25f;
         
-        private ContactBase contact;
+        private StageObject contact;
         private Coroutine _disableCollisionCoroutine;
         
         private void Awake()
         {
-            contact = GetComponentInParent<ContactBase>();
+            contact = GetComponentInParent<StageObject>();
         }
 
         private void OnEnable()
@@ -26,7 +26,7 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Player
             contact.OnContact -= OnContact;
         }
 
-        private void OnContact(ContactBase obj)
+        private void OnContact(StageObject obj)
         {
             if (_disableCollisionCoroutine != null)
             {

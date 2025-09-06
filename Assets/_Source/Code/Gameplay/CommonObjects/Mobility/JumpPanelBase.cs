@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
 {
-    public abstract class JumpPanelBase : ContactBase
+    public abstract class JumpPanelBase : StageObject
     {
         [SerializeField] protected float impulse = 30;
         [SerializeField] protected float outOfControl = 0.5f;

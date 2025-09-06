@@ -9,7 +9,7 @@ using UnityEngine;
 namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
 {
     [SelectionBase]
-    public class JumpSelector : ContactBase
+    public class JumpSelector : StageObject
     {
         [SerializeField] private float downShotForce = 10f;
         [SerializeField] private float downShotOutOfControl = 0.5f;

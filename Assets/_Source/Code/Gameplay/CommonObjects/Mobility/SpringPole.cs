@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
 {
-    public class SpringPole : ContactBase
+    public class SpringPole : StageObject
     {
         [SerializeField] float speed = 10f;
         [SerializeField] float keepVelocity = 0.1f;

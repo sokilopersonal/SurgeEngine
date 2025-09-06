@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Player
 {
-    public class SlowdownCollision : ContactBase
+    public class SlowdownCollision : StageObject
     {
         [SerializeField] private float maxSpeed = 35f;
 

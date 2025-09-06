@@ -22,7 +22,7 @@ namespace SurgeEngine._Source.Code.Core.Character.System
         public float moveDot;
         public bool skidding;
         public float groundAngle;
-        public ContactBase lastContactObject;
+        public StageObject lastContactObject;
         public bool isGrounded;
         public bool isInAir;
         [HideInInspector] public float gravity;

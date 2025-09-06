@@ -10,7 +10,7 @@ using Zenject;
 
 namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.GoalRing
 {
-    public class GoalRing : ContactBase
+    public class GoalRing : StageObject
     {
         [SerializeField] private EventReference goalRingSound;
         [SerializeField] private GoalRingScreen goalRingScreen;

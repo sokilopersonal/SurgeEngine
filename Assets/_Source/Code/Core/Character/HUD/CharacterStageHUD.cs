@@ -100,7 +100,7 @@ namespace SurgeEngine._Source.Code.Core.Character.HUD
             }
         }
 
-        private void OnObjectTriggered(ContactBase obj)
+        private void OnObjectTriggered(StageObject obj)
         {
             if (obj is Ring ring)
             {

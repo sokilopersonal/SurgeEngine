@@ -57,7 +57,7 @@ namespace SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic.SubSta
             ObjectEvents.OnEnemyDied -= OnEnemyDied;
         }
 
-        private void OnRingCollected(ContactBase obj)
+        private void OnRingCollected(StageObject obj)
         {
             if (obj is Ring ring)
             {

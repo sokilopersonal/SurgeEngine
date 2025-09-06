@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace SurgeEngine._Source.Code.Gameplay.CommonObjects
 {
-    public class ModeCollision : ContactBase
+    public class ModeCollision : StageObject
     {
         [SerializeField] protected bool isChangeCamera;
         [SerializeField] private bool isEnabledFromBack = true;

@@ -7,7 +7,7 @@ using UnityEngine.Events;
 namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
 {
     [SelectionBase]
-    public class Switch : ContactBase
+    public class Switch : StageObject
     {
         [Header("Main")]
         [Space(10)]

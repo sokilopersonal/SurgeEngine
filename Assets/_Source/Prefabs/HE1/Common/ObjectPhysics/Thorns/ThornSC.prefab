@@ -77,6 +77,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8487856131286029977}
+  - component: {fileID: 7769528927793700449}
   - component: {fileID: 2973571932087195802}
   m_Layer: 8
   m_Name: ThornSC
@@ -102,6 +103,19 @@ Transform:
   - {fileID: 620028425580270692}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7769528927793700449
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8367947887767081669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0b904a65eed42b59b6cc27857a80cd3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SurgeEngine._Source.Code.Gameplay.CommonObjects.StageObject
+  <SetID>k__BackingField: 0
 --- !u!136 &2973571932087195802
 CapsuleCollider:
   m_ObjectHideFlags: 0

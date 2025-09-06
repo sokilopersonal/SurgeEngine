@@ -93,7 +93,7 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.System
             }
         }
 
-        private void OnObjectTriggered(ContactBase obj)
+        private void OnObjectTriggered(StageObject obj)
         {
             if (obj is PointMarker marker)
             {

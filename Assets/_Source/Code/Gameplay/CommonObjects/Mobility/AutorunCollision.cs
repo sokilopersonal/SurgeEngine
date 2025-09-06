@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
 {
-    public class AutorunCollision : ContactBase
+    public class AutorunCollision : StageObject
     {
         [SerializeField, Tooltip("How long should this trigger keep the autorun?" +
                                  "It's useful in cases where a player somehow passes through a trigger with some weird way. " +

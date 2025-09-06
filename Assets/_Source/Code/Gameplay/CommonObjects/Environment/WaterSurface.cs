@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Environment
 {
-    public class WaterSurface : ContactBase
+    public class WaterSurface : StageObject
     {
         [Header("Water")]
         [SerializeField] private float minimumSpeed = 20f;

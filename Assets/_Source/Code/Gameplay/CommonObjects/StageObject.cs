@@ -6,11 +6,11 @@ using UnityEngine;
 namespace SurgeEngine._Source.Code.Gameplay.CommonObjects
 {
     [SelectionBase]
-    public abstract class ContactBase : MonoBehaviour
+    public class StageObject : MonoBehaviour
     {
         [field: SerializeField, NaughtyAttributes.ReadOnly] public long SetID { get; set; }
         
-        public Action<ContactBase> OnContact;
+        public Action<StageObject> OnContact;
 
         private void OnTriggerEnter(Collider other)
         {

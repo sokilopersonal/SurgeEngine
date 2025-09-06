@@ -7,11 +7,11 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Player
     {
         [SerializeField] private EventReference soundReference;
         
-        private ContactBase contact;
+        private StageObject contact;
 
         private void Awake()
         {
-            contact = GetComponent<ContactBase>();
+            contact = GetComponent<StageObject>();
         }
 
         private void OnEnable()
@@ -24,7 +24,7 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Player
             contact.OnContact -= OnContact;
         }
 
-        private void OnContact(ContactBase obj)
+        private void OnContact(StageObject obj)
         {
             RuntimeManager.PlayOneShotAttached(soundReference, gameObject);
         }

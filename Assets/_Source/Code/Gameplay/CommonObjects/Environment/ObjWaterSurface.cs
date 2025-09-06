@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Environment
 {
-    public class ObjWaterSurface : ContactBase
+    public class ObjWaterSurface : StageObject
     {
         [SerializeField] private ParticleSystem wave;
         

@@ -6,11 +6,11 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Player
 {
     public class CollisionSenderToContact : MonoBehaviour
     {
-        private ContactBase contact;
+        private StageObject contact;
 
         private void Awake()
         {
-            contact = GetComponentInParent<ContactBase>();
+            contact = GetComponentInParent<StageObject>();
         }
 
         private void OnTriggerEnter(Collider other)

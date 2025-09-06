@@ -163,7 +163,7 @@ namespace SurgeEngine._Source.Code.UI
             _pauseFadeTween.SetUpdate(true);
         }
 
-        private void OnObjectTriggered(ContactBase obj)
+        private void OnObjectTriggered(StageObject obj)
         {
             if (obj is GoalRing)
             {

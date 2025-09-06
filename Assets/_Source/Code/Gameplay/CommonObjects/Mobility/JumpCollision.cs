@@ -9,7 +9,7 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
     /// <summary>
     /// Trigger for applying and clamping an impulse to the player
     /// </summary>
-    public class JumpCollision : ContactBase
+    public class JumpCollision : StageObject
     {
         [Header("Properties")] 
         [SerializeField] private float speedMin = 20f;

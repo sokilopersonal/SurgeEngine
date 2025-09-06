@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Environment
 {
-    public class ParaloopVolume : ContactBase
+    public class ParaloopVolume : StageObject
     {
         private BoxCollider _collider;
 

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.CameraObjects
 {
-    public class ChangeCameraVolume : ContactBase
+    public class ChangeCameraVolume : StageObject
     {
         [SerializeField] private ObjCameraBase target;
         public ObjCameraBase Target => target;

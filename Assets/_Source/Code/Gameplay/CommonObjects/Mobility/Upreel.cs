@@ -10,7 +10,7 @@ using STOP_MODE = FMOD.Studio.STOP_MODE;
 
 namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
 {
-    public class Upreel : ContactBase, IPointMarkerLoader
+    public class Upreel : StageObject, IPointMarkerLoader
     {
         [Header("Transforms")]
         [SerializeField] private Transform attachPoint;

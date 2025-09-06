@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
 {
-    public class StumbleCollision : ContactBase
+    public class StumbleCollision : StageObject
     {
         [Tooltip("Speed required to trigger the stumble")]
         [SerializeField] private float launchVelocity = 14;

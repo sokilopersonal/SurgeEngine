@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace SurgeEngine._Source.Code.Gameplay.Enemy.Base
 {
-    public class EnemyBase : ContactBase
+    public class EnemyBase : StageObject
     {
         [SerializeField, Required] private EnemyView view;
         public EnemyView View => view;

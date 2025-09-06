@@ -61,7 +61,7 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.System
             _boxCollider.size = size;
         }
 
-        private void ContactAnimation(ContactBase obj)
+        private void ContactAnimation(StageObject obj)
         {
             leftAnimator.CrossFadeInFixedTime(Forward, 0.25f, 0);
             rightAnimator.CrossFadeInFixedTime(Forward, 0.25f, 0);

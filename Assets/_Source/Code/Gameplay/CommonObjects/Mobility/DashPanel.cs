@@ -6,7 +6,7 @@ using Quaternion = UnityEngine.Quaternion;
 
 namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
 {
-    public class DashPanel : ContactBase
+    public class DashPanel : StageObject
     {
         [SerializeField] private float speed = 35f;
         [SerializeField] private float outOfControl = 0.5f;

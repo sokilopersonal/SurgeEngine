@@ -49,6 +49,9 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                     var volume = go.GetComponent<BoxCollider>();
                     volume.size = new Vector3(w, h, l);
 
+                    float easeTimeEnter = GetFloatWithMultiSetParam(elem, "Ease_Time_Enter");
+                    float easeTimeExit = GetFloatWithMultiSetParam(elem, "Ease_Time_Exit");
+                    
                     var camVolume = go.GetComponent<ChangeCameraVolume>();
                     float priority = GetFloatWithMultiSetParam(elem, "Priority");
                     camVolume.GetType().GetField("priority", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)?.SetValue(camVolume, (int)priority);
@@ -59,6 +62,11 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                         if (cameraPan.SetID == long.Parse(volumeConnectedId, CultureInfo.InvariantCulture))
                         {
                             targetField.SetValue(camVolume, cameraPan);
+                            
+                            var dataField = cameraPan.GetType().GetField("data", BindingFlags.Instance | BindingFlags.NonPublic);
+                            var dataObj = dataField.GetValue(cameraPan);
+                            dataObj.GetType().GetField("easeTimeEnter", BindingFlags.Instance | BindingFlags.Public)?.SetValue(dataObj, easeTimeEnter);
+                            dataObj.GetType().GetField("easeTimeExit", BindingFlags.Instance | BindingFlags.Public)?.SetValue(dataObj, easeTimeExit);
                             break;
                         }
                     }
@@ -147,29 +155,21 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                 ["ObjCameraPan"] = (go, elem) =>
                 {
                     float fovy = GetFloatWithMultiSetParam(elem, "Fovy");
-                    float easeTimeEnter = GetFloatWithMultiSetParam(elem, "EaseTimeEnter");
-                    float easeTimeExit = GetFloatWithMultiSetParam(elem, "EaseTimeExit");
                     
                     var comp = go.GetComponent<ObjCameraPan>();
                     var dataField = comp.GetType().GetField("data", BindingFlags.Instance | BindingFlags.NonPublic);
                     var dataObj = dataField.GetValue(comp);
                     dataObj.GetType().GetField("fov", BindingFlags.Instance | BindingFlags.Public)?.SetValue(dataObj, fovy);
-                    dataObj.GetType().GetField("easeTimeEnter", BindingFlags.Instance | BindingFlags.Public)?.SetValue(dataObj, easeTimeEnter);
-                    dataObj.GetType().GetField("easeTimeExit", BindingFlags.Instance | BindingFlags.Public)?.SetValue(dataObj, easeTimeExit);
                 },
                 ["ObjCameraParallel"] = (go, elem) =>
                 {
                     float fovy = GetFloatWithMultiSetParam(elem, "Fovy");
-                    float easeTimeEnter = GetFloatWithMultiSetParam(elem, "EaseTimeEnter");
-                    float easeTimeExit = GetFloatWithMultiSetParam(elem, "EaseTimeExit");
                     
                     var comp = go.GetComponent<ObjCameraParallel>();
                     
                     var dataField = comp.GetType().GetField("data", BindingFlags.Instance | BindingFlags.NonPublic);
                     var dataObj = dataField.GetValue(comp);
                     dataObj.GetType().GetField("fov", BindingFlags.Instance | BindingFlags.Public)?.SetValue(dataObj, fovy);
-                    dataObj.GetType().GetField("easeTimeEnter", BindingFlags.Instance | BindingFlags.Public)?.SetValue(dataObj, easeTimeEnter);
-                    dataObj.GetType().GetField("easeTimeExit", BindingFlags.Instance | BindingFlags.Public)?.SetValue(dataObj, easeTimeExit);
                     
                     float pitch = GetFloatWithMultiSetParam(elem, "Pitch");
                     
@@ -261,7 +261,7 @@ namespace SurgeEngine._Source.Editor.HE1Importer
 
         static GameObject TryInstantiate(GameObject prefab, XElement elem, long setId)
         {
-            foreach (var stageObject in Object.FindObjectsByType<ContactBase>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+            foreach (var stageObject in Object.FindObjectsByType<StageObject>(FindObjectsInactive.Include, FindObjectsSortMode.None))
             {
                 if (stageObject.SetID == setId)
                 {
@@ -329,7 +329,7 @@ namespace SurgeEngine._Source.Editor.HE1Importer
 
         static void SetObjectID(GameObject go, long id)
         {
-            if (go.TryGetComponent(out ContactBase stageObject))
+            if (go.TryGetComponent(out StageObject stageObject))
                 stageObject.SetID = id;
         }
 

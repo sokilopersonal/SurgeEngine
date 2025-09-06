@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility.Rails
 {
-    public class RailCollision : ContactBase
+    public class RailCollision : StageObject
     {
         private Rail _rail;
 

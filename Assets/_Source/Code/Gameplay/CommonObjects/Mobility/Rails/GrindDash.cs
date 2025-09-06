@@ -5,7 +5,7 @@ using UnityEngine.Splines;
 
 namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility.Rails
 {
-    public class GrindDash : ContactBase
+    public class GrindDash : StageObject
     {
         [Header("Dash")]
         [SerializeField] private float speed = 25f;
