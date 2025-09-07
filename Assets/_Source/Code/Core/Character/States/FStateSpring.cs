@@ -43,9 +43,9 @@ namespace SurgeEngine._Source.Code.Core.Character.States
             
             Rigidbody.MovePosition(endPos);
             _travelledDistance += _springObject.Speed * Time.deltaTime;
-            _snapTimer += Time.deltaTime / 0.02f;
+            _snapTimer += Time.deltaTime / 0.1f;
 
-            if (_travelledDistance >= _springObject.KeepVelocityDistance + 0.2f)
+            if (_travelledDistance >= _springObject.KeepVelocityDistance + 0.25f)
             {
                 Rigidbody.linearVelocity = dir * _springObject.Speed;
                 StateMachine.SetState<FStateAir>();

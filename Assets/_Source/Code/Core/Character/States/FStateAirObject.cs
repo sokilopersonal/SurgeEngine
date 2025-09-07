@@ -20,7 +20,7 @@ namespace SurgeEngine._Source.Code.Core.Character.States
         protected void CalculateTravelledDistance()
         {
             _travelledDistance += Kinematics.Speed * Time.deltaTime;
-            if (_travelledDistance > _keepVelocityDistance)
+            if (_travelledDistance > _keepVelocityDistance + 0.25f)
             {
                 StateMachine.SetState<FStateAir>();
             }

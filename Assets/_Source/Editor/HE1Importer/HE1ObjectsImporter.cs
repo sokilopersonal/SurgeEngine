@@ -9,6 +9,7 @@ using SurgeEngine._Source.Code.Gameplay.CommonObjects;
 using SurgeEngine._Source.Code.Gameplay.CommonObjects.CameraObjects;
 using SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -351,6 +352,7 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                 ApplyCustom(name, go, elem);
 
             Undo.CollapseUndoOperations(group);
+            EditorSceneManager.MarkAllScenesDirty();
         }
 
         private static GameObject CreateObjectPhysics(XElement elem)
