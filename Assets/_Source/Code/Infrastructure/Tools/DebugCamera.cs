@@ -141,6 +141,8 @@ namespace SurgeEngine._Source.Code.Infrastructure.Tools
                 
                 _yaw = gameCamera.transform.eulerAngles.y;
                 _pitch = gameCamera.transform.eulerAngles.x;
+                
+                Time.timeScale = 0;
             }
             else
             {

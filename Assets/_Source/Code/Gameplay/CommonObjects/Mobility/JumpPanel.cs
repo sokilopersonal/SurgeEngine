@@ -14,12 +14,16 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
         {
             base.Contact(msg, context);
             
+            var body = context.Kinematics.Rigidbody;
+            body.position = StartPosition;
+            
             Launch(context, pitch);
         }
 
         private void OnDrawGizmosSelected()
         {
-            TrajectoryDrawer.DrawTrajectory(StartPosition, Utility.GetImpulseWithPitch(-transform.forward, transform.right, pitch, impulse), Color.green, impulse);
+            TrajectoryDrawer.DrawTrajectory(StartPosition, Utility.GetImpulseWithPitch(-transform.forward, transform.right, pitch, impulseOnNormal), Color.green, impulseOnNormal);
+            TrajectoryDrawer.DrawTrajectory(StartPosition, Utility.GetImpulseWithPitch(-transform.forward, transform.right, pitch, impulseOnBoost), Color.blue, impulseOnBoost);
         }
     }
 }

@@ -120,6 +120,18 @@ namespace SurgeEngine._Source.Editor.ObjectCustomGizmos
             }
         }
 
+        [DrawGizmo(GizmoType.Pickable | GizmoType.Selected | GizmoType.NotInSelectionHierarchy)]
+        static void DrawGizmos(SetRigidBody type, GizmoType gizmoType)
+        {
+            Gizmos.matrix = type.transform.localToWorldMatrix;
+            Gizmos.DrawCube(Vector3.zero, Vector3.one * 0.75f);
+            
+            if ((gizmoType & GizmoType.Selected) != 0)
+            {
+                DrawColliderGizmo(type, new Color(1f, 1f, 0f, 0.1f));
+            }
+        }
+
         // Call this method to use the material
         private static void GetEditorMaterial()
         {

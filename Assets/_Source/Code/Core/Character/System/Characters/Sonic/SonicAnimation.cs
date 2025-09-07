@@ -133,7 +133,7 @@ namespace SurgeEngine._Source.Code.Core.Character.System.Characters.Sonic
                     StateAnimator.SetCurrentAnimationState(AnimatorParams.RunCycle);
                 }
             }
-            if (obj is FStateAir && prev is not FStateAfterHoming and not FStateAirBoost and not FStateTrick)
+            if (obj is FStateAir && prev is not FStateAfterHoming and not FStateAirBoost and not FStateTrick and not FStateDashRing)
             {
                 if (prev is FStateUpreel)
                 {
@@ -264,7 +264,7 @@ namespace SurgeEngine._Source.Code.Core.Character.System.Characters.Sonic
             if (obj is FStateDashRing)
             {
                 StateAnimator.ResetCurrentAnimationState();
-                StateAnimator.TransitionToState("Dash Ring", 0.2f);
+                StateAnimator.TransitionToState("Dash Ring", 0).Then(() => StateAnimator.TransitionToState(AnimatorParams.AirCycle, 0.5f));
             }
             if (obj is FStateGrind && prev is not FStateGrindSquat)
             {

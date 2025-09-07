@@ -42,7 +42,7 @@ namespace SurgeEngine._Source.Code.Core.Character.States
             
             Kinematics.ResetVelocity();
             
-            if (Kinematics.CheckForGroundWithDirection(out RaycastHit hit, Vector3.down, 2f))
+            if (Kinematics.CheckForGroundWithDirection(out RaycastHit hit, Vector3.down))
             {
                 Kinematics.Point = hit.point;
                 Kinematics.Normal = Vector3.up;
@@ -55,7 +55,7 @@ namespace SurgeEngine._Source.Code.Core.Character.States
                 Quaternion target = Quaternion.FromToRotation(Rigidbody.transform.up, Vector3.up) * Rigidbody.rotation;
                 Rigidbody.rotation = Quaternion.Lerp(Rigidbody.rotation, target, Time.fixedDeltaTime * 8f);
                 
-                Kinematics.Snap(Kinematics.Point, Vector3.up);
+                Kinematics.Snap(hit.point, Kinematics.Normal);
                 Kinematics.SlopePhysics();
             }
             else

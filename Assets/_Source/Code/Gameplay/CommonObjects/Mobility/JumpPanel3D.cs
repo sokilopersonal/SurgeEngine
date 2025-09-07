@@ -7,19 +7,23 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
 {
     public class JumpPanel3D : JumpPanelBase
     {
-        private Vector3 StartPosition => transform.position + transform.up;
-        private float Pitch => 36f;
+        private Vector3 StartPosition => transform.position + transform.up * Mathf.Max(transform.localScale.y, 1f);
+        private const float Pitch = 30f;
         
         public override void Contact(Collider msg, CharacterBase context)
         {
             base.Contact(msg, context);
+            
+            var body = context.Kinematics.Rigidbody;
+            body.position = StartPosition;
             
             Launch(context, Pitch);
         }
 
         private void OnDrawGizmosSelected()
         {
-            TrajectoryDrawer.DrawTrajectory(StartPosition, Utility.GetImpulseWithPitch(-transform.forward, transform.right, Pitch, impulse), Color.green, impulse);
+            TrajectoryDrawer.DrawTrajectory(StartPosition, Utility.GetImpulseWithPitch(-transform.forward, transform.right, Pitch, impulseOnNormal), Color.green, impulseOnNormal);
+            TrajectoryDrawer.DrawTrajectory(StartPosition, Utility.GetImpulseWithPitch(-transform.forward, transform.right, Pitch, impulseOnBoost), Color.blue, impulseOnBoost);
         }
     }
 }

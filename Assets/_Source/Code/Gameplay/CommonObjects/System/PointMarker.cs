@@ -13,10 +13,8 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.System
     [RequireComponent(typeof(BoxCollider))]
     public class PointMarker : StageObject
     {
-        [SerializeField, Min(0)] private int id;
         [SerializeField, Range(0.5f, 5f)] private float length = 2f;
         public float Length => length;
-        public int ID => id;
 
         [SerializeField] private PointMarkerLoadingScreen loadingScreenPrefab;
         [Inject] private CharacterBase _character;
@@ -37,13 +35,6 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.System
 
         public override void Contact(Collider msg, CharacterBase context)
         {
-            var currentMarker = Stage.Instance.CurrentPointMarker;
-            if (currentMarker != null && ID < currentMarker.ID)
-            {
-                Debug.LogWarning("[PointMarker] Point Marker skipped.");
-                return;
-            }
-            
             if (!_triggered)
             {
                 base.Contact(msg, context);

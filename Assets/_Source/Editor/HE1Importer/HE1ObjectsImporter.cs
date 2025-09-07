@@ -25,6 +25,7 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                 ["DashPanel"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/DashPanel.prefab"),
                 ["Spring"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/Spring.prefab"),
                 ["WideSpring"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/WideSpring.prefab"),
+                ["AirSpring"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/AirSpring.prefab"),
                 ["eFighter"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Enemies/EggFighter.prefab"),
                 ["eFighterTutorial"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Enemies/EggFighter.prefab"),
                 ["eSpinner"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Enemies/Spinner.prefab"),
@@ -34,6 +35,7 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                 ["ObjCameraParallel"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/Camera/ObjCameraParallel.prefab"),
                 ["JumpBoard"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/JumpPanel_15S.prefab"),
                 ["JumpBoard3D"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/JumpPanel_30M.prefab"),
+                ["TrickJumper"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/TrickPanel.prefab"),
                 ["UpReel"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/Upreel.prefab"),
                 ["JumpCollision"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/JumpCollision.prefab"),
                 ["ChangeVolumeCamera"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/Camera/ChangeCameraVolume.prefab"),
@@ -41,6 +43,8 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                 ["StumbleCollision"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/StumbleCollision.prefab"),
                 ["DashRing"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/DashRing.prefab"),
                 ["RainbowRing"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/RainbowDashRing.prefab"),
+                ["SetRigidBody"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/SetRigidBody.prefab"),
+                ["PointMarker"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/PointMarker.prefab"),
             };
         }
 
@@ -83,16 +87,18 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                     float speed = GetFloatWithMultiSetParam(elem, "Speed");
                     float outOfControl = GetFloatWithMultiSetParam(elem, "OutOfControl");
                     var dashPanel = go.GetComponent<DashPanel>();
-                    SetFloatReflection(dashPanel, "speed", speed / HE1Variables.ImpulseDivider);
+                    SetFloatReflection(dashPanel, "speed", speed);
                     SetFloatReflection(dashPanel, "outOfControl", outOfControl);
                 },
                 ["JumpBoard"] = (go, elem) =>
                 {
                     int angleType = (int)GetFloatWithMultiSetParam(elem, "AngleType");
-                    float impulseNormal = GetFloatWithMultiSetParam(elem, "ImpulseSpeedOnBoost");
+                    float impulseNormal = GetFloatWithMultiSetParam(elem, "ImpulseSpeedOnNormal");
+                    float impulseBoost = GetFloatWithMultiSetParam(elem, "ImpulseSpeedOnBoost");
                     float outOfControl = GetFloatWithMultiSetParam(elem, "OutOfControl");
                     var jumpPanel = go.GetComponent<JumpPanel>();
-                    SetFloatReflection(jumpPanel, "impulse", impulseNormal / HE1Variables.ImpulseDivider);
+                    SetFloatReflection(jumpPanel, "impulseOnNormal", impulseNormal);
+                    SetFloatReflection(jumpPanel, "impulseOnBoost", impulseBoost);
                     SetFloatReflection(jumpPanel, "outOfControl", outOfControl);
 
                     if (angleType == 0)
@@ -107,10 +113,40 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                 ["JumpBoard3D"] = (go, elem) =>
                 {
                     float impulseNormal = GetFloatWithMultiSetParam(elem, "ImpulseSpeedOnNormal");
+                    float impulseBoost = GetFloatWithMultiSetParam(elem, "ImpulseSpeedOnBoost");
                     float outOfControl = GetFloatWithMultiSetParam(elem, "OutOfControl");
                     var jumpPanel = go.GetComponent<JumpPanel3D>();
-                    SetFloatReflection(jumpPanel, "impulse", impulseNormal / HE1Variables.ImpulseDivider);
+                    SetFloatReflection(jumpPanel, "impulseOnNormal", impulseNormal);
+                    SetFloatReflection(jumpPanel, "impulseOnBoost", impulseBoost);
                     SetFloatReflection(jumpPanel, "outOfControl", outOfControl);
+                },
+                ["TrickJumper"] = (go, elem) =>
+                {
+                    float firstSpeed = GetFloatWithMultiSetParam(elem, "FirstSpeed");
+                    float firstPitch = GetFloatWithMultiSetParam(elem, "FirstPitch");
+                    float secondSpeed = GetFloatWithMultiSetParam(elem, "SecondSpeed");
+                    float secondPitch = GetFloatWithMultiSetParam(elem, "SecondPitch");
+                    float firstOutOfControl = GetFloatWithMultiSetParam(elem, "FirstOutOfControl");
+                    float secondOutOfControl = GetFloatWithMultiSetParam(elem, "SecondOutOfControl");
+                    float trickCount1 = GetFloatWithMultiSetParam(elem, "TrickCount1");
+                    float trickCount2 = GetFloatWithMultiSetParam(elem, "TrickCount2");
+                    float trickCount3 = GetFloatWithMultiSetParam(elem, "TrickCount3");
+                    float trickTime1 = GetFloatWithMultiSetParam(elem, "TrickTime1");
+                    float trickTime2 = GetFloatWithMultiSetParam(elem, "TrickTime2");
+                    float trickTime3 = GetFloatWithMultiSetParam(elem, "TrickTime3");
+                    var trickJumper = go.GetComponent<TrickJumper>();
+                    SetFloatReflection(trickJumper, "initialSpeed", firstSpeed);
+                    SetFloatReflection(trickJumper, "initialPitch", firstPitch);
+                    SetFloatReflection(trickJumper, "finalSpeed", secondSpeed);
+                    SetFloatReflection(trickJumper, "finalPitch", secondPitch);
+                    SetFloatReflection(trickJumper, "initialOutOfControl", firstOutOfControl);
+                    SetFloatReflection(trickJumper, "finalOutOfControl", secondOutOfControl);
+                    SetIntReflection(trickJumper, "trickCount1", (int)trickCount1);
+                    SetIntReflection(trickJumper, "trickCount2", (int)trickCount2);
+                    SetIntReflection(trickJumper, "trickCount3", (int)trickCount3);
+                    SetFloatReflection(trickJumper, "trickTime1", trickTime1);
+                    SetFloatReflection(trickJumper, "trickTime2", trickTime2);
+                    SetFloatReflection(trickJumper, "trickTime3", trickTime3);
                 },
                 ["Spring"] = (go, elem) =>
                 {
@@ -118,7 +154,17 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                     float outOfControl = GetFloatWithMultiSetParam(elem, "OutOfControl");
                     float keepVelocity = GetFloatWithMultiSetParam(elem, "KeepVelocityDistance");
                     var spring = go.GetComponent<Spring>();
-                    SetFloatReflection(spring, "speed", speed / HE1Variables.ImpulseDivider);
+                    SetFloatReflection(spring, "speed", speed);
+                    SetFloatReflection(spring, "outOfControl", outOfControl);
+                    SetFloatReflection(spring, "keepVelocityDistance", keepVelocity);
+                },
+                ["AirSpring"] = (go, elem) =>
+                {
+                    float speed = GetFloatWithMultiSetParam(elem, "FirstSpeed");
+                    float outOfControl = GetFloatWithMultiSetParam(elem, "OutOfControl");
+                    float keepVelocity = GetFloatWithMultiSetParam(elem, "KeepVelocityDistance");
+                    var spring = go.GetComponent<Spring>();
+                    SetFloatReflection(spring, "speed", speed);
                     SetFloatReflection(spring, "outOfControl", outOfControl);
                     SetFloatReflection(spring, "keepVelocityDistance", keepVelocity);
                 },
@@ -128,7 +174,7 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                     float outOfControl = GetFloatWithMultiSetParam(elem, "OutOfControl");
                     float keepVelocity = GetFloatWithMultiSetParam(elem, "KeepVelocityDistance");
                     var wideSpring = go.GetComponent<WideSpring>();
-                    SetFloatReflection(wideSpring, "speed", speed  / HE1Variables.ImpulseDivider);
+                    SetFloatReflection(wideSpring, "speed", speed);
                     SetFloatReflection(wideSpring, "outOfControl", outOfControl);
                     SetFloatReflection(wideSpring, "keepVelocityDistance", keepVelocity);
                 },
@@ -155,8 +201,8 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                     float pitchMax = GetFloatWithMultiSetParam(elem, "Pitch");
                     SetFloatReflection(jumpCollision, "speedMin", speedMin / 2);
                     SetFloatReflection(jumpCollision, "outOfControl", outOfControl);
-                    SetFloatReflection(jumpCollision, "impulseOnNormal", impulseNormal / HE1Variables.ImpulseDivider);
-                    SetFloatReflection(jumpCollision, "impulseOnBoost", impulseBoost / HE1Variables.ImpulseDivider);
+                    SetFloatReflection(jumpCollision, "impulseOnNormal", impulseNormal);
+                    SetFloatReflection(jumpCollision, "impulseOnBoost", impulseBoost);
                     SetFloatReflection(jumpCollision, "pitch", pitchMax);
                 },
                 ["ObjCameraPan"] = (go, elem) =>
@@ -205,7 +251,7 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                     float outOfControl = GetFloatWithMultiSetParam(elem, "OutOfControl");
                     float keepDistance = GetFloatWithMultiSetParam(elem, "KeepVelocityDistance");
                     var dashRing = go.GetComponent<DashRing>();
-                    SetFloatReflection(dashRing, "speed", speed / HE1Variables.ImpulseDivider);
+                    SetFloatReflection(dashRing, "speed", speed);
                     SetFloatReflection(dashRing, "outOfControl", outOfControl);
                     SetFloatReflection(dashRing, "keepVelocityDistance", keepDistance);
                 },
@@ -215,7 +261,7 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                     float outOfControl = GetFloatWithMultiSetParam(elem, "OutOfControl");
                     float keepDistance = GetFloatWithMultiSetParam(elem, "KeepVelocityDistance");
                     var dashRing = go.GetComponent<DashRing>();
-                    SetFloatReflection(dashRing, "speed", speed / HE1Variables.ImpulseDivider);
+                    SetFloatReflection(dashRing, "speed", speed);
                     SetFloatReflection(dashRing, "outOfControl", outOfControl);
                     SetFloatReflection(dashRing, "keepVelocityDistance", keepDistance);
                 },
@@ -226,6 +272,25 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                     float length = GetFloatWithMultiSetParam(elem, "Length");
                     var box = go.GetComponent<BoxCollider>();
                     box.size = new Vector3(width, height, length);
+
+                    bool defaultOn = bool.Parse(elem.Element("DefaultON").Value.Trim());
+                    var setRb = go.GetComponent<SetRigidBody>();
+                    setRb.GetType().GetField("defaultOn", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)?.SetValue(setRb, defaultOn);
+                },
+                ["PointMarker"] = (go, elem) =>
+                {
+                    float width = GetFloatWithMultiSetParam(elem, "Width");
+                    float height = GetFloatWithMultiSetParam(elem, "Height");
+                    
+                    var box = go.GetComponent<BoxCollider>();
+                    Vector3 size = box.size;
+                    size.x = width;
+                    size.y = height;
+                    box.size = size;
+
+                    Vector3 center = box.center;
+                    center.y = height / 2;
+                    box.center = center;
                 }
             };
         }
@@ -280,16 +345,6 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                     if (phys)
                         applyQueue.Add((name, phys, elem));
                 }
-                else if (name == "SetRigidBody")
-                {
-                    var setRigidbody = new GameObject("SetRigidBody");
-                    setRigidbody.AddComponent<StageObject>();
-                    setRigidbody.AddComponent<BoxCollider>();
-                    
-                    var go = TryInstantiate(setRigidbody, elem, GetObjectID(elem));
-                    applyQueue.Add((name, go, elem));
-                    SetObjectID(go, GetObjectID(elem));
-                }
             }
 
             foreach (var (name, go, elem) in applyQueue)
@@ -307,6 +362,9 @@ namespace SurgeEngine._Source.Editor.HE1Importer
             {
                 case "ThornCylinder2M":
                     path = "Assets/_Source/Prefabs/HE1/Common/ObjectPhysics/Thorns/ThornSC.prefab";
+                    break;
+                case "ThornCylinder3M":
+                    path = "Assets/_Source/Prefabs/HE1/Common/ObjectPhysics/Thorns/ThornSCB.prefab";
                     break;
             }
             
@@ -446,7 +504,20 @@ namespace SurgeEngine._Source.Editor.HE1Importer
         {
             try
             {
-                var field = obj.GetType().GetField(name, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.FlattenHierarchy | BindingFlags.CreateInstance);
+                var field = obj.GetType().GetField(name, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.FlattenHierarchy);
+                field.SetValue(obj, value);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError("Can't set the value to " + name + ": " + e.Message);
+            }
+        }
+
+        static void SetIntReflection(object obj, string name, int value)
+        {
+            try
+            {
+                var field = obj.GetType().GetField(name, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.FlattenHierarchy);
                 field.SetValue(obj, value);
             }
             catch (Exception e)
