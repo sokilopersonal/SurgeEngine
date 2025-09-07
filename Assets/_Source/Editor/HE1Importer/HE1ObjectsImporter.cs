@@ -380,6 +380,15 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                 case "ThornCylinder3M":
                     path = "Assets/_Source/Prefabs/HE1/Common/ObjectPhysics/Thorns/ThornSCB.prefab";
                     break;
+                case "IronBox2":
+                    path = "Assets/_Source/Prefabs/HE1/Common/ObjectPhysics/IronBox.prefab";
+                    break;
+                case "myk_obj_hh_potplant_mixDS":
+                    path = "Assets/_Source/Prefabs/HE1/Common/ObjectPhysics/PotPlantMixDS.prefab";
+                    break;
+                case "myk_obj_hh_potplant_mixEF":
+                    path = "Assets/_Source/Prefabs/HE1/Common/ObjectPhysics/PotPlantMixEF.prefab";
+                    break;
             }
             
             var asset = AssetDatabase.LoadAssetAtPath<GameObject>(path);

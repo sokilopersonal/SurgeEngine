@@ -7,9 +7,12 @@ namespace SurgeEngine._Source.Code.Infrastructure.Custom.Extensions
     {
         public static T TryGetComponentInParent<T>(this Component instance, out T result)
         {
-            if (instance.transform.parent.TryGetComponent(out result))
+            if (instance.transform.parent != null)
             {
-                return result;
+                if (instance.transform.parent.TryGetComponent(out result))
+                {
+                    return result;
+                }
             }
             
             result = default;
