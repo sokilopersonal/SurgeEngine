@@ -1,7 +1,9 @@
-﻿namespace SurgeEngine._Source.Editor.HE1Importer
+﻿using UnityEngine;
+
+namespace SurgeEngine._Source.Editor.HE1Importer
 {
     public static class HE1Variables
     {
-        public const float ImpulseDivider = 1.2f;
+        public static readonly float ImpulseDivider = 1.2f;
     }
 }

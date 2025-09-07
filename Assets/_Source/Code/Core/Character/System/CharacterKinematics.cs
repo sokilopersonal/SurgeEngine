@@ -78,6 +78,7 @@ namespace SurgeEngine._Source.Code.Core.Character.System
         {
             Rigidbody = character.Rigidbody;
             Rigidbody.sleepThreshold = -1;
+
             _config = character.Config;
 
             if (initialGravity == 0) initialGravity = Mathf.Abs(Physics.gravity.y);

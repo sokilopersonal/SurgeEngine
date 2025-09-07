@@ -27,7 +27,7 @@ namespace SurgeEngine._Source.Code.Core.Character.States
 
             if (!Ignore)
             {
-                if (Kinematics.CheckForGroundWithDirection(out _, Vector3.down))
+                if (Kinematics.CheckForGroundWithDirection(out _, Vector3.down, castDistance: character.Config.castDistance * 0.6f))
                 {
                     StateMachine.SetState<FStateGround>();
                 }
