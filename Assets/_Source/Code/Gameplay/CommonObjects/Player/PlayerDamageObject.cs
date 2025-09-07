@@ -9,8 +9,13 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Player
         {
             if (other.TryGetComponent(out CharacterBase character))
             {
-                character.Life.TakeDamage(this);
+                DamagePlayer(character);
             }
+        }
+
+        protected virtual void DamagePlayer(CharacterBase character)
+        {
+            character.Life.TakeDamage(this);
         }
     }
 }
