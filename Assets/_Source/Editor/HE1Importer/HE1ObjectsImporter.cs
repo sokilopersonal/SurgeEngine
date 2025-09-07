@@ -8,6 +8,7 @@ using SurgeEngine._Source.Code.Core.Character.CameraSystem.Pans.Data;
 using SurgeEngine._Source.Code.Gameplay.CommonObjects;
 using SurgeEngine._Source.Code.Gameplay.CommonObjects.CameraObjects;
 using SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects.PhysicsObjects;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -40,12 +41,12 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                 ["UpReel"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/Upreel.prefab"),
                 ["JumpCollision"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/JumpCollision.prefab"),
                 ["ChangeVolumeCamera"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/Camera/ChangeCameraVolume.prefab"),
-                ["DirectionalThorn"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/ObjectPhysics/Thorns/Thorn.prefab"),
                 ["StumbleCollision"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/StumbleCollision.prefab"),
                 ["DashRing"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/DashRing.prefab"),
                 ["RainbowRing"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/RainbowDashRing.prefab"),
                 ["SetRigidBody"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/SetRigidBody.prefab"),
                 ["PointMarker"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/PointMarker.prefab"),
+                ["DirectionalThorn"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/ObjectPhysics/Thorns/DirectionalThorn.prefab"),
             };
         }
 
@@ -292,7 +293,18 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                     Vector3 center = box.center;
                     center.y = height / 2;
                     box.center = center;
-                }
+                },
+                ["DirectionalThorn"] = (go, elem) =>
+                {
+                    float moveTime = GetFloatWithMultiSetParam(elem, "MoveTime");
+                    float onTime = GetFloatWithMultiSetParam(elem, "OnTime");
+                    float offTime = GetFloatWithMultiSetParam(elem, "OffTime");
+                    
+                    var dir = go.GetComponent<DirectionalThorn>();
+                    SetFloatReflection(dir, "moveTime", moveTime);
+                    SetFloatReflection(dir, "onTime", onTime);
+                    SetFloatReflection(dir, "offTime", offTime);
+                },
             };
         }
 
@@ -507,7 +519,7 @@ namespace SurgeEngine._Source.Editor.HE1Importer
             try
             {
                 var field = obj.GetType().GetField(name, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.FlattenHierarchy);
-                field.SetValue(obj, value);
+                field?.SetValue(obj, value);
             }
             catch (Exception e)
             {
