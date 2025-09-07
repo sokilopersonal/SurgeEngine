@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 540292491941391999}
   - component: {fileID: 8358669600488884178}
+  - component: {fileID: 4486621650602440948}
   m_Layer: 0
   m_Name: IronBox
   m_TagString: Untagged
@@ -54,6 +55,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2, y: 2, z: 2}
   m_Center: {x: 0, y: 1.0287858, z: 0}
+--- !u!114 &4486621650602440948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7000478445310170194}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0b904a65eed42b59b6cc27857a80cd3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SurgeEngine._Source.Code.Gameplay.CommonObjects.StageObject
+  <SetID>k__BackingField: 0
 --- !u!1001 &1623717048408014522
 PrefabInstance:
   m_ObjectHideFlags: 0

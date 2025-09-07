@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7481723051273001237}
-  - component: {fileID: 3377818642964148190}
   - component: {fileID: 5420212811442281463}
   - component: {fileID: 5921148665681829303}
   - component: {fileID: 7064375540503884485}
@@ -36,19 +35,6 @@ Transform:
   - {fileID: 3761629439626508614}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3377818642964148190
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7827181201705845679}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e0b904a65eed42b59b6cc27857a80cd3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SurgeEngine._Source.Code.Gameplay.CommonObjects.StageObject
-  <SetID>k__BackingField: 0
 --- !u!114 &5420212811442281463
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -61,6 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1e844062ad2497290604d3258a20c63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SurgeEngine.Code.Gameplay.CommonObjects.PhysicsObjects.BreakableObject
+  <SetID>k__BackingField: 0
   destroyPiece: {fileID: 8621554692338541154, guid: faa13dfb764d67e46aeb7a3837424ab9, type: 3}
   destroyEvent:
     Guid:

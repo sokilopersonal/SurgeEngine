@@ -5,7 +5,7 @@ using UnityEngine;
 namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.PhysicsObjects
 {
     [SelectionBase, RequireComponent(typeof(Rigidbody))]
-    public class BreakableObject : MonoBehaviour, IDamageable
+    public class BreakableObject : StageObject, IDamageable
     {
         [Header("Destroy")]
         [SerializeField] protected DestroyedPiece destroyPiece;

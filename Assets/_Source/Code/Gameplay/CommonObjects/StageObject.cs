@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace SurgeEngine._Source.Code.Gameplay.CommonObjects
 {
-    [SelectionBase]
+    [SelectionBase, DisallowMultipleComponent]
     public class StageObject : MonoBehaviour
     {
         [field: SerializeField] public long SetID { get; set; } // SetObjectID is required for HE1Importer.
