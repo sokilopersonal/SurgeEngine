@@ -14,9 +14,9 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.CameraObjects
 
         private void Awake()
         {
-            if (target == null)
+            if (SetID == 2159 && target == null)
             {
-                target = GetComponentInChildren<ObjCameraBase>();
+                Debug.Log("SetID");
             }
         }
 

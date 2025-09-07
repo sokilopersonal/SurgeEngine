@@ -120,7 +120,7 @@ namespace SurgeEngine._Source.Code.Core.Character.CameraSystem
 
         public void RegisterVolume(ChangeCameraVolume vol)
         {
-            if (!_volumes.Contains(vol))
+            if (!_volumes.Contains(vol) && vol.Target)
             {
                 _volumes.Add(vol);
                 
@@ -153,7 +153,10 @@ namespace SurgeEngine._Source.Code.Core.Character.CameraSystem
             ResetBlendFactor();
 
             if (top != null) top.Target.SetPan(_character);
-            else SetState<NewModernState>();
+            else
+            {
+                SetState<NewModernState>();
+            }
         }
         
         public void CompleteBlend() => _blendFactor = 1f;

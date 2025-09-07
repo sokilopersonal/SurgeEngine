@@ -54,6 +54,11 @@ namespace SurgeEngine._Source.Code.Gameplay.Enemy.EggFighter
             Agent.updatePosition = false;
             Agent.updateRotation = true;
             
+            if (!NavMesh.SamplePosition(Vector3.zero, out var hit, 1000.0f, NavMesh.AllAreas))
+            {
+                Agent.enabled = false;
+            }
+            
             Sensor = GetComponentInChildren<VisionSensor>();
             Sensor.enabled = enableAI;
             

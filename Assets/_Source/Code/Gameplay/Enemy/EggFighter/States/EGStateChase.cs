@@ -44,7 +44,7 @@ namespace SurgeEngine._Source.Code.Gameplay.Enemy.EggFighter.States
         private void OnAnimatorMove(Animator obj)
         {
             var agent = eggFighter.Agent;
-            if (agent.remainingDistance < agent.stoppingDistance) return;
+            if (!agent.enabled || agent.remainingDistance < agent.stoppingDistance) return;
             
             var rootPos = obj.rootPosition;
             rootPos.y = agent.nextPosition.y;
