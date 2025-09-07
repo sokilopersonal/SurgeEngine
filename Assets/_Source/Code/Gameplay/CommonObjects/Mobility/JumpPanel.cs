@@ -13,8 +13,6 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
         public override void Contact(Collider msg, CharacterBase context)
         {
             base.Contact(msg, context);
-
-            context.Rigidbody.position = StartPosition;
             
             Launch(context, pitch);
         }

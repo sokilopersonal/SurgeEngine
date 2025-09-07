@@ -21,6 +21,7 @@ namespace SurgeEngine._Source.Editor.HE1Importer
             return new Dictionary<string, GameObject>
             {
                 ["Ring"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/Ring.prefab"),
+                ["SuperRing"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/SuperRing.prefab"),
                 ["DashPanel"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/DashPanel.prefab"),
                 ["Spring"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/Spring.prefab"),
                 ["WideSpring"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/WideSpring.prefab"),
@@ -38,6 +39,8 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                 ["ChangeVolumeCamera"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/Camera/ChangeCameraVolume.prefab"),
                 ["DirectionalThorn"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/ObjectPhysics/Thorns/Thorn.prefab"),
                 ["StumbleCollision"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/StumbleCollision.prefab"),
+                ["DashRing"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/DashRing.prefab"),
+                ["RainbowRing"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/RainbowDashRing.prefab"),
             };
         }
 
@@ -182,6 +185,47 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                     euler.x = pitch;
                     euler.y = yaw == 0 ? 180 : yaw;
                     comp.transform.eulerAngles = euler;
+                },
+                ["StumbleCollision"] = (go, elem) =>
+                {
+                    var stumble = go.GetComponent<StumbleCollision>();
+                    var box = go.GetComponent<BoxCollider>();
+                    
+                    float width = GetFloatWithMultiSetParam(elem, "Collision_Width");
+                    float height = GetFloatWithMultiSetParam(elem, "Collision_Height");
+                    float length = GetFloatWithMultiSetParam(elem, "Collision_Length");
+                    box.size = new Vector3(width, height, length);
+                    
+                    float noControlTime = GetFloatWithMultiSetParam(elem, "NoControlTime");
+                    SetFloatReflection(stumble, "noControlTime", noControlTime);
+                },
+                ["DashRing"] = (go, elem) =>
+                {
+                    float speed = GetFloatWithMultiSetParam(elem, "FirstSpeed");
+                    float outOfControl = GetFloatWithMultiSetParam(elem, "OutOfControl");
+                    float keepDistance = GetFloatWithMultiSetParam(elem, "KeepVelocityDistance");
+                    var dashRing = go.GetComponent<DashRing>();
+                    SetFloatReflection(dashRing, "speed", speed / HE1Variables.ImpulseDivider);
+                    SetFloatReflection(dashRing, "outOfControl", outOfControl);
+                    SetFloatReflection(dashRing, "keepVelocityDistance", keepDistance);
+                },
+                ["RainbowRing"] = (go, elem) =>
+                {
+                    float speed = GetFloatWithMultiSetParam(elem, "FirstSpeed");
+                    float outOfControl = GetFloatWithMultiSetParam(elem, "OutOfControl");
+                    float keepDistance = GetFloatWithMultiSetParam(elem, "KeepVelocityDistance");
+                    var dashRing = go.GetComponent<DashRing>();
+                    SetFloatReflection(dashRing, "speed", speed / HE1Variables.ImpulseDivider);
+                    SetFloatReflection(dashRing, "outOfControl", outOfControl);
+                    SetFloatReflection(dashRing, "keepVelocityDistance", keepDistance);
+                },
+                ["SetRigidBody"] = (go, elem) =>
+                {
+                    float width = GetFloatWithMultiSetParam(elem, "Width");
+                    float height = GetFloatWithMultiSetParam(elem, "Height");
+                    float length = GetFloatWithMultiSetParam(elem, "Length");
+                    var box = go.GetComponent<BoxCollider>();
+                    box.size = new Vector3(width, height, length);
                 }
             };
         }
@@ -216,7 +260,7 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                         int i = 0;
                         foreach (var child in ms.Elements("Element"))
                         {
-                            long childId = GetMultiSetObjectID(elem, child, i++);
+                            long childId = GetMultiSetObjectID(elem, i++);
                             var msGO = TryInstantiate(prefab, child, childId);
                             applyQueue.Add((name, msGO, child));
                             SetObjectID(msGO, childId);
@@ -235,6 +279,16 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                     var phys = CreateObjectPhysics(elem);
                     if (phys)
                         applyQueue.Add((name, phys, elem));
+                }
+                else if (name == "SetRigidBody")
+                {
+                    var setRigidbody = new GameObject("SetRigidBody");
+                    setRigidbody.AddComponent<StageObject>();
+                    setRigidbody.AddComponent<BoxCollider>();
+                    
+                    var go = TryInstantiate(setRigidbody, elem, GetObjectID(elem));
+                    applyQueue.Add((name, go, elem));
+                    SetObjectID(go, GetObjectID(elem));
                 }
             }
 
@@ -261,6 +315,18 @@ namespace SurgeEngine._Source.Editor.HE1Importer
 
             var go = TryInstantiate(asset, elem, GetObjectID(elem));
             SetObjectID(go, GetObjectID(elem));
+            
+            var ms = elem.Element("MultiSetParam");
+            if (ms != null)
+            {
+                int i = 0;
+                foreach (var child in ms.Elements("Element"))
+                {
+                    long childId = GetMultiSetObjectID(elem, i++);
+                    var msGO = TryInstantiate(asset, child, childId);
+                    SetObjectID(msGO, childId);
+                }
+            }
 
             return go;
         }
@@ -285,6 +351,7 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                     float.Parse(posE.Element("y")?.Value.Trim()  ?? "0", CultureInfo.InvariantCulture),
                     float.Parse(posE.Element("z")?.Value.Trim()  ?? "0", CultureInfo.InvariantCulture)
                 );
+            
             var q = rotE == null
                 ? Quaternion.identity
                 : new Quaternion(
@@ -293,11 +360,22 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                     float.Parse(rotE.Element("z")?.Value.Trim() ?? "0", CultureInfo.InvariantCulture),
                     float.Parse(rotE.Element("w")?.Value.Trim() ?? "1", CultureInfo.InvariantCulture)
                 );
+            
             q.Normalize();
             var targetRot = ToEulerYXZ(q);
             var parent = GameObject.FindWithTag("SetData").transform;
 
-            var go = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
+            GameObject go;
+            if (PrefabUtility.GetPrefabAssetType(prefab) != PrefabAssetType.NotAPrefab)
+            {
+                go = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
+            }
+            else
+            {
+                go = prefab;
+                Debug.Log("1231");
+            }
+            
             Undo.RegisterCreatedObjectUndo(go, "Import HE1 Objects");
             go.transform.position = p;
             go.transform.rotation = targetRot;
@@ -358,7 +436,7 @@ namespace SurgeEngine._Source.Editor.HE1Importer
 
         static long GetObjectID(XElement elem) => long.Parse(elem.Element("SetObjectID")?.Value.Trim() ?? "0", CultureInfo.InvariantCulture);
 
-        static long GetMultiSetObjectID(XElement parentElem, XElement childElem, int index)
+        static long GetMultiSetObjectID(XElement parentElem, int index)
         {
             long parentId = GetObjectID(parentElem);
             return parentId * 1000 + index;
@@ -368,7 +446,7 @@ namespace SurgeEngine._Source.Editor.HE1Importer
         {
             try
             {
-                var field = obj.GetType().GetField(name, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+                var field = obj.GetType().GetField(name, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.FlattenHierarchy | BindingFlags.CreateInstance);
                 field.SetValue(obj, value);
             }
             catch (Exception e)
@@ -380,7 +458,16 @@ namespace SurgeEngine._Source.Editor.HE1Importer
         static void ApplyCustom(string name, GameObject go, XElement elem)
         {
             if (GetCustomHandlers().TryGetValue(name, out var handler))
+            {
                 handler(go, elem);
+
+                if (PrefabUtility.GetPrefabAssetType(go) != PrefabAssetType.NotAPrefab)
+                {
+                    PrefabUtility.RecordPrefabInstancePropertyModifications(go);
+                    foreach (var component in go.GetComponents<StageObject>())
+                        PrefabUtility.RecordPrefabInstancePropertyModifications(component);
+                }
+            }
         }
     }
 }

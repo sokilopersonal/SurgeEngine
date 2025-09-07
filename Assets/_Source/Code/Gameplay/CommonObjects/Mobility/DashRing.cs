@@ -8,10 +8,10 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
 {
     public class DashRing : StageObject
     {
-        [SerializeField] private float speed = 30f;
-        [SerializeField] private float keepVelocityDistance = 5f;
-        [SerializeField] private float outOfControl = 0.5f;
-        [SerializeField] private bool cancelBoost;
+        [SerializeField] protected float speed = 30f;
+        [SerializeField] protected float keepVelocityDistance = 5f;
+        [SerializeField] protected float outOfControl = 0.5f;
+        [SerializeField] protected bool cancelBoost;
 
         public override void Contact(Collider msg, CharacterBase context)
         {
@@ -24,7 +24,7 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
 
             Rigidbody body = context.Kinematics.Rigidbody;
             body.position = transform.position;
-            body.linearVelocity = transform.up * speed;
+            body.linearVelocity = -transform.forward * speed;
             body.linearVelocity = Vector3.ClampMagnitude(body.linearVelocity, speed);
             
             context.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, Mathf.Abs(outOfControl)));
@@ -33,7 +33,7 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
         private void OnDrawGizmosSelected()
         {
             TrajectoryDrawer.DrawTrajectory(transform.position, 
-                transform.up, Color.green, speed, keepVelocityDistance);
+                -transform.forward, Color.green, speed, keepVelocityDistance);
         }
     }
 }

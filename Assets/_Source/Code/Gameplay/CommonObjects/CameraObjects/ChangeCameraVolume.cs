@@ -14,10 +14,7 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.CameraObjects
 
         private void Awake()
         {
-            if (SetID == 2159 && target == null)
-            {
-                Debug.Log("SetID");
-            }
+
         }
 
         private void OnDisable()

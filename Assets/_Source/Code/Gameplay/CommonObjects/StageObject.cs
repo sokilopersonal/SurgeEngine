@@ -9,7 +9,7 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects
     [SelectionBase]
     public class StageObject : MonoBehaviour
     {
-        [field: SerializeField, ReadOnly] public long SetID { get; set; } // SetObjectID is required for HE1Importer.
+        [field: SerializeField] public long SetID { get; set; } // SetObjectID is required for HE1Importer.
         
         public Action<StageObject> OnContact;
 
