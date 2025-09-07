@@ -6,8 +6,8 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects
     public class ModeCollision : StageObject
     {
         [SerializeField] protected bool isChangeCamera;
-        [SerializeField] private bool isEnabledFromBack = true;
-        [SerializeField] private bool isEnabledFromFront = true;
+        [SerializeField] protected bool isEnabledFromBack = true;
+        [SerializeField] protected bool isEnabledFromFront = true;
 
         protected bool CheckFacing(Vector3 dir)
         {

@@ -12,7 +12,7 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.PhysicsObjects
         [SerializeField] private Transform thorn;
 
         private const float OnHeight = 0f;
-        private const float OffHeight = -1f;
+        private const float OffHeight = -1.5f;
 
         private void Awake()
         {

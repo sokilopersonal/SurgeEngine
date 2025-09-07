@@ -188,7 +188,7 @@ namespace SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic.SubSta
 
         private void CreateDamage()
         {
-            HurtBox.CreateAttached(character, character.transform, new Vector3(0f, 0f, -0.1f), new Vector3(0.75f, 1f, 1.15f), 
+            HurtBox.CreateAttached(character, character.transform, new Vector3(0f, 0f, -0.1f), new Vector3(0.5f, 1f, 1.15f), 
                 HurtBoxTarget.Enemy | HurtBoxTarget.Breakable);
         }
 

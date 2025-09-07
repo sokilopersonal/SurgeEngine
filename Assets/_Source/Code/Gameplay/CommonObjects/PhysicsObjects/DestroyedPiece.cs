@@ -39,6 +39,7 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.PhysicsObjects
             foreach (var piece in rigidbodies)
             {
                 piece.gameObject.layer = LayerMask.NameToLayer("BrokenPiece");
+                piece.interpolation = RigidbodyInterpolation.Interpolate;
             }
 
             Destroy(gameObject, destroyTime + 0.25f);

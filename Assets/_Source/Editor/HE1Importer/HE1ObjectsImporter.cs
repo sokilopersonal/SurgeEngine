@@ -7,6 +7,7 @@ using System.Xml.Linq;
 using SurgeEngine._Source.Code.Core.Character.CameraSystem.Pans.Data;
 using SurgeEngine._Source.Code.Gameplay.CommonObjects;
 using SurgeEngine._Source.Code.Gameplay.CommonObjects.CameraObjects;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects.ChangeModes;
 using SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility;
 using SurgeEngine._Source.Code.Gameplay.CommonObjects.PhysicsObjects;
 using UnityEditor;
@@ -47,6 +48,10 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                 ["SetRigidBody"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/SetRigidBody.prefab"),
                 ["PointMarker"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/PointMarker.prefab"),
                 ["DirectionalThorn"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/ObjectPhysics/Thorns/DirectionalThorn.prefab"),
+                ["ChangeMode_3DtoForward"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/System/ChangeMode_3DtoForward.prefab"),
+                ["ChangeMode_3DtoDash"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/System/ChangeMode_3DtoDash.prefab"),
+                ["ChangeMode_3Dto2D"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/System/ChangeMode_3Dto2D.prefab"),
+                ["GoalRing"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/GoalRing/GoalRing.prefab"),
             };
         }
 
@@ -305,6 +310,56 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                     SetFloatReflection(dir, "onTime", onTime);
                     SetFloatReflection(dir, "offTime", offTime);
                 },
+                ["ChangeMode_3DtoForward"] = (go, elem) =>
+                {
+                    float width = GetFloatWithMultiSetParam(elem, "Collision_Width");
+                    float height = GetFloatWithMultiSetParam(elem, "Collision_Height");
+                    
+                    var box = go.GetComponent<BoxCollider>();
+                    box.size = new Vector3(width, height, 0.2f);
+                    
+                    bool isChangeCamera = GetBoolWithMultiSetParam(elem, "m_IsChangeCamera");
+                    bool isEnabledFront = GetBoolWithMultiSetParam(elem, "m_IsEnableFromFront");
+                    bool isEnabledBack = GetBoolWithMultiSetParam(elem, "m_IsEnableFromBack");
+                    bool isLimitEdge = GetBoolWithMultiSetParam(elem, "m_IsLimitEdge");
+                    float pathCorrectionForce = GetFloatWithMultiSetParam(elem, "m_PathCorrectionForce");
+
+                    var mode = go.GetComponent<ChangeMode3D>();
+                    SetBoolReflection(mode, "isChangeCamera", isChangeCamera);
+                    SetBoolReflection(mode, "isEnabledFromFront", isEnabledFront);
+                    SetBoolReflection(mode, "isEnabledFromBack", isEnabledBack);
+                    SetBoolReflection(mode, "isLimitEdge", isLimitEdge);
+                    SetFloatReflection(mode, "pathCorrectionForce", pathCorrectionForce);
+                },
+                ["ChangeMode_3DtoDash"] = (go, elem) =>
+                {
+                    float width = GetFloatWithMultiSetParam(elem, "Collision_Width");
+                    float height = GetFloatWithMultiSetParam(elem, "Collision_Height");
+                    
+                    var box = go.GetComponent<BoxCollider>();
+                    box.size = new Vector3(width, height, 0.2f);
+                    
+                    bool isChangeCamera = GetBoolWithMultiSetParam(elem, "m_IsChangeCamera");
+                    bool isEnabledFront = GetBoolWithMultiSetParam(elem, "m_IsEnableFromFront");
+                    bool isEnabledBack = GetBoolWithMultiSetParam(elem, "m_IsEnableFromBack");
+                    bool isLimitEdge = GetBoolWithMultiSetParam(elem, "m_IsLimitEdge");
+                    float pathCorrectionForce = GetFloatWithMultiSetParam(elem, "m_PathCorrectionForce");
+
+                    var mode = go.GetComponent<ChangeMode3D>();
+                    SetBoolReflection(mode, "isChangeCamera", isChangeCamera);
+                    SetBoolReflection(mode, "isEnabledFromFront", isEnabledFront);
+                    SetBoolReflection(mode, "isEnabledFromBack", isEnabledBack);
+                    SetBoolReflection(mode, "isLimitEdge", isLimitEdge);
+                    SetFloatReflection(mode, "pathCorrectionForce", pathCorrectionForce);
+                },
+                ["ChangeMode_3Dto2D"] = (go, elem) =>
+                {
+                    float width = GetFloatWithMultiSetParam(elem, "Collision_Width");
+                    float height = GetFloatWithMultiSetParam(elem, "Collision_Height");
+                    
+                    var box = go.GetComponent<BoxCollider>();
+                    box.size = new Vector3(width, height, 0.2f);
+                },
             };
         }
 
@@ -515,6 +570,12 @@ namespace SurgeEngine._Source.Editor.HE1Importer
             return elem.Element(valueName)?.Value.Trim() ?? defaultValue;
         }
 
+        static bool GetBoolWithMultiSetParam(XElement elem, string valueName, bool defaultValue = false)
+        {
+            var value = GetValueWithMultiSetParam(elem, valueName, defaultValue.ToString());
+            return bool.Parse(value);
+        }
+
         static long GetObjectID(XElement elem) => long.Parse(elem.Element("SetObjectID")?.Value.Trim() ?? "0", CultureInfo.InvariantCulture);
 
         static long GetMultiSetObjectID(XElement parentElem, int index)
@@ -537,6 +598,19 @@ namespace SurgeEngine._Source.Editor.HE1Importer
         }
 
         static void SetIntReflection(object obj, string name, int value)
+        {
+            try
+            {
+                var field = obj.GetType().GetField(name, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.FlattenHierarchy);
+                field.SetValue(obj, value);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError("Can't set the value to " + name + ": " + e.Message);
+            }
+        }
+
+        static void SetBoolReflection(object obj, string name, bool value)
         {
             try
             {

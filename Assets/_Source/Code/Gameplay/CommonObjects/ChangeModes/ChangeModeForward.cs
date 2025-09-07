@@ -12,14 +12,17 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.ChangeModes
         {
             base.Contact(msg, context);
 
-            if (!CheckFacing(context.transform.forward))
-                return;
+            if (path)
+            {
+                if (!CheckFacing(context.transform.forward))
+                    return;
             
-            var kinematics = context.Kinematics;
-            kinematics.SetForwardPath(kinematics.PathForward == null
-                ? new ChangeMode3DData(new SplineData(path, context.transform.position), isChangeCamera, isLimitEdge,
-                    pathCorrectionForce)
-                : null);
+                var kinematics = context.Kinematics;
+                kinematics.SetForwardPath(kinematics.PathForward == null
+                    ? new ChangeMode3DData(new SplineData(path, context.transform.position), isChangeCamera, isLimitEdge,
+                        pathCorrectionForce)
+                    : null);
+            }
         }
     }
 }

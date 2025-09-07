@@ -265,14 +265,17 @@ namespace SurgeEngine._Source.Code.Core.Character.System
                 var force = PathForward.PathCorrectionForce;
                 if (force > 0)
                 {
-                    PathForward.Spline.EvaluateWorld(out _, out var tg, out var up, out var right);
+                    if (CheckForGround(out _))
+                    {
+                        PathForward.Spline.EvaluateWorld(out _, out var tg, out var up, out var right);
                     
-                    float dot = Vector3.Dot(Velocity.normalized, tg);
-                    float sign = Mathf.Sign(dot);
-                    tg = sign * tg;
+                        float dot = Vector3.Dot(Velocity.normalized, tg);
+                        float sign = Mathf.Sign(dot);
+                        tg = sign * tg;
                     
-                    var targetDir = tg.normalized * Velocity.magnitude;
-                    Rigidbody.linearVelocity = Vector3.Slerp(HorizontalVelocity, targetDir, force * Time.fixedDeltaTime) + VerticalVelocity;
+                        var targetDir = tg.normalized * Velocity.magnitude;
+                        Rigidbody.linearVelocity = Vector3.Slerp(HorizontalVelocity, targetDir, force * Time.fixedDeltaTime) + VerticalVelocity;
+                    }
                 }
 
                 if (PathForward.IsLimitEdge)
