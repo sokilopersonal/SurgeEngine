@@ -146,7 +146,7 @@ namespace SurgeEngine._Source.Code.Infrastructure.Tools
             var gameCameraData = gameCamera.GetComponent<HDAdditionalCameraData>();
             _camera.enabled = _active;
             gameCameraData.GetComponent<HDAdditionalCameraData>().CopyTo(_camera.GetComponent<HDAdditionalCameraData>());
-            gameCameraData.fullscreenPassthrough = _active;
+            gameCamera.enabled = !_active;
             
             _character.Input.playerInput.enabled = !_active;
             _pauseHandler.enabled = !_active;

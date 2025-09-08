@@ -1,4 +1,5 @@
 ﻿using SurgeEngine._Source.Code.Core.Character.System;
+using SurgeEngine._Source.Code.Infrastructure.Custom;
 using UnityEngine;
 
 namespace SurgeEngine._Source.Code.Core.Character.States
@@ -7,6 +8,11 @@ namespace SurgeEngine._Source.Code.Core.Character.States
     {
         public FStateDashRing(CharacterBase owner) : base(owner) { }
 
+        public override void OnEnter()
+        {
+            base.OnEnter();
+        }
+
         public override void OnExit()
         {
             base.OnExit();
@@ -14,9 +20,9 @@ namespace SurgeEngine._Source.Code.Core.Character.States
             Model.StartAirRestore(0.3f);
         }
 
-        public override void OnTick(float dt)
+        public override void OnFixedTick(float dt)
         {
-            base.OnTick(dt);
+            base.OnFixedTick(dt);
             
             Model.VelocityRotation(Kinematics.Velocity.normalized);
             
@@ -30,10 +36,6 @@ namespace SurgeEngine._Source.Code.Core.Character.States
                 StateMachine.SetState<FStateGround>();
                 Model.StopAirRestore();
             }
-        }
-        
-        public void SetDashRingDirection(Vector3 dir)
-        {
         }
     }
 }

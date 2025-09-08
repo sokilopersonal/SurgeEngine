@@ -101,7 +101,7 @@ namespace SurgeEngine._Source.Code.Core.Character.CameraSystem.Pans
                                + Vector3.up * GetVerticalOffset() 
                                + Vector3.up * _verticalLag;
             
-            float maxDist = originalDistance * (_stateMachine.Master.GetModifier<BoostDistanceCameraModifier>(out var m) ? m.Value : 1f);
+            float maxDist = originalDistance * (_stateMachine.Master.GetModifier<BoostDistanceCameraModifier>(out var m) ? m.Value : 1f) + _forwardLag;
             float collDist = CalculateCollisionDistance(actorPos, StatePosition - actorPos, maxDist);
             targetPosition = actorPos + dir * (collDist + _forwardLag);
             return actorPos;

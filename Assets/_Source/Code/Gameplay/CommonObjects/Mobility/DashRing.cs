@@ -17,7 +17,10 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
         {
             base.Contact(msg, context);
 
-            if (cancelBoost) context.StateMachine.GetSubState<FBoost>().Active = false;
+            if (cancelBoost && context.StateMachine.GetState(out FBoost boost))
+            {
+                boost.Active = false;
+            }
             
             context.StateMachine.GetState<FStateDashRing>().SetKeepVelocityDistance(keepVelocityDistance);
             context.StateMachine.SetState<FStateDashRing>(true);
@@ -25,7 +28,6 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
             Rigidbody body = context.Kinematics.Rigidbody;
             body.position = transform.position;
             body.linearVelocity = -transform.forward * speed;
-            body.linearVelocity = Vector3.ClampMagnitude(body.linearVelocity, speed);
             
             context.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, Mathf.Abs(outOfControl)));
         }

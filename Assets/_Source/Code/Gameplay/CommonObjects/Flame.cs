@@ -17,13 +17,11 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects
         [SerializeField] private BoxCollider damageCollider;
         [SerializeField] private ParticleSystem flame;
         
-        private ParticleSystem.MainModule _main;
         private Coroutine _cycleRoutine;
 
         private void Awake()
         {
             damageCollider.isTrigger = true;
-            _main = flame.main;
 
             if (type != 2)
             {
@@ -117,7 +115,8 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects
 
                 float currentLength = length * t;
 
-                _main.startSpeed = currentLength * 3;
+                var main = flame.main;
+                main.startSpeed = currentLength * 3;
 
                 damageCollider.size = new Vector3(damageCollider.size.x, damageCollider.size.y, currentLength);
                 damageCollider.center = new Vector3(damageCollider.center.x, damageCollider.center.y, currentLength * 0.5f);
@@ -132,5 +131,4 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects
             }
         }
     }
-
 }

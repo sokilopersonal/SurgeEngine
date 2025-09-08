@@ -33,19 +33,19 @@ namespace SurgeEngine._Source.Code.Core.Character.States
             Model.ResetCollisionToDefault();
         }
 
-        public override void OnTick(float dt)
+        public override void OnFixedTick(float dt)
         {
-            base.OnTick(dt);
+            base.OnFixedTick(dt);
             
             Vector3 dir = _springObject.transform.up;
-            Vector3 pos = _springObject.transform.position + dir * Mathf.Max(1f, _travelledDistance);
+            Vector3 pos = _springObject.transform.position + dir * Mathf.Max(1f, travelledDistance);
             Vector3 endPos = Vector3.Lerp(_startPos, pos, _snapTimer);
             
             Rigidbody.MovePosition(endPos);
-            _travelledDistance += _springObject.Speed * Time.deltaTime;
-            _snapTimer += Time.deltaTime / 0.1f;
+            travelledDistance += _springObject.Speed * dt;
+            _snapTimer += dt / 0.1f;
 
-            if (_travelledDistance >= _springObject.KeepVelocityDistance + 0.25f)
+            if (travelledDistance >= _springObject.KeepVelocityDistance + 0.25f)
             {
                 Rigidbody.linearVelocity = dir * _springObject.Speed;
                 StateMachine.SetState<FStateAir>();
@@ -56,7 +56,7 @@ namespace SurgeEngine._Source.Code.Core.Character.States
 
         public void SetSpringObject(Spring springObject)
         {
-            _travelledDistance = 0;
+            travelledDistance = 0;
             _snapTimer = 0;
             _springObject = springObject;
             _startPos = Rigidbody.position;
