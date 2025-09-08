@@ -36,7 +36,10 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
         
         public void Remove(Rigidbody body)
         {
-            _bodies.Remove(body);
+            if (_bodies.Contains(body))
+            {
+                _bodies.Remove(body);
+            }
         }
     }
 }

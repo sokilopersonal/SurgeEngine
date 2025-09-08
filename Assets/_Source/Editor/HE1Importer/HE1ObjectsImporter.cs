@@ -13,6 +13,7 @@ using SurgeEngine._Source.Code.Gameplay.CommonObjects.PhysicsObjects;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.Events;
 using Object = UnityEngine.Object;
 
 namespace SurgeEngine._Source.Editor.HE1Importer
@@ -55,6 +56,7 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                 ["GoalRing"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/GoalRing/GoalRing.prefab"),
                 ["Flame"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/Flame.prefab"),
                 ["EventCollision"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/EventCollision.prefab"),
+                ["MykonosFloor"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Apotos/MykonosFloor.prefab"),
             };
         }
 
@@ -436,9 +438,30 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                     int durability = GetIntWithMultiSetParam(elem, "Durability");
                     SetIntReflection(eventCollision, "defaultStatus", defaultStatus);
                     SetIntReflection(eventCollision, "durability", durability);
+
+                    var uEvent =
+                        eventCollision.GetType()
+                            .GetField("eventOnContact", BindingFlags.Instance | BindingFlags.NonPublic)
+                            ?.GetValue(eventCollision) as UnityEvent;
+
+                    if (uEvent != null && uEvent.GetPersistentEventCount() == 0)
+                    {
+                        Debug.LogWarning("[HE1 Importer] Due to how events work in SU, the event won't be assigned. You should do it manually.");
+                    }
+                },
+                ["MykonosFloor"] = (go, elem) =>
+                {
+                    float amplitude = GetFloatWithMultiSetParam(elem, "Amplitude");
+                    float cycle = GetFloatWithMultiSetParam(elem, "Cycle");
+                    float phase = GetFloatWithMultiSetParam(elem, "Phase");
+                    int moveType = GetIntWithMultiSetParam(elem, "MoveType");
                     
-                    Debug.LogWarning("[HE1 Importer] Due to how events work in SU, the event won't be assigned. You should do it manually.");
-                }
+                    var floor = go.GetComponent<MykonosFloor>();
+                    SetFloatReflection(floor, "amplitude", amplitude);
+                    SetFloatReflection(floor, "cycle", cycle);
+                    SetFloatReflection(floor, "phase", phase);
+                    SetIntReflection(floor, "moveType", moveType);
+                },
             };
         }
 

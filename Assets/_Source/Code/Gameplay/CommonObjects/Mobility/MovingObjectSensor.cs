@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using SurgeEngine._Source.Code.Infrastructure.Custom.Extensions;
+using UnityEngine;
 
 namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
 {
@@ -17,6 +18,11 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
             {
                 _movingObject.Add(rb);
             }
+
+            if (other.transform.TryGetComponentInParent(out Rigidbody parentBody))
+            {
+                _movingObject.Add(parentBody);
+            }
         }
         
         private void OnTriggerExit(Collider other)
@@ -24,6 +30,11 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
             if (other.transform.TryGetComponent(out Rigidbody rb))
             {
                 _movingObject.Remove(rb);
+            }
+            
+            if (other.transform.TryGetComponentInParent(out Rigidbody parentBody))
+            {
+                _movingObject.Remove(parentBody);
             }
         }
     }
