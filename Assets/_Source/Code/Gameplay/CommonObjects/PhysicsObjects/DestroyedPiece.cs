@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using DG.Tweening;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.PhysicsObjects
@@ -7,7 +7,6 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.PhysicsObjects
     public class DestroyedPiece : MonoBehaviour
     {
         [SerializeField] private float destroyTime = 15f;
-        
         [SerializeField] private Rigidbody[] rigidbodies;
         [SerializeField] private Renderer[] meshes;
 
@@ -28,11 +27,7 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.PhysicsObjects
                 foreach (Material mat in mesh.sharedMaterials)
                 {
                     float initialAlpha = mat.GetFloat("_AlphaMult");
-                    float t = 0f;
-                    DOTween.To(() => t, x => t = x, 1, destroyTime * 0.25f).SetDelay(destroyTime * 0.75f).OnUpdate(() =>
-                    {
-                        mat.SetFloat("_AlphaMult", Mathf.Lerp(initialAlpha, 0f, t));
-                    });
+                    StartCoroutine(FadeOut(mat, initialAlpha));
                 }
             }
 
@@ -45,20 +40,34 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.PhysicsObjects
             Destroy(gameObject, destroyTime + 0.25f);
         }
 
+        private IEnumerator FadeOut(Material mat, float initialAlpha)
+        {
+            yield return new WaitForSeconds(destroyTime * 0.75f);
+
+            float time = 0f;
+            float duration = destroyTime * 0.25f;
+
+            while (time < duration)
+            {
+                time += Time.deltaTime;
+                float t = time / duration;
+                mat.SetFloat("_AlphaMult", Mathf.Lerp(initialAlpha, 0f, t));
+                yield return null;
+            }
+
+            mat.SetFloat("_AlphaMult", 0f);
+        }
+
         public void ApplyExplosionForce(float force, Vector3 position, float radius)
         {
             for (int i = 0; i < rigidbodies.Length; i++)
-            {
                 rigidbodies[i].AddExplosionForce(force, position, radius);
-            }
         }
 
         public void ApplyDirectionForce(Vector3 direction, float force)
         {
             for (int i = 0; i < rigidbodies.Length; i++)
-            {
                 rigidbodies[i].AddForce(direction * force, ForceMode.VelocityChange);
-            }
         }
     }
 }

@@ -247,7 +247,7 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                     float width = GetFloatWithMultiSetParam(elem, "Collision_Width");
                     float height = GetFloatWithMultiSetParam(elem, "Collision_Height");
                     float length = GetFloatWithMultiSetParam(elem, "Collision_Length");
-                    box.size = new Vector3(width, height, length);
+                    box.size = new Vector3(width * 1.25f, height, length);
                     
                     float noControlTime = GetFloatWithMultiSetParam(elem, "NoControlTime");
                     SetFloatReflection(stumble, "noControlTime", noControlTime);

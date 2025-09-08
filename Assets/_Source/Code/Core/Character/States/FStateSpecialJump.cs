@@ -57,7 +57,7 @@ namespace SurgeEngine._Source.Code.Core.Character.States
             
             if (SpecialJumpData.type is SpecialJumpType.Spring or SpecialJumpType.DashRing)
             {
-                Model.StartAirRestore(0.4f);
+                Model.StartAirRestore(0.3f);
             }
         }
 

@@ -133,7 +133,7 @@ namespace SurgeEngine._Source.Code.Core.Character.System.Characters.Sonic
                     StateAnimator.SetCurrentAnimationState(AnimatorParams.RunCycle);
                 }
             }
-            if (obj is FStateAir && prev is not FStateAfterHoming and not FStateAirBoost and not FStateTrick and not FStateDashRing)
+            if (obj is FStateAir && prev is not FStateAfterHoming and not FStateAirBoost and not FStateTrick and not FStateDashRing and not FStateSpring)
             {
                 if (prev is FStateUpreel)
                 {
@@ -215,7 +215,7 @@ namespace SurgeEngine._Source.Code.Core.Character.System.Characters.Sonic
             }
             if (obj is FStateHoming)
             {
-                StateAnimator.TransitionToState("BallOnce", 0f).Then(() => StateAnimator.TransitionToState(AnimatorParams.AirCycle, 0.15f));
+                StateAnimator.TransitionToState("HomingBall", 0f).After(0.2f, () => StateAnimator.TransitionToState(AnimatorParams.AirCycle, 0.15f));
             }
             if (obj is FStateStomp)
             {
@@ -259,7 +259,8 @@ namespace SurgeEngine._Source.Code.Core.Character.System.Characters.Sonic
             }
             if (obj is FStateSpring)
             {
-                StateAnimator.TransitionToState("Jump Spring", 0.2f);
+                StateAnimator.ResetCurrentAnimationState();
+                StateAnimator.TransitionToState("Jump Spring", 0.2f).AfterThen(0.1f, () => StateAnimator.TransitionToState(AnimatorParams.AirCycle));
             }
             if (obj is FStateDashRing)
             {

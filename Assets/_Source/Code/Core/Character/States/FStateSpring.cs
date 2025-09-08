@@ -28,7 +28,7 @@ namespace SurgeEngine._Source.Code.Core.Character.States
             base.OnExit();
             
             _springObject = null;
-            Model.StartAirRestore(0.5f);
+            Model.StartAirRestore(0.3f);
             
             Model.ResetCollisionToDefault();
         }

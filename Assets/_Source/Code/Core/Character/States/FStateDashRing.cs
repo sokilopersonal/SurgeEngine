@@ -11,7 +11,7 @@ namespace SurgeEngine._Source.Code.Core.Character.States
         {
             base.OnExit();
             
-            Model.StartAirRestore(0.5f);
+            Model.StartAirRestore(0.3f);
         }
 
         public override void OnTick(float dt)

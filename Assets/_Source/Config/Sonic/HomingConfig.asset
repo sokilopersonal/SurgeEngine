@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcaffbb3b3964abda9da3e640a6b1330, type: 3}
   m_Name: HomingConfig
   m_EditorClassIdentifier: 
-  speed: 45
+  speed: 55
   findRadius: 5.5
   findDistance: 15
   maxTime: 1.5
@@ -21,8 +21,8 @@ MonoBehaviour:
   mask:
     serializedVersion: 2
     m_Bits: 1024
-  jumpDashTime: 0.35
-  jumpDashDistance: 35
+  jumpDashTime: 0.4
+  jumpDashDistance: 50
   JumpDashCurve:
     serializedVersion: 2
     m_Curve:
@@ -55,7 +55,7 @@ MonoBehaviour:
       outWeight: 0.17622948
     - serializedVersion: 3
       time: 1
-      value: 0.45
+      value: 0.24999389
       inSlope: -0.27820814
       outSlope: -0.27820814
       tangentMode: 0
