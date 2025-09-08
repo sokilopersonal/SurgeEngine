@@ -74,6 +74,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1e844062ad2497290604d3258a20c63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SurgeEngine._Source.Code.Gameplay.CommonObjects.PhysicsObjects.BreakableObject
+  <SetID>k__BackingField: 0
   destroyPiece: {fileID: 7097514222225342639, guid: bb677a2613560474ca2e7021bd40ab2f, type: 3}
   destroyEvent:
     Guid:
@@ -101,7 +102,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.1116896, y: 0.65449566, z: 0.98733014}
+  m_Size: {x: 0.9873301, y: 0.65449566, z: 2.11169}
   m_Center: {x: 0, y: 0.30795106, z: 0}
 --- !u!1001 &7145228747980308932
 PrefabInstance:
@@ -125,19 +126,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 86e9c5bfaad501f4abc5a8240622e928, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 86e9c5bfaad501f4abc5a8240622e928, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 86e9c5bfaad501f4abc5a8240622e928, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 86e9c5bfaad501f4abc5a8240622e928, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 86e9c5bfaad501f4abc5a8240622e928, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -145,7 +146,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 86e9c5bfaad501f4abc5a8240622e928, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 86e9c5bfaad501f4abc5a8240622e928, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z

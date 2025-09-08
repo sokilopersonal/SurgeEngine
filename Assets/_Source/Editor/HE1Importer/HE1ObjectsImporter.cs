@@ -52,6 +52,7 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                 ["ChangeMode_3DtoDash"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/System/ChangeMode_3DtoDash.prefab"),
                 ["ChangeMode_3Dto2D"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/System/ChangeMode_3Dto2D.prefab"),
                 ["GoalRing"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/GoalRing/GoalRing.prefab"),
+                ["Flame"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/Flame.prefab"),
             };
         }
 
@@ -247,7 +248,7 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                     float width = GetFloatWithMultiSetParam(elem, "Collision_Width");
                     float height = GetFloatWithMultiSetParam(elem, "Collision_Height");
                     float length = GetFloatWithMultiSetParam(elem, "Collision_Length");
-                    box.size = new Vector3(width * 1.25f, height, length);
+                    box.size = new Vector3(width * 1.75f, height, length);
                     
                     float noControlTime = GetFloatWithMultiSetParam(elem, "NoControlTime");
                     SetFloatReflection(stumble, "noControlTime", noControlTime);
@@ -304,11 +305,13 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                     float moveTime = GetFloatWithMultiSetParam(elem, "MoveTime");
                     float onTime = GetFloatWithMultiSetParam(elem, "OnTime");
                     float offTime = GetFloatWithMultiSetParam(elem, "OffTime");
+                    int phase = GetIntWithMultiSetParam(elem, "Phase");
                     
                     var dir = go.GetComponent<DirectionalThorn>();
                     SetFloatReflection(dir, "moveTime", moveTime);
                     SetFloatReflection(dir, "onTime", onTime);
                     SetFloatReflection(dir, "offTime", offTime);
+                    SetIntReflection(dir, "phase", phase);
                 },
                 ["ChangeMode_3DtoForward"] = (go, elem) =>
                 {
@@ -359,6 +362,23 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                     
                     var box = go.GetComponent<BoxCollider>();
                     box.size = new Vector3(width, height, 0.2f);
+                },
+                ["Flame"] = (go, elem) =>
+                {
+                    float appearTime = GetFloatWithMultiSetParam(elem, "AppearTime");
+                    float onTime = GetFloatWithMultiSetParam(elem, "OnTime");
+                    float offTime = GetFloatWithMultiSetParam(elem, "OffTime");
+                    float length = GetFloatWithMultiSetParam(elem, "Length");
+                    int phase = GetIntWithMultiSetParam(elem, "Phase");
+                    
+                    var flame = go.GetComponent<Flame>();
+                    SetFloatReflection(flame, "appearTime", appearTime);
+                    SetFloatReflection(flame, "onTime", onTime);
+                    SetFloatReflection(flame, "offTime", offTime);
+                    SetFloatReflection(flame, "length", length);
+                    SetIntReflection(flame, "phase", phase);
+
+                    flame.FillMultiSet(elem, "multiSetParam");
                 },
             };
         }
@@ -512,7 +532,6 @@ namespace SurgeEngine._Source.Editor.HE1Importer
             else
             {
                 go = prefab;
-                Debug.Log("1231");
             }
             
             Undo.RegisterCreatedObjectUndo(go, "Import HE1 Objects");
@@ -562,6 +581,18 @@ namespace SurgeEngine._Source.Editor.HE1Importer
             return float.Parse(value, CultureInfo.InvariantCulture);
         }
 
+        static int GetIntWithMultiSetParam(XElement elem, string valueName, int defaultValue = 1)
+        {
+            var value = GetValueWithMultiSetParam(elem, valueName, defaultValue.ToString(CultureInfo.InvariantCulture));
+            return int.Parse(value, CultureInfo.InvariantCulture);
+        }
+
+        static bool GetBoolWithMultiSetParam(XElement elem, string valueName, bool defaultValue = false)
+        {
+            var value = GetValueWithMultiSetParam(elem, valueName, defaultValue.ToString());
+            return bool.Parse(value);
+        }
+
         static string GetValueWithMultiSetParam(XElement elem, string valueName, string defaultValue = "1")
         {
             if (elem.Name == "Element" && elem.Parent?.Name == "MultiSetParam")
@@ -571,12 +602,6 @@ namespace SurgeEngine._Source.Editor.HE1Importer
             }
 
             return elem.Element(valueName)?.Value.Trim() ?? defaultValue;
-        }
-
-        static bool GetBoolWithMultiSetParam(XElement elem, string valueName, bool defaultValue = false)
-        {
-            var value = GetValueWithMultiSetParam(elem, valueName, defaultValue.ToString());
-            return bool.Parse(value);
         }
 
         static long GetObjectID(XElement elem) => long.Parse(elem.Element("SetObjectID")?.Value.Trim() ?? "0", CultureInfo.InvariantCulture);
@@ -623,6 +648,33 @@ namespace SurgeEngine._Source.Editor.HE1Importer
             catch (Exception e)
             {
                 Debug.LogError("Can't set the value to " + name + ": " + e.Message);
+            }
+        }
+        
+        static void FillMultiSet<T>(this T stageObject, XElement elem, string listFieldName) where T : StageObject
+        {
+            if (stageObject == null || elem == null) return;
+
+            if (stageObject.GetType().GetField(listFieldName, BindingFlags.NonPublic | BindingFlags.Instance)
+                    ?.GetValue(stageObject) is not List<T> list) return;
+
+            list.Clear();
+
+            var ms = elem.Element("MultiSetParam");
+            if (ms == null) return;
+
+            int i = 0;
+            foreach (var child in ms.Elements("Element"))
+            {
+                long childId = HE1ObjectsImporter.GetMultiSetObjectID(elem, i++);
+                foreach (var obj in Object.FindObjectsByType<StageObject>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+                {
+                    if (obj.SetID == childId && obj is T tObj)
+                    {
+                        list.Add(tObj);
+                        break;
+                    }
+                }
             }
         }
         

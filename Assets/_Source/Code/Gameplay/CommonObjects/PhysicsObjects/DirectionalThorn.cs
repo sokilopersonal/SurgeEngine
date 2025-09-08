@@ -9,6 +9,7 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.PhysicsObjects
         [SerializeField] private float moveTime = 0.5f;
         [SerializeField] private float onTime = 2f;
         [SerializeField] private float offTime = 3f;
+        [SerializeField] private int phase;
         [SerializeField] private Transform thorn;
 
         private const float OnHeight = 0f;
@@ -16,7 +17,14 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.PhysicsObjects
 
         private void Awake()
         {
-            StartCoroutine(ThornCycle());
+            if (phase == 0)
+            {
+                thorn.localPosition = new Vector3(thorn.localPosition.x, OnHeight, thorn.localPosition.z);
+            }
+            else
+            {
+                StartCoroutine(ThornCycle());
+            }
         }
 
         private IEnumerator ThornCycle()

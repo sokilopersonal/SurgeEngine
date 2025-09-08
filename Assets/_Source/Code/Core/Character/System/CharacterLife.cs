@@ -25,7 +25,7 @@ namespace SurgeEngine._Source.Code.Core.Character.System
                 _ => new GeneralDamage(character)
             };
             
-            if (!character.Flags.HasFlag(FlagType.Invincible))
+            if (!character.Flags.HasFlag(FlagType.Invincible) && !IsDead)
             {
                 IsDead = false;
                 
@@ -51,7 +51,7 @@ namespace SurgeEngine._Source.Code.Core.Character.System
                 }
                 
                 damageable.TakeDamage();
-                character.Flags.AddFlag(new Flag(FlagType.Invincible, true, invincibleTime));
+                character.Flags.AddFlag(new Flag(FlagType.Invincible, true, invincibleTime + 1.5f));
             }
         }
         
