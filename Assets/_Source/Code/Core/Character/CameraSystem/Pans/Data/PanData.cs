@@ -41,8 +41,7 @@ namespace SurgeEngine._Source.Code.Core.Character.CameraSystem.Pans.Data
     {
         public float distance = 4f;
         public float yOffset = 0.25f;
-        public Vector3 offset;
-        public Vector2 localLookOffset;
+        public Transform target;
         public Vector3 Forward { get; set; }
     }
 
@@ -51,11 +50,5 @@ namespace SurgeEngine._Source.Code.Core.Character.CameraSystem.Pans.Data
     {
         public SplineContainer container;
         public float offsetOnEye = -10f;
-    }
-
-    public enum RestoreType
-    {
-        Player,
-        Camera
     }
 }

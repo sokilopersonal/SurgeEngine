@@ -36,6 +36,7 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                 ["eAirCannonNormal"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Enemies/AeroCannon.prefab"),
                 ["ObjCameraPan"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/Camera/ObjCameraPan.prefab"),
                 ["ObjCameraParallel"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/Camera/ObjCameraParallel.prefab"),
+                ["ObjCameraPoint"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/Camera/ObjCameraPoint.prefab"),
                 ["JumpBoard"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/JumpPanel_15S.prefab"),
                 ["JumpBoard3D"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/JumpPanel_30M.prefab"),
                 ["TrickJumper"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/TrickPanel.prefab"),
@@ -226,12 +227,50 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                 ["ObjCameraParallel"] = (go, elem) =>
                 {
                     float fovy = GetFloatWithMultiSetParam(elem, "Fovy");
+                    float distance = GetFloatWithMultiSetParam(elem, "Distance");
                     
                     var comp = go.GetComponent<ObjCameraParallel>();
                     
                     var dataField = comp.GetType().GetField("data", BindingFlags.Instance | BindingFlags.NonPublic);
                     var dataObj = dataField.GetValue(comp);
                     dataObj.GetType().GetField("fov", BindingFlags.Instance | BindingFlags.Public)?.SetValue(dataObj, fovy);
+                    dataObj.GetType().GetField("distance", BindingFlags.Instance | BindingFlags.Public)?.SetValue(dataObj, distance);
+                    
+                    float pitch = GetFloatWithMultiSetParam(elem, "Pitch");
+                    float yaw = GetFloatWithMultiSetParam(elem, "Yaw");
+                    
+                    var euler = comp.transform.eulerAngles;
+                    euler.x = pitch;
+                    euler.y = yaw == 0 ? 180 : yaw;
+                    comp.transform.eulerAngles = euler;
+                },
+                ["ObjCameraPoint"] = (go, elem) =>
+                {
+                    float fovy = GetFloatWithMultiSetParam(elem, "Fovy");
+                    float distance = GetFloatWithMultiSetParam(elem, "Distance");
+                    long targetId = long.Parse(elem.Element("Target").Element("SetObjectID").Value, CultureInfo.InvariantCulture);
+                    var comp = go.GetComponent<ObjCameraPoint>();
+                    
+                    var dataField = comp.GetType().GetField("data", BindingFlags.Instance | BindingFlags.NonPublic);
+                    var dataObj = dataField.GetValue(comp);
+                    dataObj.GetType().GetField("fov", BindingFlags.Instance | BindingFlags.Public)?.SetValue(dataObj, fovy);
+                    dataObj.GetType().GetField("distance", BindingFlags.Instance | BindingFlags.Public)?.SetValue(dataObj, distance);
+
+                    if (targetId != 0)
+                    {
+                        foreach (var stageObject in Object.FindObjectsByType<StageObject>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+                        {
+                            if (stageObject.SetID == targetId)
+                            {
+                                dataObj.GetType().GetField("target", BindingFlags.Instance | BindingFlags.Public)?.SetValue(dataObj, stageObject.transform);
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        dataObj.GetType().GetField("target", BindingFlags.Instance | BindingFlags.Public)?.SetValue(dataObj, null);
+                    }
                     
                     float pitch = GetFloatWithMultiSetParam(elem, "Pitch");
                     float yaw = GetFloatWithMultiSetParam(elem, "Yaw");

@@ -21,19 +21,19 @@ namespace SurgeEngine._Source.Code.Core.Character.CameraSystem.Pans
         {
             base.OnTick(dt);
             
-            _stateMachine.SetDirection(_pData.Forward);
-            
+            _stateMachine.SetDirection((_pData.target.position - StatePosition).normalized);
+
             StateFOV = _pData.fov;
         }
         
         protected override void SetPosition(Vector3 targetPosition)
         {
-            StatePosition = targetPosition + _stateMachine.Transform.TransformDirection(_pData.offset);
+            StatePosition = targetPosition;
         }
         
         protected override void SetRotation(Vector3 actorPosition)
         {
-            StateRotation = Quaternion.LookRotation(actorPosition + _stateMachine.Transform.TransformDirection(_pData.offset) + _stateMachine.Transform.TransformDirection(_pData.localLookOffset) - StatePosition );
+            StateRotation = Quaternion.LookRotation(_pData.target.position - StatePosition);
         }
 
         protected override void LookAxis()

@@ -7,7 +7,10 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.CameraObjects
     {
         private void Awake()
         {
-            data.Forward = transform.forward;
+            if (data.target == null)
+            {
+                data.target = transform;
+            }
         }
     }
 }
