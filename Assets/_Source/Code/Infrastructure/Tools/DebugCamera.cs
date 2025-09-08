@@ -20,7 +20,7 @@ namespace SurgeEngine._Source.Code.Infrastructure.Tools
         
         private Vector2 MoveInput => MoveAction.ReadValue<Vector2>();
         private float VerticalInput => VerticalAction.ReadValue<Vector2>().y;
-        private Vector2 LookInput => LookAction.ReadValue<Vector2>();
+        private Vector2 LookInput => !_blocked ? LookAction.ReadValue<Vector2>() : Vector2.zero;
         
         private InputAction MoveAction => playerInput.actions["Move"];
         private InputAction VerticalAction => playerInput.actions["Vertical"];
@@ -41,6 +41,8 @@ namespace SurgeEngine._Source.Code.Infrastructure.Tools
         private bool _active;
         private float _currentSpeedMultiplier = 1f;
         private float _moveTime;
+
+        private bool _blocked;
 
         private float _yaw;
         private float _pitch;
@@ -65,6 +67,22 @@ namespace SurgeEngine._Source.Code.Infrastructure.Tools
             {
                 Position();
                 Rotation();
+                
+#if UNITY_EDITOR
+                if (Keyboard.current.escapeKey.wasPressedThisFrame)
+                {
+                    CameraLock(true);
+                }
+
+                if (Mouse.current.leftButton.wasPressedThisFrame)
+                {
+                    CameraLock(false);
+                }
+#endif
+            }
+            else
+            {
+                _blocked = false;
             }
         }
 
@@ -171,6 +189,11 @@ namespace SurgeEngine._Source.Code.Infrastructure.Tools
             {
                 Time.timeScale = Time.timeScale > 0 ? 0 : 1f;
             }
+        }
+
+        private void CameraLock(bool value)
+        {
+            _blocked = value;
         }
     }
 }

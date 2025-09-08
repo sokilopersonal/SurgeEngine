@@ -53,6 +53,7 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                 ["ChangeMode_3Dto2D"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/System/ChangeMode_3Dto2D.prefab"),
                 ["GoalRing"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/GoalRing/GoalRing.prefab"),
                 ["Flame"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/Flame.prefab"),
+                ["EventCollision"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/EventCollision.prefab"),
             };
         }
 
@@ -369,6 +370,7 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                     float onTime = GetFloatWithMultiSetParam(elem, "OnTime");
                     float offTime = GetFloatWithMultiSetParam(elem, "OffTime");
                     float length = GetFloatWithMultiSetParam(elem, "Length");
+                    int type = GetIntWithMultiSetParam(elem, "Type");
                     int phase = GetIntWithMultiSetParam(elem, "Phase");
                     
                     var flame = go.GetComponent<Flame>();
@@ -376,10 +378,28 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                     SetFloatReflection(flame, "onTime", onTime);
                     SetFloatReflection(flame, "offTime", offTime);
                     SetFloatReflection(flame, "length", length);
+                    SetIntReflection(flame, "type", type);
                     SetIntReflection(flame, "phase", phase);
 
                     flame.FillMultiSet(elem, "multiSetParam");
                 },
+                ["EventCollision"] = (go, elem) =>
+                {
+                    float width = GetFloatWithMultiSetParam(elem, "Collision_Width");
+                    float height = GetFloatWithMultiSetParam(elem, "Collision_Height");
+                    float length = GetFloatWithMultiSetParam(elem, "Collision_Length");
+                    
+                    var box = go.GetComponent<BoxCollider>();
+                    box.size = new Vector3(width, height, length);
+                    
+                    var eventCollision = go.GetComponent<EventCollision>();
+                    int defaultStatus = GetIntWithMultiSetParam(elem, "DefaultStatus");
+                    int durability = GetIntWithMultiSetParam(elem, "Durability");
+                    SetIntReflection(eventCollision, "defaultStatus", defaultStatus);
+                    SetIntReflection(eventCollision, "durability", durability);
+                    
+                    Debug.LogWarning("[HE1 Importer] Due to how events work in SU, the event won't be assigned. You should do it manually.");
+                }
             };
         }
 

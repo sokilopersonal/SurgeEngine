@@ -11,7 +11,8 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects
         [SerializeField] private float onTime = 1f;
         [SerializeField] private float offTime = 1f;
         [SerializeField] private float length = 5;
-        [SerializeField] private int phase = 1; // 0 = constant, 1 = cycle
+        [SerializeField] private int phase;
+        [SerializeField] private int type = 1; // 0 - cycle, 1 - constant, 2 - disabled
         [SerializeField] private List<Flame> multiSetParam = new List<Flame>();
         [SerializeField] private BoxCollider damageCollider;
         [SerializeField] private ParticleSystem flame;
@@ -23,19 +24,40 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects
         {
             damageCollider.isTrigger = true;
             _main = flame.main;
-            
-            SetActive(true);
+
+            if (type != 2)
+            {
+                SetActive(true);
+            }
+            else
+            {
+                flame.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+                flame.Clear();
+                damageCollider.enabled = false;
+            }
         }
 
         public void SetActive(bool active)
         {
             if (active)
             {
-                if (_cycleRoutine == null)
+                if (_cycleRoutine != null)
                 {
-                    _cycleRoutine = phase == 0 
-                        ? StartCoroutine(ConstantFlame()) 
-                        : StartCoroutine(FlameCycle());
+                    StopCoroutine(_cycleRoutine);
+                    _cycleRoutine = null;
+                }
+                
+                if (type == 0)
+                {
+                    _cycleRoutine = StartCoroutine(FlameCycle());
+                }
+                else if (type == 1)
+                {
+                    _cycleRoutine = StartCoroutine(ConstantFlame());
+                }
+                else if (type == 2)
+                {
+                    _cycleRoutine = StartCoroutine(ConstantFlame());
                 }
             }
             else
@@ -95,8 +117,7 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects
 
                 float currentLength = length * t;
 
-                _main.startSpeed = currentLength;
-                _main.startLifetime = 1f;
+                _main.startSpeed = currentLength * 3;
 
                 damageCollider.size = new Vector3(damageCollider.size.x, damageCollider.size.y, currentLength);
                 damageCollider.center = new Vector3(damageCollider.center.x, damageCollider.center.y, currentLength * 0.5f);
