@@ -444,6 +444,9 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                 case "myk_obj_hh_potplant_mixEF":
                     path = "Assets/_Source/Prefabs/HE1/Common/ObjectPhysics/PotPlantMixEF.prefab";
                     break;
+                case "myk_obj_ky_blue_woodbox":
+                    path = "Assets/_Source/Prefabs/HE1/Common/ObjectPhysics/BlueWoodBox.prefab";
+                    break;
             }
             
             var asset = AssetDatabase.LoadAssetAtPath<GameObject>(path);

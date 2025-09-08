@@ -39,10 +39,7 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.PhysicsObjects
 
         private void OnCollisionEnter(Collision other)
         {
-            if (_rigidbody.linearVelocity.magnitude > 15f)
-            {
-                Destroy(_rigidbody.linearVelocity);
-            }
+            
         }
     }
 }
