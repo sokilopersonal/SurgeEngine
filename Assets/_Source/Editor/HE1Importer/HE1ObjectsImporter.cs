@@ -467,12 +467,18 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                     float cycle = GetFloatWithMultiSetParam(elem, "Cycle");
                     float phase = GetFloatWithMultiSetParam(elem, "Phase");
                     int moveType = GetIntWithMultiSetParam(elem, "MoveType");
+                    float onGroundTime = GetFloatWithMultiSetParam(elem, "OnGroundTime");
+                    float resetTime = GetFloatWithMultiSetParam(elem, "ResetTime");
+                    float gravity = GetFloatWithMultiSetParam(elem, "Gravity");
                     
                     var floor = go.GetComponent<MykonosFloor>();
                     SetFloatReflection(floor, "amplitude", amplitude);
                     SetFloatReflection(floor, "cycle", cycle);
                     SetFloatReflection(floor, "phase", phase);
                     SetIntReflection(floor, "moveType", moveType);
+                    SetFloatReflection(floor, "onGroundTime", onGroundTime);
+                    SetFloatReflection(floor, "resetTime", resetTime);
+                    SetFloatReflection(floor, "gravity", gravity);
                 },
             };
         }

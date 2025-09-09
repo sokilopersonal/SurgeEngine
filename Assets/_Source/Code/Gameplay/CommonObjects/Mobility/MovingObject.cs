@@ -1,13 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects.System;
+using UGizmo;
 using UnityEngine;
 
 namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
 {
-    public class MovingObject : MonoBehaviour
+    public class MovingObject : MonoBehaviour, IPointMarkerLoader
     {
         private List<Rigidbody> _bodies;
         private Vector3 _lastPosition;
         private Vector3 _velocity;
+
+        public event Action<Rigidbody> OnBodyAdded; 
 
         private void Awake()
         {
@@ -25,12 +30,18 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
                 foreach (var body in _bodies)
                     body.MovePosition(body.position + _velocity * Time.fixedDeltaTime);
             }
+            
+            UGizmos.DrawLine(transform.position, transform.position + _velocity, Color.red);
         }
 
         public void Add(Rigidbody body)
         {
             if (!_bodies.Contains(body))
+            {
                 _bodies.Add(body);
+                
+                OnBodyAdded?.Invoke(body);
+            }
         }
 
         public void Remove(Rigidbody body)
@@ -40,6 +51,11 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
                 _bodies.Remove(body);
                 body.linearVelocity += _velocity;
             }
+        }
+
+        public void Load()
+        {
+            _bodies.Clear();
         }
     }
 }
