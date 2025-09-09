@@ -30,6 +30,7 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                 ["Spring"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/Spring.prefab"),
                 ["WideSpring"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/WideSpring.prefab"),
                 ["AirSpring"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/AirSpring.prefab"),
+                ["ThornSpring"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/ThornSpring.prefab"),
                 ["eFighter"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Enemies/EggFighter.prefab"),
                 ["eFighterTutorial"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Enemies/EggFighter.prefab"),
                 ["eSpinner"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Enemies/Spinner.prefab"),
@@ -479,6 +480,22 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                     SetFloatReflection(floor, "onGroundTime", onGroundTime);
                     SetFloatReflection(floor, "resetTime", resetTime);
                     SetFloatReflection(floor, "gravity", gravity);
+                },
+                ["ThornSpring"] = (go, elem) =>
+                {
+                    float speed = GetFloatWithMultiSetParam(elem, "FirstSpeed");
+                    float outOfControl = GetFloatWithMultiSetParam(elem, "OutOfControl");
+                    float keepDistance = GetFloatWithMultiSetParam(elem, "KeepVelocityDistance");
+                    float upThornTime = GetFloatWithMultiSetParam(elem, "UpThornTime");
+                    float downThornTime = GetFloatWithMultiSetParam(elem, "DownThornTime");
+                    bool cancelBoost = GetBoolWithMultiSetParam(elem, "m_IsStopBoost");
+                    var thornSpring = go.GetComponent<ThornSpring>();
+                    SetFloatReflection(thornSpring, "speed", speed / HE1Variables.ImpulseDivider);
+                    SetFloatReflection(thornSpring, "outOfControl", outOfControl);
+                    SetFloatReflection(thornSpring, "keepVelocityDistance", keepDistance);
+                    SetFloatReflection(thornSpring, "upThornTime", upThornTime);
+                    SetFloatReflection(thornSpring, "downThornTime", downThornTime);
+                    SetBoolReflection(thornSpring, "cancelBoost", cancelBoost);
                 },
             };
         }

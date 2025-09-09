@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1205289680013313459}
   - component: {fileID: 1292320570126400976}
-  - component: {fileID: 7407914638876503210}
   - component: {fileID: 7553918138535884465}
   - component: {fileID: 8315779112442714504}
   - component: {fileID: 6525208774376867337}
@@ -51,23 +50,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ae415b787264d82ae306c556e4e577a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <SetID>k__BackingField: 0
   speed: 25
   keepVelocityDistance: 5
   outOfControl: 0.25
   cancelBoost: 0
---- !u!114 &7407914638876503210
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3930346511619348882}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 070c0d672d0e4fc1841c3f3491f80b62, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  soundReference:
+  isTo3D: 0
+  sound:
     Guid:
       Data1: -370211807
       Data2: 1199531888
@@ -108,8 +97,8 @@ MonoBehaviour:
       Data4: 647342960
     Path: event:/CommonObjects/AirSpring
   Event: 
-  PlayEvent: 1
-  StopEvent: 2
+  EventPlayTrigger: 1
+  EventStopTrigger: 2
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 1

@@ -1,4 +1,5 @@
-﻿using SurgeEngine._Source.Code.Core.Character.States;
+﻿using FMODUnity;
+using SurgeEngine._Source.Code.Core.Character.States;
 using SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic.SubStates;
 using SurgeEngine._Source.Code.Core.Character.System;
 using SurgeEngine._Source.Code.Infrastructure.Custom.Drawers;
@@ -11,17 +12,23 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
         [SerializeField] protected float speed = 30f;
         [SerializeField] protected float keepVelocityDistance = 5;
         [SerializeField] protected float outOfControl = 0.5f;
-        [SerializeField] private bool cancelBoost;
-        [SerializeField] private bool isTo3D;
+        [SerializeField] protected bool cancelBoost;
+        [SerializeField] protected bool isTo3D;
+        [SerializeField] private EventReference sound;
         public float Speed => speed;
         public float KeepVelocityDistance => keepVelocityDistance;
 
         public override void Contact(Collider msg, CharacterBase context)
         {
+            base.Contact(msg, context);
+
+            Launch(context);
+        }
+
+        protected virtual void Launch(CharacterBase context)
+        {
             var springState = context.StateMachine.GetState<FStateSpring>();
             if (springState.SpringObject == this) return;
-            
-            base.Contact(msg, context);
             
             if (cancelBoost) 
                 context.StateMachine.GetSubState<FBoost>().Active = false;
@@ -31,6 +38,8 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
             context.StateMachine.SetState<FStateSpring>();
             
             context.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, Mathf.Abs(outOfControl)));
+            
+            RuntimeManager.PlayOneShot(sound, transform.position);
 
             if (context.Kinematics.Path2D != null)
             {
