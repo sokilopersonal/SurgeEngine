@@ -1,7 +1,9 @@
+using System;
 using FMODUnity;
 using SurgeEngine._Source.Code.Core.Character.States;
 using SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic.SubStates;
 using SurgeEngine._Source.Code.Core.Character.System;
+using SurgeEngine._Source.Code.Infrastructure.Custom.Extensions;
 using UnityEngine;
 
 namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
@@ -13,26 +15,27 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
         [SerializeField] private float noControlTime = 0.5f;
         [SerializeField] private EventReference stumbleSound;
 
-        public override void Contact(Collider msg, CharacterBase context)
+        private void OnTriggerStay(Collider other)
         {
-            base.Contact(msg, context);
-            
-            if (context.Kinematics.Speed >= launchVelocity && context.Kinematics.CheckForGround(out _))
+            if (other.TryGetCharacter(out CharacterBase character))
             {
-                const float StumbleSpeed = 10;
-                
-                context.Rigidbody.linearVelocity = context.transform.forward * StumbleSpeed + 
-                                                   context.transform.up * StumbleSpeed;
-                
-                context.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, noControlTime));
-                if (context.StateMachine.GetState(out FBoost boost))
+                if (character.StateMachine.CurrentState is not FStateStumble && character.Kinematics.Speed >= launchVelocity && character.Kinematics.CheckForGround(out _))
                 {
-                    boost.Active = false;
-                }
+                    const float stumbleSpeed = 10;
                 
-                RuntimeManager.PlayOneShot(stumbleSound, context.transform.position);
+                    character.Rigidbody.linearVelocity = character.transform.forward * stumbleSpeed + 
+                                                       character.transform.up * stumbleSpeed;
+                
+                    character.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, noControlTime));
+                    if (character.StateMachine.GetState(out FBoost boost))
+                    {
+                        boost.Active = false;
+                    }
+                
+                    RuntimeManager.PlayOneShot(stumbleSound, character.transform.position);
 
-                context.StateMachine.SetState<FStateStumble>().SetNoControlTime(noControlTime);
+                    character.StateMachine.SetState<FStateStumble>().SetNoControlTime(noControlTime);
+                }
             }
         }
     }
