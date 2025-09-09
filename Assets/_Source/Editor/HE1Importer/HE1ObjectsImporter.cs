@@ -220,16 +220,22 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                 ["ObjCameraPan"] = (go, elem) =>
                 {
                     float fovy = GetFloatWithMultiSetParam(elem, "Fovy");
+                    bool isControllable = GetBoolWithMultiSetParam(elem, "IsControllable");
+                    bool isCollision = GetBoolWithMultiSetParam(elem, "IsCollision");
                     
                     var comp = go.GetComponent<ObjCameraPan>();
                     var dataField = comp.GetType().GetField("data", BindingFlags.Instance | BindingFlags.NonPublic);
                     var dataObj = dataField.GetValue(comp);
                     dataObj.GetType().GetField("fov", BindingFlags.Instance | BindingFlags.Public)?.SetValue(dataObj, fovy);
+                    dataObj.GetType().GetField("allowRotation", BindingFlags.Instance | BindingFlags.Public)?.SetValue(dataObj, isControllable);
+                    dataObj.GetType().GetField("isCollision", BindingFlags.Instance | BindingFlags.Public)?.SetValue(dataObj, isCollision);
                 },
                 ["ObjCameraParallel"] = (go, elem) =>
                 {
                     float fovy = GetFloatWithMultiSetParam(elem, "Fovy");
                     float distance = GetFloatWithMultiSetParam(elem, "Distance");
+                    bool isControllable = GetBoolWithMultiSetParam(elem, "IsControllable");
+                    bool isCollision = GetBoolWithMultiSetParam(elem, "IsCollision");
                     
                     var comp = go.GetComponent<ObjCameraParallel>();
                     
@@ -237,6 +243,8 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                     var dataObj = dataField.GetValue(comp);
                     dataObj.GetType().GetField("fov", BindingFlags.Instance | BindingFlags.Public)?.SetValue(dataObj, fovy);
                     dataObj.GetType().GetField("distance", BindingFlags.Instance | BindingFlags.Public)?.SetValue(dataObj, distance);
+                    dataObj.GetType().GetField("allowRotation", BindingFlags.Instance | BindingFlags.Public)?.SetValue(dataObj, isControllable);
+                    dataObj.GetType().GetField("isCollision", BindingFlags.Instance | BindingFlags.Public)?.SetValue(dataObj, isCollision);
                     
                     float pitch = GetFloatWithMultiSetParam(elem, "Pitch");
                     float yaw = GetFloatWithMultiSetParam(elem, "Yaw");
@@ -250,6 +258,8 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                 {
                     float fovy = GetFloatWithMultiSetParam(elem, "Fovy");
                     float distance = GetFloatWithMultiSetParam(elem, "Distance");
+                    bool isControllable = GetBoolWithMultiSetParam(elem, "IsControllable");
+                    bool isCollision = GetBoolWithMultiSetParam(elem, "IsCollision");
                     long targetId = long.Parse(elem.Element("Target").Element("SetObjectID").Value, CultureInfo.InvariantCulture);
                     var comp = go.GetComponent<ObjCameraPoint>();
                     
@@ -257,6 +267,8 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                     var dataObj = dataField.GetValue(comp);
                     dataObj.GetType().GetField("fov", BindingFlags.Instance | BindingFlags.Public)?.SetValue(dataObj, fovy);
                     dataObj.GetType().GetField("distance", BindingFlags.Instance | BindingFlags.Public)?.SetValue(dataObj, distance);
+                    dataObj.GetType().GetField("allowRotation", BindingFlags.Instance | BindingFlags.Public)?.SetValue(dataObj, isControllable);
+                    dataObj.GetType().GetField("isCollision", BindingFlags.Instance | BindingFlags.Public)?.SetValue(dataObj, isCollision);
 
                     if (targetId != 0)
                     {

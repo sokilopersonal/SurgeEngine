@@ -6,39 +6,39 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
     public class MovingObject : MonoBehaviour
     {
         private List<Rigidbody> _bodies;
-        private Vector3 _previousPosition;
+        private Vector3 _lastPosition;
+        private Vector3 _velocity;
 
-        private void Start()
+        private void Awake()
         {
             _bodies = new List<Rigidbody>();
-            _previousPosition = transform.position;
+            _lastPosition = transform.position;
         }
 
         private void FixedUpdate()
         {
+            _velocity = (transform.position - _lastPosition) / Time.fixedDeltaTime;
+            _lastPosition = transform.position;
+
             if (_bodies.Count > 0)
             {
-                Vector3 delta = transform.position - _previousPosition;
                 foreach (var body in _bodies)
-                {
-                    body.MovePosition(body.position + delta);
-                }
+                    body.MovePosition(body.position + _velocity * Time.fixedDeltaTime);
             }
-
-            _previousPosition = transform.position;
         }
-        
+
         public void Add(Rigidbody body)
         {
             if (!_bodies.Contains(body))
                 _bodies.Add(body);
         }
-        
+
         public void Remove(Rigidbody body)
         {
             if (_bodies.Contains(body))
             {
                 _bodies.Remove(body);
+                body.linearVelocity += _velocity;
             }
         }
     }

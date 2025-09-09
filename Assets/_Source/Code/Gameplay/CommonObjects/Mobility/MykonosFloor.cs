@@ -17,7 +17,7 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
             _startPos = transform.position;
         }
 
-        private void Update()
+        private void FixedUpdate()
         {
             if (moveType == 2)
             {
