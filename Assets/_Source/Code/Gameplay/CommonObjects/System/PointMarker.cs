@@ -62,6 +62,7 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.System
             _character.Kinematics.Snap(transform.position, Vector3.up);
             _character.Model.root.transform.rotation = rotation;
             
+            _character.Camera.StateMachine.SetDirection(_character.transform.forward);
             _character.Camera.StateMachine.ClearVolumes();
             Physics.SyncTransforms();
             foreach (var volume in FindObjectsByType<ChangeCameraVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None))

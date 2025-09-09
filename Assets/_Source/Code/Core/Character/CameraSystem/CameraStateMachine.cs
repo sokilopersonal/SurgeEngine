@@ -195,7 +195,14 @@ namespace SurgeEngine._Source.Code.Core.Character.CameraSystem
 
         public void Load()
         {
-            ApplyTop();
+            if (VolumeCount == 0)
+            {
+                SetState<NewModernState>();
+            }
+            else
+            {
+                ApplyTop();
+            }
             
             if (CurrentState is CameraState state)
             {

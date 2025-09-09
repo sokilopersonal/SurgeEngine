@@ -7,7 +7,7 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.ChangeModes
     {
         [Tooltip("Prevents the player from running past the end of the path")]
         [SerializeField] protected bool isLimitEdge = true;
-        [SerializeField] protected float pathCorrectionForce = 1f;
+        [SerializeField, Range(0, 1)] protected float pathCorrectionForce = 1f;
     }
     
     public class ChangeMode3DData : ChangeModeData

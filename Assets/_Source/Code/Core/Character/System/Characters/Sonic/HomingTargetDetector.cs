@@ -90,10 +90,6 @@ namespace SurgeEngine._Source.Code.Core.Character.System.Characters.Sonic
                 }
                 
                 bool facing = Vector3.Dot(direction.normalized, characterTransform.forward) > 0.5f;
-                if (Debug.isDebugBuild)
-                {
-                    UGizmos.Linecast(origin, end, _character.Config.castLayer);
-                }
                 if (facing && !Physics.Linecast(origin, end, _character.Config.castLayer))
                 {
                     if (target.TryGetComponent(out HomingTarget homingTarget))

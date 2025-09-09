@@ -260,10 +260,8 @@ namespace SurgeEngine._Source.Code.Core.Character.System
         {
             if (PathForward != null)
             {
-                PathForward.Spline.Time += Vector3.Dot(Velocity, PathForward.Spline.EvaluateTangent()) * Time.fixedDeltaTime;
-
                 var force = PathForward.PathCorrectionForce;
-                if (force > 0)
+                if (force > 0 && Speed > 0.1f)
                 {
                     if (CheckForGround(out _))
                     {
@@ -274,9 +272,15 @@ namespace SurgeEngine._Source.Code.Core.Character.System
                         tg = sign * tg;
                     
                         var targetDir = tg.normalized * Velocity.magnitude;
-                        Rigidbody.linearVelocity = Vector3.Slerp(HorizontalVelocity, targetDir, force * Time.fixedDeltaTime) + VerticalVelocity;
+                        float speedFactor = Mathf.Clamp01(1f - HorizontalVelocity.magnitude / (_config.maxSpeed * 2f));
+                        float adjustedForce = force * speedFactor;
+                        var rotation = Quaternion.RotateTowards(Quaternion.LookRotation(HorizontalVelocity), 
+                            Quaternion.LookRotation(targetDir), adjustedForce * Mathf.Rad2Deg * Time.fixedDeltaTime);
+                        Rigidbody.linearVelocity = rotation * Vector3.forward * HorizontalVelocity.magnitude + VerticalVelocity;
                     }
                 }
+                
+                PathForward.Spline.Time += Vector3.Dot(Velocity, PathForward.Spline.EvaluateTangent()) * Time.fixedDeltaTime;
 
                 if (PathForward.IsLimitEdge)
                 {

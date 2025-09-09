@@ -181,8 +181,6 @@ namespace SurgeEngine._Source.Code.Core.Character.CameraSystem
 
         public void Load()
         {
-            StateMachine.SetDirection(character.transform.forward);
-            
             StateMachine.Load();
         }
 
