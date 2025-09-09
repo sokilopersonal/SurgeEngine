@@ -11,6 +11,7 @@ namespace SurgeEngine._Source.Editor
         private SerializedProperty _actorPrefabField;
         private SerializedProperty _spawnPointField;
         private SerializedProperty _hudPrefabField;
+        private SerializedProperty _pmScreenField;
         
         private void OnEnable()
         {
@@ -18,6 +19,7 @@ namespace SurgeEngine._Source.Editor
             _actorPrefabField = serializedObject.FindProperty("actorPrefab");
             _spawnPointField = serializedObject.FindProperty("spawnPoint");
             _hudPrefabField = serializedObject.FindProperty("hudPrefab");
+            _pmScreenField = serializedObject.FindProperty("pointMarkerLoadingScreenPrefab");
         }
 
         public override void OnInspectorGUI()
@@ -49,6 +51,7 @@ namespace SurgeEngine._Source.Editor
             }
             
             EditorGUILayout.PropertyField(_hudPrefabField);
+            EditorGUILayout.PropertyField(_pmScreenField);
 
             serializedObject.ApplyModifiedProperties();
         }

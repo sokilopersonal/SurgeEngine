@@ -3,6 +3,7 @@ using SurgeEngine._Source.Code.Core.Character.HUD;
 using SurgeEngine._Source.Code.Core.Character.System;
 using SurgeEngine._Source.Code.Gameplay.CommonObjects;
 using SurgeEngine._Source.Code.Gameplay.CommonObjects.System;
+using SurgeEngine._Source.Code.UI;
 using UnityEngine;
 using Zenject;
 
@@ -20,16 +21,20 @@ namespace SurgeEngine._Source.Code.Infrastructure.DI
         [Header("HUD")]
         [SerializeField] private CharacterStageHUD hudPrefab;
         
+        [Header("Point Marker")]
+        [SerializeField] private PointMarkerLoadingScreen pointMarkerLoadingScreenPrefab;
+        
         public override void InstallBindings()
         {
             SetupStage();
             SetupActor();
             SetupHUD();
+            SetupPointMarkerScreen();
         }
 
         private void SetupStage()
         {
-            Container.Bind<Stage>().FromInstance(stage).AsSingle().NonLazy();
+            Container.BindInstance(stage).AsSingle().NonLazy();
         }
 
         private void SetupActor()
@@ -46,7 +51,7 @@ namespace SurgeEngine._Source.Code.Infrastructure.DI
             data.StartTransform = spawnPoint.transform;
 
             var instance = Container.InstantiatePrefabForComponent<CharacterBase>(actorPrefab, data.StartTransform.position, data.StartTransform.rotation, null);
-            Container.Bind<CharacterBase>().FromInstance(instance).AsSingle().NonLazy();
+            Container.BindInstance(instance).AsSingle().NonLazy();
             var parent = instance.transform.parent;
             Quaternion par = parent.rotation;
             parent.rotation = Quaternion.identity;
@@ -61,6 +66,15 @@ namespace SurgeEngine._Source.Code.Infrastructure.DI
         {
             var instance = Container.InstantiatePrefabForComponent<CharacterStageHUD>(hudPrefab);
             Container.BindInstance(instance).AsSingle().NonLazy();
+        }
+
+        private void SetupPointMarkerScreen()
+        {
+            var instance = Container.InstantiatePrefabForComponent<PointMarkerLoadingScreen>(pointMarkerLoadingScreenPrefab);
+            Container.BindInstance(instance).AsSingle().NonLazy();
+
+            // Hide
+            // instance.gameObject.hideFlags = HideFlags.HideInHierarchy; 
         }
     }
 }

@@ -5,6 +5,7 @@ using SurgeEngine._Source.Code.Core.Character.States;
 using SurgeEngine._Source.Code.Core.Character.System;
 using SurgeEngine._Source.Code.Core.StateMachine.Base;
 using SurgeEngine._Source.Code.Infrastructure.Tools.Managers;
+using SurgeEngine._Source.Code.UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Zenject;
@@ -54,14 +55,11 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.System
             ObjectEvents.OnObjectTriggered += OnObjectTriggered;
 
             _character.StateMachine.OnStateAssign += OnActorState;
-            _character.Life.OnDied += OnCharacterDied;
         }
 
         private void OnDisable()
         {
             ObjectEvents.OnObjectTriggered -= OnObjectTriggered;
-            
-            _character.Life.OnDied -= OnCharacterDied;
         }
 
         private void OnActorState(FState obj)
@@ -69,27 +67,6 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.System
             if (_character.StateMachine.PreviousState is FStateStart)
             {
                 Data.State = StageState.Playing;
-            }
-        }
-
-        private void OnCharacterDied(CharacterBase obj)
-        {
-            StartCoroutine(LoadCurrentPointMarker());
-        }
-
-        private IEnumerator LoadCurrentPointMarker()
-        {
-            if (CurrentPointMarker != null)
-            {
-                yield return new WaitForSeconds(2f);
-                CurrentPointMarker.Load();
-                Data.Score = 0;
-                Data.RingCount = 0;
-            }
-            else
-            {
-                yield return new WaitForSeconds(1.75f);
-                SceneLoader.LoadGameScene(SceneManager.GetActiveScene().name);
             }
         }
 

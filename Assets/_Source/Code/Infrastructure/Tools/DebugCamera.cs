@@ -1,4 +1,5 @@
-﻿using SurgeEngine._Source.Code.Core.Character.HUD;
+﻿using System.Collections;
+using SurgeEngine._Source.Code.Core.Character.HUD;
 using SurgeEngine._Source.Code.Core.Character.System;
 using SurgeEngine._Source.Code.Infrastructure.Tools.Managers;
 using SurgeEngine._Source.Code.UI;
@@ -172,17 +173,29 @@ namespace SurgeEngine._Source.Code.Infrastructure.Tools
         {
             if (_active)
             {
-                _character.Kinematics.ResetVelocity();
-                _character.Kinematics.Set2DPath(null);
-                _character.Kinematics.SetForwardPath(null);
-                _character.Kinematics.SetDashPath(null);
+                IEnumerator Routine()
+                {
+                    float stored = Time.timeScale;
+                    Time.timeScale = 1;
+                    
+                    _character.Kinematics.ResetVelocity();
+                    _character.Kinematics.Set2DPath(null);
+                    _character.Kinematics.SetForwardPath(null);
+                    _character.Kinematics.SetDashPath(null);
 
-                _character.Flags.Clear();
+                    _character.Flags.Clear();
 
-                _character.Rigidbody.position = _camera.transform.position + Vector3.up * 0.5f + _camera.transform.forward * 5;
+                    _character.Rigidbody.position = _camera.transform.position + Vector3.up * 0.5f + _camera.transform.forward * 5;
+                    
+                    yield return new WaitForSecondsRealtime(0.02f);
+                    
+                    Time.timeScale = stored;
+                }
+
+                StartCoroutine(Routine());
             }
         }
-
+        
         private void OnTime(InputAction.CallbackContext obj)
         {
             if (_active)

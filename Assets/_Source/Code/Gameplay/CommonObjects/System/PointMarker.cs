@@ -15,12 +15,11 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.System
     {
         [SerializeField, Range(0.5f, 5f)] private float length = 2f;
         public float Length => length;
-
-        [SerializeField] private PointMarkerLoadingScreen loadingScreenPrefab;
+        
         [Inject] private CharacterBase _character;
 
         private EventReference _soundEvent;
-        private List<IPointMarkerLoader> _loaders = new List<IPointMarkerLoader>();
+        private List<IPointMarkerLoader> _loaders = new();
 
         private bool _triggered;
 
@@ -39,20 +38,12 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.System
             {
                 base.Contact(msg, context);
                 RuntimeManager.PlayOneShot(_soundEvent, transform.position);
-                _triggered = true; // We can't active the same marker twice
+                _triggered = true;
             }
         }
 
         public void Load()
         {
-            StartCoroutine(LoadRoutine());
-        }
-
-        private IEnumerator LoadRoutine()
-        {
-            var canvas = Instantiate(loadingScreenPrefab);
-            yield return canvas.Play();
-            
             Vector3 currentRotation = transform.rotation.eulerAngles;
             Vector3 newRotation = new Vector3(0f, currentRotation.y, 0f);
             Quaternion rotation = Quaternion.Euler(newRotation);
@@ -77,12 +68,7 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.System
             {
                 loader.Load();
             }
-
-            yield return canvas.Hide();
         }
-        
-        public void AddLoader(IPointMarkerLoader loader) => _loaders.Add(loader);
-        public void RemoveLoader(IPointMarkerLoader loader) => _loaders.Remove(loader);
     }
 
     public interface IPointMarkerLoader
