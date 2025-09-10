@@ -28,7 +28,6 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
             
             context.StateMachine.SetState<FStateGround>();
             
-            body.position = transform.position;
             body.rotation = Quaternion.LookRotation(transform.forward, transform.up);
             context.Model.root.rotation = body.rotation;
 
