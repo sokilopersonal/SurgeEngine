@@ -30,6 +30,7 @@ namespace SurgeEngine._Source.Code.Infrastructure.Tools
         private InputAction TeleportPlayerAction => playerInput.actions["Teleport"];
         private InputAction TimeAction => playerInput.actions["Time"];
         private InputAction SlowdownAction => playerInput.actions["Slowdown"];
+        private InputAction AccelerateAction => playerInput.actions["Accelerate"];
 
         [Inject] private CharacterBase _character;
         [Inject] private CharacterStageHUD _hud;
@@ -115,7 +116,7 @@ namespace SurgeEngine._Source.Code.Infrastructure.Tools
                 _currentSpeedMultiplier = 1f;
             }
 
-            var speedMultiplier = SlowdownAction.IsPressed() ? 0.5f : 1f;
+            var speedMultiplier = SlowdownAction.IsPressed() ? 0.5f : AccelerateAction.IsPressed() ? 3f : 1f;
             transform.position += dir * (speed * speedMultiplier * _currentSpeedMultiplier * Time.unscaledDeltaTime);
             if (VerticalInput > 0)
             {

@@ -6,6 +6,8 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.PhysicsObjects
 {
     public class DestroyedPiece : MonoBehaviour
     {
+        private static readonly int AlphaMult = Shader.PropertyToID("_AlphaMult");
+        
         [SerializeField] private float destroyTime = 15f;
         [SerializeField] private Rigidbody[] rigidbodies;
         [SerializeField] private Renderer[] meshes;
@@ -26,8 +28,11 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.PhysicsObjects
 
                 foreach (Material mat in mesh.sharedMaterials)
                 {
-                    float initialAlpha = mat.GetFloat("_AlphaMult");
-                    StartCoroutine(FadeOut(mat, initialAlpha));
+                    if (mat.HasProperty(AlphaMult))
+                    {
+                        float initialAlpha = mat.GetFloat(AlphaMult);
+                        StartCoroutine(FadeOut(mat, initialAlpha));
+                    }
                 }
             }
 
@@ -35,6 +40,7 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.PhysicsObjects
             {
                 piece.gameObject.layer = LayerMask.NameToLayer("BrokenPiece");
                 piece.interpolation = RigidbodyInterpolation.Interpolate;
+                piece.linearDamping = 1;
             }
 
             Destroy(gameObject, destroyTime + 0.25f);
