@@ -30,8 +30,6 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
                 foreach (var body in _bodies)
                     body.MovePosition(body.position + _velocity * Time.fixedDeltaTime);
             }
-            
-            UGizmos.DrawLine(transform.position, transform.position + _velocity, Color.red);
         }
 
         public void Add(Rigidbody body)

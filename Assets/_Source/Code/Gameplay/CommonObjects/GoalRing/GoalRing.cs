@@ -3,6 +3,7 @@ using SurgeEngine._Source.Code.Core.Character.States;
 using SurgeEngine._Source.Code.Core.Character.System;
 using SurgeEngine._Source.Code.Gameplay.CommonObjects.System;
 using SurgeEngine._Source.Code.Gameplay.UI;
+using SurgeEngine._Source.Code.UI;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering;
 using UnityEngine.Rendering.HighDefinition;
@@ -20,6 +21,8 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.GoalRing
 
         private bool _triggered;
 
+        [Inject] private PauseHandler _pauseHandler;
+        
         [Inject] private DiContainer _container;
 
         public override void Contact(Collider msg, CharacterBase context)
@@ -38,6 +41,7 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.GoalRing
                 
                 CurrentGoalScreen = Instantiate(goalRingScreen);
                 _container.InjectGameObject(CurrentGoalScreen.gameObject);
+                Destroy(_pauseHandler.gameObject);
                 
                 var stage = Stage.Instance;
                 
