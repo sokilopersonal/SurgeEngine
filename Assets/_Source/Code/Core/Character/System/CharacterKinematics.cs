@@ -261,7 +261,7 @@ namespace SurgeEngine._Source.Code.Core.Character.System
             if (PathForward != null)
             {
                 var force = PathForward.PathCorrectionForce;
-                if (force > 0 && Speed > 0.1f)
+                if (force > 0)
                 {
                     if (CheckForGround(out _))
                     {
@@ -274,9 +274,13 @@ namespace SurgeEngine._Source.Code.Core.Character.System
                         var targetDir = tg.normalized * Velocity.magnitude;
                         float speedFactor = Mathf.Clamp01(1f - HorizontalVelocity.magnitude / (_config.maxSpeed * 2f));
                         float adjustedForce = force * speedFactor;
-                        var rotation = Quaternion.RotateTowards(Quaternion.LookRotation(HorizontalVelocity), 
-                            Quaternion.LookRotation(targetDir), adjustedForce * Mathf.Rad2Deg * Time.fixedDeltaTime);
-                        Rigidbody.linearVelocity = rotation * Vector3.forward * HorizontalVelocity.magnitude + VerticalVelocity;
+
+                        if (HorizontalVelocity.magnitude > 0.1f)
+                        {
+                            var rotation = Quaternion.RotateTowards(Quaternion.LookRotation(HorizontalVelocity), 
+                                Quaternion.LookRotation(targetDir), adjustedForce * Mathf.Rad2Deg * Time.fixedDeltaTime);
+                            Rigidbody.linearVelocity = rotation * Vector3.forward * HorizontalVelocity.magnitude + VerticalVelocity;
+                        }
                     }
                 }
                 

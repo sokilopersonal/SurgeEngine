@@ -116,7 +116,7 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects
                 float currentLength = length * t;
 
                 var main = flame.main;
-                main.startSpeed = currentLength * 3;
+                main.startSpeed = currentLength * 2;
 
                 damageCollider.size = new Vector3(damageCollider.size.x, damageCollider.size.y, currentLength);
                 damageCollider.center = new Vector3(damageCollider.center.x, damageCollider.center.y, currentLength * 0.5f);
