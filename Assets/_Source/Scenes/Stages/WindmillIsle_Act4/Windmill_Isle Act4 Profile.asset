@@ -118,28 +118,6 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 0
   m_Version: 1
---- !u!114 &-1938810717825049006
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da5ab44aadfb1804db5fd470983ac1b8, type: 3}
-  m_Name: LiftGammaGain
-  m_EditorClassIdentifier: 
-  active: 0
-  lift:
-    m_OverrideState: 1
-    m_Value: {x: 0.95, y: 0.95, z: 1, w: -0.005}
-  gamma:
-    m_OverrideState: 0
-    m_Value: {x: 0.96, y: 0.96, z: 1, w: -0.04}
-  gain:
-    m_OverrideState: 1
-    m_Value: {x: 0.828346, y: 0.87196195, z: 1, w: 0.051112503}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -159,7 +137,6 @@ MonoBehaviour:
   - {fileID: 8833914425718981673}
   - {fileID: 2642939096983934950}
   - {fileID: -7572545758178807192}
-  - {fileID: -1938810717825049006}
   - {fileID: 1475733969342392375}
   - {fileID: -8269884727170198660}
 --- !u!114 &1475733969342392375
@@ -453,13 +430,13 @@ MonoBehaviour:
     m_Value: 1000
   baseHeight:
     m_OverrideState: 1
-    m_Value: 175
+    m_Value: 30
   maximumHeight:
     m_OverrideState: 0
     m_Value: 300
   meanFreePath:
     m_OverrideState: 1
-    m_Value: 6000
+    m_Value: 2500
   enableVolumetricFog:
     m_OverrideState: 1
     m_Value: 1
@@ -528,14 +505,14 @@ MonoBehaviour:
     m_OverrideState: 1
     m_Value: 13.5
   compensation:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 1
   limitMin:
     m_OverrideState: 1
-    m_Value: 11.5
+    m_Value: 10
   limitMax:
     m_OverrideState: 1
-    m_Value: 13
+    m_Value: 14
   curveMap:
     m_OverrideState: 1
     m_Value:
@@ -615,14 +592,14 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   adaptationMode:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 1
   adaptationSpeedDarkToLight:
-    m_OverrideState: 1
-    m_Value: 1
+    m_OverrideState: 0
+    m_Value: 2
   adaptationSpeedLightToDark:
-    m_OverrideState: 1
-    m_Value: 0.5
+    m_OverrideState: 0
+    m_Value: 1
   weightTextureMask:
     m_OverrideState: 1
     m_Value: {fileID: 0}
@@ -634,7 +611,7 @@ MonoBehaviour:
     m_Value: 0
   targetMidGray:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 2
   centerAroundExposureTarget:
     m_OverrideState: 1
     m_Value: 0
