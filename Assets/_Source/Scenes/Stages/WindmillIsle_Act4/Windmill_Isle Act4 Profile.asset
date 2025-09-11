@@ -227,10 +227,10 @@ MonoBehaviour:
     m_Value: 0.00001
   farFocusStart:
     m_OverrideState: 1
-    m_Value: 200
+    m_Value: 700
   farFocusEnd:
     m_OverrideState: 1
-    m_Value: 400
+    m_Value: 800
   m_NearSampleCount:
     m_OverrideState: 0
     m_Value: 5
@@ -242,15 +242,15 @@ MonoBehaviour:
     m_Value: 4
   m_FarMaxBlur:
     m_OverrideState: 1
-    m_Value: 2
+    m_Value: 1.5
   m_Resolution:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 2
   m_HighQualityFiltering:
-    m_OverrideState: 0
-    m_Value: 1
+    m_OverrideState: 1
+    m_Value: 0
   m_PhysicallyBased:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 0
   m_AdaptiveSamplingWeight:
     m_OverrideState: 0
@@ -259,7 +259,7 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 0
   coCStabilization:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 0
 --- !u!114 &3563020459224904894
 MonoBehaviour:
@@ -506,7 +506,7 @@ MonoBehaviour:
     m_Value: 13.5
   compensation:
     m_OverrideState: 0
-    m_Value: 1
+    m_Value: -0.5
   limitMin:
     m_OverrideState: 1
     m_Value: 10
@@ -611,7 +611,7 @@ MonoBehaviour:
     m_Value: 0
   targetMidGray:
     m_OverrideState: 1
-    m_Value: 2
+    m_Value: 0
   centerAroundExposureTarget:
     m_OverrideState: 1
     m_Value: 0
