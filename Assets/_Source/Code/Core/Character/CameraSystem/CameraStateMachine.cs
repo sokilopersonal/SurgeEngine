@@ -198,6 +198,7 @@ namespace SurgeEngine._Source.Code.Core.Character.CameraSystem
             if (VolumeCount == 0)
             {
                 SetState<NewModernState>();
+                _lastTop = null;
             }
             else
             {

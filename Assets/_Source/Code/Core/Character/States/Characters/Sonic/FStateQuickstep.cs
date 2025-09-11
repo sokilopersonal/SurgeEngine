@@ -127,6 +127,7 @@ namespace SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic
             {
                 SplineUtility.GetNearestPoint(spline, localPos, out _, out var t);
                 Vector3 nearestWorld = container.transform.TransformPoint(spline.EvaluatePosition(t));
+                nearestWorld.y = Rigidbody.position.y;
                 Vector3 toNearest = nearestWorld - worldPos;
                 if (Vector3.Dot(toNearest, rightAxis) * dirSign <= 0f) continue;
                 float dSqr = toNearest.sqrMagnitude;
@@ -143,6 +144,7 @@ namespace SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic
 
             _snapStartPos = worldPos;
             _snapTargetPos = container.transform.TransformPoint(bestSpline.EvaluatePosition(bestT));
+            _snapTargetPos.y = Rigidbody.position.y;
             _snapTangent = container.transform.TransformDirection(bestSpline.EvaluateTangent(bestT));
             _snapDot = Vector3.Dot(Rigidbody.transform.forward, _snapTangent);
             
