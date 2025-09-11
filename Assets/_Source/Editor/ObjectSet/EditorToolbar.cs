@@ -19,12 +19,19 @@ namespace SurgeEngine._Source.Editor.ObjectSet
             
             GUILayout.BeginHorizontal();
             EditorGUILayout.LabelField("Target FPS:", GUILayout.Width(70));
-            int fps = EditorGUILayout.IntSlider("", Application.targetFrameRate, 30, 120, GUILayout.Width(200));
+            int fps = EditorGUILayout.IntSlider("", Application.targetFrameRate, 30, 120, GUILayout.Width(125));
+            EditorGUILayout.LabelField("Time scale:", GUILayout.Width(70));
+            float time = EditorGUILayout.Slider("", Time.timeScale, 0, 1, GUILayout.Width(125));
             if (Application.isPlaying)
             {
                 if (fps != Application.targetFrameRate)
                 {
                     Application.targetFrameRate = fps;
+                }
+
+                if (time != Time.timeScale)
+                {
+                    Time.timeScale = time;
                 }
             }
             GUILayout.EndHorizontal();
@@ -43,9 +50,6 @@ namespace SurgeEngine._Source.Editor.ObjectSet
         private static void OnRightToolbarGUI()
         {
             GUILayout.FlexibleSpace();
-
-            
-            
         }
     }
 }

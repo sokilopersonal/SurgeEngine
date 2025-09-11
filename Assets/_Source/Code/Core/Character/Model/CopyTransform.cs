@@ -1,14 +1,15 @@
+using System;
 using UnityEngine;
 
 namespace SurgeEngine._Source.Code.Core.Character.Model
 {
     public class CopyTransform : MonoBehaviour
     {
-        [SerializeField] Transform target;
-        void Update()
+        [SerializeField] private Transform target;
+
+        private void Awake()
         {
-            transform.position = target.position;
-            transform.rotation = target.rotation;
+            transform.SetParent(target, false);
         }
     }
 }
