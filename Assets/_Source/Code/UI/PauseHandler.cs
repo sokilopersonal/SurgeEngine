@@ -112,7 +112,7 @@ namespace SurgeEngine._Source.Code.UI
             
             if (context.Life.IsDead) return;
             
-            if (Count > 1 && Active)
+            if (Count > 1 && Active && obj.control.device is Keyboard)
             {
                 return;
             }

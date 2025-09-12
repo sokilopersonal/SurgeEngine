@@ -170,7 +170,7 @@ MonoBehaviour:
       useMipBias: 1
       advancedUpscalersByPriority: 0001
       DLSSPerfQualitySetting: 2
-      DLSSInjectionPoint: 0
+      DLSSInjectionPoint: 1
       TAAUInjectionPoint: 0
       STPInjectionPoint: 0
       defaultInjectionPoint: 0
@@ -180,7 +180,7 @@ MonoBehaviour:
       FSR2Sharpness: 0
       FSR2UseOptimalSettings: 0
       FSR2QualitySetting: 0
-      FSR2InjectionPoint: 0
+      FSR2InjectionPoint: 1
       fsrOverrideSharpness: 0
       fsrSharpness: 1
       maxPercentage: 100
@@ -222,7 +222,7 @@ MonoBehaviour:
       - 0.75
       - 2
       LimitManualRangeNearBlur: 000000
-      MotionBlurSampleCount: 020000000400000006000000
+      MotionBlurSampleCount: 04000000080000000c000000
       BloomRes: 040000000200000002000000
       BloomHighQualityFiltering: 000101
       BloomHighQualityPrefiltering: 000001
@@ -244,11 +244,11 @@ MonoBehaviour:
       m_SchemaId:
         m_Id: With3Levels
     lightingQualitySettings:
-      AOStepCount: 02000000040000000c000000
+      AOStepCount: 020000000400000006000000
       AOFullRes: 000101
-      AOMaximumRadiusPixels: 400000008000000096000000
+      AOMaximumRadiusPixels: 640000006e00000078000000
       AOBilateralUpsample: 010101
-      AODirectionCount: 020000000200000003000000
+      AODirectionCount: 020000000200000002000000
       ContactShadowSampleCount: 040000000800000010000000
       SSRMaxRaySteps: 100000002000000080000000
       SSGIRaySteps: 0c0000002000000040000000
