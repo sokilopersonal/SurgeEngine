@@ -49,8 +49,15 @@ namespace SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic
             }
             else 
             {
-                bool snapped = SnapToSpline();
-                if (!snapped)
+                if (IsRun)
+                {
+                    bool snapped = SnapToSpline();
+                    if (!snapped)
+                    {
+                        SetSideVelocity(sideDir);
+                    }
+                }
+                else
                 {
                     SetSideVelocity(sideDir);
                 }
@@ -148,7 +155,6 @@ namespace SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic
             _snapTangent = container.transform.TransformDirection(bestSpline.EvaluateTangent(bestT));
             _snapDot = Vector3.Dot(Rigidbody.transform.forward, _snapTangent);
             
-            Debug.DrawLine(worldPos, _snapTargetPos, Color.red, 10);
             _snapVelocity = Kinematics.Velocity;
             _timer = 0;
             _isSnapping = true;
@@ -170,6 +176,13 @@ namespace SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic
             }
             else
             {
+                if (Kinematics.PathDash != null)
+                {
+                    float speed = _config.runForce;
+                    var sideDir = _direction == QuickstepDirection.Left ? -speed : speed;
+                    SetSideVelocity(sideDir);
+                }
+                
                 StateMachine.SetState<FStateAir>();
             }
         }
