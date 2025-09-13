@@ -167,11 +167,11 @@ MonoBehaviour:
       bufferFormat: 74
     dynamicResolutionSettings:
       enabled: 1
-      useMipBias: 1
+      useMipBias: 0
       advancedUpscalersByPriority: 0001
       DLSSPerfQualitySetting: 2
       DLSSInjectionPoint: 1
-      TAAUInjectionPoint: 0
+      TAAUInjectionPoint: 1
       STPInjectionPoint: 0
       defaultInjectionPoint: 0
       DLSSUseOptimalSettings: 0
@@ -184,7 +184,7 @@ MonoBehaviour:
       fsrOverrideSharpness: 0
       fsrSharpness: 1
       maxPercentage: 100
-      minPercentage: 5
+      minPercentage: 33
       dynResType: 1
       upsampleFilter: 5
       forceResolution: 0

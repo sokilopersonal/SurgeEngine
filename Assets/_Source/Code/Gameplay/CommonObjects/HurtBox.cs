@@ -1,7 +1,5 @@
 ﻿using System;
 using SurgeEngine._Source.Code.Gameplay.CommonObjects.Interfaces;
-using SurgeEngine._Source.Code.Infrastructure.Custom.Extensions;
-using UGizmo;
 using UnityEngine;
 
 namespace SurgeEngine._Source.Code.Gameplay.CommonObjects
@@ -25,11 +23,6 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects
             int mask = GetMask(target);
             var transformedOffset = transform.TransformVector(offset);
             var hits = Physics.OverlapBox(transform.position + transformedOffset, size, transform.rotation, mask);
-
-            if (Debug.isDebugBuild)
-            {
-                UGizmos.DrawWireCube(transform.position + transformedOffset, transform.rotation, size, Color.red);
-            }
 
             foreach (var hit in hits)
             {

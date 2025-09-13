@@ -2,7 +2,7 @@
 using SurgeEngine._Source.Code.Gameplay.CommonObjects;
 using SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility.Rails;
 using SurgeEngine._Source.Code.Infrastructure.Config.SonicSpecific;
-using UGizmo;
+
 using UnityEngine;
 using UnityEngine.Splines;
 
@@ -49,11 +49,6 @@ namespace SurgeEngine._Source.Code.Core.Character.System.Characters.Sonic
             Collider[] hits = 
                 Physics.OverlapBox(finalOrigin, 
                     size, orientation, mask, QueryTriggerInteraction.Collide);
-
-            if (Debug.isDebugBuild)
-            {
-                UGizmos.DrawWireCube(finalOrigin, orientation, size, Color.green);
-            }
             
             HomingTarget closestTarget = null;
             float closestDistance = float.MaxValue;
