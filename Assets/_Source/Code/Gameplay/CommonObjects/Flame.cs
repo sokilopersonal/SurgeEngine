@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using FMOD.Studio;
+using FMODUnity;
 using UnityEngine;
 
 namespace SurgeEngine._Source.Code.Gameplay.CommonObjects
@@ -16,12 +18,19 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects
         [SerializeField] private List<Flame> multiSetParam = new List<Flame>();
         [SerializeField] private BoxCollider damageCollider;
         [SerializeField] private ParticleSystem flame;
+        [SerializeField] private EventReference flameSound;
+        [SerializeField] private EventReference flameLoopSound;
+
+        private EventInstance _flameLoopInstance;
         
         private Coroutine _cycleRoutine;
 
         private void Awake()
         {
             damageCollider.isTrigger = true;
+            
+            _flameLoopInstance = RuntimeManager.CreateInstance(flameLoopSound);
+            _flameLoopInstance.set3DAttributes(gameObject.To3DAttributes());
 
             if (type != 2)
             {
@@ -39,6 +48,8 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects
         {
             if (active)
             {
+                RuntimeManager.PlayOneShot(flameSound, transform.position);
+                
                 if (_cycleRoutine != null)
                 {
                     StopCoroutine(_cycleRoutine);
@@ -79,6 +90,8 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects
         {
             yield return ScaleFlame(0f, 1f, appearTime);
             
+            _flameLoopInstance.start();
+            
             damageCollider.enabled = true;
             damageCollider.size = new Vector3(damageCollider.size.x, damageCollider.size.y, length);
             damageCollider.center = new Vector3(damageCollider.center.x, damageCollider.center.y, length * 0.5f);
@@ -94,8 +107,10 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects
             while (true)
             {
                 yield return ScaleFlame(0f, 1f, appearTime);
+                _flameLoopInstance.start();
                 yield return new WaitForSeconds(onTime);
                 yield return ScaleFlame(1f, 0f, appearTime);
+                _flameLoopInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
                 yield return new WaitForSeconds(offTime);
             }
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using FMODUnity;
 using SurgeEngine._Source.Code.Gameplay.CommonObjects.System;
 using UnityEngine;
 
@@ -14,6 +15,7 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
         [SerializeField] private float onFloorTime = 2f;
         [SerializeField] private float resetTime = 5f;
         [SerializeField] private Transform model;
+        [SerializeField] private EventReference fallStepSound;
         
         private Vector3 _startPos;
         
@@ -66,7 +68,11 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
 
                 if (_fallTimer > onFloorTime)
                 {
-                    _triggeredFall = true;
+                    if (!_triggeredFall)
+                    {
+                        _triggeredFall = true;
+                        RuntimeManager.PlayOneShot(fallStepSound, transform.position);
+                    }
                 }
                 else
                 {

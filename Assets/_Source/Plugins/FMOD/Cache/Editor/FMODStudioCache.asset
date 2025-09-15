@@ -285,7 +285,7 @@ MonoBehaviour:
   Path: FMOD/SurgeEngine/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638923993356761410
+  lastModified: 638935326555559167
   FileSizes:
   - Name: Desktop
     Value: 4756
@@ -479,6 +479,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 270
+--- !u!114 &-6502490567967731815
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/CommonObjects/FlameLoop
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/CommonObjects/FlameLoop
+  Guid:
+    Data1: 1684552687
+    Data2: 1267875805
+    Data3: -440810083
+    Data4: 668631419
+  Banks:
+  - {fileID: 2805792623226039733}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 50
+  Length: 1824
 --- !u!114 &-6414497426314280145
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1004,10 +1031,10 @@ MonoBehaviour:
   Path: FMOD/SurgeEngine/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638923993356776470
+  lastModified: 638935326555573886
   FileSizes:
   - Name: Desktop
-    Value: 4944
+    Value: 5070
   Exists: 1
 --- !u!114 &-3064395595488222742
 MonoBehaviour:
@@ -1222,6 +1249,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 1500
+--- !u!114 &-1324826506183163421
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/CommonObjects/PlatformFall
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/CommonObjects/PlatformFall
+  Guid:
+    Data1: -685476706
+    Data2: 1248017937
+    Data3: -178357620
+    Data4: 1457705538
+  Banks:
+  - {fileID: 2805792623226039733}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 40
+  Length: 1578
 --- !u!114 &-1280279786747999990
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1479,6 +1533,9 @@ MonoBehaviour:
   - {fileID: -5142325492098256626}
   - {fileID: -7831467810630614000}
   - {fileID: 693966658188872067}
+  - {fileID: 9195379662829197533}
+  - {fileID: -6502490567967731815}
+  - {fileID: -1324826506183163421}
   EditorParameters:
   - {fileID: 7205006369947406295}
   - {fileID: -5359562392401140572}
@@ -1491,7 +1548,7 @@ MonoBehaviour:
   StringsBanks:
   - {fileID: -3163533322277861223}
   cacheVersion: 131849
-  cacheTime: 638923994524739809
+  cacheTime: 638935330129516927
   SerializableEventsDict:
   - key: event:/UI/Line
     index: 0
@@ -1637,6 +1694,28 @@ MonoBehaviour:
     index: 70
   - key: event:/Characters/Sonic/Start/Start_01
     index: 71
+  - key: event:/Music/ApotosDayHUD
+    index: 72
+  - key: event:/CommonObjects/ObjectPhysics/Potbig
+    index: 73
+  - key: event:/Music/DevStage
+    index: 74
+  - key: event:/Music/StageClear
+    index: 75
+  - key: event:/Music/Music
+    index: 76
+  - key: event:/Music/GameLand
+    index: 77
+  - key: event:/Music/Windmill_Isle
+    index: 78
+  - key: event:/Music/UR_InstallerOST
+    index: 79
+  - key: event:/CommonObjects/FlameS
+    index: 80
+  - key: event:/CommonObjects/FlameLoop
+    index: 81
+  - key: event:/CommonObjects/PlatformFall
+    index: 82
 --- !u!114 &28076501642241423
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2002,10 +2081,10 @@ MonoBehaviour:
   Path: FMOD/SurgeEngine/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 638923994524739809
+  lastModified: 638935330129516927
   FileSizes:
   - Name: Desktop
-    Value: 1499520
+    Value: 1552352
   Exists: 1
 --- !u!114 &2961646770365126559
 MonoBehaviour:
@@ -2749,3 +2828,30 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 1226
+--- !u!114 &9195379662829197533
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/CommonObjects/FlameS
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/CommonObjects/FlameS
+  Guid:
+    Data1: 775814286
+    Data2: 1309514405
+    Data3: -791672671
+    Data4: 510462227
+  Banks:
+  - {fileID: 2805792623226039733}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 5
+  MaxDistance: 100
+  Length: 2270
