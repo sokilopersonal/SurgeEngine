@@ -46,8 +46,7 @@ namespace SurgeEngine._Source.Code.Core.Character.System.Characters.Sonic
 
             Vector3 finalOrigin = origin + dir * maxDistance / 2;
             Quaternion orientation = Quaternion.LookRotation(dir, Vector3.up);
-            Collider[] hits = 
-                Physics.OverlapBox(finalOrigin, 
+            Collider[] hits = Physics.OverlapBox(finalOrigin, 
                     size, orientation, mask, QueryTriggerInteraction.Collide);
             
             HomingTarget closestTarget = null;
@@ -77,11 +76,8 @@ namespace SurgeEngine._Source.Code.Core.Character.System.Characters.Sonic
                     Vector3 endWorldPos = rail.transform.TransformPoint(endTargetPos);
                     railTarget.transform.position = Vector3.Lerp(railTarget.transform.position, endWorldPos, 32 * Time.fixedDeltaTime);
                     
-                    if (distance < closestDistance)
-                    {
-                        closestTarget = railTarget;
-                        closestDistance = distance;
-                    }
+                    closestTarget = railTarget;
+                    closestDistance = Vector3.Distance(origin, railTarget.transform.position);
                 }
                 
                 bool facing = Vector3.Dot(direction.normalized, characterTransform.forward) > 0.5f;
@@ -95,6 +91,10 @@ namespace SurgeEngine._Source.Code.Core.Character.System.Characters.Sonic
                             closestDistance = distance;
                         }
                     }
+                }
+                else
+                {
+                    closestTarget = null;
                 }
             }
             
