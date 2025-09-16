@@ -35,31 +35,36 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.PhysicsObjects
 
         private BoxCollider _col;
 
-        private bool _hidden = false;
+        private bool _initialized;
+        private bool _hidden;
         private float _timer;
-
-        private void Awake()
+        
+        private void Initialize()
         {
-            foreach (Transform pipe in transform.Find("pipes"))
-                _pipes.Add(pipe);
+            if (!_initialized)
+            {
+                _initialized = true;
+                foreach (Transform pipe in transform.Find("pipes"))
+                    _pipes.Add(pipe);
 
-            foreach (Transform joint in transform.Find("joints"))
-                _joints.Add(joint);
+                foreach (Transform joint in transform.Find("joints"))
+                    _joints.Add(joint);
 
-            _lightBlock = transform.Find("lightBlock");
+                _lightBlock = transform.Find("lightBlock");
 
-            _col = GetComponent<BoxCollider>();
-            _lightMaterial = new Material(_lightBlock.GetComponent<MeshRenderer>().sharedMaterial);
-            _lightBlock.GetComponent<MeshRenderer>().sharedMaterial = _lightMaterial;
+                _col = GetComponent<BoxCollider>();
+                _lightMaterial = new Material(_lightBlock.GetComponent<MeshRenderer>().sharedMaterial);
+                _lightBlock.GetComponent<MeshRenderer>().sharedMaterial = _lightMaterial;
 
-            _hidden = startHidden;
+                _hidden = startHidden;
 
-            if (_hidden)
-                Hide();
-            else
-                Show();
+                if (_hidden)
+                    Hide();
+                else
+                    Show();
 
-            VisualUpdate();
+                VisualUpdate();
+            }
         }
 
         private void VisualUpdate()
@@ -68,20 +73,18 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.PhysicsObjects
             Vector3 halfSize = size * 0.5f;
 
             // Vertex positions relative to the origin
-            Vector3[] vertices = new Vector3[]
-            {
-                new Vector3(-halfSize.x, -halfSize.y, -halfSize.z), // Bottom-left-back
-                new Vector3( halfSize.x, -halfSize.y, -halfSize.z), // Bottom-right-back
-                new Vector3(-halfSize.x,  halfSize.y, -halfSize.z), // Top-left-back
-                new Vector3( halfSize.x,  halfSize.y, -halfSize.z), // Top-right-back
-                new Vector3(-halfSize.x, -halfSize.y,  halfSize.z), // Bottom-left-front
-                new Vector3( halfSize.x, -halfSize.y,  halfSize.z), // Bottom-right-front
-                new Vector3(-halfSize.x,  halfSize.y,  halfSize.z), // Top-left-front
-                new Vector3( halfSize.x,  halfSize.y,  halfSize.z)  // Top-right-front
+            Vector3[] vertices = {
+                new(-halfSize.x, -halfSize.y, -halfSize.z), // Bottom-left-back
+                new( halfSize.x, -halfSize.y, -halfSize.z), // Bottom-right-back
+                new(-halfSize.x,  halfSize.y, -halfSize.z), // Top-left-back
+                new( halfSize.x,  halfSize.y, -halfSize.z), // Top-right-back
+                new(-halfSize.x, -halfSize.y,  halfSize.z), // Bottom-left-front
+                new( halfSize.x, -halfSize.y,  halfSize.z), // Bottom-right-front
+                new(-halfSize.x,  halfSize.y,  halfSize.z), // Top-left-front
+                new( halfSize.x,  halfSize.y,  halfSize.z)  // Top-right-front
             };
 
-            float[] pipeLengths = new float[]
-            {
+            float[] pipeLengths = {
                 Vector3.Distance(vertices[0], vertices[1]),
                 Vector3.Distance(vertices[1], vertices[5]),
                 Vector3.Distance(vertices[2], vertices[3]),
@@ -132,6 +135,8 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.PhysicsObjects
 
         private void Update()
         {
+            Initialize();
+            
             if (alternate && Application.isPlaying)
             {
                 _timer += Time.deltaTime;
@@ -182,8 +187,6 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.PhysicsObjects
             if (_lightMaterial == null)
                 return;
             
-            Debug.Log("1");
-
             float offset = 0;
             DOTween.To(() => offset, x => offset = x, -0.5f, 0.5f).SetEase(Ease.OutSine).OnUpdate(() =>
             {
