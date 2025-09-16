@@ -77,12 +77,19 @@ namespace SurgeEngine._Source.Code.Core.Character.States
             }
             else
             {
+                if (_time >= _config.jumpMaxShortTime)
+                {
+                    horizontal *= Mathf.Exp(-_config.jumpDrag * dt);
+                    Rigidbody.linearVelocity = horizontal + vertical;
+                }
+                
                 if (Rigidbody.linearVelocity.y > 0f)
                 {
-                    vertical.y /= 1.04f;
+                    vertical.y /= 1.04f; 
                     Rigidbody.linearVelocity = horizontal + vertical;
                 }
             }
+            
             
             if (character.Animation.StateAnimator.GetCurrentAnimationState() == "Ball" 
                 && HurtBox.CreateAttached(character, character.transform, new Vector3(0f, -0.45f, 0f), new Vector3(0.6f, 0.6f, 0.6f), 

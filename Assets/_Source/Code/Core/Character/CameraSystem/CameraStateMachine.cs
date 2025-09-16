@@ -28,6 +28,7 @@ namespace SurgeEngine._Source.Code.Core.Character.CameraSystem
         private Vector3 _actorPosition;
 
         public PanData CurrentData { get; set; }
+        public float BlendFactor => _blendFactor;
         private float _blendFactor;
         private float _interpolatedBlendFactor;
         

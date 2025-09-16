@@ -56,6 +56,9 @@ namespace SurgeEngine._Source.Code.Core.Character.CameraSystem.Pans
             base.OnEnter();
 
             StateFOV = 55f;
+
+            _pitchAuto = 0;
+            _yawAuto = 0;
             
             ModernSetup();
         }
@@ -201,7 +204,7 @@ namespace SurgeEngine._Source.Code.Core.Character.CameraSystem.Pans
             float dot = Vector3.Dot(Vector3.Cross(_stateMachine.Transform.right, Vector3.up), Character.transform.forward);
             if (dot > -0.95f)
             {
-                _yawAuto = angle * multiplier;
+                _yawAuto = angle * multiplier * _stateMachine.BlendFactor;
             }
         }
 
