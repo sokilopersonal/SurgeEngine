@@ -10,10 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 2456151525592967584}
   - component: {fileID: 888096088169661071}
-  - component: {fileID: 6497409939340660902}
   - component: {fileID: 5828909329531261166}
   - component: {fileID: 8700610860562053351}
   - component: {fileID: 8613770001048832797}
+  - component: {fileID: 2022245767826829183}
   m_Layer: 3
   m_Name: '- Physics'
   m_TagString: Untagged
@@ -71,29 +71,6 @@ MonoBehaviour:
   quickstepConfig: {fileID: 11400000, guid: c647c84618c165449a31b694d78eba22, type: 2}
   crawlConfig: {fileID: 11400000, guid: 6a0b92f06cecb1947aba52f93c682421, type: 2}
   sweepKickConfig: {fileID: 11400000, guid: 1ceb257673b4401468d8a7299d58b92d, type: 2}
---- !u!136 &6497409939340660902
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 100729958831981340}
-  m_Material: {fileID: 13400000, guid: 17c9f157544977f4c964eee948c35956, type: 2}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.2
-  m_Height: 0.8
-  m_Direction: 1
-  m_Center: {x: 0, y: -0.35, z: 0}
 --- !u!54 &5828909329531261166
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -152,6 +129,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SurgeEngine._Source.Code.Core.Character.System.Characters.Sonic.HomingTargetDetector
   config: {fileID: 11400000, guid: 26d8aa117f8802940838f20a3156f005, type: 2}
   size: {x: 7, y: 7, z: 14}
+--- !u!136 &2022245767826829183
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100729958831981340}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.22716683
+  m_Height: 0.77791554
+  m_Direction: 1
+  m_Center: {x: 0, y: -0.31000093, z: 0}
 --- !u!1 &104865943220000739
 GameObject:
   m_ObjectHideFlags: 0
@@ -360,6 +360,7 @@ MonoBehaviour:
   cullingMask:
     serializedVersion: 2
     m_Bits: 1
+  stateAnimator: {fileID: 4489472361400553381}
 --- !u!114 &420970829371151369
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6081,7 +6082,7 @@ Transform:
   m_GameObject: {fileID: 930709539082581898}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -11, y: 0, z: -36}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -17241,7 +17242,7 @@ MonoBehaviour:
   root: {fileID: 4638284470361493281}
   modelTransform: {fileID: 4638284470361493281}
   verticalOffset: -1
-  collision: {fileID: 6497409939340660902}
+  collision: {fileID: 2022245767826829183}
   horizontalRotationSpeed: 20
   verticalRotationSpeed: 12
   flipAngle: 360

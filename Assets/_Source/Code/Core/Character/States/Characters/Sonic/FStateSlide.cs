@@ -13,14 +13,12 @@ namespace SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic
         public float Timeout { get; set; }
         
         private readonly SlideConfig _config;
-        private readonly QuickStepConfig _quickstepConfig;
 
         private bool _released;
         
         public FStateSlide(CharacterBase owner) : base(owner)
         {
             owner.TryGetConfig(out _config);
-            owner.TryGetConfig(out _quickstepConfig);
         }
 
         public override void OnEnter()
@@ -28,7 +26,6 @@ namespace SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic
             base.OnEnter();
 
             Timeout = 0.25f;
-            StateMachine.GetSubState<FBoost>().Active = false;
             _released = false;
             
             Model.SetLowerCollision();
@@ -96,14 +93,18 @@ namespace SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic
             var config = character.Config;
             float distance = config.castDistance *
                              config.castDistanceCurve.Evaluate(Kinematics.Speed / config.topSpeed);
+            bool predictedGround = Kinematics.CheckForPredictedGround(dt, distance, 6);
             if (Kinematics.CheckForGround(out RaycastHit hit, castDistance: distance))
             {
                 Kinematics.Point = hit.point;
-                Kinematics.Normal = hit.normal;
-                Kinematics.Snap(hit.point, hit.normal);
+
+                if (predictedGround) Kinematics.RotateSnapNormal(hit.normal);
+                else StateMachine.SetState<FStateSlip>();
+                
+                Kinematics.Snap(hit.point, Kinematics.Normal);
                 
                 Rigidbody.linearVelocity = Vector3.MoveTowards(Rigidbody.linearVelocity, Vector3.zero, _config.deceleration * dt);
-                Rigidbody.linearVelocity = Vector3.ProjectOnPlane(Rigidbody.linearVelocity, hit.normal);
+                Rigidbody.linearVelocity = Vector3.ProjectOnPlane(Rigidbody.linearVelocity, Kinematics.Normal);
                 Model.RotateBody(hit.normal);
                 
                 Kinematics.SlopePhysics();

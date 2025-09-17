@@ -23,6 +23,7 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.System
         public PointMarker CurrentPointMarker { get; private set; }
 
         [Inject] private CharacterBase _character;
+        [Inject] private VolumeManager _volumeManager;
 
         [Inject]
         private void Initialize(Stage stage)
@@ -32,6 +33,8 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.System
         
         private void Awake()
         {
+            _volumeManager.ToggleMenuDistortion(false);
+            
             if (data == null)
             {
                 data = new StageData();

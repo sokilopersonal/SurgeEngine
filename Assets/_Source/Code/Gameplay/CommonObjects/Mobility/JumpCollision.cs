@@ -1,4 +1,5 @@
-﻿using SurgeEngine._Source.Code.Core.Character.System;
+﻿using SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic.SubStates;
+using SurgeEngine._Source.Code.Core.Character.System;
 using SurgeEngine._Source.Code.Infrastructure.Custom;
 using SurgeEngine._Source.Code.Infrastructure.Custom.Drawers;
 using SurgeEngine._Source.Code.Infrastructure.Tools;
@@ -24,7 +25,12 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
             base.Contact(msg, context);
             
             float dot = Vector3.Dot(context.transform.forward, transform.forward);
-            float impulse = SonicTools.IsBoost() ? impulseOnBoost : impulseOnNormal;
+            float impulse = impulseOnNormal;
+            if (context.StateMachine.GetState(out FBoost boost))
+            {
+                if (boost.Active)
+                    impulse = impulseOnBoost;
+            }
             
             if (dot > 0) // Make sure the player is facing the same direction as the jump collision
             {
@@ -32,16 +38,13 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
                 {
                     if (impulse > 0)
                     {
-                        var ray = new Ray(context.transform.position, -context.Kinematics.Normal);
-                        if (groundOnly && Physics.SphereCast(ray, 0.5f, out _, context.Config.castDistance, context.Config.castLayer) || !groundOnly)
+                        if (groundOnly && !context.Kinematics.InAir() || !groundOnly)
                         {
                             Rigidbody body = context.Kinematics.Rigidbody;
-                            body.position += Vector3.up * 0.2f;
-                            
+                            body.position += transform.up;
+
                             Vector3 force = Utility.GetImpulseWithPitch(transform.forward, -transform.right, pitch, impulse);
-                            context.Kinematics.ResetVelocity();
-                            body.AddForce(force, ForceMode.Impulse);
-                            body.linearVelocity = Vector3.ClampMagnitude(body.linearVelocity, impulse);
+                            body.linearVelocity = force;
                             
                             context.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, outOfControl));
                         }
@@ -52,8 +55,8 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
 
         private void OnDrawGizmosSelected()
         {
-            TrajectoryDrawer.DrawTrajectory(transform.position, Utility.GetImpulseWithPitch(transform.forward, -transform.right, pitch, impulseOnNormal), Color.green, impulseOnNormal);
-            TrajectoryDrawer.DrawTrajectory(transform.position, Utility.GetImpulseWithPitch(transform.forward, -transform.right, pitch, impulseOnBoost), Color.cyan, impulseOnBoost);
+            TrajectoryDrawer.DrawTrajectory(transform.position + transform.up, Utility.GetImpulseWithPitch(transform.forward, -transform.right, pitch, impulseOnNormal), Color.green, impulseOnNormal);
+            TrajectoryDrawer.DrawTrajectory(transform.position + transform.up, Utility.GetImpulseWithPitch(transform.forward, -transform.right, pitch, impulseOnBoost), Color.cyan, impulseOnBoost);
         }
     }
 }

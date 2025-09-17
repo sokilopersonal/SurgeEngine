@@ -21,13 +21,11 @@ namespace SurgeEngine._Source.Code.Core.Character.System.IK
         [SerializeField] private float plantedOffset = 0.1f;
         [SerializeField] private LayerMask cullingMask;
         
-        private StateAnimator _stateAnimator;
+        [SerializeField] private StateAnimator stateAnimator;
         private float _ikWeight;
 
-        private void Start()
+        private void Awake()
         {
-            _stateAnimator = GetComponent<StateAnimator>();
-            
             _ikWeight = 1;
 
             leftFoot.Start = leftFoot.target.localPosition;
@@ -81,7 +79,7 @@ namespace SurgeEngine._Source.Code.Core.Character.System.IK
         {
             foreach (var allowedState in allowedStates)
             {
-                if (_stateAnimator.GetCurrentAnimationState() == allowedState)
+                if (stateAnimator.GetCurrentAnimationState() == allowedState)
                 {
                     return true;
                 }

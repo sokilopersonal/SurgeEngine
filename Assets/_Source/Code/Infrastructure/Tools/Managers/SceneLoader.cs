@@ -17,7 +17,7 @@ namespace SurgeEngine._Source.Code.Infrastructure.Tools.Managers
         private Tween _groupTween;
         private bool _isLoading;
 
-        public static SceneLoader Instance { get; private set; }
+        private static SceneLoader Instance { get; set; }
 
         [Inject]
         private void Init(SceneLoader instance)
@@ -39,6 +39,7 @@ namespace SurgeEngine._Source.Code.Infrastructure.Tools.Managers
         {
             Instance._isLoading = true;
             Instance.screen.SetActive(false);
+            Instance._groupTween?.Kill(true);
             Instance._groupTween = Instance.group.DOFade(1f, Instance.transitionDuration).From(0).SetUpdate(true);
             Instance._groupTween.SetLink(Instance.gameObject);
             yield return Instance._groupTween.WaitForCompletion();
@@ -51,6 +52,7 @@ namespace SurgeEngine._Source.Code.Infrastructure.Tools.Managers
                 yield return null;
             }
 
+            Instance._groupTween?.Kill(true);
             Instance._groupTween = Instance.group.DOFade(0f, Instance.transitionDuration).From(1).SetDelay(Instance.fadeOutDelay).SetUpdate(true);
             Instance._groupTween.SetLink(Instance.gameObject);
             yield return Instance._groupTween.WaitForCompletion();

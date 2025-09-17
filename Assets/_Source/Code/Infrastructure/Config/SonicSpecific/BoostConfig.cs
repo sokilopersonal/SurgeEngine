@@ -20,6 +20,7 @@ namespace SurgeEngine._Source.Code.Infrastructure.Config.SonicSpecific
         [SerializeField] private float ringEnergyAddition = 1.5f;
         [SerializeField] private float driftEnergyAddition = 6.75f;
         [SerializeField] private float inAirTime = 0.3f;
+        [SerializeField] private float keepTime = 0.2f;
 
         public float StartSpeed => startSpeed;
         public float AirBoostSpeed => airBoostSpeed;
@@ -36,5 +37,6 @@ namespace SurgeEngine._Source.Code.Infrastructure.Config.SonicSpecific
         public float RingEnergyAddition => ringEnergyAddition;
         public float DriftEnergyAddition => driftEnergyAddition;
         public float InAirTime => inAirTime;
+        public float KeepTime => keepTime;
     }
 }

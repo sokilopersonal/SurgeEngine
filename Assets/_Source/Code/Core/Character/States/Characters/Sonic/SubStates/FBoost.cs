@@ -30,9 +30,8 @@ namespace SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic.SubSta
         private readonly BoostConfig _config;
 
         private float _boostCancelTimer;
-        private float _boostLowSpeedCancelTimer;
+        private float _boostKeepTimer;
         private float _boostNoEnergyCancelTimer;
-        private const float EnemyEnergyAddition = 10;
 
         public FBoost(CharacterBase owner) : base(owner)
         {
@@ -61,13 +60,13 @@ namespace SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic.SubSta
         {
             if (obj is Ring ring)
             {
-                BoostEnergy += _config.RingEnergyAddition * (!ring.IsSuperRing() ? 1 : 10);
+                BoostEnergy += _config.RingEnergyAddition * (!ring.IsSuperRing() ? 1 : 5);
             }
         }
 
         private void OnEnemyDied(EnemyBase obj)
         {
-            BoostEnergy += EnemyEnergyAddition;
+            BoostEnergy += 10;
         }
 
         public override void OnTick(float dt)
@@ -98,24 +97,17 @@ namespace SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic.SubSta
                     _boostCancelTimer = 0;
                 }
 
-                if (state is FStateGround)
+                if (character.Kinematics.Speed < _config.MaxBoostSpeed / 8)
                 {
-                    if (character.Kinematics.Speed < _config.MaxBoostSpeed / 8)
+                    _boostKeepTimer += dt / _config.KeepTime;
+                    if (_boostKeepTimer >= 1f)
                     {
-                        _boostLowSpeedCancelTimer += dt / 0.35f;
-                        if (_boostLowSpeedCancelTimer >= 1f)
-                        {
-                            Active = false;
-                        }
-                    }
-                    else
-                    {
-                        _boostLowSpeedCancelTimer = 0;
+                        Active = false;
                     }
                 }
                 else
                 {
-                    _boostLowSpeedCancelTimer = 0;
+                    _boostKeepTimer = 0;
                 }
                 
                 if (BoostEnergy > 0)

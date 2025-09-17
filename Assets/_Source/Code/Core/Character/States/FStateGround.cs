@@ -68,7 +68,6 @@ namespace SurgeEngine._Source.Code.Core.Character.States
                 if (predictedGround) Kinematics.RotateSnapNormal(data.normal);
                 else
                 {
-                    Kinematics.Normal = Vector3.up;
                     StateMachine.SetState<FStateSlip>();
                 }
                 
