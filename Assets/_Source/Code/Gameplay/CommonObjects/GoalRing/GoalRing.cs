@@ -39,9 +39,9 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.GoalRing
                 var eventEmitter = GetComponent<StudioEventEmitter>();
                 eventEmitter.Stop();
                 
+                Destroy(_pauseHandler.gameObject);
                 CurrentGoalScreen = Instantiate(goalRingScreen);
                 _container.InjectGameObject(CurrentGoalScreen.gameObject);
-                Destroy(_pauseHandler.gameObject);
                 
                 var stage = Stage.Instance;
                 
