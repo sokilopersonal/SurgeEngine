@@ -9,11 +9,10 @@ namespace SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic
     public class FStateAirBoost : FCharacterState
     {
         private float _timer;
-        private readonly BoostConfig _config;
         
         public FStateAirBoost(CharacterBase owner) : base(owner)
         {
-            owner.TryGetConfig(out _config);
+            
         }
 
         public override void OnEnter()
@@ -36,15 +35,14 @@ namespace SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic
         {
             base.OnTick(dt);
             
-            FBoost boost = StateMachine.GetSubState<FBoost>();
-            if (boost.CanAirBoost)
-            {
-                
-            }
-            
-            if (Utility.TickTimer(ref _timer, 0.3f))
+            if (Utility.TickTimer(ref _timer, 0.3f, false))
             {
                 StateMachine.SetState<FStateAir>();
+            }
+
+            if (Kinematics.CheckForGround(out _))
+            {
+                StateMachine.SetState<FStateGround>();
             }
 
             if (!character.Flags.HasFlag(FlagType.OutOfControl))

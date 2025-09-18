@@ -1,5 +1,5 @@
+using System.Collections;
 using System.Collections.Generic;
-using DG.Tweening;
 using FMODUnity;
 using UnityEngine;
 
@@ -8,27 +8,19 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.PhysicsObjects
     [ExecuteAlways]
     public class ReappearBlock : MonoBehaviour
     {
-        public bool startHidden = false;
-
-        [Space(10)]
-
-        public Vector3 size = Vector3.one;
-
-        [Space(10)]
-
-        public bool alternate = true;
-        public float alternateTimer = 1f;
-
-        [Space(10)]
-        public EventReference appearSound;
-        public EventReference disappearSound;
+        [SerializeField] private bool startHidden;
+        [SerializeField] private Vector3 size = Vector3.one;
+        [SerializeField] private bool alternate = true;
+        [SerializeField] private float alternateTimer = 1f;
+        [SerializeField] private EventReference appearSound;
+        [SerializeField] private EventReference disappearSound;
 
         private Vector3 _lastSize = Vector3.one;
 
-        private List<Transform> _pipes = new List<Transform>();
-        private float[] _pipeRotations = new float[] { -90, 180, -90, 180, 0, 90, 0, 90 };
+        private readonly List<Transform> _pipes = new();
+        private readonly float[] _pipeRotations = { -90, 180, -90, 180, 0, 90, 0, 90 };
 
-        private List<Transform> _joints = new List<Transform>();
+        private readonly List<Transform> _joints = new();
         private Transform _lightBlock;
 
         private Material _lightMaterial;
@@ -39,32 +31,28 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.PhysicsObjects
         private bool _hidden;
         private float _timer;
         
-        private void Initialize()
+        private void Awake()
         {
-            if (!_initialized)
-            {
-                _initialized = true;
-                foreach (Transform pipe in transform.Find("pipes"))
-                    _pipes.Add(pipe);
+            foreach (Transform pipe in transform.Find("pipes"))
+                _pipes.Add(pipe);
 
-                foreach (Transform joint in transform.Find("joints"))
-                    _joints.Add(joint);
+            foreach (Transform joint in transform.Find("joints"))
+                _joints.Add(joint);
 
-                _lightBlock = transform.Find("lightBlock");
+            _lightBlock = transform.Find("lightBlock");
 
-                _col = GetComponent<BoxCollider>();
-                _lightMaterial = new Material(_lightBlock.GetComponent<MeshRenderer>().sharedMaterial);
-                _lightBlock.GetComponent<MeshRenderer>().sharedMaterial = _lightMaterial;
+            _col = GetComponent<BoxCollider>();
+            _lightMaterial = new Material(_lightBlock.GetComponent<MeshRenderer>().sharedMaterial);
+            _lightBlock.GetComponent<MeshRenderer>().sharedMaterial = _lightMaterial;
 
-                _hidden = startHidden;
+            _hidden = startHidden;
 
-                if (_hidden)
-                    Hide();
-                else
-                    Show();
+            if (_hidden)
+                Hide();
+            else
+                Show();
 
-                VisualUpdate();
-            }
+            VisualUpdate();
         }
 
         private void VisualUpdate()
@@ -135,8 +123,6 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.PhysicsObjects
 
         private void Update()
         {
-            Initialize();
-            
             if (alternate && Application.isPlaying)
             {
                 _timer += Time.deltaTime;
@@ -168,16 +154,8 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.PhysicsObjects
             if (_lightMaterial == null)
                 return;
 
-            float offset = -0.5f;
-            DOTween.To(() => offset, x => offset = x, 0, 0.5f).SetEase(Ease.OutSine).OnUpdate(() =>
-            {
-                _lightMaterial.mainTextureOffset = new Vector2(offset, 0);
-                _lightMaterial.SetTextureOffset("_EmissiveColorMap", new Vector2(offset, 0));
-
-                if (offset > -0.4f)
-                    _col.isTrigger = false;
-            });
-
+            StartCoroutine(ShowCoroutine());
+            
             if (Time.timeSinceLevelLoad > 0)
                 RuntimeManager.PlayOneShot(appearSound, transform.position);
         }
@@ -186,19 +164,58 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.PhysicsObjects
         {
             if (_lightMaterial == null)
                 return;
-            
-            float offset = 0;
-            DOTween.To(() => offset, x => offset = x, -0.5f, 0.5f).SetEase(Ease.OutSine).OnUpdate(() =>
-            {
-                _lightMaterial.mainTextureOffset = new Vector2(offset, 0);
-                _lightMaterial.SetTextureOffset("_EmissiveColorMap", new Vector2(offset, 0));
-                
-                if (offset < -0.4f)
-                    _col.isTrigger = true;
-            });
 
+            StartCoroutine(HideCoroutine());
+            
             if (Time.timeSinceLevelLoad > 0)
                 RuntimeManager.PlayOneShot(disappearSound, transform.position);
+        }
+
+        private IEnumerator ShowCoroutine()
+        {
+            float time = 0f;
+            float duration = 0.5f;
+            
+            while (time < duration)
+            {
+                time += Time.deltaTime;
+                float t = time / duration;
+                var offset = Mathf.Lerp(-0.5f, 0f, SineOut(t));
+                
+                _lightMaterial.mainTextureOffset = new Vector2(offset, 0);
+                _lightMaterial.SetTextureOffset("_EmissiveColorMap", new Vector2(offset, 0));
+
+                if (offset > -0.4f)
+                    _col.isTrigger = false;
+                
+                yield return null;
+            }
+        }
+
+        private IEnumerator HideCoroutine()
+        {
+            float time = 0f;
+            float duration = 0.5f;
+            
+            while (time < duration)
+            {
+                time += Time.deltaTime;
+                float t = time / duration;
+                var offset = Mathf.Lerp(0f, -0.5f, SineOut(t));
+                
+                _lightMaterial.mainTextureOffset = new Vector2(offset, 0);
+                _lightMaterial.SetTextureOffset("_EmissiveColorMap", new Vector2(offset, 0));
+
+                if (offset < -0.4f)
+                    _col.isTrigger = true;
+                
+                yield return null;
+            }
+        }
+
+        private static float SineOut(float t)
+        {
+            return Mathf.Sin(t * Mathf.PI / 2);
         }
     }
 }

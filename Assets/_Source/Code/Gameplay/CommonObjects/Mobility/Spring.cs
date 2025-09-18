@@ -14,9 +14,11 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
         [SerializeField] protected float outOfControl = 0.5f;
         [SerializeField] protected bool cancelBoost;
         [SerializeField] protected bool isTo3D;
+        [SerializeField] protected bool isWallWalk;
         [SerializeField] private EventReference sound;
         public float Speed => speed;
         public float KeepVelocityDistance => keepVelocityDistance;
+        public bool IsWallWalk => isWallWalk;
 
         public override void Contact(Collider msg, CharacterBase context)
         {

@@ -43,7 +43,7 @@ namespace SurgeEngine._Source.Code.Core.Character.System
         {
             get
             {
-                if (!Rigidbody.isKinematic)
+                if (!IsKinematic)
                     return Rigidbody.linearVelocity;
 
                 return _kinematicVelocity;
@@ -55,6 +55,13 @@ namespace SurgeEngine._Source.Code.Core.Character.System
         public float TurnRate { get; set; }
         public bool Skidding => _moveDot < _config.skiddingThreshold;
         public float MoveDot => _moveDot;
+        
+        /// <summary>
+        /// Instead of using Rigidbody.isKinematic, use this property.
+        /// The only thing it does it make scripts use Kinematic Velocity instead of Physics Velocity.
+        /// That can be useful in situations where you need to use velocity, but some logic right now moves the character position.
+        /// </summary>
+        public bool IsKinematic { get; set; }
         
         private Vector3 _inputDir;
         private Transform _cameraTransform;
