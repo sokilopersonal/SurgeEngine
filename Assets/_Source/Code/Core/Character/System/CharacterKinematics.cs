@@ -439,7 +439,7 @@ namespace SurgeEngine._Source.Code.Core.Character.System
             
             Ray ray = new Ray(origin, direction);
             LayerMask castMask = character.Config.castLayer;
-            bool hit = Physics.Raycast(ray, out result, castDistance, castMask, QueryTriggerInteraction.Ignore);
+            bool hit = Physics.Raycast(ray, out result, castDistance, castMask, QueryTriggerInteraction.Collide);
             return hit;
         }
         
