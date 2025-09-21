@@ -46,7 +46,7 @@ namespace SurgeEngine._Source.Code.Core.Character.States
             
             Rigidbody.MovePosition(endPos);
             travelledDistance += _springObject.Speed * dt;
-            _snapTimer += dt / 0.05f;
+            _snapTimer += dt / 0.1f;
 
             if (travelledDistance >= _springObject.KeepVelocityDistance + 0.25f)
             {

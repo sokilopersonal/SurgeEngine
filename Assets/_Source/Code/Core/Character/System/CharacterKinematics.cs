@@ -62,6 +62,7 @@ namespace SurgeEngine._Source.Code.Core.Character.System
         /// That can be useful in situations where you need to use velocity, but some logic right now moves the character position.
         /// </summary>
         public bool IsKinematic { get; set; }
+        public virtual bool InAir => character.StateMachine.CurrentState is FStateAir or FStateSpring;
         
         private Vector3 _inputDir;
         private Transform _cameraTransform;
@@ -135,7 +136,7 @@ namespace SurgeEngine._Source.Code.Core.Character.System
 
         private void CheckIfIsInAir()
         {
-            if (InAir())
+            if (InAir)
             {
                 AirTime += Time.deltaTime;
             }
@@ -581,7 +582,6 @@ namespace SurgeEngine._Source.Code.Core.Character.System
             return _inputDir;
         }
 
-        public virtual bool InAir() => character.StateMachine.CurrentState is FStateAir;
 
         public void Set2DPath(ChangeMode2DData data)
         {

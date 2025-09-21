@@ -7,8 +7,8 @@ namespace SurgeEngine._Source.Code.Infrastructure.Config.SonicSpecific
     public class HomingConfig : ScriptableObject
     {
         [Foldout("Homing")] public float speed = 35;
-        [Foldout("Homing")] public float findRadius = 5.5f;
         [Foldout("Homing")] public float findDistance = 16f;
+        [Foldout("Homing")] public float findAngle = 55f;
         [Foldout("Homing")] public float maxTime = 1.5f;
         [Foldout("Homing")] public float afterForce = 10f;
         [Foldout("Homing")] public float delay = 0.1f;

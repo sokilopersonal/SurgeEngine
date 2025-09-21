@@ -101,118 +101,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bc4cd860cc8409799c2f1df1bad294b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <SetID>k__BackingField: 0
   view: {fileID: 1331910105712177873}
   animation: {fileID: 1855336814515770894}
   effects: {fileID: 2565871558992367779}
   ragdollPrefab: {fileID: 3051861874619504407}
   <PunchAnimationCallback>k__BackingField: {fileID: 3076461262156163148}
   enableAI: 1
-  findDistance: 0
-  chaseSpeed: 7
-  chaseMaxDistance: 0
   punchRadius: 1.8
-  patrolSpeedCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0.19829229
-      outSlope: 0.19829229
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.4513482
-    - serializedVersion: 3
-      time: 0.12
-      value: 2.8000033
-      inSlope: 0.12419144
-      outSlope: -6.8376074
-      tangentMode: 1
-      weightedMode: 0
-      inWeight: 0.3058828
-      outWeight: 0.04968578
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: -0.07181437
-      outSlope: -0.7502121
-      tangentMode: 1
-      weightedMode: 0
-      inWeight: 0.37809834
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  patrolTime: 0
-  patrolDistance: 0
-  turnCurve:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  turnHeightCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0.016138956
-      outSlope: -0.000020191075
-      tangentMode: 69
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.16143489
-    - serializedVersion: 3
-      time: 0.59999996
-      value: -0.000012114644
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.15794715
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.75
-      value: 1.500001
-      inSlope: 0
-      outSlope: 3.3242836
-      tangentMode: 1
-      weightedMode: 0
-      inWeight: 0.5923181
-      outWeight: 0.42343867
-    - serializedVersion: 3
-      time: 0.8091696
-      value: 1.6030302
-      inSlope: -0.000007947286
-      outSlope: -0.000007947286
-      tangentMode: 1
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.87
-      value: 1.5000004
-      inSlope: -5.056307
-      outSlope: 0
-      tangentMode: 1
-      weightedMode: 0
-      inWeight: 0.27079216
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: -18.76813
-      outSlope: -18.76813
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.039237726
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  turnTime: 0
+  followPlayer: 1
 --- !u!195 &5258658502684184366
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -269,6 +166,7 @@ GameObject:
   - component: {fileID: 5913160398915718345}
   - component: {fileID: 1331910105712177873}
   - component: {fileID: 2565871558992367779}
+  - component: {fileID: 5850585189608530414}
   m_Layer: 12
   m_Name: Model
   m_TagString: Untagged
@@ -335,6 +233,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hitPrefab: {fileID: 8553914193835272593, guid: b0276e20ffdd8564cbea8d0f7e190ce5, type: 3}
+--- !u!205 &5850585189608530414
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6598288326902543729}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: 0, y: 1.0450497, z: 0.0076293945}
+  m_Size: 4.510803
+  m_FadeMode: 1
+  m_AnimateCrossFading: 1
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0.036861878
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 1203498004719646549}
+  m_Enabled: 1
 --- !u!1001 &6018752067041678659
 PrefabInstance:
   m_ObjectHideFlags: 0

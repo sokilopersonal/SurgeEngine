@@ -51,6 +51,8 @@ namespace SurgeEngine._Source.Code.Infrastructure.Tools.Managers
             {
                 yield return null;
             }
+            
+            Time.timeScale = 1;
 
             Instance._groupTween?.Kill(true);
             Instance._groupTween = Instance.group.DOFade(0f, Instance.transitionDuration).From(1).SetDelay(Instance.fadeOutDelay).SetUpdate(true);
@@ -59,8 +61,6 @@ namespace SurgeEngine._Source.Code.Infrastructure.Tools.Managers
             
             Instance.screen.SetActive(false);
             Instance._isLoading = false;
-            
-            Time.timeScale = 1;
         }
     }
 }

@@ -781,6 +781,7 @@ GameObject:
   - component: {fileID: 2660690482040677725}
   - component: {fileID: 3527368928707079476}
   - component: {fileID: 1134712764629619975}
+  - component: {fileID: 4258788850405075659}
   m_Layer: 5
   m_Name: PauseCanvas
   m_TagString: Untagged
@@ -919,6 +920,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  updateCursorDevice: {fileID: 4258788850405075659}
   pauseActionReference: {fileID: -8436990913645838437, guid: aa82a2cdd5263bc4a8583ac6684fc349, type: 3}
 --- !u!114 &1134712764629619975
 MonoBehaviour:
@@ -969,6 +971,7 @@ MonoBehaviour:
   - {fileID: 1553489139223660279}
   - {fileID: 7125973759494664554}
   - {fileID: 3349041158644636269}
+  - {fileID: 2372623325823180653}
   navigationActionReference: {fileID: -8784545083839296357, guid: aa82a2cdd5263bc4a8583ac6684fc349, type: 3}
   selectSound:
     Guid:
@@ -984,6 +987,19 @@ MonoBehaviour:
       Data3: 1836293020
       Data4: 1052300912
     Path: event:/UI/ElementClick
+--- !u!114 &4258788850405075659
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7329639113110801760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6067266ad9a428eb46fd3f0697390c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SurgeEngine._Source.Code.UI.UpdateCursorDevice
+  auto: 0
 --- !u!1 &8294160120708702634
 GameObject:
   m_ObjectHideFlags: 0
@@ -1777,6 +1793,26 @@ PrefabInstance:
       propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2646884381887018067, guid: 009c846c1b7ded44a80af7193c324419, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2646884381887018067, guid: 009c846c1b7ded44a80af7193c324419, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2646884381887018067, guid: 009c846c1b7ded44a80af7193c324419, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2646884381887018067, guid: 009c846c1b7ded44a80af7193c324419, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2646884381887018067, guid: 009c846c1b7ded44a80af7193c324419, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2874990969079621840, guid: 009c846c1b7ded44a80af7193c324419, type: 3}
       propertyPath: m_SizeDelta.x
       value: 0
@@ -1975,6 +2011,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4300127358175789936, guid: 009c846c1b7ded44a80af7193c324419, type: 3}
       propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4345319703487740632, guid: 009c846c1b7ded44a80af7193c324419, type: 3}
+      propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4592764730489959836, guid: 009c846c1b7ded44a80af7193c324419, type: 3}
@@ -2631,7 +2671,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9177107585206528014, guid: 009c846c1b7ded44a80af7193c324419, type: 3}
       propertyPath: m_text
-      value: Master Volume
+      value: Sensitivity
       objectReference: {fileID: 0}
     - target: {fileID: 9217227902710653083, guid: 009c846c1b7ded44a80af7193c324419, type: 3}
       propertyPath: m_AnchorMax.y
@@ -2689,6 +2729,17 @@ MonoBehaviour:
 --- !u!114 &1926467244433634291 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 459622853679484849, guid: 009c846c1b7ded44a80af7193c324419, type: 3}
+  m_PrefabInstance: {fileID: 2079756259918347330}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f50ad9127f541c68a82bee30addfa2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2372623325823180653 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4337396439235486511, guid: 009c846c1b7ded44a80af7193c324419, type: 3}
   m_PrefabInstance: {fileID: 2079756259918347330}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}

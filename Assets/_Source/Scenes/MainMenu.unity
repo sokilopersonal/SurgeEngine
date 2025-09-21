@@ -4383,6 +4383,7 @@ GameObject:
   - component: {fileID: 3158795046291704234}
   - component: {fileID: 7674973030773186968}
   - component: {fileID: 7674973030773186969}
+  - component: {fileID: 7674973030773186970}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -4486,6 +4487,19 @@ MonoBehaviour:
       Data3: 1836293020
       Data4: 1052300912
     Path: event:/UI/ElementClick
+--- !u!114 &7674973030773186970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7674973030773186967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6067266ad9a428eb46fd3f0697390c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SurgeEngine._Source.Code.UI.UpdateCursorDevice
+  auto: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

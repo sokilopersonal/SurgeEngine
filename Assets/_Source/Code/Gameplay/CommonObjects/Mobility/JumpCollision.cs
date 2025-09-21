@@ -38,7 +38,7 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
                 {
                     if (impulse > 0)
                     {
-                        if (groundOnly && !context.Kinematics.InAir() || !groundOnly)
+                        if (groundOnly && !context.Kinematics.InAir || !groundOnly)
                         {
                             Rigidbody body = context.Kinematics.Rigidbody;
                             body.position += transform.up;

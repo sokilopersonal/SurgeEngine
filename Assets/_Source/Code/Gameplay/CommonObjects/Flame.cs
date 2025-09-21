@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using FMOD.Studio;
 using FMODUnity;
 using UnityEngine;
+using STOP_MODE = FMOD.Studio.STOP_MODE;
 
 namespace SurgeEngine._Source.Code.Gameplay.CommonObjects
 {
@@ -76,6 +77,8 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects
                     StopCoroutine(_cycleRoutine);
                     _cycleRoutine = null;
                 }
+
+                _flameLoopInstance.stop(STOP_MODE.ALLOWFADEOUT);
 
                 _cycleRoutine = StartCoroutine(ScaleFlame(1f, 0f, appearTime));
             }

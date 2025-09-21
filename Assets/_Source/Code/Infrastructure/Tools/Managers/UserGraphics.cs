@@ -57,18 +57,6 @@ namespace SurgeEngine._Source.Code.Infrastructure.Tools.Managers
             _lightsData = new List<LightDefiner>();
             
             SceneManager.sceneLoaded += OnSceneLoaded;
-            
-            Data.SunShadowsQuality.Changed += (_, _) => Apply();
-            Data.AdditionalShadowsQuality.Changed += (_, _) => Apply();
-            Data.BloomQuality.Changed += (_, _) => Apply();
-            Data.AOQuality.Changed += (_, _) => Apply();
-            Data.MotionBlur.Changed += (_, _) => Apply();
-            Data.MotionBlurQuality.Changed += (_, _) => Apply();
-            Data.TextureQuality.Changed += (_, _) => Apply();
-            Data.MeshQuality.Changed += (_, _) => Apply();
-            Data.ScreenSpaceReflectionQuality.Changed += (_, _) => Apply();
-            Data.ContactShadowsQuality.Changed += (_, _) => Apply();
-            Data.SubSurfaceScatteringQuality.Changed += (_, _) => Apply();
         }
 
         public void Initialize()
@@ -92,56 +80,71 @@ namespace SurgeEngine._Source.Code.Infrastructure.Tools.Managers
         public void SetTextureQuality(TextureQuality value)
         {
             Data.TextureQuality.Value = value;
+            
+            Apply();
         }
 
         public void SetMeshQuality(MeshQuality value)
         {
             Data.MeshQuality.Value = value;
+            
+            Apply();
         }
 
         public void SetSunShadowsQuality(ShadowsQuality value)
         {
             Data.SunShadowsQuality.Value = value;
+            
+            Apply();
         }
 
         public void SetAdditionalShadowsQuality(ShadowsQuality value)
         {
             Data.AdditionalShadowsQuality.Value = value;
+            
+            Apply();
         }
 
         public void SetBloomQuality(BloomQuality value)
         {
             Data.BloomQuality.Value = value;
+            
+            Apply();
         }
 
         public void SetAmbientOcclusionQuality(AmbientOcclusionQuality value)
         {
             Data.AOQuality.Value = value;
+            
+            Apply();
         }
 
         public void SetMotionBlur(MotionBlurState value)
         {
             Data.MotionBlur.Value = value;
+            
+            Apply();
         }
 
         public void SetMotionBlurQuality(MotionBlurQuality value)
         {
             Data.MotionBlurQuality.Value = value;
+            
+            Apply();
         }
 
         public void SetScreenSpaceReflectionsQuality(ScreenSpaceReflectionQuality level)
         {
             Data.ScreenSpaceReflectionQuality.Value = level;
-        }
-
-        public void SetContactShadows(ContactShadowsQuality level)
-        {
-            Data.ContactShadowsQuality.Value = level;
+            
+            Apply();
         }
 
         public void SetSubSurfaceScattering(SubSurfaceScatteringQuality level)
         {
             Data.SubSurfaceScatteringQuality.Value = level;
+            
+            Apply();
         }
 
         public void AddLight(LightDefiner data)
@@ -152,17 +155,6 @@ namespace SurgeEngine._Source.Code.Infrastructure.Tools.Managers
         public void RemoveLight(LightDefiner data)
         {
             _lightsData.Remove(data);
-        }
-
-        private static void SetKeyword(string[] keys, int value)
-        {
-            string key = keys[value];
-            foreach (var keyword in keys)
-            {
-                Shader.DisableKeyword(keyword);
-            }
-            
-            Shader.EnableKeyword(key);
         }
 
         public void Apply()
@@ -292,10 +284,10 @@ namespace SurgeEngine._Source.Code.Infrastructure.Tools.Managers
         public ReactiveVar<ShadowsQuality> SunShadowsQuality = new(ShadowsQuality.High);
         public ReactiveVar<ShadowsQuality> AdditionalShadowsQuality = new(ShadowsQuality.High);
         public ReactiveVar<BloomQuality> BloomQuality = new(Managers.BloomQuality.High);
-        public ReactiveVar<AmbientOcclusionQuality> AOQuality = new(AmbientOcclusionQuality.High);
+        public ReactiveVar<AmbientOcclusionQuality> AOQuality = new(AmbientOcclusionQuality.Medium);
         public ReactiveVar<MotionBlurState> MotionBlur = new(MotionBlurState.On);
         public ReactiveVar<MotionBlurQuality> MotionBlurQuality = new(Managers.MotionBlurQuality.High);
-        public ReactiveVar<TextureQuality> TextureQuality = new(Managers.TextureQuality.High);
+        public ReactiveVar<TextureQuality> TextureQuality = new(Managers.TextureQuality.VeryHigh);
         public ReactiveVar<MeshQuality> MeshQuality = new(Managers.MeshQuality.VeryHigh);
         public ReactiveVar<ScreenSpaceReflectionQuality> ScreenSpaceReflectionQuality = new(Managers.ScreenSpaceReflectionQuality.Medium); 
         public ReactiveVar<ContactShadowsQuality> ContactShadowsQuality = new(Managers.ContactShadowsQuality.Medium);

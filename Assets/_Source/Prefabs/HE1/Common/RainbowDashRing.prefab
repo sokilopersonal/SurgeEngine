@@ -241,7 +241,15 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: add79ed296ed10a4fbda7123ffe81c0b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6400348921466867927}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: add79ed296ed10a4fbda7123ffe81c0b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 317105486919939714}
   m_SourcePrefab: {fileID: 100100000, guid: add79ed296ed10a4fbda7123ffe81c0b, type: 3}
+--- !u!23 &27863606147665323 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: add79ed296ed10a4fbda7123ffe81c0b, type: 3}
+  m_PrefabInstance: {fileID: 1703319899427131695}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1164691853732755140 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: add79ed296ed10a4fbda7123ffe81c0b, type: 3}
@@ -287,6 +295,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animationName: Bubble
+--- !u!205 &317105486919939714
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1973141499817782398}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: 0, y: 0, z: 0}
+  m_Size: 2.4763286
+  m_FadeMode: 1
+  m_AnimateCrossFading: 1
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0.013917546
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 27863606147665323}
+    - renderer: {fileID: 6434010255319458846}
+    - renderer: {fileID: 5510063258889580801}
+  m_Enabled: 1
 --- !u!1001 &5815903059429686741
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -384,5 +413,15 @@ ParticleSystem:
 --- !u!4 &2893709921269380046 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8691587548409040411, guid: 2075cd69b10d43d4987b7180c7d0f1d9, type: 3}
+  m_PrefabInstance: {fileID: 5815903059429686741}
+  m_PrefabAsset: {fileID: 0}
+--- !u!199 &5510063258889580801 stripped
+ParticleSystemRenderer:
+  m_CorrespondingSourceObject: {fileID: 2072095993572265172, guid: 2075cd69b10d43d4987b7180c7d0f1d9, type: 3}
+  m_PrefabInstance: {fileID: 5815903059429686741}
+  m_PrefabAsset: {fileID: 0}
+--- !u!199 &6434010255319458846 stripped
+ParticleSystemRenderer:
+  m_CorrespondingSourceObject: {fileID: 719466781263043019, guid: 2075cd69b10d43d4987b7180c7d0f1d9, type: 3}
   m_PrefabInstance: {fileID: 5815903059429686741}
   m_PrefabAsset: {fileID: 0}

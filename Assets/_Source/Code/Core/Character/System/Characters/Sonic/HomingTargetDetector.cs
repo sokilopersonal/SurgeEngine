@@ -1,8 +1,7 @@
-﻿using SurgeEngine._Source.Code.Core.Character.States;
-using SurgeEngine._Source.Code.Gameplay.CommonObjects;
+﻿using SurgeEngine._Source.Code.Gameplay.CommonObjects;
 using SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility.Rails;
 using SurgeEngine._Source.Code.Infrastructure.Config.SonicSpecific;
-
+using SurgeEngine._Source.Code.Infrastructure.Custom.Extensions;
 using UnityEngine;
 using UnityEngine.Splines;
 
@@ -11,8 +10,7 @@ namespace SurgeEngine._Source.Code.Core.Character.System.Characters.Sonic
     public class HomingTargetDetector : MonoBehaviour
     {
         [SerializeField] private HomingConfig config;
-        [SerializeField] private Vector3 size = Vector3.one;
-        
+
         private CharacterBase _character;
 
         public HomingTarget Target { get; private set; }
@@ -24,9 +22,9 @@ namespace SurgeEngine._Source.Code.Core.Character.System.Characters.Sonic
 
         private void FixedUpdate()
         {
-            if (_character.StateMachine.CurrentState is FStateAir && !_character.Flags.HasFlag(FlagType.OutOfControl))
+            if (_character.Kinematics.InAir)
             {
-                Target = FindHomingTarget();
+                Target = FindHomingTarget(config.findDistance, config.findAngle, config.mask, _character.Config.castLayer);
             }
             else
             {
@@ -34,35 +32,29 @@ namespace SurgeEngine._Source.Code.Core.Character.System.Characters.Sonic
             }
         }
 
-        private HomingTarget FindHomingTarget()
+        private HomingTarget FindHomingTarget(float radius, float angle, LayerMask mask, LayerMask blockMask)
         {
-            Transform characterTransform = _character.transform;
-            Vector3 origin = characterTransform.position + Vector3.down / 2;
-            Vector3 dir = _character.Kinematics.GetInputDir() == Vector3.zero ? characterTransform.forward : _character.Kinematics.GetInputDir();
-            
-            float maxDistance = config.findDistance;
-            LayerMask mask = config.mask;
             mask |= _character.Config.railMask;
-
-            Vector3 finalOrigin = origin + dir * maxDistance / 2;
-            Quaternion orientation = Quaternion.LookRotation(dir, Vector3.up);
-            Collider[] hits = Physics.OverlapBox(finalOrigin, 
-                    size, orientation, mask, QueryTriggerInteraction.Collide);
             
-            HomingTarget closestTarget = null;
-            float closestDistance = float.MaxValue;
-            foreach (Collider hit in hits)
+            Collider[] colliders = Physics.OverlapSphere(transform.position, radius, mask, QueryTriggerInteraction.Collide);
+
+            HomingTarget bestTarget = null;
+            float bestDistance = Mathf.Infinity;
+
+            Vector3 forwardFlat = transform.forward;
+            forwardFlat.y = 0f;
+            forwardFlat.Normalize();
+
+            foreach (var col in colliders)
             {
-                Transform target = hit.transform;
-                Vector3 end = target.position + Vector3.up * 0.5f;
-                Vector3 direction = target.position - origin;
-                float distance = direction.magnitude;
+                HomingTarget target = col.GetComponent<HomingTarget>();
+                if (target == null) continue;
                 
-                if (target.TryGetComponent(out Rail rail))
+                if (target.TryGetComponentInParent(out Rail rail))
                 {
                     var spline = rail.Container.Spline;
                     var railTarget = rail.HomingTarget;
-                    Vector3 localPos = rail.transform.InverseTransformPoint(origin + characterTransform.forward * maxDistance / 2);
+                    Vector3 localPos = rail.transform.InverseTransformPoint(transform.position + transform.forward * radius / 2);
                     SplineUtility.GetNearestPoint(spline, localPos, out _, out var f);
                         
                     SplineSample sample = new SplineSample
@@ -76,29 +68,42 @@ namespace SurgeEngine._Source.Code.Core.Character.System.Characters.Sonic
                     Vector3 endWorldPos = rail.transform.TransformPoint(endTargetPos);
                     railTarget.transform.position = Vector3.Lerp(railTarget.transform.position, endWorldPos, 32 * Time.fixedDeltaTime);
                     
-                    closestTarget = railTarget;
-                    closestDistance = Vector3.Distance(origin, railTarget.transform.position);
+                    bestTarget = railTarget;
+                    bestDistance = Vector3.Distance(transform.position, railTarget.transform.position);
                 }
-                
-                bool facing = Vector3.Dot(direction.normalized, characterTransform.forward) > 0.5f;
-                if (facing && !Physics.Linecast(origin, end, _character.Config.castLayer))
+
+                Vector3 dir = col.transform.position - transform.position;
+                Vector3 dirFlat = new Vector3(dir.x, 0f, dir.z).normalized;
+
+                float dot = Vector3.Dot(forwardFlat, dirFlat);
+                if (dot < Mathf.Cos(angle * 0.5f * Mathf.Deg2Rad)) continue;
+
+                float dist = dir.magnitude;
+                if (dist < bestDistance && !Physics.Linecast(transform.position, col.transform.position, blockMask))
                 {
-                    if (target.TryGetComponent(out HomingTarget homingTarget))
-                    {
-                        if (distance < closestDistance)
-                        {
-                            closestTarget = homingTarget;
-                            closestDistance = distance;
-                        }
-                    }
-                }
-                else
-                {
-                    closestTarget = null;
+                    bestDistance = dist;
+                    bestTarget = target;
                 }
             }
+
+            return bestTarget;
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireSphere(transform.position, config.findDistance);
             
-            return closestTarget;
+            Vector3 forward = transform.forward;
+            forward.y = 0f;
+            forward.Normalize();
+
+            Vector3 rightBoundary = Quaternion.Euler(0f, config.findAngle * 0.5f, 0f) * forward;
+            Vector3 leftBoundary = Quaternion.Euler(0f, -config.findAngle * 0.5f, 0f) * forward;
+
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawLine(transform.position, transform.position + rightBoundary * config.findDistance);
+            Gizmos.DrawLine(transform.position, transform.position + leftBoundary * config.findDistance);
         }
     }
 }

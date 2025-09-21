@@ -16,12 +16,6 @@ namespace SurgeEngine._Source.Code.Infrastructure.Tools.Managers
         public UserDisplay()
         {
             SceneManager.sceneLoaded += OnSceneLoaded;
-            
-            Data.Fullscreen.Changed += (_, _) => Apply();
-            Data.AntiAliasingQuality.Changed += (_, _) => Apply();
-            Data.Sharpness.Changed += (_, _) => Apply();
-            Data.UpscaleMode.Changed += (_, _) => Apply();
-            Data.UpscaleQuality.Changed += (_, _) => Apply();
         }
 
         public void LateDispose()
@@ -53,33 +47,69 @@ namespace SurgeEngine._Source.Code.Infrastructure.Tools.Managers
             }
         }
 
-        public void SetAntiAliasing(AntiAliasingQuality level)
+        public void SetAntiAliasing(AntiAliasing level)
+        {
+            Data.AntiAliasing.Value = level;
+            
+            Apply();
+        }
+
+        public void SetAntiAliasingQuality(AntiAliasingQuality level)
         {
             Data.AntiAliasingQuality.Value = level;
+            
+            Apply();
         }
 
         public void SetSharpness(float value)
         {
             Data.Sharpness.Value = Mathf.Clamp(value, 0, 2);
+            
+            Apply();
         }
 
         public void SetUpscalingMode(UpscalingMode mode)
         {
             Data.UpscaleMode.Value = mode;
+            
+            Apply();
         }
 
         public void SetUpscalingQuality(UpscalingQuality quality)
         {
             Data.UpscaleQuality.Value = quality;
+            
+            Apply();
         }
 
         public void SetFullscreen(bool value)
         {
             Data.Fullscreen.Value = value;
+            
+            Apply();
         }
 
         public void Apply()
         {
+            switch (Data.AntiAliasing.Value)
+            {
+                case AntiAliasing.Off:
+                    _hdCameraData.antialiasing = HDAdditionalCameraData.AntialiasingMode.None;
+                    break;
+                case AntiAliasing.FXAA:
+                    _hdCameraData.antialiasing = HDAdditionalCameraData.AntialiasingMode.FastApproximateAntialiasing;
+                    break;
+                case AntiAliasing.SMAA:
+                    _hdCameraData.antialiasing = HDAdditionalCameraData.AntialiasingMode.SubpixelMorphologicalAntiAliasing;
+                    break;
+                case AntiAliasing.TAA:
+                    _hdCameraData.antialiasing = HDAdditionalCameraData.AntialiasingMode.TemporalAntialiasing;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+            
+            _hdCameraData.SMAAQuality = (HDAdditionalCameraData.SMAAQualityLevel)Data.AntiAliasingQuality.Value;
             _hdCameraData.TAAQuality = (HDAdditionalCameraData.TAAQualityLevel)Data.AntiAliasingQuality.Value;
             switch (Data.AntiAliasingQuality.Value)
             {
@@ -95,7 +125,7 @@ namespace SurgeEngine._Source.Code.Infrastructure.Tools.Managers
             _hdCameraData.deepLearningSuperSamplingSharpening = Data.Sharpness.Value;
             _hdCameraData.fidelityFX2SuperResolutionEnableSharpening = true;
             _hdCameraData.fidelityFX2SuperResolutionSharpening = Data.Sharpness.Value;
-            _hdCameraData.allowDynamicResolution = Data.UpscaleMode.Value != UpscalingMode.TAA;
+            _hdCameraData.allowDynamicResolution = Data.UpscaleMode.Value != UpscalingMode.Off;
 
             _hdCameraData.deepLearningSuperSamplingUseCustomAttributes = false;
             _hdCameraData.deepLearningSuperSamplingUseCustomQualitySettings = false;
@@ -107,7 +137,7 @@ namespace SurgeEngine._Source.Code.Infrastructure.Tools.Managers
 
             switch (Data.UpscaleMode.Value)
             {
-                case UpscalingMode.TAA:
+                case UpscalingMode.Off:
                     _hdCameraData.allowDeepLearningSuperSampling = false;
                     _hdCameraData.allowFidelityFX2SuperResolution = false;
                     break;
@@ -148,9 +178,10 @@ namespace SurgeEngine._Source.Code.Infrastructure.Tools.Managers
     public class UserDisplaySettings
     {
         public ReactiveVar<bool> Fullscreen = new(true);
+        public ReactiveVar<AntiAliasing> AntiAliasing = new(Managers.AntiAliasing.TAA);
         public ReactiveVar<AntiAliasingQuality> AntiAliasingQuality = new(Managers.AntiAliasingQuality.High);
         public ReactiveVar<float> Sharpness = new(0.25f);
-        public ReactiveVar<UpscalingMode> UpscaleMode = new(UpscalingMode.TAA);
+        public ReactiveVar<UpscalingMode> UpscaleMode = new(UpscalingMode.Off);
         public ReactiveVar<UpscalingQuality> UpscaleQuality = new(UpscalingQuality.Native);
     }
     
@@ -163,7 +194,7 @@ namespace SurgeEngine._Source.Code.Infrastructure.Tools.Managers
 
     public enum UpscalingMode
     {
-        TAA,
+        Off,
         DLSS,
         FSR,
     }
@@ -175,5 +206,13 @@ namespace SurgeEngine._Source.Code.Infrastructure.Tools.Managers
         Balanced,
         Quality,
         Native
+    }
+
+    public enum AntiAliasing
+    {
+        Off,
+        FXAA,
+        SMAA,
+        TAA
     }
 }

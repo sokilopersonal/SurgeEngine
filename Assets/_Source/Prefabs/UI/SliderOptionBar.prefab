@@ -385,6 +385,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   duration: 0.35
   ease: 9
+  baseColor: {r: 1, g: 1, b: 1, a: 1}
+  lowTintColor: {r: 0.4, g: 0.4, b: 0.4, a: 1}
 --- !u!1 &4317790798456798651
 GameObject:
   m_ObjectHideFlags: 0
@@ -449,7 +451,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -510,9 +512,9 @@ MonoBehaviour:
   definition:
     DisplayName: Slider Placeholder
     Values: []
+  autoScroll: {fileID: 0}
   title: {fileID: 241189504485964738}
   state: {fileID: 7201458819157038003}
-  description: 
   slider: {fileID: 7135443692195795217}
   format: 0
 --- !u!114 &8957466157568241986

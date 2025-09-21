@@ -52,7 +52,7 @@ namespace SurgeEngine._Source.Code.Core.Character.System
             
             if (isInAir)
             {
-                homingTarget = SonicTools.FindHomingTarget();
+                //homingTarget = SonicTools.FindHomingTarget();
             }
             else
             {

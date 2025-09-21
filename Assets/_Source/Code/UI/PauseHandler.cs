@@ -16,6 +16,8 @@ namespace SurgeEngine._Source.Code.UI
     {
         public bool Active { get; private set; }
 
+        [SerializeField] private UpdateCursorDevice updateCursorDevice;
+
         [Header("Input")]
         [SerializeField] private InputActionReference pauseActionReference;
         
@@ -62,45 +64,7 @@ namespace SurgeEngine._Source.Code.UI
         {
             if (Active)
             {
-                UpdateCursorBasedOnInputDevice();
-            }
-            else
-            {
-                Cursor.visible = false;
-                Cursor.lockState = CursorLockMode.Locked;
-            }
-            
-            void UpdateCursorBasedOnInputDevice()
-            {
-                var devices = InputSystem.devices;
-                foreach (var device in devices)
-                {
-                    if (!device.wasUpdatedThisFrame) continue;
-
-                    switch (device)
-                    {
-                        case Keyboard _:
-                            SetCursorVisible(true);
-                            break;
-                        
-                        case Mouse mouse:
-                            if (mouse.delta.ReadValue().magnitude > 0)
-                            {
-                                SetCursorVisible(true);
-                            }
-                            break;
-                        
-                        case Gamepad _:
-                            SetCursorVisible(false);
-                            break;
-                    }
-                }
-            }
-            
-            void SetCursorVisible(bool isVisible)
-            {
-                Cursor.visible = isVisible;
-                Cursor.lockState = isVisible ? CursorLockMode.None : CursorLockMode.Locked;
+                updateCursorDevice.UpdateDevice();
             }
         }
 
@@ -144,6 +108,9 @@ namespace SurgeEngine._Source.Code.UI
                     
                     initial.Exit();
                 }
+                
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
             }
             
             _canvasGroup.interactable = isPaused;
