@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using FMODUnity;
@@ -5,13 +6,13 @@ using UnityEngine;
 
 namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.PhysicsObjects
 {
-    [ExecuteAlways]
     public class ReappearBlock : MonoBehaviour
     {
         [SerializeField] private bool startHidden;
         [SerializeField] private Vector3 size = Vector3.one;
         [SerializeField] private bool alternate = true;
         [SerializeField] private float alternateTimer = 1f;
+        [SerializeField] private Transform lightBlock;
         [SerializeField] private EventReference appearSound;
         [SerializeField] private EventReference disappearSound;
 
@@ -21,7 +22,6 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.PhysicsObjects
         private readonly float[] _pipeRotations = { -90, 180, -90, 180, 0, 90, 0, 90 };
 
         private readonly List<Transform> _joints = new();
-        private Transform _lightBlock;
 
         private Material _lightMaterial;
 
@@ -33,17 +33,7 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.PhysicsObjects
         
         private void Awake()
         {
-            foreach (Transform pipe in transform.Find("pipes"))
-                _pipes.Add(pipe);
-
-            foreach (Transform joint in transform.Find("joints"))
-                _joints.Add(joint);
-
-            _lightBlock = transform.Find("lightBlock");
-
-            _col = GetComponent<BoxCollider>();
-            _lightMaterial = new Material(_lightBlock.GetComponent<MeshRenderer>().sharedMaterial);
-            _lightBlock.GetComponent<MeshRenderer>().sharedMaterial = _lightMaterial;
+            Setup();
 
             _hidden = startHidden;
 
@@ -53,6 +43,49 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.PhysicsObjects
                 Show();
 
             VisualUpdate();
+        }
+
+        private void OnValidate()
+        {
+            Setup();
+            
+            VisualUpdate();
+        }
+
+        private void Setup()
+        {
+            var pipesTransform = transform.Find("pipes");
+            if (pipesTransform != null)
+            {
+                foreach (Transform pipe in pipesTransform)
+                {
+                    if (!_pipes.Contains(pipe))
+                        _pipes.Add(pipe);
+                }
+            }
+
+            var jointsTransform = transform.Find("joints");
+            if (jointsTransform != null)
+            {
+                foreach (Transform joint in jointsTransform)
+                {
+                    if (!_joints.Contains(joint))
+                        _joints.Add(joint);
+                }
+            }
+
+            if (_col == null)
+                _col = GetComponent<BoxCollider>();
+
+            if (_lightMaterial == null && lightBlock != null)
+            {
+                var meshRenderer = lightBlock.GetComponent<MeshRenderer>();
+                if (meshRenderer != null && meshRenderer.sharedMaterial != null)
+                {
+                    _lightMaterial = new Material(meshRenderer.sharedMaterial);
+                    meshRenderer.sharedMaterial = _lightMaterial;
+                }
+            }
         }
 
         private void VisualUpdate()
@@ -114,7 +147,7 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.PhysicsObjects
                 }
             }
 
-            _lightBlock.localScale = size;
+            lightBlock.localScale = size;
             _lastSize = size;
 
             float margin = 0.2f;
@@ -123,7 +156,7 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.PhysicsObjects
 
         private void Update()
         {
-            if (alternate && Application.isPlaying)
+            if (alternate)
             {
                 _timer += Time.deltaTime;
                 if (_timer > alternateTimer)
@@ -155,9 +188,11 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.PhysicsObjects
                 return;
 
             StartCoroutine(ShowCoroutine());
-            
+
             if (Time.timeSinceLevelLoad > 0)
+            {
                 RuntimeManager.PlayOneShot(appearSound, transform.position);
+            }
         }
 
         public void Hide()
@@ -166,9 +201,11 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.PhysicsObjects
                 return;
 
             StartCoroutine(HideCoroutine());
-            
+
             if (Time.timeSinceLevelLoad > 0)
+            {
                 RuntimeManager.PlayOneShot(disappearSound, transform.position);
+            }
         }
 
         private IEnumerator ShowCoroutine()

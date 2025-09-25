@@ -177,6 +177,7 @@ GameObject:
   - component: {fileID: 3235971488958976487}
   - component: {fileID: 283705333235528509}
   - component: {fileID: 3580076058910728512}
+  - component: {fileID: 5745885742414065138}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -287,6 +288,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &5745885742414065138
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2204935163294076424}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0921f0cd34bf4be89809fea5fd37cfc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SurgeEngine._Source.Code.UI.Navigation.AutoAddToNavigation
 --- !u!1 &3208154905383576532
 GameObject:
   m_ObjectHideFlags: 0
@@ -390,7 +403,7 @@ GameObject:
   - component: {fileID: 7597156422752305565}
   - component: {fileID: 4655431079561566579}
   - component: {fileID: 2327043651448867362}
-  - component: {fileID: 5185388051101322263}
+  - component: {fileID: 8194384588182168024}
   m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
@@ -457,7 +470,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 10
---- !u!114 &5185388051101322263
+--- !u!114 &8194384588182168024
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

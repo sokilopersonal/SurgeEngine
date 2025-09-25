@@ -91,10 +91,11 @@ namespace SurgeEngine._Source.Code.Core.Character.System.Characters.Sonic
 
         private void OnDrawGizmos()
         {
+            Gizmos.matrix = transform.localToWorldMatrix;
             Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(transform.position, config.findDistance);
+            Gizmos.DrawWireSphere(Vector3.zero, config.findDistance);
             
-            Vector3 forward = transform.forward;
+            Vector3 forward = Vector3.forward;
             forward.y = 0f;
             forward.Normalize();
 
@@ -102,8 +103,8 @@ namespace SurgeEngine._Source.Code.Core.Character.System.Characters.Sonic
             Vector3 leftBoundary = Quaternion.Euler(0f, -config.findAngle * 0.5f, 0f) * forward;
 
             Gizmos.color = Color.yellow;
-            Gizmos.DrawLine(transform.position, transform.position + rightBoundary * config.findDistance);
-            Gizmos.DrawLine(transform.position, transform.position + leftBoundary * config.findDistance);
+            Gizmos.DrawLine(Vector3.zero, Vector3.zero + rightBoundary * config.findDistance);
+            Gizmos.DrawLine(Vector3.zero, Vector3.zero + leftBoundary * config.findDistance);
         }
     }
 }

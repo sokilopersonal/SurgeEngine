@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using DG.Tweening;
 using SurgeEngine._Source.Code.Infrastructure.Tools.Managers.UI;
@@ -29,6 +30,9 @@ namespace SurgeEngine._Source.Code.UI.Pages.Baseline.AnimatedPages
         [SerializeField] private ConfirmWindow confirmWindow;
         private int _currentSubPage;
         private PageController _controller;
+
+        public event Action OnSaveAll;
+        public event Action OnRevertAll;
 
         protected override void Awake()
         {
@@ -89,6 +93,8 @@ namespace SurgeEngine._Source.Code.UI.Pages.Baseline.AnimatedPages
             {
                 optionUI.Save();
             }
+            
+            OnSaveAll?.Invoke();
         }
 
         public void Revert()
@@ -102,6 +108,8 @@ namespace SurgeEngine._Source.Code.UI.Pages.Baseline.AnimatedPages
             {
                 optionUI.Revert();
             }
+            
+            OnRevertAll?.Invoke();
         }
 
         public void CheckDirty()
@@ -134,6 +142,7 @@ namespace SurgeEngine._Source.Code.UI.Pages.Baseline.AnimatedPages
                 subPage.CanvasGroup.blocksRaycasts = false;
             }
 
+            _currentSubPage = Array.IndexOf(subPages, page);
             page.CanvasGroup.alpha = 1f;
             page.CanvasGroup.interactable = true;
             page.CanvasGroup.blocksRaycasts = true;
@@ -158,6 +167,7 @@ namespace SurgeEngine._Source.Code.UI.Pages.Baseline.AnimatedPages
             if (!IsActive()) return;
             
             applyButton.Select();
+            SaveAll();
         }
 
         private void OnResetAction(InputAction.CallbackContext obj)
@@ -165,6 +175,7 @@ namespace SurgeEngine._Source.Code.UI.Pages.Baseline.AnimatedPages
             if (!IsActive()) return;
             
             resetButton.Select();
+            RevertAll();
         }
     }
 }

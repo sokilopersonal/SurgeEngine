@@ -7,12 +7,11 @@ namespace SurgeEngine._Source.Code.UI.Animated
 {
     public class SelectedPanel : SelectReaction
     {
-        private Tween _tween;
-        private Tween _tintTween;
         [SerializeField] private float duration = 0.35f;
         [SerializeField] private Ease ease = Ease.OutCubic;
         [SerializeField] private Color baseColor = Color.white;
         [SerializeField] private Color lowTintColor = new(0.4f, 0.4f, 0.4f);
+        private Tween _tween;
 
         private void Awake()
         {
@@ -54,7 +53,7 @@ namespace SurgeEngine._Source.Code.UI.Animated
         private void LowTint()
         {
             var image = GetComponent<Image>();
-            _tintTween = image.DOColor(baseColor, 0.25f).From(lowTintColor).SetUpdate(true);
+            image.DOColor(baseColor, 0.25f).From(lowTintColor).SetUpdate(true);
         }
 
         private void Show()
