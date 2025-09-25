@@ -9,7 +9,8 @@ namespace SurgeEngine._Source.Editor
         private const string ReadmeText = "Credits:"
                                           + "\nsokilo - Project lead" 
                                           + "\nloco - Shaders, programming help"
-                                          + "\nSkyth (not related to the project) - Result screen music from Unleashed Recompiled Installer";
+                                          + "\nhedgedev (not related to the project) - Result screen music from Unleashed Recompiled Installer"
+                                          + "\nflaticon.com - Some icons";
 
         [PostProcessBuild]
         private static void CreateReadmeFile(BuildTarget target, string pathToBuiltProject)

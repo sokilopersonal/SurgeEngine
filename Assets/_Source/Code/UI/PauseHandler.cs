@@ -1,3 +1,4 @@
+using System;
 using DG.Tweening;
 using SurgeEngine._Source.Code.Core.Character.States;
 using SurgeEngine._Source.Code.Core.Character.System;
@@ -150,6 +151,11 @@ namespace SurgeEngine._Source.Code.UI
                     }
                 }
             }
+        }
+
+        private void OnDestroy()
+        {
+            _volumeManager.ToggleMenuDistortion(false);
         }
 
         public void RestartAction()
