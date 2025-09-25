@@ -79,7 +79,7 @@ namespace SurgeEngine._Source.Code.Core.Character.System.Characters.Sonic
                 if (dot < Mathf.Cos(angle * 0.5f * Mathf.Deg2Rad)) continue;
 
                 float dist = dir.magnitude;
-                if (dist < bestDistance && !Physics.Linecast(transform.position, col.transform.position, blockMask))
+                if (dist < bestDistance && !Physics.Linecast(transform.position, col.transform.position + Vector3.up * 0.5f, blockMask))
                 {
                     bestDistance = dist;
                     bestTarget = target;
