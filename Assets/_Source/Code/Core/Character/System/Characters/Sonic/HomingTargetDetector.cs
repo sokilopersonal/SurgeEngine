@@ -35,7 +35,6 @@ namespace SurgeEngine._Source.Code.Core.Character.System.Characters.Sonic
         private HomingTarget FindHomingTarget(float radius, float angle, LayerMask mask, LayerMask blockMask)
         {
             mask |= _character.Config.railMask;
-            
             Collider[] colliders = Physics.OverlapSphere(transform.position, radius, mask, QueryTriggerInteraction.Collide);
 
             HomingTarget bestTarget = null;
@@ -49,37 +48,38 @@ namespace SurgeEngine._Source.Code.Core.Character.System.Characters.Sonic
             {
                 HomingTarget target = col.GetComponent<HomingTarget>();
                 if (target == null) continue;
-                
+
+                Vector3 targetPos = col.transform.position;
+
                 if (target.TryGetComponentInParent(out Rail rail))
                 {
                     var spline = rail.Container.Spline;
                     var railTarget = rail.HomingTarget;
                     Vector3 localPos = rail.transform.InverseTransformPoint(transform.position + transform.forward * radius / 2);
                     SplineUtility.GetNearestPoint(spline, localPos, out _, out var f);
-                        
+
                     SplineSample sample = new SplineSample
                     {
                         pos = spline.EvaluatePosition(f),
                         tg = ((Vector3)spline.EvaluateTangent(f)).normalized,
                         up = spline.EvaluateUpVector(f)
                     };
-                    
+
                     Vector3 endTargetPos = sample.pos + sample.up * (rail.Radius + 0.5f);
-                    Vector3 endWorldPos = rail.transform.TransformPoint(endTargetPos);
-                    railTarget.transform.position = Vector3.Lerp(railTarget.transform.position, endWorldPos, 32 * Time.fixedDeltaTime);
-                    
-                    bestTarget = railTarget;
-                    bestDistance = Vector3.Distance(transform.position, railTarget.transform.position);
+                    targetPos = rail.transform.TransformPoint(endTargetPos);
+
+                    railTarget.transform.position = Vector3.Lerp(railTarget.transform.position, targetPos, 32 * Time.fixedDeltaTime);
+                    target = railTarget;
                 }
 
-                Vector3 dir = col.transform.position - transform.position;
+                Vector3 dir = targetPos - transform.position;
                 Vector3 dirFlat = new Vector3(dir.x, 0f, dir.z).normalized;
 
                 float dot = Vector3.Dot(forwardFlat, dirFlat);
                 if (dot < Mathf.Cos(angle * 0.5f * Mathf.Deg2Rad)) continue;
 
                 float dist = dir.magnitude;
-                if (dist < bestDistance && !Physics.Linecast(transform.position, col.transform.position + Vector3.up * 0.5f, blockMask))
+                if (dist < bestDistance && !Physics.Linecast(transform.position, targetPos + Vector3.up * 0.5f, blockMask))
                 {
                     bestDistance = dist;
                     bestTarget = target;
@@ -88,7 +88,7 @@ namespace SurgeEngine._Source.Code.Core.Character.System.Characters.Sonic
 
             return bestTarget;
         }
-
+        
         private void OnDrawGizmos()
         {
             Gizmos.matrix = transform.localToWorldMatrix;
