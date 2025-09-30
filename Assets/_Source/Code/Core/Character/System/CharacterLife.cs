@@ -14,51 +14,61 @@ namespace SurgeEngine._Source.Code.Core.Character.System
         public float DirectionalForce => directionalForce;
 
         public bool IsDead { get; set; }
-        public event Action<CharacterBase> OnDied;
+        public bool WillDie => Stage.Instance != null && Stage.Instance.Data.RingCount <= 0;
+        public Action<CharacterBase> OnDied;
         public event Action OnRingLoss;
-        
-        public void TakeDamage(Component sender)
+
+        private void OnEnable()
+        {
+            OnDied += MarkAsDead;
+        }
+
+        private void OnDisable()
+        {
+            OnDied -= MarkAsDead;
+        }
+
+        public void TakeDamage(Component sender) => TakeDamage(true);
+
+        public void TakeDamage(bool changeState)
         {
             CharacterDamage damageable = character.StateMachine.CurrentState switch
             {
                 FStateGrind or FStateGrindSquat => new GrindDamage(character),
                 _ => new GeneralDamage(character)
             };
-            
+
             if (!character.Flags.HasFlag(FlagType.Invincible) && !IsDead)
             {
                 IsDead = false;
-                
-                // Imagine it's over
-                if (Stage.Instance.Data.RingCount <= 0)
-                {
-                    if (damageable is GeneralDamage) character.StateMachine.GetState<FStateDamage>()?.SetState(DamageState.Dead);
 
-                    OnDiedInvoke(character, true);
+                var stage = Stage.Instance;
+                if (WillDie)
+                {
+                    if (damageable is GeneralDamage && changeState)
+                        character.StateMachine.GetState<FStateDamage>()?.SetState(DamageState.Dead);
+
+                    OnDied?.Invoke(character);
                 }
                 else
                 {
-                    // Lose rings
                     const int min = 15;
-
-                    var data = Stage.Instance.Data;
+                    var data = stage.Data;
                     var ringCount = data.RingCount;
 
                     int value = Mathf.CeilToInt(Mathf.Max(min, ringCount * Random.Range(0.5f, 0.8f)));
                     data.RingCount -= Mathf.Clamp(value, 0, ringCount);
-                    
                     OnRingLoss?.Invoke();
                 }
-                
-                damageable.TakeDamage();
+
+                if (changeState) damageable.TakeDamage();
                 character.Flags.AddFlag(new Flag(FlagType.Invincible, true, invincibleTime + 1.5f));
             }
         }
-        
-        public virtual void OnDiedInvoke(CharacterBase obj, bool isMarkedForDeath)
+
+        private void MarkAsDead(CharacterBase obj)
         {
-            IsDead = isMarkedForDeath;
-            OnDied?.Invoke(obj);
+            IsDead = true;
         }
 
         public void Load()

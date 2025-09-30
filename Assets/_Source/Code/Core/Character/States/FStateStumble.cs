@@ -17,14 +17,14 @@ namespace SurgeEngine._Source.Code.Core.Character.States
             base.OnEnter();
 
             _time = 0;
-            _ignoreTime = 0.1f;
+            _ignoreTime = 0.2f;
         }
 
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
 
-            if (Utility.TickTimer(ref _time, _time, false))
+            if (_time > 0 && Utility.TickTimer(ref _time, _time, false))
             {
                 StateMachine.SetState<FStateGround>();
             }
@@ -44,6 +44,11 @@ namespace SurgeEngine._Source.Code.Core.Character.States
                     Kinematics.Snap(hit.point, Vector3.up);
                     
                     Kinematics.Project(hit.normal);
+
+                    if (_time == 0)
+                    {
+                        StateMachine.SetState<FStateGround>();
+                    }
                 }
             }
             

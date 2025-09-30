@@ -47,7 +47,7 @@ namespace SurgeEngine._Source.Code.Infrastructure.Tools.Managers
             Instance.screen.SetActive(true);
             
             var asyncOperation = SceneManager.LoadSceneAsync(name);
-            while (!asyncOperation.isDone)
+            while (asyncOperation != null && !asyncOperation.isDone)
             {
                 yield return null;
             }

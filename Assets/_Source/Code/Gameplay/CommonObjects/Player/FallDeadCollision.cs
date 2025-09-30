@@ -17,7 +17,7 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Player
             input.playerInput.enabled = false;
             
             context.Camera.StateMachine.SetState<FallCameraState>();
-            context.Life.OnDiedInvoke(context, true);
+            context.Life.OnDied?.Invoke(context);
         }
 
         private void OnDrawGizmosSelected()

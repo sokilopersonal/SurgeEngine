@@ -30,7 +30,7 @@ namespace SurgeEngine._Source.Code.Core.Character.States
 
             StateMachine.GetSubState<FBoost>().Active = false;
             Kinematics.ResetVelocity();
-            _timer = 0.4f;
+            _timer = 0.25f;
 
             Rigidbody.linearVelocity = -character.transform.forward * character.Life.DirectionalForce;
         }
