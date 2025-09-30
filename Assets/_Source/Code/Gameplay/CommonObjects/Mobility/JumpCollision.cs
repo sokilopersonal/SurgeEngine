@@ -36,18 +36,16 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
             {
                 if (context.Kinematics.Speed >= speedMin)
                 {
-                    if (impulse > 0)
+                    if (groundOnly && !context.Kinematics.InAir || !groundOnly)
                     {
-                        if (groundOnly && !context.Kinematics.InAir || !groundOnly)
-                        {
-                            Rigidbody body = context.Kinematics.Rigidbody;
-                            body.position += transform.up;
+                        Rigidbody body = context.Kinematics.Rigidbody;
+                        body.position += transform.up * 1.5f;
 
-                            Vector3 force = Utility.GetImpulseWithPitch(transform.forward, -transform.right, pitch, impulse);
-                            body.linearVelocity = force;
+                        Vector3 force = Utility.GetImpulseWithPitch(transform.forward, -transform.right, pitch, impulse);
+                        body.linearVelocity = force;
                             
-                            context.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, outOfControl));
-                        }
+                        context.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, outOfControl));
+                        Debug.Log("1");
                     }
                 }
             }

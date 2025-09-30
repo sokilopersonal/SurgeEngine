@@ -20,11 +20,6 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.System
             FindPointMarker();
         }
 
-        private void Start()
-        {
-            FindPointMarker();
-        }
-
         private void FindPointMarker()
         {
             if (!_pointMarker)
