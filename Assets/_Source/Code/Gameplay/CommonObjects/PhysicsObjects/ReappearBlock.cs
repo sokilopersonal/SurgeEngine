@@ -34,6 +34,16 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.PhysicsObjects
         private void Awake()
         {
             Setup();
+            
+            if (_lightMaterial == null && lightBlock != null)
+            {
+                var meshRenderer = lightBlock.GetComponent<MeshRenderer>();
+                if (meshRenderer != null && meshRenderer.sharedMaterial != null)
+                {
+                    _lightMaterial = new Material(meshRenderer.sharedMaterial);
+                    meshRenderer.sharedMaterial = _lightMaterial;
+                }
+            }
 
             _hidden = startHidden;
 
@@ -76,16 +86,6 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.PhysicsObjects
 
             if (_col == null)
                 _col = GetComponent<BoxCollider>();
-
-            if (_lightMaterial == null && lightBlock != null)
-            {
-                var meshRenderer = lightBlock.GetComponent<MeshRenderer>();
-                if (meshRenderer != null && meshRenderer.sharedMaterial != null)
-                {
-                    _lightMaterial = new Material(meshRenderer.sharedMaterial);
-                    meshRenderer.sharedMaterial = _lightMaterial;
-                }
-            }
         }
 
         private void VisualUpdate()
