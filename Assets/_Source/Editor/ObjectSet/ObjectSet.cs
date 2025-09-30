@@ -73,6 +73,9 @@ namespace SurgeEngine._Source.Editor.ObjectSet
                                     "\n2. Click on the object icon" +
                                     "\n3. Move your mouse to where you want place the object" +
                                     "\n4. Press LMB or Esc to place/cancel", MessageType.None);
+            
+            EditorGUILayout.Space(3);
+            EditorGUILayout.HelpBox("Tip: You can drag & drop prefabs in the window to add it in the current category.", MessageType.Info);
 
             EditorGUILayout.BeginVertical(new GUIStyle("box")); // SETTINGS
             
@@ -141,6 +144,43 @@ namespace SurgeEngine._Source.Editor.ObjectSet
             }
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.EndScrollView();
+            
+            var fullWindowRect = new Rect(0, 0, position.width, position.height);
+
+            if ((Event.current.type == EventType.DragUpdated || Event.current.type == EventType.DragPerform)
+                && fullWindowRect.Contains(Event.current.mousePosition))
+            {
+                DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
+
+                if (Event.current.type == EventType.DragPerform)
+                {
+                    DragAndDrop.AcceptDrag();
+                    foreach (var obj in DragAndDrop.objectReferences)
+                    {
+                        if (obj is GameObject go)
+                        {
+                            string path = AssetDatabase.GetAssetPath(go);
+                            if (PrefabUtility.GetPrefabAssetType(go) != PrefabAssetType.NotAPrefab)
+                            {
+                                if (_selectedCategoryIndex == 0)
+                                {
+                                    EditorUtility.DisplayDialog("Asset Manager",
+                                        "You can't add prefab in the 'All' category. Please select something different.", "OK");
+                                    continue;
+                                }
+                                if (!_prefabDataList.Exists(d => d.prefab == go))
+                                {
+                                    string guid = AssetDatabase.AssetPathToGUID(path);
+                                    string category = _categories[_selectedCategoryIndex];
+                                    _prefabDataList.Add(new PrefabData(guid, category) { prefab = go });
+                                }
+                            }
+                        }
+                    }
+                }
+
+                Event.current.Use();
+            }
         }
 
         private bool DrawPrefabButton(PrefabData prefabData)
