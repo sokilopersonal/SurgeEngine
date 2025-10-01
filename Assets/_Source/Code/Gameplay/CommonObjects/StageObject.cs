@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using NaughtyAttributes;
 using SurgeEngine._Source.Code.Core.Character.System;
 using SurgeEngine._Source.Code.Infrastructure.Custom.Extensions;
 using UnityEngine;

@@ -285,7 +285,7 @@ MonoBehaviour:
   Path: FMOD/SurgeEngine/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638943031836659615
+  lastModified: 638949157134497711
   FileSizes:
   - Name: Desktop
     Value: 4756
@@ -1031,10 +1031,10 @@ MonoBehaviour:
   Path: FMOD/SurgeEngine/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638939639725054808
+  lastModified: 638949157134524279
   FileSizes:
   - Name: Desktop
-    Value: 5070
+    Value: 5106
   Exists: 1
 --- !u!114 &-3064395595488222742
 MonoBehaviour:
@@ -1195,6 +1195,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 56
+--- !u!114 &-1672136747945920950
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/CommonObjects/SpringFake
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/CommonObjects/SpringFake
+  Guid:
+    Data1: 1025122926
+    Data2: 1297283354
+    Data3: 14454204
+    Data4: -379796462
+  Banks:
+  - {fileID: 2805792623226039733}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 10
+  MaxDistance: 85
+  Length: 1464
 --- !u!114 &-1476720935961159768
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1536,6 +1563,7 @@ MonoBehaviour:
   - {fileID: 9195379662829197533}
   - {fileID: -6502490567967731815}
   - {fileID: -1324826506183163421}
+  - {fileID: -1672136747945920950}
   EditorParameters:
   - {fileID: 7205006369947406295}
   - {fileID: -5359562392401140572}
@@ -1548,7 +1576,7 @@ MonoBehaviour:
   StringsBanks:
   - {fileID: -3163533322277861223}
   cacheVersion: 131849
-  cacheTime: 638943031836659615
+  cacheTime: 638949157138028443
   SerializableEventsDict:
   - key: event:/UI/Line
     index: 0
@@ -1716,6 +1744,8 @@ MonoBehaviour:
     index: 81
   - key: event:/CommonObjects/PlatformFall
     index: 82
+  - key: event:/CommonObjects/SpringFake
+    index: 83
 --- !u!114 &28076501642241423
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2081,10 +2111,10 @@ MonoBehaviour:
   Path: FMOD/SurgeEngine/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 638939638538536475
+  lastModified: 638949157138028443
   FileSizes:
   - Name: Desktop
-    Value: 1552352
+    Value: 1561120
   Exists: 1
 --- !u!114 &2961646770365126559
 MonoBehaviour:

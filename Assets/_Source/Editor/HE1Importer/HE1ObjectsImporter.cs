@@ -27,6 +27,7 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                 ["SuperRing"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/SuperRing.prefab"),
                 ["DashPanel"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/DashPanel.prefab"),
                 ["Spring"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/Spring.prefab"),
+                ["SpringFake"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/SpringFake.prefab"),
                 ["WideSpring"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/WideSpring.prefab"),
                 ["AirSpring"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/AirSpring.prefab"),
                 ["ThornSpring"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/ThornSpring.prefab"),
@@ -171,6 +172,14 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                     SetFloatReflection(spring, "speed", speed);
                     SetFloatReflection(spring, "outOfControl", outOfControl);
                     SetFloatReflection(spring, "keepVelocityDistance", keepVelocity);
+                },
+                ["SpringFake"] = (go, elem) =>
+                {
+                    float speed = GetFloatWithMultiSetParam(elem, "FirstSpeed");
+                    float outOfControl = GetFloatWithMultiSetParam(elem, "OutOfControl");
+                    var spring = go.GetComponent<SpringFake>();
+                    SetFloatReflection(spring, "speed", speed);
+                    SetFloatReflection(spring, "outOfControl", outOfControl);
                 },
                 ["AirSpring"] = (go, elem) =>
                 {
