@@ -6,28 +6,28 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Player
     {
         [SerializeField] private string animationName;
         
-        private StageObject contact;
-        private Animator animator;
+        private StageObject _contact;
+        private Animator _animator;
         
         private void Awake()
         {
-            contact = GetComponentInParent<StageObject>();
-            animator = GetComponent<Animator>();
+            _contact = GetComponentInParent<StageObject>();
+            _animator = GetComponent<Animator>();
         }
         
         private void OnEnable()
         {
-            contact.OnContact += OnContact;
+            _contact.OnContact += OnContact;
         }
         
         private void OnDisable()
         {
-            contact.OnContact -= OnContact;
+            _contact.OnContact -= OnContact;
         }
 
         private void OnContact(StageObject obj)
         {
-            animator.Play(animationName);
+            _animator.Play(animationName);
         }
     }
 }
