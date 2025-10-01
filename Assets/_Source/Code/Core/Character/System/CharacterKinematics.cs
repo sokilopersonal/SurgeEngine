@@ -120,10 +120,10 @@ namespace SurgeEngine._Source.Code.Core.Character.System
 
             if (!character.Flags.HasFlag(FlagType.Autorun))
             {
-                Vector3 rawInput = _cameraTransform.rotation * character.Input.moveVector;
+                Vector3 rawInput = _cameraTransform.rotation * character.Input.MoveVector;
                 Vector3 orientedInput = Quaternion.FromToRotation(_cameraTransform.up, Normal) * rawInput;
                 _inputDir = SurgeMath.GetMovementDirectionProjectedOnPlane(orientedInput, Normal, _cameraTransform.up)
-                            * character.Input.moveVector.magnitude;
+                            * character.Input.MoveVector.magnitude;
             }
             
             Debug.DrawRay(transform.position, _inputDir, Color.red, 0, false);

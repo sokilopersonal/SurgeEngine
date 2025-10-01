@@ -128,7 +128,7 @@ namespace SurgeEngine._Source.Code.Core.Character.CameraSystem.Pans
                 _yawAuto =  0;
             }
 
-            Vector2 lookInput = Character.Input.lookVector * (_master.Sensitivity * _master.UserSensitivityMultiplier);
+            Vector2 lookInput = Character.Input.LookVector * (_master.Sensitivity * _master.UserSensitivityMultiplier);
             _stateMachine.Yaw += lookInput.x + _yawAuto;
             _stateMachine.Pitch = Mathf.Clamp(_stateMachine.Pitch - lookInput.y, MinPitch, MaxPitch);
         }
@@ -210,7 +210,7 @@ namespace SurgeEngine._Source.Code.Core.Character.CameraSystem.Pans
 
         private void LateralOffset()
         {
-            float x = Character.Input.moveVector.x;
+            float x = Character.Input.MoveVector.x;
             float time = Character.Kinematics.Speed / Character.Config.topSpeed;
             AnimationCurve curve = _master.LateralOffsetSpeedCurve;
             float modifier = 0;

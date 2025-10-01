@@ -10,8 +10,8 @@ namespace SurgeEngine._Source.Code.Core.Character.System
 {
     public class CharacterInput : CharacterComponent
     {
-        public Vector3 moveVector;
-        public Vector2 lookVector;
+        public Vector3 MoveVector { get; private set; }
+        public Vector2 LookVector { get; private set; }
         public PlayerInput playerInput;
         
         public bool XPressed => XInputAction.WasPressedThisFrame();
@@ -76,8 +76,8 @@ namespace SurgeEngine._Source.Code.Core.Character.System
 
         private void OnDisable()
         {
-            moveVector = Vector3.zero;
-            lookVector = Vector2.zero;
+            MoveVector = Vector3.zero;
+            LookVector = Vector2.zero;
 
             playerInput.actions["XAction"].started -= BoostInput;
             playerInput.actions["XAction"].canceled -= BoostInput;
@@ -101,10 +101,10 @@ namespace SurgeEngine._Source.Code.Core.Character.System
         private void Update()
         {
             Vector2 temp = playerInput.actions["Movement"].ReadValue<Vector2>();
-            moveVector = new Vector3(temp.x, 0, temp.y);
-            lookVector = playerInput.actions["Camera"].ReadValue<Vector2>() * (_device is Gamepad ? 100f * Time.deltaTime : 1f);
+            MoveVector = new Vector3(temp.x, 0, temp.y);
+            LookVector = playerInput.actions["Camera"].ReadValue<Vector2>() * (_device is Gamepad ? 100f * Time.deltaTime : 1f);
 
-            if (lookVector == Vector2.zero)
+            if (LookVector == Vector2.zero)
             {
                 _noInputTimer += Time.deltaTime;
 
@@ -149,12 +149,12 @@ namespace SurgeEngine._Source.Code.Core.Character.System
 
             if (_lockCamera)
             {
-                lookVector = Vector2.zero;
+                LookVector = Vector2.zero;
             }
             
             if (character.Flags.HasFlag(FlagType.OutOfControl))
             {
-                moveVector = Vector3.zero;
+                MoveVector = Vector3.zero;
             }
         }
 
@@ -211,7 +211,7 @@ namespace SurgeEngine._Source.Code.Core.Character.System
             
             if (_lockCamera)
             {
-                lookVector = Vector2.zero;
+                LookVector = Vector2.zero;
             }
         }
         

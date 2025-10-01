@@ -39,7 +39,7 @@ namespace SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic
             base.OnTick(dt);
             if (!Input.BHeld && !Kinematics.CheckForCeiling(out RaycastHit data))
             {
-                if (Input.moveVector.magnitude > 0.1f)
+                if (Input.MoveVector.magnitude > 0.1f)
                 {
                     StateMachine.SetState<FStateGround>();
                 }
@@ -54,7 +54,7 @@ namespace SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic
                 StateMachine.SetState<FStateJump>();
             }
 
-            if (Input.moveVector.magnitude < 0.1)
+            if (Input.MoveVector.magnitude < 0.1)
             {
                 StateMachine.SetState<FStateSit>();
             }

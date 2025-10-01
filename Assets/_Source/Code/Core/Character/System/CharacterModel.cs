@@ -146,7 +146,7 @@ namespace SurgeEngine._Source.Code.Core.Character.System
             
             var kinematics = character.Kinematics;
             var rb = kinematics.Rigidbody;
-            Vector3 rawInput = character.Input.moveVector;
+            Vector3 rawInput = character.Input.MoveVector;
             Vector3 inputDir = kinematics.GetInputDir();
             var config = character.Config;
             Vector3 currentVelocity = Vector3.ProjectOnPlane(vector, normal);

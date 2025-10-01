@@ -44,7 +44,7 @@ namespace SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic
                 StateMachine.SetState<FStateJump>();
             }
 
-            if (Input.moveVector.magnitude >= 0.2f)
+            if (Input.MoveVector.magnitude >= 0.2f)
             {
                 StateMachine.SetState<FStateCrawl>();
             }

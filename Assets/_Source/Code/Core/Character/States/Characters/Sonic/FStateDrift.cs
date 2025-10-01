@@ -37,7 +37,7 @@ namespace SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic
         {
             base.OnTick(dt);
             
-            if (Input.moveVector.x == 0)
+            if (Input.MoveVector.x == 0)
                 _ignoreTimer += dt;
             else
             {
@@ -83,7 +83,7 @@ namespace SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic
                 Vector3 targetNormal = hit.normal;
                 Kinematics.RotateSnapNormal(targetNormal);
                 
-                Vector3 dir = Input.moveVector;
+                Vector3 dir = Input.MoveVector;
                 _driftXDirection = Mathf.Sign(dir.x);
 
                 Model.RotateBody(Kinematics.Velocity, Kinematics.Normal, 1600);
