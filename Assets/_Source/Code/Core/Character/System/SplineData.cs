@@ -17,7 +17,7 @@ namespace SurgeEngine._Source.Code.Core.Character.System
             _container = container;
             
             SplineUtility.GetNearestPoint(container.Spline, _container.transform.InverseTransformPoint(position), 
-                out _, out var f, 8, 4);
+                out var near, out var f, 8, 4);
             
             Time = f * Length;
         }

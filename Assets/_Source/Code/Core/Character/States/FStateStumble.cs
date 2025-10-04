@@ -8,28 +8,24 @@ namespace SurgeEngine._Source.Code.Core.Character.States
     public class FStateStumble : FCharacterState
     {
         private float _time;
-        private float _ignoreTime;
         
         public FStateStumble(CharacterBase owner) : base(owner) { }
 
         public override void OnEnter()
         {
             base.OnEnter();
-
-            _time = 0;
-            _ignoreTime = 0.2f;
+            
+            Kinematics.SetDetachTime(0.2f);
         }
 
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
 
-            if (_time > 0 && Utility.TickTimer(ref _time, _time, false))
+            if (_time > 0)
             {
-                StateMachine.SetState<FStateGround>();
+                _time -= dt;
             }
-            
-            Utility.TickTimer(ref _ignoreTime, _ignoreTime, false);
         }
 
         public override void OnFixedTick(float dt)
@@ -38,7 +34,7 @@ namespace SurgeEngine._Source.Code.Core.Character.States
 
             if (Kinematics.CheckForGround(out RaycastHit hit))
             {
-                if (_ignoreTime <= 0)
+                if (Kinematics.GetAttachState())
                 {
                     Kinematics.Normal = Vector3.up;
                     Kinematics.Snap(hit.point, Vector3.up);

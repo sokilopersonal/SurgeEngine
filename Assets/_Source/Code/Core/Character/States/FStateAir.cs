@@ -66,13 +66,12 @@ namespace SurgeEngine._Source.Code.Core.Character.States
                     var up = path.EvaluateUp();
                     
                     var ray = new Ray(Rigidbody.position, pos - Rigidbody.position);
-                    if (Physics.Raycast(ray, out var predictHit, 1.5f, character.Config.castLayer, QueryTriggerInteraction.Ignore))
+                    if (Physics.Raycast(ray, out var predictHit, 1f, character.Config.castLayer, QueryTriggerInteraction.Ignore))
                     {
                         Kinematics.Normal = predictHit.normal;
                         Kinematics.Snap(pos + up);
                         Rigidbody.rotation = Quaternion.FromToRotation(Vector3.up, up) * Rigidbody.rotation;
                         Rigidbody.linearVelocity = Vector3.ProjectOnPlane(Rigidbody.linearVelocity, up);
-                        StateMachine.SetState<FStateGround>();
                     }
                 }
             }

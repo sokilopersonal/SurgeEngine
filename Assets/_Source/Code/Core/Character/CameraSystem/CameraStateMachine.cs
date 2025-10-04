@@ -4,7 +4,9 @@ using SurgeEngine._Source.Code.Core.Character.CameraSystem.Pans;
 using SurgeEngine._Source.Code.Core.Character.CameraSystem.Pans.Data;
 using SurgeEngine._Source.Code.Core.Character.System;
 using SurgeEngine._Source.Code.Core.StateMachine;
+using SurgeEngine._Source.Code.Core.StateMachine.Base;
 using SurgeEngine._Source.Code.Gameplay.CommonObjects.CameraObjects;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects.ChangeModes;
 using SurgeEngine._Source.Code.Gameplay.CommonObjects.System;
 using SurgeEngine._Source.Code.Infrastructure.Custom;
 using UnityEngine;
@@ -20,22 +22,21 @@ namespace SurgeEngine._Source.Code.Core.Character.CameraSystem
         public float Yaw { get; set; }
         public float Pitch { get; set; }
 
-        public float BaseFov => 50f;
+        public float BaseFov { get; private set; }
 
         private Vector3 _position;
+        private Vector3 _characterPosition;
         private Quaternion _rotation;
         private float _fovY;
-        private Vector3 _actorPosition;
 
         public PanData CurrentData { get; set; }
-        public float BlendFactor => _blendFactor;
-        private float _blendFactor;
-        private float _interpolatedBlendFactor;
+        public float BlendFactor { get; private set; }
+
+        private bool _is2dCamera;
         
         private readonly List<ChangeCameraVolume> _volumes;
         private ChangeCameraVolume _lastTop;
         public int VolumeCount => _volumes.Count;
-        public ChangeCameraVolume LastTop => _lastTop;
         public ChangeCameraVolume Top => _volumes.OrderByDescending(v => v.Priority).FirstOrDefault();
 
         private CameraData _data;
@@ -50,54 +51,33 @@ namespace SurgeEngine._Source.Code.Core.Character.CameraSystem
             Transform = transform;
             _character = character;
             Master = character.Camera;
-
+            
+            BaseFov = Camera.fieldOfView;
             _fovY = BaseFov;
 
             OnStateEarlyAssign += _ => RememberRelativeData();
+            _character.Kinematics.OnPath2DChange += Set2DCamera;
 
             CompleteBlend();
         }
 
         public override void Tick(float dt)
         {
-            PanBlend(dt);
+            _characterPosition = _character.transform.position;
             
-            _actorPosition = _character.transform.position;
-
             base.Tick(dt);
             
-            if (CurrentState is CameraState currentCameraState)
-            {
-                Vector3 pos = currentCameraState.StatePosition;
-                Quaternion rot = currentCameraState.StateRotation;
+            Blend();
+            UpdateBlendFactor();
 
-                if (_blendFactor < 1)
-                {
-                    Vector3 center = _actorPosition;
-                    Vector3 diff = pos - center;
-                    _position = Vector3.Lerp(_data.position, diff, _interpolatedBlendFactor);
-                    _position += center;
-                    
-                    _rotation = Quaternion.Lerp(_data.rotation, rot, _interpolatedBlendFactor);
-                    _fovY = Mathf.Lerp(_data.fov, currentCameraState.StateFOV, _interpolatedBlendFactor);
-                }
-                
-                if (_blendFactor >= 1)
-                {
-                    _position = pos;
-                    _rotation = rot;
-                    _fovY = currentCameraState.StateFOV;
-                }
-            }
-            
             Transform.position = _position;
             Transform.rotation = _rotation;
             Camera.fieldOfView = _fovY;
         }
 
-        private void PanBlend(float dt)
+        private void UpdateBlendFactor()
         {
-            bool isExit = IsExact<NewModernState>();
+            bool isExit = VolumeCount == 0;
             if (CurrentData != null)
             {
                 PanData baseData = CurrentData;
@@ -107,16 +87,60 @@ namespace SurgeEngine._Source.Code.Core.Character.CameraSystem
 
                 if (easeTime > 0)
                 {
-                    _blendFactor += dt / easeTime;
+                    BlendFactor += Time.deltaTime / easeTime;
                 }
                 else
                 {
-                    _blendFactor = 1f;
+                    BlendFactor = 1f;
                 }
                 
-                _blendFactor = Mathf.Clamp01(_blendFactor);
-                _interpolatedBlendFactor = Easings.Get(Easing.Gens, _blendFactor);
+                BlendFactor = Mathf.Clamp01(BlendFactor);
             }
+        }
+
+        private void Blend()
+        {
+            if (CurrentState is CameraState currentCameraState)
+            {
+                Vector3 pos = currentCameraState.StatePosition;
+                Quaternion rot = currentCameraState.StateRotation;
+                float t = Easings.Get(Easing.Gens, BlendFactor);
+
+                if (BlendFactor < 1)
+                {
+                    Vector3 center = _characterPosition;
+                    Vector3 diff = pos - center;
+                    _position = Vector3.Lerp(_data.position, diff, t);
+                    _position += center;
+                    
+                    _rotation = Quaternion.Lerp(_data.rotation, rot, t);
+                    _fovY = Mathf.Lerp(_data.fov, currentCameraState.StateFOV, t);
+                }
+                
+                if (BlendFactor >= 1)
+                {
+                    _position = pos;
+                    _rotation = rot;
+                    _fovY = currentCameraState.StateFOV;
+                }
+            }
+        }
+
+        protected override void EnterState(FState newState)
+        {
+            if (_is2dCamera)
+            {
+                var type = newState.GetType();
+                if (type == typeof(NewModernState))
+                {
+                    if (states.TryGetValue(typeof(Camera2DState), out var value))
+                    {
+                        newState = value;
+                    }
+                }
+            }
+            
+            base.EnterState(newState);
         }
 
         public void RegisterVolume(ChangeCameraVolume vol)
@@ -159,13 +183,34 @@ namespace SurgeEngine._Source.Code.Core.Character.CameraSystem
                 SetState<NewModernState>();
             }
         }
-        
-        public void CompleteBlend() => _blendFactor = 1f;
+
+        private void Set2DCamera(ChangeMode2DData data)
+        {
+            if (data != null && data.IsCameraChange)
+            {
+                _is2dCamera = true;
+                ResetBlendFactor();
+                CurrentData = new();
+                SetState<Camera2DState>();
+            }
+            else if (data == null)
+            {
+                if (CurrentState is Camera2DState)
+                {
+                    _is2dCamera = false;
+                    ResetBlendFactor();
+                    SetDirection(_character.transform.forward);
+                    CurrentData = new();
+                    SetState<NewModernState>();
+                }
+            }
+        }
+
+        public void CompleteBlend() => BlendFactor = 1f;
         
         public void ResetBlendFactor()
         {
-            _blendFactor = 0f;
-            _interpolatedBlendFactor = 0f;
+            BlendFactor = 0f;
         }
 
         public void SetDirection(Vector3 forward, bool resetY = false)
@@ -185,8 +230,8 @@ namespace SurgeEngine._Source.Code.Core.Character.CameraSystem
 
         private void RememberRelativeData()
         {
-            Vector3 center = _actorPosition;
-            _data = new CameraData
+            Vector3 center = _characterPosition;
+            _data = new()
             {
                 position = _position - center,
                 rotation = _rotation,
@@ -216,15 +261,14 @@ namespace SurgeEngine._Source.Code.Core.Character.CameraSystem
                 _rotation = rot;
                 _fovY = fov;
                 
-                _data = new CameraData
+                _data = new()
                 {
-                    position = pos - _actorPosition,
+                    position = pos - _characterPosition,
                     rotation = rot,
                     fov = fov,
                 };
 
-                _blendFactor = 1;
-                _interpolatedBlendFactor = 1;
+                BlendFactor = 1;
             }
         }
     }

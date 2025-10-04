@@ -106,10 +106,11 @@ namespace SurgeEngine._Source.Code.Core.Character.CameraSystem
 
         private void Start()
         {
-            StateMachine = new CameraStateMachine(_camera, _cameraTransform, character);
+            StateMachine = new(_camera, _cameraTransform, character);
             
             StateMachine.AddState(new CameraAnimState(character));
             StateMachine.AddState(new NewModernState(character));
+            StateMachine.AddState(new Camera2DState(character));
             StateMachine.AddState(new CameraPan(character));
             StateMachine.AddState(new ParallelCameraPan(character));
             StateMachine.AddState(new FixedCameraPan(character));
@@ -203,8 +204,7 @@ namespace SurgeEngine._Source.Code.Core.Character.CameraSystem
                 {
                     GUILayout.BeginVertical();
                     
-                    var blendFactor = (float)StateMachine.GetType().GetField("_interpolatedBlendFactor",
-                        BindingFlags.Instance | BindingFlags.NonPublic)?.GetValue(StateMachine)!;
+                    var blendFactor = StateMachine.BlendFactor;
                     
                     string mCameraLabel = $"SE Camera: {StateMachine.CurrentState.GetType().Name}";
                     if (StateMachine.Top)

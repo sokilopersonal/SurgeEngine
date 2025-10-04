@@ -12,8 +12,8 @@ namespace SurgeEngine._Source.Code.Core.StateMachine
         public FState CurrentState { get; private set; }
         public FState PreviousState { get; private set; }
         public string currentStateName;
-        
-        private readonly Dictionary<Type, FState> _states = new();
+
+        protected readonly Dictionary<Type, FState> states = new();
         private readonly Dictionary<Type, FSubState> _subStates = new();
         private readonly List<FSubState> _subStatesList = new();
         private readonly List<IStateTimeout> _stateTimeouts = new();
@@ -31,7 +31,7 @@ namespace SurgeEngine._Source.Code.Core.StateMachine
         
         public void AddState(FState state)
         {
-            _states.Add(state.GetType(), state);
+            states.Add(state.GetType(), state);
 
             if (state is IStateTimeout timeout)
             {
@@ -47,7 +47,7 @@ namespace SurgeEngine._Source.Code.Core.StateMachine
 
         public bool Exists<T>(bool isSubState = false) where T : FState
         {
-            return !isSubState ? _states.ContainsKey(typeof(T)) : _subStates.ContainsKey(typeof(T));
+            return !isSubState ? states.ContainsKey(typeof(T)) : _subStates.ContainsKey(typeof(T));
         }
         
         public T SetState<T>(bool allowSameState = false) where T : FState
@@ -59,7 +59,7 @@ namespace SurgeEngine._Source.Code.Core.StateMachine
                 return null;
             }
 
-            if (_states.TryGetValue(type, out FState newState))
+            if (states.TryGetValue(type, out FState newState))
             {
                 if (newState is IStateTimeout timeout)
                 {
@@ -79,7 +79,7 @@ namespace SurgeEngine._Source.Code.Core.StateMachine
             return null;
         }
 
-        private void EnterState(FState newState)
+        protected virtual void EnterState(FState newState)
         {
             CurrentState?.OnExit();
             PreviousState = CurrentState;
@@ -93,13 +93,13 @@ namespace SurgeEngine._Source.Code.Core.StateMachine
         public T GetState<T>() where T : FState
         {
             Type type = typeof(T);
-            return _states[type] as T;
+            return states[type] as T;
         }
 
         public bool GetState<T>(out T state) where T : FState
         {
             Type type = typeof(T);
-            if (_states.TryGetValue(type, out var st))
+            if (states.TryGetValue(type, out var st))
             {
                 state = st as T;
             }
@@ -120,7 +120,7 @@ namespace SurgeEngine._Source.Code.Core.StateMachine
         
         public T[] GetAllStatesOfType<T>() where T : FState
         {
-            return _states.Values
+            return states.Values
                 .Where(state => typeof(T).IsAssignableFrom(state.GetType()))
                 .Select(state => state as T)
                 .ToArray();

@@ -2,7 +2,6 @@
 using DG.Tweening;
 using SurgeEngine._Source.Code.Core.Character.System;
 using SurgeEngine._Source.Code.Gameplay.CommonObjects.System;
-using NotImplementedException = System.NotImplementedException;
 
 namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
 {
@@ -60,12 +59,13 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
         {
             Vector3 dir = (context.transform.position - transform.position).normalized;
             float dot = Vector3.Dot(model.transform.up, dir);
-            if (dot > 0.2f)
+            if (dot > 0.2f && !context.Life.IsDead)
             {
                 base.Launch(context);
             }
             else
             {
+                context.transform.position = transform.position;
                 context.Life.TakeDamage(this);
             }
         }

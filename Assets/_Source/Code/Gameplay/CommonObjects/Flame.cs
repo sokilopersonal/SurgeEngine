@@ -8,6 +8,7 @@ using STOP_MODE = FMOD.Studio.STOP_MODE;
 
 namespace SurgeEngine._Source.Code.Gameplay.CommonObjects
 {
+    [SelectionBase]
     public class Flame : StageObject
     {
         [SerializeField] private float appearTime = 0.25f;
@@ -15,7 +16,7 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects
         [SerializeField] private float offTime = 1f;
         [SerializeField] private float length = 5;
         [SerializeField] private int phase;
-        [SerializeField] private int type = 1; // 0 - cycle, 1 - constant, 2 - disabled
+        [SerializeField, Tooltip("0 - Cycle, 1 - Constant, 2 - Disabled")] private int type = 1; // 0 - cycle, 1 - constant, 2 - disabled
         [SerializeField] private List<Flame> multiSetParam = new List<Flame>();
         [SerializeField] private BoxCollider damageCollider;
         [SerializeField] private ParticleSystem flame;

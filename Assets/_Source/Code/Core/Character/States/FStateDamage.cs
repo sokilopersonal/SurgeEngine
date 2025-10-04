@@ -32,7 +32,9 @@ namespace SurgeEngine._Source.Code.Core.Character.States
             Kinematics.ResetVelocity();
             _timer = 0.25f;
 
-            Rigidbody.linearVelocity = -character.transform.forward * character.Life.DirectionalForce;
+            Vector3 forward = Vector3.Cross(Rigidbody.transform.right, Vector3.up);
+            Rigidbody.linearVelocity = -forward * character.Life.DirectionalForce;
+            Rigidbody.rotation = Quaternion.LookRotation(forward, Vector3.up);
         }
 
         public override void OnFixedTick(float dt)

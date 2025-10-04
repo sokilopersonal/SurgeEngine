@@ -75,6 +75,9 @@ namespace SurgeEngine._Source.Code.Core.Character.System
         public ChangeMode2DData Path2D { get; private set; }
         public ChangeMode3DData PathForward { get; private set; }
         public ChangeMode3DData PathDash { get; private set; }
+        public event Action<ChangeMode2DData> OnPath2DChange;
+        public event Action<ChangeMode3DData> OnPathForwardChange;
+        public event Action<ChangeMode3DData> OnPathDashChange;
 
         private float _moveDot;
         private float _detachTimer;
@@ -236,7 +239,7 @@ namespace SurgeEngine._Source.Code.Core.Character.System
                     
                 if (right != Vector3.zero)
                 {
-                    _inputDir = Vector3.ProjectOnPlane(_inputDir, tg);
+                    _inputDir = Vector3.ProjectOnPlane(_inputDir, right);
                     Project(right);
                 }
 
@@ -245,7 +248,7 @@ namespace SurgeEngine._Source.Code.Core.Character.System
                 endPos.y = Rigidbody.position.y;
 
                 Vector3 target = Vector3.MoveTowards(Rigidbody.position, endPos,
-                    Mathf.Min(Speed / 16f, 1) * 16f * Time.fixedDeltaTime);
+                    Mathf.Min(Speed / 16f, 1) * 8f * Time.fixedDeltaTime);
                 Rigidbody.MovePosition(target);
                 
                 if (Speed > 0.02f && character.Flags.HasFlag(FlagType.Autorun))
@@ -257,10 +260,10 @@ namespace SurgeEngine._Source.Code.Core.Character.System
                         
                 if (IsPathOutOfRange(Path2D))
                 {
-                    Path2D = null;
+                    Set2DPath(null);
                 }
 
-                path.Time += Vector3.Dot(HorizontalVelocity, tg) * Time.fixedDeltaTime;
+                path.Time += Vector3.Dot(Velocity, tg) * Time.fixedDeltaTime;
             }
         }
 
@@ -298,7 +301,7 @@ namespace SurgeEngine._Source.Code.Core.Character.System
                 {
                     if (IsPathOutOfRange(PathForward))
                     {
-                        PathForward = null;
+                        SetForwardPath(null);
                     }
                 }
             }
@@ -314,7 +317,7 @@ namespace SurgeEngine._Source.Code.Core.Character.System
                 {
                     if (IsPathOutOfRange(PathDash))
                     {
-                        PathDash = null;
+                        SetDashPath(null);
                     }
                 }
             }
@@ -586,16 +589,22 @@ namespace SurgeEngine._Source.Code.Core.Character.System
         public void Set2DPath(ChangeMode2DData data)
         {
             Path2D = data;
+            
+            OnPath2DChange?.Invoke(data);
         }
 
         public void SetForwardPath(ChangeMode3DData data)
         {
             PathForward = data;
+            
+            OnPathForwardChange?.Invoke(data);
         }
 
         public void SetDashPath(ChangeMode3DData data)
         {
             PathDash = data;
+            
+            OnPathDashChange?.Invoke(data);
         }
 
         public void Load()

@@ -40,7 +40,6 @@ namespace SurgeEngine._Source.Code.Core.Character.CameraSystem.Pans
         private const float AutoLookResetSpeed = 12f;
         private const float MinPitch = -75f;
         private const float MaxPitch = 85f;
-        private const float LateralOffsetLerpSpeed = 1.6f;
         private const float LateralOffsetResetSpeed = 3.25f;
         private const float MinCollisionDistance = 0.1f;
 
@@ -54,13 +53,9 @@ namespace SurgeEngine._Source.Code.Core.Character.CameraSystem.Pans
         public override void OnEnter()
         {
             base.OnEnter();
-
-            StateFOV = 55f;
-
+            
             _pitchAuto = 0;
             _yawAuto = 0;
-            
-            ModernSetup();
         }
 
         public override void OnTick(float dt)
@@ -68,11 +63,7 @@ namespace SurgeEngine._Source.Code.Core.Character.CameraSystem.Pans
             base.OnTick(dt);
             
             LookAxis();
-            ModernSetup();
-        }
-
-        private void ModernSetup()
-        {
+            
             float distance = 1;
             if (_stateMachine.Master.GetModifier(out BoostDistanceCameraModifier boostDistance))
             {
@@ -85,29 +76,32 @@ namespace SurgeEngine._Source.Code.Core.Character.CameraSystem.Pans
                 fov = boostView.Value;
             }
 
-            StateFOV = 55f * fov;
+            StateFOV = _stateMachine.BaseFov * fov;
             
-            var horizontal = Quaternion.AngleAxis(_stateMachine.Yaw, Vector3.up);
-            var vertical = Quaternion.AngleAxis(_stateMachine.Pitch, Vector3.right);
-            Vector3 dir = horizontal * vertical * Vector3.back;
-            
-            Vector3 actorPosition = CalculateTarget(out Vector3 targetPosition, dir, GetDistance() * distance);
             ZLag();
             YLag(_master.YLagMin, _master.YLagMax);
             LateralOffset();
-            Setup(targetPosition, actorPosition);
+            
+            Setup(CalculateCameraTarget(GetDistance() * distance), CalculateTarget());
         }
 
-        protected Vector3 CalculateTarget(out Vector3 targetPosition, Vector3 dir, float originalDistance)
+        private Vector3 CalculateCameraTarget(float originalDistance)
         {
-            Vector3 actorPos = Character.transform.position 
-                               + Vector3.up * GetVerticalOffset() 
-                               + Vector3.up * _verticalLag;
+            var horizontal = Quaternion.AngleAxis(_stateMachine.Yaw, Vector3.up);
+            var vertical = Quaternion.AngleAxis(_stateMachine.Pitch, Vector3.right);
+            Vector3 dir = horizontal * vertical * Vector3.back;
+
+            var pos = CalculateTarget();
             
-            float maxDist = originalDistance * (_stateMachine.Master.GetModifier<BoostDistanceCameraModifier>(out var m) ? m.Value : 1f) + _forwardLag;
-            float collDist = CalculateCollisionDistance(actorPos, StatePosition - actorPos, maxDist);
-            targetPosition = actorPos + dir * collDist;
-            return actorPos;
+            float maxDist = originalDistance * 
+                (_stateMachine.Master.GetModifier<BoostDistanceCameraModifier>(out var m) ? m.Value : 1f) + _forwardLag;
+            float collDist = CalculateCollisionDistance(pos, StatePosition - pos, maxDist);
+            return pos + dir * collDist;
+        }
+
+        protected virtual Vector3 CalculateTarget()
+        {
+            return Character.transform.position + Vector3.up * GetVerticalOffset() + Vector3.up * _verticalLag;
         }
 
         protected virtual float CalculateCollisionDistance(Vector3 origin, Vector3 direction, float baseDistance)
@@ -240,10 +234,15 @@ namespace SurgeEngine._Source.Code.Core.Character.CameraSystem.Pans
             }
         }
         
-        private void Setup(Vector3 targetPosition, Vector3 actorPosition)
+        /// <summary>
+        /// Setup the camera state.
+        /// </summary>
+        /// <param name="targetPosition">Camera goal position</param>
+        /// <param name="characterPosition">Camera goal rotation target</param>
+        private void Setup(Vector3 targetPosition, Vector3 characterPosition)
         {
             SetPosition(targetPosition);
-            SetRotation(actorPosition);
+            SetRotation(characterPosition);
         }
 
         protected virtual void SetPosition(Vector3 targetPosition)
@@ -265,7 +264,7 @@ namespace SurgeEngine._Source.Code.Core.Character.CameraSystem.Pans
             return Vector3.SignedAngle(forward, camForward, -Vector3.up);
         }
 
-        protected Vector3 GetOffset()
+        private Vector3 GetOffset()
         {
             float yOffset = _lookOffset.y;
             

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8613770001048832797}
   - component: {fileID: 2022245767826829183}
   m_Layer: 3
-  m_Name: '- Physics'
+  m_Name: '- Main'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -128,7 +128,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SurgeEngine._Source.Code.Core.Character.System.Characters.Sonic.HomingTargetDetector
   config: {fileID: 11400000, guid: 26d8aa117f8802940838f20a3156f005, type: 2}
-  size: {x: 13, y: 11, z: 14}
 --- !u!136 &2022245767826829183
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -6103,8 +6102,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: daaf94f2b73d48f49533d8449fe6b6f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveVector: {x: 0, y: 0, z: 0}
-  lookVector: {x: 0, y: 0}
   playerInput: {fileID: 0}
 --- !u!114 &8699919761573115592
 MonoBehaviour:
@@ -16651,7 +16648,7 @@ Camera:
     height: 1
   near clip plane: 0.02
   far clip plane: 10000
-  field of view: 50
+  field of view: 55
   orthographic: 0
   orthographic size: 5
   m_Depth: 1

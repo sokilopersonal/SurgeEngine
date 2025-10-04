@@ -16,14 +16,17 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.PhysicsObjects
             base.Contact(msg, context);
 
             var life = context.Life;
-            life.TakeDamage(life.WillDie);
             
-            context.Rigidbody.AddForce(Vector3.up * 15, ForceMode.Impulse);
-
             if (!life.WillDie)
             {
                 context.StateMachine.SetState<FStateStumble>(true).SetNoControlTime(0);
             }
+            
+            life.TakeDamage(life.WillDie);
+            
+            context.Rigidbody.AddForce(Vector3.up * 15, ForceMode.Impulse);
+
+            
             
             _currentExplosion = Instantiate(explosion, transform.position, Quaternion.identity);
             Destroy(_currentExplosion.gameObject, 3f);
