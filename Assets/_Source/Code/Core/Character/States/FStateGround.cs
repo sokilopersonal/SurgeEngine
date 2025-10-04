@@ -1,6 +1,7 @@
 ﻿using System;
 using SurgeEngine._Source.Code.Core.Character.States.BaseStates;
 using SurgeEngine._Source.Code.Core.Character.System;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects;
 using SurgeEngine._Source.Code.Gameplay.CommonObjects.Environment;
 using SurgeEngine._Source.Code.Infrastructure.Config;
 using SurgeEngine._Source.Code.Infrastructure.Custom;
@@ -12,6 +13,8 @@ namespace SurgeEngine._Source.Code.Core.Character.States
     {
         private WaterSurface _waterSurface;
         
+        private const float BreakableThreshold = 0.7f; // If Speed Percent is greater than this, character will destroy Breakable objects
+
         public FStateGround(CharacterBase owner) : base(owner)
         {
             
@@ -41,6 +44,11 @@ namespace SurgeEngine._Source.Code.Core.Character.States
         public override void OnFixedTick(float dt)
         {
             base.OnFixedTick(dt);
+            
+            if (Kinematics.Speed / character.Config.topSpeed > BreakableThreshold)
+            {
+                HurtBox.CreateAttached(character, character.transform, new Vector3(0f, 0f, -0.1f), new Vector3(0.5f, 1f, 1.15f), HurtBoxTarget.Breakable);
+            }
 
             PhysicsConfig config = character.Config;
             float distance = config.EvaluateCastDistance(Kinematics.Speed / config.topSpeed);

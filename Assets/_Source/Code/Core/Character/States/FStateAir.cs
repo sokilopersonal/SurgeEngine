@@ -82,7 +82,14 @@ namespace SurgeEngine._Source.Code.Core.Character.States
                 {
                     float speed = Kinematics.HorizontalVelocity.magnitude;
                     if (speed > character.Config.landingSpeed) StateMachine.SetState<FStateGround>();
-                    else StateMachine.SetState<FStateIdle>();
+                    else
+                    {
+                        StateMachine.SetState<FStateIdle>();
+                        if (Input.MoveVector.magnitude < 0.1f)
+                        {
+                            Rigidbody.linearVelocity = Vector3.zero;
+                        }
+                    }
                 }
             }
             

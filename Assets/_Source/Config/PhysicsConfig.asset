@@ -45,30 +45,30 @@ MonoBehaviour:
   minParaloopSpeed: 40
   minVerticalSpeed: 30
   maxVerticalSpeed: 25
-  airControl: 0.22
-  landingSpeed: 3
+  airControl: 0.2
+  landingSpeed: 15
   accelerationRate: 15
   accelerationCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0.75
-      inSlope: 0.00064946996
-      outSlope: 0.00064946996
+      value: 1.1499939
+      inSlope: -0.0050631724
+      outSlope: -0.0050631724
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.717675
+      outWeight: 0.6220898
     - serializedVersion: 3
-      time: 0.19999999
-      value: 1
-      inSlope: 3.0467973
-      outSlope: 0
+      time: 0.45
+      value: 0.9999973
+      inSlope: -0.014836006
+      outSlope: -2.698721
       tangentMode: 1
       weightedMode: 0
-      inWeight: 0.13404505
-      outWeight: 0.33333334
+      inWeight: 0.38315538
+      outWeight: 0.09630106
     - serializedVersion: 3
       time: 1
       value: 0.4000293

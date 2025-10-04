@@ -50,7 +50,7 @@ namespace SurgeEngine._Source.Code.Core.Character.System.Characters.Sonic
                             break;
                         case FStateAir:
                             float verticalSpeed = character.Kinematics.VerticalVelocity.magnitude;
-                            bool hard = verticalSpeed > character.Config.landingSpeed * 3;
+                            bool hard = verticalSpeed > 9;
                             StateAnimator.TransitionToState(!hard ? "Landing" : "LandingL", 0f).After(0.4f, () => StateAnimator.TransitionToState("Idle", 1f));
                             break;
                         case FStateSit:

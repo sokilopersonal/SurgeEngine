@@ -41,7 +41,7 @@ namespace SurgeEngine._Source.Code.Core.Character.States
                     
                     Kinematics.Project(hit.normal);
 
-                    if (_time == 0)
+                    if (_time <= 0)
                     {
                         StateMachine.SetState<FStateGround>();
                     }

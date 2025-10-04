@@ -12,11 +12,6 @@ namespace SurgeEngine._Source.Code.Core.Character.States
         {
         }
 
-        public override void OnEnter()
-        {
-            base.OnEnter();
-        }
-
         public override void OnTick(float dt)
         {
             if (Kinematics.GetInputDir().magnitude > 0.1f || Kinematics.HorizontalVelocity.magnitude > 0.1f)
