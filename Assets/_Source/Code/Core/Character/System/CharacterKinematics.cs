@@ -127,6 +127,12 @@ namespace SurgeEngine._Source.Code.Core.Character.System
                 Vector3 orientedInput = Quaternion.FromToRotation(_cameraTransform.up, Normal) * rawInput;
                 _inputDir = SurgeMath.GetMovementDirectionProjectedOnPlane(orientedInput, Normal, _cameraTransform.up)
                             * character.Input.MoveVector.magnitude;
+
+                if (Path2D != null)
+                {
+                    Path2D.Spline.EvaluateWorld(out _, out _, out _, out var right);
+                    _inputDir = Vector3.ProjectOnPlane(_inputDir, right);
+                }
             }
             
             Debug.DrawRay(transform.position, _inputDir, Color.red, 0, false);
