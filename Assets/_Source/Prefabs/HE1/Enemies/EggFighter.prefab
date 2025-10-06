@@ -151,7 +151,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.75
+  m_Radius: 0.6
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
@@ -693,7 +693,7 @@ Rigidbody:
   m_GameObject: {fileID: 483560082084050141}
   serializedVersion: 5
   m_Mass: 1.875
-  m_LinearDamping: 0
+  m_LinearDamping: 0.3
   m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -710,7 +710,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!144 &8584136078861369428
 CharacterJoint:
   m_ObjectHideFlags: 0
@@ -806,7 +806,7 @@ Rigidbody:
   m_GameObject: {fileID: 788087261022351302}
   serializedVersion: 5
   m_Mass: 1.25
-  m_LinearDamping: 0
+  m_LinearDamping: 0.3
   m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -823,7 +823,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!144 &6405217090451467276
 CharacterJoint:
   m_ObjectHideFlags: 0
@@ -924,7 +924,7 @@ Rigidbody:
   m_GameObject: {fileID: 1683400757008911639}
   serializedVersion: 5
   m_Mass: 1.25
-  m_LinearDamping: 0
+  m_LinearDamping: 0.3
   m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -941,7 +941,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!144 &6257611727319902706
 CharacterJoint:
   m_ObjectHideFlags: 0
@@ -1037,7 +1037,7 @@ Rigidbody:
   m_GameObject: {fileID: 1774475281391400150}
   serializedVersion: 5
   m_Mass: 1.25
-  m_LinearDamping: 0
+  m_LinearDamping: 0.3
   m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -1054,7 +1054,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!144 &1859994176985322334
 CharacterJoint:
   m_ObjectHideFlags: 0
@@ -1127,7 +1127,7 @@ Rigidbody:
   m_GameObject: {fileID: 2666315703244716582}
   serializedVersion: 5
   m_Mass: 1
-  m_LinearDamping: 0
+  m_LinearDamping: 0.3
   m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -1144,7 +1144,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!135 &3191219659194896569
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1220,7 +1220,7 @@ Rigidbody:
   m_GameObject: {fileID: 4212560264372484015}
   serializedVersion: 5
   m_Mass: 1.25
-  m_LinearDamping: 0
+  m_LinearDamping: 0.3
   m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -1237,7 +1237,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!144 &3931657168210313552
 CharacterJoint:
   m_ObjectHideFlags: 0
@@ -1331,7 +1331,7 @@ Rigidbody:
   m_GameObject: {fileID: 4450030723491288380}
   serializedVersion: 5
   m_Mass: 3.125
-  m_LinearDamping: 0
+  m_LinearDamping: 0.3
   m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -1348,7 +1348,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!144 &4522000641599176727
 CharacterJoint:
   m_ObjectHideFlags: 0
@@ -1444,7 +1444,7 @@ Rigidbody:
   m_GameObject: {fileID: 4465965900091295881}
   serializedVersion: 5
   m_Mass: 1.875
-  m_LinearDamping: 0
+  m_LinearDamping: 0.3
   m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -1461,7 +1461,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!144 &6241800241197750299
 CharacterJoint:
   m_ObjectHideFlags: 0
@@ -1555,7 +1555,7 @@ Rigidbody:
   m_GameObject: {fileID: 4947539373632500475}
   serializedVersion: 5
   m_Mass: 3.125
-  m_LinearDamping: 0
+  m_LinearDamping: 0.3
   m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -1572,7 +1572,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!114 &165472294924961014
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1620,7 +1620,7 @@ Rigidbody:
   m_GameObject: {fileID: 5600452851952208519}
   serializedVersion: 5
   m_Mass: 1.25
-  m_LinearDamping: 0
+  m_LinearDamping: 0.3
   m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -1637,7 +1637,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!144 &3708329748067161262
 CharacterJoint:
   m_ObjectHideFlags: 0
@@ -1733,7 +1733,7 @@ Rigidbody:
   m_GameObject: {fileID: 5644299927648244908}
   serializedVersion: 5
   m_Mass: 1.875
-  m_LinearDamping: 0
+  m_LinearDamping: 0.3
   m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -1750,7 +1750,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!144 &3916212303278230346
 CharacterJoint:
   m_ObjectHideFlags: 0
@@ -1877,7 +1877,7 @@ MonoBehaviour:
   - {fileID: 8066615653428147428}
   - {fileID: 5947124138291365150}
   - {fileID: 8435860025455285105}
-  limbMassScale: 1
+  limbMassScale: 5
   collideLayers:
     serializedVersion: 2
     m_Bits: 4097
@@ -1958,7 +1958,7 @@ Rigidbody:
   m_GameObject: {fileID: 8354536993242243361}
   serializedVersion: 5
   m_Mass: 1.875
-  m_LinearDamping: 0
+  m_LinearDamping: 0.3
   m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -1975,7 +1975,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!144 &3378141555527585894
 CharacterJoint:
   m_ObjectHideFlags: 0
