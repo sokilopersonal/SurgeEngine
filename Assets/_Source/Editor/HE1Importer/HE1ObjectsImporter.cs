@@ -159,6 +159,8 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                     var upReel = go.GetComponent<Upreel>();
                     HE1Helper.SetFloatReflection(upReel, "length", HE1Helper.GetFloatWithMultiSetParam(elem, "Length"));
                     HE1Helper.SetFloatReflection(upReel, "outOfControl", HE1Helper.GetFloatWithMultiSetParam(elem, "OutOfControl"));
+                    HE1Helper.SetFloatReflection(upReel, "upMaxSpeed", HE1Helper.GetFloatWithMultiSetParam(elem, "UpMaxSpeed"));
+                    HE1Helper.SetFloatReflection(upReel, "impulseVelocity", HE1Helper.GetFloatWithMultiSetParam(elem, "ImpulseVelocity"));
                 },
                 ["JumpCollision"] = (go, elem) =>
                 {

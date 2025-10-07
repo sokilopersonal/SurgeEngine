@@ -46,19 +46,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f85322d79e5341be9370f512308fcb26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <SetID>k__BackingField: 0
+  upMaxSpeed: 50
+  impulseVelocity: 15
+  length: 10
+  outOfControl: 0.5
+  isWaitUp: 0
   attachPoint: {fileID: 2263946046784938182}
   model: {fileID: 473179200346883634}
   rope: {fileID: 445130071561011803}
   box: {fileID: 6685599997905561494}
   homingTarget: {fileID: 6740386162000565331}
-  moveTime: 1.5
-  lowerTime: 1.25
-  length: 10
-  outOfControl: 0.5
-  isWaitUp: 0
-  forwardPushForce: 4
-  upPushForce: 14
   sound:
     Guid:
       Data1: -2045994758

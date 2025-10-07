@@ -15,14 +15,16 @@ namespace SurgeEngine._Source.Code.Core.Character.States
             base.OnEnter();
             
             Rigidbody.linearVelocity = Vector3.zero;
-            Rigidbody.isKinematic = true;
+            Rigidbody.interpolation = RigidbodyInterpolation.None;
+            Kinematics.IsKinematic = true;
         }
 
         public override void OnExit()
         {
             base.OnExit();
 
-            Rigidbody.isKinematic = false;
+            Kinematics.IsKinematic = false;
+            Rigidbody.interpolation = RigidbodyInterpolation.Interpolate;
         }
     }
 }
