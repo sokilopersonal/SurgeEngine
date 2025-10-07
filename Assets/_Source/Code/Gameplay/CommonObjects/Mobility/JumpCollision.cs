@@ -45,7 +45,6 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
                         body.linearVelocity = force;
                             
                         context.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, outOfControl));
-                        Debug.Log("1");
                     }
                 }
             }

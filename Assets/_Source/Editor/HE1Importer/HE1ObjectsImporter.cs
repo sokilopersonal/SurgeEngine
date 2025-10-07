@@ -41,6 +41,7 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                 ["ObjCameraPan"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/Camera/ObjCameraPan.prefab"),
                 ["ObjCameraParallel"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/Camera/ObjCameraParallel.prefab"),
                 ["ObjCameraPoint"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/Camera/ObjCameraPoint.prefab"),
+                ["ObjCameraPathTarget"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/Camera/ObjCameraPathTarget.prefab"),
                 ["JumpBoard"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/JumpPanel_15S.prefab"),
                 ["JumpBoard3D"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/JumpPanel_30M.prefab"),
                 ["TrickJumper"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/TrickPanel.prefab"),
@@ -55,7 +56,9 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                 ["DirectionalThorn"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/ObjectPhysics/Thorns/DirectionalThorn.prefab"),
                 ["ChangeMode_3DtoForward"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/System/ChangeMode_3DtoForward.prefab"),
                 ["ChangeMode_3DtoDash"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/System/ChangeMode_3DtoDash.prefab"),
-                ["ChangeMode_3Dto2D"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/System/ChangeMode_3Dto2D.prefab"),
+                ["ChangeMode_3Dto2D"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/System/ChangeMode_2D.prefab"),
+                ["AutorunStartCollision"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/AutorunCollision.prefab"),
+                ["AutorunFinishCollision"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/AutorunCollision.prefab"),
                 ["GoalRing"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/GoalRing/GoalRing.prefab"),
                 ["Flame"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/Flame.prefab"),
                 ["EventCollision"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/EventCollision.prefab"),
@@ -69,17 +72,14 @@ namespace SurgeEngine._Source.Editor.HE1Importer
             {
                 ["ChangeVolumeCamera"] = (go, elem) =>
                 {
-                    float w = GetFloatWithMultiSetParam(elem, "Collision_Width");
-                    float h = GetFloatWithMultiSetParam(elem, "Collision_Height");
-                    float l = GetFloatWithMultiSetParam(elem, "Collision_Length");
                     var volume = go.GetComponent<BoxCollider>();
-                    volume.size = new Vector3(w, h, l);
+                    HE1Helper.SetBoxColliderSize(volume, elem);
 
-                    float easeTimeEnter = GetFloatWithMultiSetParam(elem, "Ease_Time_Enter");
-                    float easeTimeExit = GetFloatWithMultiSetParam(elem, "Ease_Time_Exit");
-                    
+                    float easeTimeEnter = HE1Helper.GetFloatWithMultiSetParam(elem, "Ease_Time_Enter");
+                    float easeTimeExit = HE1Helper.GetFloatWithMultiSetParam(elem, "Ease_Time_Leave");
+
                     var camVolume = go.GetComponent<ChangeCameraVolume>();
-                    float priority = GetFloatWithMultiSetParam(elem, "Priority");
+                    float priority = HE1Helper.GetFloatWithMultiSetParam(elem, "Priority");
                     camVolume.GetType().GetField("priority", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)?.SetValue(camVolume, (int)priority);
                     var targetField = camVolume.GetType().GetField("target", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
                     var volumeConnectedId = elem.Element("Target").Element("SetObjectID")?.Value.Trim() ?? "0";
@@ -93,192 +93,115 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                             var dataObj = dataField.GetValue(cameraPan);
                             dataObj.GetType().GetField("easeTimeEnter", BindingFlags.Instance | BindingFlags.Public)?.SetValue(dataObj, easeTimeEnter);
                             dataObj.GetType().GetField("easeTimeExit", BindingFlags.Instance | BindingFlags.Public)?.SetValue(dataObj, easeTimeExit);
+                            RecordStageObject(cameraPan.gameObject);
                             break;
                         }
                     }
                 },
                 ["DashPanel"] = (go, elem) =>
                 {
-                    float speed = GetFloatWithMultiSetParam(elem, "Speed");
-                    float outOfControl = GetFloatWithMultiSetParam(elem, "OutOfControl");
+                    float speed = HE1Helper.GetFloatWithMultiSetParam(elem, "Speed");
+                    float outOfControl = HE1Helper.GetFloatWithMultiSetParam(elem, "OutOfControl");
                     var dashPanel = go.GetComponent<DashPanel>();
-                    SetFloatReflection(dashPanel, "speed", speed);
-                    SetFloatReflection(dashPanel, "outOfControl", outOfControl);
+                    HE1Helper.SetFloatReflection(dashPanel, "speed", speed);
+                    HE1Helper.SetFloatReflection(dashPanel, "outOfControl", outOfControl);
                 },
                 ["JumpBoard"] = (go, elem) =>
                 {
-                    int angleType = (int)GetFloatWithMultiSetParam(elem, "AngleType");
-                    float impulseNormal = GetFloatWithMultiSetParam(elem, "ImpulseSpeedOnNormal");
-                    float impulseBoost = GetFloatWithMultiSetParam(elem, "ImpulseSpeedOnBoost");
-                    float outOfControl = GetFloatWithMultiSetParam(elem, "OutOfControl");
+                    int angleType = (int)HE1Helper.GetFloatWithMultiSetParam(elem, "AngleType");
                     var jumpPanel = go.GetComponent<JumpPanel>();
-                    SetFloatReflection(jumpPanel, "impulseOnNormal", impulseNormal);
-                    SetFloatReflection(jumpPanel, "impulseOnBoost", impulseBoost);
-                    SetFloatReflection(jumpPanel, "outOfControl", outOfControl);
-
-                    if (angleType == 0)
-                    {
-                        SetFloatReflection(jumpPanel, "pitch", 15);
-                    }
-                    else
-                    {
-                        SetFloatReflection(jumpPanel, "pitch", 30);
-                    }
+                    HE1Helper.SetJumpPanelProperties(jumpPanel, elem);
+                    HE1Helper.SetFloatReflection(jumpPanel, "pitch", angleType == 0 ? 15 : 30);
                 },
                 ["JumpBoard3D"] = (go, elem) =>
                 {
-                    float impulseNormal = GetFloatWithMultiSetParam(elem, "ImpulseSpeedOnNormal");
-                    float impulseBoost = GetFloatWithMultiSetParam(elem, "ImpulseSpeedOnBoost");
-                    float outOfControl = GetFloatWithMultiSetParam(elem, "OutOfControl");
                     var jumpPanel = go.GetComponent<JumpPanel3D>();
-                    SetFloatReflection(jumpPanel, "impulseOnNormal", impulseNormal);
-                    SetFloatReflection(jumpPanel, "impulseOnBoost", impulseBoost);
-                    SetFloatReflection(jumpPanel, "outOfControl", outOfControl);
+                    HE1Helper.SetJumpPanelProperties(jumpPanel, elem);
                 },
                 ["TrickJumper"] = (go, elem) =>
                 {
-                    float firstSpeed = GetFloatWithMultiSetParam(elem, "FirstSpeed");
-                    float firstPitch = GetFloatWithMultiSetParam(elem, "FirstPitch");
-                    float secondSpeed = GetFloatWithMultiSetParam(elem, "SecondSpeed");
-                    float secondPitch = GetFloatWithMultiSetParam(elem, "SecondPitch");
-                    float firstOutOfControl = GetFloatWithMultiSetParam(elem, "FirstOutOfControl");
-                    float secondOutOfControl = GetFloatWithMultiSetParam(elem, "SecondOutOfControl");
-                    float trickCount1 = GetFloatWithMultiSetParam(elem, "TrickCount1");
-                    float trickCount2 = GetFloatWithMultiSetParam(elem, "TrickCount2");
-                    float trickCount3 = GetFloatWithMultiSetParam(elem, "TrickCount3");
-                    float trickTime1 = GetFloatWithMultiSetParam(elem, "TrickTime1");
-                    float trickTime2 = GetFloatWithMultiSetParam(elem, "TrickTime2");
-                    float trickTime3 = GetFloatWithMultiSetParam(elem, "TrickTime3");
                     var trickJumper = go.GetComponent<TrickJumper>();
-                    SetFloatReflection(trickJumper, "initialSpeed", firstSpeed);
-                    SetFloatReflection(trickJumper, "initialPitch", firstPitch);
-                    SetFloatReflection(trickJumper, "finalSpeed", secondSpeed);
-                    SetFloatReflection(trickJumper, "finalPitch", secondPitch);
-                    SetFloatReflection(trickJumper, "initialOutOfControl", firstOutOfControl);
-                    SetFloatReflection(trickJumper, "finalOutOfControl", secondOutOfControl);
-                    SetIntReflection(trickJumper, "trickCount1", (int)trickCount1);
-                    SetIntReflection(trickJumper, "trickCount2", (int)trickCount2);
-                    SetIntReflection(trickJumper, "trickCount3", (int)trickCount3);
-                    SetFloatReflection(trickJumper, "trickTime1", trickTime1);
-                    SetFloatReflection(trickJumper, "trickTime2", trickTime2);
-                    SetFloatReflection(trickJumper, "trickTime3", trickTime3);
+                    HE1Helper.SetFloatReflection(trickJumper, "initialSpeed", HE1Helper.GetFloatWithMultiSetParam(elem, "FirstSpeed"));
+                    HE1Helper.SetFloatReflection(trickJumper, "initialPitch", HE1Helper.GetFloatWithMultiSetParam(elem, "FirstPitch"));
+                    HE1Helper.SetFloatReflection(trickJumper, "finalSpeed", HE1Helper.GetFloatWithMultiSetParam(elem, "SecondSpeed"));
+                    HE1Helper.SetFloatReflection(trickJumper, "finalPitch", HE1Helper.GetFloatWithMultiSetParam(elem, "SecondPitch"));
+                    HE1Helper.SetFloatReflection(trickJumper, "initialOutOfControl", HE1Helper.GetFloatWithMultiSetParam(elem, "FirstOutOfControl"));
+                    HE1Helper.SetFloatReflection(trickJumper, "finalOutOfControl", HE1Helper.GetFloatWithMultiSetParam(elem, "SecondOutOfControl"));
+                    HE1Helper.SetIntReflection(trickJumper, "trickCount1", HE1Helper.GetIntWithMultiSetParam(elem, "TrickCount1"));
+                    HE1Helper.SetIntReflection(trickJumper, "trickCount2", HE1Helper.GetIntWithMultiSetParam(elem, "TrickCount2"));
+                    HE1Helper.SetIntReflection(trickJumper, "trickCount3", HE1Helper.GetIntWithMultiSetParam(elem, "TrickCount3"));
+                    HE1Helper.SetFloatReflection(trickJumper, "trickTime1", HE1Helper.GetFloatWithMultiSetParam(elem, "TrickTime1"));
+                    HE1Helper.SetFloatReflection(trickJumper, "trickTime2", HE1Helper.GetFloatWithMultiSetParam(elem, "TrickTime2"));
+                    HE1Helper.SetFloatReflection(trickJumper, "trickTime3", HE1Helper.GetFloatWithMultiSetParam(elem, "TrickTime3"));
                 },
                 ["Spring"] = (go, elem) =>
                 {
-                    float speed = GetFloatWithMultiSetParam(elem, "FirstSpeed");
-                    float outOfControl = GetFloatWithMultiSetParam(elem, "OutOfControl");
-                    float keepVelocity = GetFloatWithMultiSetParam(elem, "KeepVelocityDistance");
                     var spring = go.GetComponent<Spring>();
-                    SetFloatReflection(spring, "speed", speed);
-                    SetFloatReflection(spring, "outOfControl", outOfControl);
-                    SetFloatReflection(spring, "keepVelocityDistance", keepVelocity);
+                    HE1Helper.SetSpringProperties(spring, elem);
                 },
                 ["SpringFake"] = (go, elem) =>
                 {
-                    float speed = GetFloatWithMultiSetParam(elem, "FirstSpeed");
-                    float outOfControl = GetFloatWithMultiSetParam(elem, "OutOfControl");
                     var spring = go.GetComponent<SpringFake>();
-                    SetFloatReflection(spring, "speed", speed);
-                    SetFloatReflection(spring, "outOfControl", outOfControl);
+                    HE1Helper.SetSpringProperties(spring, elem);
                 },
                 ["AirSpring"] = (go, elem) =>
                 {
-                    float speed = GetFloatWithMultiSetParam(elem, "FirstSpeed");
-                    float outOfControl = GetFloatWithMultiSetParam(elem, "OutOfControl");
-                    float keepVelocity = GetFloatWithMultiSetParam(elem, "KeepVelocityDistance");
                     var spring = go.GetComponent<Spring>();
-                    SetFloatReflection(spring, "speed", speed);
-                    SetFloatReflection(spring, "outOfControl", outOfControl);
-                    SetFloatReflection(spring, "keepVelocityDistance", keepVelocity);
+                    HE1Helper.SetSpringProperties(spring, elem);
                 },
                 ["WideSpring"] = (go, elem) =>
                 {
-                    float speed = GetFloatWithMultiSetParam(elem, "FirstSpeed");
-                    float outOfControl = GetFloatWithMultiSetParam(elem, "OutOfControl");
-                    float keepVelocity = GetFloatWithMultiSetParam(elem, "KeepVelocityDistance");
                     var wideSpring = go.GetComponent<WideSpring>();
-                    SetFloatReflection(wideSpring, "speed", speed );
-                    SetFloatReflection(wideSpring, "outOfControl", outOfControl);
-                    SetFloatReflection(wideSpring, "keepVelocityDistance", keepVelocity);
+                    HE1Helper.SetSpringProperties(wideSpring, elem);
                 },
                 ["UpReel"] = (go, elem) =>
                 {
-                    float length = GetFloatWithMultiSetParam(elem, "Length");
-                    float outOfControl = GetFloatWithMultiSetParam(elem, "OutOfControl");
                     var upReel = go.GetComponent<Upreel>();
-                    SetFloatReflection(upReel, "length", length);
-                    SetFloatReflection(upReel, "outOfControl", outOfControl);
+                    HE1Helper.SetFloatReflection(upReel, "length", HE1Helper.GetFloatWithMultiSetParam(elem, "Length"));
+                    HE1Helper.SetFloatReflection(upReel, "outOfControl", HE1Helper.GetFloatWithMultiSetParam(elem, "OutOfControl"));
                 },
                 ["JumpCollision"] = (go, elem) =>
                 {
-                    float w = GetFloatWithMultiSetParam(elem, "Collision_Width");
-                    float h = GetFloatWithMultiSetParam(elem, "Collision_Height");
                     if (go.TryGetComponent<BoxCollider>(out var bc))
+                    {
+                        float w = HE1Helper.GetFloatWithMultiSetParam(elem, "Collision_Width");
+                        float h = HE1Helper.GetFloatWithMultiSetParam(elem, "Collision_Height");
                         bc.size = new Vector3(w, h, bc.size.z);
-                    
+                    }
+
                     var jumpCollision = go.GetComponent<JumpCollision>();
-                    float speedMin = GetFloatWithMultiSetParam(elem, "SpeedMin");
-                    float outOfControl = GetFloatWithMultiSetParam(elem, "OutOfControl");
-                    float impulseNormal = GetFloatWithMultiSetParam(elem, "ImpulseSpeedOnNormal");
-                    float impulseBoost = GetFloatWithMultiSetParam(elem, "ImpulseSpeedOnBoost");
-                    float pitchMax = GetFloatWithMultiSetParam(elem, "Pitch");
-                    SetFloatReflection(jumpCollision, "speedMin", speedMin / 2);
-                    SetFloatReflection(jumpCollision, "outOfControl", outOfControl);
-                    SetFloatReflection(jumpCollision, "impulseOnNormal", impulseNormal);
-                    SetFloatReflection(jumpCollision, "impulseOnBoost", impulseBoost);
-                    SetFloatReflection(jumpCollision, "pitch", pitchMax);
+                    HE1Helper.SetFloatReflection(jumpCollision, "speedMin", HE1Helper.GetFloatWithMultiSetParam(elem, "SpeedMin") / 2);
+                    HE1Helper.SetFloatReflection(jumpCollision, "outOfControl", HE1Helper.GetFloatWithMultiSetParam(elem, "OutOfControl"));
+                    HE1Helper.SetFloatReflection(jumpCollision, "impulseOnNormal", HE1Helper.GetFloatWithMultiSetParam(elem, "ImpulseSpeedOnNormal"));
+                    HE1Helper.SetFloatReflection(jumpCollision, "impulseOnBoost", HE1Helper.GetFloatWithMultiSetParam(elem, "ImpulseSpeedOnBoost"));
+                    HE1Helper.SetFloatReflection(jumpCollision, "pitch", HE1Helper.GetFloatWithMultiSetParam(elem, "Pitch"));
                 },
                 ["ObjCameraPan"] = (go, elem) =>
                 {
-                    float fovy = GetFloatWithMultiSetParam(elem, "Fovy");
-                    bool isControllable = GetBoolWithMultiSetParam(elem, "IsControllable");
-                    bool isCollision = GetBoolWithMultiSetParam(elem, "IsCollision");
-                    
                     var comp = go.GetComponent<ObjCameraPan>();
-                    var dataField = comp.GetType().GetField("data", BindingFlags.Instance | BindingFlags.NonPublic);
-                    var dataObj = dataField.GetValue(comp);
-                    dataObj.GetType().GetField("fov", BindingFlags.Instance | BindingFlags.Public)?.SetValue(dataObj, fovy);
-                    dataObj.GetType().GetField("allowRotation", BindingFlags.Instance | BindingFlags.Public)?.SetValue(dataObj, isControllable);
-                    dataObj.GetType().GetField("isCollision", BindingFlags.Instance | BindingFlags.Public)?.SetValue(dataObj, isCollision);
+                    HE1Helper.SetCameraDataProperties(comp, elem);
                 },
                 ["ObjCameraParallel"] = (go, elem) =>
                 {
-                    float fovy = GetFloatWithMultiSetParam(elem, "Fovy");
-                    float distance = GetFloatWithMultiSetParam(elem, "Distance");
-                    bool isControllable = GetBoolWithMultiSetParam(elem, "IsControllable");
-                    bool isCollision = GetBoolWithMultiSetParam(elem, "IsCollision");
-                    
                     var comp = go.GetComponent<ObjCameraParallel>();
-                    
-                    var dataField = comp.GetType().GetField("data", BindingFlags.Instance | BindingFlags.NonPublic);
-                    var dataObj = dataField.GetValue(comp);
-                    dataObj.GetType().GetField("fov", BindingFlags.Instance | BindingFlags.Public)?.SetValue(dataObj, fovy);
-                    dataObj.GetType().GetField("distance", BindingFlags.Instance | BindingFlags.Public)?.SetValue(dataObj, distance);
-                    dataObj.GetType().GetField("allowRotation", BindingFlags.Instance | BindingFlags.Public)?.SetValue(dataObj, isControllable);
-                    dataObj.GetType().GetField("isCollision", BindingFlags.Instance | BindingFlags.Public)?.SetValue(dataObj, isCollision);
-                    
-                    float pitch = GetFloatWithMultiSetParam(elem, "Pitch");
-                    float yaw = GetFloatWithMultiSetParam(elem, "Yaw");
+                    HE1Helper.SetCameraDataProperties(comp, elem, includeDistance: true);
+
+                    float pitch = HE1Helper.GetFloatWithMultiSetParam(elem, "Pitch");
+                    float yaw = HE1Helper.GetFloatWithMultiSetParam(elem, "Yaw");
                     
                     var euler = Quaternion.Euler(pitch, yaw - 180, 0);
                     comp.transform.rotation = ToEulerYXZ(euler);
                 },
                 ["ObjCameraPoint"] = (go, elem) =>
                 {
-                    float fovy = GetFloatWithMultiSetParam(elem, "Fovy");
-                    float distance = GetFloatWithMultiSetParam(elem, "Distance");
-                    bool isControllable = GetBoolWithMultiSetParam(elem, "IsControllable");
-                    bool isCollision = GetBoolWithMultiSetParam(elem, "IsCollision");
-                    long targetId = long.Parse(elem.Element("Target").Element("SetObjectID").Value, CultureInfo.InvariantCulture);
                     var comp = go.GetComponent<ObjCameraPoint>();
-                    
-                    var dataField = comp.GetType().GetField("data", BindingFlags.Instance | BindingFlags.NonPublic);
-                    var dataObj = dataField.GetValue(comp);
-                    dataObj.GetType().GetField("fov", BindingFlags.Instance | BindingFlags.Public)?.SetValue(dataObj, fovy);
-                    dataObj.GetType().GetField("distance", BindingFlags.Instance | BindingFlags.Public)?.SetValue(dataObj, distance);
-                    dataObj.GetType().GetField("allowRotation", BindingFlags.Instance | BindingFlags.Public)?.SetValue(dataObj, isControllable);
-                    dataObj.GetType().GetField("isCollision", BindingFlags.Instance | BindingFlags.Public)?.SetValue(dataObj, isCollision);
+                    HE1Helper.SetCameraDataProperties(comp, elem, includeDistance: true);
 
+                    var dataField = comp.GetType().GetField("data", BindingFlags.Instance | BindingFlags.NonPublic);
+                    var dataObj = dataField?.GetValue(comp);
+                    if (dataObj == null) return;
+
+                    long targetId = long.Parse(elem.Element("Target").Element("SetObjectID").Value, CultureInfo.InvariantCulture);
                     if (targetId != 0)
                     {
                         foreach (var stageObject in Object.FindObjectsByType<StageObject>(FindObjectsInactive.Include, FindObjectsSortMode.None))
@@ -295,45 +218,44 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                         dataObj.GetType().GetField("target", BindingFlags.Instance | BindingFlags.Public)?.SetValue(dataObj, null);
                     }
                 },
+                ["ObjCameraPathTarget"] = (go, elem) =>
+                {
+                    var comp = go.GetComponent<ObjCameraPathTarget>();
+                    HE1Helper.SetCameraDataProperties(comp, elem);
+                    
+                    var dataField = comp.GetType().GetField("data", BindingFlags.Instance | BindingFlags.NonPublic);
+                    var dataObj = dataField?.GetValue(comp);
+                    if (dataObj == null) return;
+                    
+                    float offsetOnEyePath = HE1Helper.GetFloatWithMultiSetParam(elem, "OffsetOnEyePath");
+                    HE1Helper.SetFloatReflection(dataObj, "offsetOnEye", offsetOnEyePath);
+                },
                 ["StumbleCollision"] = (go, elem) =>
                 {
                     var stumble = go.GetComponent<StumbleCollision>();
                     var box = go.GetComponent<BoxCollider>();
                     
-                    float width = GetFloatWithMultiSetParam(elem, "Collision_Width");
-                    float height = GetFloatWithMultiSetParam(elem, "Collision_Height");
-                    float length = GetFloatWithMultiSetParam(elem, "Collision_Length");
-                    box.size = new Vector3(width * 1.75f, height, length);
-                    
-                    float noControlTime = GetFloatWithMultiSetParam(elem, "NoControlTime");
-                    SetFloatReflection(stumble, "noControlTime", noControlTime);
+                    HE1Helper.SetBoxColliderSize(box, elem);
+                    box.size = new Vector3(box.size.x * 1.75f, box.size.y, box.size.z);
+
+                    HE1Helper.SetFloatReflection(stumble, "noControlTime", HE1Helper.GetFloatWithMultiSetParam(elem, "NoControlTime"));
                 },
                 ["DashRing"] = (go, elem) =>
                 {
-                    float speed = GetFloatWithMultiSetParam(elem, "FirstSpeed");
-                    float outOfControl = GetFloatWithMultiSetParam(elem, "OutOfControl");
-                    float keepDistance = GetFloatWithMultiSetParam(elem, "KeepVelocityDistance");
                     var dashRing = go.GetComponent<DashRing>();
-                    SetFloatReflection(dashRing, "speed", speed);
-                    SetFloatReflection(dashRing, "outOfControl", outOfControl);
-                    SetFloatReflection(dashRing, "keepVelocityDistance", keepDistance);
+                    HE1Helper.SetDashRingProperties(dashRing, elem);
                 },
                 ["RainbowRing"] = (go, elem) =>
                 {
-                    float speed = GetFloatWithMultiSetParam(elem, "FirstSpeed");
-                    float outOfControl = GetFloatWithMultiSetParam(elem, "OutOfControl");
-                    float keepDistance = GetFloatWithMultiSetParam(elem, "KeepVelocityDistance");
                     var dashRing = go.GetComponent<DashRing>();
-                    SetFloatReflection(dashRing, "speed", speed);
-                    SetFloatReflection(dashRing, "outOfControl", outOfControl);
-                    SetFloatReflection(dashRing, "keepVelocityDistance", keepDistance);
+                    HE1Helper.SetDashRingProperties(dashRing, elem);
                 },
                 ["SetRigidBody"] = (go, elem) =>
                 {
-                    float width = GetFloatWithMultiSetParam(elem, "Width");
-                    float height = GetFloatWithMultiSetParam(elem, "Height");
-                    float length = GetFloatWithMultiSetParam(elem, "Length");
                     var box = go.GetComponent<BoxCollider>();
+                    float width = HE1Helper.GetFloatWithMultiSetParam(elem, "Width");
+                    float height = HE1Helper.GetFloatWithMultiSetParam(elem, "Height");
+                    float length = HE1Helper.GetFloatWithMultiSetParam(elem, "Length");
                     box.size = new Vector3(width, height, length);
 
                     bool defaultOn = bool.Parse(elem.Element("DefaultON").Value.Trim());
@@ -342,8 +264,8 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                 },
                 ["PointMarker"] = (go, elem) =>
                 {
-                    float width = GetFloatWithMultiSetParam(elem, "Width");
-                    float height = GetFloatWithMultiSetParam(elem, "Height");
+                    float width = HE1Helper.GetFloatWithMultiSetParam(elem, "Width");
+                    float height = HE1Helper.GetFloatWithMultiSetParam(elem, "Height");
                     
                     var box = go.GetComponent<BoxCollider>();
                     Vector3 size = box.size;
@@ -357,100 +279,70 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                 },
                 ["DirectionalThorn"] = (go, elem) =>
                 {
-                    float moveTime = GetFloatWithMultiSetParam(elem, "MoveTime");
-                    float onTime = GetFloatWithMultiSetParam(elem, "OnTime");
-                    float offTime = GetFloatWithMultiSetParam(elem, "OffTime");
-                    int phase = GetIntWithMultiSetParam(elem, "Phase");
-                    
                     var dir = go.GetComponent<DirectionalThorn>();
-                    SetFloatReflection(dir, "moveTime", moveTime);
-                    SetFloatReflection(dir, "onTime", onTime);
-                    SetFloatReflection(dir, "offTime", offTime);
-                    SetIntReflection(dir, "phase", phase);
+                    HE1Helper.SetFloatReflection(dir, "moveTime", HE1Helper.GetFloatWithMultiSetParam(elem, "MoveTime"));
+                    HE1Helper.SetFloatReflection(dir, "onTime", HE1Helper.GetFloatWithMultiSetParam(elem, "OnTime"));
+                    HE1Helper.SetFloatReflection(dir, "offTime", HE1Helper.GetFloatWithMultiSetParam(elem, "OffTime"));
+                    HE1Helper.SetIntReflection(dir, "phase", HE1Helper.GetIntWithMultiSetParam(elem, "Phase"));
                 },
                 ["ChangeMode_3DtoForward"] = (go, elem) =>
                 {
-                    float width = GetFloatWithMultiSetParam(elem, "Collision_Width");
-                    float height = GetFloatWithMultiSetParam(elem, "Collision_Height");
-                    
                     var box = go.GetComponent<BoxCollider>();
-                    box.size = new Vector3(width, height, 0.2f);
-                    
-                    bool isChangeCamera = GetBoolWithMultiSetParam(elem, "m_IsChangeCamera");
-                    bool isEnabledFront = GetBoolWithMultiSetParam(elem, "m_IsEnableFromFront");
-                    bool isEnabledBack = GetBoolWithMultiSetParam(elem, "m_IsEnableFromBack");
-                    bool isLimitEdge = GetBoolWithMultiSetParam(elem, "m_IsLimitEdge");
-                    float pathCorrectionForce = GetFloatWithMultiSetParam(elem, "m_PathCorrectionForce");
+                    HE1Helper.SetBoxColliderSize(box, elem, 0.2f);
 
                     var mode = go.GetComponent<ChangeMode3D>();
-                    SetBoolReflection(mode, "isChangeCamera", isChangeCamera);
-                    SetBoolReflection(mode, "isEnabledFromFront", isEnabledFront);
-                    SetBoolReflection(mode, "isEnabledFromBack", isEnabledBack);
-                    SetBoolReflection(mode, "isLimitEdge", isLimitEdge);
-                    SetFloatReflection(mode, "pathCorrectionForce", pathCorrectionForce);
+                    HE1Helper.SetChangeMode3DProperties(mode, elem);
                 },
                 ["ChangeMode_3DtoDash"] = (go, elem) =>
                 {
-                    float width = GetFloatWithMultiSetParam(elem, "Collision_Width");
-                    float height = GetFloatWithMultiSetParam(elem, "Collision_Height");
-                    
                     var box = go.GetComponent<BoxCollider>();
-                    box.size = new Vector3(width, height, 0.2f);
-                    
-                    bool isChangeCamera = GetBoolWithMultiSetParam(elem, "m_IsChangeCamera");
-                    bool isEnabledFront = GetBoolWithMultiSetParam(elem, "m_IsEnableFromFront");
-                    bool isEnabledBack = GetBoolWithMultiSetParam(elem, "m_IsEnableFromBack");
-                    bool isLimitEdge = GetBoolWithMultiSetParam(elem, "m_IsLimitEdge");
-                    float pathCorrectionForce = GetFloatWithMultiSetParam(elem, "m_PathCorrectionForce");
+                    HE1Helper.SetBoxColliderSize(box, elem, 0.2f);
 
                     var mode = go.GetComponent<ChangeMode3D>();
-                    SetBoolReflection(mode, "isChangeCamera", isChangeCamera);
-                    SetBoolReflection(mode, "isEnabledFromFront", isEnabledFront);
-                    SetBoolReflection(mode, "isEnabledFromBack", isEnabledBack);
-                    SetBoolReflection(mode, "isLimitEdge", isLimitEdge);
-                    SetFloatReflection(mode, "pathCorrectionForce", pathCorrectionForce);
+                    HE1Helper.SetChangeMode3DProperties(mode, elem);
                 },
                 ["ChangeMode_3Dto2D"] = (go, elem) =>
                 {
-                    float width = GetFloatWithMultiSetParam(elem, "Collision_Width");
-                    float height = GetFloatWithMultiSetParam(elem, "Collision_Height");
-                    
                     var box = go.GetComponent<BoxCollider>();
-                    box.size = new Vector3(width, height, 0.2f);
+                    HE1Helper.SetBoxColliderSize(box, elem, 0.2f);
+                },
+                ["AutorunStartCollision"] = (go, elem) =>
+                {
+                    var autorun = go.GetComponent<AutorunCollision>();
+                    
+                    HE1Helper.SetBoxColliderSize(autorun.GetComponent<BoxCollider>(), elem);
+                    HE1Helper.SetFloatReflection(autorun, "speed", HE1Helper.GetFloatWithMultiSetParam(elem, "Speed"));
+                    HE1Helper.SetFloatReflection(autorun, "easeTime", HE1Helper.GetFloatWithMultiSetParam(elem, "EaseTime"));
+                    HE1Helper.SetFloatReflection(autorun, "keepTime", HE1Helper.GetFloatWithMultiSetParam(elem, "KeepTime"));
+                    HE1Helper.SetBoolReflection(autorun, "isFinish", false);
+                },
+                ["AutorunFinishCollision"] = (go, elem) =>
+                {
+                    var autorun = go.GetComponent<AutorunCollision>();
+                    
+                    HE1Helper.SetBoxColliderSize(autorun.GetComponent<BoxCollider>(), elem);
+                    HE1Helper.SetBoolReflection(autorun, "isFinish", true);
                 },
                 ["Flame"] = (go, elem) =>
                 {
-                    float appearTime = GetFloatWithMultiSetParam(elem, "AppearTime");
-                    float onTime = GetFloatWithMultiSetParam(elem, "OnTime");
-                    float offTime = GetFloatWithMultiSetParam(elem, "OffTime");
-                    float length = GetFloatWithMultiSetParam(elem, "Length");
-                    int type = GetIntWithMultiSetParam(elem, "Type");
-                    int phase = GetIntWithMultiSetParam(elem, "Phase");
-                    
                     var flame = go.GetComponent<Flame>();
-                    SetFloatReflection(flame, "appearTime", appearTime);
-                    SetFloatReflection(flame, "onTime", onTime);
-                    SetFloatReflection(flame, "offTime", offTime);
-                    SetFloatReflection(flame, "length", length);
-                    SetIntReflection(flame, "type", type);
-                    SetIntReflection(flame, "phase", phase);
+                    HE1Helper.SetFloatReflection(flame, "appearTime", HE1Helper.GetFloatWithMultiSetParam(elem, "AppearTime"));
+                    HE1Helper.SetFloatReflection(flame, "onTime", HE1Helper.GetFloatWithMultiSetParam(elem, "OnTime"));
+                    HE1Helper.SetFloatReflection(flame, "offTime", HE1Helper.GetFloatWithMultiSetParam(elem, "OffTime"));
+                    HE1Helper.SetFloatReflection(flame, "length", HE1Helper.GetFloatWithMultiSetParam(elem, "Length"));
+                    HE1Helper.SetIntReflection(flame, "type", HE1Helper.GetIntWithMultiSetParam(elem, "Type"));
+                    HE1Helper.SetIntReflection(flame, "phase", HE1Helper.GetIntWithMultiSetParam(elem, "Phase"));
 
                     flame.FillMultiSet(elem, "multiSetParam");
                 },
                 ["EventCollision"] = (go, elem) =>
                 {
-                    float width = GetFloatWithMultiSetParam(elem, "Collision_Width");
-                    float height = GetFloatWithMultiSetParam(elem, "Collision_Height");
-                    float length = GetFloatWithMultiSetParam(elem, "Collision_Length");
-                    
                     var box = go.GetComponent<BoxCollider>();
-                    box.size = new Vector3(width, height, length);
-                    
+                    HE1Helper.SetBoxColliderSize(box, elem);
+
                     var eventCollision = go.GetComponent<EventCollision>();
-                    int defaultStatus = GetIntWithMultiSetParam(elem, "DefaultStatus");
-                    int durability = GetIntWithMultiSetParam(elem, "Durability");
-                    SetIntReflection(eventCollision, "defaultStatus", defaultStatus);
-                    SetIntReflection(eventCollision, "durability", durability);
+                    HE1Helper.SetIntReflection(eventCollision, "defaultStatus", HE1Helper.GetIntWithMultiSetParam(elem, "DefaultStatus"));
+                    HE1Helper.SetIntReflection(eventCollision, "durability", HE1Helper.GetIntWithMultiSetParam(elem, "Durability"));
 
                     var uEvent =
                         eventCollision.GetType()
@@ -464,38 +356,22 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                 },
                 ["MykonosFloor"] = (go, elem) =>
                 {
-                    float amplitude = GetFloatWithMultiSetParam(elem, "Amplitude");
-                    float cycle = GetFloatWithMultiSetParam(elem, "Cycle");
-                    float phase = GetFloatWithMultiSetParam(elem, "Phase");
-                    int moveType = GetIntWithMultiSetParam(elem, "MoveType");
-                    float onGroundTime = GetFloatWithMultiSetParam(elem, "OnGroundTime");
-                    float resetTime = GetFloatWithMultiSetParam(elem, "ResetTime");
-                    float gravity = GetFloatWithMultiSetParam(elem, "Gravity");
-                    
                     var floor = go.GetComponent<MykonosFloor>();
-                    SetFloatReflection(floor, "amplitude", amplitude);
-                    SetFloatReflection(floor, "cycle", cycle);
-                    SetFloatReflection(floor, "phase", phase);
-                    SetIntReflection(floor, "moveType", moveType);
-                    SetFloatReflection(floor, "onGroundTime", onGroundTime);
-                    SetFloatReflection(floor, "resetTime", resetTime);
-                    SetFloatReflection(floor, "gravity", gravity);
+                    HE1Helper.SetFloatReflection(floor, "amplitude", HE1Helper.GetFloatWithMultiSetParam(elem, "Amplitude"));
+                    HE1Helper.SetFloatReflection(floor, "cycle", HE1Helper.GetFloatWithMultiSetParam(elem, "Cycle"));
+                    HE1Helper.SetFloatReflection(floor, "phase", HE1Helper.GetFloatWithMultiSetParam(elem, "Phase"));
+                    HE1Helper.SetIntReflection(floor, "moveType", HE1Helper.GetIntWithMultiSetParam(elem, "MoveType"));
+                    HE1Helper.SetFloatReflection(floor, "onGroundTime", HE1Helper.GetFloatWithMultiSetParam(elem, "OnGroundTime"));
+                    HE1Helper.SetFloatReflection(floor, "resetTime", HE1Helper.GetFloatWithMultiSetParam(elem, "ResetTime"));
+                    HE1Helper.SetFloatReflection(floor, "gravity", HE1Helper.GetFloatWithMultiSetParam(elem, "Gravity"));
                 },
                 ["ThornSpring"] = (go, elem) =>
                 {
-                    float speed = GetFloatWithMultiSetParam(elem, "FirstSpeed");
-                    float outOfControl = GetFloatWithMultiSetParam(elem, "OutOfControl");
-                    float keepDistance = GetFloatWithMultiSetParam(elem, "KeepVelocityDistance");
-                    float upThornTime = GetFloatWithMultiSetParam(elem, "UpThornTime");
-                    float downThornTime = GetFloatWithMultiSetParam(elem, "DownThornTime");
-                    bool cancelBoost = GetBoolWithMultiSetParam(elem, "m_IsStopBoost");
                     var thornSpring = go.GetComponent<ThornSpring>();
-                    SetFloatReflection(thornSpring, "speed", speed);
-                    SetFloatReflection(thornSpring, "outOfControl", outOfControl);
-                    SetFloatReflection(thornSpring, "keepVelocityDistance", keepDistance);
-                    SetFloatReflection(thornSpring, "upThornTime", upThornTime);
-                    SetFloatReflection(thornSpring, "downThornTime", downThornTime);
-                    SetBoolReflection(thornSpring, "cancelBoost", cancelBoost);
+                    HE1Helper.SetSpringProperties(thornSpring, elem);
+                    HE1Helper.SetFloatReflection(thornSpring, "upThornTime", HE1Helper.GetFloatWithMultiSetParam(elem, "UpThornTime"));
+                    HE1Helper.SetFloatReflection(thornSpring, "downThornTime", HE1Helper.GetFloatWithMultiSetParam(elem, "DownThornTime"));
+                    HE1Helper.SetBoolReflection(thornSpring, "cancelBoost", HE1Helper.GetBoolWithMultiSetParam(elem, "m_IsStopBoost"));
                 },
             };
         }
@@ -561,7 +437,7 @@ namespace SurgeEngine._Source.Editor.HE1Importer
 
         private static GameObject CreateObjectPhysics(XElement elem)
         {
-            string type = GetValueWithMultiSetParam(elem, "Type", "None");
+            string type = HE1Helper.GetValueWithMultiSetParam(elem, "Type", "None");
             string path = "";
 
             switch (type)
@@ -673,25 +549,56 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                 stageObject.SetID = id;
         }
 
-        static float GetFloatWithMultiSetParam(XElement elem, string valueName, float defaultValue = 1f)
+        static long GetObjectID(XElement elem) => long.Parse(elem.Element("SetObjectID")?.Value.Trim() ?? "0", CultureInfo.InvariantCulture);
+
+        public static long GetMultiSetObjectID(XElement parentElem, int index)
+        {
+            long parentId = GetObjectID(parentElem);
+            return parentId * 1000 + index;
+        }
+        
+        static void ApplyCustom(string name, GameObject go, XElement elem)
+        {
+            if (GetCustomHandlers().TryGetValue(name, out var handler))
+            {
+                handler(go, elem);
+
+                RecordStageObject(go);
+            }
+        }
+
+        private static void RecordStageObject(GameObject go)
+        {
+            if (PrefabUtility.GetPrefabAssetType(go) != PrefabAssetType.NotAPrefab)
+            {
+                PrefabUtility.RecordPrefabInstancePropertyModifications(go);
+                foreach (var component in go.GetComponents<StageObject>())
+                    PrefabUtility.RecordPrefabInstancePropertyModifications(component);
+            }
+        }
+    }
+
+    static class HE1Helper
+    {
+        public static float GetFloatWithMultiSetParam(XElement elem, string valueName, float defaultValue = 1f)
         {
             var value = GetValueWithMultiSetParam(elem, valueName, defaultValue.ToString(CultureInfo.InvariantCulture));
             return float.Parse(value, CultureInfo.InvariantCulture);
         }
 
-        static int GetIntWithMultiSetParam(XElement elem, string valueName, int defaultValue = 1)
+        public static int GetIntWithMultiSetParam(XElement elem, string valueName, int defaultValue = 1)
         {
             var value = GetValueWithMultiSetParam(elem, valueName, defaultValue.ToString(CultureInfo.InvariantCulture));
             return int.Parse(value, CultureInfo.InvariantCulture);
         }
 
-        static bool GetBoolWithMultiSetParam(XElement elem, string valueName, bool defaultValue = false)
+        public static bool GetBoolWithMultiSetParam(XElement elem, string valueName, bool defaultValue = false)
         {
             var value = GetValueWithMultiSetParam(elem, valueName, defaultValue.ToString());
             return bool.Parse(value);
         }
 
-        static string GetValueWithMultiSetParam(XElement elem, string valueName, string defaultValue = "1")
+        public static string GetValueWithMultiSetParam(XElement elem, string valueName, string defaultValue = "1")
         {
             if (elem.Name == "Element" && elem.Parent?.Name == "MultiSetParam")
             {
@@ -702,15 +609,7 @@ namespace SurgeEngine._Source.Editor.HE1Importer
             return elem.Element(valueName)?.Value.Trim() ?? defaultValue;
         }
 
-        static long GetObjectID(XElement elem) => long.Parse(elem.Element("SetObjectID")?.Value.Trim() ?? "0", CultureInfo.InvariantCulture);
-
-        static long GetMultiSetObjectID(XElement parentElem, int index)
-        {
-            long parentId = GetObjectID(parentElem);
-            return parentId * 1000 + index;
-        }
-
-        static void SetFloatReflection(object obj, string name, float value)
+        public static void SetFloatReflection(object obj, string name, float value)
         {
             try
             {
@@ -723,7 +622,7 @@ namespace SurgeEngine._Source.Editor.HE1Importer
             }
         }
 
-        static void SetIntReflection(object obj, string name, int value)
+        public static void SetIntReflection(object obj, string name, int value)
         {
             try
             {
@@ -736,7 +635,7 @@ namespace SurgeEngine._Source.Editor.HE1Importer
             }
         }
 
-        static void SetBoolReflection(object obj, string name, bool value)
+        public static void SetBoolReflection(object obj, string name, bool value)
         {
             try
             {
@@ -748,8 +647,91 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                 Debug.LogError("Can't set the value to " + name + ": " + e.Message);
             }
         }
-        
-        static void FillMultiSet<T>(this T stageObject, XElement elem, string listFieldName) where T : StageObject
+
+        public static void SetBoxColliderSize(BoxCollider box, XElement elem, float? depth = null)
+        {
+            float width = GetFloatWithMultiSetParam(elem, "Collision_Width");
+            float height = GetFloatWithMultiSetParam(elem, "Collision_Height");
+
+            if (depth.HasValue)
+            {
+                box.size = new Vector3(width, height, depth.Value);
+            }
+            else
+            {
+                float length = GetFloatWithMultiSetParam(elem, "Collision_Length");
+                box.size = new Vector3(width, height, length);
+            }
+        }
+
+        public static void SetSpringProperties(object spring, XElement elem)
+        {
+            float speed = GetFloatWithMultiSetParam(elem, "FirstSpeed");
+            float outOfControl = GetFloatWithMultiSetParam(elem, "OutOfControl");
+            float keepVelocity = GetFloatWithMultiSetParam(elem, "KeepVelocityDistance");
+            SetFloatReflection(spring, "speed", speed);
+            SetFloatReflection(spring, "outOfControl", outOfControl);
+            SetFloatReflection(spring, "keepVelocityDistance", keepVelocity);
+        }
+
+        public static void SetJumpPanelProperties(object jumpPanel, XElement elem)
+        {
+            float impulseNormal = GetFloatWithMultiSetParam(elem, "ImpulseSpeedOnNormal");
+            float impulseBoost = GetFloatWithMultiSetParam(elem, "ImpulseSpeedOnBoost");
+            float outOfControl = GetFloatWithMultiSetParam(elem, "OutOfControl");
+            SetFloatReflection(jumpPanel, "impulseOnNormal", impulseNormal);
+            SetFloatReflection(jumpPanel, "impulseOnBoost", impulseBoost);
+            SetFloatReflection(jumpPanel, "outOfControl", outOfControl);
+        }
+
+        public static void SetDashRingProperties(object dashRing, XElement elem)
+        {
+            float speed = GetFloatWithMultiSetParam(elem, "FirstSpeed");
+            float outOfControl = GetFloatWithMultiSetParam(elem, "OutOfControl");
+            float keepDistance = GetFloatWithMultiSetParam(elem, "KeepVelocityDistance");
+            SetFloatReflection(dashRing, "speed", speed);
+            SetFloatReflection(dashRing, "outOfControl", outOfControl);
+            SetFloatReflection(dashRing, "keepVelocityDistance", keepDistance);
+        }
+
+        public static void SetCameraDataProperties(object cameraComponent, XElement elem, bool includeDistance = false)
+        {
+            var dataField = cameraComponent.GetType().GetField("data", BindingFlags.Instance | BindingFlags.NonPublic);
+            if (dataField == null) return;
+
+            var dataObj = dataField.GetValue(cameraComponent);
+
+            float fovy = GetFloatWithMultiSetParam(elem, "Fovy");
+            bool isControllable = GetBoolWithMultiSetParam(elem, "IsControllable");
+            bool isCollision = GetBoolWithMultiSetParam(elem, "IsCollision");
+
+            dataObj.GetType().GetField("fov", BindingFlags.Instance | BindingFlags.Public)?.SetValue(dataObj, fovy);
+            dataObj.GetType().GetField("allowRotation", BindingFlags.Instance | BindingFlags.Public)?.SetValue(dataObj, isControllable);
+            dataObj.GetType().GetField("isCollision", BindingFlags.Instance | BindingFlags.Public)?.SetValue(dataObj, isCollision);
+
+            if (includeDistance)
+            {
+                float distance = GetFloatWithMultiSetParam(elem, "Distance");
+                dataObj.GetType().GetField("distance", BindingFlags.Instance | BindingFlags.Public)?.SetValue(dataObj, distance);
+            }
+        }
+
+        public static void SetChangeMode3DProperties(object mode, XElement elem)
+        {
+            bool isChangeCamera = GetBoolWithMultiSetParam(elem, "m_IsChangeCamera");
+            bool isEnabledFront = GetBoolWithMultiSetParam(elem, "m_IsEnableFromFront");
+            bool isEnabledBack = GetBoolWithMultiSetParam(elem, "m_IsEnableFromBack");
+            bool isLimitEdge = GetBoolWithMultiSetParam(elem, "m_IsLimitEdge");
+            float pathCorrectionForce = GetFloatWithMultiSetParam(elem, "m_PathCorrectionForce");
+
+            SetBoolReflection(mode, "isChangeCamera", isChangeCamera);
+            SetBoolReflection(mode, "isEnabledFromFront", isEnabledFront);
+            SetBoolReflection(mode, "isEnabledFromBack", isEnabledBack);
+            SetBoolReflection(mode, "isLimitEdge", isLimitEdge);
+            SetFloatReflection(mode, "pathCorrectionForce", pathCorrectionForce);
+        }
+
+        public static void FillMultiSet<T>(this T stageObject, XElement elem, string listFieldName) where T : StageObject
         {
             if (stageObject == null || elem == null) return;
 
@@ -772,21 +754,6 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                         list.Add(tObj);
                         break;
                     }
-                }
-            }
-        }
-        
-        static void ApplyCustom(string name, GameObject go, XElement elem)
-        {
-            if (GetCustomHandlers().TryGetValue(name, out var handler))
-            {
-                handler(go, elem);
-
-                if (PrefabUtility.GetPrefabAssetType(go) != PrefabAssetType.NotAPrefab)
-                {
-                    PrefabUtility.RecordPrefabInstancePropertyModifications(go);
-                    foreach (var component in go.GetComponents<StageObject>())
-                        PrefabUtility.RecordPrefabInstancePropertyModifications(component);
                 }
             }
         }

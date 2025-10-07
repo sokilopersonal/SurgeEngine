@@ -27,7 +27,8 @@ namespace SurgeEngine._Source.Code.Core.Character.States
 
             if (!Ignore)
             {
-                if (Kinematics.CheckForGroundWithDirection(out _, Vector3.down, castDistance: character.Config.castDistance * 0.5f))
+                bool predicted = Kinematics.CheckForPredictedGround(dt, character.Config.castDistance, 4);
+                if (Kinematics.CheckForGroundWithDirection(out _, Vector3.down, castDistance: character.Config.castDistance * 0.55f) && predicted)
                 {
                     StateMachine.SetState<FStateGround>();
                 }

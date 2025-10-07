@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using System;
+using JetBrains.Annotations;
 using NaughtyAttributes;
 using SurgeEngine._Source.Code.Core.Character.System;
 using UnityEngine;
@@ -17,11 +18,29 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects
         [SerializeField] protected bool isEnabledFromBack = true;
         [SerializeField] protected bool isEnabledFromFront = true;
 
+        private void Awake()
+        {
+            if (path == null)
+            {
+                var closePath = FindClosestContainer();
+                if (closePath)
+                {
+                    path = closePath;
+                    
+                    Debug.Log($"Path set for {name} (ID: {SetID})");
+                }
+                else
+                {
+                    Debug.LogWarning($"No path found for {name} (ID: {SetID})");
+                }
+            }
+        }
+
         public override void Contact(Collider msg, CharacterBase context)
         {
             base.Contact(msg, context);
             
-            if (!CheckFacing(context.transform.forward))
+            if (!CheckFacing(context.transform.forward) || !path)
                 return;
             
             SetMode(context);
