@@ -34,10 +34,10 @@ namespace SurgeEngine._Source.Code.Core.Character.CameraSystem
 
         private bool _is2dCamera;
         
-        private readonly List<ChangeCameraVolume> _volumes;
+        private readonly Stack<ChangeCameraVolume> _volumes;
         private ChangeCameraVolume _lastTop;
         public int VolumeCount => _volumes.Count;
-        public ChangeCameraVolume Top => _volumes.OrderByDescending(v => v.Priority).FirstOrDefault();
+        public ChangeCameraVolume Top => _volumes.Count > 0 ? _volumes.Peek() : null;
 
         private CameraData _data;
         
@@ -147,7 +147,14 @@ namespace SurgeEngine._Source.Code.Core.Character.CameraSystem
         {
             if (!_volumes.Contains(vol) && vol.Target)
             {
-                _volumes.Add(vol);
+                var tempList = new List<ChangeCameraVolume>(_volumes) { vol };
+                tempList = tempList.OrderBy(v => v.Priority).ToList();
+
+                _volumes.Clear();
+                foreach (var t in tempList)
+                {
+                    _volumes.Push(t);
+                }
                 
                 if (CurrentState is not CameraAnimState)
                 {
@@ -160,7 +167,15 @@ namespace SurgeEngine._Source.Code.Core.Character.CameraSystem
         {
             if (_volumes.Contains(vol))
             {
-                _volumes.Remove(vol);
+                var tempList = new List<ChangeCameraVolume>(_volumes);
+                tempList.Remove(vol);
+                tempList = tempList.OrderBy(v => v.Priority).ToList();
+
+                _volumes.Clear();
+                for (int i = 0; i < tempList.Count; i++)
+                {
+                    _volumes.Push(tempList[i]);
+                }
 
                 if (CurrentState is not CameraAnimState)
                 {
