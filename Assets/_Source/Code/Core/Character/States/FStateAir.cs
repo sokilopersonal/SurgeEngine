@@ -80,12 +80,14 @@ namespace SurgeEngine._Source.Code.Core.Character.States
                 bool predictedGround = Kinematics.CheckForPredictedGround(dt, character.Config.castDistance, 4);
                 if (Kinematics.GetAttachState() && predictedGround)
                 {
-                    float speed = Kinematics.HorizontalVelocity.magnitude;
+                    var vel = Kinematics.Velocity;
+                    vel.y = 0;
+                    float speed = vel.magnitude;
                     if (speed > character.Config.landingSpeed) StateMachine.SetState<FStateGround>();
                     else
                     {
                         StateMachine.SetState<FStateIdle>();
-                        if (Input.MoveVector.magnitude < 0.1f)
+                        if (Kinematics.GetInputDir().magnitude < 0.1f)
                         {
                             Rigidbody.linearVelocity = Vector3.zero;
                         }

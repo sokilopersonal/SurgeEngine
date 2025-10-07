@@ -8,11 +8,6 @@ namespace SurgeEngine._Source.Code.Core.Character.States
     {
         public FStateDashRing(CharacterBase owner) : base(owner) { }
 
-        public override void OnEnter()
-        {
-            base.OnEnter();
-        }
-
         public override void OnExit()
         {
             base.OnExit();

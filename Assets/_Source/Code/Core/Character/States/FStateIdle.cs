@@ -12,6 +12,13 @@ namespace SurgeEngine._Source.Code.Core.Character.States
         {
         }
 
+        public override void OnEnter()
+        {
+            base.OnEnter();
+            
+            Kinematics.ResetVelocity();
+        }
+
         public override void OnTick(float dt)
         {
             if (Kinematics.GetInputDir().magnitude > 0.1f || Kinematics.HorizontalVelocity.magnitude > 0.1f)
@@ -34,8 +41,6 @@ namespace SurgeEngine._Source.Code.Core.Character.States
         public override void OnFixedTick(float dt)
         {
             base.OnFixedTick(dt);
-            
-            Kinematics.ResetVelocity();
             
             if (Kinematics.CheckForGroundWithDirection(out RaycastHit hit, Vector3.down))
             {

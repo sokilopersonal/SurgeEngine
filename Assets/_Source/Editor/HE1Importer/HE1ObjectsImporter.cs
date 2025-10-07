@@ -260,10 +260,8 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                     float pitch = GetFloatWithMultiSetParam(elem, "Pitch");
                     float yaw = GetFloatWithMultiSetParam(elem, "Yaw");
                     
-                    var euler = comp.transform.eulerAngles;
-                    euler.x = pitch;
-                    euler.y = yaw == 0 ? 180 : yaw;
-                    comp.transform.eulerAngles = euler;
+                    var euler = Quaternion.Euler(pitch, yaw - 180, 0);
+                    comp.transform.rotation = ToEulerYXZ(euler);
                 },
                 ["ObjCameraPoint"] = (go, elem) =>
                 {
@@ -296,14 +294,6 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                     {
                         dataObj.GetType().GetField("target", BindingFlags.Instance | BindingFlags.Public)?.SetValue(dataObj, null);
                     }
-                    
-                    float pitch = GetFloatWithMultiSetParam(elem, "Pitch");
-                    float yaw = GetFloatWithMultiSetParam(elem, "Yaw");
-                    
-                    var euler = comp.transform.eulerAngles;
-                    euler.x = pitch;
-                    euler.y = yaw == 0 ? 180 : yaw;
-                    comp.transform.eulerAngles = euler;
                 },
                 ["StumbleCollision"] = (go, elem) =>
                 {
@@ -528,7 +518,7 @@ namespace SurgeEngine._Source.Editor.HE1Importer
 
                 if (prefabs.ContainsKey(name))
                 {
-                    if (!prefabs.TryGetValue(name, out var prefab) || prefab == null) return;
+                    if (!prefabs.TryGetValue(name, out var prefab) || prefab == null) continue;
 
                     var ms = elem.Element("MultiSetParam");
                     if (ms != null)
@@ -619,14 +609,6 @@ namespace SurgeEngine._Source.Editor.HE1Importer
 
         static GameObject TryInstantiate(GameObject prefab, XElement elem, long setId)
         {
-            foreach (var stageObject in Object.FindObjectsByType<StageObject>(FindObjectsInactive.Include, FindObjectsSortMode.None))
-            {
-                if (stageObject.SetID == setId)
-                {
-                    return stageObject.gameObject;
-                }
-            }
-            
             var posE = elem.Element("Position");
             var rotE = elem.Element("Rotation");
             
@@ -647,8 +629,18 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                     float.Parse(rotE.Element("w")?.Value.Trim() ?? "1", CultureInfo.InvariantCulture)
                 );
             
-            q.Normalize();
             var targetRot = ToEulerYXZ(q);
+            
+            foreach (var stageObject in Object.FindObjectsByType<StageObject>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+            {
+                if (stageObject.SetID == setId && stageObject.SetID != 0)
+                {
+                    stageObject.transform.position = p;
+                    stageObject.transform.rotation = targetRot;
+                    return stageObject.gameObject;
+                }
+            }
+            
             var parent = GameObject.FindWithTag("SetData").transform;
 
             GameObject go;
@@ -670,30 +662,9 @@ namespace SurgeEngine._Source.Editor.HE1Importer
 
         private static Quaternion ToEulerYXZ(Quaternion q)
         {
-            var m = Matrix4x4.Rotate(q);
-
-            float m02 = m.m02, m12 = m.m12, m22 = m.m22;
-            float m10 = m.m10, m11 = m.m11;
-        
-            float pitch = Mathf.Asin(-m12);
-            float yaw, roll;
-        
-            if (Mathf.Abs(m12) < 0.999999f)
-            {
-                yaw  = Mathf.Atan2(m02, m22);
-                roll = Mathf.Atan2(m10, m11);
-            }
-            else
-            {
-                yaw  = 0f;
-                roll = 0f;
-            }
-
-            return Quaternion.Euler(
-                pitch * Mathf.Rad2Deg,
-                -yaw   * Mathf.Rad2Deg,
-                -roll  * Mathf.Rad2Deg
-            );
+            q.Normalize();
+            var euler = q.eulerAngles;
+            return Quaternion.Euler(euler.x, -euler.y, -euler.z);
         }
 
         static void SetObjectID(GameObject go, long id)
