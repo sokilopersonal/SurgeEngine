@@ -19,6 +19,7 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
         public float Speed => speed;
         public virtual float KeepVelocityDistance => keepVelocityDistance;
         public bool IsWallWalk => isWallWalk;
+        public virtual Vector3 Direction => transform.up;
 
         public override void Contact(Collider msg, CharacterBase context)
         {
@@ -56,7 +57,7 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
 
         private void OnDrawGizmosSelected()
         {
-            TrajectoryDrawer.DrawTrajectory(transform.position, transform.up, Color.green, speed, keepVelocityDistance);
+            TrajectoryDrawer.DrawTrajectory(transform.position, Direction, Color.green, speed, keepVelocityDistance);
         }
     }
 }

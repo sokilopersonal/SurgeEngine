@@ -4,6 +4,8 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
 {
     public class WideSpring : Spring
     {
+        public override Vector3 Direction => Vector3.up;
+
         private void OnDrawGizmosSelected()
         {
             Vector3 start = transform.position + Vector3.up * 0.5f;

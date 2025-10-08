@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 842711673420455471}
   - component: {fileID: 3340561544493559877}
   - component: {fileID: 2434895846924912876}
-  m_Layer: 14
+  m_Layer: 8
   m_Name: JumpCollision
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -45,8 +45,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdb6f5b50f114da9aa1b7761623c0911, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speedRequired: 15
+  speedMin: 20
   pitch: 45
+  groundOnly: 1
   impulseOnNormal: 30
   impulseOnBoost: 47
   outOfControl: 1

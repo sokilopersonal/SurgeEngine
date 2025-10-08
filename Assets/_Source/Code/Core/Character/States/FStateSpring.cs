@@ -40,7 +40,7 @@ namespace SurgeEngine._Source.Code.Core.Character.States
         {
             base.OnFixedTick(dt);
             
-            Vector3 dir = _springObject.transform.up;
+            Vector3 dir = _springObject.Direction;
             Vector3 pos = _springObject.transform.position + dir * Mathf.Max(1f, travelledDistance);
             Vector3 endPos = Vector3.Lerp(_startPos, pos, _snapTimer);
             
