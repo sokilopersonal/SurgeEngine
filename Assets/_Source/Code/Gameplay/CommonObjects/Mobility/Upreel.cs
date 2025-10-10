@@ -93,6 +93,7 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
                 if (distance < 0.1f)
                 {
                     ctx.StateMachine.SetState<FStateAir>();
+                    ctx.Kinematics.SetDetachTime(0.1f);
                     ctx.Kinematics.Rigidbody.position += Vector3.up;
                     ctx.Kinematics.Rigidbody.AddForce(transform.up * impulseVelocity, ForceMode.Impulse);
                     ctx.Kinematics.Rigidbody.AddForce(model.forward * impulseVelocity / 4, ForceMode.Impulse);
