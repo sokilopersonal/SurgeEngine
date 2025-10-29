@@ -72,7 +72,6 @@ namespace SurgeEngine._Source.Code.Core.Character.States
                     break;
                 case SpecialJumpType.Spring:
                 case SpecialJumpType.DashRing:
-                    HandleSpringOrDashRing();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -85,12 +84,6 @@ namespace SurgeEngine._Source.Code.Core.Character.States
                     StateMachine.SetState<FStateAir>();
                 }
             }
-        }
-
-        private void HandleSpringOrDashRing()
-        {
-            Model.SetRestoreUp(SpecialJumpData.transform.up);
-            Model.VelocityRotation(character.Kinematics.Velocity.normalized);
         }
 
         private void UpdateKeepVelocityTimer(float dt)

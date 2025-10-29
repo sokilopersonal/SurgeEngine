@@ -29,7 +29,7 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
             context.StateMachine.SetState<FStateGround>();
             
             body.rotation = Quaternion.LookRotation(transform.forward, transform.up);
-            context.Model.root.rotation = body.rotation;
+            context.Model.Root.rotation = body.rotation;
 
             context.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, Mathf.Abs(outOfControl)));
             

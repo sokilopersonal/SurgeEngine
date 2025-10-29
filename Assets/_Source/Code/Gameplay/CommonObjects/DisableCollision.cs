@@ -17,7 +17,7 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects
             _collider = collider;
             _type = type;
             
-            Physics.IgnoreCollision(_collider, _character.Model.collision, true);
+            Physics.IgnoreCollision(_collider, _character.Model.Collision, true);
             Debug.Log("Ignoring collision");
 
             _character.StateMachine.OnStateAssign += OnState;
@@ -27,7 +27,7 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects
         {
             if (obj.GetType() != _type)
             {
-                Physics.IgnoreCollision(_collider, _character.Model.collision, false);
+                Physics.IgnoreCollision(_collider, _character.Model.Collision, false);
                 _character.StateMachine.OnStateAssign -= OnState;
                 Debug.Log("Stop collision");
             }

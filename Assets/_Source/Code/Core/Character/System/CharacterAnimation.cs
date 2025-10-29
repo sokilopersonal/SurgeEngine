@@ -43,10 +43,10 @@ namespace SurgeEngine._Source.Code.Core.Character.System
             animator.SetFloat("SpeedPercent", Mathf.Lerp(currentSpeedPercent, targetSpeedPercent, 10f * Time.deltaTime));
 
             Vector3 vel = character.Kinematics.Velocity;
-            float signed = Vector3.SignedAngle(vel, character.Model.root.forward, -Vector3.up);
+            float signed = Vector3.SignedAngle(vel, character.Model.Root.forward, -Vector3.up);
             float angle = signed * 0.3f;
 
-            Vector3 cross = Vector3.Cross(character.Model.root.forward, character.Kinematics.Normal);
+            Vector3 cross = Vector3.Cross(character.Model.Root.forward, character.Kinematics.Normal);
             float mDot = Vector3.Dot(vel, cross);
             mDot = Mathf.Clamp(mDot * 0.3f, -1f, 1f);
             

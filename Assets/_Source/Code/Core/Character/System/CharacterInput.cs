@@ -53,7 +53,7 @@ namespace SurgeEngine._Source.Code.Core.Character.System
 
         private void Awake()
         {
-            playerInput ??= GetComponent<PlayerInput>();
+            if (!playerInput) playerInput = GetComponent<PlayerInput>();
         }
 
         private void OnEnable()

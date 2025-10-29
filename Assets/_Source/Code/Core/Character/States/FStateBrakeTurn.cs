@@ -44,7 +44,7 @@ namespace SurgeEngine._Source.Code.Core.Character.States
                 if (_timer < duration)
                 {
                     Rigidbody.rotation = Quaternion.Lerp(_startRotation, _endRotation, Easings.Get(Easing.InSine, _timer / duration));
-                    Model.root.rotation = Rigidbody.rotation;
+                    Model.Root.rotation = Rigidbody.rotation;
                 
                     _timer += dt;
                 }

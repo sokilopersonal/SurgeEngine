@@ -29,7 +29,7 @@ namespace SurgeEngine._Source.Code.Core.Character.States
             Rigidbody.linearVelocity = Vector3.zero;
             Rigidbody.position = _attachedJumpSelector.transform.position + Vector3.up * 0.5f;
             Rigidbody.rotation = _attachedJumpSelector.transform.rotation;
-            Model.root.rotation = _attachedJumpSelector.transform.rotation;
+            Model.Root.rotation = _attachedJumpSelector.transform.rotation;
             
             character.Flags.AddFlag(new Flag(FlagType.OutOfControl, false));
             

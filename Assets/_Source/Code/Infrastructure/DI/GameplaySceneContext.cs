@@ -15,7 +15,7 @@ namespace SurgeEngine._Source.Code.Infrastructure.DI
         [SerializeField] private Stage stage;
         
         [Header("Character")]
-        [SerializeField] private Transform actorPrefab;
+        [SerializeField] private Transform characterPrefab;
         [SerializeField] private CharacterSpawn spawnPoint;
         
         [Header("HUD")]
@@ -27,7 +27,7 @@ namespace SurgeEngine._Source.Code.Infrastructure.DI
         public override void InstallBindings()
         {
             SetupStage();
-            SetupActor();
+            SetupCharacter();
             SetupHUD();
             SetupPointMarkerScreen();
         }
@@ -37,7 +37,7 @@ namespace SurgeEngine._Source.Code.Infrastructure.DI
             Container.BindInstance(stage).AsSingle().NonLazy();
         }
 
-        private void SetupActor()
+        private void SetupCharacter()
         {
             if (!spawnPoint)
             {
@@ -48,9 +48,9 @@ namespace SurgeEngine._Source.Code.Infrastructure.DI
             }
 
             var data = spawnPoint.StartData;
-            data.StartTransform = spawnPoint.transform;
+            var spawn = spawnPoint.transform;
 
-            var instance = Container.InstantiatePrefabForComponent<CharacterBase>(actorPrefab, data.StartTransform.position, data.StartTransform.rotation, null);
+            var instance = Container.InstantiatePrefabForComponent<CharacterBase>(characterPrefab, spawn.position, spawn.rotation, null);
             Container.BindInstance(instance).AsSingle().NonLazy();
             var parent = instance.transform.parent;
             Quaternion par = parent.rotation;
@@ -72,9 +72,6 @@ namespace SurgeEngine._Source.Code.Infrastructure.DI
         {
             var instance = Container.InstantiatePrefabForComponent<PointMarkerLoadingScreen>(pointMarkerLoadingScreenPrefab);
             Container.BindInstance(instance).AsSingle().NonLazy();
-
-            // Hide
-            // instance.gameObject.hideFlags = HideFlags.HideInHierarchy; 
         }
     }
 }

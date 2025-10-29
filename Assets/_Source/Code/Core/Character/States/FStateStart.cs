@@ -65,15 +65,11 @@ namespace SurgeEngine._Source.Code.Core.Character.States
                 StateMachine.SetState<FStateGround>();
             }
         }
-        
-        public StartType GetStartType() => _startData.startType;
     }
 
     [Serializable]
     public class StartData
     {
-        public Transform StartTransform { get; set; }
-        
         public StartType startType = StartType.Standing;
         public float speed;
         public float time;

@@ -16,7 +16,7 @@ namespace SurgeEngine._Source.Editor
         private void OnEnable()
         {
             _stageField = serializedObject.FindProperty("stage");
-            _actorPrefabField = serializedObject.FindProperty("actorPrefab");
+            _actorPrefabField = serializedObject.FindProperty("characterPrefab");
             _spawnPointField = serializedObject.FindProperty("spawnPoint");
             _hudPrefabField = serializedObject.FindProperty("hudPrefab");
             _pmScreenField = serializedObject.FindProperty("pointMarkerLoadingScreenPrefab");

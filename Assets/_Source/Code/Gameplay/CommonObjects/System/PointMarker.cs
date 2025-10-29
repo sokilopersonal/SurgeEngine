@@ -51,7 +51,7 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.System
             _character.Rigidbody.position = transform.position;
             _character.Rigidbody.rotation = rotation;
             _character.Kinematics.Snap(transform.position, Vector3.up);
-            _character.Model.root.transform.rotation = rotation;
+            _character.Model.Root.transform.rotation = rotation;
 
             var euler = rotation.eulerAngles;
             _character.Camera.StateMachine.SetDirection(euler.y, euler.x);
