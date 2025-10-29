@@ -19,5 +19,11 @@ namespace SurgeEngine._Source.Code.Infrastructure.Custom
             v2 = Vector3.Cross(axis, right);
             return Mathf.Atan2(Vector3.Dot(v1, right), Vector3.Dot(v1, v2)) * Mathf.Rad2Deg;
         }
+        
+        public static void SplitPlanarVector(Vector3 vector, Vector3 normal, out Vector3 planar, out Vector3 vertical)
+        {
+            planar = Vector3.ProjectOnPlane(vector, normal);
+            vertical = vector - Vector3.ProjectOnPlane(vector, normal);
+        }
     }
 }

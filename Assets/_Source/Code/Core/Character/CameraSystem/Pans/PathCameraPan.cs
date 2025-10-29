@@ -25,7 +25,7 @@ namespace SurgeEngine._Source.Code.Core.Character.CameraSystem.Pans
             _splineData.EvaluateWorld(out var pos, out var tg, out _, out _);
             
             Vector3 target = pos + tg * _panData.offsetOnEye;
-            StatePosition = Vector3.Lerp(StatePosition, target, 32 * dt); // A little bit of smoothness
+            StatePosition = Vector3.Lerp(StatePosition, target, 64 * dt); // A little bit of smoothness
             StateRotation = SetRotation(Quaternion.LookRotation(tg));
             StateFOV = _panData.fov;
             

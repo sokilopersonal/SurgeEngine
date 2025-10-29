@@ -179,7 +179,8 @@ namespace SurgeEngine._Source.Code.Core.Character.System
                 {
                     Vector3 velocityDir = currentVelocity.normalized;
                     Quaternion targetRotation = Quaternion.LookRotation(velocityDir, normal);
-                    var towards = Quaternion.RotateTowards(rb.rotation, targetRotation, (128f + currentSpeed / 2) * Time.fixedDeltaTime);
+                    var towards = Quaternion.RotateTowards(rb.rotation, targetRotation,
+                        (128f + currentSpeed) * Time.fixedDeltaTime);
                     rb.MoveRotation(towards);
                 }
             }

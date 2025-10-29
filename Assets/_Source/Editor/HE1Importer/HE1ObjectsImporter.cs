@@ -307,6 +307,9 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                 {
                     var box = go.GetComponent<BoxCollider>();
                     HE1Helper.SetBoxColliderSize(box, elem, 0.2f);
+
+                    var mode = go.GetComponent<ChangeMode2D>();
+                    HE1Helper.SetChangeMode2DProperties(mode, elem);
                 },
                 ["AutorunStartCollision"] = (go, elem) =>
                 {
@@ -316,6 +319,7 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                     HE1Helper.SetFloatReflection(autorun, "speed", HE1Helper.GetFloatWithMultiSetParam(elem, "Speed"));
                     HE1Helper.SetFloatReflection(autorun, "easeTime", HE1Helper.GetFloatWithMultiSetParam(elem, "EaseTime"));
                     HE1Helper.SetFloatReflection(autorun, "keepTime", HE1Helper.GetFloatWithMultiSetParam(elem, "KeepTime"));
+                    HE1Helper.SetFloatReflection(autorun, "pathEaseTime", HE1Helper.GetFloatWithMultiSetParam(elem, "ToPathEaseTime"));
                     HE1Helper.SetBoolReflection(autorun, "isFinish", false);
                 },
                 ["AutorunFinishCollision"] = (go, elem) =>
@@ -731,6 +735,21 @@ namespace SurgeEngine._Source.Editor.HE1Importer
             SetBoolReflection(mode, "isEnabledFromBack", isEnabledBack);
             SetBoolReflection(mode, "isLimitEdge", isLimitEdge);
             SetFloatReflection(mode, "pathCorrectionForce", pathCorrectionForce);
+        }
+
+        public static void SetChangeMode2DProperties(object mode, XElement elem)
+        {
+            bool isChangeCamera = GetBoolWithMultiSetParam(elem, "m_IsChangeCamera");
+            bool isEnabledFront = GetBoolWithMultiSetParam(elem, "m_IsEnableFromFront");
+            bool isEnabledBack = GetBoolWithMultiSetParam(elem, "m_IsEnableFromBack");
+            bool isLimitEdge = GetBoolWithMultiSetParam(elem, "m_IsLimitEdge");
+            float pathEaseTime = GetFloatWithMultiSetParam(elem, "m_PathEaseTime");
+
+            SetBoolReflection(mode, "isChangeCamera", isChangeCamera);
+            SetBoolReflection(mode, "isEnabledFromFront", isEnabledFront);
+            SetBoolReflection(mode, "isEnabledFromBack", isEnabledBack);
+            SetBoolReflection(mode, "isLimitEdge", isLimitEdge);
+            SetFloatReflection(mode, "pathEaseTime", pathEaseTime);
         }
 
         public static void FillMultiSet<T>(this T stageObject, XElement elem, string listFieldName) where T : StageObject

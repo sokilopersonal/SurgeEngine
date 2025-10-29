@@ -24,6 +24,15 @@ namespace SurgeEngine._Source.Editor.HE1Importer
                     HE1ObjectsImporter.ReadObjects(xml);
                 }
             }
+
+            if (GUILayout.Button("Load Spline", GUILayout.Height(30)))
+            {
+                var xml = EditorUtility.OpenFilePanel("Load XML", "", "xml");
+                if (!string.IsNullOrEmpty(xml))
+                {
+                    HE1SplinesImporter.ReadSpline(xml);
+                }
+            }
         }
     }
 }

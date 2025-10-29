@@ -242,33 +242,42 @@ namespace SurgeEngine._Source.Code.Core.Character.System
             {
                 var path = Path2D.Spline;
                 path.EvaluateWorld(out var pos, out var tg, out var up, out var right);
-                    
                 if (right != Vector3.zero)
                 {
-                    _inputDir = Vector3.ProjectOnPlane(_inputDir, right);
                     Project(right);
                 }
-
+                
+                if (IsPathOutOfRange(Path2D))
+                {
+                    Set2DPath(null);
+                    return;
+                }
+                
                 Vector3 endPos = pos;
                 endPos += up;
                 endPos.y = Rigidbody.position.y;
 
-                Vector3 target = Vector3.MoveTowards(Rigidbody.position, endPos,
-                    Mathf.Min(Speed / 16f, 1) * 8f * Time.fixedDeltaTime);
-                Rigidbody.MovePosition(target);
-                
-                if (Speed > 0.02f && character.Flags.HasFlag(FlagType.Autorun))
+                float pathEaseTime = Path2D.PathEaseTime;
+                if (character.Flags.GetFlag<AutorunFlag>(out var autoRunFlag))
                 {
-                    float sign = Mathf.Sign(Vector3.Dot(Velocity.normalized, tg));
-                    var dir = sign * tg;
-                    Rigidbody.MoveRotation(Quaternion.LookRotation(dir, Normal));
-                }
-                        
-                if (IsPathOutOfRange(Path2D))
-                {
-                    Set2DPath(null);
+                    pathEaseTime = autoRunFlag.PathEaseTime;
                 }
 
+                Vector3 target;
+                if (pathEaseTime > 0f)
+                {
+                    Path2D.CurrentEaseTime += Time.deltaTime / pathEaseTime;
+                    Path2D.CurrentEaseTime = Mathf.Clamp01(Path2D.CurrentEaseTime);
+                    Path2D.StartPosition += Velocity * Time.fixedDeltaTime;
+                    target = Vector3.Lerp(Path2D.StartPosition, endPos, Path2D.CurrentEaseTime);
+                }
+                else
+                {
+                    target = Vector3.MoveTowards(Rigidbody.position, endPos, Mathf.Min(Speed / 32f, 1) * 16f * Time.fixedDeltaTime);
+                }
+                
+                Rigidbody.MovePosition(target);
+                
                 path.Time += Vector3.Dot(Velocity, tg) * Time.fixedDeltaTime;
             }
         }

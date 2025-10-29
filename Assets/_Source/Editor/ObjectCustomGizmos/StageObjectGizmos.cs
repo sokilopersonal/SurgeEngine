@@ -37,7 +37,8 @@ namespace SurgeEngine._Source.Editor.ObjectCustomGizmos
         [DrawGizmo(GizmoType.Pickable | GizmoType.Selected | GizmoType.NotInSelectionHierarchy)]
         static void DrawGizmos(ModeCollision type, GizmoType gizmoType)
         {
-            Gizmos.matrix = type.transform.localToWorldMatrix;
+            var matrix = Matrix4x4.TRS(type.transform.position, type.transform.rotation, Vector3.one * 0.75f);
+            Gizmos.matrix = matrix;
             Gizmos.color = Color.clear;
 
             var mesh = AssetDatabase.LoadAssetAtPath<Mesh>("Assets/EditorMeshes/Arrow.fbx");
@@ -47,7 +48,7 @@ namespace SurgeEngine._Source.Editor.ObjectCustomGizmos
             Gizmos.DrawCube(mesh.bounds.center, mesh.bounds.size);
             
             GetEditorMaterial();
-            Graphics.DrawMeshNow(mesh, type.transform.localToWorldMatrix);
+            Graphics.DrawMeshNow(mesh, matrix);
 
             if ((gizmoType & GizmoType.Selected) != 0)
             {

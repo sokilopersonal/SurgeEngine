@@ -8,17 +8,17 @@ namespace SurgeEngine._Source.Code.Core.Character.System
 {
     public sealed class CharacterFlags : CharacterComponent
     {
-        private HashSet<Flag> list;
+        private HashSet<Flag> _list;
         public FlagType flagType;
 
         private void Awake()
         {
-            list = new HashSet<Flag>();
+            _list = new HashSet<Flag>();
         }
 
         private void Update()
         {
-            foreach (var flag in list.ToList())
+            foreach (var flag in _list.ToList())
             {
                 flag.Count(Time.deltaTime);
             }
@@ -26,29 +26,35 @@ namespace SurgeEngine._Source.Code.Core.Character.System
 
         public void AddFlag(Flag flag)
         {
-            Flag existingFlag = list.FirstOrDefault(f => f.type == flag.type);
+            Flag existingFlag = _list.FirstOrDefault(f => f.type == flag.type);
             if (existingFlag != null)
             {
-                list.Remove(existingFlag);
+                _list.Remove(existingFlag);
             }
             flagType |= flag.type;
             flag.SetActor(character);
-            list.Add(flag);
+            _list.Add(flag);
         }
 
         public void RemoveFlag(FlagType type)
         {
             flagType &= ~type;
-            Flag flagToRemove = list.FirstOrDefault(f => f.type == type);
+            Flag flagToRemove = _list.FirstOrDefault(f => f.type == type);
             if (flagToRemove != null)
             {
-                list.Remove(flagToRemove);
+                _list.Remove(flagToRemove);
             }
+        }
+        
+        public bool GetFlag<T>(out T flag) where T : Flag
+        {
+            flag = _list.OfType<T>().FirstOrDefault();
+            return flag != null;
         }
 
         public void Clear()
         {
-            list.Clear();
+            _list.Clear();
             flagType = FlagType.None;
         }
 
@@ -94,9 +100,12 @@ namespace SurgeEngine._Source.Code.Core.Character.System
         private float _easeTime;
         private float _currentEaseTime;
         private float _initialSpeed;
+        private float _pathEaseTime;
         private bool _accelerationStarted;
+
+        public float PathEaseTime => _pathEaseTime;
         
-        public AutorunFlag(FlagType type, bool isTemporary, float time, float speed, float easeTime) : base(type,
+        public AutorunFlag(FlagType type, bool isTemporary, float time, float speed, float easeTime, float pathEaseTime = 0) : base(type,
             isTemporary, time)
         {
             this.type = FlagType.Autorun;
@@ -105,6 +114,7 @@ namespace SurgeEngine._Source.Code.Core.Character.System
             _easeTime = easeTime;
             _currentEaseTime = 0f;
             _accelerationStarted = false;
+            _pathEaseTime = pathEaseTime;
         }
 
         public override void Count(float dt)
