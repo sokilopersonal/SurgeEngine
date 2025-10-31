@@ -7,6 +7,7 @@ using SurgeEngine._Source.Code.Core.Character.States;
 using SurgeEngine._Source.Code.Core.Character.System;
 using SurgeEngine._Source.Code.Gameplay.CommonObjects.CameraObjects;
 using SurgeEngine._Source.Code.Gameplay.CommonObjects.System;
+using SurgeEngine._Source.Code.Infrastructure.Custom;
 using SurgeEngine._Source.Code.Infrastructure.Tools.Managers;
 using UnityEngine;
 using Zenject;
@@ -133,13 +134,10 @@ namespace SurgeEngine._Source.Code.Core.Character.CameraSystem
             Vector3 dir = Quaternion.LookRotation(character.transform.forward).eulerAngles;
             dir.x = yawDefaultAmplitude;
             StateMachine.SetDirection(dir.y, dir.x);
-            
-            foreach (var volume in FindObjectsByType<ChangeCameraVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+
+            foreach (var volume in Utility.GetVolumesInBounds(character.transform.position))
             {
-                if (volume.GetComponent<BoxCollider>().bounds.Contains(character.transform.position))
-                {
-                    StateMachine.RegisterVolume(volume);
-                }
+                StateMachine.RegisterVolume(volume);
             }
             
             StateMachine.CompleteBlend();

@@ -4,6 +4,7 @@ using System.Linq;
 using FMODUnity;
 using SurgeEngine._Source.Code.Core.Character.System;
 using SurgeEngine._Source.Code.Gameplay.CommonObjects.CameraObjects;
+using SurgeEngine._Source.Code.Infrastructure.Custom;
 using SurgeEngine._Source.Code.UI;
 using UnityEngine;
 using Zenject;
@@ -57,12 +58,9 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.System
             _character.Camera.StateMachine.SetDirection(euler.y, euler.x);
             _character.Camera.StateMachine.ClearVolumes();
             Physics.SyncTransforms();
-            foreach (var volume in FindObjectsByType<ChangeCameraVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+            foreach (var volume in Utility.GetVolumesInBounds(_character.Rigidbody.position))
             {
-                if (volume.GetComponent<Collider>().bounds.Contains(_character.Rigidbody.position))
-                {
-                    _character.Camera.StateMachine.RegisterVolume(volume);
-                }
+                _character.Camera.StateMachine.RegisterVolume(volume);
             }
             
             foreach (var loader in _loaders)

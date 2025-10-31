@@ -1,22 +1,23 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using SurgeEngine._Source.Code.Core.Character.States;
+using SurgeEngine._Source.Code.Gameplay.CommonObjects.CameraObjects;
 using SurgeEngine._Source.Code.Gameplay.CommonObjects.System;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace SurgeEngine._Source.Code.Infrastructure.Custom
 {
     public static class Utility
     {
-        public static bool AddScore(int score)
+        public static void AddScore(int score)
         {
             int abs = Mathf.Abs(score);
             if (abs > 0)
             {
                 Stage.Instance.Data.AddScore(abs);
-                return true;
             }
-            
-            return false;
         }
 
         /// <summary>
@@ -73,6 +74,12 @@ namespace SurgeEngine._Source.Code.Infrastructure.Custom
         {
             Vector3 viewport = camera.WorldToViewportPoint(obj.position);
             return viewport.x > 0 && viewport.x < 1 && viewport.y > 0 && viewport.y < 1 && viewport.z > 0;
+        }
+
+        public static List<ChangeCameraVolume> GetVolumesInBounds(Vector3 position)
+        {
+            return Object.FindObjectsByType<ChangeCameraVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None)
+                .Where(volume => volume.GetComponent<BoxCollider>().bounds.Contains(position)).ToList();
         }
     }
 
