@@ -155,7 +155,6 @@ namespace SurgeEngine._Source.Code.Core.Character.CameraSystem
 
         private void LateUpdate()
         {
-            StateMachine.LateTick(Time.deltaTime);
         }
         
         public Camera GetCamera()

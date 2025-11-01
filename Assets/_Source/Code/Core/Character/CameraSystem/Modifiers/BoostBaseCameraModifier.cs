@@ -21,7 +21,11 @@ namespace SurgeEngine._Source.Code.Core.Character.CameraSystem.Modifiers
         {
             base.Set(character);
 
-            Character.StateMachine.GetSubState<FBoost>().OnActiveChanged += OnBoostActivate;
+            // Character.StateMachine.GetSubState<FBoost>().OnActiveChanged += OnBoostActivate;
+            
+            if (character.StateMachine.GetState(out FBoost boost))
+                boost.OnActiveChanged += OnBoostActivate;
+            
             Value = 1;
         }
 

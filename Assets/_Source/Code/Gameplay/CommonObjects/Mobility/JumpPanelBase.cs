@@ -17,20 +17,24 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
         
         protected void Launch(CharacterBase context, float pitch)
         {
-            var boost = context.StateMachine.GetSubState<FBoost>();
             bool boosted = false;
-            if (boost != null)
+            if (context.StateMachine.GetState(out FBoost boost))
             {
-                boosted = boost.Active;
+                if (boost != null)
+                {
+                    boosted = boost.Active;
+                }
             }
-                
+
             if (boosted)
                 context.Effects.JumpDeluxEffect.Toggle(true);
 
-            var disableCollision = new DisableCollision(context, collision, typeof(FStateJumpPanel));
+            var disableCollision = new DisableCollision();
 
             context.transform.forward = Vector3.Cross(-transform.right, Vector3.up);
             context.Kinematics.Rigidbody.linearVelocity = Utility.GetImpulseWithPitch(-transform.forward, transform.right, pitch, !boosted ? impulseOnNormal : impulseOnBoost);
+            
+            disableCollision.Disable(context, collision, typeof(FStateJumpPanel));
 
             var jumpPanelState = context.StateMachine.GetState<FStateJumpPanel>();
             jumpPanelState.SetDelux(boosted);

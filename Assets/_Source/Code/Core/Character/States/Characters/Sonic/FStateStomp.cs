@@ -26,7 +26,9 @@ namespace SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic
         {
             base.OnEnter();
             
-            StateMachine.GetSubState<FBoost>().Active = false;
+            if (StateMachine.GetState(out FBoost boost))
+                boost.Active = false;
+            
             _released = false;
             Rigidbody.linearVelocity = new Vector3(Rigidbody.linearVelocity.x, 0f, Rigidbody.linearVelocity.z);
             

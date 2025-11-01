@@ -27,7 +27,8 @@ namespace SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic
         {
             base.OnEnter();
 
-            StateMachine.GetSubState<FBoost>().Active = false;
+            if (StateMachine.GetState(out FBoost boost))
+                boost.Active = false;
 
             _timer = 0f;
             Timeout = _config.delay;

@@ -12,11 +12,11 @@ namespace SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic
         private float _rotationAngle;
 
         private bool _swingSound;
-        private readonly SwingSound soundReference;
+        private readonly SwingSound _soundReference;
         
         public FStateSwing(CharacterBase owner) : base(owner)
         {
-            soundReference = owner.Sounds.GetComponent<SwingSound>();
+            _soundReference = owner.Sounds.GetComponent<SwingSound>();
         }
 
         public override void OnEnter()
@@ -24,12 +24,9 @@ namespace SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic
             base.OnEnter();
 
             Kinematics.ResetVelocity();
-            StateMachine.GetSubState<FBoost>().Active = false;
-        }
-
-        public override void OnExit()
-        {
-            base.OnExit();
+            
+            if (StateMachine.GetState(out FBoost boost))
+                boost.Active = false;
         }
 
         private void Jump()
@@ -47,7 +44,7 @@ namespace SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic
             if (_rotationAngle > 0.9f && !_swingSound)
             {
                 _swingSound = true;
-                soundReference.Swing();
+                _soundReference?.Swing();
             }
             else if (_rotationAngle < 0.9f && _swingSound)
             {

@@ -65,11 +65,13 @@ namespace SurgeEngine._Source.Code.Core.Character.System.Characters.Sonic
 
         public override void Load()
         {
-            var boost = StateMachine.GetSubState<FBoost>();
-            boost.Active = false;
-            boost.BoostEnergy = 0;
-            (Effects as SonicEffects)?.BoostAura.Clear();
-            
+            if (StateMachine.GetState(out FBoost boost))
+            {
+                boost.Active = false;
+                boost.BoostEnergy = 0;
+                (Effects as SonicEffects)?.BoostAura.Clear();
+            }
+
             base.Load();
         }
     }

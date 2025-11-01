@@ -80,7 +80,6 @@ namespace SurgeEngine._Source.Code.Core.Character.System
 
         private void LateUpdate()
         {
-            StateMachine.LateTick(Time.deltaTime);
         }
 
         protected virtual void AddStates()

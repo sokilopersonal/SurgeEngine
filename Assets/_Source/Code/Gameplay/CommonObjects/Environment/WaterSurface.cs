@@ -22,9 +22,8 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Environment
         private ParticleSystem _currentRunSplash;
 
         private bool _isInWater;
-        private CharacterBase _surfaceCharacter;
-        private Rigidbody _surfaceRigidbody;
-        private Collider _collider;
+        private CharacterBase _character;
+        private Rigidbody _cRigidbody;
         private Vector3 _contactPoint;
         private bool _isUnderwater;
         private bool _isRunning;
@@ -34,8 +33,7 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Environment
 
         private void Awake()
         {
-            _collider = GetComponent<Collider>();
-            _collider.isTrigger = true;
+            GetComponent<Collider>();
             
             _splashSound = RuntimeManager.PathToEventReference(SplashEventPath);
             
@@ -50,9 +48,9 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Environment
         {
             if (_isInWater)
             {
-                Vector3 velocity = new Vector3(_surfaceRigidbody.linearVelocity.x, 0, _surfaceRigidbody.linearVelocity.z);
+                Vector3 velocity = new Vector3(_cRigidbody.linearVelocity.x, 0, _cRigidbody.linearVelocity.z);
                 float speed = velocity.magnitude;
-                float delta = _surfaceRigidbody.transform.position.y - _contactPoint.y;
+                float delta = _cRigidbody.transform.position.y - _contactPoint.y;
 
                 _isUnderwater = delta <= -0.5f;
                 _isRunning = speed > minimumSpeed;
@@ -60,10 +58,10 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Environment
                 if (_isRunning && !_isUnderwater && _currentRunSplash)
                 {
                     _currentRunSplash.Play(true);
-                    Vector3 runSplashPosition = _surfaceRigidbody.position;
-                    runSplashPosition += _surfaceRigidbody.transform.forward;
-                    runSplashPosition -= _surfaceRigidbody.transform.up * 0.75f;
-                    Quaternion runSplashRotation = _surfaceRigidbody.rotation;
+                    Vector3 runSplashPosition = _cRigidbody.position;
+                    runSplashPosition += _cRigidbody.transform.forward;
+                    runSplashPosition -= _cRigidbody.transform.up * 0.75f;
+                    Quaternion runSplashRotation = _cRigidbody.rotation;
                     runSplashRotation *= Quaternion.Euler(-90f, 0f, 0f);
                     _currentRunSplash.transform.SetPositionAndRotation(runSplashPosition, runSplashRotation);
                 }
@@ -76,14 +74,6 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Environment
                 {
                     _isRunning = false;
                 }
-
-                if (_surfaceCharacter.StateMachine.Exists<FStateStomp>())
-                {
-                    if (_surfaceCharacter.StateMachine.IsExact<FStateStomp>())
-                    {
-                        _collider.isTrigger = true;
-                    }
-                }
                 
                 Vector3 counterForce;
                 if (!_isUnderwater)
@@ -95,18 +85,19 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Environment
                     counterForce = new Vector3(velocity.normalized.x, Mathf.Clamp(velocity.normalized.y, float.NegativeInfinity, 0f), velocity.normalized.z) * (speed * underwaterResistance * Time.fixedDeltaTime);
                 }
                 
-                if (_surfaceCharacter.StateMachine.Exists<FStateDrift>() && _surfaceCharacter.StateMachine.IsExact<FStateDrift>() || _surfaceCharacter is Sonic && _surfaceCharacter.StateMachine.GetSubState<FBoost>().Active)
+                if (_character.StateMachine.CurrentState is IWaterMaintainSpeed
+                    || _character.StateMachine.GetState(out FBoost boost) && boost.Active)
                 {
                     counterForce = Vector3.zero;
                 }
                 
-                _surfaceRigidbody.linearVelocity -= counterForce;
+                _cRigidbody.linearVelocity -= counterForce;
 
                 if (!_isUnderwater)
                 {
-                    if (!_surfaceCharacter.Kinematics.CheckForGround(out _))
+                    if (!_character.Kinematics.CheckForGround(out _))
                     {
-                        Detach(_surfaceCharacter);
+                        Detach(_character);
                     }
                 }
             }
@@ -134,10 +125,10 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Environment
 
         public void Attach(Vector3 point, CharacterBase context)
         {
-            if (_surfaceCharacter == null)
+            if (_character == null)
             {
-                _surfaceCharacter = context;
-                _surfaceRigidbody = context.Rigidbody;
+                _character = context;
+                _cRigidbody = context.Rigidbody;
                 _isInWater = true;
                 _contactPoint = point;
             
@@ -145,12 +136,12 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Environment
 
                 Vector3 splashPoint = _contactPoint;
                 splashPoint.y -= 0.75f;
-                if (Mathf.Abs(_surfaceCharacter.Kinematics.VerticalVelocity.y) > 8) SpawnSplash(splashPoint);
+                if (Mathf.Abs(_character.Kinematics.VerticalVelocity.y) > 8) SpawnSplash(splashPoint);
 
                 DestroyRunSplash();
                 _currentRunSplash = Instantiate(runSplash);
 
-                _surfaceCharacter.Flags.AddFlag(new Flag(FlagType.OnWater, false));
+                _character.Flags.AddFlag(new Flag(FlagType.OnWater, false));
             }
         }
 
@@ -164,8 +155,8 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Environment
                     
             character.Flags.RemoveFlag(FlagType.OnWater);
                     
-            _surfaceRigidbody = null;
-            _surfaceCharacter = null;
+            _cRigidbody = null;
+            _character = null;
             _isInWater = false;
 
             DestroyRunSplash();
@@ -193,11 +184,16 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Environment
 
         private void OnDrawGizmos()
         {
-            if (_surfaceRigidbody)
+            if (_cRigidbody)
             {
                 Gizmos.color = Color.green;
                 Gizmos.DrawSphere(_contactPoint, 0.2f);
             }
         }
     }
+    
+    /// <summary>
+    /// Interface for player states that maintain water speed.
+    /// </summary>
+    public interface IWaterMaintainSpeed { }
 }

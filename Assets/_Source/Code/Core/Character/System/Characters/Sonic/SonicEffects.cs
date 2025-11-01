@@ -31,18 +31,29 @@ namespace SurgeEngine._Source.Code.Core.Character.System.Characters.Sonic
         [Header("Sweepkick")]
         [SerializeField] private Effect sweepKickEffect;
 
+        private FBoost _boost;
+
+        protected override void Awake()
+        {
+            base.Awake();
+
+            character.StateMachine.GetState(out _boost);
+        }
+
         protected override void OnEnable()
         {
             base.OnEnable();
             
-            character.StateMachine.GetSubState<FBoost>().OnActiveChanged += OnBoostActivate;
+            if (_boost != null)
+                _boost.OnActiveChanged += OnBoostActivate;
         }
 
         protected override void OnDisable()
         {
             base.OnDisable();
             
-            character.StateMachine.GetSubState<FBoost>().OnActiveChanged -= OnBoostActivate;
+            if (_boost != null)
+                _boost.OnActiveChanged -= OnBoostActivate;
         }
 
         protected override void OnStateAssign(FState obj)
@@ -100,9 +111,8 @@ namespace SurgeEngine._Source.Code.Core.Character.System.Characters.Sonic
         
         private IEnumerator PlayJumpball()
         {
-            var actor = character;
-            yield return new WaitForSeconds(actor.Config.jumpMaxShortTime);
-            if (actor.StateMachine.CurrentState is FStateJump && actor.Input.AHeld)
+            yield return new WaitForSeconds(character.Config.jumpMaxShortTime);
+            if (character.StateMachine.CurrentState is FStateJump && character.Input.AHeld)
                 spinball.Toggle(true);
         }
     }

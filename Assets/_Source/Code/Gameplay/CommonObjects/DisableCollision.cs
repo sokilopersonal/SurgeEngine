@@ -7,11 +7,11 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects
 {
     public class DisableCollision
     {
-        private readonly CharacterBase _character;
-        private readonly Collider _collider;
-        private readonly Type _type;
+        private CharacterBase _character;
+        private Collider _collider;
+        private Type _type;
         
-        public DisableCollision(CharacterBase character, Collider collider, Type type)
+        public void Disable(CharacterBase character, Collider collider, Type type)
         {
             _character = character;
             _collider = collider;

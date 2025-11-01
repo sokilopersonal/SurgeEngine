@@ -9,20 +9,31 @@ namespace SurgeEngine._Source.Code.Core.Character.System.Characters.Sonic
 {
     public class SonicKinematics : CharacterKinematics
     {
+        private FBoost _boost;
+
+        protected override void Awake()
+        {
+            base.Awake();
+            
+            character.StateMachine.GetState(out _boost);
+        }
+
         protected override bool CanReturnToBaseSpeed()
         {
-            var boost = character.StateMachine.GetSubState<FBoost>();
-            var boostActive = boost.Active;
+            if (_boost != null)
+            {
+                var boostActive = _boost.Active;
             
-            if (!boostActive)
-                return true;
+                if (!boostActive)
+                    return true;
+            }
             
             return base.CanReturnToBaseSpeed();
         }
 
         protected override bool CanDecelerate()
         {
-            return base.CanDecelerate() && !character.StateMachine.GetSubState<FBoost>().Active;
+            return base.CanDecelerate() && _boost != null && !_boost.Active;
         }
 
         protected override void SetStateOnZeroSpeed(FState state)

@@ -21,21 +21,40 @@ namespace SurgeEngine._Source.Code.Core.Character.HUD
 
         [Inject] private CharacterBase _character;
 
+        private FBoost _boost;
+
+        private void Awake()
+        {
+            _character.StateMachine.GetState(out _boost);
+
+            if (_boost == null)
+            {
+                boostBar.gameObject.SetActive(false);
+                boostFill.gameObject.SetActive(false);
+                boostFill2.gameObject.SetActive(false);
+            }
+        }
+
         public void UpdateBoostBar()
         {
-            FBoost boost = _character.StateMachine.GetSubState<FBoost>();
-            float amount = boost.BoostEnergy / boost.MaxBoostEnergy;;
-            SetBoostBarFill(amount, energyDivider);
+            if (_boost != null)
+            {
+                float amount = _boost.BoostEnergy / _boost.MaxBoostEnergy;;
+                SetBoostBarFill(amount, energyDivider);
             
-            float boostBarWidth = Mathf.Lerp(minBoostBarSize.width, maxBoostBarSize.width, boost.MaxBoostEnergy / 100);
-            boostBar.rectTransform.sizeDelta = new Vector2(boostBarWidth, boostBar.rectTransform.sizeDelta.y);
+                float boostBarWidth = Mathf.Lerp(minBoostBarSize.width, maxBoostBarSize.width, _boost.MaxBoostEnergy / 100);
+                boostBar.rectTransform.sizeDelta = new Vector2(boostBarWidth, boostBar.rectTransform.sizeDelta.y);
+            }
         }
 
         public void SetBoostBarFill(float energyAmount, float divider)
         {
-            boostFill.materialForRendering.SetFloat("_BoostAmount", energyAmount);
-            boostFill.materialForRendering.SetFloat("_SplitAmount", divider);
-            boostFill2.fillAmount = Mathf.Approximately(energyAmount, 0f) ? 0 : energyAmount + 0.01f;
+            if (_boost != null)
+            {
+                boostFill.materialForRendering.SetFloat("_BoostAmount", energyAmount);
+                boostFill.materialForRendering.SetFloat("_SplitAmount", divider);
+                boostFill2.fillAmount = Mathf.Approximately(energyAmount, 0f) ? 0 : energyAmount + 0.01f;
+            }
         }
     }
 

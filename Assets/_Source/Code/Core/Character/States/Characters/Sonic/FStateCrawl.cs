@@ -20,7 +20,9 @@ namespace SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic
         public override void OnEnter()
         {
             base.OnEnter();
-            StateMachine.GetSubState<FBoost>().Active = false;
+
+            if (StateMachine.GetState(out FBoost boost))
+                boost.Active = false;
 
             Timeout = 0.5f;
             

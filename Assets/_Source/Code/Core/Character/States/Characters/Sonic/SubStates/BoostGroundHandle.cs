@@ -12,8 +12,7 @@ namespace SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic.SubSta
             var body = character.Kinematics.Rigidbody;
             float speed = character.Kinematics.Speed;
 
-            var boost = character.StateMachine.GetSubState<FBoost>();
-            if (boost.Active)
+            if (character.StateMachine.GetState(out FBoost boost) && boost.Active)
             {
                 if (character.Input.MoveVector == Vector3.zero) character.Kinematics.SetInputDir(character.transform.forward);
                 float maxSpeed = character.Config.topSpeed * config.TopSpeedMultiplier;

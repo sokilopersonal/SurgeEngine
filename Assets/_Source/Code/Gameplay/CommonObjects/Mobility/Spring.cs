@@ -33,8 +33,8 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
             var springState = context.StateMachine.GetState<FStateSpring>();
             if (springState.SpringObject == this) return;
             
-            if (cancelBoost) 
-                context.StateMachine.GetSubState<FBoost>().Active = false;
+            if (cancelBoost && context.StateMachine.GetState(out FBoost boost)) 
+                boost.Active = false;
             
             springState.SetKeepVelocityDistance(keepVelocityDistance);
             springState.SetSpringObject(this);

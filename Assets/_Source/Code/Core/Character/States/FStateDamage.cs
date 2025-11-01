@@ -28,7 +28,9 @@ namespace SurgeEngine._Source.Code.Core.Character.States
         {
             base.OnEnter();
 
-            StateMachine.GetSubState<FBoost>().Active = false;
+            if (StateMachine.GetState(out FBoost boost))
+                boost.Active = false;
+            
             Kinematics.ResetVelocity();
             _timer = 0.25f;
 

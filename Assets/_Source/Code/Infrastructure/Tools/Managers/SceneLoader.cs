@@ -12,7 +12,6 @@ namespace SurgeEngine._Source.Code.Infrastructure.Tools.Managers
         [SerializeField] private GameObject screen;
         [SerializeField] private float transitionDuration = 0.5f;
         [SerializeField] private float fadeOutDelay = 1.25f;
-        [SerializeField] private float artificialDelay = 2f;
 
         private Tween _groupTween;
         private bool _isLoading;

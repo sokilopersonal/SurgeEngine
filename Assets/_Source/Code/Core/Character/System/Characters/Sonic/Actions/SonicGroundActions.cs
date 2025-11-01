@@ -1,5 +1,6 @@
 ﻿using SurgeEngine._Source.Code.Core.Character.States;
 using SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic;
+using SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic.SubStates;
 using SurgeEngine._Source.Code.Core.StateMachine;
 using SurgeEngine._Source.Code.Infrastructure.Config.SonicSpecific;
 using SurgeEngine._Source.Code.Infrastructure.Tools;
@@ -12,6 +13,8 @@ namespace SurgeEngine._Source.Code.Core.Character.System.Characters.Sonic.Action
         private SlideConfig _slideConfig;
         private QuickStepConfig _quickstepConfig;
 
+        private FBoost _boost;
+
         public SonicGroundActions(CharacterBase character) : base(character) { }
 
         protected override void Connect(FStateMachine stateMachine)
@@ -20,6 +23,8 @@ namespace SurgeEngine._Source.Code.Core.Character.System.Characters.Sonic.Action
             
             Character.TryGetConfig(out _slideConfig);
             Character.TryGetConfig(out _quickstepConfig);
+            
+            Character.StateMachine.GetState(out _boost);
         }
 
         public override void Execute()
@@ -28,7 +33,7 @@ namespace SurgeEngine._Source.Code.Core.Character.System.Characters.Sonic.Action
             
             if (!Flags.HasFlag(FlagType.OutOfControl))
             {
-                if (!SonicTools.IsBoost())
+                if (_boost != null && _boost.Active)
                 {
                     if (Kinematics.Skidding && Kinematics.Speed > 15f)
                     {

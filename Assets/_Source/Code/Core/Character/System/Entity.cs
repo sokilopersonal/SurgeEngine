@@ -24,7 +24,6 @@ namespace SurgeEngine._Source.Code.Core.Character.System
 
         protected virtual void LateUpdate()
         {
-            stateMachine?.LateTick(Time.deltaTime);
         }
     }
 }

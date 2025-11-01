@@ -11,7 +11,6 @@ namespace SurgeEngine._Source.Code.Core.StateMachine
     {
         public FState CurrentState { get; private set; }
         public FState PreviousState { get; private set; }
-        public string currentStateName;
 
         protected readonly Dictionary<Type, FState> states = new();
         private readonly Dictionary<Type, FSubState> _subStates = new();
@@ -20,7 +19,6 @@ namespace SurgeEngine._Source.Code.Core.StateMachine
         
         /// <summary>
         /// Called after the previous state ends and before the next state is set.
-        /// Use it when you have data that needs to be passed to a state and you need to retrieve it from an event.
         /// </summary>
         public event Action<FState> OnStateEarlyAssign;
         
@@ -45,11 +43,6 @@ namespace SurgeEngine._Source.Code.Core.StateMachine
             _subStatesList.Add(subState);
         }
 
-        public bool Exists<T>(bool isSubState = false) where T : FState
-        {
-            return !isSubState ? states.ContainsKey(typeof(T)) : _subStates.ContainsKey(typeof(T));
-        }
-        
         public T SetState<T>(bool allowSameState = false) where T : FState
         {
             Type type = typeof(T);
@@ -85,7 +78,6 @@ namespace SurgeEngine._Source.Code.Core.StateMachine
             PreviousState = CurrentState;
             OnStateEarlyAssign?.Invoke(newState);
             CurrentState = newState;
-            currentStateName = CurrentState?.GetType().Name;
             OnStateAssign?.Invoke(CurrentState);
             CurrentState?.OnEnter();
         }
@@ -138,11 +130,6 @@ namespace SurgeEngine._Source.Code.Core.StateMachine
             return PreviousState != null && PreviousState.GetType() == type;
         }
 
-        public T GetSubState<T>() where T : FSubState
-        {
-            return _subStates[typeof(T)] as T;
-        }
-
         public virtual void Tick(float dt)
         {
             CurrentState?.OnTick(dt);
@@ -165,16 +152,6 @@ namespace SurgeEngine._Source.Code.Core.StateMachine
             foreach (FSubState subState in _subStatesList)
             {
                 subState?.OnFixedTick(dt);
-            }
-        }
-        
-        public virtual void LateTick(float dt)
-        {
-            CurrentState?.OnLateTick(dt);
-            
-            foreach (FSubState subState in _subStatesList)
-            {
-                subState?.OnLateTick(dt);
             }
         }
     }

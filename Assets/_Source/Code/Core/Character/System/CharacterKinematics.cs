@@ -85,7 +85,7 @@ namespace SurgeEngine._Source.Code.Core.Character.System
 
         private PhysicsConfig _config;
 
-        private void Awake()
+        protected virtual void Awake()
         {
             Rigidbody = character.Rigidbody;
             Rigidbody.sleepThreshold = -1;

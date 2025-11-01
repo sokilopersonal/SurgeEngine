@@ -12,7 +12,6 @@ namespace SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic
         
         public FStateAirBoost(CharacterBase owner) : base(owner)
         {
-            
         }
 
         public override void OnEnter()
@@ -25,10 +24,12 @@ namespace SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic
         public override void OnExit()
         {
             base.OnExit();
-            
-            FBoost boost = StateMachine.GetSubState<FBoost>();
-            boost.CanAirBoost = false;
-            boost.Active = false;
+
+            if (StateMachine.GetState(out FBoost boost))
+            {
+                boost.CanAirBoost = false;
+                boost.Active = false;
+            }
         }
 
         public override void OnTick(float dt)

@@ -95,7 +95,9 @@ namespace SurgeEngine._Source.Code.Gameplay.CommonObjects.Mobility
             if (_character.StateMachine.CurrentState is FStateTrickJump) yield break;
             if (initialSpeed > 0)
             {
-                _character.StateMachine.GetSubState<FBoost>().Active = false;
+                if (_character.StateMachine.GetState(out FBoost boost))
+                    boost.Active = false;
+                
                 _character.Kinematics.ResetVelocity();
                 _character.Rigidbody.position = StartPosition;
                 _character.transform.forward = Vector3.Cross(-transform.right, Vector3.up);

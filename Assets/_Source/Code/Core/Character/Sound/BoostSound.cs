@@ -29,7 +29,10 @@ namespace SurgeEngine._Source.Code.Core.Character.Sound
             _boostLoopInstance = RuntimeManager.CreateInstance(boostLoopSound);
             _boostVoiceInstance = RuntimeManager.CreateInstance(boostVoiceSound);
             
-            Character.StateMachine.GetSubState<FBoost>().OnActiveChanged += OnBoostActivate;
+            // Character.StateMachine.GetSubState<FBoost>().OnActiveChanged += OnBoostActivate;
+            
+            if (character.StateMachine.GetState(out FBoost boost))
+                boost.OnActiveChanged += OnBoostActivate;
         }
 
         private void OnBoostActivate(FSubState arg1, bool arg2)

@@ -45,7 +45,6 @@ namespace SurgeEngine._Source.Code.Gameplay.Enemy.Base
 
         private void LateUpdate()
         {
-            StateMachine.LateTick(Time.deltaTime);
         }
 
         private void OnDeath()

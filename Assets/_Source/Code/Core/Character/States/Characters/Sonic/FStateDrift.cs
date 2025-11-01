@@ -1,4 +1,5 @@
 ﻿using SurgeEngine._Source.Code.Core.Character.States.BaseStates;
+using SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic.SubStates;
 using SurgeEngine._Source.Code.Core.Character.System;
 using SurgeEngine._Source.Code.Core.Character.System.Characters.Sonic;
 using SurgeEngine._Source.Code.Core.StateMachine.Interfaces;
@@ -13,7 +14,7 @@ using Vector3 = UnityEngine.Vector3;
 
 namespace SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic
 {
-    public class FStateDrift : FCharacterState, IStateTimeout, IDamageableState
+    public class FStateDrift : FCharacterState, IStateTimeout, IDamageableState, IWaterMaintainSpeed
     {
         private float _driftXDirection;
         private float _ignoreTimer;
@@ -90,8 +91,11 @@ namespace SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic
                 
                 Kinematics.SlopePhysics();
                 
-                float boostForce = SonicTools.IsBoost() ? 0.5f : 1f;
-                Quaternion angle = Quaternion.AngleAxis(_driftXDirection * _config.centrifugalForce * boostForce, Kinematics.Normal);
+                float force = 1f;
+                if (character.StateMachine.GetState(out FBoost boost) && boost.Active)
+                    force *= 0.5f;
+                
+                Quaternion angle = Quaternion.AngleAxis(_driftXDirection * _config.centrifugalForce * force, Kinematics.Normal);
                 Vector3 driftVelocity = angle * Rigidbody.linearVelocity;
                 Rigidbody.linearVelocity = driftVelocity;
                 if (Kinematics.Speed < _config.maxSpeed) Rigidbody.linearVelocity += Rigidbody.linearVelocity.normalized *

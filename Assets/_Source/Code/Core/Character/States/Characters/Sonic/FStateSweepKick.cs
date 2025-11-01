@@ -9,7 +9,7 @@ namespace SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic
 {
     public class FStateSweepKick : FCharacterState
     {
-        private float timer;
+        private float _timer;
 
         private readonly SweepConfig _config;
 
@@ -22,12 +22,10 @@ namespace SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic
         {
             base.OnEnter();
 
-            timer = 0f;
+            _timer = 0f;
 
             if (Rigidbody.linearVelocity.magnitude < 1f)
                 Kinematics.ResetVelocity();
-
-            StateMachine.GetSubState<FBoost>().Active = false;
 
             Model.SetLowerCollision();
         }
@@ -43,15 +41,15 @@ namespace SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic
         {
             base.OnTick(dt);
             bool ceiling = Kinematics.CheckForCeiling(out RaycastHit data);
-            timer += dt;
-            if (timer > 0.85f && Kinematics.Speed > 1f)
+            _timer += dt;
+            if (_timer > 0.85f && Kinematics.Speed > 1f)
             {
                 if (!ceiling)
                     StateMachine.SetState<FStateGround>();
                 else
                     StateMachine.SetState<FStateCrawl>();
             }
-            if (timer > 1f && Kinematics.Speed < 1f)
+            if (_timer > 1f && Kinematics.Speed < 1f)
             {
                 if (Input.BHeld)
                 {
@@ -87,7 +85,7 @@ namespace SurgeEngine._Source.Code.Core.Character.States.Characters.Sonic
                 StateMachine.SetState<FStateAir>();
             }
 
-            if (timer >= 0.26f && timer <= 0.7f)
+            if (_timer >= 0.26f && _timer <= 0.7f)
             {
                 var offset = -Rigidbody.transform.up * 0.65f;
                 var size = new Vector3(1.4f, 0.4f, 1.4f);
