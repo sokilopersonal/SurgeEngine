@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using System.Linq;
+using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -15,26 +16,30 @@ namespace SurgeEngine.Source.Editor
                          " \nAre you sure you want to continue?";
             if (EditorUtility.DisplayDialog("Scene Validation", msg, "Yes", "No"))
             {
-                if (!CheckSceneSetup())
-                {
-                    var currentScene = SceneManager.GetActiveScene();
-                    var additiveScene = EditorSceneManager.OpenScene("Assets/_Source/Scenes/Template/GameplayScene.unity", OpenSceneMode.Additive);
-                    
-                    foreach (var rootGameObject in currentScene.GetRootGameObjects()) Undo.RegisterFullObjectHierarchyUndo(rootGameObject, "Validate Scene");
+                var currentScene = SceneManager.GetActiveScene();
+                var additiveScene = EditorSceneManager.OpenScene("Assets/Source/Scenes/Template/GameplayScene.unity", OpenSceneMode.Additive);
 
-                    foreach (var rootObj in additiveScene.GetRootGameObjects())
+                foreach (var rootGameObject in currentScene.GetRootGameObjects())
+                    Undo.RegisterFullObjectHierarchyUndo(rootGameObject, "Validate Scene");
+
+                var currentRoots = currentScene.GetRootGameObjects();
+
+                foreach (var rootObj in additiveScene.GetRootGameObjects())
+                {
+                    bool exists = currentRoots.Any(o => o.name == rootObj.name);
+                    if (!exists)
                     {
                         SceneManager.MoveGameObjectToScene(rootObj, currentScene);
                     }
-                    
-                    EditorSceneManager.CloseScene(additiveScene, true);
+                    else
+                    {
+                        Object.DestroyImmediate(rootObj);
+                    }
                 }
-                else
-                {
-                    EditorUtility.DisplayDialog("Scene Validation", "Scene is already validated. " +
-                                                                    "If you want to revalidate it: " +
-                                                                    "remove GameplaySceneContext, Volumes, SetData, Geometry and Lighting objects", "Ok");
-                }
+
+                EditorSceneManager.CloseScene(additiveScene, true);
+                EditorSceneManager.MarkSceneDirty(currentScene);
+                Debug.Log("Scene validated successfully.");
             }
         }
 

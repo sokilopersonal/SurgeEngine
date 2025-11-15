@@ -23,46 +23,46 @@ namespace SurgeEngine.Source.Editor.HE1Importer
         {
             return new Dictionary<string, GameObject>
             {
-                ["Ring"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/Ring.prefab"),
-                ["SuperRing"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/SuperRing.prefab"),
-                ["DashPanel"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/DashPanel.prefab"),
-                ["Spring"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/Spring.prefab"),
-                ["SpringFake"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/SpringFake.prefab"),
-                ["WideSpring"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/WideSpring.prefab"),
-                ["AirSpring"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/AirSpring.prefab"),
-                ["ThornSpring"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/ThornSpring.prefab"),
-                ["eFighter"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Enemies/EggFighter.prefab"),
-                ["eFighterGun"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Enemies/EggFighter.prefab"), // TODO: Implement an actual eFighterGun
-                ["eFighterMissile"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Enemies/EggFighter.prefab"), // TODO: Implement an actual eFighterMissile
-                ["eFighterTutorial"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Enemies/EggFighter.prefab"),
-                ["eSpinner"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Enemies/Spinner.prefab"),
-                ["eSpanner"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Enemies/Spinner.prefab"), // TODO: Implement an actual eSpanner
-                ["eAirCannonNormal"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Enemies/AeroCannon.prefab"),
-                ["ObjCameraPan"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/Camera/ObjCameraPan.prefab"),
-                ["ObjCameraParallel"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/Camera/ObjCameraParallel.prefab"),
-                ["ObjCameraPoint"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/Camera/ObjCameraPoint.prefab"),
-                ["ObjCameraPathTarget"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/Camera/ObjCameraPathTarget.prefab"),
-                ["JumpBoard"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/JumpPanel_15S.prefab"),
-                ["JumpBoard3D"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/JumpPanel_30M.prefab"),
-                ["TrickJumper"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/TrickPanel.prefab"),
-                ["UpReel"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/Upreel.prefab"),
-                ["JumpCollision"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/JumpCollision.prefab"),
-                ["ChangeVolumeCamera"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/Camera/ChangeCameraVolume.prefab"),
-                ["StumbleCollision"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/StumbleCollision.prefab"),
-                ["DashRing"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/DashRing.prefab"),
-                ["RainbowRing"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/RainbowDashRing.prefab"),
-                ["SetRigidBody"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/SetRigidBody.prefab"),
-                ["PointMarker"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/PointMarker.prefab"),
-                ["DirectionalThorn"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/ObjectPhysics/Thorns/DirectionalThorn.prefab"),
-                ["ChangeMode_3DtoForward"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/System/ChangeMode_3DtoForward.prefab"),
-                ["ChangeMode_3DtoDash"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/System/ChangeMode_3DtoDash.prefab"),
-                ["ChangeMode_3Dto2D"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/System/ChangeMode_2D.prefab"),
-                ["AutorunStartCollision"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/AutorunCollision.prefab"),
-                ["AutorunFinishCollision"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/AutorunCollision.prefab"),
-                ["GoalRing"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/GoalRing/GoalRing.prefab"),
-                ["Flame"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/Flame.prefab"),
-                ["EventCollision"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Common/EventCollision.prefab"),
-                ["MykonosFloor"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Source/Prefabs/HE1/Apotos/MykonosFloor.prefab"),
+                ["Ring"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Common/Ring.prefab"),
+                ["SuperRing"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Common/SuperRing.prefab"),
+                ["DashPanel"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Common/DashPanel.prefab"),
+                ["Spring"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Common/Spring.prefab"),
+                ["SpringFake"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Common/SpringFake.prefab"),
+                ["WideSpring"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Common/WideSpring.prefab"),
+                ["AirSpring"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Common/AirSpring.prefab"),
+                ["ThornSpring"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Common/ThornSpring.prefab"),
+                ["eFighter"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Enemies/EggFighter.prefab"),
+                ["eFighterGun"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Enemies/EggFighter.prefab"), // TODO: Implement an actual eFighterGun
+                ["eFighterMissile"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Enemies/EggFighter.prefab"), // TODO: Implement an actual eFighterMissile
+                ["eFighterTutorial"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Enemies/EggFighter.prefab"),
+                ["eSpinner"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Enemies/Spinner.prefab"),
+                ["eSpanner"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Enemies/Spinner.prefab"), // TODO: Implement an actual eSpanner
+                ["eAirCannonNormal"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Enemies/AeroCannon.prefab"),
+                ["ObjCameraPan"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Common/Camera/ObjCameraPan.prefab"),
+                ["ObjCameraParallel"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Common/Camera/ObjCameraParallel.prefab"),
+                ["ObjCameraPoint"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Common/Camera/ObjCameraPoint.prefab"),
+                ["ObjCameraPathTarget"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Common/Camera/ObjCameraPathTarget.prefab"),
+                ["JumpBoard"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Common/JumpPanel_15S.prefab"),
+                ["JumpBoard3D"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Common/JumpPanel_30M.prefab"),
+                ["TrickJumper"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Common/TrickPanel.prefab"),
+                ["UpReel"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Common/Upreel.prefab"),
+                ["JumpCollision"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Common/JumpCollision.prefab"),
+                ["ChangeVolumeCamera"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Common/Camera/ChangeCameraVolume.prefab"),
+                ["StumbleCollision"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Common/StumbleCollision.prefab"),
+                ["DashRing"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Common/DashRing.prefab"),
+                ["RainbowRing"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Common/RainbowDashRing.prefab"),
+                ["SetRigidBody"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Common/SetRigidBody.prefab"),
+                ["PointMarker"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Common/PointMarker.prefab"),
+                ["DirectionalThorn"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Common/ObjectPhysics/Thorns/DirectionalThorn.prefab"),
+                ["ChangeMode_3DtoForward"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Common/System/ChangeMode_3DtoForward.prefab"),
+                ["ChangeMode_3DtoDash"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Common/System/ChangeMode_3DtoDash.prefab"),
+                ["ChangeMode_3Dto2D"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Common/System/ChangeMode_2D.prefab"),
+                ["AutorunStartCollision"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Common/AutorunCollision.prefab"),
+                ["AutorunFinishCollision"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Common/AutorunCollision.prefab"),
+                ["GoalRing"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/GoalRing/GoalRing.prefab"),
+                ["Flame"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Common/Flame.prefab"),
+                ["EventCollision"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Common/EventCollision.prefab"),
+                ["MykonosFloor"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Apotos/MykonosFloor.prefab"),
             };
         }
 
@@ -449,22 +449,22 @@ namespace SurgeEngine.Source.Editor.HE1Importer
             switch (type)
             {
                 case "ThornCylinder2M":
-                    path = "Assets/_Source/Prefabs/HE1/Common/ObjectPhysics/Thorns/ThornSC.prefab";
+                    path = "Assets/Source/Prefabs/HE1/Common/ObjectPhysics/Thorns/ThornSC.prefab";
                     break;
                 case "ThornCylinder3M":
-                    path = "Assets/_Source/Prefabs/HE1/Common/ObjectPhysics/Thorns/ThornSCB.prefab";
+                    path = "Assets/Source/Prefabs/HE1/Common/ObjectPhysics/Thorns/ThornSCB.prefab";
                     break;
                 case "IronBox2":
-                    path = "Assets/_Source/Prefabs/HE1/Common/ObjectPhysics/IronBox.prefab";
+                    path = "Assets/Source/Prefabs/HE1/Common/ObjectPhysics/IronBox.prefab";
                     break;
                 case "myk_obj_hh_potplant_mixDS":
-                    path = "Assets/_Source/Prefabs/HE1/Common/ObjectPhysics/PotPlantMixDS.prefab";
+                    path = "Assets/Source/Prefabs/HE1/Common/ObjectPhysics/PotPlantMixDS.prefab";
                     break;
                 case "myk_obj_hh_potplant_mixEF":
-                    path = "Assets/_Source/Prefabs/HE1/Common/ObjectPhysics/PotPlantMixEF.prefab";
+                    path = "Assets/Source/Prefabs/HE1/Common/ObjectPhysics/PotPlantMixEF.prefab";
                     break;
                 case "myk_obj_ky_blue_woodbox":
-                    path = "Assets/_Source/Prefabs/HE1/Common/ObjectPhysics/BlueWoodBox.prefab";
+                    path = "Assets/Source/Prefabs/HE1/Common/ObjectPhysics/BlueWoodBox.prefab";
                     break;
             }
             

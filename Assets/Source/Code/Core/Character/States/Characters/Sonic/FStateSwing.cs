@@ -39,7 +39,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
         {
             base.OnTick(dt);
 
-            _rotationAngle = character.Animation.StateAnimator.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime % 1;
+            _rotationAngle = Character.Animation.StateAnimator.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime % 1;
 
             if (_rotationAngle > 0.9f && !_swingSound)
             {
@@ -54,8 +54,8 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
             if(Input.APressed)
                 Jump();
             
-            character.transform.position = poleGrip.position;
-            character.transform.rotation = poleGrip.rotation;
+            Character.transform.position = poleGrip.position;
+            Character.transform.rotation = poleGrip.rotation;
         }
     }
 }

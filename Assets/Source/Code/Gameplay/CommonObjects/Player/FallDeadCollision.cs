@@ -9,9 +9,9 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Player
     {
         private BoxCollider _collider;
 
-        public override void Contact(Collider msg, CharacterBase context)
+        public override void OnEnter(Collider msg, CharacterBase context)
         {
-            base.Contact(msg, context);
+            base.OnEnter(msg, context);
 
             CharacterInput input = context.Input;
             input.playerInput.enabled = false;

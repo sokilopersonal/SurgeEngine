@@ -42,7 +42,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
                         if (_startData.speed > 0)
                         {
                             Rigidbody.linearVelocity = Rigidbody.transform.forward * _startData.speed;
-                            character.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, _startData.time));
+                            Character.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, _startData.time));
                         }
                     }
 
@@ -60,7 +60,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
             {
                 Rigidbody.linearVelocity = Rigidbody.transform.forward * _startData.speed;
                 Input.enabled = true;
-                character.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, _startData.time));
+                Character.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, _startData.time));
                 StateMachine.SetState<FStateGround>();
             }
         }

@@ -30,7 +30,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
         {
             base.OnTick(dt);
 
-            if (!character.Flags.HasFlag(FlagType.OutOfControl))
+            if (!Character.Flags.HasFlag(FlagType.OutOfControl))
             {
                 if (Input.APressed)
                 {
@@ -44,12 +44,12 @@ namespace SurgeEngine.Source.Code.Core.Character.States
         {
             base.OnFixedTick(dt);
             
-            if (Kinematics.Speed / character.Config.topSpeed > BreakableThreshold)
+            if (Kinematics.Speed / Character.Config.topSpeed > BreakableThreshold)
             {
-                HurtBox.CreateAttached(character, character.transform, new Vector3(0f, 0f, -0.1f), new Vector3(0.5f, 1f, 1.15f), HurtBoxTarget.Breakable);
+                HurtBox.CreateAttached(Character, Character.transform, new Vector3(0f, 0f, -0.1f), new Vector3(0.5f, 1f, 1.15f), HurtBoxTarget.Breakable);
             }
 
-            PhysicsConfig config = character.Config;
+            PhysicsConfig config = Character.Config;
             float distance = config.EvaluateCastDistance(Kinematics.Speed / config.topSpeed);
             bool ground = Kinematics.CheckForGround(out RaycastHit data, castDistance: distance);
             bool isWater = false;
@@ -58,7 +58,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
                 isWater = data.transform.gameObject.GetGroundTag() == GroundTag.Water;
                 if (isWater && data.transform.TryGetComponent(out _waterSurface))
                 {
-                    _waterSurface.Attach(Rigidbody.position, character);
+                    _waterSurface.Attach(Rigidbody.position, Character);
                     
                     if (Kinematics.HorizontalVelocity.magnitude < _waterSurface.MinimumSpeed)
                     {

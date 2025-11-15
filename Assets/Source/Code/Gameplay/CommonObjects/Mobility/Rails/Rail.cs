@@ -2,6 +2,7 @@
 using SurgeEngine.Source.Code.Core.Character.States;
 using SurgeEngine.Source.Code.Core.Character.System;
 using SurgeEngine.Source.Code.Core.StateMachine.Base;
+using SurgeEngine.Source.Code.Gameplay.CommonObjects.ChangeModes;
 using SurgeEngine.Source.Code.Infrastructure.Custom.Extensions;
 using UnityEngine;
 using UnityEngine.Splines;
@@ -11,11 +12,12 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility.Rails
     [RequireComponent(typeof(MeshCollider), typeof(SplineContainer))]
     public class Rail : MonoBehaviour
     {
-        private SplineContainer _container;
+        [SerializeField] private SplineContainer container;
+        [SerializeField] private DominantSpline dominant;
         
         [SerializeField] private float radius = 0.25f;
-        [SerializeField, Required] private HomingTarget homingTargetPrefab;
-        public SplineContainer Container => _container;
+        [SerializeField] private HomingTarget homingTargetPrefab;
+        public SplineContainer Container => container;
         public float Radius => radius;
         public HomingTarget HomingTarget { get; private set; }
 
@@ -23,8 +25,8 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility.Rails
 
         private void Awake()
         {
-            if (!_container)
-                _container = GetComponent<SplineContainer>();
+            if (!container)
+                container = GetComponent<SplineContainer>();
             
             HomingTarget = Instantiate(homingTargetPrefab, transform, false);
             HomingTarget.OnTargetReached.AddListener(AttachToRail);
@@ -47,7 +49,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility.Rails
         private void AttachToRail(CharacterBase character)
         {
             Physics.IgnoreCollision(GetComponentInChildren<Collider>(), character.Kinematics.Rigidbody.GetComponent<Collider>(), true);
-            character.StateMachine.SetState<FStateGrind>()?.SetRail(this);
+            character.StateMachine.SetState<FStateGrind>()?.SetRail(this, dominant);
             _character = character;
             _character.StateMachine.OnStateAssign += DisableCollision;
         }

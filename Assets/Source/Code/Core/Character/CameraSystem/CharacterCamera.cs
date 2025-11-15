@@ -98,28 +98,28 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem
             
             foreach (var modifier in baseCameraModifiers)
             {
-                modifier.Set(this.character);
+                modifier.Set(this.Character);
                 _modifiersDictionary.Add(modifier.GetType(), modifier);
             }
         }
 
         private void Start()
         {
-            StateMachine = new(_camera, _cameraTransform, character);
+            StateMachine = new(_camera, _cameraTransform, Character);
             
-            StateMachine.AddState(new CameraAnimState(character));
-            StateMachine.AddState(new NewModernState(character));
-            StateMachine.AddState(new Camera2DState(character));
-            StateMachine.AddState(new CameraPan(character));
-            StateMachine.AddState(new ParallelCameraPan(character));
-            StateMachine.AddState(new FixedCameraPan(character));
-            StateMachine.AddState(new NormalCameraPan(character));
-            StateMachine.AddState(new FallCameraState(character));
-            StateMachine.AddState(new PointCameraPan(character));
-            StateMachine.AddState(new PathCameraPan(character));
-            StateMachine.AddState(new PathTargetCameraPan(character));
+            StateMachine.AddState(new CameraAnimState(Character));
+            StateMachine.AddState(new NewModernState(Character));
+            StateMachine.AddState(new Camera2DState(Character));
+            StateMachine.AddState(new CameraPan(Character));
+            StateMachine.AddState(new ParallelCameraPan(Character));
+            StateMachine.AddState(new FixedCameraPan(Character));
+            StateMachine.AddState(new NormalCameraPan(Character));
+            StateMachine.AddState(new FallCameraState(Character));
+            StateMachine.AddState(new PointCameraPan(Character));
+            StateMachine.AddState(new PathCameraPan(Character));
+            StateMachine.AddState(new PathTargetCameraPan(Character));
 
-            var start = character.GetStartData();
+            var start = Character.GetStartData();
             if (start.startType == StartType.None || start.startType == StartType.Dash)
             {
                 StateMachine.SetState<NewModernState>();
@@ -129,11 +129,11 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem
                 StateMachine.SetState<CameraAnimState>();
             }
 
-            Vector3 dir = Quaternion.LookRotation(character.transform.forward).eulerAngles;
+            Vector3 dir = Quaternion.LookRotation(Character.transform.forward).eulerAngles;
             dir.x = yawDefaultAmplitude;
             StateMachine.SetDirection(dir.y, dir.x);
 
-            foreach (var volume in Utility.GetVolumesInBounds(character.transform.position))
+            foreach (var volume in Utility.GetVolumesInBounds(Character.transform.position))
             {
                 StateMachine.RegisterVolume(volume);
             }

@@ -59,7 +59,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
                 if (_springObject.IsWallWalk)
                 {
                     var ray = new Ray(endPos, dir);
-                    if (Physics.Raycast(ray, out var hit, character.Config.castDistance, character.Config.castLayer))
+                    if (Physics.Raycast(ray, out var hit, Character.Config.castDistance, Character.Config.castLayer))
                     {
                         Kinematics.Normal = hit.normal;
 

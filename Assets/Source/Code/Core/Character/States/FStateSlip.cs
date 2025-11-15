@@ -24,7 +24,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
             
             Kinematics.Normal = Vector3.up;
             bool ground = Kinematics.CheckForGroundWithDirection(out var hit, Vector3.down);
-            bool predictedGround = Kinematics.CheckForPredictedGround(dt, character.Config.castDistance, 4);
+            bool predictedGround = Kinematics.CheckForPredictedGround(dt, Character.Config.castDistance, 4);
             if (ground)
             {
                 if (!predictedGround)

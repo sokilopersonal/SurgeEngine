@@ -46,28 +46,28 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             _collisionStartHeight = Collision.height;
             _collisionStartRadius = Collision.radius;
             
-            Root.rotation = character.transform.rotation;
+            Root.rotation = Character.transform.rotation;
             
             modelTransform.localPosition = new Vector3(0, verticalOffset, 0);
             
-            _bodyRotation = new CharacterBodyRotation(character);
+            _bodyRotation = new CharacterBodyRotation(Character);
         }
 
         private void OnEnable()
         {
-            character.StateMachine.OnStateAssign += OnStateAssign;
+            Character.StateMachine.OnStateAssign += OnStateAssign;
         }
         
         private void OnDisable()
         {
-            character.StateMachine.OnStateAssign -= OnStateAssign;
+            Character.StateMachine.OnStateAssign -= OnStateAssign;
         }
 
         private void Update()
         {
-            Root.localPosition = character.transform.localPosition;
+            Root.localPosition = Character.transform.localPosition;
             
-            FState prev = character.StateMachine.PreviousState;
+            FState prev = Character.StateMachine.PreviousState;
             UpdateRotationVectors();
 
             if (prev is FStateObject)
@@ -91,12 +91,12 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
         private void UpdateRotationVectors()
         {
-            float speedMultiplier = Mathf.Lerp(1f, 2f, character.Kinematics.Speed / character.Config.topSpeed);
+            float speedMultiplier = Mathf.Lerp(1f, 2f, Character.Kinematics.Speed / Character.Config.topSpeed);
             
-            _forwardVector = Vector3.Slerp(Root.forward, character.transform.forward, 
+            _forwardVector = Vector3.Slerp(Root.forward, Character.transform.forward, 
                 Time.deltaTime * horizontalRotationSpeed);
             
-            _upVector = Vector3.Slerp(Root.up, character.transform.up, 
+            _upVector = Vector3.Slerp(Root.up, Character.transform.up, 
                 Time.deltaTime * verticalRotationSpeed * speedMultiplier);
         }
 
@@ -104,7 +104,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         {
             if (_airRestoring)
             {
-                _bodyRotation.VelocityRotation(character.Kinematics.Velocity.normalized);
+                _bodyRotation.VelocityRotation(Character.Kinematics.Velocity.normalized);
                 
                 _airRestoreTimer -= Time.deltaTime;
                 
@@ -131,7 +131,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         {
             float dt = Time.deltaTime;
             _upRestoreTimer += dt / UpRestoreDuration;
-            _upVector = Vector3.Slerp(Root.up, character.transform.up, _upRestoreTimer);
+            _upVector = Vector3.Slerp(Root.up, Character.transform.up, _upRestoreTimer);
             
             if (_upRestoreTimer >= 1)
             {
@@ -169,7 +169,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
         private void ExecuteFlip()
         {
-            var rb = character.Kinematics.Rigidbody;
+            var rb = Character.Kinematics.Rigidbody;
             Quaternion flipRotation = Quaternion.AngleAxis(flipAngle * Time.deltaTime, Vector3.left);
             rb.MoveRotation(rb.rotation * flipRotation);
         }
@@ -194,7 +194,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         public void VelocityRotation(Vector3 vel)
         {
             _bodyRotation.VelocityRotation(vel);
-            Root.rotation = character.Kinematics.Rigidbody.rotation;
+            Root.rotation = Character.Kinematics.Rigidbody.rotation;
         }
 
         private void OnStateAssign(FState obj)
@@ -211,8 +211,8 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
         private void CheckAndStartFlip()
         {
-            bool isNearVertical = Mathf.Abs(character.Kinematics.Angle - 90) < 0.05f;
-            bool hasUpwardVelocity = character.Kinematics.Velocity.y > 3f;
+            bool isNearVertical = Mathf.Abs(Character.Kinematics.Angle - 90) < 0.05f;
+            bool hasUpwardVelocity = Character.Kinematics.Velocity.y > 3f;
             
             if (isNearVertical && hasUpwardVelocity)
             {

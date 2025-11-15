@@ -55,9 +55,9 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
             
             var transform = Rigidbody.transform;
             var offset = -transform.up * 0.75f;
-            HurtBox.CreateAttached(character, transform, offset, new Vector3(0.75f, 0.3f, 0.75f), HurtBoxTarget.Enemy | HurtBoxTarget.Breakable);
+            HurtBox.CreateAttached(Character, transform, offset, new Vector3(0.75f, 0.3f, 0.75f), HurtBoxTarget.Enemy | HurtBoxTarget.Breakable);
             
-            var physicsConfig = character.Config;
+            var physicsConfig = Character.Config;
             float distance = physicsConfig.castDistance * physicsConfig.castDistanceCurve.Evaluate(Kinematics.Speed / physicsConfig.topSpeed);
             var ground = Kinematics.CheckForGround(out RaycastHit hit, castDistance: distance);
             bool isWater = false;
@@ -66,7 +66,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
                 isWater = hit.transform.gameObject.GetGroundTag() == GroundTag.Water;
                 if (isWater && hit.transform.TryGetComponent(out WaterSurface water))
                 {
-                    water.Attach(Rigidbody.position, character);
+                    water.Attach(Rigidbody.position, Character);
                     
                     if (Kinematics.HorizontalVelocity.magnitude < water.MinimumSpeed)
                     {
@@ -76,7 +76,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
                 }
             }
             
-            bool predictedGround = Kinematics.CheckForPredictedGround(dt, character.Config.castDistance, 4);
+            bool predictedGround = Kinematics.CheckForPredictedGround(dt, Character.Config.castDistance, 4);
             if (ground && predictedGround)
             {
                 Vector3 point = hit.point;
@@ -91,7 +91,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
                 Kinematics.SlopePhysics();
                 
                 float force = 1f;
-                if (character.StateMachine.GetState(out FBoost boost) && boost.Active)
+                if (Character.StateMachine.GetState(out FBoost boost) && boost.Active)
                     force *= 0.5f;
                 
                 Quaternion angle = Quaternion.AngleAxis(_driftXDirection * _config.centrifugalForce * force, Kinematics.Normal);

@@ -35,7 +35,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
             _timer = 0.25f;
 
             Vector3 forward = Vector3.Cross(Rigidbody.transform.right, Vector3.up);
-            Rigidbody.linearVelocity = -forward * character.Life.DirectionalForce;
+            Rigidbody.linearVelocity = -forward * Character.Life.DirectionalForce;
             Rigidbody.rotation = Quaternion.LookRotation(forward, Vector3.up);
         }
 
@@ -51,7 +51,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
                 var isWater = hit.transform.gameObject.GetGroundTag() == GroundTag.Water;
                 if (isWater && hit.transform.TryGetComponent(out WaterSurface water))
                 {
-                    water.Attach(Rigidbody.position, character);
+                    water.Attach(Rigidbody.position, Character);
                     return;
                 }
             }

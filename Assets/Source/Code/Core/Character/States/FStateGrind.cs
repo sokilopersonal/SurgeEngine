@@ -1,5 +1,6 @@
 ﻿using SurgeEngine.Source.Code.Core.Character.States.BaseStates;
 using SurgeEngine.Source.Code.Core.Character.System;
+using SurgeEngine.Source.Code.Gameplay.CommonObjects.ChangeModes;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility.Rails;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
@@ -28,7 +29,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
             
             if (StateMachine.PreviousState is not FStateRailSwitch)
             {
-                Rigidbody.linearVelocity = Vector3.ClampMagnitude(Rigidbody.linearVelocity, character.Config.topSpeed);
+                Rigidbody.linearVelocity = Vector3.ClampMagnitude(Rigidbody.linearVelocity, Character.Config.topSpeed);
             }
         }
 
@@ -105,10 +106,10 @@ namespace SurgeEngine.Source.Code.Core.Character.States
             }
         }
 
-        public void SetRail(Rail rail)
+        public void SetRail(Rail rail, DominantSpline dominant = DominantSpline.Left)
         {
-            Vector3 pos = Rigidbody.position - character.transform.up * rail.Radius;
-            _data = new SplineData(rail.Container, pos);
+            Vector3 pos = Rigidbody.position - Character.transform.up * rail.Radius;
+            _data = new SplineData(rail.Container, pos, dominant);
             _data.EvaluateWorld(out _, out Vector3 tg, out var up, out var right);
             
             float dot = Vector3.Dot(Kinematics.Velocity.normalized, tg);
@@ -124,7 +125,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
             Vector3 forward = Rigidbody.transform.forward * mult;
             Vector3 predictedPoint = Rigidbody.position + Vector3.Normalize(Vector3.Lerp(direction, forward, 0.5f));
 
-            float dist = character.Config.railSearchDistance;
+            float dist = Character.Config.railSearchDistance;
             Vector3 rayDirection = (predictedPoint - Rigidbody.position).normalized;
             
             Debug.DrawRay(Rigidbody.position, rayDirection * dist, Color.green);

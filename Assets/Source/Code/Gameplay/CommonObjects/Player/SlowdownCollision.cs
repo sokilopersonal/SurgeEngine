@@ -8,9 +8,9 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Player
     {
         [SerializeField] private float maxSpeed = 35f;
 
-        public override void Contact(Collider msg, CharacterBase context)
+        public override void OnEnter(Collider msg, CharacterBase context)
         {
-            base.Contact(msg, context);
+            base.OnEnter(msg, context);
             
             context.Flags.AddFlag(new SlowdownFlag(FlagType.Slowdown, false, 0, maxSpeed));
         }

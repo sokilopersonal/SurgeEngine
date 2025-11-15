@@ -26,7 +26,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
                 StateMachine.SetState<FStateGround>();
             }
 
-            if (!character.Flags.HasFlag(FlagType.OutOfControl))
+            if (!Character.Flags.HasFlag(FlagType.OutOfControl))
             {
                 if (Input.APressed)
                 {
@@ -47,7 +47,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
                 Kinematics.Point = hit.point;
                 Kinematics.Normal = Vector3.up;
                 
-                if (!Kinematics.CheckForPredictedGround(dt, character.Config.castDistance, 4))
+                if (!Kinematics.CheckForPredictedGround(dt, Character.Config.castDistance, 4))
                 {
                     StateMachine.SetState<FStateSlip>();
                 }

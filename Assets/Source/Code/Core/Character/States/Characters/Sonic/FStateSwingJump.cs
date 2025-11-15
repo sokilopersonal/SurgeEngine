@@ -22,7 +22,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
 
         public void Launch(bool successful)
         {
-            Rigidbody.linearVelocity = (character.transform.forward + character.transform.up).normalized * (successful ? successVel : failVel);
+            Rigidbody.linearVelocity = (Character.transform.forward + Character.transform.up).normalized * (successful ? successVel : failVel);
         }
     }
 }

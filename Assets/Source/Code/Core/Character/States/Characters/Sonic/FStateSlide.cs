@@ -89,7 +89,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
         {
             base.OnFixedTick(dt);
             
-            var config = character.Config;
+            var config = Character.Config;
             float distance = config.castDistance *
                              config.castDistanceCurve.Evaluate(Kinematics.Speed / config.topSpeed);
             bool predictedGround = Kinematics.CheckForPredictedGround(dt, distance, 6);
@@ -116,7 +116,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
             var transform = Rigidbody.transform;
             var offset = -transform.up * 0.6f;
             offset += transform.forward * 0.2f;
-            HurtBox.CreateAttached(character, transform, offset, new Vector3(0.5f, 0.5f, 0.75f), HurtBoxTarget.Enemy | HurtBoxTarget.Breakable);
+            HurtBox.CreateAttached(Character, transform, offset, new Vector3(0.5f, 0.5f, 0.75f), HurtBoxTarget.Enemy | HurtBoxTarget.Breakable);
         }
     }
 }

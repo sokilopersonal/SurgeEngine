@@ -16,7 +16,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
         public FStateJump(CharacterBase owner) : base(owner)
         {
             _maxAirTime = 0.8f;
-            _config = character.Config;
+            _config = Character.Config;
         }
 
         public override void OnEnter()
@@ -50,7 +50,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
             if (Input.AReleased && !_released)
                 _released = true;
 
-            if (!character.Flags.HasFlag(FlagType.OutOfControl))
+            if (!Character.Flags.HasFlag(FlagType.OutOfControl))
             {
                 if (_time < _config.jumpMaxTime)
                     _time += dt;
@@ -91,8 +91,8 @@ namespace SurgeEngine.Source.Code.Core.Character.States
             }
             
             
-            if (character.Animation.StateAnimator.GetCurrentAnimationState() == "Ball" 
-                && HurtBox.CreateAttached(character, character.transform, new Vector3(0f, -0.45f, 0f), new Vector3(0.6f, 0.6f, 0.6f), 
+            if (Character.Animation.StateAnimator.GetCurrentAnimationState() == "Ball" 
+                && HurtBox.CreateAttached(Character, Character.transform, new Vector3(0f, -0.45f, 0f), new Vector3(0.6f, 0.6f, 0.6f), 
                     HurtBoxTarget.Enemy | HurtBoxTarget.Breakable))
             {
                 ExecuteJump(true);

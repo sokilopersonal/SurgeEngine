@@ -22,7 +22,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
             
             CalculateTravelledDistance();
 
-            if (Kinematics.CheckForGroundWithDirection(out var hit, Vector3.down, castDistance: character.Config.castDistance * 0.6f))
+            if (Kinematics.CheckForGroundWithDirection(out var hit, Vector3.down, castDistance: Character.Config.castDistance * 0.6f))
             {
                 Kinematics.Normal = Vector3.up;
                 Rigidbody.rotation = Quaternion.FromToRotation(Rigidbody.transform.up, Vector3.up) * Rigidbody.rotation;

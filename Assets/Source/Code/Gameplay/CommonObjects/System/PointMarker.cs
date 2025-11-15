@@ -30,11 +30,11 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.System
                 .ToList();
         }
 
-        public override void Contact(Collider msg, CharacterBase context)
+        public override void OnEnter(Collider msg, CharacterBase context)
         {
             if (!_triggered)
             {
-                base.Contact(msg, context);
+                base.OnEnter(msg, context);
                 RuntimeManager.PlayOneShot(_soundEvent, transform.position);
                 _triggered = true;
             }

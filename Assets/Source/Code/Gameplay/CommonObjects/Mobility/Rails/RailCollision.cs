@@ -12,9 +12,9 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility.Rails
             _rail = GetComponentInParent<Rail>();
         }
 
-        public override void Contact(Collider msg, CharacterBase context)
+        public override void OnEnter(Collider msg, CharacterBase context)
         {
-            base.Contact(msg, context);
+            base.OnEnter(msg, context);
             
             //_rail.AttachToRail();
         }

@@ -17,7 +17,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Player
         {
             if (other.TryGetCharacter(out CharacterBase ctx))
             {
-                contact.Contact(other, ctx);
+                contact.OnEnter(other, ctx);
             }
         }
     }

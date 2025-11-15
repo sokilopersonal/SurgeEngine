@@ -19,7 +19,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         protected CharacterAnimation Animation => Character.Animation;
         protected CharacterFlags Flags => Character.Flags;
 
-        public CharacterActions(CharacterBase character)
+        protected CharacterActions(CharacterBase character)
         {
             Character = character;
             

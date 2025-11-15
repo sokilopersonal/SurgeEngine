@@ -32,13 +32,13 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
         public void TakeDamage(bool changeState)
         {
-            CharacterDamage damageable = character.StateMachine.CurrentState switch
+            CharacterDamage damageable = Character.StateMachine.CurrentState switch
             {
-                FStateGrind or FStateGrindSquat => new GrindDamage(character),
-                _ => new GeneralDamage(character)
+                FStateGrind or FStateGrindSquat => new GrindDamage(Character),
+                _ => new GeneralDamage(Character)
             };
 
-            if (!character.Flags.HasFlag(FlagType.Invincible) && !IsDead)
+            if (!Character.Flags.HasFlag(FlagType.Invincible) && !IsDead)
             {
                 IsDead = false;
 
@@ -46,9 +46,9 @@ namespace SurgeEngine.Source.Code.Core.Character.System
                 if (WillDie)
                 {
                     if (damageable is GeneralDamage && changeState)
-                        character.StateMachine.GetState<FStateDamage>()?.SetState(DamageState.Dead);
+                        Character.StateMachine.GetState<FStateDamage>()?.SetState(DamageState.Dead);
 
-                    OnDied?.Invoke(character);
+                    OnDied?.Invoke(Character);
                 }
                 else
                 {
@@ -62,7 +62,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
                 }
 
                 if (changeState) damageable.TakeDamage();
-                character.Flags.AddFlag(new Flag(FlagType.Invincible, true, invincibleTime + 1.5f));
+                Character.Flags.AddFlag(new Flag(FlagType.Invincible, true, invincibleTime + 1.5f));
             }
         }
 

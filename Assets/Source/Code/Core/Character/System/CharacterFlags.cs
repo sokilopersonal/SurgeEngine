@@ -32,7 +32,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
                 _list.Remove(existingFlag);
             }
             flagType |= flag.type;
-            flag.SetActor(character);
+            flag.SetActor(Character);
             _list.Add(flag);
         }
 

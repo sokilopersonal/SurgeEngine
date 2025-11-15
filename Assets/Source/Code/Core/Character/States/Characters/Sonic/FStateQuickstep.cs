@@ -165,7 +165,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
         {
             base.OnFixedTick(dt);
 
-            var config = character.Config;
+            var config = Character.Config;
             float distance = config.EvaluateCastDistance(config.castDistanceCurve.Evaluate(Kinematics.Speed / config.topSpeed));
             if (Kinematics.CheckForGround(out var hit, castDistance: distance))
             {
@@ -197,7 +197,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
         public FStateQuickstep SetDirection(QuickstepDirection direction)
         {
             // Invert QS direction if we are looking in the opposite of player's forward
-            float dot = Vector3.Dot(Rigidbody.transform.forward, character.Camera.GetCameraTransform().forward);
+            float dot = Vector3.Dot(Rigidbody.transform.forward, Character.Camera.GetCameraTransform().forward);
             if (direction == QuickstepDirection.Left && dot < 0)
             {
                 direction = QuickstepDirection.Right;

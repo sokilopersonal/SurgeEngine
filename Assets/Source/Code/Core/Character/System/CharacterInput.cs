@@ -152,7 +152,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
                 LookVector = Vector2.zero;
             }
             
-            if (character.Flags.HasFlag(FlagType.OutOfControl))
+            if (Character.Flags.HasFlag(FlagType.OutOfControl))
             {
                 MoveVector = Vector3.zero;
             }
@@ -162,7 +162,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         {
             if (obj.started) OnButtonPressed?.Invoke(ButtonType.A);
             
-            if (character.Flags.HasFlag(FlagType.OutOfControl))
+            if (Character.Flags.HasFlag(FlagType.OutOfControl))
             {
                 return;
             }

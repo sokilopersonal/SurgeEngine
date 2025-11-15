@@ -38,9 +38,9 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             meshRenderer.sharedMaterials = mats;
         }
 
-        public override void Contact(Collider msg, CharacterBase context)
+        public override void OnEnter(Collider msg, CharacterBase context)
         {
-            base.Contact(msg, context);
+            base.OnEnter(msg, context);
 
             if (toggleOnce && _hasBeenToggled)
                 return;

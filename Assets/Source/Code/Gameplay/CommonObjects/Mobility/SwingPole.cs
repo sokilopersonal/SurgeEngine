@@ -12,9 +12,9 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         [SerializeField] private Transform grip;
         [SerializeField] private bool trail2D;
         
-        public override void Contact(Collider msg, CharacterBase context)
+        public override void OnEnter(Collider msg, CharacterBase context)
         {
-            base.Contact(msg, context);
+            base.OnEnter(msg, context);
 
             context.Rigidbody.position = grip.position;
             context.Effects.SwingTrail.trail2D = trail2D;

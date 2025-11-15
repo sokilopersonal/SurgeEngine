@@ -37,7 +37,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
         {
             base.Awake();
 
-            character.StateMachine.GetState(out _boost);
+            Character.StateMachine.GetState(out _boost);
         }
 
         protected override void OnEnable()
@@ -60,7 +60,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
         {
             base.OnStateAssign(obj);
             
-            FState prev = character.StateMachine.PreviousState;
+            FState prev = Character.StateMachine.PreviousState;
             
             if (obj is FStateHoming or FStateStomp or FStateSwingJump)
                 trailRenderer.Emit(0.6f);
@@ -104,15 +104,15 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
         {
             if (obj is not FBoost) return;
             boostAura.Toggle(value);
-            var viewport = character.Camera.GetCamera().WorldToViewportPoint(character.transform.position);
+            var viewport = Character.Camera.GetCamera().WorldToViewportPoint(Character.transform.position);
             viewport.y *= 0.8f;
             if (value) boostDistortion.Play(viewport);
         }
         
         private IEnumerator PlayJumpball()
         {
-            yield return new WaitForSeconds(character.Config.jumpMaxShortTime);
-            if (character.StateMachine.CurrentState is FStateJump && character.Input.AHeld)
+            yield return new WaitForSeconds(Character.Config.jumpMaxShortTime);
+            if (Character.StateMachine.CurrentState is FStateJump && Character.Input.AHeld)
                 spinball.Toggle(true);
         }
     }

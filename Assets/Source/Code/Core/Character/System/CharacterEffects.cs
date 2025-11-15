@@ -37,14 +37,14 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
         protected virtual void OnEnable()
         {
-            character.Kinematics.GroundTag.Changed += OnSurfaceTagChanged;
-            character.StateMachine.OnStateAssign += OnStateAssign;
+            Character.Kinematics.GroundTag.Changed += OnSurfaceTagChanged;
+            Character.StateMachine.OnStateAssign += OnStateAssign;
         }
 
         protected virtual void OnDisable()
         {
-            character.Kinematics.GroundTag.Changed -= OnSurfaceTagChanged;
-            character.StateMachine.OnStateAssign -= OnStateAssign;
+            Character.Kinematics.GroundTag.Changed -= OnSurfaceTagChanged;
+            Character.StateMachine.OnStateAssign -= OnStateAssign;
         }
 
         protected virtual void OnStateAssign(FState obj)
@@ -68,7 +68,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
                 {
                     _currentStep?.Stop();
                 }
-                else if (_stepMap.TryGetValue(character.Kinematics.GroundTag.Value, out var ps))
+                else if (_stepMap.TryGetValue(Character.Kinematics.GroundTag.Value, out var ps))
                 {
                     _currentStep = ps;
                     _currentStep?.Play();
@@ -102,8 +102,8 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
         public void CreateParaloop()
         {
-            paraloopEffect.startPoint = character.Kinematics.Rigidbody.position;
-            paraloopEffect.sonicContext = character;
+            paraloopEffect.startPoint = Character.Kinematics.Rigidbody.position;
+            paraloopEffect.sonicContext = Character;
             paraloopEffect.Toggle(true);
         }
     }

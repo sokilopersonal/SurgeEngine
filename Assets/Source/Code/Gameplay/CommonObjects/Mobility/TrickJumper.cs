@@ -82,9 +82,9 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             }
         }
         
-        public override void Contact(Collider msg, CharacterBase context)
+        public override void OnEnter(Collider msg, CharacterBase context)
         {
-            base.Contact(msg, context);
+            base.OnEnter(msg, context);
             _character = context;
             StartCoroutine(PerformTrickContact());
             ObjectEvents.OnTrickJumperTriggered?.Invoke(this);

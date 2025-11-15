@@ -17,13 +17,13 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
         {
             base.ChangeAnimationState(obj);
             
-            FStateMachine machine = character.StateMachine;
+            FStateMachine machine = Character.StateMachine;
             FState prev = machine.PreviousState;
             Animator animator = StateAnimator.Animator;
 
             if (obj is FStateStart)
             {
-                var data = character.GetStartData();
+                var data = Character.GetStartData();
                 AnimationHandle startHandle = null;
                 if (data.startType == StartType.Standing)
                 {
@@ -49,7 +49,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
                             StateAnimator.TransitionToState("Idle", 0.1f);
                             break;
                         case FStateAir:
-                            float verticalSpeed = character.Kinematics.VerticalVelocity.magnitude;
+                            float verticalSpeed = Character.Kinematics.VerticalVelocity.magnitude;
                             bool hard = verticalSpeed > 9;
                             StateAnimator.TransitionToState(!hard ? "Landing" : "LandingL", 0f).After(0.4f, () => StateAnimator.TransitionToState("Idle", 1f));
                             break;
@@ -358,7 +358,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
         
         private IEnumerator PlayHop()
         {
-            var actor = character;
+            var actor = Character;
             bool hop = actor.Kinematics.Speed > 5;
             _hopAnimation = _hopAnimation == "HopL" ? "HopR" : "HopL";
             StateAnimator.TransitionToState(hop ? _hopAnimation : "JumpStart", 0f);

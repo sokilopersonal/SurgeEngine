@@ -43,9 +43,9 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             currentSpeed = _rigidbody.linearVelocity.magnitude;
             currentVerticalSpeed = _rigidbody.linearVelocity.y;
             
-            moveDot = Vector3.Dot(character.Kinematics.GetInputDir().normalized, _rigidbody.linearVelocity.normalized);
+            moveDot = Vector3.Dot(Character.Kinematics.GetInputDir().normalized, _rigidbody.linearVelocity.normalized);
 
-            FState state = character.StateMachine.CurrentState;
+            FState state = Character.StateMachine.CurrentState;
             isGrounded = state is FStateGround;
             isInAir = state is FStateAir or FStateAirBoost or FStateJump or FStateSpecialJump;
             
@@ -61,17 +61,17 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
         public float GetForwardSignedAngle()
         {
-            Vector3 forward = character.transform.forward;
+            Vector3 forward = Character.transform.forward;
             Vector3 f = Vector3.ProjectOnPlane(forward, Vector3.up).normalized;
-            Vector3 c = Vector3.ProjectOnPlane(character.Camera.GetCameraTransform().forward, Vector3.up).normalized;
-            float dot = Vector3.Dot(character.transform.up, Vector3.down);
+            Vector3 c = Vector3.ProjectOnPlane(Character.Camera.GetCameraTransform().forward, Vector3.up).normalized;
+            float dot = Vector3.Dot(Character.transform.up, Vector3.down);
             return f.SignedAngleByAxis(c, dot > 0 ? Vector3.up : Vector3.down);
         }
 
         public float GetUpwardSignedAngle()
         {
-            Vector3 f = Vector3.ProjectOnPlane(character.transform.up, Vector3.up).normalized;
-            Vector3 c = Vector3.ProjectOnPlane(character.Camera.GetCameraTransform().up, Vector3.up).normalized;
+            Vector3 f = Vector3.ProjectOnPlane(Character.transform.up, Vector3.up).normalized;
+            Vector3 c = Vector3.ProjectOnPlane(Character.Camera.GetCameraTransform().up, Vector3.up).normalized;
             return Vector3.SignedAngle(f, c, -Vector3.up);
         }
 

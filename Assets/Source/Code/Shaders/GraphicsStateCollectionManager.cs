@@ -18,7 +18,7 @@ namespace SurgeEngine.Source.Code.Shaders
         public static GraphicsStateCollectionManager Instance;
 
         public GraphicsStateCollection[] collections;
-        private const string CollectionFolderPath = "_Source/RenderStatesCollections/";
+        private const string CollectionFolderPath = "Source/RenderStatesCollections/";
 
         private string _outputCollectionName;
         private GraphicsStateCollection _graphicsStateCollection;

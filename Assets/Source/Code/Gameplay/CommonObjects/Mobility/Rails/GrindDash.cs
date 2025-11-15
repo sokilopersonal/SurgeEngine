@@ -20,9 +20,9 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility.Rails
         private bool _wereSplineAssigned;
 #endif
 
-        public override void Contact(Collider msg, CharacterBase context)
+        public override void OnEnter(Collider msg, CharacterBase context)
         {
-            base.Contact(msg, context);
+            base.OnEnter(msg, context);
 
             if (context.StateMachine.CurrentState is FStateGrind grind)
             {

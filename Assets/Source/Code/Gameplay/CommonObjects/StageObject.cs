@@ -16,11 +16,11 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects
         {
             if (other.TryGetCharacter(out CharacterBase ctx))
             {
-                Contact(other, ctx);
+                OnEnter(other, ctx);
             }
         }
 
-        public virtual void Contact(Collider msg, CharacterBase context)
+        public virtual void OnEnter(Collider msg, CharacterBase context)
         {
             ObjectEvents.OnObjectTriggered?.Invoke(this);
             

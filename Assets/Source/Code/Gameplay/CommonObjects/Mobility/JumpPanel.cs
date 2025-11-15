@@ -10,9 +10,9 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         [SerializeField] private float pitch = 15f;
         private Vector3 StartPosition => transform.position + transform.up * Mathf.Max(transform.localScale.y, 1f);
         
-        public override void Contact(Collider msg, CharacterBase context)
+        public override void OnEnter(Collider msg, CharacterBase context)
         {
-            base.Contact(msg, context);
+            base.OnEnter(msg, context);
             
             var body = context.Kinematics.Rigidbody;
             body.position = StartPosition;

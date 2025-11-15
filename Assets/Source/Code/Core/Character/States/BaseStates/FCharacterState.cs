@@ -7,19 +7,18 @@ namespace SurgeEngine.Source.Code.Core.Character.States.BaseStates
 {
     public abstract class FCharacterState : FState
     {
-        protected CharacterBase character { get; }
-        protected CharacterKinematics Kinematics => character.Kinematics;
-        protected CharacterInput Input => character.Input;
-        protected CharacterModel Model => character.Model;
-        protected CharacterAnimation Animation => character.Animation;
+        protected CharacterBase Character { get; }
+        protected CharacterKinematics Kinematics => Character.Kinematics;
+        protected CharacterInput Input => Character.Input;
+        protected CharacterModel Model => Character.Model;
+        protected CharacterAnimation Animation => Character.Animation;
         protected CharacterActions Actions { get; private set; }
-        
-        protected Rigidbody Rigidbody => character.Rigidbody;
+        protected Rigidbody Rigidbody => Character.Rigidbody;
         protected FStateMachine StateMachine { get; private set; }
 
         protected FCharacterState(CharacterBase owner)
         {
-            character = owner;
+            Character = owner;
             StateMachine = owner.StateMachine;
         }
 

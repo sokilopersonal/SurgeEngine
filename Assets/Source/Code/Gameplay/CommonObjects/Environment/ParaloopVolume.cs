@@ -8,9 +8,9 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Environment
     {
         private BoxCollider _collider;
 
-        public override void Contact(Collider msg, CharacterBase context)
+        public override void OnEnter(Collider msg, CharacterBase context)
         {
-            base.Contact(msg, context);
+            base.OnEnter(msg, context);
             
             if (context.Kinematics.Speed >= context.Config.minParaloopSpeed)
             {

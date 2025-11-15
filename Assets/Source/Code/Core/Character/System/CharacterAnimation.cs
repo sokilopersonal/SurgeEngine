@@ -24,39 +24,39 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
         private void OnEnable()
         {
-            character.StateMachine.OnStateEarlyAssign += ChangeAnimationState;
+            Character.StateMachine.OnStateEarlyAssign += ChangeAnimationState;
         }
 
         private void OnDisable()
         {
-            character.StateMachine.OnStateEarlyAssign -= ChangeAnimationState;
+            Character.StateMachine.OnStateEarlyAssign -= ChangeAnimationState;
         }
 
         protected virtual void Update()
         {
             var animator = StateAnimator.Animator;
-            animator.SetFloat(AnimatorParams.GroundSpeed, Mathf.Clamp(character.Kinematics.Speed, 0, 30f));
-            animator.SetFloat(AnimatorParams.VerticalSpeed, character.Kinematics.Velocity.y);
+            animator.SetFloat(AnimatorParams.GroundSpeed, Mathf.Clamp(Character.Kinematics.Speed, 0, 30f));
+            animator.SetFloat(AnimatorParams.VerticalSpeed, Character.Kinematics.Velocity.y);
             
-            float targetSpeedPercent = Mathf.Clamp(character.Kinematics.Speed / character.Config.topSpeed, 0.02f, 1.1f);
+            float targetSpeedPercent = Mathf.Clamp(Character.Kinematics.Speed / Character.Config.topSpeed, 0.02f, 1.1f);
             float currentSpeedPercent = animator.GetFloat("SpeedPercent");
             animator.SetFloat("SpeedPercent", Mathf.Lerp(currentSpeedPercent, targetSpeedPercent, 10f * Time.deltaTime));
 
-            Vector3 vel = character.Kinematics.Velocity;
-            float signed = Vector3.SignedAngle(vel, character.Model.Root.forward, -Vector3.up);
+            Vector3 vel = Character.Kinematics.Velocity;
+            float signed = Vector3.SignedAngle(vel, Character.Model.Root.forward, -Vector3.up);
             float angle = signed * 0.3f;
 
-            Vector3 cross = Vector3.Cross(character.Model.Root.forward, character.Kinematics.Normal);
+            Vector3 cross = Vector3.Cross(Character.Model.Root.forward, Character.Kinematics.Normal);
             float mDot = Vector3.Dot(vel, cross);
             mDot = Mathf.Clamp(mDot * 0.3f, -1f, 1f);
             
             animator.SetFloat(AnimatorParams.SmoothTurnAngle, Mathf.Lerp(animator.GetFloat(AnimatorParams.SmoothTurnAngle), angle, 4f * Time.deltaTime));
             animator.SetFloat(AnimatorParams.TurnAngle, Mathf.Lerp(animator.GetFloat(AnimatorParams.TurnAngle), -mDot, 4f * Time.deltaTime));
             
-            float dot = Vector3.Dot(Vector3.up, character.transform.right);
+            float dot = Vector3.Dot(Vector3.up, Character.transform.right);
             animator.SetFloat("WallDot", -dot);
             animator.SetFloat("AbsWallDot", Mathf.Lerp(animator.GetFloat("AbsWallDot"), 
-                Mathf.Abs(Mathf.Approximately(character.Kinematics.Angle, 90) ? dot : 0), 1 * Time.deltaTime));
+                Mathf.Abs(Mathf.Approximately(Character.Kinematics.Angle, 90) ? dot : 0), 1 * Time.deltaTime));
 
             CalculateIdleState();
         }

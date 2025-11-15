@@ -11,12 +11,11 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.PhysicsObjects
 
         private ParticleSystem _currentExplosion;
         
-        public override void Contact(Collider msg, CharacterBase context)
+        public override void OnEnter(Collider msg, CharacterBase context)
         {
-            base.Contact(msg, context);
+            base.OnEnter(msg, context);
 
             var life = context.Life;
-            
             if (!life.WillDie)
             {
                 context.StateMachine.SetState<FStateStumble>(true).SetNoControlTime(0);
@@ -25,8 +24,6 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.PhysicsObjects
             life.TakeDamage(life.WillDie);
             
             context.Rigidbody.AddForce(Vector3.up * 15, ForceMode.Impulse);
-
-            
             
             _currentExplosion = Instantiate(explosion, transform.position, Quaternion.identity);
             Destroy(_currentExplosion.gameObject, 3f);

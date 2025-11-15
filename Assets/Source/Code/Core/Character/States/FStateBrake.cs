@@ -28,7 +28,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
         {
             base.OnFixedTick(dt);
 
-            var config = character.Config;
+            var config = Character.Config;
             var curve = config.castDistanceCurve;
             var curveDistance = curve.Evaluate(Kinematics.Speed / _config.topSpeed);
             float distance = config.castDistance * curveDistance;

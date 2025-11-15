@@ -24,7 +24,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
             
             if (Mathf.Abs(Kinematics.Angle - 90) < 0.05f && Kinematics.Velocity.y > 3f)
             {
-                character.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, 0.5f));
+                Character.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, 0.5f));
             }
         }
 
@@ -66,7 +66,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
                     var up = path.EvaluateUp();
                     
                     var ray = new Ray(Rigidbody.position, pos - Rigidbody.position);
-                    if (Physics.Raycast(ray, out var predictHit, 1f, character.Config.castLayer, QueryTriggerInteraction.Ignore))
+                    if (Physics.Raycast(ray, out var predictHit, 1f, Character.Config.castLayer, QueryTriggerInteraction.Ignore))
                     {
                         Kinematics.Normal = predictHit.normal;
                         Kinematics.Snap(pos + up);
@@ -77,13 +77,13 @@ namespace SurgeEngine.Source.Code.Core.Character.States
             }
             else
             {
-                bool predictedGround = Kinematics.CheckForPredictedGround(dt, character.Config.castDistance, 4);
+                bool predictedGround = Kinematics.CheckForPredictedGround(dt, Character.Config.castDistance, 4);
                 if (Kinematics.GetAttachState() && predictedGround)
                 {
                     var vel = Kinematics.Velocity;
                     vel.y = 0;
                     float speed = vel.magnitude;
-                    if (speed > character.Config.landingSpeed) StateMachine.SetState<FStateGround>();
+                    if (speed > Character.Config.landingSpeed) StateMachine.SetState<FStateGround>();
                     else
                     {
                         if (Kinematics.GetInputDir().magnitude < 0.1f)
@@ -99,7 +99,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
             }
             
             float gravity = Kinematics.Gravity;
-            if (character.Flags.HasFlag(FlagType.OnWater))
+            if (Character.Flags.HasFlag(FlagType.OnWater))
             {
                 gravity /= 4f;
             }

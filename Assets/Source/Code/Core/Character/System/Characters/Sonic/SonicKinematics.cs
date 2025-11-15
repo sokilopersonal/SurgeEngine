@@ -12,7 +12,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
         {
             base.Awake();
             
-            character.StateMachine.GetState(out _boost);
+            Character.StateMachine.GetState(out _boost);
         }
 
         protected override bool CanReturnToBaseSpeed()

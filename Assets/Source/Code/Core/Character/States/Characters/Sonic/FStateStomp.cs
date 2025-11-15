@@ -50,7 +50,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
         {
             base.OnFixedTick(dt);
             
-            HurtBox.CreateAttached(character, Rigidbody.transform, new Vector3(0f, -0.1f, 0f),
+            HurtBox.CreateAttached(Character, Rigidbody.transform, new Vector3(0f, -0.1f, 0f),
                 new Vector3(1.1f, 2f, 1.1f), HurtBoxTarget.Enemy | HurtBoxTarget.Breakable);
 
             Vector3 vel = Rigidbody.linearVelocity;
@@ -77,7 +77,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
                 if (isWater)
                 {
                     WaterSurface water = hit.transform.GetComponent<WaterSurface>();
-                    water.Attach(Rigidbody.position, character);
+                    water.Attach(Rigidbody.position, Character);
                 }
             }
             

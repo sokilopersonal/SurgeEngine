@@ -33,7 +33,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
             _timer = 0f;
             Timeout = _config.delay;
 
-            PhysicsConfig config = character.Config;
+            PhysicsConfig config = Character.Config;
             Model.SetCollisionParam(config.jumpCollisionHeight, config.jumpCollisionCenter, config.jumpCollisionRadius);
         }
 
@@ -59,7 +59,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
                 float distance = Vector3.Distance(Rigidbody.position, _target.transform.position);
                 if (distance <= _target.DistanceThreshold)
                 {
-                    _target.OnTargetReached.Invoke(character);
+                    _target.OnTargetReached.Invoke(Character);
                 }
                 
                 // If for some reason Sonic get stuck
@@ -82,7 +82,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
                     }
                 }
                 
-                Vector3 direction = Vector3.Cross(character.transform.right, Vector3.up);
+                Vector3 direction = Vector3.Cross(Character.transform.right, Vector3.up);
                 Rigidbody.linearVelocity = direction * (_config.jumpDashDistance *
                                                         _config.JumpDashCurve.Evaluate(_timer));
                 Rigidbody.rotation = Quaternion.LookRotation(direction, Vector3.up);
@@ -95,7 +95,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
                 }
             }
             
-            bool foundDamageable = HurtBox.CreateAttached(character, character.transform, Vector3.zero, Vector3.one * 0.5f, HurtBoxTarget.Enemy | HurtBoxTarget.Breakable);
+            bool foundDamageable = HurtBox.CreateAttached(Character, Character.transform, Vector3.zero, Vector3.one * 0.5f, HurtBoxTarget.Enemy | HurtBoxTarget.Breakable);
             if (foundDamageable)
             {
                 StateMachine.SetState<FStateAfterHoming>();

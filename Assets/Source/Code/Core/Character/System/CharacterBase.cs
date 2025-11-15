@@ -16,15 +16,15 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         public new Transform transform => Rigidbody.transform;
         
         [Header("Components")]
-        [SerializeField, Required] private CharacterInput input;
-        [SerializeField, Required] private CharacterSounds sounds; 
-        [SerializeField, Required] private new CharacterCamera camera;
-        [SerializeField, Required] private new CharacterAnimation animation;
-        [SerializeField, Required] private CharacterEffects effects;
-        [SerializeField, Required] private CharacterModel model;
-        [SerializeField, Required] private CharacterFlags flags;
-        [SerializeField, Required] private CharacterKinematics kinematics;
-        [SerializeField, Required] private CharacterLife life;
+        [SerializeField] private CharacterInput input;
+        [SerializeField] private CharacterSounds sounds; 
+        [SerializeField] private new CharacterCamera camera;
+        [SerializeField] private new CharacterAnimation animation;
+        [SerializeField] private CharacterEffects effects;
+        [SerializeField] private CharacterModel model;
+        [SerializeField] private CharacterFlags flags;
+        [SerializeField] private CharacterKinematics kinematics;
+        [SerializeField] private CharacterLife life;
         public CharacterInput Input => input;
         public CharacterSounds Sounds => sounds;
         public CharacterCamera Camera => camera; 
@@ -34,7 +34,6 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         public CharacterFlags Flags => flags;
         public CharacterKinematics Kinematics => kinematics;
         public CharacterLife Life => life;
-        private readonly Dictionary<Type, CharacterComponent> _components = new();
 
         [Header("Config")]
         [SerializeField] private PhysicsConfig config;
@@ -76,10 +75,6 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         private void FixedUpdate()
         {
             StateMachine.FixedTick(Time.fixedDeltaTime);
-        }
-
-        private void LateUpdate()
-        {
         }
 
         protected virtual void AddStates()

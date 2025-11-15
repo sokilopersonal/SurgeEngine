@@ -25,7 +25,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.GoalRing
         
         [Inject] private DiContainer _container;
 
-        public override void Contact(Collider msg, CharacterBase context)
+        public override void OnEnter(Collider msg, CharacterBase context)
         {
             if (!_triggered)
             {
@@ -85,7 +85,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.GoalRing
                 };
             }
             
-            base.Contact(msg, context);
+            base.OnEnter(msg, context);
         }
     }
 }

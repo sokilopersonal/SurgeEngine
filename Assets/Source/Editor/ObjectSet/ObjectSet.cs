@@ -24,7 +24,7 @@ namespace SurgeEngine.Source.Editor.ObjectSet
 
         private readonly List<PrefabData> _prefabDataList = new List<PrefabData>();
         private Vector2 _scrollPosition;
-        private const string SaveFilePath = "Assets/_Source/Editor/ObjectSet/SelectedPrefabs.json";
+        private const string SaveFilePath = "Assets/Source/Editor/ObjectSet/SelectedPrefabs.json";
         private string[] _categories;
         private GameObject _currentPrefabInstance;
         private bool _isPlacingPrefab;

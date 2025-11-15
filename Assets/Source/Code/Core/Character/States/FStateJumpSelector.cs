@@ -31,7 +31,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
             Rigidbody.rotation = _attachedJumpSelector.transform.rotation;
             Model.Root.rotation = _attachedJumpSelector.transform.rotation;
             
-            character.Flags.AddFlag(new Flag(FlagType.OutOfControl, false));
+            Character.Flags.AddFlag(new Flag(FlagType.OutOfControl, false));
             
             _attachedJumpSelector.OnJumpSelectorResult?.Invoke(JumpSelectorResultType.Start);
         }
@@ -70,7 +70,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
             if (_fallTimer >= fallTime)
             {
                 _attachedJumpSelector.OnJumpSelectorResult?.Invoke(JumpSelectorResultType.Fall);
-                character.Flags.RemoveFlag(FlagType.OutOfControl);
+                Character.Flags.RemoveFlag(FlagType.OutOfControl);
                 StateMachine.SetState<FStateJumpSelectorLaunch>().SetData(0.5f, default, JumpSelectorResultType.Fall);
                 return;
             }
@@ -99,7 +99,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
             void Launch(float speed, float outOfControl, Vector3 forward, Vector3 right, JumpSelectorButton button, float pitch = 0)
             {
                 Rigidbody.linearVelocity = Utility.GetImpulseWithPitch(forward, right, pitch, speed);
-                character.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, outOfControl));
+                Character.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, outOfControl));
                 
                 StateMachine.SetState<FStateJumpSelectorLaunch>().SetData(outOfControl, button, JumpSelectorResultType.OK);
             }

@@ -68,7 +68,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
 
             // how the hell do i make him move
             // you did it!!
-            PhysicsConfig config = character.Config;
+            PhysicsConfig config = Character.Config;
             float distance = config.castDistance * config.castDistanceCurve
                 .Evaluate(Kinematics.Speed / _crawlConfig.topSpeed);
             if (Kinematics.CheckForGroundWithDirection(out RaycastHit data, Vector3.down, distance))

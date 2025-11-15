@@ -13,9 +13,9 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         [SerializeField, Tooltip("How much time it takes for player to get on the 2D Path")] private float pathEaseTime = 0.2f;
         [SerializeField, Tooltip("Should this trigger end the autorun?")] private bool isFinish;
         
-        public override void Contact(Collider msg, CharacterBase context)
+        public override void OnEnter(Collider msg, CharacterBase context)
         {
-            base.Contact(msg, context);
+            base.OnEnter(msg, context);
 
             var flags = context.Flags;
             

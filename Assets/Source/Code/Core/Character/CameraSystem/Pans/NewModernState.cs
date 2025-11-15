@@ -216,7 +216,7 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem.Pans
             
             if (Mathf.Abs(x) > 0)
             {
-                float viewDot = Vector3.Dot(_stateMachine.Transform.forward, -_master.character.transform.up);
+                float viewDot = Vector3.Dot(_stateMachine.Transform.forward, -_master.Character.transform.up);
                 viewDot = Mathf.Abs(viewDot);
 
                 if (viewDot >= 0.9f)
