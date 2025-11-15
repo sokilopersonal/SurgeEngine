@@ -92,13 +92,13 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem
             _cameraTransform = _camera.transform;
         }
 
-        internal override void Set(CharacterBase character)
+        public override void Set(CharacterBase character)
         {
             base.Set(character);
             
             foreach (var modifier in baseCameraModifiers)
             {
-                modifier.Set(this.Character);
+                modifier.Set(Character);
                 _modifiersDictionary.Add(modifier.GetType(), modifier);
             }
         }

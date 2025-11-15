@@ -4,7 +4,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 {
     public class CharacterSounds : CharacterComponent
     {
-        internal override void Set(CharacterBase character)
+        public override void Set(CharacterBase character)
         {
             base.Set(character);
             
