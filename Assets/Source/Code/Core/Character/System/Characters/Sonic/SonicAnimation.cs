@@ -349,10 +349,14 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
                     StateAnimator.TransitionToState("RailSwitchR", 0.4f);
                 }
             }
-
             if (obj is FStateStumble)
             {
                 StateAnimator.TransitionToState("StumbleC");
+            }
+
+            if (obj is FStateLightSpeedDash)
+            {
+                StateAnimator.TransitionToState("LightSpeedDash");
             }
         }
         

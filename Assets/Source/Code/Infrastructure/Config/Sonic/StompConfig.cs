@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace SurgeEngine.Source.Code.Infrastructure.Config.SonicSpecific
+namespace SurgeEngine.Source.Code.Infrastructure.Config.Sonic
 {
-    [CreateAssetMenu(fileName = "StompConfig", menuName = "SurgeEngine/Configs/Physics/Stomp", order = 0)]
+    [CreateAssetMenu(fileName = "StompConfig", menuName = "Surge Engine/Configs/Physics/Stomp", order = 0)]
     public class StompConfig : ScriptableObject
     {
         public float speed;

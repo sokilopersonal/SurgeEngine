@@ -4,6 +4,8 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Collectables
 {
     public class SuperRing : Ring
     {
+        public override bool IsLightSpeedDashTarget => false;
+
         protected override void Collect(int count)
         {
             base.Collect(10);

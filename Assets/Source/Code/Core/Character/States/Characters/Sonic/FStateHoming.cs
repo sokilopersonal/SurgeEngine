@@ -5,7 +5,7 @@ using SurgeEngine.Source.Code.Core.StateMachine.Interfaces;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.PhysicsObjects;
 using SurgeEngine.Source.Code.Infrastructure.Config;
-using SurgeEngine.Source.Code.Infrastructure.Config.SonicSpecific;
+using SurgeEngine.Source.Code.Infrastructure.Config.Sonic;
 using SurgeEngine.Source.Code.Infrastructure.Custom;
 using UnityEngine;
 

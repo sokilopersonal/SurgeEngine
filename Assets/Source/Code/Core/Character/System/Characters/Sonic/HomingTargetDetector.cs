@@ -1,6 +1,6 @@
 ﻿using SurgeEngine.Source.Code.Gameplay.CommonObjects;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility.Rails;
-using SurgeEngine.Source.Code.Infrastructure.Config.SonicSpecific;
+using SurgeEngine.Source.Code.Infrastructure.Config.Sonic;
 using SurgeEngine.Source.Code.Infrastructure.Custom.Extensions;
 using UnityEngine;
 using UnityEngine.Splines;

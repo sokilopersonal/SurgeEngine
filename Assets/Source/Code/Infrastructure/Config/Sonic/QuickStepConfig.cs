@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace SurgeEngine.Source.Code.Infrastructure.Config.SonicSpecific
+namespace SurgeEngine.Source.Code.Infrastructure.Config.Sonic
 {
-    [CreateAssetMenu(fileName = "QuickStepConfig", menuName = "SurgeEngine/Configs/Sonic/QuickStep", order = 0)]
+    [CreateAssetMenu(fileName = "QuickStepConfig", menuName = "Surge Engine/Configs/Sonic/QuickStep", order = 0)]
     public class QuickStepConfig : ScriptableObject
     {
         [Header("Quickstep")]

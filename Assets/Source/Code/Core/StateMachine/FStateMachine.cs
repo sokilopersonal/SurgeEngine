@@ -13,6 +13,7 @@ namespace SurgeEngine.Source.Code.Core.StateMachine
         public FState PreviousState { get; private set; }
 
         protected readonly Dictionary<Type, FState> states = new();
+        private readonly List<FState> _statesList = new();
         private readonly Dictionary<Type, FSubState> _subStates = new();
         private readonly List<FSubState> _subStatesList = new();
         private readonly List<IStateTimeout> _stateTimeouts = new();
@@ -30,6 +31,7 @@ namespace SurgeEngine.Source.Code.Core.StateMachine
         public void AddState(FState state)
         {
             states.Add(state.GetType(), state);
+            _statesList.Add(state);
 
             if (state is IStateTimeout timeout)
             {

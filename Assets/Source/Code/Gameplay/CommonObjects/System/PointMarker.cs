@@ -69,10 +69,6 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.System
 
     public interface IPointMarkerLoader
     {
-        /// <summary>
-        /// Load the player at the specified position and rotation.
-        /// Make it virtual to, for example, disable boost on load.
-        /// </summary>
         void Load();
     }
 }

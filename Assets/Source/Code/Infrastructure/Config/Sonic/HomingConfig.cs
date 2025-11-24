@@ -1,9 +1,9 @@
 ﻿using NaughtyAttributes;
 using UnityEngine;
 
-namespace SurgeEngine.Source.Code.Infrastructure.Config.SonicSpecific
+namespace SurgeEngine.Source.Code.Infrastructure.Config.Sonic
 {
-    [CreateAssetMenu(fileName = "HomingConfig", menuName = "SurgeEngine/Configs/Sonic/Homing", order = 0)]
+    [CreateAssetMenu(fileName = "HomingConfig", menuName = "Surge Engine/Configs/Sonic/Homing", order = 0)]
     public class HomingConfig : ScriptableObject
     {
         [Foldout("Homing")] public float speed = 35;

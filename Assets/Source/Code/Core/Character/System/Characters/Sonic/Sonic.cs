@@ -1,7 +1,7 @@
 ﻿using SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic;
 using SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStates;
 using SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic.Actions;
-using SurgeEngine.Source.Code.Infrastructure.Config.SonicSpecific;
+using SurgeEngine.Source.Code.Infrastructure.Config.Sonic;
 using UnityEngine;
 
 namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
@@ -16,6 +16,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
         [SerializeField] private QuickStepConfig quickstepConfig;
         [SerializeField] private CrawlConfig crawlConfig;
         [SerializeField] private SweepConfig sweepKickConfig;
+        [SerializeField] private LightSpeedDashConfig lightSpeedDashConfig;
 
         public BoostConfig BoostConfig => boostConfig;
         public DriftConfig DriftConfig => driftConfig; 
@@ -25,6 +26,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
         public QuickStepConfig QuickstepConfig => quickstepConfig;
         public CrawlConfig CrawlConfig => crawlConfig;
         public SweepConfig SweepKickConfig => sweepKickConfig;
+        public LightSpeedDashConfig LightSpeedDashConfig => lightSpeedDashConfig;
 
         protected override void InitializeConfigs()
         {
@@ -38,6 +40,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
             AddConfig(QuickstepConfig);
             AddConfig(CrawlConfig);
             AddConfig(SweepKickConfig);
+            AddConfig(LightSpeedDashConfig);
         }
 
         protected override void AddStates()
@@ -54,9 +57,11 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
             StateMachine.AddState(new FStateQuickstep(this));
             StateMachine.AddState(new FStateCrawl(this));
             StateMachine.AddState(new FStateSweepKick(this));
+            StateMachine.AddState(new FStateLightSpeedDash(this));
 
             StateMachine.AddSubState(new FBoost(this));
             StateMachine.AddSubState(new FSweepKick(this));
+            StateMachine.AddSubState(new FRingDashSearch(this));
 
             _ = new SonicIdleActions(this);
             _ = new SonicGroundActions(this);

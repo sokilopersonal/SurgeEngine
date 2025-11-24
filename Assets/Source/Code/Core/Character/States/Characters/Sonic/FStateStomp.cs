@@ -3,7 +3,7 @@ using SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStates;
 using SurgeEngine.Source.Code.Core.Character.System;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.Environment;
-using SurgeEngine.Source.Code.Infrastructure.Config.SonicSpecific;
+using SurgeEngine.Source.Code.Infrastructure.Config.Sonic;
 using SurgeEngine.Source.Code.Infrastructure.Custom;
 using UnityEngine;
 using Vector3 = UnityEngine.Vector3;

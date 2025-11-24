@@ -1,11 +1,11 @@
 using SurgeEngine.Source.Code.Core.Character.States.BaseStates;
 using SurgeEngine.Source.Code.Core.Character.System;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility;
-using SurgeEngine.Source.Code.Infrastructure.Config.SonicSpecific;
+using SurgeEngine.Source.Code.Infrastructure.Config.Sonic;
 
 namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStates
 {
-    public class FSweepKick : FActorSubState
+    public class FSweepKick : FCharacterSubState
     {
         private readonly SweepConfig _config;
         
@@ -17,9 +17,9 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStat
 
         private void ButtonPressed(ButtonType button)
         {
-            if (button != ButtonType.B || !_config.eligibleAnimationStates.Contains(character.Animation.StateAnimator.GetCurrentAnimationState()))
+            if (button != ButtonType.B || !_config.eligibleAnimationStates.Contains(Character.Animation.StateAnimator.GetCurrentAnimationState()))
                 return;
-            character.StateMachine.SetState<FStateSweepKick>();
+            Character.StateMachine.SetState<FStateSweepKick>();
         }
     }
 }

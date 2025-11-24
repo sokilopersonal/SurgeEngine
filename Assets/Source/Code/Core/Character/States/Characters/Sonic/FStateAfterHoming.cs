@@ -1,6 +1,6 @@
 ﻿using SurgeEngine.Source.Code.Core.Character.States.BaseStates;
 using SurgeEngine.Source.Code.Core.Character.System;
-using SurgeEngine.Source.Code.Infrastructure.Config.SonicSpecific;
+using SurgeEngine.Source.Code.Infrastructure.Config.Sonic;
 using UnityEngine;
 
 namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic

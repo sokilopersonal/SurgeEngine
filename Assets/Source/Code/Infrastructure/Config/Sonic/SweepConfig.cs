@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SurgeEngine.Source.Code.Infrastructure.Config.SonicSpecific
+namespace SurgeEngine.Source.Code.Infrastructure.Config.Sonic
 {
-    [CreateAssetMenu(fileName = "SweepKickConfig", menuName = "SurgeEngine/Configs/Sonic/SweepKick", order = 0)]
+    [CreateAssetMenu(fileName = "SweepKickConfig", menuName = "Surge Engine/Configs/Sonic/SweepKick", order = 0)]
     public class SweepConfig : ScriptableObject
     {
         public float deceleration = 6f;

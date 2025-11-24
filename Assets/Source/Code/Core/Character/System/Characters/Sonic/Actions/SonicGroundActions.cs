@@ -2,7 +2,7 @@
 using SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic;
 using SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStates;
 using SurgeEngine.Source.Code.Core.StateMachine;
-using SurgeEngine.Source.Code.Infrastructure.Config.SonicSpecific;
+using SurgeEngine.Source.Code.Infrastructure.Config.Sonic;
 using UnityEngine;
 
 namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic.Actions
@@ -32,7 +32,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic.Actions
             
             if (!Flags.HasFlag(FlagType.OutOfControl))
             {
-                if (_boost != null && _boost.Active)
+                if (_boost != null && !_boost.Active)
                 {
                     if (Kinematics.Skidding && Kinematics.Speed > 15f)
                     {

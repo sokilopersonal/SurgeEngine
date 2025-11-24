@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace SurgeEngine.Source.Code.Infrastructure.Config.SonicSpecific
+namespace SurgeEngine.Source.Code.Infrastructure.Config.Sonic
 {
-    [CreateAssetMenu(fileName = "BoostConfig", menuName = "SurgeEngine/Configs/Sonic/Boost", order = 0)]
+    [CreateAssetMenu(fileName = "BoostConfig", menuName = "Surge Engine/Configs/Sonic/Boost", order = 0)]
     public class BoostConfig : ScriptableObject
     {
         [SerializeField] private float startSpeed = 45f;

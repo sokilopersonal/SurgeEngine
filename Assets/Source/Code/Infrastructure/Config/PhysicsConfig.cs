@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace SurgeEngine.Source.Code.Infrastructure.Config
 {
-    [CreateAssetMenu(fileName = "PhysicsConfig", menuName = "SurgeEngine/Configs/Physics/Base", order = 0)]
+    [CreateAssetMenu(fileName = "PhysicsConfig", menuName = "Surge Engine/Configs/Physics/Base", order = 0)]
     public class PhysicsConfig : ScriptableObject
     {
         [Header("Cast")]

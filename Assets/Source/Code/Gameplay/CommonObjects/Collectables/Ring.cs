@@ -9,8 +9,12 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Collectables
 {
     public class Ring : StageObject, IPointMarkerLoader
     {
+        [SerializeField] private bool isLightSpeedDashTarget = true;
         [SerializeField] private ParticleSystem particle;
         [SerializeField] private EventReference ringSound;
+        
+        public virtual bool IsLightSpeedDashTarget => isLightSpeedDashTarget;
+        public bool InMagnet => _inMagnet;
         
         [Inject] private Stage _stage;
         

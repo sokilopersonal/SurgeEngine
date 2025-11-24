@@ -5,13 +5,13 @@ using SurgeEngine.Source.Code.Gameplay.CommonObjects;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.Collectables;
 using SurgeEngine.Source.Code.Gameplay.Enemy.Base;
 using SurgeEngine.Source.Code.Gameplay.Inputs;
-using SurgeEngine.Source.Code.Infrastructure.Config.SonicSpecific;
+using SurgeEngine.Source.Code.Infrastructure.Config.Sonic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStates
 {
-    public class FBoost : FActorSubState
+    public class FBoost : FCharacterSubState
     {
         public float BoostEnergy
         {
@@ -41,7 +41,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStat
             BoostEnergy = MaxBoostEnergy * _config.StartBoostCapacity;
             
             owner.Input.XAction += BoostAction;
-            character.StateMachine.OnStateAssign += OnStateAssign;
+            Character.StateMachine.OnStateAssign += OnStateAssign;
 
             ObjectEvents.OnObjectTriggered += OnRingCollected;
             ObjectEvents.OnEnemyDied += OnEnemyDied;
@@ -49,8 +49,8 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStat
         
         ~FBoost()
         {
-            character.Input.XAction -= BoostAction;
-            character.StateMachine.OnStateAssign -= OnStateAssign;
+            Character.Input.XAction -= BoostAction;
+            Character.StateMachine.OnStateAssign -= OnStateAssign;
 
             ObjectEvents.OnObjectTriggered -= OnRingCollected;
             ObjectEvents.OnEnemyDied -= OnEnemyDied;
@@ -73,9 +73,9 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStat
         {
             base.OnTick(dt);
             
-            _boostHandler?.BoostHandle(character, _config);
+            _boostHandler?.BoostHandle(Character, _config);
 
-            FState state = character.StateMachine.CurrentState;
+            FState state = Character.StateMachine.CurrentState;
             if (state is FStateDrift)
             {
                 BoostEnergy += _config.DriftEnergyAddition * dt;
@@ -97,7 +97,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStat
                     _boostCancelTimer = 0;
                 }
 
-                if (character.Kinematics.Speed < _config.MaxBoostSpeed / 8)
+                if (Character.Kinematics.Speed < _config.MaxBoostSpeed / 8)
                 {
                     _boostKeepTimer += dt / _config.KeepTime;
                     if (_boostKeepTimer >= 1f)
@@ -128,7 +128,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStat
                     _boostNoEnergyCancelTimer += dt / 0.1f;
                 }
                 
-                character.Kinematics.TurnRate *= _config.TurnSpeedMultiplier;
+                Character.Kinematics.TurnRate *= _config.TurnSpeedMultiplier;
             }
             else
             {
@@ -163,7 +163,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStat
             if (obj is FStateGrind)
             {
                 if (_cancelBoostCoroutine != null)
-                    character.StopCoroutine(_cancelBoostCoroutine);
+                    Character.StopCoroutine(_cancelBoostCoroutine);
             }
         }
 
@@ -180,7 +180,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStat
 
         private void CreateDamage()
         {
-            HurtBox.CreateAttached(character, character.transform, new Vector3(0f, 0f, -0.1f), new Vector3(0.5f, 1f, 1.15f), 
+            HurtBox.CreateAttached(Character, Character.transform, new Vector3(0f, 0f, -0.1f), new Vector3(0.5f, 1f, 1.15f), 
                 HurtBoxTarget.Enemy | HurtBoxTarget.Breakable);
         }
 
@@ -189,12 +189,12 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStat
             var mask = _config.MagnetRingMask;
             var radius = _config.MagnetRadius;
             
-            var col = Physics.OverlapSphere(character.transform.position, radius, mask);
+            var col = Physics.OverlapSphere(Character.transform.position, radius, mask);
             if (col.Length > 0)
             {
                 for (int i = 0; i < col.Length; i++)
                 {
-                    col[i].GetComponent<Ring>().StartMagnet(character);
+                    col[i].GetComponent<Ring>().StartMagnet(Character);
                 }
             }
         }
@@ -203,7 +203,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStat
 
         private void BoostAction(InputAction.CallbackContext obj)
         {
-            if (character.StateMachine.CurrentState is FStateAir && !CanAirBoost) return;
+            if (Character.StateMachine.CurrentState is FStateAir && !CanAirBoost) return;
 
             if (_boostHandler == null)
             {
@@ -215,15 +215,15 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStat
             
             if (CanBoost())
             {
-                Active = obj.started && !character.Flags.HasFlag(FlagType.OutOfControl);
+                Active = obj.started && !Character.Flags.HasFlag(FlagType.OutOfControl);
             }
             
             if (Active)
             {
-                Rigidbody body = character.Kinematics.Rigidbody;
+                Rigidbody body = Character.Kinematics.Rigidbody;
                 float startSpeed = _config.StartSpeed;
                 
-                if (character.Kinematics.Speed < startSpeed)
+                if (Character.Kinematics.Speed < startSpeed)
                 {
                     body.linearVelocity = body.transform.forward * startSpeed;
                 }

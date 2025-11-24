@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace SurgeEngine.Source.Code.Infrastructure.Config.SonicSpecific
+namespace SurgeEngine.Source.Code.Infrastructure.Config.Sonic
 {
-    [CreateAssetMenu(fileName = "DriftConfig", menuName = "SurgeEngine/Configs/Sonic/Drift", order = 0)]
+    [CreateAssetMenu(fileName = "DriftConfig", menuName = "Surge Engine/Configs/Sonic/Drift", order = 0)]
     public class DriftConfig : ScriptableObject
     {
         public float centrifugalForce = 1.5f;

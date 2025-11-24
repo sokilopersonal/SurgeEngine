@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace SurgeEngine.Source.Code.UI.MainMenu
 {
-    [CreateAssetMenu(fileName = "StageSlotView", menuName = "SurgeEngine/UI/StageSlotView")]
+    [CreateAssetMenu(fileName = "StageSlotView", menuName = "Surge Engine/UI/StageSlotView")]
     public class StageSlotAsset : ScriptableObject
     {
         [SerializeField] private Sprite image;

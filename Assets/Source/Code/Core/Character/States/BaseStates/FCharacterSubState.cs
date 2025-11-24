@@ -3,13 +3,13 @@ using SurgeEngine.Source.Code.Core.StateMachine.Base;
 
 namespace SurgeEngine.Source.Code.Core.Character.States.BaseStates
 {
-    public class FActorSubState : FSubState
+    public class FCharacterSubState : FSubState
     {
-        protected CharacterBase character { get; private set; }
+        protected CharacterBase Character { get; private set; }
 
-        public FActorSubState(CharacterBase owner)
+        public FCharacterSubState(CharacterBase owner)
         {
-            character = owner;
+            Character = owner;
         }
     }
 }
