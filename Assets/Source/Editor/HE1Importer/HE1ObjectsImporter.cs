@@ -7,6 +7,7 @@ using System.Xml.Linq;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.CameraObjects;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.ChangeModes;
+using SurgeEngine.Source.Code.Gameplay.CommonObjects.Collectables;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.PhysicsObjects;
 using UnityEditor;
@@ -70,6 +71,11 @@ namespace SurgeEngine.Source.Editor.HE1Importer
         {
             return new Dictionary<string, Action<GameObject, XElement>>
             {
+                ["Ring"] = (go, elem) =>
+                {
+                    var ring = go.GetComponent<Ring>();
+                    HE1Helper.SetBoolReflection(ring, "isLightSpeedDashTarget", HE1Helper.GetBoolWithMultiSetParam(elem, "IsLightSpeedDashTarget"));
+                },
                 ["ChangeVolumeCamera"] = (go, elem) =>
                 {
                     var volume = go.GetComponent<BoxCollider>();
