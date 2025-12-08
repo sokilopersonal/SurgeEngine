@@ -193,30 +193,10 @@ MonoBehaviour:
       - rid: 4770385477952339968
       - rid: 4770385477952339969
       - rid: 4770385477952339970
+      - rid: 5777693013177270272
+      - rid: 5777693013177270273
     m_RuntimeSettings:
-      m_List:
-      - rid: 6283096851078971481
-      - rid: 6283096851078971482
-      - rid: 6283096851078971485
-      - rid: 6283096851078971487
-      - rid: 6283096851078971488
-      - rid: 6283096851078971489
-      - rid: 6283096851078971491
-      - rid: 6283096851078971493
-      - rid: 6283096851078971494
-      - rid: 6283096851078971495
-      - rid: 6283096851078971496
-      - rid: 6283096851078971498
-      - rid: 6283096851078971499
-      - rid: 6283096851078971501
-      - rid: 6283096851078971502
-      - rid: 6283096851078971505
-      - rid: 6283096851078971507
-      - rid: 6283096851078971510
-      - rid: 6283096851078971512
-      - rid: 6283096851078971513
-      - rid: 4770385477952339969
-      - rid: 4770385477952339970
+      m_List: []
   renderingLayerNames:
   - Default
   lightLayerName0: 
@@ -398,6 +378,23 @@ MonoBehaviour:
       data:
         m_Version: 1
         m_UseBicubicLightmapSampling: 0
+    - rid: 5777693013177270272
+      type: {class: RayTracingRenderPipelineResources, ns: UnityEngine.Rendering.UnifiedRayTracing, asm: Unity.UnifiedRayTracing.Runtime}
+      data:
+        m_Version: 1
+        m_GeometryPoolKernels: {fileID: 7200000, guid: 98e3d58cae7210c4786f67f504c9e899, type: 3}
+        m_CopyBuffer: {fileID: 7200000, guid: 1b95b5dcf48d1914c9e1e7405c7660e3, type: 3}
+        m_CopyPositions: {fileID: 7200000, guid: 1ad53a96b58d3c3488dde4f14db1aaeb, type: 3}
+        m_BitHistogram: {fileID: 7200000, guid: 8670f7ce4b60cef43bed36148aa1b0a2, type: 3}
+        m_BlockReducePart: {fileID: 7200000, guid: 4e034cc8ea2635c4e9f063e5ddc7ea7a, type: 3}
+        m_BlockScan: {fileID: 7200000, guid: 4d6d5de35fa45ef4a92119397a045cc9, type: 3}
+        m_BuildHlbvh: {fileID: 7200000, guid: 2d70cd6be91bd7843a39a54b51c15b13, type: 3}
+        m_RestructureBvh: {fileID: 7200000, guid: 56641cb88dcb31a4398a4997ef7a7a8c, type: 3}
+        m_Scatter: {fileID: 7200000, guid: a2eaeefdac4637a44b734e85b7be9186, type: 3}
+    - rid: 5777693013177270273
+      type: {class: ColorCheckerResources, ns: UnityEngine.Rendering.HighDefinition, asm: Unity.RenderPipelines.HighDefinition.Runtime}
+      data:
+        m_ColorCheckerMaterial: {fileID: 2100000, guid: 7a1044256d39dba4aa777255550527bf, type: 2}
     - rid: 6283096851078971481
       type: {class: LensSettings, ns: UnityEngine.Rendering.HighDefinition, asm: Unity.RenderPipelines.HighDefinition.Runtime}
       data:

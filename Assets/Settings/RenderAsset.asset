@@ -51,6 +51,7 @@ MonoBehaviour:
     supportTransparentDepthPrepass: 1
     supportTransparentDepthPostpass: 0
     colorBufferFormat: 48
+    depthBufferFormat: 0
     supportCustomPass: 1
     supportVariableRateShading: 1
     customBufferFormat: 8
@@ -169,6 +170,9 @@ MonoBehaviour:
       enabled: 1
       useMipBias: 0
       advancedUpscalersByPriority: 0001
+      advancedUpscalerNames:
+      - DLSS
+      - FSR2
       DLSSPerfQualitySetting: 2
       DLSSInjectionPoint: 1
       TAAUInjectionPoint: 1
@@ -176,6 +180,11 @@ MonoBehaviour:
       defaultInjectionPoint: 0
       DLSSUseOptimalSettings: 0
       DLSSSharpness: 0
+      DLSSRenderPresetForQuality: 0
+      DLSSRenderPresetForBalanced: 0
+      DLSSRenderPresetForPerformance: 0
+      DLSSRenderPresetForUltraPerformance: 0
+      DLSSRenderPresetForDLAA: 0
       FSR2EnableSharpness: 0
       FSR2Sharpness: 0
       FSR2UseOptimalSettings: 0
@@ -353,7 +362,7 @@ MonoBehaviour:
   m_CompositorCustomVolumeComponentsList:
     m_InjectionPoint: 1
     m_CustomPostProcessTypesAsString: []
-  m_Version: 25
+  m_Version: 26
   m_ObsoleteFrameSettings:
     overrides: 0
     enableShadow: 0
