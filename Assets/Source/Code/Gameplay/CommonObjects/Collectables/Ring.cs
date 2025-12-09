@@ -14,14 +14,13 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Collectables
         [SerializeField] private EventReference ringSound;
         
         public virtual bool IsLightSpeedDashTarget => isLightSpeedDashTarget;
-        public bool InMagnet => _inMagnet;
-        
-        [Inject] private Stage _stage;
+        public bool InMagnet { get; private set; }
+
+        private Stage Stage => Stage.Instance;
         
         private const float RotationSpeed = 240f;
 
         private CharacterBase _character;
-        private bool _inMagnet;
         private float _factor;
         private Vector3 _velocity;
 
@@ -43,7 +42,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Collectables
                 return;
             }
             
-            if (_inMagnet)
+            if (InMagnet)
             {
                 float stiffnessRampTime = 0.5f;
                 float baseStiffness = 12f;
@@ -76,9 +75,9 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Collectables
 
         public virtual void StartMagnet(CharacterBase character)
         {
-            if (!_inMagnet)
+            if (!InMagnet)
             {
-                _inMagnet = true;
+                InMagnet = true;
                 
                 _character = character;
             }
@@ -90,7 +89,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Collectables
 
             for (int i = 0; i < count; i++)
             {
-                _stage.Data.RingCount++;
+                Stage.Data.RingCount++;
                 Utility.AddScore(10);
             }
             
@@ -101,7 +100,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Collectables
 
         public void Load()
         {
-            _inMagnet = false;
+            InMagnet = false;
             _factor = 0f;
             _velocity = Vector3.zero;
 
