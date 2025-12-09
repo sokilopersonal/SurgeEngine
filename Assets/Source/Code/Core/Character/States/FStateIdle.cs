@@ -16,7 +16,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
         {
             base.OnEnter();
             
-            Kinematics.ResetVelocity();
+            Rigidbody.linearVelocity = Vector3.zero;
         }
 
         public override void OnTick(float dt)

@@ -47,11 +47,9 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
             foreach (var col in colliders)
             {
                 HomingTarget target = col.GetComponent<HomingTarget>();
-                if (target == null) continue;
-
                 Vector3 targetPos = col.transform.position;
-
-                if (target.TryGetComponentInParent(out Rail rail))
+                
+                if (col.TryGetComponent(out Rail rail))
                 {
                     var spline = rail.Container.Spline;
                     var railTarget = rail.HomingTarget;
@@ -71,6 +69,8 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
                     railTarget.transform.position = Vector3.Lerp(railTarget.transform.position, targetPos, 32 * Time.fixedDeltaTime);
                     target = railTarget;
                 }
+                
+                if (target == null) continue;
 
                 Vector3 dir = targetPos - transform.position;
                 Vector3 dirFlat = new Vector3(dir.x, 0f, dir.z).normalized;
