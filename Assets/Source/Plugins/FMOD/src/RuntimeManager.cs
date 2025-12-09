@@ -184,7 +184,7 @@ namespace FMODUnity
                         RuntimeUtils.EnforceLibraryOrder();
 
                         #if UNITY_OPENHARMONY && !UNITY_EDITOR
-                        OpenHarmonyJSObject openHarmonyJSObject = new OpenHarmonyJSObject("ClassFMOD" + FMOD.VERSION.dllSuffix);
+                        OpenHarmonyJSObject openHarmonyJSObject = new OpenHarmonyJSObject("ClassFMOD" + FMOD.VERSION.suffix);
                         openHarmonyJSObject.Call("init");
                         #endif
 
@@ -1013,7 +1013,7 @@ retry:
             else
             {
                 Instance.loadingBanksRef++;
-                assetReference.LoadAssetAsync<TextAsset>().Completed += (obj) =>
+                Addressables.LoadAssetAsync<TextAsset>(assetReference).Completed += (obj) =>
                 {
                     if (!obj.IsValid())
                     {
@@ -1031,7 +1031,7 @@ retry:
                         completionCallback();
                     }
 
-                    assetReference.ReleaseAsset();
+                    Addressables.Release(obj);
                 };
 
             }
