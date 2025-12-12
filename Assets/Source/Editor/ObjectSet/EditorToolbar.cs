@@ -1,6 +1,4 @@
-﻿using UnityEditor;
-using UnityEditor.Toolbars;
-using UnityEngine;
+﻿using UnityEditor.Toolbars;
 
 namespace SurgeEngine.Source.Editor.ObjectSet
 {

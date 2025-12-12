@@ -48,6 +48,13 @@ namespace SurgeEngine.Source.Code.Core.Character.States
                 }
             }
             
+            float gravity = Kinematics.Gravity;
+            if (Character.Flags.HasFlag(FlagType.OnWater))
+            {
+                gravity /= 4f;
+            }
+            Kinematics.ApplyGravity(gravity);
+            
             if (air || isWater)
             {
                 Kinematics.Point = hit.point;
@@ -97,13 +104,6 @@ namespace SurgeEngine.Source.Code.Core.Character.States
                     }
                 }
             }
-            
-            float gravity = Kinematics.Gravity;
-            if (Character.Flags.HasFlag(FlagType.OnWater))
-            {
-                gravity /= 4f;
-            }
-            Kinematics.ApplyGravity(gravity);
         }
 
         public void Load()
