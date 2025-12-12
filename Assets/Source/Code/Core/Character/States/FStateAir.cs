@@ -33,15 +33,11 @@ namespace SurgeEngine.Source.Code.Core.Character.States
             base.OnFixedTick(dt);
 
             bool air = !Kinematics.CheckForGroundWithDirection(out var hit, Vector3.down);
-            bool isWater = false;
-            if (hit.transform != null)
-            {
-                isWater = hit.transform.gameObject.GetGroundTag() == GroundTag.Water;
-            }
-
+            bool isWater = hit.transform.IsWater(out var surface);
             if (isWater)
             {
-                if (hit.transform.TryGetComponent(out WaterSurface water) && Kinematics.HorizontalVelocity.magnitude > water.MinimumSpeed && Kinematics.VerticalVelocity.y < 0)
+                if (Kinematics.HorizontalVelocity.magnitude > surface.MinimumSpeed 
+                    && Kinematics.VerticalVelocity.y < 0)
                 {
                     StateMachine.SetState<FStateGround>();
                     return;

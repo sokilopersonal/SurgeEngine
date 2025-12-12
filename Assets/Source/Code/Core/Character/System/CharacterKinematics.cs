@@ -11,7 +11,7 @@ using UnityEngine;
 namespace SurgeEngine.Source.Code.Core.Character.System
 {
     /// <summary>
-    /// Base actor class for a movement physics.
+    /// Base character class for a movement physics.
     /// </summary>
     public class CharacterKinematics : CharacterComponent, IPointMarkerLoader
     {
@@ -62,7 +62,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         /// That can be useful in situations where you need to use velocity, but some logic right now moves the character position.
         /// </summary>
         public bool IsKinematic { get; set; }
-        public virtual bool InAir => Character.StateMachine.CurrentState is FStateAir or FStateSpring;
+        public virtual bool InAir => Character.StateMachine.CurrentState is FStateAir or FStateSpring or FStateDashRing;
         
         private Vector3 _inputDir;
         private Transform _cameraTransform;
@@ -140,7 +140,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
         private void CalculateMovementStats()
         {
-            _moveDot = Vector3.Dot(Character.Kinematics.GetInputDir().normalized, Rigidbody.transform.forward);
+            _moveDot = Vector3.Dot(_inputDir.normalized, Rigidbody.transform.forward);
         }
 
         private void CheckIfIsInAir()
@@ -600,7 +600,6 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             return _inputDir;
         }
 
-
         public void Set2DPath(ChangeMode2DData data)
         {
             Path2D = data;
@@ -630,16 +629,6 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         }
 
         private static bool IsPathOutOfRange(ChangeModeData data) => data.Spline.Time > data.Spline.Length || data.Spline.Time < 0;
-    }
-
-    public struct SplineSample
-    {
-        public Vector3 pos;
-        public Vector3 tg;
-        public Vector3 up;
-        public Vector3 right;
-        
-        public Vector3 ProjectOnUp(Vector3 vector) => Vector3.ProjectOnPlane(vector, Vector3.up);
     }
 
     public enum MovementType

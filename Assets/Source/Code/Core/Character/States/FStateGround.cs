@@ -1,7 +1,6 @@
 ﻿using SurgeEngine.Source.Code.Core.Character.States.BaseStates;
 using SurgeEngine.Source.Code.Core.Character.System;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects;
-using SurgeEngine.Source.Code.Gameplay.CommonObjects.Environment;
 using SurgeEngine.Source.Code.Infrastructure.Config;
 using SurgeEngine.Source.Code.Infrastructure.Custom;
 using UnityEngine;
@@ -10,8 +9,6 @@ namespace SurgeEngine.Source.Code.Core.Character.States
 {
     public sealed class FStateGround : FCharacterState, IDamageableState
     {
-        private WaterSurface _waterSurface;
-        
         private const float BreakableThreshold = 0.7f; // If Speed Percent is greater than this, character will destroy Breakable objects
 
         public FStateGround(CharacterBase owner) : base(owner)
@@ -52,19 +49,16 @@ namespace SurgeEngine.Source.Code.Core.Character.States
             PhysicsConfig config = Character.Config;
             float distance = config.EvaluateCastDistance(Kinematics.Speed / config.topSpeed);
             bool ground = Kinematics.CheckForGround(out RaycastHit data, castDistance: distance);
-            bool isWater = false;
-            if (data.transform != null)
+
+            bool isWater = data.transform.IsWater(out var surface);
+            if (isWater)
             {
-                isWater = data.transform.gameObject.GetGroundTag() == GroundTag.Water;
-                if (isWater && data.transform.TryGetComponent(out _waterSurface))
+                surface.Attach(Rigidbody.position, Character);
+                
+                if (Kinematics.HorizontalVelocity.magnitude < surface.MinimumSpeed)
                 {
-                    _waterSurface.Attach(Rigidbody.position, Character);
-                    
-                    if (Kinematics.HorizontalVelocity.magnitude < _waterSurface.MinimumSpeed)
-                    {
-                        StateMachine.SetState<FStateAir>();
-                        return;
-                    }
+                    StateMachine.SetState<FStateAir>();
+                    return;
                 }
             }
             

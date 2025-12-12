@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SurgeEngine.Source.Code.Core.Character.States;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.CameraObjects;
+using SurgeEngine.Source.Code.Gameplay.CommonObjects.Environment;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.System;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -47,12 +48,33 @@ namespace SurgeEngine.Source.Code.Infrastructure.Custom
             int index = input.IndexOf('@');
             string result = index == -1 ? "Concrete" : input.Substring(index + 1);
             
-            if(Enum.TryParse(typeof(GroundTag), result, out object tag))
+            if (Enum.TryParse(typeof(GroundTag), result, out object tag))
             {
                 return (GroundTag)tag;
             }
             
             return GroundTag.Concrete;
+        }
+
+        public static bool IsWater(this Transform transform, out WaterSurface waterSurface)
+        {
+            if (transform == null)
+            {
+                waterSurface = null;
+                return false;
+            }
+            
+            bool isWater = false;
+            if (transform.gameObject.GetGroundTag() == GroundTag.Water)
+                isWater = true;
+            
+            if (isWater && transform.TryGetComponent(out waterSurface))
+            {
+                return true;
+            }
+            
+            waterSurface = null;
+            return false;
         }
 
         public static Vector3 GetCross(Transform transform, float pitch, bool inverse = false)

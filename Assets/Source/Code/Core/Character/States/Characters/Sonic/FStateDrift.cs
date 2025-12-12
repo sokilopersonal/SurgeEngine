@@ -60,19 +60,15 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
             var physicsConfig = Character.Config;
             float distance = physicsConfig.castDistance * physicsConfig.castDistanceCurve.Evaluate(Kinematics.Speed / physicsConfig.topSpeed);
             var ground = Kinematics.CheckForGround(out RaycastHit hit, castDistance: distance);
-            bool isWater = false;
-            if (hit.transform != null)
+            bool isWater = hit.transform.IsWater(out var surface);
+            if (isWater)
             {
-                isWater = hit.transform.gameObject.GetGroundTag() == GroundTag.Water;
-                if (isWater && hit.transform.TryGetComponent(out WaterSurface water))
-                {
-                    water.Attach(Rigidbody.position, Character);
+                surface.Attach(Rigidbody.position, Character);
                     
-                    if (Kinematics.HorizontalVelocity.magnitude < water.MinimumSpeed)
-                    {
-                        StateMachine.SetState<FStateAir>();
-                        return;
-                    }
+                if (Kinematics.HorizontalVelocity.magnitude < surface.MinimumSpeed)
+                {
+                    StateMachine.SetState<FStateAir>();
+                    return;
                 }
             }
             

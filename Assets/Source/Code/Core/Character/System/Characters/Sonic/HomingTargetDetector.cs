@@ -56,14 +56,10 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
                     Vector3 localPos = rail.transform.InverseTransformPoint(transform.position + transform.forward * radius / 2);
                     SplineUtility.GetNearestPoint(spline, localPos, out _, out var f);
 
-                    SplineSample sample = new SplineSample
-                    {
-                        pos = spline.EvaluatePosition(f),
-                        tg = ((Vector3)spline.EvaluateTangent(f)).normalized,
-                        up = spline.EvaluateUpVector(f)
-                    };
+                    var pos = spline.EvaluatePosition(f);
+                    var up = spline.EvaluateUpVector(f);
 
-                    Vector3 endTargetPos = sample.pos + sample.up * (rail.Radius + 0.5f);
+                    Vector3 endTargetPos = pos + up * (rail.Radius + 0.5f);
                     targetPos = rail.transform.TransformPoint(endTargetPos);
 
                     railTarget.transform.position = Vector3.Lerp(railTarget.transform.position, targetPos, 32 * Time.fixedDeltaTime);

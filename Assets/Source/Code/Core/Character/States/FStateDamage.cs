@@ -46,14 +46,11 @@ namespace SurgeEngine.Source.Code.Core.Character.States
             Kinematics.ApplyGravity(Kinematics.Gravity);
             
             bool ground = Kinematics.CheckForGround(out var hit);
-            if (hit.transform != null)
+            bool isWater = hit.transform.IsWater(out var surface);
+            if (isWater)
             {
-                var isWater = hit.transform.gameObject.GetGroundTag() == GroundTag.Water;
-                if (isWater && hit.transform.TryGetComponent(out WaterSurface water))
-                {
-                    water.Attach(Rigidbody.position, Character);
-                    return;
-                }
+                surface.Attach(Rigidbody.position, Character);
+                return;
             }
             
             if (ground)
