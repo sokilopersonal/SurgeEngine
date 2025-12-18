@@ -1,8 +1,15 @@
 fileFormatVersion: 2
 guid: a51a0d8250058a0408a258f271dca17e
+AssetOrigin:
+  serializedVersion: 1
+  productId: 311497
+  packageName: FMOD for Unity (2.03)
+  packageVersion: 2.03.10
+  assetPath: Assets/Source/Plugins/FMOD/platforms/win/lib/arm64/fmodstudio.dll
+  uploadId: 821714
 PluginImporter:
   externalObjects: {}
-  serializedVersion: 2
+  serializedVersion: 3
   iconMap: {}
   executionOrder: {}
   defineConstraints: []
@@ -11,14 +18,7 @@ PluginImporter:
   isExplicitlyReferenced: 0
   validateReferences: 1
   platformData:
-  - first:
-      : 
-    second:
-      enabled: 0
-      settings: {}
-  - first:
-      : Any
-    second:
+    Any:
       enabled: 0
       settings:
         Exclude Editor: 0
@@ -26,45 +26,28 @@ PluginImporter:
         Exclude OSXUniversal: 0
         Exclude Win: 0
         Exclude Win64: 0
-  - first:
-      Editor: Editor
-    second:
+    Editor:
       enabled: 0
       settings:
         CPU: ARM64
         DefaultValueInitialized: true
         OS: AnyOS
-  - first:
-      Standalone: Linux64
-    second:
+    Linux64:
       enabled: 0
       settings:
         CPU: x86_64
-  - first:
-      Standalone: OSXUniversal
-    second:
+    OSXUniversal:
       enabled: 0
       settings:
         CPU: None
-  - first:
-      Standalone: Win
-    second:
+    Win:
       enabled: 0
       settings:
         CPU: None
-  - first:
-      Standalone: Win64
-    second:
-      enabled: 0
+    Win64:
+      enabled: 1
       settings:
         CPU: ARM64
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 311497
-  packageName: FMOD for Unity (2.03)
-  packageVersion: 2.03.10
-  assetPath: Assets/Source/Plugins/FMOD/platforms/win/lib/arm64/fmodstudio.dll
-  uploadId: 821714
