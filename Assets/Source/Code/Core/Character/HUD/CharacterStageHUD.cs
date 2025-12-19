@@ -7,8 +7,10 @@ using SurgeEngine.Source.Code.Gameplay.CommonObjects.GoalRing;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.HUD;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.System;
 using SurgeEngine.Source.Code.Infrastructure.Custom;
+using SurgeEngine.Source.Code.Infrastructure.Tools.Managers;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using Zenject;
 
@@ -43,12 +45,15 @@ namespace SurgeEngine.Source.Code.Core.Character.HUD
 
         [Inject] private CharacterBase _character;
         [Inject] private DiContainer _instantiator;
+        [Inject] private GameSettings _gameSettings;
         
         private Camera _camera;
+        private Canvas _canvas;
 
         private void Awake()
         {
             _camera = _character.Camera.GetCamera();
+            _canvas = GetComponent<Canvas>();
         }
 
         private void OnEnable()
@@ -69,6 +74,14 @@ namespace SurgeEngine.Source.Code.Core.Character.HUD
             boostBarController.UpdateBoostBar();
             UpdateHomingTarget();
             UpdateHUDText(Stage.Instance.Data);
+
+            if (_gameSettings.IsDebug)
+            {
+                if (Keyboard.current.f1Key.wasPressedThisFrame)
+                {
+                    _canvas.enabled = !_canvas.enabled;
+                }
+            }
         }
 
         private void UpdateRingCount()
