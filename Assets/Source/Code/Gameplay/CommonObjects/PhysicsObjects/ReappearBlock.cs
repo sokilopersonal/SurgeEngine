@@ -16,6 +16,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.PhysicsObjects
         [Header("Pattern")]
         [SerializeField] private bool alternate = true;
         [SerializeField] private float alternateTimer = 1f;
+        [SerializeField] private LayerMask sweepMask;
 
         [Header("Sound")]
         [SerializeField] private EventReference appearSound;
@@ -182,8 +183,16 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.PhysicsObjects
             VisualUpdate();
         }
 
+        public bool canPassThrough()
+        {
+            return !Physics.CheckBox(transform.position, size * 0.5f, transform.rotation, sweepMask);
+        }
+
         public void Toggle()
         {
+            if (!canPassThrough())
+                return;
+
             _hidden = !_hidden;
 
             if (_hidden)
@@ -233,7 +242,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.PhysicsObjects
                 _lightMaterial.SetTextureOffset("_EmissiveColorMap", new Vector2(offset, 0));
 
                 if (offset > -0.4f)
-                    _col.isTrigger = false;
+                    _col.enabled = true;
                 
                 yield return null;
             }
@@ -254,7 +263,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.PhysicsObjects
                 _lightMaterial.SetTextureOffset("_EmissiveColorMap", new Vector2(offset, 0));
 
                 if (offset < -0.4f)
-                    _col.isTrigger = true;
+                    _col.enabled = false;
                 
                 yield return null;
             }
