@@ -66,7 +66,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5203001c8cec42345b2846ef29e3faa4, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -183,9 +183,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startHidden: 0
   size: {x: 3, y: 3, z: 3}
+  blockColor: {r: 0, g: 1, b: 1, a: 0.7490196}
   alternate: 0
   alternateTimer: 1
-  lightBlock: {fileID: 186532734865195763}
   appearSound:
     Guid:
       Data1: -1112997334
@@ -200,6 +200,7 @@ MonoBehaviour:
       Data3: 1518177726
       Data4: 477288122
     Path: event:/CommonObjects/StepDisappear
+  materialTemplate: {fileID: 2100000, guid: 5203001c8cec42345b2846ef29e3faa4, type: 2}
 --- !u!65 &542037306715967626
 BoxCollider:
   m_ObjectHideFlags: 0

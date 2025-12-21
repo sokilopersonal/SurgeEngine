@@ -1,48 +1,46 @@
+using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
-using FMODUnity;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.PhysicsObjects
 {
     public class ReappearBlock : MonoBehaviour
     {
+        [Header("Block Properties")]
         [SerializeField] private bool startHidden;
         [SerializeField] private Vector3 size = Vector3.one;
+        [SerializeField] private Color blockColor = new Color(0.0f, 1.0f, 1.0f, 0.75f);
+       
+        [Header("Pattern")]
         [SerializeField] private bool alternate = true;
         [SerializeField] private float alternateTimer = 1f;
-        [SerializeField] private Transform lightBlock;
+
+        [Header("Sound")]
         [SerializeField] private EventReference appearSound;
         [SerializeField] private EventReference disappearSound;
 
         private Vector3 _lastSize = Vector3.one;
+        private Transform lightBlock;
 
         private readonly List<Transform> _pipes = new();
         private readonly float[] _pipeRotations = { -90, 180, -90, 180, 0, 90, 0, 90 };
 
         private readonly List<Transform> _joints = new();
 
-        private Material _lightMaterial;
+        [SerializeField] private Material materialTemplate;
+
+        private Material _lightMaterial = null;
 
         private BoxCollider _col;
 
-        private bool _initialized;
         private bool _hidden;
         private float _timer;
         
-        private void Awake()
+        private void Start()
         {
             Setup();
-            
-            if (_lightMaterial == null && lightBlock != null)
-            {
-                var meshRenderer = lightBlock.GetComponent<MeshRenderer>();
-                if (meshRenderer != null && meshRenderer.sharedMaterial != null)
-                {
-                    _lightMaterial = new Material(meshRenderer.sharedMaterial);
-                    meshRenderer.sharedMaterial = _lightMaterial;
-                }
-            }
 
             _hidden = startHidden;
 
@@ -63,24 +61,29 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.PhysicsObjects
 
         private void Setup()
         {
-            var pipesTransform = transform.Find("pipes");
-            if (pipesTransform != null)
+            lightBlock = transform.Find("lightBlock");
+
+            MeshRenderer meshRenderer = lightBlock.GetComponent<MeshRenderer>();
+
+            if (_lightMaterial == null)
             {
-                foreach (Transform pipe in pipesTransform)
-                {
-                    if (!_pipes.Contains(pipe))
-                        _pipes.Add(pipe);
-                }
+                _lightMaterial = new Material(materialTemplate);
             }
 
-            var jointsTransform = transform.Find("joints");
-            if (jointsTransform != null)
+            meshRenderer.sharedMaterial = _lightMaterial;
+
+            Transform pipesTransform = transform.Find("pipes");
+            foreach (Transform pipe in pipesTransform)
             {
-                foreach (Transform joint in jointsTransform)
-                {
-                    if (!_joints.Contains(joint))
-                        _joints.Add(joint);
-                }
+                if (!_pipes.Contains(pipe))
+                    _pipes.Add(pipe);
+            }
+
+            Transform jointsTransform = transform.Find("joints");
+            foreach (Transform joint in jointsTransform)
+            {
+                if (!_joints.Contains(joint))
+                    _joints.Add(joint);
             }
 
             if (_col == null)
@@ -89,8 +92,16 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.PhysicsObjects
 
         private void VisualUpdate()
         {
+            if (_lightMaterial != null)
+            {
+                _lightMaterial.color = blockColor;
+                _lightMaterial.SetColor("_EmissiveColor", new Color(blockColor.r, blockColor.g, blockColor.b));
+            }
+
+            Vector3 abSize = new Vector3(Mathf.Abs(size.x), Mathf.Abs(size.y), Mathf.Abs(size.z));
+
             // Half-size offsets
-            Vector3 halfSize = size * 0.5f;
+            Vector3 halfSize = abSize * 0.5f;
 
             // Vertex positions relative to the origin
             Vector3[] vertices = {
@@ -146,11 +157,11 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.PhysicsObjects
                 }
             }
 
-            lightBlock.localScale = size;
-            _lastSize = size;
+            lightBlock.localScale = abSize;
+            _lastSize = abSize;
 
             float margin = 0.2f;
-            _col.size = size + new Vector3(margin, margin, margin);
+            _col.size = abSize + new Vector3(margin, margin, margin);
         }
 
         private void Update()

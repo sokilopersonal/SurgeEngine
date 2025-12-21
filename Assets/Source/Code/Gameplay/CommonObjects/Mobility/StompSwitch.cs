@@ -43,6 +43,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 
             _currentState++;
 
+            particle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
             particle.Play();
 
             RuntimeManager.PlayOneShot(soundReference, transform.position + Vector3.up);
