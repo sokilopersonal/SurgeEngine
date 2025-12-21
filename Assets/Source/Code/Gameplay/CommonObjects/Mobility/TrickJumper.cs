@@ -17,12 +17,12 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
     {
         private const float MaxFrameTime = 0.33f;
         
-        [SerializeField] private float initialSpeed = 30f;
-        [SerializeField] private float initialPitch = 45f;
-        [SerializeField] private float initialOutOfControl = 1f;
-        [SerializeField] private float finalSpeed = 45f;
-        [SerializeField] private float finalPitch = 50f;
-        [SerializeField] private float finalOutOfControl = 1f;
+        [SerializeField] private float firstSpeed = 30f;
+        [SerializeField] private float firstPitch = 45f;
+        [SerializeField] private float firstOutOfControl = 1f;
+        [SerializeField] private float secondSpeed = 45f;
+        [SerializeField] private float secondPitch = 50f;
+        [SerializeField] private float secondOutOfControl = 1f;
         [SerializeField] private float trickTime1 = 3.5f;
         [SerializeField] private float trickTime2;
         [SerializeField] private float trickTime3;
@@ -93,7 +93,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         private IEnumerator PerformTrickContact()
         {
             if (_character.StateMachine.CurrentState is FStateTrickJump) yield break;
-            if (initialSpeed > 0)
+            if (firstSpeed > 0)
             {
                 if (_character.StateMachine.GetState(out FBoost boost))
                     boost.Active = false;
@@ -106,8 +106,8 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
                 Vector3 impulse = Utility.GetImpulseWithPitch(
                     -transform.forward,
                     transform.right,
-                    initialPitch,
-                    initialSpeed
+                    firstPitch,
+                    firstSpeed
                 );
                 
                 _character.Kinematics.Rigidbody.linearVelocity = impulse;
@@ -225,29 +225,29 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             if (result.success)
             {
                 _character.Flags.RemoveFlag(FlagType.OutOfControl);
-                _character.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, finalOutOfControl));
+                _character.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, secondOutOfControl));
                 _character.Kinematics.ResetVelocity();
 
                 Vector3 arcPeak = Trajectory.GetArcPosition(
                     StartPosition,
-                    Utility.GetCross(transform, initialPitch, true),
-                    initialSpeed
+                    Utility.GetCross(transform, firstPitch, true),
+                    firstSpeed
                 );
-                _character.StateMachine.SetState<FStateTrick>().SetTimer(finalOutOfControl);
+                _character.StateMachine.SetState<FStateTrick>().SetTimer(secondOutOfControl);
                 yield return MoveRigidbodyToArc(body, arcPeak);
 
                 Vector3 impulse = Utility.GetImpulseWithPitch(
                     Vector3.Cross(-transform.right, Vector3.up),
                     transform.right,
-                    finalPitch,
-                    finalSpeed
+                    secondPitch,
+                    secondSpeed
                 );
                 _character.Kinematics.Rigidbody.linearVelocity = impulse;
             }
             else
             {
                 _character.Flags.RemoveFlag(FlagType.OutOfControl);
-                _character.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, initialOutOfControl));
+                _character.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, firstOutOfControl));
                 _character.StateMachine.SetState<FStateAir>();
                 
                 RuntimeManager.PlayOneShot(qteFailSound);
@@ -289,20 +289,20 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         {
             TrajectoryDrawer.DrawTrickTrajectory(
                 StartPosition,
-                Utility.GetCross(transform, initialPitch, true),
+                Utility.GetCross(transform, firstPitch, true),
                 Color.red,
-                initialSpeed
+                firstSpeed
             );
             Vector3 peakPosition = Trajectory.GetArcPosition(
                 StartPosition,
-                Utility.GetCross(transform, initialPitch, true),
-                initialSpeed
+                Utility.GetCross(transform, firstPitch, true),
+                firstSpeed
             );
             TrajectoryDrawer.DrawTrickTrajectory(
                 peakPosition,
-                Utility.GetCross(transform, finalPitch, true),
+                Utility.GetCross(transform, secondPitch, true),
                 Color.green,
-                finalSpeed
+                secondSpeed
             );
         }
     }

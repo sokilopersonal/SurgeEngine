@@ -127,12 +127,12 @@ namespace SurgeEngine.Source.Editor.HE1Importer
                 ["TrickJumper"] = (go, elem) =>
                 {
                     var trickJumper = go.GetComponent<TrickJumper>();
-                    HE1Helper.SetFloatReflection(trickJumper, "initialSpeed", HE1Helper.GetFloatWithMultiSetParam(elem, "FirstSpeed"));
-                    HE1Helper.SetFloatReflection(trickJumper, "initialPitch", HE1Helper.GetFloatWithMultiSetParam(elem, "FirstPitch"));
-                    HE1Helper.SetFloatReflection(trickJumper, "finalSpeed", HE1Helper.GetFloatWithMultiSetParam(elem, "SecondSpeed"));
-                    HE1Helper.SetFloatReflection(trickJumper, "finalPitch", HE1Helper.GetFloatWithMultiSetParam(elem, "SecondPitch"));
-                    HE1Helper.SetFloatReflection(trickJumper, "initialOutOfControl", HE1Helper.GetFloatWithMultiSetParam(elem, "FirstOutOfControl"));
-                    HE1Helper.SetFloatReflection(trickJumper, "finalOutOfControl", HE1Helper.GetFloatWithMultiSetParam(elem, "SecondOutOfControl"));
+                    HE1Helper.SetFloatReflection(trickJumper, "firstSpeed", HE1Helper.GetFloatWithMultiSetParam(elem, "FirstSpeed"));
+                    HE1Helper.SetFloatReflection(trickJumper, "firstPitch", HE1Helper.GetFloatWithMultiSetParam(elem, "FirstPitch"));
+                    HE1Helper.SetFloatReflection(trickJumper, "firstOutOfControl", HE1Helper.GetFloatWithMultiSetParam(elem, "FirstOutOfControl"));
+                    HE1Helper.SetFloatReflection(trickJumper, "secondSpeed", HE1Helper.GetFloatWithMultiSetParam(elem, "SecondSpeed"));
+                    HE1Helper.SetFloatReflection(trickJumper, "secondPitch", HE1Helper.GetFloatWithMultiSetParam(elem, "SecondPitch"));
+                    HE1Helper.SetFloatReflection(trickJumper, "secondOutOfControl", HE1Helper.GetFloatWithMultiSetParam(elem, "SecondOutOfControl"));
                     HE1Helper.SetIntReflection(trickJumper, "trickCount1", HE1Helper.GetIntWithMultiSetParam(elem, "TrickCount1"));
                     HE1Helper.SetIntReflection(trickJumper, "trickCount2", HE1Helper.GetIntWithMultiSetParam(elem, "TrickCount2"));
                     HE1Helper.SetIntReflection(trickJumper, "trickCount3", HE1Helper.GetIntWithMultiSetParam(elem, "TrickCount3"));
