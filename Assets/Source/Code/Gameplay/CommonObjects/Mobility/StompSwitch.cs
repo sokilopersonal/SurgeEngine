@@ -22,18 +22,17 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         [SerializeField] private EventReference soundReference;
         [SerializeField] private EventReference onReference;
 
-        private const float _downSpeed = 0.5f;
-        private const Ease _downEase = Ease.OutBack;
+        private const float DownSpeed = 0.5f;
+        private const Ease DownEase = Ease.OutBack;
         private Material _buttonMaterial;
 
         private int _currentState;
 
         private void Awake()
         {
-            Material[] mats = meshRenderer.sharedMaterials;
-            _buttonMaterial = new Material(mats[1]);
-            mats[1] = _buttonMaterial;
-            meshRenderer.sharedMaterials = mats;
+            Material[] materials = meshRenderer.materials;
+            _buttonMaterial = materials[1];
+            meshRenderer.materials = materials;
             _buttonMaterial.SetFloat(EmissiveExposureWeight, 1.0f);
         }
         
@@ -80,7 +79,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             }
 
             switchTransform.DOKill(true);
-            switchTransform.DOLocalMoveY(downHeight, _downSpeed).SetEase(_downEase);
+            switchTransform.DOLocalMoveY(downHeight, DownSpeed).SetEase(DownEase);
         }
     }
 }
