@@ -117,11 +117,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ReflectionMap:
-        m_Texture: {fileID: 8900000, guid: 5d9146ad52d52274c8d8058916b3f97a, type: 3}
+        m_Texture: {fileID: 8900000, guid: 95089112f81132740b93d3a7bcb00f3f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ReflectionMask:
-        m_Texture: {fileID: 2800000, guid: 04097d7e552bcd8449305aebd2946375, type: 3}
+        m_Texture: {fileID: 2800000, guid: 41c9b76162edd2f488f086f269a7fede, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SecondNormalMap:
@@ -243,11 +243,11 @@ Material:
     - _Ior: 1.5
     - _IridescenceMask: 1
     - _IridescenceThickness: 1
-    - _LightmapSampleBlend: 1
+    - _LightmapSampleBlend: 0.5
     - _LinkDetailsWithBase: 1
     - _MaterialID: 1
     - _MaterialTypeMask: 18
-    - _Metallic: 0.5
+    - _Metallic: 0.75
     - _MetallicRemapMax: 1
     - _MetallicRemapMin: 0
     - _NormalIntensity: 1
@@ -262,11 +262,11 @@ Material:
     - _PPDPrimitiveLength: 1
     - _PPDPrimitiveWidth: 1
     - _PerPixelSorting: 0
-    - _PowPower: 0.5
+    - _PowPower: 0.3
     - _RayTracing: 0
     - _ReceivesSSR: 1
     - _ReceivesSSRTransparent: 0
-    - _ReflectionIntensity: 1
+    - _ReflectionIntensity: 0.75
     - _RefractionModel: 0
     - _RenderQueueType: 1
     - _RequireSplitLighting: 0
@@ -335,7 +335,7 @@ Material:
     - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissiveColorLDR: {r: 0, g: 0, b: 0, a: 1}
     - _FalloffColor: {r: 1, g: 1, b: 1, a: 1}
-    - _FalloffParam: {r: 0, g: 0.75, b: 1.5, a: 0}
+    - _FalloffParam: {r: 0, g: 1, b: 3, a: 0}
     - _InvPrimScale: {r: 1, g: 1, b: 0, a: 0}
     - _IridescenceThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
     - _ReflectionColor: {r: 1, g: 1, b: 1, a: 1}

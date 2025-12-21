@@ -36,6 +36,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             _buttonMaterial = new Material(mats[2]);
             mats[2] = _buttonMaterial;
             meshRenderer.sharedMaterials = mats;
+            _buttonMaterial.SetFloat("_EmissiveExposureWeight", _toggled ? 0f : 1f);
         }
 
         public override void OnEnter(Collider msg, CharacterBase context)

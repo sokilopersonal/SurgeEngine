@@ -12,8 +12,9 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
+  - _ALPHATEST_ON
+  - _DISABLE_DECALS
   - _DISABLE_SSR_TRANSPARENT
-  - _ENABLE_FOG_ON_TRANSPARENT
   - _NORMALMAP_TANGENT_SPACE
   - _SURFACE_TYPE_TRANSPARENT
   m_InvalidKeywords: []
@@ -26,9 +27,9 @@ Material:
   disabledShaderPasses:
   - TransparentDepthPrepass
   - TransparentDepthPostpass
-  - TransparentBackface
-  - RayTracingPrepass
   - MOTIONVECTORS
+  - RayTracingPrepass
+  - TransparentBackface
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -136,8 +137,8 @@ Material:
     - _ATDistance: 1
     - _AddPrecomputedVelocity: 0
     - _AlbedoAffectEmissive: 0
-    - _AlphaCutoff: 0.5
-    - _AlphaCutoffEnable: 0
+    - _AlphaCutoff: 1
+    - _AlphaCutoffEnable: 1
     - _AlphaCutoffPostpass: 0.5
     - _AlphaCutoffPrepass: 0.5
     - _AlphaCutoffShadow: 0.5
@@ -149,9 +150,9 @@ Material:
     - _BlendMode: 0
     - _BumpScale: 1
     - _CoatMask: 0
-    - _CullMode: 2
-    - _CullModeForward: 2
-    - _Cutoff: 0.5
+    - _CullMode: 1
+    - _CullModeForward: 1
+    - _Cutoff: 1
     - _DepthOffsetEnable: 0
     - _DetailAlbedoScale: 1
     - _DetailNormalMapScale: 1
@@ -163,7 +164,7 @@ Material:
     - _DisplacementLockTilingScale: 1
     - _DisplacementMode: 0
     - _DoubleSidedEnable: 0
-    - _DoubleSidedGIMode: 0
+    - _DoubleSidedGIMode: 2
     - _DoubleSidedNormalMode: 1
     - _DstBlend: 10
     - _DstBlend2: 10
@@ -172,7 +173,7 @@ Material:
     - _EmissiveIntensity: 1
     - _EmissiveIntensityUnit: 0
     - _EnableBlendModePreserveSpecularLighting: 0
-    - _EnableFogOnTransparent: 1
+    - _EnableFogOnTransparent: 0
     - _EnableGeometricSpecularAA: 0
     - _EnergyConservingSpecularColor: 1
     - _GlossMapScale: 1
@@ -193,7 +194,7 @@ Material:
     - _IridescenceThickness: 1
     - _LinkDetailsWithBase: 1
     - _MaterialID: 1
-    - _Metallic: 0
+    - _Metallic: 0.25
     - _MetallicRemapMax: 1
     - _MetallicRemapMin: 0
     - _Mode: 0
@@ -232,7 +233,7 @@ Material:
     - _StencilWriteMaskGBuffer: 15
     - _StencilWriteMaskMV: 41
     - _SubsurfaceMask: 1
-    - _SupportDecals: 1
+    - _SupportDecals: 0
     - _SurfaceType: 1
     - _TexWorldScale: 1
     - _TexWorldScaleEmissive: 1
@@ -240,7 +241,7 @@ Material:
     - _TransmissionEnable: 1
     - _TransmissionMask: 1
     - _TransparentBackfaceEnable: 0
-    - _TransparentCullMode: 2
+    - _TransparentCullMode: 1
     - _TransparentDepthPostpassEnable: 0
     - _TransparentDepthPrepassEnable: 0
     - _TransparentSortPriority: 0
@@ -252,13 +253,13 @@ Material:
     - _UVSec: 0
     - _UseEmissiveIntensity: 0
     - _UseShadowThreshold: 0
-    - _ZTestDepthEqualForOpaque: 4
-    - _ZTestGBuffer: 4
-    - _ZTestTransparent: 4
+    - _ZTestDepthEqualForOpaque: 1
+    - _ZTestGBuffer: 3
+    - _ZTestTransparent: 1
     - _ZWrite: 0
     m_Colors:
-    - _BaseColor: {r: 1, g: 1, b: 1, a: 0.29411766}
-    - _Color: {r: 1, g: 1, b: 1, a: 0.29411766}
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 0}
+    - _Color: {r: 1, g: 1, b: 1, a: 0}
     - _DiffusionProfileAsset: {r: 0, g: 0, b: 0, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
