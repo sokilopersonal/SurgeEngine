@@ -22,17 +22,18 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.PhysicsObjects
         [SerializeField] private EventReference appearSound;
         [SerializeField] private EventReference disappearSound;
 
+        [Header("Material")]
+        [SerializeField] private Material materialTemplate;
+        [SerializeField] private Transform lightBlock;
+        
         private Vector3 _lastSize = Vector3.one;
-        private Transform lightBlock;
 
         private readonly List<Transform> _pipes = new();
         private readonly float[] _pipeRotations = { -90, 180, -90, 180, 0, 90, 0, 90 };
 
         private readonly List<Transform> _joints = new();
 
-        [SerializeField] private Material materialTemplate;
-
-        private Material _lightMaterial = null;
+        private Material _lightMaterial;
 
         private BoxCollider _col;
 
@@ -62,10 +63,9 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.PhysicsObjects
 
         private void Setup()
         {
-            lightBlock = transform.Find("lightBlock");
+            if (lightBlock == null) lightBlock = transform.Find("lightBlock");
 
             MeshRenderer meshRenderer = lightBlock.GetComponent<MeshRenderer>();
-
             if (_lightMaterial == null)
             {
                 _lightMaterial = new Material(materialTemplate);
