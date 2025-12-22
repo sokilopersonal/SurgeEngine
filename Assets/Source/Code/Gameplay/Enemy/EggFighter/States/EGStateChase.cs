@@ -1,4 +1,5 @@
-﻿using SurgeEngine.Source.Code.Gameplay.Enemy.Base;
+﻿using SurgeEngine.Source.Code.Core.Character.System;
+using SurgeEngine.Source.Code.Gameplay.Enemy.Base;
 using UnityEngine;
 
 namespace SurgeEngine.Source.Code.Gameplay.Enemy.EggFighter.States
@@ -30,7 +31,7 @@ namespace SurgeEngine.Source.Code.Gameplay.Enemy.EggFighter.States
             
             if (Vector3.Distance(pos, transform.position) < eggFighter.PunchRadius)
             {
-                if (hasTarget && !character.Life.IsDead)
+                if (hasTarget && !character.Life.IsDead && !character.Flags.HasFlag(FlagType.Invincible))
                 {
                     StateMachine.SetState<EGStatePunch>();
                 }

@@ -10,6 +10,10 @@ using UnityEngine;
 using UnityEngine.AI;
 using Zenject;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 namespace SurgeEngine.Source.Code.Gameplay.Enemy.EggFighter
 {
     public class EggFighter : EnemyBase, IDamageable, IPointMarkerLoader
@@ -105,6 +109,27 @@ namespace SurgeEngine.Source.Code.Gameplay.Enemy.EggFighter
             transform.rotation = _startRotation;
 
             IsDead = false;
+        }
+
+        private void OnDrawGizmos()
+        {
+#if UNITY_EDITOR
+            if (StateMachine?.CurrentState != null)
+            {
+                float maxDistance = 40f;
+                if (Camera.current != null)
+                {
+                    var style = new GUIStyle(EditorStyles.boldLabel);
+                    style.fontSize = 24;
+                    
+                    float distance = Vector3.Distance(Camera.current.transform.position, transform.position);
+                    if (distance <= maxDistance)
+                    {
+                        Handles.Label(transform.position + Vector3.up * 2f, StateMachine.CurrentState.GetType().Name, style);
+                    }
+                }
+            }
+#endif
         }
     }
 }

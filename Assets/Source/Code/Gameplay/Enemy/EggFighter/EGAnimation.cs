@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using SurgeEngine.Source.Code.Core.StateMachine.Base;
 using SurgeEngine.Source.Code.Core.StateMachine.Components;
 using SurgeEngine.Source.Code.Gameplay.Enemy.Base;
@@ -18,7 +19,7 @@ namespace SurgeEngine.Source.Code.Gameplay.Enemy.EggFighter
             
             if (obj is EGStateIdle)
             {
-                stateAnimator.TransitionToState("Idle");
+                stateAnimator.TransitionToState("Idle", 0.4f);
             }
             
             if (obj is EGStateChase)
