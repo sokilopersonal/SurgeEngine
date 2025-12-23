@@ -13,7 +13,7 @@ namespace SurgeEngine.Source.Code.Core.Character.Sound
         
         public void Toggle()
         {
-            if (!_volumeManager.GetData().BoostDistortionEnabled) return;
+            if (!_volumeManager.GetData().boostDistortionEnabled) return;
             
             _enabled = !_enabled;
 

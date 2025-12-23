@@ -1,5 +1,32 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-9186630516892520584
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: snapshot:/Pause
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: snapshot:/Pause
+  Guid:
+    Data1: 18525145
+    Data2: 1262711603
+    Data3: 1752286622
+    Data4: -1904719915
+  Banks:
+  - {fileID: 726838345330605405}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 0
 --- !u!114 &-8933756691163848479
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -558,6 +585,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 1745
+--- !u!114 &-5218495594050668929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Music/Music
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/Music/Music
+  Guid:
+    Data1: 488817604
+    Data2: 1312532294
+    Data3: -610899534
+    Data4: 591606807
+  Banks:
+  - {fileID: -125803758630592857}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-5019267756485538903
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -745,33 +799,6 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 451
---- !u!114 &-3077321702767680198
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Music/StageClear
-  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
-  Path: event:/Music/StageClear
-  Guid:
-    Data1: -1061678926
-    Data2: 1177006156
-    Data3: -2127125336
-    Data4: -1447318162
-  Banks:
-  - {fileID: -125803758630592857}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 9589
 --- !u!114 &-2489515066361024069
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -826,6 +853,33 @@ MonoBehaviour:
   MinDistance: 40
   MaxDistance: 300
   Length: 2093
+--- !u!114 &-2362838619614321762
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/CommonObjects/ObjectPhysics/Potbig
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/CommonObjects/ObjectPhysics/Potbig
+  Guid:
+    Data1: -976295039
+    Data2: 1080029663
+    Data3: -114936396
+    Data4: -577234958
+  Banks:
+  - {fileID: -125803758630592857}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 4
+  MaxDistance: 200
+  Length: 1465
 --- !u!114 &-2283377925094310099
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -922,11 +976,38 @@ MonoBehaviour:
   Path: FMOD/SurgeEngine/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 639008358755885783
+  lastModified: 639020872351745554
   FileSizes:
   - Name: Desktop
     Value: 1561120
   Exists: 1
+--- !u!114 &-1526902946018036418
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Music/GameLand
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/Music/GameLand
+  Guid:
+    Data1: 1736423652
+    Data2: 1232467109
+    Data3: -1582614608
+    Data4: 2127758299
+  Banks:
+  - {fileID: -125803758630592857}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 158328
 --- !u!114 &-1477271000826630241
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1077,11 +1158,38 @@ MonoBehaviour:
   Path: FMOD/SurgeEngine/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639008358755010604
+  lastModified: 639020882791601300
   FileSizes:
   - Name: Desktop
-    Value: 5106
+    Value: 5232
   Exists: 1
+--- !u!114 &-769613665873113949
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Music/Windmill_Isle
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/Music/Windmill_Isle
+  Guid:
+    Data1: 1405928691
+    Data2: 1093380392
+    Data3: -1038161754
+    Data4: 15257632
+  Banks:
+  - {fileID: -125803758630592857}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 301209
 --- !u!114 &-290026391229809563
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1110,33 +1218,6 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 2064
---- !u!114 &-209299608387418159
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Music/UR_InstallerOST
-  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
-  Path: event:/Music/UR_InstallerOST
-  Guid:
-    Data1: 935008245
-    Data2: 1241320675
-    Data3: -1005732432
-    Data4: -1043679782
-  Banks:
-  - {fileID: -125803758630592857}
-  IsStream: 1
-  Is3D: 0
-  IsOneShot: 0
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 274227
 --- !u!114 &-199045928911110521
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1206,7 +1287,7 @@ MonoBehaviour:
   Path: FMOD/SurgeEngine/Build/Desktop/Music.bank
   Name: Music
   StudioPath: bank:/Music
-  lastModified: 639008358755815497
+  lastModified: 639020872346801033
   FileSizes:
   - Name: Desktop
     Value: 15900864
@@ -1229,14 +1310,6 @@ MonoBehaviour:
   - {fileID: -125803758630592857}
   - {fileID: -1743142839708579139}
   EditorEvents:
-  - {fileID: 555277444331763929}
-  - {fileID: 1975909571817514216}
-  - {fileID: 8391507416779299783}
-  - {fileID: -3077321702767680198}
-  - {fileID: 728271205909737745}
-  - {fileID: 705279602257558284}
-  - {fileID: 3495930894070956673}
-  - {fileID: -209299608387418159}
   - {fileID: -2056605672357886717}
   - {fileID: -2367491413820297241}
   - {fileID: 6892958126341868353}
@@ -1313,6 +1386,16 @@ MonoBehaviour:
   - {fileID: -3798336096290315502}
   - {fileID: -8308661641363463936}
   - {fileID: 8953136936123385742}
+  - {fileID: -9186630516892520584}
+  - {fileID: 3731210932019563604}
+  - {fileID: -2362838619614321762}
+  - {fileID: 4045293281796126268}
+  - {fileID: 8890249475107933043}
+  - {fileID: -5218495594050668929}
+  - {fileID: -1526902946018036418}
+  - {fileID: -769613665873113949}
+  - {fileID: 1411665213169096492}
+  - {fileID: 1274722045989745449}
   EditorParameters:
   - {fileID: 6663763015479774687}
   - {fileID: -3420748674274979972}
@@ -1320,181 +1403,186 @@ MonoBehaviour:
   - {fileID: -6757386076032437655}
   - {fileID: 2121238492180842571}
   - {fileID: 3418582227899047665}
+  - {fileID: 5925912690273829648}
   MasterBanks:
   - {fileID: 726838345330605405}
   StringsBanks:
   - {fileID: -807986425241235947}
   cacheVersion: 131857
-  cacheTime: 639008358755885783
+  cacheTime: 639020882791601300
   SerializableEventsDict:
-  - key: event:/Music/ApotosDayHUD
-    index: 0
-  - key: event:/CommonObjects/ObjectPhysics/Potbig
-    index: 1
-  - key: event:/Music/DevStage
-    index: 2
-  - key: event:/Music/StageClear
-    index: 3
-  - key: event:/Music/Music
-    index: 4
-  - key: event:/Music/GameLand
-    index: 5
-  - key: event:/Music/Windmill_Isle
-    index: 6
-  - key: event:/Music/UR_InstallerOST
-    index: 7
   - key: event:/UI/Line
-    index: 8
+    index: 0
   - key: event:/CommonObjects/WaterSplash
-    index: 9
+    index: 1
   - key: event:/CommonObjects/Ring
-    index: 10
+    index: 2
   - key: event:/Characters/Sonic/Sweepkick
-    index: 11
+    index: 3
   - key: event:/Characters/Sonic/DeathSound
-    index: 12
+    index: 4
   - key: event:/CommonObjects/JumpPanel
-    index: 13
+    index: 5
   - key: event:/Characters/Sonic/CrawlStep
-    index: 14
+    index: 6
   - key: event:/CommonObjects/DashPanel
-    index: 15
+    index: 7
   - key: event:/Characters/Sonic/Quickstep
-    index: 16
+    index: 8
   - key: event:/CommonObjects/Spring
-    index: 17
+    index: 9
   - key: event:/Characters/Sonic/DamageVoice
-    index: 18
+    index: 10
   - key: event:/CommonObjects/StepAppear
-    index: 19
+    index: 11
   - key: event:/UI/PressStart
-    index: 20
+    index: 12
   - key: event:/CommonObjects/JumpSelectorFall
-    index: 21
+    index: 13
   - key: event:/CommonObjects/JumpSelectorWrong
-    index: 22
+    index: 14
   - key: event:/Enemies/Destroy
-    index: 23
+    index: 15
   - key: event:/CommonObjects/SwitchOff
-    index: 24
+    index: 16
   - key: event:/CommonObjects/ObjectPhysics/WoodBox
-    index: 25
+    index: 17
   - key: event:/Characters/Sonic/QTE/QTE_Fail_Voice
-    index: 26
+    index: 18
   - key: event:/Characters/Sonic/BoostVoice
-    index: 27
+    index: 19
   - key: event:/CommonObjects/DashRing
-    index: 28
+    index: 20
   - key: event:/Characters/Sonic/Start/Start_02
-    index: 29
+    index: 21
   - key: event:/UI/ElementSelect
-    index: 30
+    index: 22
   - key: event:/CommonObjects/GoalRing/GoalRing
-    index: 31
+    index: 23
   - key: event:/Characters/Sonic/Spin
-    index: 32
+    index: 24
   - key: event:/Characters/Sonic/SweepkickVoice
-    index: 33
+    index: 25
   - key: event:/CommonObjects/StompSwitch
-    index: 34
+    index: 26
   - key: event:/Common/Brake
-    index: 35
+    index: 27
   - key: event:/CommonObjects/RingSpread
-    index: 36
+    index: 28
   - key: event:/UI/ElementClick
-    index: 37
+    index: 29
   - key: event:/Common/Paraloop
-    index: 38
+    index: 30
   - key: event:/Enemies/AeroCannon/Charge
-    index: 39
+    index: 31
   - key: event:/CommonObjects/SpringFake
-    index: 40
+    index: 32
   - key: event:/Characters/Sonic/DriftVoice
-    index: 41
+    index: 33
   - key: event:/Characters/Sonic/BoostLoop
-    index: 42
+    index: 34
   - key: event:/Common/GrindStart
-    index: 43
+    index: 35
   - key: event:/Characters/Sonic/QTE/QTE_Success
-    index: 44
+    index: 36
   - key: event:/CommonObjects/StepDisappear
-    index: 45
+    index: 37
   - key: event:/Characters/Sonic/SitVoice
-    index: 46
+    index: 38
   - key: event:/Characters/Sonic/QTE/QTE_Fail
-    index: 47
+    index: 39
   - key: event:/Characters/Sonic/LockOn
-    index: 48
+    index: 40
   - key: event:/CommonObjects/FlameS
-    index: 49
+    index: 41
   - key: event:/CommonObjects/RainbowRing
-    index: 50
+    index: 42
   - key: event:/Characters/Sonic/Swing
-    index: 51
+    index: 43
   - key: event:/Characters/Sonic/QTE/QTE_Hit
-    index: 52
+    index: 44
   - key: event:/Characters/Sonic/Slide
-    index: 53
+    index: 45
   - key: event:/CommonObjects/Stumble
-    index: 54
+    index: 46
   - key: event:/Characters/Sonic/Homing
-    index: 55
+    index: 47
   - key: event:/CommonObjects/PlatformFall
-    index: 56
+    index: 48
   - key: event:/Characters/Sonic/SwingCatch
-    index: 57
+    index: 49
   - key: event:/Characters/Sonic/Stomp
-    index: 58
+    index: 50
   - key: event:/CommonObjects/SwitchOn
-    index: 59
+    index: 51
   - key: event:/CommonObjects/PointMarker
-    index: 60
+    index: 52
   - key: event:/Characters/Sonic/JumpVoice
-    index: 61
+    index: 53
   - key: event:/Characters/Sonic/QTE/QTE_Sonic_Voice
-    index: 62
+    index: 54
   - key: event:/Characters/Sonic/QuickstepVoice
-    index: 63
+    index: 55
   - key: event:/Characters/Sonic/DriftLoop
-    index: 64
+    index: 56
   - key: event:/Common/Land
-    index: 65
+    index: 57
   - key: event:/Characters/Sonic/BoostImpulse
-    index: 66
+    index: 58
   - key: event:/Common/Step
-    index: 67
+    index: 59
   - key: event:/CommonObjects/SpringPole
-    index: 68
+    index: 60
   - key: event:/CommonObjects/JumpSelectorOK
-    index: 69
+    index: 61
   - key: event:/Enemies/AeroCannon/Fire
-    index: 70
+    index: 62
   - key: event:/CommonObjects/SuperRing
-    index: 71
+    index: 63
   - key: event:/UI/Titlebar
-    index: 72
+    index: 64
   - key: event:/CommonObjects/AirSpring
-    index: 73
+    index: 65
   - key: event:/CommonObjects/JumpSelectorStart
-    index: 74
+    index: 66
   - key: event:/Characters/Sonic/Start/Start_01
-    index: 75
+    index: 67
   - key: event:/Common/Grind
-    index: 76
+    index: 68
   - key: event:/Characters/Sonic/SlideVoice
-    index: 77
+    index: 69
   - key: event:/Enemies/MetalDamage
-    index: 78
+    index: 70
   - key: event:/Characters/Sonic/StompLand
-    index: 79
+    index: 71
   - key: event:/CommonObjects/FlameLoop
-    index: 80
+    index: 72
   - key: event:/CommonObjects/GoalRing/GoalRingLoop
-    index: 81
+    index: 73
   - key: event:/Characters/Sonic/Jump
-    index: 82
+    index: 74
   - key: event:/CommonObjects/Pulley
+    index: 75
+  - key: snapshot:/Pause
+    index: 76
+  - key: event:/Music/ApotosDayHUD
+    index: 77
+  - key: event:/CommonObjects/ObjectPhysics/Potbig
+    index: 78
+  - key: event:/Music/DevStage
+    index: 79
+  - key: event:/Music/StageClear
+    index: 80
+  - key: event:/Music/Music
+    index: 81
+  - key: event:/Music/GameLand
+    index: 82
+  - key: event:/Music/Windmill_Isle
     index: 83
+  - key: event:/Music/UR_InstallerOST
+    index: 84
+  - key: event:/GameStatus
+    index: 85
 --- !u!114 &4628462006692184
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1549,33 +1637,6 @@ MonoBehaviour:
   MinDistance: 10
   MaxDistance: 350
   Length: 3003
---- !u!114 &555277444331763929
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Music/ApotosDayHUD
-  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
-  Path: event:/Music/ApotosDayHUD
-  Guid:
-    Data1: 217913905
-    Data2: 1189895326
-    Data3: -1260740421
-    Data4: -1921013111
-  Banks:
-  - {fileID: -125803758630592857}
-  IsStream: 1
-  Is3D: 0
-  IsOneShot: 0
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 198816
 --- !u!114 &647186100492162625
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1603,33 +1664,6 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 712
---- !u!114 &705279602257558284
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Music/GameLand
-  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
-  Path: event:/Music/GameLand
-  Guid:
-    Data1: 1736423652
-    Data2: 1232467109
-    Data3: -1582614608
-    Data4: 2127758299
-  Banks:
-  - {fileID: -125803758630592857}
-  IsStream: 1
-  Is3D: 0
-  IsOneShot: 0
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 158328
 --- !u!114 &726838345330605405
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1645,38 +1679,11 @@ MonoBehaviour:
   Path: FMOD/SurgeEngine/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639008358755010604
+  lastModified: 639020882791591146
   FileSizes:
   - Name: Desktop
-    Value: 4756
+    Value: 6754
   Exists: 1
---- !u!114 &728271205909737745
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Music/Music
-  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
-  Path: event:/Music/Music
-  Guid:
-    Data1: 488817604
-    Data2: 1312532294
-    Data3: -610899534
-    Data4: 591606807
-  Banks:
-  - {fileID: -125803758630592857}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 0
 --- !u!114 &762248314509945005
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1786,6 +1793,61 @@ MonoBehaviour:
   MinDistance: 10
   MaxDistance: 500
   Length: 1780
+--- !u!114 &1274722045989745449
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/GameStatus
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/GameStatus
+  Guid:
+    Data1: -1973744747
+    Data2: 1318757843
+    Data3: 1667770029
+    Data4: 915693954
+  Banks:
+  - {fileID: 726838345330605405}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 0
+  Parameters:
+  - {fileID: 4185373403652972686}
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &1411665213169096492
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Music/UR_InstallerOST
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/Music/UR_InstallerOST
+  Guid:
+    Data1: 935008245
+    Data2: 1241320675
+    Data3: -1005732432
+    Data4: -1043679782
+  Banks:
+  - {fileID: -125803758630592857}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 274227
 --- !u!114 &1586510988709393986
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1840,33 +1902,6 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 2208
---- !u!114 &1975909571817514216
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/CommonObjects/ObjectPhysics/Potbig
-  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
-  Path: event:/CommonObjects/ObjectPhysics/Potbig
-  Guid:
-    Data1: -976295039
-    Data2: 1080029663
-    Data3: -114936396
-    Data4: -577234958
-  Banks:
-  - {fileID: -125803758630592857}
-  IsStream: 0
-  Is3D: 1
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 4
-  MaxDistance: 200
-  Length: 1465
 --- !u!114 &2121238492180842571
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2132,7 +2167,7 @@ MonoBehaviour:
   IsGlobal: 1
   Labels: []
   Exists: 1
---- !u!114 &3495930894070956673
+--- !u!114 &3731210932019563604
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2142,14 +2177,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Music/Windmill_Isle
+  m_Name: event:/Music/ApotosDayHUD
   m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
-  Path: event:/Music/Windmill_Isle
+  Path: event:/Music/ApotosDayHUD
   Guid:
-    Data1: 1405928691
-    Data2: 1093380392
-    Data3: -1038161754
-    Data4: 15257632
+    Data1: 217913905
+    Data2: 1189895326
+    Data3: -1260740421
+    Data4: -1921013111
   Banks:
   - {fileID: -125803758630592857}
   IsStream: 1
@@ -2158,7 +2193,58 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 301209
+  Length: 198816
+--- !u!114 &4045293281796126268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Music/DevStage
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/Music/DevStage
+  Guid:
+    Data1: 652316829
+    Data2: 1234255361
+    Data3: 34337444
+    Data4: 1245306631
+  Banks:
+  - {fileID: -125803758630592857}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 232896
+--- !u!114 &4185373403652972686
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/GameStatus/IsPaused
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorParamRef
+  Name: IsPaused
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 286394698
+    data2: 876892308
+  Type: 1
+  IsGlobal: 1
+  Labels: []
+  Exists: 1
 --- !u!114 &4323512531526135762
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2429,6 +2515,30 @@ MonoBehaviour:
   MinDistance: 11
   MaxDistance: 750
   Length: 816
+--- !u!114 &5925912690273829648
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/IsPaused
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorParamRef
+  Name: IsPaused
+  StudioPath: parameter:/IsPaused
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 286394698
+    data2: 876892308
+  Type: 1
+  IsGlobal: 1
+  Labels: []
+  Exists: 1
 --- !u!114 &6030456759901006774
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2777,33 +2887,6 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 3616
---- !u!114 &8391507416779299783
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Music/DevStage
-  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
-  Path: event:/Music/DevStage
-  Guid:
-    Data1: 652316829
-    Data2: 1234255361
-    Data3: 34337444
-    Data4: 1245306631
-  Banks:
-  - {fileID: -125803758630592857}
-  IsStream: 1
-  Is3D: 0
-  IsOneShot: 0
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 232896
 --- !u!114 &8399452062513993650
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2858,6 +2941,33 @@ MonoBehaviour:
   MinDistance: 10
   MaxDistance: 85
   Length: 1464
+--- !u!114 &8890249475107933043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Music/StageClear
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/Music/StageClear
+  Guid:
+    Data1: -1061678926
+    Data2: 1177006156
+    Data3: -2127125336
+    Data4: -1447318162
+  Banks:
+  - {fileID: -125803758630592857}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 9589
 --- !u!114 &8953136936123385742
 MonoBehaviour:
   m_ObjectHideFlags: 0

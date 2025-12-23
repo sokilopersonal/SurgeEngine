@@ -9,54 +9,63 @@ namespace SurgeEngine.Source.Code.Infrastructure.Tools.Managers
         private const string MasterVolumeKey = "Master";
         private const string MusicVolumeKey = "Music";
         private const string SFXVolumeKey = "SFX";
-        private const string MenuDistortKey = "MenuDistort";
+        private const string IsPausedKey = "IsPaused";
+        
+        private const string GameGroupBusPath = "bus:/SFX/GameGroup";
+        private const string GameStatusEventPath = "event:/GameStatus";
 
         public VolumeManager()
         {
-            SetMasterVolume(Data.MasterVolume);
-            SetMusicVolume(Data.MusicVolume);
-            SetSFXVolume(Data.SfxVolume);
+            SetMasterVolume(Data.masterVolume);
+            SetMusicVolume(Data.musicVolume);
+            SetSFXVolume(Data.sfxVolume);
             
             ToggleMenuDistortion(false);
+            
+            var instance = RuntimeManager.CreateInstance(GameStatusEventPath);
+            instance.start();
         }
         
         public void SetMasterVolume(float value)
         {
-            Data.MasterVolume = value;
+            Data.masterVolume = value;
             
-            RuntimeManager.StudioSystem.setParameterByName(MasterVolumeKey, Data.MasterVolume);
+            RuntimeManager.StudioSystem.setParameterByName(MasterVolumeKey, Data.masterVolume);
         }
         
         public void SetMusicVolume(float value)
         {
-            Data.MusicVolume = value;
+            Data.musicVolume = value;
             
-            RuntimeManager.StudioSystem.setParameterByName(MusicVolumeKey, Data.MusicVolume);
+            RuntimeManager.StudioSystem.setParameterByName(MusicVolumeKey, Data.musicVolume);
         }
         
         public void SetSFXVolume(float value)
         {
-            Data.SfxVolume = value;
+            Data.sfxVolume = value;
             
-            RuntimeManager.StudioSystem.setParameterByName(SFXVolumeKey, Data.SfxVolume);
+            RuntimeManager.StudioSystem.setParameterByName(SFXVolumeKey, Data.sfxVolume);
         }
 
         public void ToggleMenuDistortion(bool value)
         {
             float val = value ? 1 : 0;
-            RuntimeManager.StudioSystem.setParameterByName(MenuDistortKey, val);
+            RuntimeManager.StudioSystem.setParameterByName(IsPausedKey, val);
+            
+            RuntimeManager.StudioSystem.getBus(GameGroupBusPath, out var gameBus);
+            gameBus.setPaused(value);
         }
 
         public void SetDistortion(bool value)
         {
-            Data.BoostDistortionEnabled = value;
+            Data.boostDistortionEnabled = value;
         }
     }
 
     [Serializable]
     public class VolumeData
     {
-        public float MasterVolume = 1f, MusicVolume = 1f, SfxVolume = 1f;
-        public bool BoostDistortionEnabled = true;
+        public float masterVolume = 1f, musicVolume = 1f, sfxVolume = 1f;
+        public bool boostDistortionEnabled = true;
     }
 }

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="Snapshot" id="{011aabd9-7333-4b43-9ec5-7168d547788e}">
+		<property name="name">
+			<value>Pause</value>
+		</property>
+		<relationship name="mixer">
+			<destination>{0dfd118c-269c-46ef-a0a0-67f3b8bceb7b}</destination>
+		</relationship>
+		<relationship name="automatableProperties">
+			<destination>{a66ba906-4e6a-45e7-a650-0468548d13bb}</destination>
+		</relationship>
+		<relationship name="markerTracks">
+			<destination>{9f13bc54-391b-4b2d-b827-442a0231de2d}</destination>
+		</relationship>
+		<relationship name="timeline">
+			<destination>{c9584f39-5e89-422c-b9e0-96ea21eed9c1}</destination>
+		</relationship>
+		<relationship name="snapshotMasterTrack">
+			<destination>{d19c72c4-ba49-4d04-a2a5-050b5a2311dc}</destination>
+		</relationship>
+		<relationship name="snapshotProperties">
+			<destination>{acd8dac8-07f8-4f87-b1a3-d341f9694fa9}</destination>
+			<destination>{d759d150-9e8c-4029-877e-89f0b192c0f5}</destination>
+			<destination>{5679c462-ef61-4073-be64-bc82404d85c7}</destination>
+			<destination>{f71fdd1b-a30d-421c-b916-04f904a59bfb}</destination>
+		</relationship>
+		<relationship name="snapshotTracks">
+			<destination>{726773c5-c7bc-4e0f-a510-945e156fcd62}</destination>
+			<destination>{79d5f6d6-0225-4582-955c-324b34448fc0}</destination>
+		</relationship>
+	</object>
+	<object class="EventAutomatableProperties" id="{a66ba906-4e6a-45e7-a650-0468548d13bb}">
+		<relationship name="modulators">
+			<destination>{7ab9d872-6beb-42c8-81b9-729fcff73aa6}</destination>
+		</relationship>
+	</object>
+	<object class="MarkerTrack" id="{9f13bc54-391b-4b2d-b827-442a0231de2d}" />
+	<object class="Timeline" id="{c9584f39-5e89-422c-b9e0-96ea21eed9c1}" />
+	<object class="SnapshotMasterTrack" id="{d19c72c4-ba49-4d04-a2a5-050b5a2311dc}" />
+	<object class="SnapshotProperty" id="{acd8dac8-07f8-4f87-b1a3-d341f9694fa9}">
+		<property name="propertyName">
+			<value>volume</value>
+		</property>
+		<property name="value">
+			<value>0</value>
+		</property>
+		<relationship name="automatableObject">
+			<destination>{1d8f20e8-7f01-406b-aede-b1a50c623f5e}</destination>
+		</relationship>
+	</object>
+	<object class="SnapshotProperty" id="{d759d150-9e8c-4029-877e-89f0b192c0f5}">
+		<property name="propertyName">
+			<value>volume</value>
+		</property>
+		<property name="value">
+			<value>-9</value>
+		</property>
+		<relationship name="automatableObject">
+			<destination>{e8274b0c-ad12-43ec-9482-aad27e6fa1d6}</destination>
+		</relationship>
+	</object>
+	<object class="SnapshotProperty" id="{5679c462-ef61-4073-be64-bc82404d85c7}">
+		<property name="propertyName">
+			<value>cutoff</value>
+		</property>
+		<property name="value">
+			<value>260</value>
+		</property>
+		<relationship name="automatableObject">
+			<destination>{47195dbc-d858-47c1-a757-e7c82ed22097}</destination>
+		</relationship>
+	</object>
+	<object class="SnapshotProperty" id="{f71fdd1b-a30d-421c-b916-04f904a59bfb}">
+		<property name="propertyName">
+			<value>pitch</value>
+		</property>
+		<property name="value">
+			<value>0</value>
+		</property>
+		<relationship name="automatableObject">
+			<destination>{1d8f20e8-7f01-406b-aede-b1a50c623f5e}</destination>
+		</relationship>
+	</object>
+	<object class="SnapshotTrack" id="{726773c5-c7bc-4e0f-a510-945e156fcd62}">
+		<relationship name="mixerStrip">
+			<destination>{1d8f20e8-7f01-406b-aede-b1a50c623f5e}</destination>
+		</relationship>
+	</object>
+	<object class="SnapshotTrack" id="{79d5f6d6-0225-4582-955c-324b34448fc0}">
+		<relationship name="mixerStrip">
+			<destination>{e8274b0c-ad12-43ec-9482-aad27e6fa1d6}</destination>
+		</relationship>
+	</object>
+	<object class="ADSRModulator" id="{7ab9d872-6beb-42c8-81b9-729fcff73aa6}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>snapshotIntensity</value>
+		</property>
+		<property name="attackTime">
+			<value>200</value>
+		</property>
+		<property name="peakValue">
+			<value>100</value>
+		</property>
+		<property name="sustainValue">
+			<value>100</value>
+		</property>
+		<property name="releaseTime">
+			<value>300</value>
+		</property>
+	</object>
+</objects>

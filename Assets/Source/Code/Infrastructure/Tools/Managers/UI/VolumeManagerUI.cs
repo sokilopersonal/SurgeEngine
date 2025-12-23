@@ -32,9 +32,9 @@ namespace SurgeEngine.Source.Code.Infrastructure.Tools.Managers.UI
                 _volumeManager.SetMusicVolume(musicSlider.Slider.value / 100f);
             };
             
-            masterSlider.Slider.value = data.MasterVolume * 100;
-            sfxSlider.Slider.value = data.SfxVolume * 100;
-            musicSlider.Slider.value = data.MusicVolume * 100;
+            masterSlider.Slider.value = data.masterVolume * 100;
+            sfxSlider.Slider.value = data.sfxVolume * 100;
+            musicSlider.Slider.value = data.musicVolume * 100;
         }
 
         public override void Save()
@@ -50,9 +50,9 @@ namespace SurgeEngine.Source.Code.Infrastructure.Tools.Managers.UI
 
             _volumeManager.Load(data =>
             {
-                masterSlider.Slider.value = data.MasterVolume * 100;
-                sfxSlider.Slider.value = data.SfxVolume * 100;
-                musicSlider.Slider.value = data.MusicVolume * 100;
+                masterSlider.Slider.value = data.masterVolume * 100;
+                sfxSlider.Slider.value = data.sfxVolume * 100;
+                musicSlider.Slider.value = data.musicVolume * 100;
 
                 Save();
             });
