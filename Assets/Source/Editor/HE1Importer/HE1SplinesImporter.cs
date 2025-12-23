@@ -9,6 +9,11 @@ namespace SurgeEngine.Source.Editor.HE1Importer
 {
     public static class HE1SplinesImporter
     {
+        private const string HESideViewTag = "@SV";
+        private const string HEQuickstepTag = "@QS";
+        private const string UnitySideViewTag = "SideView";
+        private const string UnityQuickstepTag = "Quickstep";
+        
         public static void ReadSpline(string xmlPath)
         {
             var doc = XDocument.Load(xmlPath);
@@ -59,6 +64,12 @@ namespace SurgeEngine.Source.Editor.HE1Importer
                     var s = ReadScale(scaleStr);
                     go.transform.localScale = s;
                 }
+
+                if (nodeName.Contains(HEQuickstepTag))
+                    go.gameObject.tag = UnityQuickstepTag;
+                
+                if (nodeName.Contains(HESideViewTag))
+                    go.gameObject.tag = UnitySideViewTag;
 
                 var splines = geometry.Descendants("spline3d");
                 foreach (var splineNode in splines)

@@ -238,7 +238,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
         private void CalculatePath2D()
         {
-            if (Path2D != null)
+            if (Path2D != null && Path2D.Tag == SplineTag.SideView)
             {
                 var path = Path2D.Spline;
                 path.EvaluateWorld(out var pos, out var tg, out var up, out var right);
@@ -286,29 +286,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         {
             if (PathForward != null)
             {
-                var force = PathForward.PathCorrectionForce;
-                if (force > 0)
-                {
-                    if (CheckForGround(out _))
-                    {
-                        PathForward.Spline.EvaluateWorld(out _, out var tg, out var up, out var right);
-                    
-                        float dot = Vector3.Dot(Velocity.normalized, tg);
-                        float sign = Mathf.Sign(dot);
-                        tg = sign * tg;
-                    
-                        var targetDir = tg.normalized * Velocity.magnitude;
-                        float speedFactor = Mathf.Clamp01(1f - HorizontalVelocity.magnitude / (_config.maxSpeed * 2f));
-                        float adjustedForce = force * speedFactor;
-
-                        if (HorizontalVelocity.magnitude > 0.1f)
-                        {
-                            var rotation = Quaternion.RotateTowards(Quaternion.LookRotation(HorizontalVelocity), 
-                                Quaternion.LookRotation(targetDir), adjustedForce * Mathf.Rad2Deg * Time.fixedDeltaTime);
-                            Rigidbody.linearVelocity = rotation * Vector3.forward * HorizontalVelocity.magnitude + VerticalVelocity;
-                        }
-                    }
-                }
+                AdjustVelocityForPath(PathForward);
                 
                 PathForward.Spline.Time += Vector3.Dot(Velocity, PathForward.Spline.EvaluateTangent()) * Time.fixedDeltaTime;
 
@@ -326,6 +304,8 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         {
             if (PathDash != null)
             {
+                AdjustVelocityForPath(PathDash);
+                
                 PathDash.Spline.Time += Vector3.Dot(Velocity, PathDash.Spline.EvaluateTangent()) * Time.fixedDeltaTime;
 
                 if (PathDash.IsLimitEdge)
@@ -333,6 +313,33 @@ namespace SurgeEngine.Source.Code.Core.Character.System
                     if (IsPathOutOfRange(PathDash))
                     {
                         SetDashPath(null);
+                    }
+                }
+            }
+        }
+
+        private void AdjustVelocityForPath(ChangeMode3DData data)
+        {
+            var force = data.PathCorrectionForce;
+            if (force > 0)
+            {
+                if (CheckForGround(out _))
+                {
+                    data.Spline.EvaluateWorld(out _, out var tg, out _, out _);
+                    
+                    float dot = Vector3.Dot(Velocity.normalized, tg);
+                    float sign = Mathf.Sign(dot);
+                    tg = sign * tg;
+                    
+                    var targetDir = tg.normalized * Velocity.magnitude;
+                    float speedFactor = Mathf.Clamp01(1f - HorizontalVelocity.magnitude / (_config.maxSpeed * 2f));
+                    float adjustedForce = force * speedFactor;
+
+                    if (HorizontalVelocity.magnitude > 0.1f)
+                    {
+                        var rotation = Quaternion.RotateTowards(Quaternion.LookRotation(HorizontalVelocity), 
+                            Quaternion.LookRotation(targetDir), adjustedForce * Mathf.Rad2Deg * Time.fixedDeltaTime);
+                        Rigidbody.linearVelocity = rotation * Vector3.forward * HorizontalVelocity.magnitude + VerticalVelocity;
                     }
                 }
             }
@@ -605,6 +612,16 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             Path2D = data;
             
             OnPath2DChange?.Invoke(data);
+
+            if (PathForward != null)
+            {
+                SetForwardPath(null);
+            }
+
+            if (PathDash != null)
+            {
+                SetDashPath(null);
+            }
         }
 
         public void SetForwardPath(ChangeMode3DData data)
@@ -612,6 +629,16 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             PathForward = data;
             
             OnPathForwardChange?.Invoke(data);
+
+            if (Path2D != null)
+            {
+                Set2DPath(null);
+            }
+
+            if (PathDash != null)
+            {
+                SetDashPath(null);
+            }
         }
 
         public void SetDashPath(ChangeMode3DData data)
@@ -619,6 +646,16 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             PathDash = data;
             
             OnPathDashChange?.Invoke(data);
+            
+            if (Path2D != null)
+            {
+                Set2DPath(null);
+            }
+            
+            if (PathForward != null)
+            {
+                SetForwardPath(null);
+            }
         }
 
         public void Load()

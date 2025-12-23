@@ -1,6 +1,8 @@
 using SurgeEngine.Source.Code.Core.Character.States.BaseStates;
 using SurgeEngine.Source.Code.Core.Character.System;
 using SurgeEngine.Source.Code.Core.StateMachine.Interfaces;
+using SurgeEngine.Source.Code.Gameplay.CommonObjects;
+using SurgeEngine.Source.Code.Gameplay.CommonObjects.ChangeModes;
 using SurgeEngine.Source.Code.Infrastructure.Config.Sonic;
 using SurgeEngine.Source.Code.Infrastructure.Custom;
 using UnityEngine;
@@ -43,15 +45,16 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
             
             float speed = !IsRun ? _config.force : _config.runForce;
             var sideDir = _direction == QuickstepDirection.Left ? -speed : speed;
-            if (Kinematics.PathDash == null)
+            var pathForward = Kinematics.PathForward;
+            if (pathForward == null)
             {
                 SetSideVelocity(sideDir);
             }
             else 
             {
-                if (IsRun)
+                if (IsRun && pathForward.Tag == SplineTag.Quickstep)
                 {
-                    bool snapped = SnapToSpline();
+                    bool snapped = SnapToSpline(pathForward);
                     if (!snapped)
                     {
                         SetSideVelocity(sideDir);
@@ -113,51 +116,90 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
             }
         }
 
-        private bool SnapToSpline()
+        private bool SnapToSpline(ChangeMode3DData pathData)
         {
-            var container = Kinematics.PathDash.Spline.Container;
+            var container = pathData.Spline.Container;
             var splines = container.Splines;
-            if (splines.Count == 0) return false;
+            
+            if (splines.Count < 2) 
+            {
+                Debug.LogWarning("Quickstep: Container has less than 2 splines.");
+                return false;
+            }
 
-            float ignoreDistance = 1f;
-            float ignoreSqr = ignoreDistance * ignoreDistance;
-            Vector3 worldPos = Rigidbody.position - Rigidbody.transform.up * 0.5f;;
+            if (splines.Count > 2)
+            {
+                Debug.LogWarning("Quickstep: Container has more than 2 splines.");
+                return false;
+            }
+
+            const float ignoreDistance = 1f;
+            const float ignoreSqr = ignoreDistance * ignoreDistance;
+            const float blend = 0.6f;
+
+            Vector3 worldPos = Rigidbody.position - Rigidbody.transform.up * 0.5f;
             Vector3 localPos = container.transform.InverseTransformPoint(worldPos);
 
-            float minDist = float.MaxValue;
-            Spline bestSpline = null;
-            float bestT = 0f;
-            float dirSign = _direction == QuickstepDirection.Right ? 1f : -1f;
-            Vector3 rightAxis = Rigidbody.transform.right;
+            Spline leftSpline = splines[0];
+            Spline rightSpline = splines[1];
 
-            foreach (var spline in splines)
+            SplineUtility.GetNearestPoint(leftSpline, localPos, out _, out var leftT);
+            SplineUtility.GetNearestPoint(rightSpline, localPos, out _, out var rightT);
+
+            var potentialTargets = new (Vector3 pos, Vector3 tangent, float sqrDist, bool isValid)[3];
+
+            Vector3 leftPos = container.transform.TransformPoint(leftSpline.EvaluatePosition(leftT));
+            leftPos.y = worldPos.y;
+            potentialTargets[0] = (leftPos, container.transform.TransformDirection(leftSpline.EvaluateTangent(leftT)), (leftPos - worldPos).sqrMagnitude, false);
+
+            Vector3 rightPos = container.transform.TransformPoint(rightSpline.EvaluatePosition(rightT));
+            rightPos.y = worldPos.y;
+            potentialTargets[2] = (rightPos, container.transform.TransformDirection(rightSpline.EvaluateTangent(rightT)), (rightPos - worldPos).sqrMagnitude, false);
+
+            Vector3 centerPos = (leftPos + rightPos) * 0.5f;
+            Vector3 centerTangent = (potentialTargets[0].tangent + potentialTargets[2].tangent).normalized;
+            potentialTargets[1] = (centerPos, centerTangent, (centerPos - worldPos).sqrMagnitude, false);
+
+            Vector3 rightAxis = Rigidbody.transform.right;
+            float dirSign = _direction == QuickstepDirection.Right ? 1f : -1f;
+            
+            float bestDist = float.MaxValue;
+            int bestIndex = -1;
+            
+            for (int i = 0; i < 3; i++)
             {
-                SplineUtility.GetNearestPoint(spline, localPos, out _, out var t);
-                Vector3 nearestWorld = container.transform.TransformPoint(spline.EvaluatePosition(t));
-                nearestWorld.y = Rigidbody.position.y;
-                Vector3 toNearest = nearestWorld - worldPos;
-                if (Vector3.Dot(toNearest, rightAxis) * dirSign <= 0f) continue;
-                float dSqr = toNearest.sqrMagnitude;
-                if (dSqr < ignoreSqr) continue;
-                if (dSqr < minDist)
+                var candidate = potentialTargets[i];
+                if (candidate.sqrDist < ignoreSqr) continue;
+                
+                Vector3 toPoint = candidate.pos - worldPos;
+                float dot = Vector3.Dot(toPoint, rightAxis) * dirSign;
+                float minDot = (i == 1) ? 0f : 0.3f;
+
+                if (dot > minDot)
                 {
-                    minDist = dSqr;
-                    bestSpline = spline;
-                    bestT = t;
+                    if (candidate.sqrDist < bestDist)
+                    {
+                        bestDist = candidate.sqrDist;
+                        bestIndex = i;
+                    }
                 }
             }
 
-            if (bestSpline == null) return false;
+            if (bestIndex == -1) return false;
 
+            var target = potentialTargets[bestIndex];
             _snapStartPos = worldPos;
-            _snapTargetPos = container.transform.TransformPoint(bestSpline.EvaluatePosition(bestT));
-            _snapTargetPos.y = Rigidbody.position.y;
-            _snapTangent = container.transform.TransformDirection(bestSpline.EvaluateTangent(bestT));
+
+            float blendFactor = (bestIndex == 1) ? 1.0f : blend;
+            _snapTargetPos = Vector3.Lerp(_snapStartPos, target.pos, blendFactor);
+            
+            _snapTangent = target.tangent;
             _snapDot = Vector3.Dot(Rigidbody.transform.forward, _snapTangent);
             
             _snapVelocity = Kinematics.Velocity;
             _timer = 0;
             _isSnapping = true;
+            
             return true;
         }
         

@@ -93,11 +93,40 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects
     {
         public SplineData Spline { get; private set; }
         public bool IsCameraChange { get; private set; }
-        
-        public ChangeModeData(SplineData spline, bool isCameraChange)
+        public SplineTag Tag { get; private set; }
+
+        protected ChangeModeData(SplineData spline, bool isCameraChange)
         {
             Spline = spline;
             IsCameraChange = isCameraChange;
+            Tag = DetermineSplineTag(spline);
         }
+
+        private SplineTag DetermineSplineTag(SplineData spline)
+        {
+            if (spline == null)
+                return SplineTag.Default;
+
+            var container = spline.Container;
+            if (container == null)
+                return SplineTag.Default;
+            
+            var gameObject = container.gameObject;
+            
+            if (gameObject.CompareTag("SideView"))
+                return SplineTag.SideView;
+
+            if (gameObject.CompareTag("Quickstep"))
+                return SplineTag.Quickstep;
+
+            return SplineTag.Default;
+        }
+    }
+
+    public enum SplineTag
+    {
+        Default,
+        SideView,
+        Quickstep
     }
 }
