@@ -68,17 +68,29 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
 
             Rigidbody.linearVelocity = vel;
             _timer += dt;
+            
+            Collider[] overlaps = Physics.OverlapSphere(Rigidbody.position, 0.5f, LayerMask.GetMask("Default"));
+            foreach (Collider overlap in overlaps)
+            {
+                if (overlap == Character.GetComponent<Collider>())
+                    continue;
+
+                if (Physics.ComputePenetration(
+                    Character.Model.Collision, Rigidbody.position, Rigidbody.rotation,
+                    overlap, overlap.transform.position, overlap.transform.rotation,
+                    out Vector3 direction, out float distance))
+                {
+                    Rigidbody.position += direction * (distance + 0.5f);
+                    Debug.Log("Pushing the player out of the object...");
+                }
+            }
 
             bool ground = Kinematics.CheckForGround(out RaycastHit hit);
             bool isWater = false;
-            if (hit.transform != null)
+            if (hit.transform.IsWater(out var surface))
             {
-                isWater = hit.transform.gameObject.GetGroundTag() == GroundTag.Water;
-                if (isWater)
-                {
-                    WaterSurface water = hit.transform.GetComponent<WaterSurface>();
-                    water.Attach(Rigidbody.position, Character);
-                }
+                surface.Attach(Rigidbody.position, Character);
+                isWater = true;
             }
             
             if (ground && !isWater)
