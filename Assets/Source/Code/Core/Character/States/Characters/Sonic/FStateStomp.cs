@@ -70,13 +70,14 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
             _timer += dt;
             
             Collider[] overlaps = Physics.OverlapSphere(Rigidbody.position, 0.5f, LayerMask.GetMask("Default"));
+            var playerCollider = Character.Model.Collision;
             foreach (Collider overlap in overlaps)
             {
-                if (overlap == Character.GetComponent<Collider>())
+                if (overlap == playerCollider)
                     continue;
 
                 if (Physics.ComputePenetration(
-                    Character.Model.Collision, Rigidbody.position, Rigidbody.rotation,
+                        playerCollider, Rigidbody.position, Rigidbody.rotation,
                     overlap, overlap.transform.position, overlap.transform.rotation,
                     out Vector3 direction, out float distance))
                 {
