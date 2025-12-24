@@ -1,7 +1,7 @@
 # Surge Engine
 ### Sonic Framework
 
-Scaleable, Easy and Fast - Boost framework created with Unity 6. Working on High Definition Render Pipeline (HDRP) for amazing graphics quality.
+Scaleable, Easy and Fast - Boost framework created with Unity 6. Working on High Definition Render Pipeline (HDRP) for an amazing graphics quality.
 <img width="1920" height="967" alt="image" src="https://github.com/user-attachments/assets/010aec57-938a-4019-b89d-f1cc6d1398ae" />
 
 ## Features
