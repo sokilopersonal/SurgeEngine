@@ -13,6 +13,7 @@ Material:
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - _ALPHABLEND_ON
+  - _FADING_ON
   m_InvalidKeywords:
   - _DISABLE_SSR_TRANSPARENT
   - _DOUBLESIDED_ON
@@ -170,9 +171,9 @@ Material:
     - _BlendMode: 0
     - _BlendOp: 0
     - _BumpScale: 1
-    - _CameraFadingEnabled: 0
+    - _CameraFadingEnabled: 1
     - _CameraFarFadeDistance: 2
-    - _CameraNearFadeDistance: 1
+    - _CameraNearFadeDistance: 0.1
     - _CoatMask: 0
     - _ColorMode: 0
     - _ConservativeDepthOffsetEnable: 0
@@ -295,7 +296,7 @@ Material:
     - _ZWrite: 0
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _CameraFadeParams: {r: 0, g: Infinity, b: 0, a: 0}
+    - _CameraFadeParams: {r: 0.1, g: 0.5263158, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _ColorAddSubDiff: {r: 1, g: 0, b: 0, a: 0}
     - _DiffusionProfileAsset: {r: 0, g: 0, b: 0, a: 0}

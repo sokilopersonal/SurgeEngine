@@ -33,6 +33,9 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
 
         [Header("Light Speed Dash")]
         [SerializeField] private Effect lightSpeedDashEffect;
+        
+        [Header("Drift")]
+        [SerializeField] private DriftEffect driftEffect;
 
         private FBoost _boost;
 
@@ -41,6 +44,8 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
             base.Awake();
 
             Character.StateMachine.GetState(out _boost);
+            
+            driftEffect.Rigidbody = Character.Rigidbody;
         }
 
         protected override void OnEnable()
@@ -105,6 +110,8 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
             {
                 sweepKickEffect.Clear();
             }
+            
+            driftEffect.Toggle(obj is FStateDrift);
         }
         
         private void OnBoostActivate(FSubState obj, bool value)
