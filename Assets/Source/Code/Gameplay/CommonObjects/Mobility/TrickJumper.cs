@@ -218,7 +218,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 
         private IEnumerator HandleQTEResultRoutine(QTEResult result)
         {
-            _finishingSequence = _qteSequences[_sequenceId-1];
+            _finishingSequence = _qteSequences[Math.Max(_sequenceId - 1, 0)];
             _qteSequences.Clear();
             _buttonId = 0;
             _sequenceId = 0;
