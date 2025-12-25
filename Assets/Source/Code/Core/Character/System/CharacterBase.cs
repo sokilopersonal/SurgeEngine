@@ -101,6 +101,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             StateMachine.AddState(new FStateDamage(this));
             StateMachine.AddState(new FStateDamageLand(this));
             StateMachine.AddState(new FStateUpreel(this));
+            StateMachine.AddState(new FStatePulley(this));
             StateMachine.AddState(new FStateTrickJump(this));
             StateMachine.AddState(new FStateTrick(this));
             StateMachine.AddState(new FStateSpring(this));

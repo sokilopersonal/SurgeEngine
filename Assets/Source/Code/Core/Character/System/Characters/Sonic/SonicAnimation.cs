@@ -1,10 +1,11 @@
-﻿using System.Collections;
-using SurgeEngine.Source.Code.Core.Character.States;
+﻿using SurgeEngine.Source.Code.Core.Character.States;
 using SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic;
 using SurgeEngine.Source.Code.Core.StateMachine;
 using SurgeEngine.Source.Code.Core.StateMachine.Base;
 using SurgeEngine.Source.Code.Core.StateMachine.Components;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.XR;
 using Random = UnityEngine.Random;
 
 namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
@@ -37,6 +38,11 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
                 startHandle?.Then(() => StateAnimator.TransitionToState("Idle"));
 
                 return;
+            }
+
+            if (obj is FStatePulley)
+            {
+                StateAnimator.TransitionToState("PulleyStart", 0f).After(1.0f, () => StateAnimator.TransitionToState("PulleyLoop", 0f));
             }
             
             if (obj is FStateIdle)
@@ -202,7 +208,11 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
             }
             if (obj is FStateJump)
             {
-                if (machine.IsPrevExact<FStateJump>())
+                if (prev is FStatePulley)
+                {
+                    StateAnimator.TransitionToState("PulleyJump", 0f).After(0.333f, () => StateAnimator.TransitionToState("Ball", 0f));
+                }
+                else if (machine.IsPrevExact<FStateJump>())
                 {
                     StateAnimator.TransitionToState("Ball", 0f);
                 }
@@ -332,7 +342,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
             }
             if (obj is FStateUpreel)
             {
-                StateAnimator.TransitionToState("UpreelStart", 0f).Then(() => StateAnimator.TransitionToState("PulleyLoop", 0.25f));
+                StateAnimator.TransitionToState("UpreelStart", 0f).Then(() => StateAnimator.TransitionToState("UpreelLoop", 0.25f));
             }
             if (obj is FStateTrick)
             {
