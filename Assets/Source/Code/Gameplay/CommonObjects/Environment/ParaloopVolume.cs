@@ -31,7 +31,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Environment
             context.Effects.ParaloopEffect.Toggle(true);
             RuntimeManager.PlayOneShotAttached(paraloopSound, context.gameObject);
             
-            var rings = Physics.OverlapBox(_boxCollider.bounds.center, _boxCollider.bounds.extents, _boxCollider.transform.rotation);
+            var rings = Physics.OverlapBox(_boxCollider.bounds.center, _boxCollider.bounds.extents, transform.rotation);
             if (rings.Length == 0) return;
             _ringsList.Clear();
             foreach (var ring in rings)
