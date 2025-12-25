@@ -31,6 +31,9 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
         [Header("Sweepkick")]
         [SerializeField] private Effect sweepKickEffect;
 
+        [Header("Light Speed Dash")]
+        [SerializeField] private Effect lightSpeedDashEffect;
+
         private FBoost _boost;
 
         protected override void Awake()
@@ -78,7 +81,9 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
                 StopCoroutine(PlayJumpball());
                 spinball.Toggle(false);
             }
-            
+
+            lightSpeedDashEffect.Toggle(obj is FStateLightSpeedDash);
+
             if (obj is FStateGround or FStateStompLand && prev is FStateStomp)
                 stompEffect.Land();
 
