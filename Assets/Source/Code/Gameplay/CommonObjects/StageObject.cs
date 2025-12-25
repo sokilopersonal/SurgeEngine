@@ -20,11 +20,24 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects
             }
         }
 
+        private void OnTriggerExit(Collider other)
+        {
+            if (other.TryGetCharacter(out CharacterBase ctx))
+            {
+                OnExit(other, ctx);
+            }
+        }
+
         public virtual void OnEnter(Collider msg, CharacterBase context)
         {
             ObjectEvents.OnObjectTriggered?.Invoke(this);
             
             OnContact?.Invoke(this);
+        }
+
+        public virtual void OnExit(Collider msg, CharacterBase context)
+        {
+            
         }
     }
 }

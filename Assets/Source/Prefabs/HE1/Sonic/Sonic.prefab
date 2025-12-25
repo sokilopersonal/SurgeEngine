@@ -27790,7 +27790,6 @@ GameObject:
   - component: {fileID: 8154153295917155542}
   - component: {fileID: 5613109573097416191}
   - component: {fileID: 4109363033627661366}
-  - component: {fileID: 3843729156831640190}
   - component: {fileID: 901914677090446478}
   - component: {fileID: 2889595739742054052}
   - component: {fileID: 8326745376011860981}
@@ -28140,26 +28139,6 @@ MonoBehaviour:
       Data3: -563556443
       Data4: -1941405797
     Path: event:/Common/Brake
---- !u!114 &3843729156831640190
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3999411662334716339}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea238877c4ec4ee42ba4e37246aff8d0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  paraloopSound:
-    Guid:
-      Data1: 135725930
-      Data2: 1223720458
-      Data3: 289375626
-      Data4: 1012995992
-    Path: event:/Common/Paraloop
-  paraloopEffect: {fileID: 8823258531851677657}
 --- !u!114 &901914677090446478
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34032,8 +34011,6 @@ MonoBehaviour:
   stopDelay: 0
   trail1: {fileID: 3049231155018111083}
   trail2: {fileID: 489791928594389422}
-  sonicContext: {fileID: 0}
-  startPoint: {x: 0, y: 0, z: 0}
 --- !u!1 &5431110773202901620
 GameObject:
   m_ObjectHideFlags: 0

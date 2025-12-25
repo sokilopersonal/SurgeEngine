@@ -7,13 +7,11 @@ namespace SurgeEngine.Source.Code.Gameplay.Effects
     public class ParaloopEffect : Effect
     {
         [SerializeField] private TrailRenderer trail1, trail2;
-        [HideInInspector] public CharacterBase sonicContext;
-        [HideInInspector] public Vector3 startPoint;
+
+        private bool _toggled;
+        private Tween _colorTween;
         
-        private bool toggled;
-        Tweener colorTween;
-        
-        public void Start()
+        public void Awake()
         {
             trail1.emitting = true;
             trail1.startColor = Color.clear;
@@ -26,32 +24,17 @@ namespace SurgeEngine.Source.Code.Gameplay.Effects
         
         public override void Toggle(bool value)
         {
-            if (toggled)
-                return;
+            _toggled = value;
 
-            toggled = value;
-
-            colorTween.Kill(true);
+            _colorTween?.Kill(true);
             Color targetColor = value ? Color.white : Color.clear;
-            colorTween = DOVirtual.Color(trail1.startColor, targetColor, 0.5f, (Color color) =>
+            _colorTween = DOVirtual.Color(trail1.startColor, targetColor, 0.5f, color =>
             {
                 trail1.startColor = color;
                 trail1.endColor = color;
                 trail2.startColor = color;
                 trail2.endColor = color;
             });
-        }
-
-        private void Update()
-        {  
-            if (!toggled || sonicContext == null)
-                return;
-
-            if (sonicContext.Kinematics.Speed < sonicContext.Config.minParaloopSpeed || Vector3.Distance(sonicContext.Kinematics.Rigidbody.position, startPoint) > 50f)
-            {
-                toggled = false;
-                Toggle(false);
-            }
         }
     }
 }

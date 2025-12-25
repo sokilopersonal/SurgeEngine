@@ -83,8 +83,11 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Collectables
             }
         }
 
-        protected virtual void Collect(int count)
+        public virtual void Collect(int count)
         {
+            if (!gameObject.activeInHierarchy)
+                return;
+            
             RuntimeManager.PlayOneShot(ringSound, transform.position);
 
             for (int i = 0; i < count; i++)
@@ -109,6 +112,6 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Collectables
             gameObject.SetActive(true);
         }
 
-        public virtual bool IsSuperRing() => false;
+        public virtual bool IsSuperRing => false;
     }
 }

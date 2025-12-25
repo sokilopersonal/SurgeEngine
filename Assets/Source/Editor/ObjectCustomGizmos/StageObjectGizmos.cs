@@ -1,5 +1,6 @@
 ﻿using SurgeEngine.Source.Code.Gameplay.CommonObjects;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.CameraObjects;
+using SurgeEngine.Source.Code.Gameplay.CommonObjects.Environment;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.Player;
 using UnityEditor;
@@ -141,6 +142,18 @@ namespace SurgeEngine.Source.Editor.ObjectCustomGizmos
             if ((gizmoType & GizmoType.Selected) != 0)
             {
                 DrawColliderGizmo(type, new Color(0.15f, 1f, 0f, 0.1f));
+            }
+        }
+
+        [DrawGizmo(GizmoType.Pickable | GizmoType.Selected | GizmoType.NotInSelectionHierarchy)]
+        static void DrawGizmos(ParaloopVolume type, GizmoType gizmoType)
+        {
+            Gizmos.matrix = type.transform.localToWorldMatrix;
+            Gizmos.DrawCube(Vector3.zero, Vector3.one * 0.75f);
+            
+            if ((gizmoType & GizmoType.Selected) != 0)
+            {
+                DrawColliderGizmo(type, new Color(0f, 1f, 1f, 0.1f));
             }
         }
 
