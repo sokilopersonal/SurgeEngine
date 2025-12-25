@@ -53,11 +53,11 @@ namespace SurgeEngine.Source.Code.Core.Character.HUD
         
         private void OnQTEResultReceived(QTEResult result)
         {
-            _currentMessageUI = Instantiate(quickTimeMessageUI);
+            CleanupUIElements();
+
+            _currentMessageUI = Instantiate(quickTimeMessageUI, transform);
             _currentMessageUI.Play(result);
             Destroy(_currentMessageUI, 1f);
-            
-            CleanupUIElements();
         }
         
         private void CleanupUIElements()
