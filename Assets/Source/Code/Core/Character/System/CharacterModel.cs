@@ -10,19 +10,11 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         [SerializeField] private Transform root;
         public Transform Root => root;
         [SerializeField] private Transform modelTransform;
-        [SerializeField] private float verticalOffset = -1f;
 
         [SerializeField] private CapsuleCollider collision;
         public CapsuleCollider Collision => collision;
         private float _collisionStartHeight;
         private float _collisionStartRadius;
-        
-        [SerializeField] private float horizontalRotationSpeed = 14f;
-        [SerializeField] private float verticalRotationSpeed = 7.5f;
-        [SerializeField] private float flipAngle = 360f;
-        
-        private Vector3 _modelForwardRotationVelocity;
-        private Vector3 _modelUpRotationVelocity;
 
         private float _airRestoreTimer;
         private bool _airRestoring;
@@ -31,41 +23,28 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         private bool _upRestoring;
         private Vector3 _forwardVector;
         private Vector3 _upVector;
-
-        private bool _isFlipping;
-        private float _flipTimer;
+        
         private float _timer;
 
-        private const float AirRotationResetTime = 2f;
         private const float UpRestoreDuration = 5f;
 
         private CharacterBodyRotation _bodyRotation;
 
         private void Awake()
         {
-            _collisionStartHeight = Collision.height;
+            /*_collisionStartHeight = Collision.height;
             _collisionStartRadius = Collision.radius;
             
             Root.rotation = Character.transform.rotation;
             
-            modelTransform.localPosition = new Vector3(0, verticalOffset, 0);
+            modelTransform.localPosition = new Vector3(0, verticalOffset, 0);*/
             
             _bodyRotation = new CharacterBodyRotation(Character);
         }
 
-        private void OnEnable()
-        {
-            Character.StateMachine.OnStateAssign += OnStateAssign;
-        }
-        
-        private void OnDisable()
-        {
-            Character.StateMachine.OnStateAssign -= OnStateAssign;
-        }
-
         private void Update()
         {
-            Root.localPosition = Character.transform.localPosition;
+            /*Root.localPosition = Character.transform.localPosition;
             
             FState prev = Character.StateMachine.PreviousState;
             UpdateRotationVectors();
@@ -86,18 +65,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
             Utility.TickTimer(ref _timer, AirRotationResetTime, false);
             
-            ApplyFinalRotation();
-        }
-
-        private void UpdateRotationVectors()
-        {
-            float speedMultiplier = Mathf.Lerp(1f, 2f, Character.Kinematics.Speed / Character.Config.topSpeed);
-            
-            _forwardVector = Vector3.Slerp(Root.forward, Character.transform.forward, 
-                Time.deltaTime * horizontalRotationSpeed);
-            
-            _upVector = Vector3.Slerp(Root.up, Character.transform.up, 
-                Time.deltaTime * verticalRotationSpeed * speedMultiplier);
+            ApplyFinalRotation();*/
         }
 
         private void HandleAirRotationRestore()
@@ -148,32 +116,6 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             _upRestoring = false;
         }
 
-        private void HandleFlip()
-        {
-            if (_airRestoring)
-            {
-                _isFlipping = false;
-                _flipTimer = 0;
-                return;
-            }
-            
-            ExecuteFlip();
-            
-            _flipTimer -= Time.deltaTime;
-            if (_flipTimer <= 0)
-            {
-                _isFlipping = false;
-                _flipTimer = 0;
-            }
-        }
-
-        private void ExecuteFlip()
-        {
-            var rb = Character.Kinematics.Rigidbody;
-            Quaternion flipRotation = Quaternion.AngleAxis(flipAngle * Time.deltaTime, Vector3.left);
-            rb.MoveRotation(rb.rotation * flipRotation);
-        }
-
         private void ApplyFinalRotation()
         {
             Vector3.OrthoNormalize(ref _upVector, ref _forwardVector);
@@ -185,47 +127,14 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             _bodyRotation.RotateBody(normal);
         }
 
-        public void RotateBody(Vector3 vector, Vector3 normal, float angleDelta = 1200f)
+        public void RotateBody(Vector3 vector, Vector3 normal, float angleDelta = 1000f)
         {
-            if (_airRestoring || _isFlipping) return;
             _bodyRotation.RotateBody(vector, normal, angleDelta);
         }
 
         public void VelocityRotation(Vector3 vel)
         {
             _bodyRotation.VelocityRotation(vel);
-            Root.rotation = Character.Kinematics.Rigidbody.rotation;
-        }
-
-        private void OnStateAssign(FState obj)
-        {
-            if (obj is FStateAir)
-            {
-                CheckAndStartFlip();
-            }
-            else
-            {
-                StopFlip();
-            }
-        }
-
-        private void CheckAndStartFlip()
-        {
-            bool isNearVertical = Mathf.Abs(Character.Kinematics.Angle - 90) < 0.05f;
-            bool hasUpwardVelocity = Character.Kinematics.Velocity.y > 3f;
-            
-            if (isNearVertical && hasUpwardVelocity)
-            {
-                _isFlipping = true;
-                _flipTimer = 0.75f;
-                _timer = AirRotationResetTime;
-            }
-        }
-
-        private void StopFlip()
-        {
-            _isFlipping = false;
-            _flipTimer = 0;
         }
 
         /// <summary>
