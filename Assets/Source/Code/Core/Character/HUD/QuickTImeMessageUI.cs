@@ -14,23 +14,23 @@ namespace SurgeEngine
         [SerializeField] private Image message;
         [SerializeField] private Image messageAfterImage;
 
-        public void Play(QTEResult result)
+        public void Play(QTEResult result, float time)
         {
             if (result.Equals(QTEResult.Success))
             {
-                switch (Random.Range(0, 2))
+                if (time >= 0.75)
                 {
-                    case 0:
-                        message.sprite = niceTexture;
-                        break;
-                    case 1:
-                        message.sprite = greatTexture;
-                        break;
-                    case 2:
-                        message.sprite = coolTexture;
-                        break;
+                    message.sprite = coolTexture;
                 }
-                
+                else if (time >= 0.5 && time < 0.75)
+                {
+                    message.sprite = greatTexture;
+                }
+                else
+                {
+                    message.sprite = niceTexture;
+                }
+
                 messageAfterImage.sprite = message.sprite;
                 animator.Play("Success", 0, 0f);
             }
