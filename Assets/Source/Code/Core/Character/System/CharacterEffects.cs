@@ -24,6 +24,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         [SerializeField] private ParaloopEffect paraloopEffect;
         public SwingEffect SwingTrail => swingTrail;
         public Effect JumpDeluxEffect => jumpDeluxEffect;
+        public ParaloopEffect ParaloopEffect => paraloopEffect;
 
         protected virtual void Awake()
         {
@@ -98,13 +99,6 @@ namespace SurgeEngine.Source.Code.Core.Character.System
                 _currentStep?.Stop();
                 _currentStep = null;
             }
-        }
-
-        public void CreateParaloop()
-        {
-            paraloopEffect.startPoint = Character.Kinematics.Rigidbody.position;
-            paraloopEffect.sonicContext = Character;
-            paraloopEffect.Toggle(true);
         }
     }
 }

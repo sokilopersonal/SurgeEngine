@@ -41,6 +41,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
 
             if (Input.APressed && !ceiling)
             {
+                Kinematics.SetDetachTime(0.1f);
                 StateMachine.SetState<FStateJump>();
             }
 

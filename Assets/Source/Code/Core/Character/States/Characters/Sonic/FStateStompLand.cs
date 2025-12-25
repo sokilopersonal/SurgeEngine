@@ -39,6 +39,12 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
                         StateMachine.SetState<FStateSit>();
                 }
             }
+
+            if (Input.APressed && !ceiling)
+            {
+                Kinematics.SetDetachTime(0.1f);
+                StateMachine.SetState<FStateJump>();
+            }
         }
 
         public override void OnFixedTick(float dt)

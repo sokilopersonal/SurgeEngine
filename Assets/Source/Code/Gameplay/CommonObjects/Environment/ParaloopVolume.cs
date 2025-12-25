@@ -1,32 +1,67 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using FMODUnity;
 using SurgeEngine.Source.Code.Core.Character.Sound;
 using SurgeEngine.Source.Code.Core.Character.System;
+using SurgeEngine.Source.Code.Gameplay.CommonObjects.Collectables;
 using UnityEngine;
 
 namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Environment
 {
     public class ParaloopVolume : StageObject
     {
-        private BoxCollider _collider;
+        [SerializeField] private EventReference paraloopSound;
+        
+        private BoxCollider _boxCollider;
+        private List<Ring> _ringsList;
+        
+        private Coroutine _paraloopCoroutine;
+
+        private void Awake()
+        {
+            _boxCollider = GetComponent<BoxCollider>();
+            _ringsList = new List<Ring>();
+        }
 
         public override void OnEnter(Collider msg, CharacterBase context)
         {
             base.OnEnter(msg, context);
             
-            if (context.Kinematics.Speed >= context.Config.minParaloopSpeed)
+            context.Effects.ParaloopEffect.Toggle(true);
+            RuntimeManager.PlayOneShotAttached(paraloopSound, context.gameObject);
+            
+            var rings = Physics.OverlapBox(_boxCollider.bounds.center, _boxCollider.bounds.extents, transform.rotation);
+            if (rings.Length == 0) return;
+            _ringsList.Clear();
+            foreach (var ring in rings)
             {
-                context.Effects.CreateParaloop();
-                context.Sounds.GetComponent<ParaloopSound>().Play();
+                var ringComponent = ring.GetComponent<Ring>();
+                if (ringComponent != null && !ringComponent.IsSuperRing)
+                {
+                    _ringsList.Add(ringComponent);
+                }
             }
         }
 
-        private void OnDrawGizmosSelected()
+        public override void OnExit(Collider msg, CharacterBase context)
         {
-            if (_collider == null)
-                _collider = GetComponent<BoxCollider>();
+            base.OnExit(msg, context);
             
-            Gizmos.color = new Color(0f, 1f, 1f, 0.1f);
-            Gizmos.matrix = transform.localToWorldMatrix;
-            Gizmos.DrawCube(_collider.center, _collider.size);
+            if (_paraloopCoroutine != null) StopCoroutine(_paraloopCoroutine);
+            _paraloopCoroutine = StartCoroutine(CollectRings(context));
+        }
+
+        private IEnumerator CollectRings(CharacterBase character)
+        {
+            yield return new WaitForSeconds(1f);
+
+            character.Effects.ParaloopEffect.Toggle(false);
+            
+            foreach (var ring in _ringsList)
+            {
+                ring.Collect(1);
+            }
         }
     }
 }

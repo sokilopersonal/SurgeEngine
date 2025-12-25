@@ -6,12 +6,12 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Collectables
     {
         public override bool IsLightSpeedDashTarget => false;
 
-        protected override void Collect(int count)
+        public override void Collect(int count)
         {
             base.Collect(10);
         }
 
         public override void StartMagnet(CharacterBase character) { }
-        public override bool IsSuperRing() => true;
+        public override bool IsSuperRing => true;
     }
 }

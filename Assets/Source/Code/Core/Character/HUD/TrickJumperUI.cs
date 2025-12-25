@@ -8,9 +8,11 @@ namespace SurgeEngine.Source.Code.Core.Character.HUD
     public class TrickJumperUI : MonoBehaviour
     {
         [SerializeField] private QuickTimeEventUI quickTimeEventUI;
+        [SerializeField] private QuickTimeMessageUI quickTimeMessageUI;
         
         private TrickJumper _trickJumper;
         private QuickTimeEventUI _currentUI;
+        private QuickTimeMessageUI _currentMessageUI;
         private readonly List<QuickTimeEventUI> _activeUIs = new();
         
         private void OnEnable()
@@ -52,6 +54,10 @@ namespace SurgeEngine.Source.Code.Core.Character.HUD
         private void OnQTEResultReceived(QTEResult result)
         {
             CleanupUIElements();
+
+            _currentMessageUI = Instantiate(quickTimeMessageUI, transform);
+            _currentMessageUI.Play(result, _trickJumper.GetTimer() / _trickJumper.GetFinishingSequence().time);
+            Destroy(_currentMessageUI, 1f);
         }
         
         private void CleanupUIElements()

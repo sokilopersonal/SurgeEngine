@@ -60,7 +60,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStat
         {
             if (obj is Ring ring)
             {
-                BoostEnergy += _config.RingEnergyAddition * (!ring.IsSuperRing() ? 1 : 5);
+                BoostEnergy += _config.RingEnergyAddition * (!ring.IsSuperRing ? 1 : 5);
             }
         }
 

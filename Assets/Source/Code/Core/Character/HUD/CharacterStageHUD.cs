@@ -117,7 +117,7 @@ namespace SurgeEngine.Source.Code.Core.Character.HUD
         {
             if (obj is Ring ring)
             {
-                if (!ring.IsSuperRing())
+                if (!ring.IsSuperRing)
                 {
                     RingHUD ringHUDInstance = Instantiate(ringHUDPrefab, obj.transform.position, obj.transform.rotation);
                     _instantiator.InjectGameObject(ringHUDInstance.gameObject);

@@ -48,6 +48,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         private int _sequenceId;
         private QuickTimeEventUI _currentQTEUI;
         private float _timer;
+        private QTESequence _finishingSequence;
         private CharacterBase _character;
 
         private void Awake()
@@ -217,6 +218,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 
         private IEnumerator HandleQTEResultRoutine(QTEResult result)
         {
+            _finishingSequence = _qteSequences[Math.Max(_sequenceId - 1, 0)];
             _qteSequences.Clear();
             _buttonId = 0;
             _sequenceId = 0;
@@ -283,6 +285,11 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         public QTESequence GetCurrentSequence()
         {
             return _qteSequences[_sequenceId];
+        }
+
+        public QTESequence GetFinishingSequence()
+        {
+            return _finishingSequence;
         }
 
         private void OnDrawGizmosSelected()
