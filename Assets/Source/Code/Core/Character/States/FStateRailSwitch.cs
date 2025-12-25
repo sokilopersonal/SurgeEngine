@@ -66,7 +66,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
             
             _data.Time += Vector3.Dot(tg, _savedVelocity) * dt;
 
-            _switchTimer += dt / 0.625f;
+            _switchTimer += dt / 0.68f;
             _switchTimer = Mathf.Clamp01(_switchTimer);
 
             if (_switchTimer >= 1f)

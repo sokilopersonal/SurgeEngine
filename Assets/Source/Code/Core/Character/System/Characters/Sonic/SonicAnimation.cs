@@ -342,11 +342,11 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
             {
                 if (railSwitch.IsLeft)
                 {
-                    StateAnimator.TransitionToState("RailSwitchL", 0.4f);
+                    StateAnimator.TransitionToState("RailSwitchL", 0.0f);
                 }
                 else
                 {
-                    StateAnimator.TransitionToState("RailSwitchR", 0.4f);
+                    StateAnimator.TransitionToState("RailSwitchR", 0.0f);
                 }
             }
             if (obj is FStateStumble)
