@@ -68,8 +68,6 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             {
                 AlignToVelocity(vel, left);
             }
-            
-            _character.Model.Root.rotation = _character.Kinematics.Rigidbody.rotation;
         }
 
         private bool HasValidInput(Vector3 inputDir)
@@ -87,7 +85,8 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             {
                 var targetRot = Quaternion.LookRotation(targetDir, normal);
                 var towards = Quaternion.RotateTowards(rb.rotation, targetRot, rotSpeed * Time.fixedDeltaTime);
-                rb.MoveRotation(towards);
+                var finalRot = Quaternion.Slerp(rb.rotation, towards, 128 * Time.fixedDeltaTime);
+                rb.MoveRotation(finalRot);
             }
         }
 

@@ -124,8 +124,6 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             {
                 StateMachine.SetState<FStateIdle>();
             }
-            
-            Model.Root.forward = transform.forward;
         }
 
         protected virtual void InitializeConfigs()

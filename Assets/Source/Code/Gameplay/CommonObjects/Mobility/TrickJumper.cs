@@ -102,7 +102,6 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
                 _character.Kinematics.ResetVelocity();
                 _character.Rigidbody.position = StartPosition;
                 _character.transform.forward = Vector3.Cross(-transform.right, Vector3.up);
-                _character.Model.Root.forward = Vector3.Cross(-transform.right, Vector3.up);
 
                 Vector3 impulse = Utility.GetImpulseWithPitch(
                     -transform.forward,

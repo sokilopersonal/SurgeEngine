@@ -16,18 +16,6 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         private float _collisionStartHeight;
         private float _collisionStartRadius;
 
-        private float _airRestoreTimer;
-        private bool _airRestoring;
-        
-        private float _upRestoreTimer;
-        private bool _upRestoring;
-        private Vector3 _forwardVector;
-        private Vector3 _upVector;
-        
-        private float _timer;
-
-        private const float UpRestoreDuration = 5f;
-
         private CharacterBodyRotation _bodyRotation;
 
         private void Awake()
@@ -40,82 +28,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
         private void Update()
         {
-            /*Root.localPosition = Character.transform.localPosition;
             
-            FState prev = Character.StateMachine.PreviousState;
-            UpdateRotationVectors();
-
-            if (prev is FStateObject)
-            {
-                HandleAirRotationRestore();
-            }
-            else
-            {
-                ResetRotationRestore();
-            }
-
-            if (_isFlipping)
-            {
-                HandleFlip();
-            }
-
-            Utility.TickTimer(ref _timer, AirRotationResetTime, false);
-            
-            ApplyFinalRotation();*/
-        }
-
-        private void HandleAirRotationRestore()
-        {
-            if (_airRestoring)
-            {
-                _bodyRotation.VelocityRotation(Character.Kinematics.Velocity.normalized);
-                
-                _airRestoreTimer -= Time.deltaTime;
-                
-                if (_airRestoreTimer <= 0)
-                {
-                    TransitionToUpRestore();
-                }
-            }
-            else if (_upRestoring)
-            {
-                UpdateUpRestore();
-            }
-        }
-
-        private void TransitionToUpRestore()
-        {
-            _airRestoreTimer = 0;
-            _upRestoreTimer = 0f;
-            _upRestoring = true;
-            _airRestoring = false;
-        }
-
-        private void UpdateUpRestore()
-        {
-            float dt = Time.deltaTime;
-            _upRestoreTimer += dt / UpRestoreDuration;
-            _upVector = Vector3.Slerp(Root.up, Character.transform.up, _upRestoreTimer);
-            
-            if (_upRestoreTimer >= 1)
-            {
-                _upRestoreTimer = 0f;
-                _upRestoring = false;
-            }
-        }
-
-        private void ResetRotationRestore()
-        {
-            _airRestoreTimer = 0f;
-            _airRestoring = false;
-            _upRestoreTimer = 0f;
-            _upRestoring = false;
-        }
-
-        private void ApplyFinalRotation()
-        {
-            Vector3.OrthoNormalize(ref _upVector, ref _forwardVector);
-            Root.localRotation = Quaternion.LookRotation(_forwardVector, _upVector);
         }
 
         public void RotateBody(Vector3 normal)
@@ -168,14 +81,12 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
         public void StartAirRestore(float time)
         {
-            _airRestoreTimer = time;
-            _airRestoring = true;
+            
         }
 
         public void StopAirRestore()
         {
-            _airRestoreTimer = 0;
-            _airRestoring = false;
+            
         }
     }
 }
