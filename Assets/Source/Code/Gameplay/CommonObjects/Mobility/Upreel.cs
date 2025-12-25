@@ -54,8 +54,8 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 
         private void PositionRope()
         {
-            rope.localPosition = Vector3.down * (length * 0.5f - 0.25f);
-            rope.localScale = new Vector3(0.25f, length - 0.5f, 0.25f);
+            rope.localPosition = Vector3.down * (-model.localPosition.y * 0.5f - 0.25f);
+            rope.localScale = new Vector3(0.25f, -model.localPosition.y - 0.5f, 0.25f);
         }
 
         private void Update()
