@@ -1,12 +1,14 @@
 using DG.Tweening;
 using FMODUnity;
+using SurgeEngine.Source.Code.Gameplay.CommonObjects.System;
 using UnityEngine;
 using UnityEngine.Events;
+using NotImplementedException = System.NotImplementedException;
 
 namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 {
     [SelectionBase]
-    public class StompSwitch : MonoBehaviour
+    public class StompSwitch : MonoBehaviour, IPointMarkerLoader
     {
         private static readonly int EmissiveExposureWeight = Shader.PropertyToID("_EmissiveExposureWeight");
 
@@ -81,6 +83,14 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 
             switchTransform.DOKill(true);
             switchTransform.DOLocalMoveY(downHeight, DownSpeed).SetEase(DownEase);
+        }
+
+        public void Load()
+        {
+            _currentState = 0;
+            switchTransform.localPosition = Vector3.zero;
+            particle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            _buttonMaterial.SetFloat(EmissiveExposureWeight, 1.0f);
         }
     }
 }
