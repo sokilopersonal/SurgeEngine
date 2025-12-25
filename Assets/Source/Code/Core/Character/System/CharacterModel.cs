@@ -1,7 +1,4 @@
-﻿using SurgeEngine.Source.Code.Core.Character.States;
-using SurgeEngine.Source.Code.Core.StateMachine.Base;
-using SurgeEngine.Source.Code.Infrastructure.Custom;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace SurgeEngine.Source.Code.Core.Character.System
 {
@@ -16,6 +13,9 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         private float _collisionStartHeight;
         private float _collisionStartRadius;
 
+        private bool _isRestoring;
+        private float _restoreTimer;
+
         private CharacterBodyRotation _bodyRotation;
 
         private void Awake()
@@ -28,7 +28,13 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
         private void Update()
         {
-            
+            if (_isRestoring)
+            {
+                _restoreTimer -= Time.deltaTime;
+
+                if (_restoreTimer <= 0)
+                    _isRestoring = false;
+            }
         }
 
         public void RotateBody(Vector3 normal)
@@ -38,6 +44,9 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
         public void RotateBody(Vector3 vector, Vector3 normal, float angleDelta = 1000f)
         {
+            if (_isRestoring)
+                return;
+            
             _bodyRotation.RotateBody(vector, normal, angleDelta);
         }
 
@@ -81,12 +90,13 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
         public void StartAirRestore(float time)
         {
-            
+            _isRestoring = true;
+            _restoreTimer = time;
         }
 
         public void StopAirRestore()
         {
-            
+            _isRestoring = false;
         }
     }
 }

@@ -39,7 +39,6 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             
             Vector3 currentVelocity = Vector3.ProjectOnPlane(vector, normal);
             float currentSpeed = currentVelocity.magnitude;
-
             if (HasValidInput(inputDir))
             {
                 RotateWithInput(inputDir, currentVelocity, currentSpeed, normal, angleDelta, rb);
@@ -85,7 +84,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             {
                 var targetRot = Quaternion.LookRotation(targetDir, normal);
                 var towards = Quaternion.RotateTowards(rb.rotation, targetRot, rotSpeed * Time.fixedDeltaTime);
-                var finalRot = Quaternion.Slerp(rb.rotation, towards, 128 * Time.fixedDeltaTime);
+                var finalRot = Quaternion.Slerp(rb.rotation, towards, 96 * Time.fixedDeltaTime);
                 rb.MoveRotation(finalRot);
             }
         }
