@@ -32,6 +32,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         private float _time;
         private float _speed;
         private bool _trackPulley;
+        private bool _triggered = false;
         private BoxCollider _collider;
 
         private void Awake()
@@ -46,6 +47,23 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             
             longStand.gameObject.SetActive(type == PulleyType.Long);
             shortStand.gameObject.SetActive(type == PulleyType.Short);
+        }
+
+        private void Update()
+        {
+            if (!_isPlayerAttached)
+                return;
+
+            // Please sokilo i need this my jump is kinda homeless
+            // S: you're fine bro, I came to help
+            if (_character.Input.APressed)
+            {
+                _character.Kinematics.SetDetachTime(0.1f);
+                _character.Kinematics.Rigidbody.linearVelocity = _character.Kinematics.Velocity;
+                _character.StateMachine.SetState<FStateJump>();
+
+                Cancel();
+            }
         }
 
         private void FixedUpdate()
@@ -64,17 +82,6 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             {
                 _character.Rigidbody.MovePosition(attachPoint.position);
                 _character.Rigidbody.MoveRotation(attachPoint.rotation);
-
-                // Please sokilo i need this my jump is kinda homeless
-                // S: you're fine bro, I came to help
-                if (_character.Input.APressed)
-                {
-                    _character.Kinematics.SetDetachTime(0.1f);
-                    _character.Kinematics.Rigidbody.linearVelocity = _character.Kinematics.Velocity;
-                    _character.StateMachine.SetState<FStateJump>();
-                    
-                    Cancel();
-                }
 
                 if (_time > 0.99f)
                 {
@@ -102,7 +109,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         {
             base.OnEnter(msg, context);
 
-            if (!_isPlayerAttached)
+            if (!_isPlayerAttached && !_triggered)
             {
                 _time = 0.0f;
                 _speed = Mathf.Lerp(minSpeed, maxSpeed, context.Kinematics.Speed / context.Config.topSpeed);
@@ -116,6 +123,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 
                 _isPlayerAttached = true;
                 _trackPulley = true;
+                _triggered = true;
             }
         }
 
@@ -124,6 +132,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             homingTarget.gameObject.SetActive(true);
             _isPlayerAttached = false;
             _trackPulley = false;
+            _triggered = false;
             _character = null;
             _time = 0.0f;
         }
