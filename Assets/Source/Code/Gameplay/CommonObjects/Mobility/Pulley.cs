@@ -1,3 +1,4 @@
+using System;
 using FMOD.Studio;
 using SurgeEngine.Source.Code.Core.Character.States;
 using SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStates;
@@ -16,7 +17,6 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         [SerializeField] private PulleyType type;
         [SerializeField] private float minSpeed = 1.0f;
         [SerializeField] private float maxSpeed = 5.0f;
-        [SerializeField] private float exitSpeed = 30.0f;
         [SerializeField, Tooltip("Out Of Control time when player exits the Pulley.")] private float outOfControl = 0.5f;
 
         [Header("Transforms")]
@@ -28,27 +28,31 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         [SerializeField] private Transform handle;
 
         private bool _isPlayerAttached;
-        private CharacterBase _attachedCharacter;
+        private CharacterBase _character;
         private float _time;
         private float _speed;
-        private bool _trackPulley = false;
+        private bool _trackPulley;
+        private BoxCollider _collider;
+
+        private void Awake()
+        {
+            _collider = GetComponent<BoxCollider>();
+        }
 
         private void OnValidate()
         {
-            longStand.gameObject.SetActive(type.Equals(PulleyType.Long));
-            shortStand.gameObject.SetActive(type.Equals(PulleyType.Short));
-        }
-
-        private float GetExitSpeed()
-        {
-            return exitSpeed + _speed;
+            if (!longStand || !shortStand)
+                return;
+            
+            longStand.gameObject.SetActive(type == PulleyType.Long);
+            shortStand.gameObject.SetActive(type == PulleyType.Short);
         }
 
         private void FixedUpdate()
         {
             if (_trackPulley)
             {
-                _time += Time.deltaTime * _speed;
+                _time += Time.fixedDeltaTime * _speed;
                 handle.position = spline.EvaluatePosition(Mathf.Min(_time, 1f));
                 handle.rotation = Quaternion.LookRotation(spline.EvaluateTangent(Mathf.Min(_time, 0.99f)));
 
@@ -58,37 +62,40 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             
             if (_isPlayerAttached)
             {
-
-                _attachedCharacter.Rigidbody.MovePosition(attachPoint.position);
-                _attachedCharacter.Rigidbody.MoveRotation(attachPoint.rotation);
+                _character.Rigidbody.MovePosition(attachPoint.position);
+                _character.Rigidbody.MoveRotation(attachPoint.rotation);
 
                 // Please sokilo i need this my jump is kinda homeless
-                if (_attachedCharacter.Input.APressed)
+                // S: you're fine bro, I came to help
+                if (_character.Input.APressed)
                 {
-                    _attachedCharacter.Kinematics.SetDetachTime(0.1f);
-                    _attachedCharacter.StateMachine.SetState<FStateJump>();
-                    _attachedCharacter.Kinematics.Rigidbody.AddForce(handle.forward * GetExitSpeed() / 4, ForceMode.Impulse);
-                    Cancel(_attachedCharacter);
+                    _character.Kinematics.SetDetachTime(0.1f);
+                    _character.Kinematics.Rigidbody.linearVelocity = _character.Kinematics.Velocity;
+                    _character.StateMachine.SetState<FStateJump>();
+                    
+                    Cancel();
                 }
 
-                if (_time > 0.9f)
+                if (_time > 0.99f)
                 {
-                    _attachedCharacter.Kinematics.SetDetachTime(0.1f);
-                    _attachedCharacter.StateMachine.SetState<FStateAir>();
-                    _attachedCharacter.Kinematics.Rigidbody.AddForce(transform.up * GetExitSpeed() / 4, ForceMode.Impulse);
-                    _attachedCharacter.Kinematics.Rigidbody.AddForce(handle.forward * GetExitSpeed(), ForceMode.Impulse);
+                    _character.Kinematics.SetDetachTime(0.1f);
+                    _character.Kinematics.Rigidbody.linearVelocity = _character.Kinematics.Velocity;
+                    _character.StateMachine.SetState<FStateAir>(); 
+                    _character.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, Mathf.Abs(outOfControl)));
 
-                    Cancel(_attachedCharacter);
+                    Cancel();
                 }
             }
             
-            homingTarget.gameObject.SetActive(_time < 0.9f);
+            _collider.center = handle.localPosition - Vector3.up;
+            
+            homingTarget.gameObject.SetActive(_time < 0.99f);
         }
-        private void Cancel(CharacterBase ctx)
+        
+        private void Cancel()
         {
             _isPlayerAttached = false;
-            ctx.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, Mathf.Abs(outOfControl)));
-            _attachedCharacter = null;
+            _character = null;
         }
 
         public override void OnEnter(Collider msg, CharacterBase context)
@@ -99,10 +106,10 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             {
                 _time = 0.0f;
                 _speed = Mathf.Lerp(minSpeed, maxSpeed, context.Kinematics.Speed / context.Config.topSpeed);
-                _attachedCharacter = context;
-                _attachedCharacter.StateMachine.SetState<FStatePulley>();
+                _character = context;
+                _character.StateMachine.SetState<FStatePulley>();
 
-                if (_attachedCharacter.StateMachine.GetState(out FBoost boost))
+                if (_character.StateMachine.GetState(out FBoost boost))
                 {
                     boost.Active = false;
                 }
@@ -117,7 +124,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             homingTarget.gameObject.SetActive(true);
             _isPlayerAttached = false;
             _trackPulley = false;
-            _attachedCharacter = null;
+            _character = null;
             _time = 0.0f;
         }
     }

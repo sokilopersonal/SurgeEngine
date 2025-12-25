@@ -83,7 +83,6 @@ MonoBehaviour:
   type: 1
   minSpeed: 0.5
   maxSpeed: 1
-  exitSpeed: 20
   outOfControl: 0.5
   attachPoint: {fileID: 8244253087833674801}
   spline: {fileID: 6169627345259645617}
@@ -106,7 +105,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -126,7 +125,7 @@ GameObject:
   - component: {fileID: 3032176328204737279}
   - component: {fileID: 8232783371185391618}
   m_Layer: 0
-  m_Name: splinePath
+  m_Name: Path
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -366,7 +365,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 8483d4f540e9af8429e7f78faa699807, type: 3}
       propertyPath: m_Name
-      value: handle
+      value: Handle
       objectReference: {fileID: 0}
     - target: {fileID: 1339134910850263745, guid: 8483d4f540e9af8429e7f78faa699807, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -523,7 +522,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 46ee0379ed070174bb637f11fc5c3fe9, type: 3}
       propertyPath: m_Name
-      value: shortStand
+      value: ShortStand
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 46ee0379ed070174bb637f11fc5c3fe9, type: 3}
       propertyPath: m_IsActive
@@ -609,7 +608,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 719338d025e6f2d41b610e4c7083d590, type: 3}
       propertyPath: m_Name
-      value: longStand
+      value: LongStand
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 719338d025e6f2d41b610e4c7083d590, type: 3}
       propertyPath: m_IsActive
