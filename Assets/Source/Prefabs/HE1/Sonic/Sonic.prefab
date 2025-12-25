@@ -41697,16 +41697,20 @@ PrefabInstance:
       value: DriftParticle
       objectReference: {fileID: 0}
     - target: {fileID: 3919675858839510815, guid: 0cfae096f006db042a7a3e02c0064464, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3919675858839510815, guid: 0cfae096f006db042a7a3e02c0064464, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3919675858839510815, guid: 0cfae096f006db042a7a3e02c0064464, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.75
       objectReference: {fileID: 0}
     - target: {fileID: 3919675858839510815, guid: 0cfae096f006db042a7a3e02c0064464, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 3919675858839510815, guid: 0cfae096f006db042a7a3e02c0064464, type: 3}
       propertyPath: m_LocalRotation.w
@@ -41737,8 +41741,36 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5302089576254374075, guid: 0cfae096f006db042a7a3e02c0064464, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5302089576254374075, guid: 0cfae096f006db042a7a3e02c0064464, type: 3}
       propertyPath: UVModule.enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5302089576254374075, guid: 0cfae096f006db042a7a3e02c0064464, type: 3}
+      propertyPath: ShapeModule.angle
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5302089576254374075, guid: 0cfae096f006db042a7a3e02c0064464, type: 3}
+      propertyPath: InitialModule.startSize.scalar
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5302089576254374075, guid: 0cfae096f006db042a7a3e02c0064464, type: 3}
+      propertyPath: InitialModule.startSpeed.scalar
+      value: -32
+      objectReference: {fileID: 0}
+    - target: {fileID: 5302089576254374075, guid: 0cfae096f006db042a7a3e02c0064464, type: 3}
+      propertyPath: InitialModule.startSize.minScalar
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5302089576254374075, guid: 0cfae096f006db042a7a3e02c0064464, type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5302089576254374075, guid: 0cfae096f006db042a7a3e02c0064464, type: 3}
+      propertyPath: InitialModule.startLifetime.minScalar
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
