@@ -1,13 +1,13 @@
-using System;
+using System.Collections;
 using FMOD.Studio;
+using FMODUnity;
 using SurgeEngine.Source.Code.Core.Character.States;
 using SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStates;
 using SurgeEngine.Source.Code.Core.Character.System;
-using SurgeEngine.Source.Code.Gameplay.CommonObjects;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.System;
 using UnityEngine;
 using UnityEngine.Splines;
-using UnityEngine.UIElements;
+using STOP_MODE = FMOD.Studio.STOP_MODE;
 
 namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 {
@@ -27,6 +27,9 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         [SerializeField] private Transform shortStand;
         [SerializeField] private Transform handle;
 
+        [Header("Sound")]
+        [SerializeField] private EventReference sound;
+
         private bool _isPlayerAttached;
         private CharacterBase _character;
         private float _time;
@@ -34,10 +37,13 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         private bool _trackPulley;
         private bool _triggered = false;
         private BoxCollider _collider;
+        private EventInstance _eventInstance;
 
         private void Awake()
         {
             _collider = GetComponent<BoxCollider>();
+            _eventInstance = RuntimeManager.CreateInstance(sound);
+            _eventInstance.set3DAttributes(transform.To3DAttributes());
         }
 
         private void OnValidate()
@@ -103,6 +109,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         {
             _isPlayerAttached = false;
             _character = null;
+            _eventInstance.stop(STOP_MODE.IMMEDIATE);
         }
 
         public override void OnEnter(Collider msg, CharacterBase context)
@@ -124,6 +131,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
                 _isPlayerAttached = true;
                 _trackPulley = true;
                 _triggered = true;
+                _eventInstance.start();
             }
         }
 
