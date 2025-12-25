@@ -210,7 +210,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
             {
                 if (prev is FStatePulley)
                 {
-                    StateAnimator.TransitionToState("PulleyJump", 0f).After(0.333f, () => StateAnimator.TransitionToState("Ball", 0f));
+                    StartCoroutine(PlayPulleyJump());
                 }
                 else if (machine.IsPrevExact<FStateJump>())
                 {
@@ -399,6 +399,26 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
                         StateAnimator.TransitionToState(AnimatorParams.AirCycle);
                     });
                 }
+            }
+        }
+
+        private IEnumerator PlayPulleyJump()
+        {
+            var actor = Character;
+            StateAnimator.TransitionToState("PulleyJump", 0f);
+
+            yield return new WaitForSeconds(0.333f);
+
+            if (actor.StateMachine.CurrentState is not FStateJump)
+                yield break;
+
+            if (actor.Input.AHeld)
+            {
+                StateAnimator.TransitionToState("Ball", 0f);
+            }
+            else
+            {
+                StateAnimator.TransitionToState("Ball", 0f).Then(() => StateAnimator.TransitionToState(AnimatorParams.AirCycle, 0f));
             }
         }
     }
