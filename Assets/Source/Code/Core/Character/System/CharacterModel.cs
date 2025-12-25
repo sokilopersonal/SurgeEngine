@@ -32,12 +32,8 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
         private void Awake()
         {
-            /*_collisionStartHeight = Collision.height;
+            _collisionStartHeight = Collision.height;
             _collisionStartRadius = Collision.radius;
-            
-            Root.rotation = Character.transform.rotation;
-            
-            modelTransform.localPosition = new Vector3(0, verticalOffset, 0);*/
             
             _bodyRotation = new CharacterBodyRotation(Character);
         }
