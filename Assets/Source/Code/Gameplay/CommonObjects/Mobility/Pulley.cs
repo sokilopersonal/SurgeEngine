@@ -81,7 +81,10 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
                 handle.rotation = Quaternion.LookRotation(spline.EvaluateTangent(Mathf.Min(_time, 0.99f)));
 
                 if (_time >= 1.0f)
+                {
                     _trackPulley = false;
+                    _eventInstance.stop(STOP_MODE.IMMEDIATE);
+                }
             }
             
             if (_isPlayerAttached)
@@ -109,7 +112,6 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         {
             _isPlayerAttached = false;
             _character = null;
-            _eventInstance.stop(STOP_MODE.IMMEDIATE);
         }
 
         public override void OnEnter(Collider msg, CharacterBase context)
@@ -135,6 +137,11 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             }
         }
 
+        private void OnDestroy()
+        {
+            _eventInstance.stop(STOP_MODE.IMMEDIATE);
+        }
+
         public void Load()
         {
             homingTarget.gameObject.SetActive(true);
@@ -143,6 +150,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             _triggered = false;
             _character = null;
             _time = 0.0f;
+            _eventInstance.stop(STOP_MODE.IMMEDIATE);
         }
     }
 

@@ -197,6 +197,11 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             _isMovingUp = false;
         }
 
+        private void OnDestroy()
+        {
+            _eventInstance.stop(STOP_MODE.IMMEDIATE);
+        }
+
         public void Load()
         {
             PutModel();
