@@ -56,12 +56,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Environment
                 if (_isRunning && !_isUnderwater && _currentRunSplash)
                 {
                     _currentRunSplash.Play(true);
-                    Vector3 runSplashPosition = _cRigidbody.position;
-                    runSplashPosition += _cRigidbody.transform.forward;
-                    runSplashPosition -= _cRigidbody.transform.up * 0.75f;
-                    Quaternion runSplashRotation = _cRigidbody.rotation;
-                    runSplashRotation *= Quaternion.Euler(-90f, 0f, 0f);
-                    _currentRunSplash.transform.SetPositionAndRotation(runSplashPosition, runSplashRotation);
+                    _currentRunSplash.transform.localPosition = new Vector3(0, -0.75f, 1);
                 }
                 else
                 {
@@ -137,7 +132,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Environment
                 if (Mathf.Abs(_character.Kinematics.VerticalVelocity.y) > 8) SpawnSplash(splashPoint);
 
                 DestroyRunSplash();
-                _currentRunSplash = Instantiate(runSplash);
+                _currentRunSplash = Instantiate(runSplash, _cRigidbody.transform);
 
                 _character.Flags.AddFlag(new Flag(FlagType.OnWater, false));
             }
