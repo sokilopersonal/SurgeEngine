@@ -43,7 +43,6 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         {
             _collider = GetComponent<BoxCollider>();
             _eventInstance = RuntimeManager.CreateInstance(sound);
-            _eventInstance.set3DAttributes(transform.To3DAttributes());
         }
 
         private void OnValidate()
@@ -79,6 +78,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
                 _time += Time.fixedDeltaTime * _speed;
                 handle.position = spline.EvaluatePosition(Mathf.Min(_time, 1f));
                 handle.rotation = Quaternion.LookRotation(spline.EvaluateTangent(Mathf.Min(_time, 0.99f)));
+                _eventInstance.set3DAttributes(handle.To3DAttributes());
 
                 if (_time >= 1.0f)
                 {
