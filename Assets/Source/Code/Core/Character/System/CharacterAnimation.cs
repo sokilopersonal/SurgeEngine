@@ -49,7 +49,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             Vector3 cross = Vector3.Cross(Character.Model.Root.forward, Character.Kinematics.Normal);
             float mDot = Vector3.Dot(vel, cross);
             mDot = Mathf.Clamp(mDot * 0.3f, -1f, 1f);
-            
+
             animator.SetFloat(AnimatorParams.SmoothTurnAngle, Mathf.Lerp(animator.GetFloat(AnimatorParams.SmoothTurnAngle), angle, 4f * Time.deltaTime));
             animator.SetFloat(AnimatorParams.TurnAngle, Mathf.Lerp(animator.GetFloat(AnimatorParams.TurnAngle), -mDot, 4f * Time.deltaTime));
             

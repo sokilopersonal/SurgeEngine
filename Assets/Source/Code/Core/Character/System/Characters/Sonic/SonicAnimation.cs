@@ -44,6 +44,11 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
             {
                 StateAnimator.TransitionToState("PulleyStart", 0f).After(1.0f, () => StateAnimator.TransitionToState("PulleyLoop", 0f));
             }
+
+            if (obj is FStateSkydive)
+            {
+                StateAnimator.TransitionToState("SkydiveStart", 0f).Then(() => StateAnimator.TransitionToState("SkydiveLoop", 0f));
+            }
             
             if (obj is FStateIdle)
             {
