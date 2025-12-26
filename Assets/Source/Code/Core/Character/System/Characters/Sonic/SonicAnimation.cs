@@ -79,6 +79,9 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
                         case FStateBrakeTurn:
                             StateAnimator.TransitionToState("Idle", 0.1f);
                             break;
+                        case FStateSkydive:
+                            StateAnimator.TransitionToState("SkydiveLand", 0f).Then(() => StateAnimator.TransitionToState("SkydiveLandIdle", 0f).After(0.8f, () => StateAnimator.TransitionToState("Idle", 0.2f)));
+                            break;
                         default:
                             StateAnimator.TransitionToState("Idle");
                             break;
@@ -99,6 +102,12 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
                     if (machine.IsPrevExact<FStateAir>())
                     {
                         StateAnimator.TransitionToState(AnimatorParams.RunCycle);
+                        return;
+                    }
+
+                    if (machine.IsPrevExact<FStateSkydive>())
+                    {
+                        StateAnimator.TransitionToState("SkydiveLand", 0f).After(0.067f, () => StateAnimator.TransitionToState(AnimatorParams.RunCycle));
                         return;
                     }
             
