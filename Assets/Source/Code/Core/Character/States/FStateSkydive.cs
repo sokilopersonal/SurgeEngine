@@ -60,7 +60,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
                 return;
             }
 
-            _speed = _diving ? _config.diveSpeed : _config.fallSpeed;
+            _speed = Mathf.Lerp(_speed, _diving ? _config.diveSpeed : _config.fallSpeed, dt * _config.speedLerpSpeed);
 
             Kinematics.Rigidbody.linearVelocity = Kinematics.HorizontalVelocity + Vector3.Lerp(Kinematics.VerticalVelocity, Vector3.down * _speed, dt * _config.lerpSpeed);
 

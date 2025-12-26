@@ -7,6 +7,7 @@ namespace SurgeEngine.Source.Code.Infrastructure.Config.Sonic
     {
         public float fallSpeed = 10.0f;
         public float diveSpeed = 20.0f;
+        public float speedLerpSpeed = 2.0f;
         public float lerpSpeed = 5.0f;
     }
 }

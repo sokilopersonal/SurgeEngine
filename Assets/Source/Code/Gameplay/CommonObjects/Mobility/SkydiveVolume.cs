@@ -16,12 +16,12 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 
             if (isFinish)
             {
-                if (context.StateMachine.IsExact<FStateSkydive>())
+                if (context.StateMachine.CurrentState is FStateSkydive)
                     context.StateMachine.SetState<FStateAir>();
             }
             else
             {
-                if (!context.StateMachine.IsExact<FStateSkydive>())
+                if (!(context.StateMachine.CurrentState is FStateSkydive))
                     context.StateMachine.SetState<FStateSkydive>();
             }
         }
