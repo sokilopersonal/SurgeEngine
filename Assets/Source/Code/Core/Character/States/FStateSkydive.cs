@@ -3,6 +3,7 @@ using SurgeEngine.Source.Code.Core.Character.System;
 using SurgeEngine.Source.Code.Core.StateMachine.Components;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.Environment;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.System;
+using SurgeEngine.Source.Code.Infrastructure.Config.Sonic;
 using SurgeEngine.Source.Code.Infrastructure.Custom;
 using UnityEngine;
 
@@ -13,17 +14,18 @@ namespace SurgeEngine.Source.Code.Core.Character.States
         private StateAnimator _stateAnimator => Character.Animation.StateAnimator;
         private Animator _animator => Character.Animation.StateAnimator.Animator;
         private bool _diving = false;
+        private readonly SkydiveConfig _config;
+        private float _speed;
 
         public FStateSkydive(CharacterBase owner) : base(owner)
         {
-
+            owner.TryGetConfig(out _config);
         }
 
         public override void OnEnter()
         {
             base.OnEnter();
             _diving = false;
-            Kinematics.ResetVelocity();
         }
 
         public override void OnTick(float dt)
@@ -50,9 +52,17 @@ namespace SurgeEngine.Source.Code.Core.Character.States
             base.OnFixedTick(dt);
 
             bool air = !Kinematics.CheckForGroundWithDirection(out var hit, Vector3.down);
-            
-            float gravity = Kinematics.Gravity * 0.0f;
-            Kinematics.ApplyGravity(gravity);
+            bool isWater = hit.transform.IsWater(out var surface);
+
+            if (isWater)
+            {
+                StateMachine.SetState<FStateAir>();
+                return;
+            }
+
+            _speed = _diving ? _config.diveSpeed : _config.fallSpeed;
+
+            Kinematics.Rigidbody.linearVelocity = Kinematics.HorizontalVelocity + Vector3.Lerp(Kinematics.VerticalVelocity, Vector3.down * _speed, dt * _config.lerpSpeed);
 
             if (air)
             {
