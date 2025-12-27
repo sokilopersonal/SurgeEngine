@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using SurgeEngine.Source.Code.Core.Character.States;
+using UnityEngine;
 
 namespace SurgeEngine.Source.Code.Core.Character.System
 {
@@ -13,8 +14,10 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         private float _collisionStartHeight;
         private float _collisionStartRadius;
 
-        private bool _isRestoring;
+        private bool _isAirRestoring;
         private float _restoreTimer;
+        private bool _isUpRestoring;
+        private float _upRestoreTimer;
 
         private CharacterBodyRotation _bodyRotation;
 
@@ -28,15 +31,42 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
         private void Update()
         {
-            if (_isRestoring)
-            {
-                _restoreTimer -= Time.deltaTime;
+            bool isObject = Character.StateMachine.PreviousState is FStateObject;
 
-                if (_restoreTimer <= 0)
-                    _isRestoring = false;
+            if (isObject)
+            {
+                if (_isAirRestoring)
+                {
+                    _bodyRotation.VelocityRotation(Character.Kinematics.Velocity.normalized);
+                    _restoreTimer -= Time.deltaTime;
+
+                    if (_restoreTimer <= 0)
+                    {
+                        _restoreTimer = 0;
+                        _isAirRestoring = false;
+                        _isUpRestoring = true;
+                        _upRestoreTimer = 0.4f;
+                    }
+                }
+                else if (_isUpRestoring)
+                {
+                    bool isComplete = _bodyRotation.AlignToUpOverTime(Time.deltaTime, ref _upRestoreTimer);
+                    if (isComplete)
+                    {
+                        _isUpRestoring = false;
+                        _upRestoreTimer = 0;
+                    }
+                }
+            }
+            else
+            {
+                _isAirRestoring = false;
+                _isUpRestoring = false;
+                _restoreTimer = 0;
+                _upRestoreTimer = 0;
             }
         }
-
+        
         public void RotateBody(Vector3 normal)
         {
             _bodyRotation.RotateBody(normal);
@@ -44,7 +74,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
         public void RotateBody(Vector3 vector, Vector3 normal, float angleDelta = 1000f)
         {
-            if (_isRestoring)
+            if (_isAirRestoring || _isUpRestoring)
                 return;
             
             _bodyRotation.RotateBody(vector, normal, angleDelta);
@@ -90,13 +120,16 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
         public void StartAirRestore(float time)
         {
-            _isRestoring = true;
+            _isAirRestoring = true;
             _restoreTimer = time;
         }
 
         public void StopAirRestore()
         {
-            _isRestoring = false;
+            _isAirRestoring = false;
+            _isUpRestoring = false;
+            _restoreTimer = 0;
+            _upRestoreTimer = 0;
         }
     }
 }
