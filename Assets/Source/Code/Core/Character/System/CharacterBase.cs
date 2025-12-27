@@ -13,8 +13,6 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 {
     public class CharacterBase : MonoBehaviour, IPointMarkerLoader
     {
-        public new Transform transform => Rigidbody.transform;
-        
         [Header("Components")]
         [SerializeField] private CharacterInput input;
         [SerializeField] private CharacterSounds sounds; 

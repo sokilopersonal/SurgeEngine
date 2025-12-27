@@ -15,7 +15,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Player
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.TryGetCharacter(out CharacterBase ctx))
+            if (other.TryGetComponent(out CharacterBase ctx))
             {
                 contact.OnEnter(other, ctx);
             }

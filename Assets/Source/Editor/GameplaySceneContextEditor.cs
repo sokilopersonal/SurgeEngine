@@ -8,7 +8,8 @@ namespace SurgeEngine.Source.Editor
     public class GameplaySceneContextEditor : UnityEditor.Editor
     {
         private SerializedProperty _stageField;
-        private SerializedProperty _actorPrefabField;
+        private SerializedProperty _characterPrefabField;
+        private SerializedProperty _gameCameraPrefabField;
         private SerializedProperty _spawnPointField;
         private SerializedProperty _hudPrefabField;
         private SerializedProperty _pmScreenField;
@@ -16,7 +17,8 @@ namespace SurgeEngine.Source.Editor
         private void OnEnable()
         {
             _stageField = serializedObject.FindProperty("stage");
-            _actorPrefabField = serializedObject.FindProperty("characterPrefab");
+            _characterPrefabField = serializedObject.FindProperty("characterPrefab");
+            _gameCameraPrefabField = serializedObject.FindProperty("gameCameraPrefab");
             _spawnPointField = serializedObject.FindProperty("spawnPoint");
             _hudPrefabField = serializedObject.FindProperty("hudPrefab");
             _pmScreenField = serializedObject.FindProperty("pointMarkerLoadingScreenPrefab");
@@ -28,7 +30,8 @@ namespace SurgeEngine.Source.Editor
 
             EditorGUILayout.PropertyField(_stageField);
 
-            EditorGUILayout.PropertyField(_actorPrefabField);
+            EditorGUILayout.PropertyField(_characterPrefabField);
+            EditorGUILayout.PropertyField(_gameCameraPrefabField);
             EditorGUILayout.PropertyField(_spawnPointField);
             if (_spawnPointField.objectReferenceValue != null)
             {

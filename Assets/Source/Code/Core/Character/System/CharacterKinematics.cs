@@ -263,6 +263,13 @@ namespace SurgeEngine.Source.Code.Core.Character.System
                     pathEaseTime = autoRunFlag.PathEaseTime;
                 }
 
+                if (Speed > 0.02f && Character.Flags.HasFlag(FlagType.Autorun))
+                {
+                    float sign = Mathf.Sign(Vector3.Dot(Rigidbody.transform.forward, tg));
+                    var rotTarget = Quaternion.LookRotation(tg * sign, up);
+                    Rigidbody.MoveRotation(Quaternion.RotateTowards(Rigidbody.rotation, rotTarget, 720f * Time.fixedDeltaTime));
+                }
+
                 Vector3 target;
                 if (pathEaseTime > 0f)
                 {

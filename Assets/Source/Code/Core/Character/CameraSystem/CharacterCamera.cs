@@ -18,8 +18,6 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem
         
         [Header("Input")]
         [SerializeField] private float sensitivity = 0.5f;
-        [SerializeField] private float maxSensitivitySpeed = 1f;
-        [SerializeField] private float minSensitivitySpeed = 0.5f;
 
         [Header("Target")] 
         [SerializeField] private float distance = 2.9f;
@@ -31,8 +29,6 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem
         [SerializeField] private float yawDefaultAmplitude = 7f;
         [SerializeField] private float yawMinAmplitude = -5f;
         [SerializeField] private float yawMaxAmplitude = 5f;
-        [SerializeField] private float yawMinLerpSpeed = 0.75f;
-        [SerializeField] private float yawLerpSpeed = 1.65f;
         
         [Header("Z Lag")]
         [SerializeField] private float zLagMax = 0.5f;
@@ -51,14 +47,11 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem
         [SerializeField] private float collisionRadius = 0.2f;
 
         [Header("Modifiers")] 
-        [SerializeField] private List<BaseCameraModifier> baseCameraModifiers;
         private readonly Dictionary<Type, BaseCameraModifier> _modifiersDictionary = new();
 
         [SerializeField] private bool showDebugText;
 
         public float Sensitivity => sensitivity;
-        public float MaxSensitivitySpeed => maxSensitivitySpeed;
-        public float MinSensitivitySpeed => minSensitivitySpeed;
         public float Distance => distance;
         public float YOffset => yOffset;
         public float PitchAutoLookAmplitude => pitchAutoLookAmplitude;
@@ -66,8 +59,6 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem
         public float YawDefaultAmplitude => yawDefaultAmplitude;
         public float YawMinAmplitude => yawMinAmplitude;
         public float YawMaxAmplitude => yawMaxAmplitude;
-        public float YawMinLerpSpeed => yawMinLerpSpeed;
-        public float YawLerpSpeed => yawLerpSpeed;
         public float ZLagMax => zLagMax;
         public float ZLagTime => zLagTime;
         public float YLagMin => yLagMin;
@@ -89,14 +80,14 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem
             Cursor.lockState = CursorLockMode.Locked;
             
             _camera = Camera.main;
-            _cameraTransform = _camera.transform;
-        }
+            if (_camera != null) _cameraTransform = _camera.transform;
+            else
+            {
+                Debug.LogError("For some reason, there is no camera...");
+            }
 
-        public override void Set(CharacterBase character)
-        {
-            base.Set(character);
-            
-            foreach (var modifier in baseCameraModifiers)
+            var cameraModifiers = _cameraTransform.GetComponentsInChildren<BaseCameraModifier>();
+            foreach (var modifier in cameraModifiers)
             {
                 modifier.Set(Character);
                 _modifiersDictionary.Add(modifier.GetType(), modifier);

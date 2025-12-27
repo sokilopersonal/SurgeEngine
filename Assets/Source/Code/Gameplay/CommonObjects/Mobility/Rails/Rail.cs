@@ -39,9 +39,9 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility.Rails
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.transform.TryGetCharacter(out CharacterBase actor) && actor.StateMachine.CurrentState is not FStateRailSwitch)
+            if (other.TryGetComponent(out CharacterBase character) && character.StateMachine.CurrentState is not FStateRailSwitch)
             {
-                AttachToRail(actor);
+                AttachToRail(character);
             }
         }
 

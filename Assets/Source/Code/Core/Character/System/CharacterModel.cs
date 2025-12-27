@@ -5,10 +5,6 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 {
     public class CharacterModel : CharacterComponent
     {
-        [SerializeField] private Transform root;
-        public Transform Root => root;
-        [SerializeField] private Transform modelTransform;
-
         [SerializeField] private CapsuleCollider collision;
         public CapsuleCollider Collision => collision;
         private float _collisionStartHeight;
@@ -25,6 +21,8 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         {
             _collisionStartHeight = Collision.height;
             _collisionStartRadius = Collision.radius;
+            
+            Collision.excludeLayers |= LayerMask.GetMask("Collision"); // TODO: Move collision to kinematics
             
             _bodyRotation = new CharacterBodyRotation(Character);
         }
@@ -50,7 +48,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
                 }
                 else if (_isUpRestoring)
                 {
-                    bool isComplete = _bodyRotation.AlignToUpOverTime(Time.deltaTime, ref _upRestoreTimer);
+                    bool isComplete = _bodyRotation.AlignToUpOverTime(Time.deltaTime, ref _upRestoreTimer); // TODO: Allow player to rotate while aligning
                     if (isComplete)
                     {
                         _isUpRestoring = false;

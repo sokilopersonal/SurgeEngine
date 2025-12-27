@@ -14,12 +14,12 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         
         private void OnTriggerEnter(Collider other)
         {
-            if (other.transform.TryGetComponent(out Rigidbody rb))
+            if (other.TryGetComponent(out Rigidbody rb))
             {
                 _movingObject.Add(rb);
             }
 
-            if (other.transform.TryGetComponentInParent(out Rigidbody parentBody))
+            if (other.TryGetComponent(out Rigidbody parentBody))
             {
                 _movingObject.Add(parentBody);
             }
@@ -27,12 +27,12 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         
         private void OnTriggerExit(Collider other)
         {
-            if (other.transform.TryGetComponent(out Rigidbody rb))
+            if (other.TryGetComponent(out Rigidbody rb))
             {
                 _movingObject.Remove(rb);
             }
             
-            if (other.transform.TryGetComponentInParent(out Rigidbody parentBody))
+            if (other.TryGetComponent(out Rigidbody parentBody))
             {
                 _movingObject.Remove(parentBody);
             }
