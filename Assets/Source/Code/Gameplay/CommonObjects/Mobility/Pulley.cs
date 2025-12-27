@@ -30,6 +30,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         [Header("Sound")]
         [SerializeField] private EventReference sound;
 
+        private SplineData _splineData;
         private bool _isPlayerAttached;
         private CharacterBase _character;
         private float _time;
@@ -57,37 +58,43 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 
         private void FixedUpdate()
         {
-            if (_trackPulley)
+            if (_splineData != null)
             {
-                _time += Time.fixedDeltaTime * _speed;
-                handle.position = spline.EvaluatePosition(Mathf.Min(_time, 1f));
-                handle.rotation = Quaternion.LookRotation(spline.EvaluateTangent(Mathf.Min(_time, 0.99f)));
-                _eventInstance.set3DAttributes(handle.To3DAttributes());
-
-                if (_time >= 1.0f)
+                float time = _splineData.NormalizedTime;
+                
+                if (_trackPulley)
                 {
-                    _trackPulley = false;
-                    _eventInstance.stop(STOP_MODE.IMMEDIATE);
-                }
-            }
-            
-            if (_isPlayerAttached)
-            {
-                _character.Rigidbody.MovePosition(attachPoint.position);
-                _character.Rigidbody.MoveRotation(attachPoint.rotation);
+                    _splineData.EvaluateWorld(out var pos, out var tangent, out _, out _);
+                    
+                    handle.position = pos;
+                    if (tangent != Vector3.zero) handle.rotation = Quaternion.LookRotation(tangent);
+                    _eventInstance.set3DAttributes(handle.To3DAttributes());
 
-                if (_time > 0.99f)
-                {
-                    _character.Kinematics.SetDetachTime(0.1f);
-                    _character.Kinematics.Rigidbody.linearVelocity = _character.Kinematics.Velocity;
-                    _character.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, Mathf.Abs(outOfControl)));
-                    _character.StateMachine.SetState<FStateAir>(); 
+                    _splineData.Time += Time.fixedDeltaTime * _speed;
+                    if (time >= 1.0f)
+                    {
+                        _trackPulley = false;
+                        _eventInstance.stop(STOP_MODE.IMMEDIATE);
+                    }
                 }
+            
+                if (_isPlayerAttached)
+                {
+                    _character.Rigidbody.MovePosition(attachPoint.position);
+                    _character.Rigidbody.MoveRotation(attachPoint.rotation);
+
+                    if (time > 0.99f)
+                    {
+                        _character.Kinematics.SetDetachTime(0.1f);
+                        _character.Kinematics.Rigidbody.linearVelocity = _character.Kinematics.Velocity;
+                        _character.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, Mathf.Abs(outOfControl)));
+                        _character.StateMachine.SetState<FStateAir>(); 
+                    }
+                }
+            
+                _collider.center = handle.localPosition - Vector3.up;
+                homingTarget.gameObject.SetActive(_time < 0.99f);
             }
-            
-            _collider.center = handle.localPosition - Vector3.up;
-            
-            homingTarget.gameObject.SetActive(_time < 0.99f);
         }
 
         public override void OnEnter(Collider msg, CharacterBase context)
@@ -100,10 +107,11 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             }
         }
 
-        private void AttachPlayer(CharacterBase context)
+        public void AttachPlayer(CharacterBase context)
         {
-            _time = 0.0f;
-            _speed = Mathf.Lerp(minSpeed, maxSpeed, context.Kinematics.Speed / context.Config.topSpeed);
+            _splineData = new SplineData(spline, context.transform.position);
+            
+            _speed = Mathf.Clamp(context.Kinematics.Speed, minSpeed, maxSpeed);
             _character = context;
             _character.StateMachine.OnStateAssign += OnCharacterStateAssign;
             _character.StateMachine.SetState<FStatePulley>();
