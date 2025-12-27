@@ -119,7 +119,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
             float speedRange = _character.Config.topSpeed - SpeedThreshold;
             float speedFactor = (currentSpeed - SpeedThreshold) / speedRange;
-            float rotationMultiplier = Mathf.Lerp(1f, 0.1f, Mathf.Pow(speedFactor, 0.5f));
+            float rotationMultiplier = Mathf.Lerp(1f, 0.5f, Mathf.Pow(speedFactor, 0.5f));
             
             return angleDelta * rotationMultiplier;
         }
@@ -129,7 +129,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             if (currentSpeed > 0.1f)
             {
                 Vector3 velocityDir = currentVelocity.normalized;
-                Quaternion targetRotation = Quaternion.LookRotation(velocityDir);
+                Quaternion targetRotation = Quaternion.LookRotation(velocityDir, normal);
                 var towards = Quaternion.RotateTowards(rb.rotation, targetRotation, (64f + currentSpeed) * Time.fixedDeltaTime);
                 rb.MoveRotation(towards);
             }

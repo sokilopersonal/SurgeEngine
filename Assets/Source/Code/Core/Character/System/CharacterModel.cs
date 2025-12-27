@@ -45,7 +45,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
                         _restoreTimer = 0;
                         _isAirRestoring = false;
                         _isUpRestoring = true;
-                        _upRestoreTimer = 0.4f;
+                        _upRestoreTimer = 0.66f;
                     }
                 }
                 else if (_isUpRestoring)
