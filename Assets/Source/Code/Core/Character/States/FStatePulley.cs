@@ -26,5 +26,17 @@ namespace SurgeEngine.Source.Code.Core.Character.States
             Kinematics.IsKinematic = false;
             Rigidbody.interpolation = RigidbodyInterpolation.Interpolate;
         }
+
+        public override void OnTick(float dt)
+        {
+            base.OnTick(dt);
+            
+            if (Input.APressed)
+            {
+                Kinematics.SetDetachTime(0.1f);
+                Kinematics.Rigidbody.linearVelocity = Kinematics.Velocity;
+                StateMachine.SetState<FStateJump>();
+            }
+        }
     }
 }

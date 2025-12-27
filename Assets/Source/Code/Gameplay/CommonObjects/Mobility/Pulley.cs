@@ -1,9 +1,9 @@
-using System.Collections;
 using FMOD.Studio;
 using FMODUnity;
 using SurgeEngine.Source.Code.Core.Character.States;
 using SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStates;
 using SurgeEngine.Source.Code.Core.Character.System;
+using SurgeEngine.Source.Code.Core.StateMachine.Base;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.System;
 using UnityEngine;
 using UnityEngine.Splines;
@@ -43,6 +43,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         {
             _collider = GetComponent<BoxCollider>();
             _eventInstance = RuntimeManager.CreateInstance(sound);
+            _eventInstance.set3DAttributes(transform.To3DAttributes());
         }
 
         private void OnValidate()
@@ -52,23 +53,6 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             
             longStand.gameObject.SetActive(type == PulleyType.Long);
             shortStand.gameObject.SetActive(type == PulleyType.Short);
-        }
-
-        private void Update()
-        {
-            if (!_isPlayerAttached)
-                return;
-
-            // Please sokilo i need this my jump is kinda homeless
-            // S: you're fine bro, I came to help
-            if (_character.Input.APressed)
-            {
-                _character.Kinematics.SetDetachTime(0.1f);
-                _character.Kinematics.Rigidbody.linearVelocity = _character.Kinematics.Velocity;
-                _character.StateMachine.SetState<FStateJump>();
-
-                Cancel();
-            }
         }
 
         private void FixedUpdate()
@@ -96,22 +80,14 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
                 {
                     _character.Kinematics.SetDetachTime(0.1f);
                     _character.Kinematics.Rigidbody.linearVelocity = _character.Kinematics.Velocity;
-                    _character.StateMachine.SetState<FStateAir>(); 
                     _character.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, Mathf.Abs(outOfControl)));
-
-                    Cancel();
+                    _character.StateMachine.SetState<FStateAir>(); 
                 }
             }
             
             _collider.center = handle.localPosition - Vector3.up;
             
             homingTarget.gameObject.SetActive(_time < 0.99f);
-        }
-        
-        private void Cancel()
-        {
-            _isPlayerAttached = false;
-            _character = null;
         }
 
         public override void OnEnter(Collider msg, CharacterBase context)
@@ -129,6 +105,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             _time = 0.0f;
             _speed = Mathf.Lerp(minSpeed, maxSpeed, context.Kinematics.Speed / context.Config.topSpeed);
             _character = context;
+            _character.StateMachine.OnStateAssign += OnCharacterStateAssign;
             _character.StateMachine.SetState<FStatePulley>();
 
             if (_character.StateMachine.GetState(out FBoost boost))
@@ -140,6 +117,20 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             _trackPulley = true;
             _triggered = true;
             _eventInstance.start();
+        }
+
+        private void OnCharacterStateAssign(FState obj)
+        {
+            if (obj is not FStatePulley)
+                Cancel();
+        }
+
+        private void Cancel()
+        {
+            _character.StateMachine.OnStateAssign -= OnCharacterStateAssign;
+            
+            _isPlayerAttached = false;
+            _character = null;
         }
 
         private void OnDestroy()
