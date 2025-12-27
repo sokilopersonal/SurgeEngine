@@ -35,7 +35,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         private float _time;
         private float _speed;
         private bool _trackPulley;
-        private bool _triggered = false;
+        private bool _triggered;
         private BoxCollider _collider;
         private EventInstance _eventInstance;
 
@@ -120,21 +120,26 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 
             if (!_isPlayerAttached && !_triggered)
             {
-                _time = 0.0f;
-                _speed = Mathf.Lerp(minSpeed, maxSpeed, context.Kinematics.Speed / context.Config.topSpeed);
-                _character = context;
-                _character.StateMachine.SetState<FStatePulley>();
-
-                if (_character.StateMachine.GetState(out FBoost boost))
-                {
-                    boost.Active = false;
-                }
-
-                _isPlayerAttached = true;
-                _trackPulley = true;
-                _triggered = true;
-                _eventInstance.start();
+                AttachPlayer(context);
             }
+        }
+
+        private void AttachPlayer(CharacterBase context)
+        {
+            _time = 0.0f;
+            _speed = Mathf.Lerp(minSpeed, maxSpeed, context.Kinematics.Speed / context.Config.topSpeed);
+            _character = context;
+            _character.StateMachine.SetState<FStatePulley>();
+
+            if (_character.StateMachine.GetState(out FBoost boost))
+            {
+                boost.Active = false;
+            }
+
+            _isPlayerAttached = true;
+            _trackPulley = true;
+            _triggered = true;
+            _eventInstance.start();
         }
 
         private void OnDestroy()
