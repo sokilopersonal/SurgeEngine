@@ -42,21 +42,14 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             float currentSpeedPercent = animator.GetFloat("SpeedPercent");
             animator.SetFloat("SpeedPercent", Mathf.Lerp(currentSpeedPercent, targetSpeedPercent, 10f * Time.deltaTime));
 
-            Vector3 vel = Character.Kinematics.Velocity;
-            float signed = Vector3.SignedAngle(vel, Character.Model.Root.forward, -Vector3.up);
-            float angle = signed * 0.3f;
-
-            Vector3 cross = Vector3.Cross(Character.Model.Root.forward, Character.Kinematics.Normal);
-            float mDot = Vector3.Dot(vel, cross);
-            mDot = Mathf.Clamp(mDot * 0.3f, -1f, 1f);
+            var characterForward = Vector3.ProjectOnPlane(Character.transform.forward, Vector3.up);
+            var camForward = Vector3.ProjectOnPlane(Character.Camera.GetCameraTransform().forward, Vector3.up);
+            float camDot  = Vector3.Dot(camForward, characterForward);
+            float inputX = Character.Input.MoveVector.x;
+            float angle = inputX * camDot;
             
             animator.SetFloat(AnimatorParams.SmoothTurnAngle, Mathf.Lerp(animator.GetFloat(AnimatorParams.SmoothTurnAngle), angle, 4f * Time.deltaTime));
-            animator.SetFloat(AnimatorParams.TurnAngle, Mathf.Lerp(animator.GetFloat(AnimatorParams.TurnAngle), -mDot, 4f * Time.deltaTime));
-            
-            float dot = Vector3.Dot(Vector3.up, Character.transform.right);
-            animator.SetFloat("WallDot", -dot);
-            animator.SetFloat("AbsWallDot", Mathf.Lerp(animator.GetFloat("AbsWallDot"), 
-                Mathf.Abs(Mathf.Approximately(Character.Kinematics.Angle, 90) ? dot : 0), 1 * Time.deltaTime));
+            animator.SetFloat(AnimatorParams.TurnAngle, Mathf.Lerp(animator.GetFloat(AnimatorParams.TurnAngle), angle, 3f * Time.deltaTime));
 
             CalculateIdleState();
         }

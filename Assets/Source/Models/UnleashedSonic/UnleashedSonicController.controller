@@ -1021,7 +1021,7 @@ BlendTree:
   m_Childs:
   - serializedVersion: 2
     m_Motion: {fileID: 7400000, guid: 3769218b7f4761c478bde96a63847da9, type: 2}
-    m_Threshold: 4
+    m_Threshold: 1
     m_Position: {x: 0.02, y: 0}
     m_TimeScale: 3.25
     m_CycleOffset: 0
@@ -1067,21 +1067,13 @@ BlendTree:
     m_CycleOffset: 0
     m_DirectBlendParameter: GroundSpeed
     m_Mirror: 0
-  - serializedVersion: 2
-    m_Motion: {fileID: -7918806664860764914}
-    m_Threshold: 29
-    m_Position: {x: 1, y: 0.8}
-    m_TimeScale: 1
-    m_CycleOffset: 0
-    m_DirectBlendParameter: GroundSpeed
-    m_Mirror: 0
   m_BlendParameter: SpeedPercent
   m_BlendParameterY: AbsWallDot
-  m_MinThreshold: 4
-  m_MaxThreshold: 29
+  m_MinThreshold: 1
+  m_MaxThreshold: 25
   m_UseAutomaticThresholds: 0
   m_NormalizedBlendValues: 0
-  m_BlendType: 2
+  m_BlendType: 0
 --- !u!1101 &-4659023204604599762
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -2107,18 +2099,6 @@ AnimatorController:
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
   - m_Name: SmoothTurnAngle
-    m_Type: 1
-    m_DefaultFloat: 0
-    m_DefaultInt: 0
-    m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
-  - m_Name: WallDot
-    m_Type: 1
-    m_DefaultFloat: 0
-    m_DefaultInt: 0
-    m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
-  - m_Name: AbsWallDot
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
