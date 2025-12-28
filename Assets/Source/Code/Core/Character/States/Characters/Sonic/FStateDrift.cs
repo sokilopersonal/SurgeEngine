@@ -88,7 +88,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
                 
                 float force = 1f;
                 if (Character.StateMachine.GetState(out FBoost boost) && boost.Active)
-                    force *= 0.5f;
+                    force *= 0.66f;
                 
                 Quaternion angle = Quaternion.AngleAxis(_driftXDirection * _config.centrifugalForce * force, Kinematics.Normal);
                 Vector3 driftVelocity = angle * Rigidbody.linearVelocity;

@@ -22,7 +22,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         [Header("Transforms")]
         [SerializeField] private Transform attachPoint;
         [SerializeField] private Transform model;
-        [SerializeField] private LineRenderer rope;
+        [SerializeField] private Transform rope;
         [SerializeField] private BoxCollider box;
         [SerializeField] private HomingTarget homingTarget;
         
@@ -52,9 +52,15 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             homingTarget.gameObject.SetActive(!isWaitUp);
         }
 
+        private void PositionRope()
+        {
+            rope.localPosition = Vector3.down * (-model.localPosition.y * 0.5f - 0.25f);
+            rope.localScale = new Vector3(0.25f, -model.localPosition.y - 0.5f, 0.25f);
+        }
+
         private void Update()
         {
-            rope.SetPosition(1, new Vector3(0, model.localPosition.y + 0.45f, 0));
+            PositionRope();
             box.center = new Vector3(box.center.x, model.localPosition.y + 0.15f, box.center.z);
         }
 
@@ -109,7 +115,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             {
                 model.localPosition = new Vector3(model.localPosition.x, -length, model.localPosition.z);
                 box.center = new Vector3(box.center.x, model.localPosition.y + 0.15f, box.center.z);
-                rope.SetPosition(1, new Vector3(0, model.localPosition.y + 0.45f, 0));
+                PositionRope();
             }
         }
 
@@ -189,6 +195,11 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             _currentSpeed = 0f;
             _isMovingDown = true;
             _isMovingUp = false;
+        }
+
+        private void OnDestroy()
+        {
+            _eventInstance.stop(STOP_MODE.IMMEDIATE);
         }
 
         public void Load()

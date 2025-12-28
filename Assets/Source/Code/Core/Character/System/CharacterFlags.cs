@@ -193,9 +193,9 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         None = 0,
         OutOfControl = 1,
         OnWater = 2,
-        Underwater = 4,
-        Invincible = 8,
-        Autorun = 16,
-        Slowdown = 32
+        Invincible = 4,
+        Autorun = 8,
+        Slowdown = 16,
+        Skydiving = 32
     }
 }

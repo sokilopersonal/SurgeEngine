@@ -46,16 +46,34 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
             float speed = !IsRun ? _config.force : _config.runForce;
             var sideDir = _direction == QuickstepDirection.Left ? -speed : speed;
             var pathForward = Kinematics.PathForward;
-            if (pathForward == null)
+            var pathDash = Kinematics.PathDash;
+            if (pathForward == null && pathDash == null)
             {
                 SetSideVelocity(sideDir);
             }
             else 
             {
-                if (IsRun && pathForward.Tag == SplineTag.Quickstep)
+                if (IsRun)
                 {
-                    bool snapped = SnapToSpline(pathForward);
-                    if (!snapped)
+                    ChangeMode3DData quickstepPath = null;
+                    if (pathForward != null && pathForward.Tag == SplineTag.Quickstep)
+                    {
+                        quickstepPath = pathForward;
+                    }
+                    else if (pathDash != null && pathDash.Tag == SplineTag.Quickstep)
+                    {
+                        quickstepPath = pathDash;
+                    }
+
+                    if (quickstepPath != null)
+                    {
+                        bool snapped = SnapToSpline(quickstepPath);
+                        if (!snapped)
+                        {
+                            SetSideVelocity(sideDir);
+                        }
+                    }
+                    else
                     {
                         SetSideVelocity(sideDir);
                     }
@@ -135,7 +153,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
 
             const float ignoreDistance = 1f;
             const float ignoreSqr = ignoreDistance * ignoreDistance;
-            const float blend = 0.6f;
+            const float blend = 0.7f;
 
             Vector3 worldPos = Rigidbody.position - Rigidbody.transform.up * 0.5f;
             Vector3 localPos = container.transform.InverseTransformPoint(worldPos);

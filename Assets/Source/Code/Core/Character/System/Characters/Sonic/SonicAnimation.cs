@@ -1,10 +1,11 @@
-﻿using System.Collections;
-using SurgeEngine.Source.Code.Core.Character.States;
+﻿using SurgeEngine.Source.Code.Core.Character.States;
 using SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic;
 using SurgeEngine.Source.Code.Core.StateMachine;
 using SurgeEngine.Source.Code.Core.StateMachine.Base;
 using SurgeEngine.Source.Code.Core.StateMachine.Components;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.XR;
 using Random = UnityEngine.Random;
 
 namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
@@ -38,6 +39,16 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
 
                 return;
             }
+
+            if (obj is FStatePulley)
+            {
+                StateAnimator.TransitionToState("PulleyStart", 0f).After(1.0f, () => StateAnimator.TransitionToState("PulleyLoop", 0f));
+            }
+
+            if (obj is FStateSkydive)
+            {
+                StateAnimator.TransitionToState("SkydiveStart", 0f).Then(() => StateAnimator.TransitionToState("SkydiveLoop", 0f));
+            }
             
             if (obj is FStateIdle)
             {
@@ -68,6 +79,9 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
                         case FStateBrakeTurn:
                             StateAnimator.TransitionToState("Idle", 0.1f);
                             break;
+                        case FStateSkydive:
+                            StateAnimator.TransitionToState("SkydiveLand", 0f).Then(() => StateAnimator.TransitionToState("SkydiveLandIdle", 0f).After(0.8f, () => StateAnimator.TransitionToState("Idle", 0.2f)));
+                            break;
                         default:
                             StateAnimator.TransitionToState("Idle");
                             break;
@@ -88,6 +102,12 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
                     if (machine.IsPrevExact<FStateAir>())
                     {
                         StateAnimator.TransitionToState(AnimatorParams.RunCycle);
+                        return;
+                    }
+
+                    if (machine.IsPrevExact<FStateSkydive>())
+                    {
+                        StateAnimator.TransitionToState("SkydiveLand", 0f).After(0.067f, () => StateAnimator.TransitionToState(AnimatorParams.RunCycle));
                         return;
                     }
             
@@ -202,7 +222,11 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
             }
             if (obj is FStateJump)
             {
-                if (machine.IsPrevExact<FStateJump>())
+                if (prev is FStatePulley)
+                {
+                    StartCoroutine(PlayPulleyJump());
+                }
+                else if (machine.IsPrevExact<FStateJump>())
                 {
                     StateAnimator.TransitionToState("Ball", 0f);
                 }
@@ -332,7 +356,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
             }
             if (obj is FStateUpreel)
             {
-                StateAnimator.TransitionToState("UpreelStart", 0f).Then(() => StateAnimator.TransitionToState("PulleyLoop", 0.25f));
+                StateAnimator.TransitionToState("UpreelStart", 0f).Then(() => StateAnimator.TransitionToState("UpreelLoop", 0.25f));
             }
             if (obj is FStateTrick)
             {
@@ -389,6 +413,26 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
                         StateAnimator.TransitionToState(AnimatorParams.AirCycle);
                     });
                 }
+            }
+        }
+
+        private IEnumerator PlayPulleyJump()
+        {
+            var actor = Character;
+            StateAnimator.TransitionToState("PulleyJump", 0f);
+
+            yield return new WaitForSeconds(0.333f);
+
+            if (actor.StateMachine.CurrentState is not FStateJump)
+                yield break;
+
+            if (actor.Input.AHeld)
+            {
+                StateAnimator.TransitionToState("Ball", 0f);
+            }
+            else
+            {
+                StateAnimator.TransitionToState("Ball", 0f).Then(() => StateAnimator.TransitionToState(AnimatorParams.AirCycle, 0f));
             }
         }
     }

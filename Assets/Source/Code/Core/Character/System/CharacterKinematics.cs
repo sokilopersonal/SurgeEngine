@@ -53,7 +53,8 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         public Vector3 VerticalVelocity => Vector3.Project(Velocity, Rigidbody.transform.up);
         public Vector3 PlanarVelocity => _planarVelocity;
         public float TurnRate { get; set; }
-        public bool Skidding => _moveDot < _config.skiddingThreshold;
+        public bool BlockSkidding { get; set; }
+        public bool Skidding => _moveDot < _config.skiddingThreshold && !BlockSkidding;
         public float MoveDot => _moveDot;
         
         /// <summary>
@@ -574,7 +575,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         protected virtual bool CanDecelerate()
         {
             var flags = Character.Flags;
-            bool canDecelerate = !flags.HasFlag(FlagType.OutOfControl) && !flags.HasFlag(FlagType.Autorun);
+            bool canDecelerate = !flags.HasFlag(FlagType.OutOfControl) && !flags.HasFlag(FlagType.Autorun) && !flags.HasFlag(FlagType.Skydiving);
             return canDecelerate;
         }
         

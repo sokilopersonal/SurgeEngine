@@ -33,6 +33,9 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
 
         [Header("Light Speed Dash")]
         [SerializeField] private Effect lightSpeedDashEffect;
+        
+        [Header("Drift")]
+        [SerializeField] private DriftEffect driftEffect;
 
         private FBoost _boost;
 
@@ -41,6 +44,8 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
             base.Awake();
 
             Character.StateMachine.GetState(out _boost);
+            
+            driftEffect.Rigidbody = Character.Rigidbody;
         }
 
         protected override void OnEnable()
@@ -71,7 +76,9 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
             // jump visuals
             if (obj is FStateJump && prev is not FStateUpreel)
             {
-                if (prev is FStateJump)
+                if (prev is FStatePulley)
+                    StartCoroutine(PlayJumpball(0.333f));
+                else if (prev is FStateJump)
                     spinball.Toggle(true);
                 else
                     StartCoroutine(PlayJumpball());
@@ -103,6 +110,8 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
             {
                 sweepKickEffect.Clear();
             }
+            
+            driftEffect.Toggle(obj is FStateDrift);
         }
         
         private void OnBoostActivate(FSubState obj, bool value)
@@ -117,6 +126,13 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
         private IEnumerator PlayJumpball()
         {
             yield return new WaitForSeconds(Character.Config.jumpMaxShortTime);
+            if (Character.StateMachine.CurrentState is FStateJump && Character.Input.AHeld)
+                spinball.Toggle(true);
+        }
+
+        private IEnumerator PlayJumpball(float delay)
+        {
+            yield return new WaitForSeconds(delay);
             if (Character.StateMachine.CurrentState is FStateJump && Character.Input.AHeld)
                 spinball.Toggle(true);
         }

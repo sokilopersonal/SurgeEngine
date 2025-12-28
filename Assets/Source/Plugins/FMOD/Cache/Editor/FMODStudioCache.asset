@@ -971,6 +971,33 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 0
   Length: 0
+--- !u!114 &-6018335792843603262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/CommonObjects/UpReel
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/CommonObjects/UpReel
+  Guid:
+    Data1: -2045994758
+    Data2: 1242227922
+    Data3: -691465342
+    Data4: -2042622017
+  Banks:
+  - {fileID: 7665322492351459145}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 200
+  Length: 950
 --- !u!114 &-5972874983783128072
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1633,10 +1660,10 @@ MonoBehaviour:
   Path: FMOD/SurgeEngine/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639024651220369839
+  lastModified: 639025279320909325
   FileSizes:
   - Name: Desktop
-    Value: 5232
+    Value: 5268
   Exists: 1
 --- !u!114 &-2706248421708495253
 MonoBehaviour:
@@ -2713,6 +2740,7 @@ MonoBehaviour:
   - {fileID: -8143334748115006920}
   - {fileID: -1001272223519087932}
   - {fileID: 543009469176892832}
+  - {fileID: -6018335792843603262}
   EditorParameters:
   - {fileID: -2226656583482838958}
   - {fileID: -8569422454319582638}
@@ -2726,7 +2754,7 @@ MonoBehaviour:
   StringsBanks:
   - {fileID: -3100179975989899627}
   cacheVersion: 131857
-  cacheTime: 639024651221169147
+  cacheTime: 639025279322694541
   SerializableEventsDict:
   - key: event:/GameStatus
     index: 0
@@ -3235,10 +3263,10 @@ MonoBehaviour:
   Path: FMOD/SurgeEngine/Build/Desktop/Music.bank
   Name: Music
   StudioPath: bank:/Music
-  lastModified: 639024651221089436
+  lastModified: 639025279322484588
   FileSizes:
   - Name: Desktop
-    Value: 15900864
+    Value: 15900928
   Exists: 1
 --- !u!114 &965482780836433925
 MonoBehaviour:
@@ -5294,10 +5322,10 @@ MonoBehaviour:
   Path: FMOD/SurgeEngine/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 639024651221169147
+  lastModified: 639025279322694541
   FileSizes:
   - Name: Desktop
-    Value: 1561120
+    Value: 1586048
   Exists: 1
 --- !u!114 &7672089596371258650
 MonoBehaviour:
@@ -5502,10 +5530,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
   Path: event:/CommonObjects/Pulley
   Guid:
-    Data1: -2045994758
-    Data2: 1242227922
-    Data3: -691465342
-    Data4: -2042622017
+    Data1: -609260542
+    Data2: 1203835732
+    Data3: -673900901
+    Data4: 702604013
   Banks:
   - {fileID: 7665322492351459145}
   IsStream: 0
@@ -5513,8 +5541,8 @@ MonoBehaviour:
   IsOneShot: 0
   Parameters: []
   MinDistance: 1
-  MaxDistance: 200
-  Length: 950
+  MaxDistance: 20
+  Length: 1588
 --- !u!114 &8399452062513993650
 MonoBehaviour:
   m_ObjectHideFlags: 0
