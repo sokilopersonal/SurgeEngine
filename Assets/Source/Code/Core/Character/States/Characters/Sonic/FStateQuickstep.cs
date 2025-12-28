@@ -123,6 +123,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
                     
                     _isSnapping = false;
                 }
+                
                 return;
             }
             
@@ -236,7 +237,8 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
             }
             else
             {
-                if (Kinematics.PathDash != null)
+                if ((Kinematics.PathForward != null && Kinematics.PathForward.Tag == SplineTag.Quickstep) ||
+                    (Kinematics.PathDash != null && Kinematics.PathDash.Tag == SplineTag.Quickstep))
                 {
                     float speed = _config.runForce;
                     var sideDir = _direction == QuickstepDirection.Left ? -speed : speed;

@@ -27,8 +27,12 @@ namespace SurgeEngine.Source.Code.Core.Character.States
         public override void OnExit()
         {
             base.OnExit();
-            
-            if (_springObject is not WideSpring || Mathf.Abs(Vector3.Dot(_springObject.transform.up, Vector3.up)) < 0.99f)  Model.StartAirRestore(0.4f);
+
+            float dot = Mathf.Abs(Vector3.Dot(_springObject.transform.up, Vector3.up));
+            if (_springObject is not WideSpring && dot < 0.99f)
+            {
+                Model.StartAirRestore(0.4f);
+            }
             
             _springObject = null;
             
