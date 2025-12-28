@@ -10335,6 +10335,7 @@ Transform:
   - {fileID: 4316110599402415316}
   - {fileID: 8824456318075510787}
   - {fileID: 4690470684391400452}
+  - {fileID: 3035833085585825127}
   m_Father: {fileID: 7739058843547658555}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2150128593568624820
@@ -10362,6 +10363,7 @@ MonoBehaviour:
   slideEffect: {fileID: 6503372395664916017}
   sweepKickEffect: {fileID: 6884542699522063837}
   lightSpeedDashEffect: {fileID: 5198008254230013415}
+  driftEffect: {fileID: 3522480244210409641}
 --- !u!1 &970799988547206850
 GameObject:
   m_ObjectHideFlags: 0
@@ -35000,6 +35002,7 @@ GameObject:
   - component: {fileID: 8788362855092149117}
   - component: {fileID: 6511473085365060971}
   - component: {fileID: 6071698925568684358}
+  - component: {fileID: 7302058023141224401}
   m_Layer: 3
   m_Name: Audio
   m_TagString: Untagged
@@ -35449,6 +35452,25 @@ MonoBehaviour:
       Data3: -1096726650
       Data4: -1570101722
     Path: event:/CommonObjects/RingSpread
+--- !u!114 &7302058023141224401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1542517866752370036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3384e56927eef34ea2658d7121aeb4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SurgeEngine.Source.Code.Core.Character.Sound.LightSpeedDashSound
+  lightSpeedDashSound:
+    Guid:
+      Data1: -1762872512
+      Data2: 1286371634
+      Data3: -2083234649
+      Data4: -334347515
+    Path: event:/CommonObjects/DashRing
 --- !u!1 &1545620063383477941
 GameObject:
   m_ObjectHideFlags: 0
@@ -106103,6 +106125,7 @@ MonoBehaviour:
   crawlConfig: {fileID: 11400000, guid: 6a0b92f06cecb1947aba52f93c682421, type: 2}
   sweepKickConfig: {fileID: 11400000, guid: 1ceb257673b4401468d8a7299d58b92d, type: 2}
   lightSpeedDashConfig: {fileID: 11400000, guid: e706f3eaa18758d4f94243273d384b38, type: 2}
+  skydiveConfig: {fileID: 11400000, guid: 078073a1bc9108748accfef4252e2f3c, type: 2}
 --- !u!54 &6108445923362325328
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -111691,8 +111714,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fb79e24b4f14334a771187e38a66390, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  root: {fileID: 7739058843547658555}
-  modelTransform: {fileID: 7739058843547658555}
   collision: {fileID: 8125793059267505887}
 --- !u!1 &6342916307881010261
 GameObject:
@@ -142417,6 +142438,53 @@ ParticleSystemRenderer:
   m_MeshWeighting1: 1
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
+--- !u!1 &8233354147784786792
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3035833085585825127}
+  - component: {fileID: 3522480244210409641}
+  m_Layer: 3
+  m_Name: Drift
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3035833085585825127
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8233354147784786792}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 36000068792889574}
+  m_Father: {fileID: 6777753098785572162}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3522480244210409641
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8233354147784786792}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef01ffc567194772a7e447b1e99e3845, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SurgeEngine.Source.Code.Gameplay.Effects.DriftEffect
+  particle: {fileID: 9191380451908267842}
+  stopDelay: 0
 --- !u!1 &8289596878334964433
 GameObject:
   m_ObjectHideFlags: 0
@@ -157293,3 +157361,82 @@ ParticleSystemRenderer:
   m_MeshWeighting1: 1
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
+--- !u!1001 &3898597417503141881
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3035833085585825127}
+    m_Modifications:
+    - target: {fileID: 3087354998136388669, guid: 0cfae096f006db042a7a3e02c0064464, type: 3}
+      propertyPath: m_Name
+      value: Drift
+      objectReference: {fileID: 0}
+    - target: {fileID: 3919675858839510815, guid: 0cfae096f006db042a7a3e02c0064464, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3919675858839510815, guid: 0cfae096f006db042a7a3e02c0064464, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3919675858839510815, guid: 0cfae096f006db042a7a3e02c0064464, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3919675858839510815, guid: 0cfae096f006db042a7a3e02c0064464, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3919675858839510815, guid: 0cfae096f006db042a7a3e02c0064464, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3919675858839510815, guid: 0cfae096f006db042a7a3e02c0064464, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3919675858839510815, guid: 0cfae096f006db042a7a3e02c0064464, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3919675858839510815, guid: 0cfae096f006db042a7a3e02c0064464, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3919675858839510815, guid: 0cfae096f006db042a7a3e02c0064464, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3919675858839510815, guid: 0cfae096f006db042a7a3e02c0064464, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5302089576254374075, guid: 0cfae096f006db042a7a3e02c0064464, type: 3}
+      propertyPath: ClampVelocityModule.dampen
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5302089576254374075, guid: 0cfae096f006db042a7a3e02c0064464, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.a
+      value: 0.078431375
+      objectReference: {fileID: 0}
+    - target: {fileID: 5302089576254374075, guid: 0cfae096f006db042a7a3e02c0064464, type: 3}
+      propertyPath: ClampVelocityModule.magnitude.scalar
+      value: 16
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 0cfae096f006db042a7a3e02c0064464, type: 3}
+--- !u!4 &36000068792889574 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3919675858839510815, guid: 0cfae096f006db042a7a3e02c0064464, type: 3}
+  m_PrefabInstance: {fileID: 3898597417503141881}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &9191380451908267842 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 5302089576254374075, guid: 0cfae096f006db042a7a3e02c0064464, type: 3}
+  m_PrefabInstance: {fileID: 3898597417503141881}
+  m_PrefabAsset: {fileID: 0}

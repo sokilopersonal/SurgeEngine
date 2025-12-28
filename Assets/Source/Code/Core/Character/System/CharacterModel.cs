@@ -43,12 +43,12 @@ namespace SurgeEngine.Source.Code.Core.Character.System
                         _restoreTimer = 0;
                         _isAirRestoring = false;
                         _isUpRestoring = true;
-                        _upRestoreTimer = 0.66f;
+                        _upRestoreTimer = 0.4f;
                     }
                 }
                 else if (_isUpRestoring)
                 {
-                    bool isComplete = _bodyRotation.AlignToUpOverTime(Time.deltaTime, ref _upRestoreTimer); // TODO: Allow player to rotate while aligning
+                    bool isComplete = _bodyRotation.AlignToUpOverTime(Time.deltaTime, ref _upRestoreTimer); // I can't bruh
                     if (isComplete)
                     {
                         _isUpRestoring = false;
