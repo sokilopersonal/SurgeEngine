@@ -15,6 +15,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
         
         private bool _isForward;
         private float _timer;
+        private bool _switching => Character.Animation.StateAnimator.GetCurrentAnimationState().Contains("GrindSwitch");
 
         protected float gravityPower;
         
@@ -45,17 +46,17 @@ namespace SurgeEngine.Source.Code.Core.Character.States
 
             if (this is not FStateGrindSquat)
             {
-                if (Input.BHeld)
+                if (Input.BHeld && !_switching)
                 {
                     StateMachine.SetState<FStateGrindSquat>()?.Share(_rail, _data, _isForward);
                 }
             }
 
-            if (Input.LeftBumperHeld)
+            if (Input.LeftBumperHeld && !_switching)
             {
                 FindRailInDirection(true);
             }
-            else if (Input.RightBumperHeld)
+            else if (Input.RightBumperHeld && !_switching)
             {
                 FindRailInDirection(false);
             }
