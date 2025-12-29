@@ -326,18 +326,26 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
             if (obj is FStateQuickstep quickstep)
             {
                 var dir = quickstep.GetDirection();
-                float delay = 0.0875f;
+                float delay = 0.085f;
                 if (dir == QuickstepDirection.Left)
                 {
                     string left = "QuickstepLeft";
                     if (quickstep.IsRun) left = "RunQuickstepLeft";
-                    StateAnimator.TransitionToState(left, 0.1f).After(delay, () => StateAnimator.TransitionToState(AnimatorParams.RunCycle));
+                    StateAnimator.TransitionToState(left, 0.1f).After(delay, () =>
+                    {
+                        if (quickstep.IsRun)
+                            StateAnimator.TransitionToState(AnimatorParams.RunCycle);
+                    });
                 }
                 else if (dir == QuickstepDirection.Right)
                 {
                     string right = "QuickstepRight";
                     if (quickstep.IsRun) right = "RunQuickstepRight";
-                    StateAnimator.TransitionToState(right, 0.1f).After(delay, () => StateAnimator.TransitionToState(AnimatorParams.RunCycle));
+                    StateAnimator.TransitionToState(right, 0.1f).After(delay, () =>
+                    {
+                        if (quickstep.IsRun)
+                            StateAnimator.TransitionToState(AnimatorParams.RunCycle);
+                    });
                 }
             }
             if (obj is FStateSwing)

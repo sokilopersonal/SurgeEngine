@@ -27,16 +27,6 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem.Pans
             _stateMachine.SetDirection(_vData.forward);
             StateFOV = _vData.fov;
         }
-
-        protected override void SetPosition(Vector3 targetPosition)
-        {
-            StatePosition = targetPosition;
-        }
-        
-        protected override void SetRotation(Vector3 actorPosition)
-        {
-            StateRotation = Quaternion.LookRotation(actorPosition - StatePosition);
-        }
         
         protected override void LookAxis()
         {
