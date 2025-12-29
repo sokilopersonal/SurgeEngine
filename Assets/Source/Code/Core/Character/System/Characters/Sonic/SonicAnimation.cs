@@ -13,7 +13,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
     public class SonicAnimation : CharacterAnimation
     {
         private string _hopAnimation = "HopL";
-        private string _grindSuffix => StateAnimator.Animator.GetBool("GrindFlip") ? "_L" : "";
+        private string GrindSuffix => StateAnimator.Animator.GetBool("GrindFlip") ? "_L" : "";
 
         protected override void ChangeAnimationState(FState obj)
         {
@@ -242,7 +242,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
             }
             if (obj is FStateGrindJump)
             {
-                StateAnimator.TransitionToState("GrindJump"+_grindSuffix, 0.2f);
+                StateAnimator.TransitionToState("GrindJump"+GrindSuffix, 0.2f);
             }
             if (obj is FStateHoming)
             {
@@ -300,18 +300,18 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
             }
             if (obj is FStateGrind && prev is not FStateGrindSquat)
             {
-                StateAnimator.TransitionToState("Grind_S" + _grindSuffix, 0f);
+                StateAnimator.TransitionToState("Grind_S" + GrindSuffix, 0f);
             }
             if (obj is FStateGrindSquat)
             {
-                StateAnimator.TransitionToState("GrindSquat" + _grindSuffix, 0.25f);
+                StateAnimator.TransitionToState("GrindSquat" + GrindSuffix, 0.25f);
             }
             if (obj is FStateGrind && prev is FStateGrindSquat)
             {
-                StateAnimator.TransitionToState("GrindSwitch" + _grindSuffix, 0f).Then(() => 
+                StateAnimator.TransitionToState("GrindSwitch" + GrindSuffix, 0f).Then(() => 
                 { 
                     animator.SetBool("GrindFlip", !animator.GetBool("GrindFlip")); 
-                    StateAnimator.TransitionToState("GrindLoop" + _grindSuffix, 0f); 
+                    StateAnimator.TransitionToState("GrindLoop" + GrindSuffix, 0f); 
                 }); 
             }
             if (obj is FStateJumpSelector)
@@ -357,7 +357,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
             }
             if (obj is FStateDamageLand)
             {
-                StateAnimator.TransitionToStateDelayed("DamageRestore", 1f, 0);
+                StateAnimator.TransitionToStateDelayed("DamageRestore", 0.66f, 0);
             }
             if (obj is FStateUpreel)
             {
@@ -371,11 +371,11 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
             {
                 if (railSwitch.IsLeft)
                 {
-                    StateAnimator.TransitionToState("RailSwitchL" + _grindSuffix, 0.0f);
+                    StateAnimator.TransitionToState("RailSwitchL" + GrindSuffix, 0.0f);
                 }
                 else
                 {
-                    StateAnimator.TransitionToState("RailSwitchR" + _grindSuffix, 0.0f);
+                    StateAnimator.TransitionToState("RailSwitchR" + GrindSuffix, 0.0f);
                 }
             }
             if (obj is FStateStumble)
