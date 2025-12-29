@@ -103,14 +103,8 @@ namespace SurgeEngine.Source.Editor.ObjectSet
         {
             _selectedCategoryIndex = EditorPrefs.GetInt(LastCategoryKey, 0);
             _normalOffset = EditorPrefs.GetFloat(NormalOffsetKey, 0.1f);
-            autoRepaintOnSceneChange = true;
-
+            
             LoadDatabase();
-        }
-        
-        private void OnDisable()
-        {
-            SaveDatabase();
         }
         
         private void LoadDatabase()
@@ -158,7 +152,7 @@ namespace SurgeEngine.Source.Editor.ObjectSet
             };
             
             var headerRect = EditorGUILayout.BeginVertical(headerStyle);
-            EditorGUILayout.LabelField("Asset Manager", headerStyle);
+            EditorGUILayout.LabelField("🎮 Asset Manager", headerStyle);
             EditorGUILayout.EndVertical();
             
             if (GUI.Button(new Rect(headerRect.xMax - 25, headerRect.y + 5, 20, 20), 
@@ -176,8 +170,7 @@ namespace SurgeEngine.Source.Editor.ObjectSet
                 "• Select category or search\n" +
                 "• Click on prefab icon to place\n" +
                 "• Move mouse in scene and click to place\n" +
-                "• Press Esc to cancel\n" +
-                "• Changes saved automatically", MessageType.Info);
+                "• Press Esc to cancel", MessageType.Info);
         }
         
         private void DrawSettings()
@@ -226,12 +219,24 @@ namespace SurgeEngine.Source.Editor.ObjectSet
         private void DrawControls()
         {
             EditorGUILayout.Space(5);
-
+            EditorGUILayout.BeginHorizontal();
+            
             var addContent = new GUIContent(" Add Prefab", EditorGUIUtility.IconContent("Toolbar Plus").image);
+            var saveContent = new GUIContent(" Save Database", EditorGUIUtility.IconContent("SaveActive").image);
+            
             if (GUILayout.Button(addContent, GUILayout.Height(25)))
             {
                 SelectPrefab();
             }
+            
+            GUI.enabled = _database != null;
+            if (GUILayout.Button(saveContent, GUILayout.Height(25)))
+            {
+                SaveDatabase();
+            }
+            GUI.enabled = true;
+            
+            EditorGUILayout.EndHorizontal();
         }
         
         private void DrawPrefabGrid()
@@ -293,16 +298,20 @@ namespace SurgeEngine.Source.Editor.ObjectSet
             GameObject prefab = prefabData.prefab;
             string displayName = string.IsNullOrEmpty(prefabData.customName) ? prefab.name : prefabData.customName;
 
+            // Draw tile with subtle border
             Rect tileRect = GUILayoutUtility.GetRect(110, 110);
-
+            
+            // Draw preview background
             EditorGUI.DrawRect(new Rect(tileRect.x + 1, tileRect.y + 1, tileRect.width - 2, tileRect.width - 2), 
                 new Color(0.2f, 0.2f, 0.2f, 0.3f));
-
+            
+            // Draw border
             EditorGUI.DrawRect(new Rect(tileRect.x, tileRect.y, tileRect.width, 1), Color.grey);
             EditorGUI.DrawRect(new Rect(tileRect.x, tileRect.y, 1, tileRect.height), Color.grey);
             EditorGUI.DrawRect(new Rect(tileRect.x + tileRect.width - 1, tileRect.y, 1, tileRect.height), Color.grey);
             EditorGUI.DrawRect(new Rect(tileRect.x, tileRect.y + tileRect.height - 1, tileRect.width, 1), Color.grey);
 
+            // Draw prefab preview
             Texture2D preview = AssetPreview.GetAssetPreview(prefab);
             if (preview != null)
             {
@@ -310,6 +319,7 @@ namespace SurgeEngine.Source.Editor.ObjectSet
                 GUI.DrawTexture(previewRect, preview, ScaleMode.ScaleToFit);
             }
 
+            // Handle clicks
             if (Event.current.type == EventType.MouseDown && tileRect.Contains(Event.current.mousePosition))
             {
                 if (Event.current.button == 0)
@@ -322,7 +332,8 @@ namespace SurgeEngine.Source.Editor.ObjectSet
                 }
                 Event.current.Use();
             }
-
+            
+            // Draw name label
             Rect nameRect = new Rect(tileRect.x, tileRect.yMax - 20, tileRect.width, 20);
             EditorGUI.DrawRect(nameRect, new Color(0, 0, 0, 0.7f));
                 
@@ -342,6 +353,9 @@ namespace SurgeEngine.Source.Editor.ObjectSet
         {
             GenericMenu menu = new GenericMenu();
             menu.AddItem(new GUIContent("Rename..."), false, () => RenamePrefab(prefabData));
+            menu.AddSeparator("");
+            menu.AddItem(new GUIContent("Move To/Top"), false, () => MovePrefabToTop(prefabData));
+            menu.AddItem(new GUIContent("Move To/Bottom"), false, () => MovePrefabToBottom(prefabData));
             menu.AddSeparator("");
 
             foreach (var category in _database.categories)
@@ -394,6 +408,28 @@ namespace SurgeEngine.Source.Editor.ObjectSet
             if (!string.IsNullOrEmpty(newName))
             {
                 prefabData.customName = newName;
+                SaveDatabase();
+            }
+        }
+        
+        private void MovePrefabToTop(AssetManagerDatabase.PrefabData prefabData)
+        {
+            if (_selectedCategoryIndex > 0)
+            {
+                var category = _database.categories[_selectedCategoryIndex - 1];
+                category.prefabGUIDs.Remove(prefabData.guid);
+                category.prefabGUIDs.Insert(0, prefabData.guid);
+                SaveDatabase();
+            }
+        }
+        
+        private void MovePrefabToBottom(AssetManagerDatabase.PrefabData prefabData)
+        {
+            if (_selectedCategoryIndex > 0)
+            {
+                var category = _database.categories[_selectedCategoryIndex - 1];
+                category.prefabGUIDs.Remove(prefabData.guid);
+                category.prefabGUIDs.Add(prefabData.guid);
                 SaveDatabase();
             }
         }
@@ -623,7 +659,7 @@ namespace SurgeEngine.Source.Editor.ObjectSet
             _newCategoryName = EditorGUILayout.TextField("New Category:", _newCategoryName);
             if (GUILayout.Button("Add", GUILayout.Width(50)) && !string.IsNullOrWhiteSpace(_newCategoryName))
             {
-                if (_database.categories.All(c => c.name != _newCategoryName))
+                if (!_database.categories.Any(c => c.name == _newCategoryName))
                 {
                     _database.categories.Add(new AssetManagerDatabase.Category { name = _newCategoryName.Trim() });
                     _saveCallback?.Invoke();
