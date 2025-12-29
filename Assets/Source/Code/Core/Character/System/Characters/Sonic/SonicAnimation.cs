@@ -91,6 +91,9 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
             }
             if (obj is FStateGround)
             {
+                if (prev is FStateQuickstep)
+                    return;
+                
                 if (prev is not FStateDrift)
                 {
                     if (machine.IsPrevExact<FStateJump>())
@@ -127,12 +130,6 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
                     if (machine.IsPrevExact<FStateSweepKick>())
                     {
                         StateAnimator.TransitionToState(AnimatorParams.RunCycle, 0.25f);
-                        return;
-                    }
-
-                    if (machine.IsPrevExact<FStateQuickstep>())
-                    {
-                        StateAnimator.TransitionToState(AnimatorParams.RunCycle, 0.3f);
                         return;
                     }
             
@@ -329,18 +326,18 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
             if (obj is FStateQuickstep quickstep)
             {
                 var dir = quickstep.GetDirection();
-            
+                float delay = 0.0875f;
                 if (dir == QuickstepDirection.Left)
                 {
                     string left = "QuickstepLeft";
                     if (quickstep.IsRun) left = "RunQuickstepLeft";
-                    StateAnimator.TransitionToState(left, 0.1f);
+                    StateAnimator.TransitionToState(left, 0.1f).After(delay, () => StateAnimator.TransitionToState(AnimatorParams.RunCycle));
                 }
                 else if (dir == QuickstepDirection.Right)
                 {
                     string right = "QuickstepRight";
                     if (quickstep.IsRun) right = "RunQuickstepRight";
-                    StateAnimator.TransitionToState(right, 0.1f);
+                    StateAnimator.TransitionToState(right, 0.1f).After(delay, () => StateAnimator.TransitionToState(AnimatorParams.RunCycle));
                 }
             }
             if (obj is FStateSwing)
