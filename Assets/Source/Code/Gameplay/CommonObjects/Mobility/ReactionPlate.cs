@@ -4,8 +4,10 @@ using Cysharp.Threading.Tasks;
 using FMODUnity;
 using SurgeEngine.Source.Code.Core.Character.States;
 using SurgeEngine.Source.Code.Core.Character.System;
+using SurgeEngine.Source.Code.Core.StateMachine;
 using SurgeEngine.Source.Code.Infrastructure.Custom;
 using UnityEngine;
+using UnityEngine.Rendering;
 using Random = UnityEngine.Random;
 
 namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
@@ -16,6 +18,15 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         Panel,
         End
     }
+
+    public enum ReactionPlateButton
+    {
+        B = 1,
+        A = 0,
+        X = 2,
+        Y = 3,
+        Random = 4
+    }
     
     public class ReactionPlate : StageObject
     {
@@ -25,17 +36,19 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         [SerializeField] private float preAcceptingTime = 1;
         [SerializeField] private ReactionPlate target;
         [SerializeField] private ReactionPlateType type;
+        [SerializeField] private ReactionPlateButton buttonType;
+        [SerializeField] private MeshRenderer mesh;
         [SerializeField] private float failOutOfControlTime = 0.5f;
         [SerializeField] private float jumpMaxVelocity;
         [SerializeField] private float jumpMinVelocity;
         public ReactionPlate Target => target;
         public ReactionPlateType Type => type;
 
-        [SerializeField] private EventReference qteHitSound;
+        [SerializeField] private EventReference qteTouchSound;
         [SerializeField] private EventReference qteSuccessSound;
-        [SerializeField] private EventReference qteSuccessVoiceSound;
         [SerializeField] private EventReference qteFailSound;
-        [SerializeField] private EventReference qteFailVoiceSound;
+
+        [SerializeField] private Material materialTemplate;
 
         public Action<QTEResult> OnQTEResultReceived;
         public event Action OnCorrectButton;
@@ -44,6 +57,9 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         private float _timer;
         private QTESequence _finishingSequence;
         private CharacterBase _character;
+        private Material _material = null;
+        private ReactionPlateJumpInfo _info;
+        private bool _countdown = false;
 
         private void OnEnable()
         {
@@ -52,14 +68,34 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 
         private void OnDisable()
         {
+            _material = null;
             OnQTEResultReceived -= HandleQTEResult;
+        }
+
+        private void OnValidate()
+        {
+            if (mesh == null || materialTemplate == null)
+                return;
+
+            if (mesh.sharedMaterials.Length != 2)
+                return;
+
+            if (_material == null)
+                _material = new Material(materialTemplate);
+            
+            Material[] mats = mesh.sharedMaterials;
+            mats[1] = _material;
+            mesh.sharedMaterials = mats;
+            
+            _material.SetFloat("_ButtonFace", (int)buttonType);
+            _material.SetFloat("_InputDevice", 1);
         }
 
         private void Update()
         {
             if (_qteSequence != null)
             {
-                float deltaTime = Time.unscaledDeltaTime;
+                float deltaTime = Time.deltaTime;
                 if (deltaTime < MaxFrameTime)
                 {
                     _timer -= deltaTime;
@@ -70,6 +106,9 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
                     OnQTEResultReceived?.Invoke(QTEResult.Fail);
                 }
             }
+
+            if (_material != null)
+                _material.SetFloat("_InputDevice", (int)CharacterContext.Context.Input.GetDevice());
         }
 
         public override void OnEnter(Collider msg, CharacterBase context)
@@ -80,6 +119,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             {
                 if (type == ReactionPlateType.Spring)
                 {
+                    RuntimeManager.PlayOneShot(qteTouchSound);
                     Launch(context);
                 }
             }
@@ -87,30 +127,36 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 
         public void PerformTrickContact(CharacterBase context)
         {
-            _character = context;
-            ObjectEvents.OnReactionPanelTriggered?.Invoke(this);
-            
             if (target)
             {
+                RuntimeManager.PlayOneShot(qteTouchSound);
                 context.Kinematics.ResetVelocity();
-                
-                InitializeQTESequences(preAcceptingTime);
             }
         }
 
-        private void InitializeQTESequences(float trickTime)
+        private async void InitializeQTESequences(float trickTime)
         {
+            float time = Vector3.Distance(_info.start, _info.target.transform.position) / _info.jumpMaxVelocity;
+
+            await UniTask.Delay(TimeSpan.FromSeconds(time * 0.75f), DelayType.DeltaTime);
+
+            ObjectEvents.OnReactionPanelTriggered?.Invoke(this);
+
             CreateSequence(trickTime);
 
             _character.Input.OnButtonPressed += HandleButtonPressed;
+
+            await UniTask.Delay(TimeSpan.FromSeconds(0.13f), DelayType.DeltaTime);
+            
+            _countdown = true;
         }
 
         private void CreateSequence(float time)
         {
             _qteSequence = new QTESequence { time = time };
             
-            ButtonType buttonType = (ButtonType)Random.Range(0, 3);
-            QTEButton button = new QTEButton(buttonType);
+            ButtonType _buttonType = buttonType.Equals(ReactionPlateButton.Random) ? (ButtonType)Random.Range(0, 3) : (ButtonType)buttonType;
+            QTEButton button = new QTEButton(_buttonType);
 
             _qteSequence.buttons.Add(button);
 
@@ -124,16 +170,12 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             if (sequenceButton == button)
             {
                 OnCorrectButton?.Invoke();
-                RuntimeManager.PlayOneShot(qteHitSound);
 
                 float additionalScore = 1000f * _qteSequence.time * (1.0f - _timer * 0.01f);
                 int score = 1000;
                 Utility.AddScore(score + (int)additionalScore);
 
-                RuntimeManager.PlayOneShot(qteSuccessSound);
-
                 OnQTEResultReceived.Invoke(QTEResult.Success);
-                RuntimeManager.PlayOneShot(qteSuccessVoiceSound);
             }
             else
             {
@@ -143,6 +185,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 
         private async void HandleQTEResult(QTEResult result)
         {
+            _character.Input.OnButtonPressed -= HandleButtonPressed;
             _finishingSequence = _qteSequence;
             _qteSequence = null;
 
@@ -151,28 +194,42 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
                 await UniTask.Delay(TimeSpan.FromSeconds(mainAcceptingTime), DelayType.DeltaTime);
                 
                 Launch(_character);
+
+                RuntimeManager.PlayOneShot(qteSuccessSound);
             }
             else
             {
+                if (_timer > 0.0f)
+                    await UniTask.Delay(TimeSpan.FromSeconds(mainAcceptingTime), DelayType.DeltaTime);
+
                 _character.Flags.RemoveFlag(FlagType.OutOfControl);
                 _character.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, failOutOfControlTime));
                 _character.StateMachine.SetState<FStateAir>();
 
                 RuntimeManager.PlayOneShot(qteFailSound);
-                RuntimeManager.PlayOneShot(qteFailVoiceSound);
             }
 
-            _character.Input.OnButtonPressed -= HandleButtonPressed;
             _character = null;
         }
 
         private void Launch(CharacterBase context)
         {
-            var st = context.StateMachine;
-            var plateJump = st.GetState<FStateReactionPlateJump>();
-            var info = new ReactionPlateJumpInfo(context.transform.position, target, jumpMaxVelocity, jumpMinVelocity);
+            target._character = context;
+            _character = context;
+
+            FStateMachine st = context.StateMachine;
+            FStateReactionPlateJump plateJump = st.GetState<FStateReactionPlateJump>();
+            ReactionPlateJumpInfo info = new ReactionPlateJumpInfo(context.transform.position, target, jumpMaxVelocity, jumpMinVelocity);
+            
+            target._info = info;
+            _info = info;
+            
             plateJump.SetInfo(info);
+            
             st.SetState<FStateReactionPlateJump>();
+
+            if (target.type == ReactionPlateType.Panel)
+                target.InitializeQTESequences(target.preAcceptingTime);
         }
 
         public float GetTimer()

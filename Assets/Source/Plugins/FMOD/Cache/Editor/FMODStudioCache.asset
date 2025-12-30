@@ -174,7 +174,7 @@ MonoBehaviour:
   Path: FMOD/SurgeEngine/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639026016488912731
+  lastModified: 639027016338835361
   FileSizes:
   - Name: Desktop
     Value: 6754
@@ -1486,6 +1486,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 1777
+--- !u!114 &-3865983729591799746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Characters/Sonic/QTE/QTE_OK
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/Characters/Sonic/QTE/QTE_OK
+  Guid:
+    Data1: 1618073443
+    Data2: 1255895328
+    Data3: -655812447
+    Data4: 311351064
+  Banks:
+  - {fileID: 7665322492351459145}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 1270
 --- !u!114 &-3798336096290315502
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1660,10 +1687,10 @@ MonoBehaviour:
   Path: FMOD/SurgeEngine/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639026016488927768
+  lastModified: 639027016338840396
   FileSizes:
   - Name: Desktop
-    Value: 5268
+    Value: 5338
   Exists: 1
 --- !u!114 &-2706248421708495253
 MonoBehaviour:
@@ -2507,6 +2534,33 @@ MonoBehaviour:
   IsGlobal: 1
   Labels: []
   Exists: 1
+--- !u!114 &-343062625952809282
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Characters/Sonic/QTE/QTE_Touch
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/Characters/Sonic/QTE/QTE_Touch
+  Guid:
+    Data1: 248721932
+    Data2: 1217376958
+    Data3: -1971976064
+    Data4: 587993296
+  Banks:
+  - {fileID: 7665322492351459145}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 937
 --- !u!114 &-290026391229809563
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2741,6 +2795,8 @@ MonoBehaviour:
   - {fileID: -1001272223519087932}
   - {fileID: 543009469176892832}
   - {fileID: -6018335792843603262}
+  - {fileID: -343062625952809282}
+  - {fileID: -3865983729591799746}
   EditorParameters:
   - {fileID: -2226656583482838958}
   - {fileID: -8569422454319582638}
@@ -2754,7 +2810,7 @@ MonoBehaviour:
   StringsBanks:
   - {fileID: -3100179975989899627}
   cacheVersion: 131857
-  cacheTime: 639027115148946617
+  cacheTime: 639027016342392316
   SerializableEventsDict:
   - key: event:/GameStatus
     index: 0
@@ -2930,6 +2986,10 @@ MonoBehaviour:
     index: 85
   - key: event:/CommonObjects/UpReel
     index: 86
+  - key: event:/Characters/Sonic/QTE/QTE_Touch
+    index: 87
+  - key: event:/Characters/Sonic/QTE/QTE_OK
+    index: 88
 --- !u!114 &4628462006692184
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3263,10 +3323,10 @@ MonoBehaviour:
   Path: FMOD/SurgeEngine/Build/Desktop/Music.bank
   Name: Music
   StudioPath: bank:/Music
-  lastModified: 639027115148946617
+  lastModified: 639027016339808006
   FileSizes:
   - Name: Desktop
-    Value: 15900864
+    Value: 15900928
   Exists: 1
 --- !u!114 &965482780836433925
 MonoBehaviour:
@@ -5322,10 +5382,10 @@ MonoBehaviour:
   Path: FMOD/SurgeEngine/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 639026016493239998
+  lastModified: 639027016342392316
   FileSizes:
   - Name: Desktop
-    Value: 1586048
+    Value: 1608864
   Exists: 1
 --- !u!114 &7672089596371258650
 MonoBehaviour:

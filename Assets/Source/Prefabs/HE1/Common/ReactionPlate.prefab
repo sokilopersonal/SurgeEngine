@@ -1,0 +1,165 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8280104126392166209
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6517022309199519782}
+  - component: {fileID: 8411714765615418129}
+  m_Layer: 8
+  m_Name: ReactionPlate
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6517022309199519782
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8280104126392166209}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8175838983511932895}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!114 &8411714765615418129
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8280104126392166209}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b25f653ae6c7de499c3cd94af9cbd73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility.ReactionPlate
+  mainAcceptingTime: 1
+  preAcceptingTime: 1
+  target: {fileID: 0}
+  type: 1
+  buttonType: 0
+  mesh: {fileID: 7006834524707030192}
+  failOutOfControlTime: 0.5
+  jumpMaxVelocity: 30
+  jumpMinVelocity: 0
+  qteTouchSound:
+    Guid:
+      Data1: 248721932
+      Data2: 1217376958
+      Data3: -1971976064
+      Data4: 587993296
+    Path: event:/Characters/Sonic/QTE/QTE_Touch
+  qteSuccessSound:
+    Guid:
+      Data1: 1618073443
+      Data2: 1255895328
+      Data3: -655812447
+      Data4: 311351064
+    Path: event:/Characters/Sonic/QTE/QTE_OK
+  qteFailSound:
+    Guid:
+      Data1: -2076594292
+      Data2: 1146176254
+      Data3: 1129547154
+      Data4: 301612095
+    Path: event:/Characters/Sonic/QTE/QTE_Fail
+  materialTemplate: {fileID: 2100000, guid: b870f27321c39274d82874abe8f25228, type: 2}
+--- !u!1001 &8573960069144221748
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 6517022309199519782}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 27d32a184d73c2d45ab85f4144a95458, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 27d32a184d73c2d45ab85f4144a95458, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 27d32a184d73c2d45ab85f4144a95458, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 27d32a184d73c2d45ab85f4144a95458, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 27d32a184d73c2d45ab85f4144a95458, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.03
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 27d32a184d73c2d45ab85f4144a95458, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 27d32a184d73c2d45ab85f4144a95458, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 27d32a184d73c2d45ab85f4144a95458, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 27d32a184d73c2d45ab85f4144a95458, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 27d32a184d73c2d45ab85f4144a95458, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 27d32a184d73c2d45ab85f4144a95458, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 27d32a184d73c2d45ab85f4144a95458, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 27d32a184d73c2d45ab85f4144a95458, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 27d32a184d73c2d45ab85f4144a95458, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: e38d91485c130a1449e9d2b39c33f6b2, type: 2}
+    - target: {fileID: -7511558181221131132, guid: 27d32a184d73c2d45ab85f4144a95458, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 27d32a184d73c2d45ab85f4144a95458, type: 3}
+      propertyPath: m_Name
+      value: reactionPanel
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 27d32a184d73c2d45ab85f4144a95458, type: 3}
+--- !u!23 &7006834524707030192 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 27d32a184d73c2d45ab85f4144a95458, type: 3}
+  m_PrefabInstance: {fileID: 8573960069144221748}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &8175838983511932895 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 27d32a184d73c2d45ab85f4144a95458, type: 3}
+  m_PrefabInstance: {fileID: 8573960069144221748}
+  m_PrefabAsset: {fileID: 0}
