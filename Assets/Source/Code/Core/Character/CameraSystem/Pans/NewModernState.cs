@@ -20,11 +20,14 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem.Pans
         private float _verticalLagVelocity;
         private float _forwardLag;
         private float _forwardLagVelocity;
+        private float _lateralLag;
+        private float _lateralLagVelocity;
+        private float _xLagBlend;
 
         private Vector3 _lookOffset;
         private float _yawAuto;
         private float _pitchAuto;
-        
+
         private const float RisingSmoothingTime = 0.6f;
         private const float FallingSmoothingTime = 0.5f;
         private const float RestoreSmoothingTime = 0.75f;
@@ -61,9 +64,9 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem.Pans
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
-            
+    
             LookAxis();
-            
+    
             float distance = 1;
             if (_stateMachine.Master.GetModifier(out BoostDistanceCameraModifier boostDistance))
             {
@@ -77,11 +80,12 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem.Pans
             }
 
             StateFOV = _stateMachine.BaseFov * fov;
-            
+    
             ZLag();
             YLag(_master.YLagMin, _master.YLagMax);
+            XLag();
             LateralOffset();
-            
+    
             Setup(CalculateCameraTarget(GetDistance() * distance), CalculateTarget());
         }
 
@@ -101,7 +105,10 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem.Pans
 
         protected virtual Vector3 CalculateTarget()
         {
-            return Character.transform.position + Vector3.up * GetVerticalOffset() + Vector3.up * _verticalLag;
+            Vector3 basePos = Character.transform.position + Vector3.up * GetVerticalOffset() + Vector3.up * _verticalLag;
+
+            Vector3 lateralOffset = Character.transform.right * _lateralLag;
+            return basePos + lateralOffset;
         }
 
         protected virtual float CalculateCollisionDistance(Vector3 origin, Vector3 direction, float baseDistance)
@@ -168,6 +175,23 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem.Pans
             {
                 _lookOffset.y = Mathf.SmoothDamp(_lookOffset.y, 0, ref _lookVelocity, 0.5f);
             }
+        }
+        
+        private void XLag()
+        {
+            Vector3 localVelocity = Character.transform.InverseTransformDirection(Character.Kinematics.Velocity);
+            float lateralSpeed = localVelocity.x;
+
+            bool allowXLag = Character.StateMachine.CurrentState is FStateQuickstep or FStateRailSwitch;
+
+            _xLagBlend = Mathf.Lerp(_xLagBlend, allowXLag ? 1f : 0f, Time.deltaTime * 10f);
+
+            float speedFactor = Mathf.Clamp01(Mathf.Abs(lateralSpeed) / 15f);
+            float rawTargetLag = -Mathf.Sign(lateralSpeed) * 2f * speedFactor;
+            float targetLag = rawTargetLag * _xLagBlend;
+            float smoothTime = Mathf.Lerp(0.4f, 0.1f, _xLagBlend);
+    
+            _lateralLag = Mathf.SmoothDamp(_lateralLag, targetLag, ref _lateralLagVelocity, smoothTime);
         }
 
         private void AutoLookDirection()
