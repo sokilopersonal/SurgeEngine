@@ -8,6 +8,7 @@ using SurgeEngine.Source.Code.Core.StateMachine;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.System;
 using SurgeEngine.Source.Code.Infrastructure.Config;
 using UnityEngine;
+using Zenject;
 
 namespace SurgeEngine.Source.Code.Core.Character.System
 {
@@ -39,7 +40,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         
         private readonly Dictionary<Type, ScriptableObject> _configs = new();
         
-        private StartData _startData;
+        [Inject] private StartData _startData;
 
         public FStateMachine StateMachine { get; private set; }
         public Rigidbody Rigidbody { get; private set; }
@@ -63,6 +64,19 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             Flags.Set(this);
             Kinematics.Set(this);
             Life.Set(this);
+        }
+
+        private void Start()
+        {
+            if (_startData.startType != StartType.None)
+            {
+                StateMachine.GetState<FStateStart>().SetData(_startData);
+                StateMachine.SetState<FStateStart>();
+            }
+            else
+            {
+                StateMachine.SetState<FStateIdle>();
+            }
         }
 
         private void Update()
@@ -109,21 +123,6 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             StateMachine.AddState(new FStateDead(this));
             StateMachine.AddState(new FStateGoal(this));
             StateMachine.AddState(new FStateStumble(this));
-        }
-
-        public void SetStart(StartData data)
-        {
-            _startData = data;
-            
-            if (data.startType != StartType.None)
-            {
-                StateMachine.GetState<FStateStart>().SetData(data);
-                StateMachine.SetState<FStateStart>();
-            }
-            else
-            {
-                StateMachine.SetState<FStateIdle>();
-            }
         }
 
         protected virtual void InitializeConfigs()

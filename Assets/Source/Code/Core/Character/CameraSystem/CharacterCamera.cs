@@ -72,6 +72,7 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem
         private Camera _camera;
         private Transform _cameraTransform;
 
+        [Inject] private StartData _startData;
         [Inject] private UserInput _userInput;
 
         private void Awake()
@@ -85,17 +86,7 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem
             {
                 Debug.LogError("For some reason, there is no camera...");
             }
-
-            var cameraModifiers = _cameraTransform.GetComponentsInChildren<BaseCameraModifier>();
-            foreach (var modifier in cameraModifiers)
-            {
-                modifier.Set(Character);
-                _modifiersDictionary.Add(modifier.GetType(), modifier);
-            }
-        }
-
-        private void Start()
-        {
+            
             StateMachine = new(_camera, _cameraTransform, Character);
             
             StateMachine.AddState(new CameraAnimState(Character));
@@ -110,16 +101,6 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem
             StateMachine.AddState(new PathCameraPan(Character));
             StateMachine.AddState(new PathTargetCameraPan(Character));
 
-            var start = Character.GetStartData();
-            if (start.startType == StartType.None || start.startType == StartType.Dash)
-            {
-                StateMachine.SetState<NewModernState>();
-            }
-            else
-            {
-                StateMachine.SetState<CameraAnimState>();
-            }
-
             Vector3 dir = Quaternion.LookRotation(Character.transform.forward).eulerAngles;
             dir.x = yawDefaultAmplitude;
             StateMachine.SetDirection(dir.y, dir.x);
@@ -130,6 +111,27 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem
             }
             
             StateMachine.CompleteBlend();
+            
+            if (_startData.startType == StartType.None || _startData.startType == StartType.Dash)
+            {
+                StateMachine.SetState<NewModernState>();
+            }
+            else
+            {
+                StateMachine.SetState<CameraAnimState>();
+            }
+
+            var cameraModifiers = _cameraTransform.GetComponentsInChildren<BaseCameraModifier>();
+            foreach (var modifier in cameraModifiers)
+            {
+                modifier.Set(Character);
+                _modifiersDictionary.Add(modifier.GetType(), modifier);
+            }
+        }
+
+        private void Start()
+        {
+            
         }
 
         private void Update()
