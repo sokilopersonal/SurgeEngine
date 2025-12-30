@@ -107,7 +107,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
             _info = info;
             
             var targetTransform = _info.target.transform;
-            _endPosition = targetTransform.position + -targetTransform.forward - targetTransform.up * 0.2f;
+            _endPosition = targetTransform.position - targetTransform.forward - targetTransform.up * 0.2f;
         }
     }
 

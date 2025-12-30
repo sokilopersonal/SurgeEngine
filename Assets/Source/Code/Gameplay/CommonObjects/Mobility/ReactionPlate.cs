@@ -9,6 +9,7 @@ using SurgeEngine.Source.Code.Infrastructure.Custom;
 using UnityEngine;
 using UnityEngine.Rendering;
 using Random = UnityEngine.Random;
+using NaughtyAttributes;
 
 namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 {
@@ -31,24 +32,37 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
     public class ReactionPlate : StageObject
     {
         private const float MaxFrameTime = 0.33f;
-        
-        [SerializeField] private float mainAcceptingTime = 0.5f;
-        [SerializeField] private float preAcceptingTime = 1;
-        [SerializeField] private ReactionPlate target;
+
+        [Header("General Settings")]
         [SerializeField] private ReactionPlateType type;
         [SerializeField] private ReactionPlateButton buttonType;
-        [SerializeField] private MeshRenderer mesh;
+        [SerializeField] private ReactionPlate target;
+        [SerializeField] private Collider col;
+
+        [Header("QTE Settings")]
+        [SerializeField] private float mainAcceptingTime = 0.5f;
+        [SerializeField] private float preAcceptingTime = 1;
         [SerializeField] private float failOutOfControlTime = 0.5f;
+
+        [Header("Launch Settings")]
         [SerializeField] private float jumpMaxVelocity;
         [SerializeField] private float jumpMinVelocity;
-        public ReactionPlate Target => target;
-        public ReactionPlateType Type => type;
 
+        [Header("Sound References")]
         [SerializeField] private EventReference qteTouchSound;
         [SerializeField] private EventReference qteSuccessSound;
         [SerializeField] private EventReference qteFailSound;
 
+        [Header("Reaction Plate Settings")]
+        [ShowIf("ShowPlate")]
+        [SerializeField] private MeshRenderer mesh;
+        [ShowIf("ShowPlate")]
         [SerializeField] private Material materialTemplate;
+
+        public bool ShowPlate() => type != ReactionPlateType.Spring;
+
+        public ReactionPlate Target => target;
+        public ReactionPlateType Type => type;
 
         public Action<QTEResult> OnQTEResultReceived;
         public event Action OnCorrectButton;
@@ -74,6 +88,11 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 
         private void OnValidate()
         {
+            col.enabled = type == ReactionPlateType.Spring;
+
+            transform.Find("Spring").gameObject.SetActive(type == ReactionPlateType.Spring);
+            transform.Find("Plate").gameObject.SetActive(type != ReactionPlateType.Spring);
+
             if (mesh == null || materialTemplate == null)
                 return;
 
@@ -96,7 +115,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             if (_qteSequence != null)
             {
                 float deltaTime = Time.deltaTime;
-                if (deltaTime < MaxFrameTime)
+                if (deltaTime < MaxFrameTime && _countdown)
                 {
                     _timer -= deltaTime;
                 }
@@ -136,6 +155,8 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 
         private async void InitializeQTESequences(float trickTime)
         {
+            _countdown = false;
+
             float time = Vector3.Distance(_info.start, _info.target.transform.position) / _info.jumpMaxVelocity;
 
             await UniTask.Delay(TimeSpan.FromSeconds(time * 0.75f), DelayType.DeltaTime);
