@@ -10,5 +10,6 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects
         public static Action<EnemyBase> OnEnemyDied;
 
         public static Action<TrickJumper> OnTrickJumperTriggered;
+        public static Action<ReactionPanel> OnReactionPanelTriggered;
     }
 }
