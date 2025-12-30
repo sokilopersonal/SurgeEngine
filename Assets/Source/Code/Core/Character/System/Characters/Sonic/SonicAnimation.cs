@@ -382,10 +382,13 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
             {
                 StateAnimator.TransitionToState("StumbleC");
             }
-
             if (obj is FStateLightSpeedDash)
             {
                 StateAnimator.TransitionToState("LightSpeedDash");
+            }
+            if (obj is FStateReactionPlateJump)
+            {
+                StateAnimator.TransitionToState("Jump Standard", 0f);
             }
         }
         

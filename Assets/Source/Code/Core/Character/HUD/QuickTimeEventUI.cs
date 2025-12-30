@@ -18,7 +18,7 @@ namespace SurgeEngine.Source.Code.Core.Character.HUD
         
         private List<QuickTimeEventUIButton> _buttons = new List<QuickTimeEventUIButton>();
 
-        private ReactionPanel _reactionPanelObject;
+        private ReactionPlate _reactionPlateObject;
         private ReactionPanelUI _reactionPanelUI;
         private TrickJumper _trickJumperObject;
         private TrickJumperUI _trickJumperUI;
@@ -29,10 +29,10 @@ namespace SurgeEngine.Source.Code.Core.Character.HUD
             {
                 barFill.fillAmount = _trickJumperObject.GetTimer() / _trickJumperObject.GetCurrentSequence().time;
             }
-            else if (_reactionPanelObject != null)
+            else if (_reactionPlateObject != null)
             {
-                barFill.color = Color.Lerp(Color.red, Color.yellow, _reactionPanelObject.GetTimer() / _reactionPanelObject.GetCurrentSequence().time);
-                barFill.fillAmount = _reactionPanelObject.GetTimer() / _reactionPanelObject.GetCurrentSequence().time;
+                barFill.color = Color.Lerp(Color.red, Color.yellow, _reactionPlateObject.GetTimer() / _reactionPlateObject.GetCurrentSequence().time);
+                barFill.fillAmount = _reactionPlateObject.GetTimer() / _reactionPlateObject.GetCurrentSequence().time;
             }
         }
 
@@ -44,12 +44,12 @@ namespace SurgeEngine.Source.Code.Core.Character.HUD
             trickJumper.OnCorrectButton += OnCorrectButtonPressed;
         }
 
-        public void SetReactionPanel(ReactionPanel reactionPanel, ReactionPanelUI ui)
+        public void SetReactionPanel(ReactionPlate reactionPlate, ReactionPanelUI ui)
         {
-            _reactionPanelObject = reactionPanel;
+            _reactionPlateObject = reactionPlate;
             _reactionPanelUI = ui;
 
-            reactionPanel.OnCorrectButton += OnCorrectButtonPressed;
+            reactionPlate.OnCorrectButton += OnCorrectButtonPressed;
         }
 
         private void OnCorrectButtonPressed()
@@ -93,9 +93,9 @@ namespace SurgeEngine.Source.Code.Core.Character.HUD
                 _trickJumperObject.OnCorrectButton -= OnCorrectButtonPressed;                
             }
 
-            if (_reactionPanelObject != null)
+            if (_reactionPlateObject != null)
             {
-                _reactionPanelObject.OnCorrectButton -= OnCorrectButtonPressed;
+                _reactionPlateObject.OnCorrectButton -= OnCorrectButtonPressed;
             }
         }
     }

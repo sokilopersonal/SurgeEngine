@@ -10,7 +10,7 @@ namespace SurgeEngine.Source.Code.Core.Character.HUD
         [SerializeField] private QuickTimeEventUI quickTimeEventUI;
         [SerializeField] private QuickTimeMessageUI quickTimeMessageUI;
 
-        private ReactionPanel _reactionPanel;
+        private ReactionPlate _reactionPlate;
         private QuickTimeEventUI _currentUI;
         private QuickTimeMessageUI _currentMessageUI;
         private readonly List<QuickTimeEventUI> _activeUIs = new();
@@ -26,14 +26,14 @@ namespace SurgeEngine.Source.Code.Core.Character.HUD
             UnsubscribeFromReactionPanel();
         }
 
-        private void OnReactionPanelTriggered(ReactionPanel obj)
+        private void OnReactionPanelTriggered(ReactionPlate obj)
         {
             UnsubscribeFromReactionPanel();
 
-            _reactionPanel = obj;
+            _reactionPlate = obj;
 
-            _reactionPanel.OnQTEResultReceived += OnQTEResultReceived;
-            _reactionPanel.OnNewSequenceStarted += OnNewSequenceStarted;
+            _reactionPlate.OnQTEResultReceived += OnQTEResultReceived;
+            _reactionPlate.OnNewSequenceStarted += OnNewSequenceStarted;
         }
 
         private void OnNewSequenceStarted(QTESequence sequence)
@@ -46,7 +46,7 @@ namespace SurgeEngine.Source.Code.Core.Character.HUD
             }
 
             _currentUI = Instantiate(quickTimeEventUI);
-            _currentUI.SetReactionPanel(_reactionPanel, this);
+            _currentUI.SetReactionPanel(_reactionPlate, this);
             _currentUI.CreateButtonIcon(sequence);
             _activeUIs.Add(_currentUI);
         }
@@ -56,7 +56,7 @@ namespace SurgeEngine.Source.Code.Core.Character.HUD
             CleanupUIElements();
 
             _currentMessageUI = Instantiate(quickTimeMessageUI, transform);
-            _currentMessageUI.Play(result, _reactionPanel.GetTimer() / _reactionPanel.GetFinishingSequence().time);
+            _currentMessageUI.Play(result, _reactionPlate.GetTimer() / _reactionPlate.GetFinishingSequence().time);
             Destroy(_currentMessageUI.gameObject, 1f);
         }
 
@@ -75,10 +75,10 @@ namespace SurgeEngine.Source.Code.Core.Character.HUD
 
         private void UnsubscribeFromReactionPanel()
         {
-            if (_reactionPanel != null)
+            if (_reactionPlate != null)
             {
-                _reactionPanel.OnQTEResultReceived -= OnQTEResultReceived;
-                _reactionPanel.OnNewSequenceStarted -= OnNewSequenceStarted;
+                _reactionPlate.OnQTEResultReceived -= OnQTEResultReceived;
+                _reactionPlate.OnNewSequenceStarted -= OnNewSequenceStarted;
             }
         }
 
