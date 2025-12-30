@@ -76,6 +76,10 @@ namespace SurgeEngine.Source.Code.Core.Character.States
                         else if (dot > 0f)
                             animator.TransitionToState("ReactionPlate_L", 0.1f);
                     }
+                    else
+                    {
+                        StateMachine.SetState<FStateAir>();
+                    }
                 }
                 else if (target.Type == ReactionPlateType.End)
                 {

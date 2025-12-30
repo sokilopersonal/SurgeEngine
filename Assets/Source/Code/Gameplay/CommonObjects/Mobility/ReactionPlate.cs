@@ -21,7 +21,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
     {
         private const float MaxFrameTime = 0.33f;
         
-        [SerializeField] private float mainAcceptingTime = 1;
+        [SerializeField] private float mainAcceptingTime = 0.5f;
         [SerializeField] private float preAcceptingTime = 1;
         [SerializeField] private ReactionPlate target;
         [SerializeField] private ReactionPlateType type;
@@ -95,10 +95,6 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
                 context.Kinematics.ResetVelocity();
                 
                 InitializeQTESequences(preAcceptingTime);
-            }
-            else
-            {
-                context.StateMachine.SetState<FStateAir>();
             }
         }
 
