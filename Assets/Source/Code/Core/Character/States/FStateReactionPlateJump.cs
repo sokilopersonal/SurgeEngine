@@ -37,7 +37,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
         {
             base.OnExit();
 
-            Kinematics.IsKinematic = true;
+            Kinematics.IsKinematic = false;
         }
 
         public override void OnTick(float dt)
@@ -53,7 +53,6 @@ namespace SurgeEngine.Source.Code.Core.Character.States
 
                 if (target.Type == ReactionPlateType.Panel)
                 {
-                    Rigidbody.linearVelocity = Vector3.zero;
                     StateMachine.SetState<FStateReactionPlate>();
                     target.PerformTrickContact(Character);
                 
@@ -83,8 +82,8 @@ namespace SurgeEngine.Source.Code.Core.Character.States
                 }
                 else if (target.Type == ReactionPlateType.End)
                 {
-                    StateMachine.SetState<FStateAir>();
                     Rigidbody.linearVelocity = Kinematics.Velocity;
+                    StateMachine.SetState<FStateAir>();
                 }
                 
                 return;
