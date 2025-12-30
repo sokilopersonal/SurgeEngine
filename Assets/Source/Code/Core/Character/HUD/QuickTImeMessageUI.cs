@@ -7,10 +7,6 @@ namespace SurgeEngine
     public class QuickTimeMessageUI : MonoBehaviour
     {
         [SerializeField] private Animator animator;
-        [SerializeField] private Sprite niceTexture;
-        [SerializeField] private Sprite greatTexture;
-        [SerializeField] private Sprite coolTexture;
-        [SerializeField] private Sprite failTexture;
         [SerializeField] private Image message;
         [SerializeField] private Image messageAfterImage;
 
@@ -20,23 +16,19 @@ namespace SurgeEngine
             {
                 if (time >= 0.75)
                 {
-                    message.sprite = coolTexture;
+                    animator.Play("Cool", 0, 0f);
                 }
                 else if (time >= 0.5 && time < 0.75)
                 {
-                    message.sprite = greatTexture;
+                    animator.Play("Great", 0, 0f);
                 }
                 else
                 {
-                    message.sprite = niceTexture;
+                    animator.Play("Nice", 0, 0f);
                 }
-
-                messageAfterImage.sprite = message.sprite;
-                animator.Play("Success", 0, 0f);
             }
             else
             {
-                message.sprite = failTexture;
                 animator.Play("Fail", 0, 0f);
             }
         }

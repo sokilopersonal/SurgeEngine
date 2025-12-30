@@ -59,7 +59,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
                     var nextTarget = target.Target;
                     if (nextTarget != null)
                     {
-                        Rigidbody.rotation = Quaternion.LookRotation(-target.transform.up);
+                        Rigidbody.rotation = Quaternion.LookRotation(target.transform.up);
                     
                         var dirToNext = Vector3.ProjectOnPlane(
                             nextTarget.transform.position - target.transform.position,
@@ -107,7 +107,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
             _info = info;
             
             var targetTransform = _info.target.transform;
-            _endPosition = targetTransform.position - targetTransform.forward - targetTransform.up * 0.2f;
+            _endPosition = targetTransform.position - targetTransform.forward + targetTransform.up * 1.225f;
         }
     }
 
