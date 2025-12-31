@@ -1,5 +1,6 @@
 ﻿using System;
 using SurgeEngine.Source.Code.Core.Character.HUD;
+using SurgeEngine.Source.Code.Core.Character.States;
 using SurgeEngine.Source.Code.Core.Character.System;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.System;
@@ -29,6 +30,7 @@ namespace SurgeEngine.Source.Code.Infrastructure.DI
         {
             SetupStage();
             SetupGameCamera();
+            SetupSpawn();
             SetupCharacter();
             SetupHUD();
             SetupPointMarkerScreen();
@@ -42,6 +44,11 @@ namespace SurgeEngine.Source.Code.Infrastructure.DI
         private void SetupGameCamera()
         {
             Container.InstantiatePrefabForComponent<Camera>(gameCameraPrefab);
+        }
+
+        private void SetupSpawn()
+        {
+            Container.Bind<StartData>().FromInstance(spawnPoint.StartData).AsSingle().NonLazy();
         }
 
         private void SetupCharacter()
@@ -61,8 +68,6 @@ namespace SurgeEngine.Source.Code.Infrastructure.DI
             Container.BindInstance(instance).AsSingle();
             
             Container.Bind<CharacterContext>().FromNew().AsSingle().NonLazy();
-            
-            instance.SetStart(data);
         }
 
         private void SetupHUD()
