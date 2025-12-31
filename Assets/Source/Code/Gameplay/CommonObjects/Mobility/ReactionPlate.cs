@@ -1,13 +1,12 @@
 using System;
-using System.Collections;
 using Cysharp.Threading.Tasks;
 using FMODUnity;
+using JetBrains.Annotations;
 using SurgeEngine.Source.Code.Core.Character.States;
 using SurgeEngine.Source.Code.Core.Character.System;
 using SurgeEngine.Source.Code.Core.StateMachine;
 using SurgeEngine.Source.Code.Infrastructure.Custom;
 using UnityEngine;
-using UnityEngine.Rendering;
 using Random = UnityEngine.Random;
 using NaughtyAttributes;
 
@@ -16,7 +15,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
     public enum ReactionPlateType
     {
         Spring,
-        Panel,
+        Plate,
         End
     }
 
@@ -53,13 +52,15 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         [SerializeField] private EventReference qteSuccessSound;
         [SerializeField] private EventReference qteFailSound;
 
-        [Header("Reaction Plate Settings")]
-        [ShowIf("ShowPlate")]
+        [Header("Rendering")]
+        [ShowIf(nameof(ShowPlate))]
         [SerializeField] private MeshRenderer mesh;
-        [ShowIf("ShowPlate")]
+        [ShowIf(nameof(ShowPlate))]
         [SerializeField] private Material materialTemplate;
+        [SerializeField] private Transform springRenderer;
+        [SerializeField] private Transform plateRenderer;
 
-        public bool ShowPlate() => type != ReactionPlateType.Spring;
+        private bool ShowPlate() => type != ReactionPlateType.Spring;
 
         public ReactionPlate Target => target;
         public ReactionPlateType Type => type;
@@ -71,9 +72,9 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         private float _timer;
         private QTESequence _finishingSequence;
         private CharacterBase _character;
-        private Material _material = null;
+        private Material _material;
         private ReactionPlateJumpInfo _info;
-        private bool _countdown = false;
+        private bool _countdown;
 
         private void OnEnable()
         {
@@ -90,8 +91,19 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         {
             col.enabled = type == ReactionPlateType.Spring;
 
-            transform.Find("Spring").gameObject.SetActive(type == ReactionPlateType.Spring);
-            transform.Find("Plate").gameObject.SetActive(type != ReactionPlateType.Spring);
+            if (springRenderer && plateRenderer)
+            {
+                if (type != ReactionPlateType.End)
+                {
+                    springRenderer.gameObject.SetActive(type == ReactionPlateType.Spring);
+                    plateRenderer.gameObject.SetActive(type == ReactionPlateType.Plate);
+                }
+                else
+                {
+                    springRenderer.gameObject.SetActive(false);
+                    plateRenderer.gameObject.SetActive(false);
+                }
+            }
 
             if (mesh == null || materialTemplate == null)
                 return;
@@ -138,7 +150,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             {
                 if (type == ReactionPlateType.Spring)
                 {
-                    RuntimeManager.PlayOneShot(qteTouchSound);
+                    RuntimeManager.PlayOneShot(qteSuccessSound);
                     Launch(context);
                 }
             }
@@ -158,13 +170,11 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             _countdown = false;
 
             float time = Vector3.Distance(_info.start, _info.target.transform.position) / _info.jumpMaxVelocity;
-
+            
             await UniTask.Delay(TimeSpan.FromSeconds(time * 0.75f), DelayType.DeltaTime);
-
+            
             ObjectEvents.OnReactionPanelTriggered?.Invoke(this);
-
             CreateSequence(trickTime);
-
             _character.Input.OnButtonPressed += HandleButtonPressed;
 
             await UniTask.Delay(TimeSpan.FromSeconds(0.13f), DelayType.DeltaTime);
@@ -197,6 +207,8 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
                 Utility.AddScore(score + (int)additionalScore);
 
                 OnQTEResultReceived.Invoke(QTEResult.Success);
+                
+                RuntimeManager.PlayOneShot(qteSuccessSound);
             }
             else
             {
@@ -249,7 +261,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             
             st.SetState<FStateReactionPlateJump>();
 
-            if (target.type == ReactionPlateType.Panel)
+            if (target.type == ReactionPlateType.Plate)
                 target.InitializeQTESequences(target.preAcceptingTime);
         }
 

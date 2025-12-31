@@ -157,6 +157,16 @@ namespace SurgeEngine.Source.Editor.ObjectCustomGizmos
             }
         }
 
+        [DrawGizmo(GizmoType.Pickable | GizmoType.Selected | GizmoType.NotInSelectionHierarchy)]
+        static void DrawGizmos(ReactionPlate type, GizmoType gizmoType)
+        {
+            Gizmos.matrix = type.transform.localToWorldMatrix;
+            if (type.Type == ReactionPlateType.End)
+            {
+                Gizmos.DrawCube(Vector3.zero, Vector3.one * 0.75f);
+            }
+        }
+
         // Call this method to use the material
         private static void GetEditorMaterial()
         {

@@ -51,7 +51,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
             {
                 Rigidbody.MovePosition(_endPosition);
 
-                if (target.Type == ReactionPlateType.Panel)
+                if (target.Type == ReactionPlateType.Plate)
                 {
                     StateMachine.SetState<FStateReactionPlate>();
                     target.PerformTrickContact(Character);
