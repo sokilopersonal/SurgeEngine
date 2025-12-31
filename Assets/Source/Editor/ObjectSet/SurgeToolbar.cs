@@ -23,7 +23,7 @@ namespace SurgeEngine.Source.Editor.ObjectSet
         public static MainToolbarElement AssetManagerButton()
         {
             var content = new MainToolbarContent("Asset Manager");
-            return new MainToolbarButton(content, ObjectSet.ShowWindow);
+            return new MainToolbarButton(content, AssetManager.ShowWindow);
         }
 
         [MainToolbarElement(TimeScaleSliderPath, defaultDockPosition = MainToolbarDockPosition.Left)]

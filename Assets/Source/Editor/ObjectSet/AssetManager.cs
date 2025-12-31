@@ -7,7 +7,20 @@ using UnityEngine;
 
 namespace SurgeEngine.Source.Editor.ObjectSet
 {
-    public class ObjectSet : EditorWindow
+    [CreateAssetMenu(fileName = "AssetManagerData", menuName = "Surge Engine/Asset Manager Data")]
+    public class AssetManagerData : ScriptableObject
+    {
+        [Serializable]
+        public class PrefabData
+        {
+            public string guid;
+            public string category;
+        }
+
+        public List<PrefabData> prefabs = new List<PrefabData>();
+    }
+    
+    public class AssetManager : EditorWindow
     {
         [Serializable]
         public class PrefabData
@@ -21,10 +34,12 @@ namespace SurgeEngine.Source.Editor.ObjectSet
                 this.category = category;
             }
         }
+        
+        private AssetManagerData _data;
+        private const string DataAssetPath = "Assets/Source/Editor/ObjectSet/AssetManagerData.asset";
 
         private readonly List<PrefabData> _prefabDataList = new List<PrefabData>();
         private Vector2 _scrollPosition;
-        private const string SaveFilePath = "Assets/Source/Editor/ObjectSet/SelectedPrefabs.json";
         private string[] _categories;
         private GameObject _currentPrefabInstance;
         private bool _isPlacingPrefab;
@@ -36,18 +51,29 @@ namespace SurgeEngine.Source.Editor.ObjectSet
         [MenuItem("Surge Engine/Asset Manager")]
         public static void ShowWindow()
         {
-            var window = GetWindow<ObjectSet>();
+            var window = GetWindow<AssetManager>();
             window.titleContent = new GUIContent("Asset Manager");
             window.Show();
         }
 
         private void OnEnable()
         {
+            if (_data == null)
+            {
+                _data = AssetDatabase.LoadAssetAtPath<AssetManagerData>(DataAssetPath);
+                if (_data == null)
+                {
+                    _data = CreateInstance<AssetManagerData>();
+                    AssetDatabase.CreateAsset(_data, DataAssetPath);
+                    AssetDatabase.SaveAssets();
+                }
+            }
+
+            LoadFromScriptableObject();
+            
             _selectedCategoryIndex = EditorPrefs.GetInt("AssetManagerCategoryIndex", 0);
             _normalOffset = EditorPrefs.GetFloat("AssetManagerNormalOffset", 0.1f);
             _alwaysDrawPrefabName = EditorPrefs.GetBool("AssetManagerAlwaysDrawPrefabName", false);
-            
-            LoadAssetsList();
         }
 
         private void OnGUI()
@@ -291,25 +317,26 @@ namespace SurgeEngine.Source.Editor.ObjectSet
 
         private void SaveAssetsList()
         {
-            var jsonList = new List<PrefabData>();
+            _data.prefabs.Clear();
             foreach (var data in _prefabDataList)
             {
                 var path = AssetDatabase.GetAssetPath(data.prefab);
                 var guid = AssetDatabase.AssetPathToGUID(path);
-                jsonList.Add(new PrefabData(guid, data.category) { prefab = data.prefab });
+                _data.prefabs.Add(new AssetManagerData.PrefabData
+                {
+                    guid = guid,
+                    category = data.category
+                });
             }
-            var json = JsonConvert.SerializeObject(jsonList, Formatting.Indented);
-            File.WriteAllText(SaveFilePath, json);
-            AssetDatabase.Refresh();
+
+            EditorUtility.SetDirty(_data);
+            AssetDatabase.SaveAssets();
         }
 
-        private void LoadAssetsList()
+        private void LoadFromScriptableObject()
         {
             _prefabDataList.Clear();
-            if (!File.Exists(SaveFilePath)) return;
-            var json = File.ReadAllText(SaveFilePath);
-            var jsonList = JsonConvert.DeserializeObject<List<PrefabData>>(json);
-            foreach (var data in jsonList)
+            foreach (var data in _data.prefabs)
             {
                 var path = AssetDatabase.GUIDToAssetPath(data.guid);
                 var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
