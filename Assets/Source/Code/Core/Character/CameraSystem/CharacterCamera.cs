@@ -104,13 +104,6 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem
             Vector3 dir = Quaternion.LookRotation(Character.transform.forward).eulerAngles;
             dir.x = yawDefaultAmplitude;
             StateMachine.SetDirection(dir.y, dir.x);
-
-            foreach (var volume in Utility.GetVolumesInBounds(Character.transform.position))
-            {
-                StateMachine.RegisterVolume(volume);
-            }
-            
-            StateMachine.CompleteBlend();
             
             if (_startData.startType == StartType.None || _startData.startType == StartType.Dash)
             {
@@ -120,6 +113,13 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem
             {
                 StateMachine.SetState<CameraAnimState>();
             }
+            
+            foreach (var volume in Utility.GetVolumesInBounds(Character.transform.position))
+            {
+                StateMachine.RegisterVolume(volume);
+            }
+            
+            StateMachine.CompleteBlend();
 
             var cameraModifiers = _cameraTransform.GetComponentsInChildren<BaseCameraModifier>();
             foreach (var modifier in cameraModifiers)
