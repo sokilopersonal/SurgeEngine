@@ -28,6 +28,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         Random = 4
     }
     
+    [ExecuteAlways]
     public class ReactionPlate : StageObject
     {
         private const float MaxFrameTime = 0.33f;
@@ -87,7 +88,32 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             OnQTEResultReceived -= HandleQTEResult;
         }
 
-        private void OnValidate()
+        private void Update()
+        {
+            UpdateMesh();
+
+            if (Application.isPlaying)
+            {
+                if (_qteSequence != null)
+                {
+                    float deltaTime = Time.deltaTime;
+                    if (deltaTime < MaxFrameTime && _countdown)
+                    {
+                        _timer -= deltaTime;
+                    }
+
+                    if (_timer <= 0)
+                    {
+                        OnQTEResultReceived?.Invoke(QTEResult.Fail);
+                    }
+                }
+
+                if (_material != null)
+                    _material.SetFloat("_InputDevice", (int)CharacterContext.Context.Input.GetDevice());
+            }
+        }
+
+        private void UpdateMesh()
         {
             col.enabled = type == ReactionPlateType.Spring;
 
@@ -120,26 +146,6 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             
             _material.SetFloat("_ButtonFace", (int)buttonType);
             _material.SetFloat("_InputDevice", 1);
-        }
-
-        private void Update()
-        {
-            if (_qteSequence != null)
-            {
-                float deltaTime = Time.deltaTime;
-                if (deltaTime < MaxFrameTime && _countdown)
-                {
-                    _timer -= deltaTime;
-                }
-
-                if (_timer <= 0)
-                {
-                    OnQTEResultReceived?.Invoke(QTEResult.Fail);
-                }
-            }
-
-            if (_material != null)
-                _material.SetFloat("_InputDevice", (int)CharacterContext.Context.Input.GetDevice());
         }
 
         public override void OnEnter(Collider msg, CharacterBase context)
