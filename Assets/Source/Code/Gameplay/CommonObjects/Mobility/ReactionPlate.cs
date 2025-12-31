@@ -45,7 +45,6 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 
         [Header("Launch Settings")]
         [SerializeField] private float jumpMaxVelocity;
-        [SerializeField] private float jumpMinVelocity;
 
         [Header("Sound References")]
         [SerializeField] private EventReference qteTouchSound;
@@ -64,6 +63,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 
         public ReactionPlate Target => target;
         public ReactionPlateType Type => type;
+        public static float Velocity => 30f;
 
         public Action<QTEResult> OnQTEResultReceived;
         public event Action OnCorrectButton;
@@ -169,7 +169,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         {
             _countdown = false;
 
-            float time = Vector3.Distance(_info.start, _info.target.transform.position) / _info.jumpMaxVelocity;
+            float time = Vector3.Distance(_info.start, _info.target.transform.position) / Velocity;
             
             await UniTask.Delay(TimeSpan.FromSeconds(time * 0.75f), DelayType.DeltaTime);
             
@@ -252,7 +252,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 
             FStateMachine st = context.StateMachine;
             FStateReactionPlateJump plateJump = st.GetState<FStateReactionPlateJump>();
-            ReactionPlateJumpInfo info = new ReactionPlateJumpInfo(context.transform.position, target, jumpMaxVelocity, jumpMinVelocity);
+            ReactionPlateJumpInfo info = new ReactionPlateJumpInfo(context.transform.position, target);
             
             target._info = info;
             _info = info;

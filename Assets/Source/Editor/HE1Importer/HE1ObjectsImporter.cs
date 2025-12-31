@@ -64,6 +64,7 @@ namespace SurgeEngine.Source.Editor.HE1Importer
                 ["Flame"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Common/Flame.prefab"),
                 ["EventCollision"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Common/EventCollision.prefab"),
                 ["MykonosFloor"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Apotos/MykonosFloor.prefab"),
+                ["ReactionPlate"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Common/ReactionPlate.prefab"),
             };
         }
 
@@ -385,6 +386,52 @@ namespace SurgeEngine.Source.Editor.HE1Importer
                     HE1Helper.SetFloatReflection(thornSpring, "downThornTime", HE1Helper.GetFloatWithMultiSetParam(elem, "DownThornTime"));
                     HE1Helper.SetBoolReflection(thornSpring, "cancelBoost", HE1Helper.GetBoolWithMultiSetParam(elem, "m_IsStopBoost"));
                 },
+                ["ReactionPlate"] = (go, elem) =>
+                {
+                    var plate = go.GetComponent<ReactionPlate>();
+                    
+                    var type = HE1Helper.GetIntWithMultiSetParam(elem, "Type");
+                    switch (type)
+                    {
+                        case 0:
+                            HE1Helper.SetIntReflection(plate, "type", (int)ReactionPlateType.Spring);
+                            break;
+                        case 1 | 2 | 3 | 4 | 6:
+                            HE1Helper.SetIntReflection(plate, "type", (int)ReactionPlateType.Plate);
+                            break;
+                        case 5:
+                            HE1Helper.SetIntReflection(plate, "type", (int)ReactionPlateType.End);
+                            break;
+                    }
+                    
+                    if (type == 1)
+                        HE1Helper.SetIntReflection(plate, "buttonType", (int)ReactionPlateButton.B);
+                    else if (type == 2)
+                        HE1Helper.SetIntReflection(plate, "buttonType", (int)ReactionPlateButton.A);
+                    else if (type == 3)
+                        HE1Helper.SetIntReflection(plate, "buttonType", (int)ReactionPlateButton.X);
+                    else if (type == 4)
+                        HE1Helper.SetIntReflection(plate, "buttonType", (int)ReactionPlateButton.Y);
+                    else if (type == 6)
+                        HE1Helper.SetIntReflection(plate, "buttonType", (int)ReactionPlateButton.Random);
+                    
+                    long targetId = long.Parse(elem.Element("Target").Element("SetObjectID").Value, CultureInfo.InvariantCulture);
+                    if (targetId != 0)
+                    {
+                        foreach (var stageObject in Object.FindObjectsByType<StageObject>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+                        {
+                            if (stageObject.SetID == targetId)
+                            {
+                                plate.GetType().GetField("target", BindingFlags.Instance | BindingFlags.Public)?.SetValue(plate, stageObject.transform);
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        plate.GetType().GetField("target", BindingFlags.Instance | BindingFlags.Public)?.SetValue(plate, null);
+                    }
+                },
             };
         }
 
@@ -600,10 +647,15 @@ namespace SurgeEngine.Source.Editor.HE1Importer
 
         public static int GetIntWithMultiSetParam(XElement elem, string valueName, int defaultValue = 1)
         {
-            var value = GetValueWithMultiSetParam(elem, valueName, defaultValue.ToString(CultureInfo.InvariantCulture));
-            return int.Parse(value, CultureInfo.InvariantCulture);
-        }
+            var value = GetValueWithMultiSetParam(
+                elem,
+                valueName,
+                defaultValue.ToString(CultureInfo.InvariantCulture)
+            );
 
+            return int.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture, out var result) ? result : defaultValue;
+        }
+        
         public static bool GetBoolWithMultiSetParam(XElement elem, string valueName, bool defaultValue = false)
         {
             var value = GetValueWithMultiSetParam(elem, valueName, defaultValue.ToString());
@@ -639,7 +691,7 @@ namespace SurgeEngine.Source.Editor.HE1Importer
             try
             {
                 var field = obj.GetType().GetField(name, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.FlattenHierarchy);
-                field.SetValue(obj, value);
+                if (field != null) field.SetValue(obj, value);
             }
             catch (Exception e)
             {
@@ -652,7 +704,7 @@ namespace SurgeEngine.Source.Editor.HE1Importer
             try
             {
                 var field = obj.GetType().GetField(name, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.FlattenHierarchy);
-                field.SetValue(obj, value);
+                if (field != null) field.SetValue(obj, value);
             }
             catch (Exception e)
             {
@@ -748,13 +800,11 @@ namespace SurgeEngine.Source.Editor.HE1Importer
             bool isChangeCamera = GetBoolWithMultiSetParam(elem, "m_IsChangeCamera");
             bool isEnabledFront = GetBoolWithMultiSetParam(elem, "m_IsEnableFromFront");
             bool isEnabledBack = GetBoolWithMultiSetParam(elem, "m_IsEnableFromBack");
-            bool isLimitEdge = GetBoolWithMultiSetParam(elem, "m_IsLimitEdge");
             float pathEaseTime = GetFloatWithMultiSetParam(elem, "m_PathEaseTime");
 
             SetBoolReflection(mode, "isChangeCamera", isChangeCamera);
             SetBoolReflection(mode, "isEnabledFromFront", isEnabledFront);
             SetBoolReflection(mode, "isEnabledFromBack", isEnabledBack);
-            SetBoolReflection(mode, "isLimitEdge", isLimitEdge);
             SetFloatReflection(mode, "pathEaseTime", pathEaseTime);
         }
 

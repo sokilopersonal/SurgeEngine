@@ -27,7 +27,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
             _timer = 0;
 
             float distance = Vector3.Distance(_info.start, _endPosition);
-            _jumpDuration = distance / _info.jumpMaxVelocity;
+            _jumpDuration = distance / ReactionPlate.Velocity;
             
             var dir = (_endPosition - _info.start).normalized;
             Rigidbody.rotation = Quaternion.LookRotation(Vector3.ProjectOnPlane(dir, Vector3.up));
@@ -93,7 +93,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
 
             Vector3 targetPosition = Vector3.Lerp(_info.start, _endPosition, t);
 
-            float height = 4f;
+            float height = 2f;
             float heightOffset = Mathf.Sin(t * Mathf.PI) * height;
 
             float yOffset = Mathf.Lerp(0, _endPosition.y - _info.start.y, t);
@@ -115,20 +115,11 @@ namespace SurgeEngine.Source.Code.Core.Character.States
     {
         public readonly Vector3 start;
         public readonly ReactionPlate target;
-        public readonly float jumpMaxVelocity;
-        public readonly float jumpMinVelocity;
 
-        public ReactionPlateJumpInfo(Vector3 start, ReactionPlate target, float jumpMaxVelocity, float jumpMinVelocity)
+        public ReactionPlateJumpInfo(Vector3 start, ReactionPlate target)
         {
             this.start = start;
             this.target  = target;
-            
-            if (jumpMaxVelocity == 0)
-            {
-                jumpMaxVelocity = 15;
-            }
-            this.jumpMaxVelocity = jumpMaxVelocity;
-            this.jumpMinVelocity = jumpMinVelocity;
         }
     }
 }
