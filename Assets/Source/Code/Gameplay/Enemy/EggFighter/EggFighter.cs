@@ -1,4 +1,5 @@
-﻿using SurgeEngine.Source.Code.Core.Character.System;
+﻿using System;
+using SurgeEngine.Source.Code.Core.Character.System;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.AnimationCallback;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.Interfaces;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.Sensors;
@@ -9,10 +10,7 @@ using SurgeEngine.Source.Code.Gameplay.Enemy.RagdollPhysics;
 using UnityEngine;
 using UnityEngine.AI;
 using Zenject;
-using NaughtyAttributes;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.PhysicsObjects;
-
-
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -25,6 +23,18 @@ namespace SurgeEngine.Source.Code.Gameplay.Enemy.EggFighter
         Normal,
         Tutorial
     }
+
+    [Serializable]
+    struct EggFighterStyle
+    {
+        public Material bodyOneMaterial;
+        public Material bodyTwoMaterial;
+        public Material bodyOneTMaterial;
+        public Material bodyTwoTMaterial;
+        public DestroyedPiece defaultPieces;
+        public DestroyedPiece tutorialPieces;
+    }
+    
     public class EggFighter : EnemyBase, IDamageable, IPointMarkerLoader
     {
         [SerializeField] private new EGAnimation animation;
@@ -40,9 +50,11 @@ namespace SurgeEngine.Source.Code.Gameplay.Enemy.EggFighter
         [SerializeField, Tooltip("Disabling this will disable enemy vision, meaning enemy won't notice you, but still will be functional.")] private bool enableAI = true;
         [SerializeField] private float punchRadius = 2f;
         [SerializeField] private bool followPlayer = true;
-
         public float PunchRadius => punchRadius;
         public bool FollowPlayer => followPlayer;
+
+        [Space(10)] 
+        [SerializeField] private EggFighterStyle style;
 
         public NavMeshAgent Agent { get; private set; }
         public CharacterBase Character => _character;
@@ -53,30 +65,13 @@ namespace SurgeEngine.Source.Code.Gameplay.Enemy.EggFighter
         private Vector3 _startPosition;
         private Quaternion _startRotation;
 
-# if UNITY_EDITOR
-        const string egMatPath = "Assets/Source/Materials/HE1/Enemies/EggFighter/";
-        const string egPiecePath = "Assets/Source/Prefabs/HE1/DestroyedPieces";
-        private Material FetchMaterial(string path)
-        {
-            return AssetDatabase.LoadAssetAtPath<Material>(path);
-        }
-        
-        private Material FetchMaterial(string path, string path2)
-        {
-            return FetchMaterial(path+"/"+path2);
-        }
-        
-        private DestroyedPiece FetchDestroyedPiece(string path)
-        {
-            return AssetDatabase.LoadAssetAtPath<DestroyedPiece>(path);
-        }
-        
-        private DestroyedPiece FetchDestroyedPiece(string path, string path2)
-        {
-            return FetchDestroyedPiece(path+"/"+path2);
-        }
-        
+#if UNITY_EDITOR
         private void OnValidate()
+        {
+            UpdateVisuals();
+        }
+
+        private void UpdateVisuals()
         {
             SkinnedMeshRenderer meshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
 
@@ -88,12 +83,19 @@ namespace SurgeEngine.Source.Code.Gameplay.Enemy.EggFighter
             if (mats.Length < 4)
                 return;
 
-            mats[0] = type == EggFighterType.Normal ? FetchMaterial(egMatPath, "em_eday_ef2n_body01.mat") : FetchMaterial(egMatPath, "em_eday_ef2n_body01_T.mat");
-            mats[3] = type == EggFighterType.Normal ? FetchMaterial(egMatPath, "em_eday_ef2n_body02.mat") : FetchMaterial(egMatPath, "em_eday_ef2n_body02_T.mat");
+            mats[0] = type == EggFighterType.Normal ? style.bodyOneMaterial : style.bodyOneTMaterial;
+            mats[3] = type == EggFighterType.Normal ? style.bodyTwoMaterial : style.bodyTwoTMaterial;
 
             meshRenderer.sharedMaterials = mats;
 
-            View.SetDestroyedPiece(type == EggFighterType.Normal ? FetchDestroyedPiece(egPiecePath, "EggFighterPieces.prefab") : FetchDestroyedPiece(egPiecePath, "EggFighterPieces_T.prefab"));
+            View.SetDestroyedPiece(type == EggFighterType.Normal ? style.defaultPieces : style.tutorialPieces);
+        }
+
+        public override void OnImport()
+        {
+            base.OnImport();
+            
+            UpdateVisuals();
         }
 #endif
 

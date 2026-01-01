@@ -110,6 +110,13 @@ MonoBehaviour:
   enableAI: 1
   punchRadius: 1.8
   followPlayer: 1
+  style:
+    bodyOneMaterial: {fileID: 2100000, guid: ee85e7513905bec42a1c7c82ca1ab74d, type: 2}
+    bodyTwoMaterial: {fileID: 2100000, guid: 43202930117944646a4d9683717f4518, type: 2}
+    bodyOneTMaterial: {fileID: 2100000, guid: d0d9df4edd56ab7438efb0d9a3f88b53, type: 2}
+    bodyTwoTMaterial: {fileID: 2100000, guid: 7a1b6d3d06a8c994b8202bc4432b514d, type: 2}
+    defaultPieces: {fileID: 2783773666713308101, guid: 995491a75952f7444a646b0ffc7b14f9, type: 3}
+    tutorialPieces: {fileID: 2783773666713308101, guid: db53280ae1e571d44957fe962fb73149, type: 3}
 --- !u!195 &5258658502684184366
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -440,6 +447,10 @@ PrefabInstance:
       propertyPath: m_UpdateWhenOffscreen
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4842856219945099798, guid: efc2ce8db1f28fa4eba27cea4d948f68, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: ee85e7513905bec42a1c7c82ca1ab74d, type: 2}
     - target: {fileID: 4842856219945099798, guid: efc2ce8db1f28fa4eba27cea4d948f68, type: 3}
       propertyPath: 'm_Materials.Array.data[3]'
       value: 

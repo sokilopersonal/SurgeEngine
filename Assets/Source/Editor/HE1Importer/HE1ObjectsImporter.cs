@@ -10,6 +10,7 @@ using SurgeEngine.Source.Code.Gameplay.CommonObjects.ChangeModes;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.Collectables;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.PhysicsObjects;
+using SurgeEngine.Source.Code.Gameplay.Enemy.EggFighter;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -432,6 +433,12 @@ namespace SurgeEngine.Source.Editor.HE1Importer
                         plate.GetType().GetField("target", BindingFlags.Instance | BindingFlags.Public)?.SetValue(plate, null);
                     }
                 },
+                ["eFighterTutorial"] = (go, elem) =>
+                {
+                    var eg = go.GetComponent<EggFighter>();
+                    
+                    HE1Helper.SetIntReflection(eg, "type", (int)EggFighterType.Tutorial);
+                },
             };
         }
 
@@ -632,7 +639,11 @@ namespace SurgeEngine.Source.Editor.HE1Importer
             {
                 PrefabUtility.RecordPrefabInstancePropertyModifications(go);
                 foreach (var component in go.GetComponents<StageObject>())
+                {
                     PrefabUtility.RecordPrefabInstancePropertyModifications(component);
+                    
+                    component.OnImport();
+                }
             }
         }
     }

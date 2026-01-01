@@ -290,7 +290,8 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         {
             if (target)
             {
-                
+                Gizmos.color = Color.green;
+                Gizmos.DrawLine(transform.position, target.transform.position);
             }
         }
     }
