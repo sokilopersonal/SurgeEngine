@@ -71,6 +71,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         public event Action<QTESequence> OnNewSequenceStarted;
         private QTESequence _qteSequence;
         private float _timer;
+        private float _remainedTime;
         private QTESequence _finishingSequence;
         private CharacterBase _character;
         private Material _material;
@@ -90,7 +91,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 
         private void Update()
         {
-            UpdateMesh();
+            UpdateVisual();
 
             if (Application.isPlaying)
             {
@@ -113,7 +114,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             }
         }
 
-        private void UpdateMesh()
+        private void UpdateVisual()
         {
             col.enabled = type == ReactionPlateType.Spring;
 
@@ -174,7 +175,6 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         private async void InitializeQTESequences(float trickTime)
         {
             _countdown = false;
-
             float time = Vector3.Distance(_info.start, _info.target.transform.position) / Velocity;
             
             await UniTask.Delay(TimeSpan.FromSeconds(time * 0.75f), DelayType.DeltaTime);
@@ -198,6 +198,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             _qteSequence.buttons.Add(button);
 
             _timer = _qteSequence.time;
+            _remainedTime = _timer;
             OnNewSequenceStarted?.Invoke(_qteSequence);
         }
 
@@ -230,7 +231,12 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 
             if (result.success)
             {
-                await UniTask.Delay(TimeSpan.FromSeconds(mainAcceptingTime), DelayType.DeltaTime);
+                float reaction01 = Mathf.Clamp01(_timer / _remainedTime);
+                float scaledDelay = mainAcceptingTime * (1f - reaction01);
+                float minDelay = Mathf.Max(0f, mainAcceptingTime - 0.25f);
+                float delay = Mathf.Max(minDelay, scaledDelay);
+
+                await UniTask.Delay(TimeSpan.FromSeconds(delay), DelayType.DeltaTime);
                 
                 Launch(_character);
 
@@ -284,6 +290,13 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         public QTESequence GetFinishingSequence()
         {
             return _finishingSequence;
+        }
+
+        public override void OnImport()
+        {
+            base.OnImport();
+            
+            UpdateVisual();
         }
 
         private void OnDrawGizmosSelected()
