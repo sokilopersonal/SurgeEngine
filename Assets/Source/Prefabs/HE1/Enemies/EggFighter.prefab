@@ -106,6 +106,7 @@ MonoBehaviour:
   effects: {fileID: 2565871558992367779}
   ragdollPrefab: {fileID: 3051861874619504407}
   <PunchAnimationCallback>k__BackingField: {fileID: 3076461262156163148}
+  type: 0
   enableAI: 1
   punchRadius: 1.8
   followPlayer: 1
@@ -439,6 +440,10 @@ PrefabInstance:
       propertyPath: m_UpdateWhenOffscreen
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4842856219945099798, guid: efc2ce8db1f28fa4eba27cea4d948f68, type: 3}
+      propertyPath: 'm_Materials.Array.data[3]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 43202930117944646a4d9683717f4518, type: 2}
     - target: {fileID: 4961351658505836628, guid: efc2ce8db1f28fa4eba27cea4d948f68, type: 3}
       propertyPath: m_Layer
       value: 13
@@ -1908,39 +1913,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stateAnimator: {fileID: 334434458288507473}
-  punchAnimationCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: -0.016842647
-      outSlope: -0.016842647
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.18908626
-    - serializedVersion: 3
-      time: 0.47
-      value: 0.35001022
-      inSlope: 1.3899381
-      outSlope: 1.3899381
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0.019760765
-      outSlope: 0.019760765
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.16116762
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!114 &3076461262156163148
 MonoBehaviour:
   m_ObjectHideFlags: 0

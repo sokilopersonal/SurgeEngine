@@ -9,6 +9,7 @@ using SurgeEngine.Source.Code.Infrastructure.Custom;
 using UnityEngine;
 using Random = UnityEngine.Random;
 using NaughtyAttributes;
+using UnityEditor;
 
 namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 {
@@ -37,7 +38,6 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         [SerializeField] private ReactionPlateType type;
         [SerializeField] private ReactionPlateButton buttonType;
         [SerializeField] private ReactionPlate target;
-        [SerializeField] private Collider col;
 
         [Header("QTE Settings")]
         [SerializeField] private float mainAcceptingTime = 0.5f;
@@ -51,14 +51,6 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         [SerializeField] private EventReference qteTouchSound;
         [SerializeField] private EventReference qteSuccessSound;
         [SerializeField] private EventReference qteFailSound;
-
-        [Header("Rendering")]
-        [ShowIf(nameof(ShowPlate))]
-        [SerializeField] private MeshRenderer mesh;
-        [ShowIf(nameof(ShowPlate))]
-        [SerializeField] private Material materialTemplate;
-        [SerializeField] private Transform springRenderer;
-        [SerializeField] private Transform plateRenderer;
 
         private bool ShowPlate() => type != ReactionPlateType.Spring;
 
@@ -113,23 +105,22 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             }
         }
 
-        private void UpdateMesh()
+#if UNITY_EDITOR
+        Transform springRenderer => transform.Find("Spring");
+        Transform plateRenderer => transform.Find("Plate");
+        Collider col => GetComponent<Collider>();
+        private void UpdateMeshEditor()
         {
             col.enabled = type == ReactionPlateType.Spring;
 
             if (springRenderer && plateRenderer)
             {
-                if (type != ReactionPlateType.End)
-                {
-                    springRenderer.gameObject.SetActive(type == ReactionPlateType.Spring);
-                    plateRenderer.gameObject.SetActive(type == ReactionPlateType.Plate);
-                }
-                else
-                {
-                    springRenderer.gameObject.SetActive(false);
-                    plateRenderer.gameObject.SetActive(false);
-                }
+                springRenderer.gameObject.SetActive(type == ReactionPlateType.Spring && type != ReactionPlateType.End);
+                plateRenderer.gameObject.SetActive(type == ReactionPlateType.Plate && type != ReactionPlateType.End);
             }
+
+            MeshRenderer mesh = plateRenderer.GetComponentInChildren<MeshRenderer>();
+            Material materialTemplate = AssetDatabase.LoadAssetAtPath<Material>("Assets/Source/Materials/HE1/CommonObjects/ReactionPanel/GlassPanel.mat");
 
             if (mesh == null || materialTemplate == null)
                 return;
@@ -139,10 +130,22 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 
             if (_material == null)
                 _material = new Material(materialTemplate);
-            
+
             Material[] mats = mesh.sharedMaterials;
             mats[1] = _material;
             mesh.sharedMaterials = mats;
+        }
+
+        private void OnValidate()
+        {
+            UpdateMeshEditor();
+            UpdateMesh();
+        }
+#endif
+        private void UpdateMesh()
+        {
+            if (_material == null)
+                return;
             
             _material.SetFloat("_ButtonFace", (int)buttonType);
             _material.SetFloat("_InputDevice", 1);

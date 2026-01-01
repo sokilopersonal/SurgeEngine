@@ -9,6 +9,10 @@ using SurgeEngine.Source.Code.Gameplay.Enemy.RagdollPhysics;
 using UnityEngine;
 using UnityEngine.AI;
 using Zenject;
+using NaughtyAttributes;
+using SurgeEngine.Source.Code.Gameplay.CommonObjects.PhysicsObjects;
+
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -16,6 +20,11 @@ using UnityEditor;
 
 namespace SurgeEngine.Source.Code.Gameplay.Enemy.EggFighter
 {
+    public enum EggFighterType
+    {
+        Normal,
+        Tutorial
+    }
     public class EggFighter : EnemyBase, IDamageable, IPointMarkerLoader
     {
         [SerializeField] private new EGAnimation animation;
@@ -25,11 +34,13 @@ namespace SurgeEngine.Source.Code.Gameplay.Enemy.EggFighter
         
         public VisionSensor Sensor { get; private set; }
         [field: SerializeField] public AnimationEventCallback PunchAnimationCallback { get; private set; }
+        [SerializeField] private EggFighterType type;
 
         [Header("AI")]
         [SerializeField, Tooltip("Disabling this will disable enemy vision, meaning enemy won't notice you, but still will be functional.")] private bool enableAI = true;
         [SerializeField] private float punchRadius = 2f;
         [SerializeField] private bool followPlayer = true;
+
         public float PunchRadius => punchRadius;
         public bool FollowPlayer => followPlayer;
 
@@ -41,6 +52,50 @@ namespace SurgeEngine.Source.Code.Gameplay.Enemy.EggFighter
 
         private Vector3 _startPosition;
         private Quaternion _startRotation;
+
+# if UNITY_EDITOR
+        const string egMatPath = "Assets/Source/Materials/HE1/Enemies/EggFighter/";
+        const string egPiecePath = "Assets/Source/Prefabs/HE1/DestroyedPieces";
+        private Material FetchMaterial(string path)
+        {
+            return AssetDatabase.LoadAssetAtPath<Material>(path);
+        }
+        
+        private Material FetchMaterial(string path, string path2)
+        {
+            return FetchMaterial(path+"/"+path2);
+        }
+        
+        private DestroyedPiece FetchDestroyedPiece(string path)
+        {
+            return AssetDatabase.LoadAssetAtPath<DestroyedPiece>(path);
+        }
+        
+        private DestroyedPiece FetchDestroyedPiece(string path, string path2)
+        {
+            return FetchDestroyedPiece(path+"/"+path2);
+        }
+        
+        private void OnValidate()
+        {
+            SkinnedMeshRenderer meshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
+
+            if (meshRenderer == null)
+                return;
+
+            Material[] mats = meshRenderer.sharedMaterials;
+
+            if (mats.Length < 4)
+                return;
+
+            mats[0] = type == EggFighterType.Normal ? FetchMaterial(egMatPath, "em_eday_ef2n_body01.mat") : FetchMaterial(egMatPath, "em_eday_ef2n_body01_T.mat");
+            mats[3] = type == EggFighterType.Normal ? FetchMaterial(egMatPath, "em_eday_ef2n_body02.mat") : FetchMaterial(egMatPath, "em_eday_ef2n_body02_T.mat");
+
+            meshRenderer.sharedMaterials = mats;
+
+            View.SetDestroyedPiece(type == EggFighterType.Normal ? FetchDestroyedPiece(egPiecePath, "EggFighterPieces.prefab") : FetchDestroyedPiece(egPiecePath, "EggFighterPieces_T.prefab"));
+        }
+#endif
 
         protected override void Awake()
         {
