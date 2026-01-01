@@ -106067,6 +106067,7 @@ GameObject:
   - component: {fileID: 8840034248951514102}
   - component: {fileID: 5329638351937773268}
   - component: {fileID: 7406824387918309845}
+  - component: {fileID: 2728200451231694606}
   m_Layer: 3
   m_Name: + Sonic
   m_TagString: Untagged
@@ -106362,6 +106363,34 @@ MonoBehaviour:
   m_DefaultActionMap: Gameplay
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &2728200451231694606
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5673036700509009099}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d062e0397d717004da2fe9ced8c8fa1a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SurgeEngine.MeshTrail
+  delay: 0.05
+  startAlpha: 0.75
+  fadeTime: 0.5
+  amount: 4
+  sonic: {fileID: 9106328266865491940}
+  meshRenderer: {fileID: 402744291908889182}
+  materials:
+  - {fileID: 2100000, guid: 32e10e35468fddc40aee0d53a28da9a3, type: 2}
+  - {fileID: 2100000, guid: 6550739e7b6177f40bfd8396a288e6c2, type: 2}
+  - {fileID: 2100000, guid: 60ded95f70042a344adf8308f94dd592, type: 2}
+  - {fileID: 2100000, guid: 6112f54e5f358664e88af15e0070dbe1, type: 2}
+  - {fileID: 2100000, guid: d2c4741bb5295584bad51086f8cfd87e, type: 2}
+  - {fileID: 2100000, guid: 1284e2f579283d547b689672f20e3dbb, type: 2}
+  - {fileID: 2100000, guid: 05bfdb4145befc34f981a804feca518a, type: 2}
+  - {fileID: 2100000, guid: cebcbda96469e3c4aae2175f49d3d825, type: 2}
+  - {fileID: 2100000, guid: 419c830a31889fe48936165aa7a8b255, type: 2}
 --- !u!1 &5675775637917401601
 GameObject:
   m_ObjectHideFlags: 0
