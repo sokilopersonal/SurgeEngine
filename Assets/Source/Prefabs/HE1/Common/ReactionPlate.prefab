@@ -5068,6 +5068,7 @@ MonoBehaviour:
   type: 1
   buttonType: 0
   target: {fileID: 0}
+  col: {fileID: 2300377215857214039}
   mainAcceptingTime: 1
   preAcceptingTime: 1
   failOutOfControlTime: 0.5
@@ -5093,6 +5094,10 @@ MonoBehaviour:
       Data3: 1129547154
       Data4: 301612095
     Path: event:/Characters/Sonic/QTE/QTE_Fail
+  mesh: {fileID: 6648395938045435442}
+  materialTemplate: {fileID: 2100000, guid: b870f27321c39274d82874abe8f25228, type: 2}
+  springRenderer: {fileID: 673076017125213333}
+  plateRenderer: {fileID: 8588378022443305221}
 --- !u!65 &2300377215857214039
 BoxCollider:
   m_ObjectHideFlags: 0
