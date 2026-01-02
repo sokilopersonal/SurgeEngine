@@ -237,7 +237,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStat
                 }
                 
                 BoostEnergy -= _config.StartDrain;
-                new Rumble().Vibrate(0.7f, 0.8f, 0.5f);
+                Rumble.Vibrate(0.7f, 0.8f, 1.5f);
             }
         }
     }

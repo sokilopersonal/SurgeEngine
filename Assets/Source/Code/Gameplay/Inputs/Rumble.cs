@@ -1,34 +1,54 @@
-﻿using Cysharp.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
+using Zenject;
 
 namespace SurgeEngine.Source.Code.Gameplay.Inputs
 {
-    public class Rumble
+    public sealed class Rumble : ITickable, ILateDisposable
     {
-        public void Vibrate(float low, float high, float duration)
+        private static Rumble instance;
+        private float _timer;
+
+        [Inject] private void Inject(Rumble self) => instance = self;
+        
+        public static void Vibrate(float low, float high, float duration)
         {
-            if (Gamepad.current == null)
+            var pad = Gamepad.current;
+            if (pad == null)
                 return;
 
-            if (Gamepad.current.wasUpdatedThisFrame) // We don't want to rumble if the input was from another device
+            if (pad.wasUpdatedThisFrame) // We don't want to rumble if the input was from another device
             {
-                _ = Rumbling(low, high, duration);
+                instance.Rumbling(low, high, duration);
             }
         }
 
-        private async UniTask Rumbling(float low, float high, float duration)
+        private void Rumbling(float low, float high, float duration = 0.2f)
         {
-            float t = 0;
-            Gamepad pad = Gamepad.current;
-            pad.SetMotorSpeeds(low, high);
-            while (t < duration)
-            {
-                t += Time.unscaledDeltaTime;
-                await UniTask.Yield();
-            }
+            _timer = duration;
             
-            pad.SetMotorSpeeds(0, 0);
+            Gamepad.current.SetMotorSpeeds(low, high);
+        }
+
+        public void Tick()
+        {
+            var pad = Gamepad.current;
+            if (pad != null)
+            {
+                if (_timer > 0)
+                {
+                    _timer -= Time.unscaledDeltaTime;
+                }
+                else
+                {
+                    pad.SetMotorSpeeds(0, 0);
+                }
+            }
+        }
+
+        public void LateDispose()
+        {
+            Gamepad.current?.SetMotorSpeeds(0, 0);
         }
     }
 }

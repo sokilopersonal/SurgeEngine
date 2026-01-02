@@ -7,7 +7,9 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
 {
     public class FStateSit : FCharacterState, IDamageableState
     {
-        private QuickStepConfig _quickstepConfig;
+        private readonly QuickStepConfig _quickstepConfig;
+
+        private Vector3 _squatVelocity;
         
         public FStateSit(CharacterBase owner) : base(owner)
         {
@@ -21,7 +23,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
             Kinematics.ResetVelocity();
 
             if (!StateMachine.IsPrevExact<FStateSweepKick>())
-                Kinematics.Rigidbody.AddForce(Kinematics.Character.transform.forward * 0.67f, ForceMode.Impulse);
+                Kinematics.Rigidbody.AddForce(Kinematics.Character.transform.forward, ForceMode.Impulse);
 
             Model.SetLowerCollision();
         }
@@ -76,7 +78,8 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
             {
                 Kinematics.Point = data.point;
                 Kinematics.Normal = Vector3.up;
-                Kinematics.Rigidbody.linearVelocity = Vector3.Lerp(Kinematics.Rigidbody.linearVelocity, Vector3.zero, Time.deltaTime * 6.7f);
+                Kinematics.Rigidbody.linearVelocity = Vector3.SmoothDamp(Kinematics.Rigidbody.linearVelocity, 
+                    Vector3.zero, ref _squatVelocity, 0.067f);
                 Kinematics.Snap(Kinematics.Point, Vector3.up);
             }
             else
