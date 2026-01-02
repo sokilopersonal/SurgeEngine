@@ -31,7 +31,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
         public LightSpeedDashConfig LightSpeedDashConfig => lightSpeedDashConfig;
         public SkydiveConfig SkyDiveConfig => skydiveConfig;
 
-        [Inject] private DiContainer diContainer;
+        [Inject] private DiContainer _diContainer;
 
         protected override void InitializeConfigs()
         {
@@ -66,7 +66,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
             StateMachine.AddState(new FStateLightSpeedDash(this));
 
             FBoost boost = new FBoost(this);
-            diContainer.Inject(boost);
+            _diContainer.Inject(boost);
             StateMachine.AddSubState(boost);
             StateMachine.AddSubState(new FSweepKick(this));
             StateMachine.AddSubState(new FRingDashSearch(this));
@@ -75,7 +75,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
             _ = new SonicGroundActions(this);
             
             SonicAirActions airActions = new SonicAirActions(this);
-            diContainer.Inject(airActions);
+            _diContainer.Inject(airActions);
         }
 
         public override void Load()

@@ -19,6 +19,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
             base.OnEnter();
             
             Kinematics.ResetVelocity();
+            Kinematics.Rigidbody.AddForce(Kinematics.Character.transform.forward * 0.67f, ForceMode.Impulse);
             Model.SetLowerCollision();
         }
 
@@ -72,7 +73,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
             {
                 Kinematics.Point = data.point;
                 Kinematics.Normal = Vector3.up;
-                
+                Kinematics.Rigidbody.linearVelocity = Vector3.Lerp(Kinematics.Rigidbody.linearVelocity, Vector3.zero, Time.deltaTime * 6.7f);
                 Kinematics.Snap(Kinematics.Point, Vector3.up);
             }
             else
