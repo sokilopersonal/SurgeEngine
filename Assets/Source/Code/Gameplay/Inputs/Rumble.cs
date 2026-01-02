@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using SurgeEngine.Source.Code.Core.Character.System;
+using UnityEngine;
 using UnityEngine.InputSystem;
 using Zenject;
 
@@ -13,14 +14,13 @@ namespace SurgeEngine.Source.Code.Gameplay.Inputs
         
         public static void Vibrate(float low, float high, float duration)
         {
-            var pad = Gamepad.current;
-            if (pad == null)
+            Gamepad pad = Gamepad.current;
+            GameDevice device = CharacterContext.Context.Input.GetDevice();
+            
+            if (pad == null || device == GameDevice.Keyboard)
                 return;
 
-            if (pad.wasUpdatedThisFrame) // We don't want to rumble if the input was from another device
-            {
-                instance.Rumbling(low, high, duration);
-            }
+            instance.Rumbling(low, high, duration);
         }
 
         private void Rumbling(float low, float high, float duration = 0.2f)
@@ -32,17 +32,18 @@ namespace SurgeEngine.Source.Code.Gameplay.Inputs
 
         public void Tick()
         {
-            var pad = Gamepad.current;
-            if (pad != null)
+            Gamepad pad = Gamepad.current;
+
+            if (pad == null)
+                return;
+
+            if (_timer > 0)
             {
-                if (_timer > 0)
-                {
-                    _timer -= Time.unscaledDeltaTime;
-                }
-                else
-                {
-                    pad.SetMotorSpeeds(0, 0);
-                }
+                _timer -= Time.unscaledDeltaTime;
+            }
+            else
+            {
+                pad.SetMotorSpeeds(0, 0);
             }
         }
 

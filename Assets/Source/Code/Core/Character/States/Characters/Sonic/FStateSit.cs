@@ -23,7 +23,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
             Kinematics.ResetVelocity();
 
             if (!StateMachine.IsPrevExact<FStateSweepKick>())
-                Kinematics.Rigidbody.AddForce(Kinematics.Character.transform.forward, ForceMode.Impulse);
+                Rigidbody.AddForce(Character.transform.forward, ForceMode.Impulse);
 
             Model.SetLowerCollision();
         }
@@ -78,7 +78,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
             {
                 Kinematics.Point = data.point;
                 Kinematics.Normal = Vector3.up;
-                Kinematics.Rigidbody.linearVelocity = Vector3.SmoothDamp(Kinematics.Rigidbody.linearVelocity, 
+                Rigidbody.linearVelocity = Vector3.SmoothDamp(Rigidbody.linearVelocity, 
                     Vector3.zero, ref _squatVelocity, 0.067f);
                 Kinematics.Snap(Kinematics.Point, Vector3.up);
             }
