@@ -1,6 +1,7 @@
 ﻿using SurgeEngine.Source.Code.Core.Character.States;
 using SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStates;
 using SurgeEngine.Source.Code.Core.Character.System;
+using SurgeEngine.Source.Code.Gameplay.Inputs;
 using SurgeEngine.Source.Code.Infrastructure.Custom;
 using UnityEngine;
 
@@ -40,6 +41,8 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             context.StateMachine.SetState<FStateJumpPanel>(true);
                     
             context.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, Mathf.Abs(outOfControl)));
+            
+            Rumble.Vibrate(0.3f, 0.4f);
         }
     }
 }

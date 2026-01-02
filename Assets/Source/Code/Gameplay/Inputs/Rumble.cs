@@ -11,19 +11,19 @@ namespace SurgeEngine.Source.Code.Gameplay.Inputs
 
         [Inject] private void Inject(Rumble self) => instance = self;
         
-        public static void Vibrate(float low, float high, float duration)
+        public static void Vibrate(float low, float high, float duration = 0.2f)
         {
             var pad = Gamepad.current;
             if (pad == null)
                 return;
 
             if (pad.wasUpdatedThisFrame) // We don't want to rumble if the input was from another device
-            {
+            {   
                 instance.Rumbling(low, high, duration);
             }
         }
 
-        private void Rumbling(float low, float high, float duration = 0.2f)
+        private void Rumbling(float low, float high, float duration)
         {
             _timer = duration;
             
