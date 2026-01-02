@@ -19,7 +19,10 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
             base.OnEnter();
             
             Kinematics.ResetVelocity();
-            Kinematics.Rigidbody.AddForce(Kinematics.Character.transform.forward * 0.67f, ForceMode.Impulse);
+
+            if (!StateMachine.IsPrevExact<FStateSweepKick>())
+                Kinematics.Rigidbody.AddForce(Kinematics.Character.transform.forward * 0.67f, ForceMode.Impulse);
+
             Model.SetLowerCollision();
         }
 
