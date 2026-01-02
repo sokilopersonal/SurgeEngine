@@ -8,9 +8,8 @@ namespace SurgeEngine.Source.Code.Gameplay.Inputs
     {
         private static Rumble instance;
         private float _timer;
-
         [Inject] private void Inject(Rumble self) => instance = self;
-        
+
         public static void Vibrate(float low, float high, float duration = 0.2f)
         {
             var pad = Gamepad.current;

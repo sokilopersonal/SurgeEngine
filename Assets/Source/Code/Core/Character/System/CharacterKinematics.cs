@@ -169,7 +169,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
             if (movementType == MovementType.Ground)
             {
-                if (_inputDir.magnitude > 0.2f)
+                if (_inputDir.magnitude > 0.02f)
                 {
                     if (!Skidding)
                     {
@@ -194,7 +194,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             }
             else
             {
-                if (_inputDir.magnitude > 0.2f)
+                if (_inputDir.magnitude > 0.02f)
                 {
                     if (!Skidding)
                     {
@@ -612,7 +612,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         
         public Vector3 GetInputDir()
         {
-            return _inputDir;
+            return _inputDir.normalized;
         }
 
         public void Set2DPath(ChangeMode2DData data)
