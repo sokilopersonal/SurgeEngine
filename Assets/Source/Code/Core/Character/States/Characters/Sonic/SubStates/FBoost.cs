@@ -18,7 +18,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStat
     {
         public float BoostEnergy
         {
-            get => _boostEnergy; 
+            get => _boostEnergy;
             set => _boostEnergy = Mathf.Clamp(value, 0, MaxBoostEnergy);
         }
 
@@ -41,17 +41,17 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStat
         public FBoost(CharacterBase owner) : base(owner)
         {
             owner.TryGetConfig(out _config);
-            
+
             CanAirBoost = true;
             BoostEnergy = MaxBoostEnergy * _config.StartBoostCapacity;
-            
+
             owner.Input.XAction += BoostAction;
             Character.StateMachine.OnStateAssign += OnStateAssign;
 
             ObjectEvents.OnObjectTriggered += OnRingCollected;
             ObjectEvents.OnEnemyDied += OnEnemyDied;
         }
-        
+
         ~FBoost()
         {
             Character.Input.XAction -= BoostAction;
@@ -77,7 +77,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStat
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
-            
+
             _boostHandler?.BoostHandle(Character, _config);
 
             FState state = Character.StateMachine.CurrentState;
@@ -91,7 +91,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStat
                 if (state is FStateAir or FStateSpecialJump)
                 {
                     _boostCancelTimer += dt;
-                
+
                     if (_boostCancelTimer >= _config.InAirTime)
                     {
                         Active = false;
@@ -114,7 +114,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStat
                 {
                     _boostKeepTimer = 0;
                 }
-                
+
                 if (BoostEnergy > 0)
                 {
                     BoostEnergy -= _config.EnergyDrain * Time.deltaTime;
@@ -132,14 +132,14 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStat
                 {
                     _boostNoEnergyCancelTimer += dt / 0.1f;
                 }
-                
+
                 Character.Kinematics.TurnRate *= _config.TurnSpeedMultiplier;
             }
             else
             {
                 _boostNoEnergyCancelTimer = 0;
             }
-            
+
             BoostEnergy = Mathf.Clamp(BoostEnergy, 0, MaxBoostEnergy);
         }
 
@@ -164,7 +164,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStat
                     _boostCancelTimer = 0;
                 }
             }
-            
+
             if (obj is FStateGrind)
             {
                 if (_cancelBoostCoroutine != null)
@@ -185,7 +185,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStat
 
         private void CreateDamage()
         {
-            HurtBox.CreateAttached(Character, Character.transform, new Vector3(0f, 0f, -0.1f), new Vector3(0.5f, 1f, 1.15f), 
+            HurtBox.CreateAttached(Character, Character.transform, new Vector3(0f, 0f, -0.1f), new Vector3(0.5f, 1f, 1.15f),
                 HurtBoxTarget.Enemy | HurtBoxTarget.Breakable);
         }
 
@@ -193,7 +193,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStat
         {
             var mask = _config.MagnetRingMask;
             var radius = _config.MagnetRadius;
-            
+
             var col = Physics.OverlapSphere(Character.transform.position, radius, mask);
             if (col.Length > 0)
             {
@@ -210,34 +210,34 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStat
         {
             if (Character.TryGetComponent(out HomingTargetDetector detector) && _userInput.GetData().homingOnX.Value && detector.Target != null)
                 return;
-            
+
             if (Character.StateMachine.CurrentState is FStateAir && !CanAirBoost) return;
 
             if (_boostHandler == null)
             {
                 if (Active)
                     Active = false;
-                
+
                 return;
             }
-            
+
             if (CanBoost())
             {
                 Active = obj.started && !Character.Flags.HasFlag(FlagType.OutOfControl);
             }
-            
+
             if (Active)
             {
                 Rigidbody body = Character.Kinematics.Rigidbody;
                 float startSpeed = _config.StartSpeed;
-                
+
                 if (Character.Kinematics.Speed < startSpeed)
                 {
                     body.linearVelocity = body.transform.forward * startSpeed;
                 }
-                
+
                 BoostEnergy -= _config.StartDrain;
-                Rumble.Vibrate(0.7f, 0.8f, 1.5f);
+                Rumble.Vibrate(0.6f, 0.7f, 0.66f);
             }
         }
     }
