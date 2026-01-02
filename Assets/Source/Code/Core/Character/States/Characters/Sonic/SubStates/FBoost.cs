@@ -1,13 +1,16 @@
 ﻿using SurgeEngine.Source.Code.Core.Character.States.BaseStates;
 using SurgeEngine.Source.Code.Core.Character.System;
+using SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic;
 using SurgeEngine.Source.Code.Core.StateMachine.Base;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.Collectables;
 using SurgeEngine.Source.Code.Gameplay.Enemy.Base;
 using SurgeEngine.Source.Code.Gameplay.Inputs;
 using SurgeEngine.Source.Code.Infrastructure.Config.Sonic;
+using SurgeEngine.Source.Code.Infrastructure.Tools.Managers;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Zenject;
 
 namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStates
 {
@@ -32,6 +35,8 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStat
         private float _boostCancelTimer;
         private float _boostKeepTimer;
         private float _boostNoEnergyCancelTimer;
+
+        [Inject] private UserInput _userInput;
 
         public FBoost(CharacterBase owner) : base(owner)
         {
@@ -203,6 +208,9 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStat
 
         private void BoostAction(InputAction.CallbackContext obj)
         {
+            if (Character.TryGetComponent(out HomingTargetDetector detector) && _userInput.GetData().homingOnX.Value && detector.Target != null)
+                return;
+            
             if (Character.StateMachine.CurrentState is FStateAir && !CanAirBoost) return;
 
             if (_boostHandler == null)
