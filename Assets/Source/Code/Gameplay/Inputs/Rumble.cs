@@ -11,8 +11,8 @@ namespace SurgeEngine.Source.Code.Gameplay.Inputs
         private float _timer;
 
         [Inject] private void Inject(Rumble self) => instance = self;
-        
-        public static void Vibrate(float low, float high, float duration)
+
+        public static void Vibrate(float low, float high, float duration = 0.2f)
         {
             Gamepad pad = Gamepad.current;
             GameDevice device = CharacterContext.Context.Input.GetDevice();
@@ -23,20 +23,20 @@ namespace SurgeEngine.Source.Code.Gameplay.Inputs
             instance.Rumbling(low, high, duration);
         }
 
-        private void Rumbling(float low, float high, float duration = 0.2f)
+        private void Rumbling(float low, float high, float duration)
         {
             _timer = duration;
-            
+
             Gamepad.current.SetMotorSpeeds(low, high);
         }
 
         public void Tick()
         {
             Gamepad pad = Gamepad.current;
-
+            
             if (pad == null)
                 return;
-
+            
             if (_timer > 0)
             {
                 _timer -= Time.unscaledDeltaTime;
