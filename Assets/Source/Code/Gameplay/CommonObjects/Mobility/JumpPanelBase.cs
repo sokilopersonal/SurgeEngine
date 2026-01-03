@@ -13,7 +13,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         [SerializeField] protected float impulseOnBoost = 30;
         [SerializeField] protected float outOfControl = 0.5f;
         [SerializeField] private Collider collision;
-        
+
         protected void Launch(CharacterBase context, float pitch)
         {
             bool boosted = false;
@@ -32,16 +32,16 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 
             context.transform.forward = Vector3.Cross(-transform.right, Vector3.up);
             context.Kinematics.Rigidbody.linearVelocity = Utility.GetImpulseWithPitch(-transform.forward, transform.right, pitch, !boosted ? impulseOnNormal : impulseOnBoost);
-            
+
             disableCollision.Disable(context, collision, typeof(FStateJumpPanel));
 
             var jumpPanelState = context.StateMachine.GetState<FStateJumpPanel>();
             jumpPanelState.SetDelux(boosted);
             jumpPanelState.SetKeepVelocity(outOfControl);
             context.StateMachine.SetState<FStateJumpPanel>(true);
-                    
+
             context.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, Mathf.Abs(outOfControl)));
-            
+
             Rumble.Vibrate(0.3f, 0.4f);
         }
     }
