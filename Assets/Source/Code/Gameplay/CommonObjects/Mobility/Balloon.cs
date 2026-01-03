@@ -12,11 +12,11 @@ using UnityEngine.TextCore.Text;
 namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 {
     [Serializable]
-    public class BalloonStyle
+    public struct BalloonStyle
     {
         public Color balloonColor;
-        public List<Material> templateMaterials = new List<Material>();
-        public List<ParticleSystem> colorParticles = new List<ParticleSystem>();
+        public List<Material> templateMaterials;
+        public List<ParticleSystem> colorParticles;
     }
     public class Balloon : StageObject
     {
