@@ -8,7 +8,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 {
     public class JumpPanel3D : JumpPanelBase
     {
-        private Vector3 StartPosition => transform.position + transform.up * Mathf.Max(transform.localScale.y, 1f);
+        protected override Vector3 StartPosition => transform.position + transform.up * Mathf.Max(transform.localScale.y, 1f);
         private const float Pitch = 30f;
         
         public override void OnEnter(Collider msg, CharacterBase context)
@@ -16,7 +16,6 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             base.OnEnter(msg, context);
             
             Launch(context, Pitch);
-            Utility.MoveToPosition(this, context.Kinematics.Rigidbody, StartPosition);
         }
 
         private void OnDrawGizmosSelected()

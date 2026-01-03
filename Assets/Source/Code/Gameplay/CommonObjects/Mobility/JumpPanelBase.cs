@@ -14,6 +14,8 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         [SerializeField] protected float outOfControl = 0.5f;
         [SerializeField] private Collider collision;
 
+        protected virtual Vector3 StartPosition => transform.position;
+
         protected void Launch(CharacterBase context, float pitch)
         {
             bool boosted = false;
@@ -39,6 +41,8 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             jumpPanelState.SetDelux(boosted);
             jumpPanelState.SetKeepVelocity(outOfControl);
             context.StateMachine.SetState<FStateJumpPanel>(true);
+            
+            Utility.MoveToPosition(this, context.Kinematics.Rigidbody, StartPosition);
 
             context.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, Mathf.Abs(outOfControl)));
 

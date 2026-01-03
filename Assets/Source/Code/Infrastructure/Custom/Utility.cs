@@ -93,18 +93,39 @@ namespace SurgeEngine.Source.Code.Infrastructure.Custom
             return impulseV;
         }
         
-        public static void MoveToPosition(MonoBehaviour runner, Rigidbody body, Vector3 targetPosition, float duration = 0.2f)
+        public static void MoveToPosition(MonoBehaviour runner, Rigidbody body, Vector3 targetPosition, float duration = 0.1f)
         {
-            runner.StartCoroutine(MoveToPositionSmoothRoutine(body, targetPosition, body.linearVelocity, duration));
+            runner.StartCoroutine(MoveToPositionVelocityRoutine(body, targetPosition, duration));
         }
 
         public static void MoveToPosition(MonoBehaviour runner, Rigidbody body, Vector3 targetPosition,
-            Vector3 velocity, float duration = 0.2f)
+            Vector3 velocity, float duration = 0.1f)
         {
-            runner.StartCoroutine(MoveToPositionSmoothRoutine(body, targetPosition, velocity, duration));
+            runner.StartCoroutine(MoveToPositionRoutine(body, targetPosition, velocity, duration));
         }
 
-        private static IEnumerator MoveToPositionSmoothRoutine(Rigidbody body, Vector3 targetPosition, Vector3 velocity, float duration)
+        private static IEnumerator MoveToPositionVelocityRoutine(Rigidbody body, Vector3 targetPosition, float duration)
+        {
+            Vector3 startPos = body.position;
+            Vector3 endPos = targetPosition;
+            float elapsed = 0f;
+
+            while (elapsed < duration)
+            {
+                elapsed += Time.deltaTime;
+                float t = elapsed / duration;
+                
+                startPos += body.linearVelocity * Time.deltaTime;
+                endPos += body.linearVelocity * Time.deltaTime;
+
+                body.MovePosition(Vector3.Lerp(startPos, endPos, t));
+                yield return null;
+            }
+
+            body.MovePosition(endPos);
+        }
+
+        private static IEnumerator MoveToPositionRoutine(Rigidbody body, Vector3 targetPosition, Vector3 velocity, float duration)
         {
             Vector3 startPos = body.position;
             Vector3 endPos = targetPosition;
