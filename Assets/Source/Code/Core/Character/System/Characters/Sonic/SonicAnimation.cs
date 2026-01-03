@@ -170,7 +170,13 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
                     StateAnimator.TransitionToStateDelayed(AnimatorParams.AirCycle, 0.25f, 0.5f);
                     return;
                 }
-                
+
+                if (obj is FStateBalloon)
+                {
+                    StateAnimator.TransitionToState("Balloon", 0f);
+                    return;
+                }
+
                 StateAnimator.TransitionToState(AnimatorParams.AirCycle, prev switch
                 {
                     FStateGround => 0.2f,

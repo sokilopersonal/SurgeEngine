@@ -98,6 +98,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             StateMachine.AddState(new FStateBrake(this));
             StateMachine.AddState(new FStateBrakeTurn(this));
             StateMachine.AddState(new FStateAir(this));
+            StateMachine.AddState(new FStateBalloon(this));
             StateMachine.AddState(new FStateSkydive(this));
             StateMachine.AddState(new FStateSpecialJump(this));
             StateMachine.AddState(new FStateSit(this));
