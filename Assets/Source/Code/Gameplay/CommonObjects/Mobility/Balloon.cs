@@ -28,7 +28,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         [SerializeField] private HomingTarget target;
         [SerializeField] private EventReference sound;
 
-        private bool _triggered = false;
+        private bool _triggered;
 
         private void OnValidate()
         {
