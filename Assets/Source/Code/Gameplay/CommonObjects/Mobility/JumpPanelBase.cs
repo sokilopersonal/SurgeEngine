@@ -33,7 +33,9 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             var disableCollision = new DisableCollision();
 
             context.transform.forward = Vector3.Cross(-transform.right, Vector3.up);
-            context.Kinematics.Rigidbody.linearVelocity = Utility.GetImpulseWithPitch(-transform.forward, transform.right, pitch, !boosted ? impulseOnNormal : impulseOnBoost);
+            Vector3 impulse = Utility.GetImpulseWithPitch(-transform.forward, transform.right, pitch,
+                !boosted ? impulseOnNormal : impulseOnBoost);
+            context.Kinematics.Rigidbody.linearVelocity = impulse;
 
             disableCollision.Disable(context, collision, typeof(FStateJumpPanel));
 
@@ -42,7 +44,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             jumpPanelState.SetKeepVelocity(outOfControl);
             context.StateMachine.SetState<FStateJumpPanel>(true);
             
-            Utility.MoveToPosition(this, context.Kinematics.Rigidbody, StartPosition);
+            Utility.MoveToPosition(this, context.Kinematics.Rigidbody, StartPosition, impulse);
 
             context.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, Mathf.Abs(outOfControl)));
 

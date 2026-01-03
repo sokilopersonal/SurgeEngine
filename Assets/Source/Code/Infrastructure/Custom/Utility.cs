@@ -93,13 +93,13 @@ namespace SurgeEngine.Source.Code.Infrastructure.Custom
             return impulseV;
         }
         
-        public static void MoveToPosition(MonoBehaviour runner, Rigidbody body, Vector3 targetPosition, float duration = 0.1f)
+        public static void MoveToPosition(MonoBehaviour runner, Rigidbody body, Vector3 targetPosition, float duration = 0.2f)
         {
             runner.StartCoroutine(MoveToPositionVelocityRoutine(body, targetPosition, duration));
         }
 
         public static void MoveToPosition(MonoBehaviour runner, Rigidbody body, Vector3 targetPosition,
-            Vector3 velocity, float duration = 0.1f)
+            Vector3 velocity, float duration = 0.2f)
         {
             runner.StartCoroutine(MoveToPositionRoutine(body, targetPosition, velocity, duration));
         }
