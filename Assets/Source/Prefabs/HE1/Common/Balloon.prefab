@@ -224,7 +224,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 1, b: 1, a: 1}
+      maxColor: {r: 1, g: 0, b: 0, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -288,7 +288,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 2
+      scalar: 1.5
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -4972,6 +4972,7 @@ MonoBehaviour:
     colorParticles:
     - {fileID: 6438176393130942608}
     - {fileID: 7793913312378392889}
+    - {fileID: 3362740879956815840}
   minSpeed: 10
   maxSpeed: 20
   mainParticle: {fileID: 3362740879956815840}
