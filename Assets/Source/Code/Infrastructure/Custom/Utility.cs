@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using SurgeEngine.Source.Code.Core.Character.States;
@@ -90,6 +91,38 @@ namespace SurgeEngine.Source.Code.Infrastructure.Custom
             dir = Quaternion.AngleAxis(pitch, right) * dir;
             Vector3 impulseV = dir * impulse;
             return impulseV;
+        }
+        
+        public static void MoveToPosition(MonoBehaviour runner, Rigidbody body, Vector3 targetPosition, float duration = 0.2f)
+        {
+            runner.StartCoroutine(MoveToPositionSmoothRoutine(body, targetPosition, body.linearVelocity, duration));
+        }
+
+        public static void MoveToPosition(MonoBehaviour runner, Rigidbody body, Vector3 targetPosition,
+            Vector3 velocity, float duration = 0.2f)
+        {
+            runner.StartCoroutine(MoveToPositionSmoothRoutine(body, targetPosition, velocity, duration));
+        }
+
+        private static IEnumerator MoveToPositionSmoothRoutine(Rigidbody body, Vector3 targetPosition, Vector3 velocity, float duration)
+        {
+            Vector3 startPos = body.position;
+            Vector3 endPos = targetPosition;
+            float elapsed = 0f;
+
+            while (elapsed < duration)
+            {
+                elapsed += Time.deltaTime;
+                float t = elapsed / duration;
+                
+                startPos += velocity * Time.deltaTime;
+                endPos += velocity * Time.deltaTime;
+
+                body.MovePosition(Vector3.Lerp(startPos, endPos, t));
+                yield return null;
+            }
+
+            body.MovePosition(endPos);
         }
 
         public static bool IsObjectInView(this Camera camera, Transform obj)

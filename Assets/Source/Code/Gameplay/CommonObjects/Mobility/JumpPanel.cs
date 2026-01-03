@@ -14,11 +14,9 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         public override void OnEnter(Collider msg, CharacterBase context)
         {
             base.OnEnter(msg, context);
-
-            var body = context.Kinematics.Rigidbody;
-            body.position = StartPosition;
-
+            
             Launch(context, pitch);
+            Utility.MoveToPosition(this, context.Kinematics.Rigidbody, StartPosition);
         }
 
         private void OnDrawGizmosSelected()

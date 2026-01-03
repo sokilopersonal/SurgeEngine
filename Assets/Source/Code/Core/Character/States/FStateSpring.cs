@@ -8,9 +8,6 @@ namespace SurgeEngine.Source.Code.Core.Character.States
     {
         private Spring _springObject;
         public Spring SpringObject => _springObject;
-        
-        private Vector3 _startPos;
-        private float _snapTimer;
 
         public FStateSpring(CharacterBase owner) : base(owner) { }
  
@@ -19,7 +16,6 @@ namespace SurgeEngine.Source.Code.Core.Character.States
             base.OnEnter();
             
             Kinematics.SetDetachTime(0.1f);
-            Kinematics.IsKinematic = true;
             
             Model.SetLowerCollision();
         }
@@ -35,9 +31,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
             }
             
             _springObject = null;
-            
-            Kinematics.IsKinematic = false;
-            
+
             Model.ResetCollisionToDefault();
         }
 
@@ -47,15 +41,12 @@ namespace SurgeEngine.Source.Code.Core.Character.States
             
             Vector3 dir = _springObject.Direction;
             Vector3 pos = _springObject.transform.position + dir * Mathf.Max(1f, travelledDistance);
-            Vector3 endPos = Vector3.Lerp(_startPos, pos, _snapTimer);
             
-            Rigidbody.MovePosition(endPos);
+            Rigidbody.linearVelocity = dir * _springObject.Speed;
             travelledDistance += _springObject.Speed * dt;
-            _snapTimer += dt / 0.1f;
 
             if (travelledDistance >= _springObject.KeepVelocityDistance + 0.25f)
             {
-                Rigidbody.linearVelocity = dir * _springObject.Speed;
                 StateMachine.SetState<FStateAir>();
             }
 
@@ -63,7 +54,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
             {
                 if (_springObject.IsWallWalk)
                 {
-                    var ray = new Ray(endPos, dir);
+                    var ray = new Ray(pos, dir);
                     if (Physics.Raycast(ray, out var hit, Character.Config.castDistance, Character.Config.castLayer))
                     {
                         Kinematics.Normal = hit.normal;
@@ -85,9 +76,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
         public void SetSpringObject(Spring springObject)
         {
             travelledDistance = 0;
-            _snapTimer = 0;
             _springObject = springObject;
-            _startPos = Rigidbody.position;
 
             Rigidbody.linearVelocity = Vector3.zero;
         }

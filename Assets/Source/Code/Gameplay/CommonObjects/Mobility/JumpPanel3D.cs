@@ -1,4 +1,5 @@
-﻿using SurgeEngine.Source.Code.Core.Character.System;
+﻿using System.Collections;
+using SurgeEngine.Source.Code.Core.Character.System;
 using SurgeEngine.Source.Code.Infrastructure.Custom;
 using SurgeEngine.Source.Code.Infrastructure.Custom.Drawers;
 using UnityEngine;
@@ -14,10 +15,8 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         {
             base.OnEnter(msg, context);
             
-            var body = context.Kinematics.Rigidbody;
-            body.position = StartPosition;
-            
             Launch(context, Pitch);
+            Utility.MoveToPosition(this, context.Kinematics.Rigidbody, StartPosition);
         }
 
         private void OnDrawGizmosSelected()

@@ -2,6 +2,7 @@
 using SurgeEngine.Source.Code.Core.Character.States;
 using SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStates;
 using SurgeEngine.Source.Code.Core.Character.System;
+using SurgeEngine.Source.Code.Infrastructure.Custom;
 using SurgeEngine.Source.Code.Infrastructure.Custom.Drawers;
 using UnityEngine;
 
@@ -39,6 +40,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             springState.SetKeepVelocityDistance(keepVelocityDistance);
             springState.SetSpringObject(this);
             context.StateMachine.SetState<FStateSpring>();
+            Utility.MoveToPosition(this, context.Kinematics.Rigidbody, transform.position, Direction * speed);
             
             context.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, Mathf.Abs(outOfControl)));
             
