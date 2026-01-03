@@ -24,6 +24,8 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
             if (StateMachine.GetState(out FBoost boost))
                 boost.Active = false;
 
+            Kinematics.BlockSkidding = true;
+
             Timeout = 0.5f;
             
             Model.SetLowerCollision();
@@ -32,6 +34,8 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
         public override void OnExit()
         {
             base.OnExit();
+            
+            Kinematics.BlockSkidding = false;
 
             Model.ResetCollisionToDefault();
         }

@@ -72,7 +72,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
                 }
             }
             
-            bool predictedGround = Kinematics.CheckForPredictedGround(dt, Character.Config.castDistance, 4);
+            bool predictedGround = Kinematics.CheckForPredictedGround(dt, distance, 4);
             if (ground && predictedGround)
             {
                 Vector3 point = hit.point;

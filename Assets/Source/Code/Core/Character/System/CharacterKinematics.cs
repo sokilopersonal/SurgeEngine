@@ -164,6 +164,9 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             Vector3 planar = Vector3.ProjectOnPlane(vel, normal);
             Vector3 vertical = Vector3.Project(vel, normal);
             
+            TurnRate = Mathf.Lerp(TurnRate, _config.turnSpeed, _config.turnSmoothing * Time.fixedDeltaTime);
+            float accelRateMod = _config.accelerationCurve.Evaluate(_planarVelocity.magnitude / _config.topSpeed);
+            
             _movementVector = planar;
             _planarVelocity = planar;
 
@@ -173,13 +176,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
                 {
                     if (!Skidding)
                     {
-                        TurnRate = Mathf.Lerp(TurnRate, _config.turnSpeed, _config.turnSmoothing * Time.fixedDeltaTime);
-                        float accelRateMod = _config.accelerationCurve.Evaluate(_planarVelocity.magnitude / _config.topSpeed);
-                        if (_planarVelocity.magnitude < _config.topSpeed)
-                            _planarVelocity += dir * (_config.accelerationRate * accelRateMod * Time.fixedDeltaTime);
-                        else if (CanReturnToBaseSpeed())
-                            _planarVelocity = Vector3.MoveTowards(_planarVelocity, _planarVelocity.normalized * _config.topSpeed, baseSpeedRestorationDelta * Time.fixedDeltaTime);
-                        
+                        AddPlanarVelocity(dir * (_config.accelerationRate * accelRateMod * Time.fixedDeltaTime), CanReturnToBaseSpeed());
                         BaseGroundPhysics();
                     }
                     else
@@ -198,11 +195,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
                 {
                     if (!Skidding)
                     {
-                        TurnRate = Mathf.Lerp(TurnRate, _config.turnSpeed, _config.turnSmoothing * Time.fixedDeltaTime);
-                        float accelRateMod = _config.accelerationCurve.Evaluate(_planarVelocity.magnitude / _config.topSpeed);
-                        if (_planarVelocity.magnitude < _config.topSpeed)
-                            _planarVelocity += dir * (_config.accelerationRate * accelRateMod * Time.fixedDeltaTime);
-                        
+                        AddPlanarVelocity(dir * (_config.accelerationRate * accelRateMod * Time.fixedDeltaTime));
                         BaseAirPhysics();
                     }
                     else
@@ -218,6 +211,15 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             {
                 Rigidbody.linearVelocity += vertical;
             }
+        }
+
+        private void AddPlanarVelocity(Vector3 dir, bool returnToBaseSpeed = false)
+        {
+            if (_planarVelocity.magnitude < _config.topSpeed)
+                _planarVelocity += dir;
+            else if (returnToBaseSpeed)
+                _planarVelocity = Vector3.MoveTowards(_planarVelocity, _planarVelocity.normalized * _config.topSpeed, 
+                    baseSpeedRestorationDelta * Time.fixedDeltaTime);
         }
 
         private void BaseGroundPhysics()
