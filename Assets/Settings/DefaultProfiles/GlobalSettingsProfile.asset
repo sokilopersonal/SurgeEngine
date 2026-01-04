@@ -1229,17 +1229,17 @@ MonoBehaviour:
         - serializedVersion: 3
           time: 0
           value: 0
-          inSlope: 1
-          outSlope: 1
+          inSlope: 0
+          outSlope: 1.2308971
           tangentMode: 0
           weightedMode: 0
           inWeight: 0
           outWeight: 0
         - serializedVersion: 3
-          time: 1
-          value: 1
-          inSlope: 1
-          outSlope: 1
+          time: 0.5400641
+          value: 0.69435215
+          inSlope: 1.4023845
+          outSlope: 0
           tangentMode: 0
           weightedMode: 0
           inWeight: 0
@@ -1392,7 +1392,7 @@ MonoBehaviour:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-  m_SelectedCurve: 1
+  m_SelectedCurve: 0
 --- !u!114 &-5004676948815216521
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -2775,7 +2775,7 @@ MonoBehaviour:
   active: 1
   quality:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 3
   spectralLut:
     m_OverrideState: 1
     m_Value: {fileID: 0}
@@ -2784,7 +2784,7 @@ MonoBehaviour:
     m_Value: 0
   m_MaxSamples:
     m_OverrideState: 1
-    m_Value: 6
+    m_Value: 24
 --- !u!114 &-311440484353378797
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -3420,22 +3420,22 @@ MonoBehaviour:
     m_Value: 3
   useFullACES:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0
   toeStrength:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0.1
   toeLength:
     m_OverrideState: 1
-    m_Value: 0.15
+    m_Value: 1
   shoulderStrength:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0
   shoulderLength:
     m_OverrideState: 1
-    m_Value: 0.25
+    m_Value: 0.5
   shoulderAngle:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 0.4
   gamma:
     m_OverrideState: 1
     m_Value: 1
@@ -3655,7 +3655,7 @@ MonoBehaviour:
     m_Value: 0
   contrast:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: -3
   colorFilter:
     m_OverrideState: 1
     m_Value: {r: 1, g: 1, b: 1, a: 1}
@@ -5069,7 +5069,7 @@ MonoBehaviour:
   active: 1
   temperature:
     m_OverrideState: 1
-    m_Value: -10
+    m_Value: 0
   tint:
     m_OverrideState: 1
     m_Value: 0
@@ -5122,13 +5122,13 @@ MonoBehaviour:
     m_Value: 3
   threshold:
     m_OverrideState: 1
-    m_Value: 1.5
+    m_Value: 1.2
   intensity:
     m_OverrideState: 1
     m_Value: 1
   scatter:
     m_OverrideState: 1
-    m_Value: 0.8
+    m_Value: 0.85
   tint:
     m_OverrideState: 1
     m_Value: {r: 1, g: 1, b: 1, a: 1}
