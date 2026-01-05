@@ -42,7 +42,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             springState.SetKeepVelocityDistance(keepVelocityDistance);
             springState.SetSpringObject(this);
             context.StateMachine.SetState<FStateSpring>();
-            Utility.MoveToPosition(this, context.Kinematics.Rigidbody, transform.position, Direction * speed);
+            Utility.MoveToPosition(this, context.Kinematics.Rigidbody, transform.position, Direction * speed, 0.1f);
             
             context.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, Mathf.Abs(outOfControl)));
             
