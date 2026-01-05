@@ -172,7 +172,7 @@ namespace UnityEngine.Rendering.HighDefinition
         /// </summary>
         public float spotIESCutoffPercent01 => spotIESCutoffPercent / 100f;
 
-        [Range(0.0f, 16.0f)]
+        [Range(0.0f, 64.0f)]
         [SerializeField, FormerlySerializedAs("lightDimmer")]
         float m_LightDimmer = 1.0f;
         /// <summary>
@@ -186,7 +186,7 @@ namespace UnityEngine.Rendering.HighDefinition
                 if (m_LightDimmer == value)
                     return;
 
-                m_LightDimmer = Mathf.Clamp(value, 0.0f, 16.0f);
+                m_LightDimmer = Mathf.Clamp(value, 0.0f, 64.0f);
 
                 if (lightEntity.valid)
                     HDLightRenderDatabase.instance.EditLightDataAsRef(lightEntity).lightDimmer = m_LightDimmer;

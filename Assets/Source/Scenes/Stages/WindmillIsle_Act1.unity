@@ -93,7 +93,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 112000000, guid: 6008de983b6185b439cd0d74c44b398a, type: 2}
+  m_LightingDataAsset: {fileID: 112000000, guid: 7938f522e7a16754cb3270da5bd6a1bb, type: 2}
   m_LightingSettings: {fileID: 4890085278179872738, guid: 221ac07bb8f1f5a4a8df2ca1f5552313, type: 2}
 --- !u!196 &4
 NavMeshSettings:
@@ -307,7 +307,7 @@ MonoBehaviour:
   m_ShapeHeight: -1
   m_AspectRatio: 1
   m_SpotIESCutoffPercent: 100
-  m_LightDimmer: 1
+  m_LightDimmer: 1.4
   m_VolumetricDimmer: 2
   m_FadeDistance: 10000
   m_VolumetricFadeDistance: 10000
@@ -380,7 +380,7 @@ MonoBehaviour:
   m_ShadowResolution:
     m_Override: 512
     m_UseOverride: 0
-    m_Level: 3
+    m_Level: 2
   m_ShadowDimmer: 1
   m_VolumetricShadowDimmer: 1
   m_ShadowFadeDistance: 10000
@@ -435,7 +435,7 @@ Light:
   m_Enabled: 1
   serializedVersion: 12
   m_Type: 1
-  m_Color: {r: 1, g: 0.69411767, b: 0.44705883, a: 1}
+  m_Color: {r: 1, g: 0.7521076, b: 0.5518868, a: 1}
   m_Intensity: 100000
   m_Range: 10
   m_SpotAngle: 30
@@ -481,7 +481,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 10139
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 3.9e-44, w: 0}
+  m_BoundingSphereOverride: {x: 0, y: 0, z: 1.01e-42, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
@@ -1502,9 +1502,9 @@ MonoBehaviour:
   m_ShapeHeight: -1
   m_AspectRatio: 1
   m_SpotIESCutoffPercent: 100
-  m_LightDimmer: 5
+  m_LightDimmer: 64
   m_VolumetricDimmer: 1
-  m_FadeDistance: 25
+  m_FadeDistance: 50
   m_VolumetricFadeDistance: 10000
   m_AffectDiffuse: 1
   m_AffectSpecular: 1
@@ -1575,10 +1575,10 @@ MonoBehaviour:
   m_ShadowResolution:
     m_Override: 512
     m_UseOverride: 0
-    m_Level: 0
+    m_Level: 1
   m_ShadowDimmer: 1
   m_VolumetricShadowDimmer: 1
-  m_ShadowFadeDistance: 10000
+  m_ShadowFadeDistance: 25
   m_UseContactShadow:
     m_Override: 0
     m_UseOverride: 1
@@ -1632,7 +1632,7 @@ Light:
   m_Type: 2
   m_Color: {r: 0.46598905, g: 0.45977217, b: 0.7924528, a: 1}
   m_Intensity: 3183.0989
-  m_Range: 2.5
+  m_Range: 5
   m_SpotAngle: 30
   m_InnerSpotAngle: 0
   m_CookieSize2D: {x: 10, y: 10}
@@ -3206,9 +3206,9 @@ MonoBehaviour:
   m_ShapeHeight: -1
   m_AspectRatio: 1
   m_SpotIESCutoffPercent: 100
-  m_LightDimmer: 5
+  m_LightDimmer: 64
   m_VolumetricDimmer: 1
-  m_FadeDistance: 25
+  m_FadeDistance: 50
   m_VolumetricFadeDistance: 10000
   m_AffectDiffuse: 1
   m_AffectSpecular: 1
@@ -3279,10 +3279,10 @@ MonoBehaviour:
   m_ShadowResolution:
     m_Override: 512
     m_UseOverride: 0
-    m_Level: 0
+    m_Level: 1
   m_ShadowDimmer: 1
   m_VolumetricShadowDimmer: 1
-  m_ShadowFadeDistance: 10000
+  m_ShadowFadeDistance: 25
   m_UseContactShadow:
     m_Override: 0
     m_UseOverride: 1
@@ -3336,7 +3336,7 @@ Light:
   m_Type: 2
   m_Color: {r: 0.46598905, g: 0.45977217, b: 0.7924528, a: 1}
   m_Intensity: 3183.0989
-  m_Range: 2.5
+  m_Range: 5
   m_SpotAngle: 30
   m_InnerSpotAngle: 0
   m_CookieSize2D: {x: 10, y: 10}
@@ -3594,9 +3594,9 @@ MonoBehaviour:
   m_ShapeHeight: -1
   m_AspectRatio: 1
   m_SpotIESCutoffPercent: 100
-  m_LightDimmer: 5
+  m_LightDimmer: 64
   m_VolumetricDimmer: 1
-  m_FadeDistance: 25
+  m_FadeDistance: 50
   m_VolumetricFadeDistance: 10000
   m_AffectDiffuse: 1
   m_AffectSpecular: 1
@@ -3667,10 +3667,10 @@ MonoBehaviour:
   m_ShadowResolution:
     m_Override: 512
     m_UseOverride: 0
-    m_Level: 0
+    m_Level: 1
   m_ShadowDimmer: 1
   m_VolumetricShadowDimmer: 1
-  m_ShadowFadeDistance: 10000
+  m_ShadowFadeDistance: 25
   m_UseContactShadow:
     m_Override: 0
     m_UseOverride: 1
@@ -3724,7 +3724,7 @@ Light:
   m_Type: 2
   m_Color: {r: 0.46598905, g: 0.45977217, b: 0.7924528, a: 1}
   m_Intensity: 3183.0989
-  m_Range: 2.5
+  m_Range: 5
   m_SpotAngle: 30
   m_InnerSpotAngle: 0
   m_CookieSize2D: {x: 10, y: 10}
@@ -4875,9 +4875,9 @@ MonoBehaviour:
   m_ShapeHeight: -1
   m_AspectRatio: 1
   m_SpotIESCutoffPercent: 100
-  m_LightDimmer: 5
+  m_LightDimmer: 64
   m_VolumetricDimmer: 1
-  m_FadeDistance: 25
+  m_FadeDistance: 50
   m_VolumetricFadeDistance: 10000
   m_AffectDiffuse: 1
   m_AffectSpecular: 1
@@ -4948,10 +4948,10 @@ MonoBehaviour:
   m_ShadowResolution:
     m_Override: 512
     m_UseOverride: 0
-    m_Level: 0
+    m_Level: 1
   m_ShadowDimmer: 1
   m_VolumetricShadowDimmer: 1
-  m_ShadowFadeDistance: 10000
+  m_ShadowFadeDistance: 25
   m_UseContactShadow:
     m_Override: 0
     m_UseOverride: 1
@@ -5005,7 +5005,7 @@ Light:
   m_Type: 2
   m_Color: {r: 0.46598905, g: 0.45977217, b: 0.7924528, a: 1}
   m_Intensity: 3183.0989
-  m_Range: 2.5
+  m_Range: 5
   m_SpotAngle: 30
   m_InnerSpotAngle: 0
   m_CookieSize2D: {x: 10, y: 10}
@@ -42629,9 +42629,9 @@ MonoBehaviour:
   m_ShapeHeight: -1
   m_AspectRatio: 1
   m_SpotIESCutoffPercent: 100
-  m_LightDimmer: 5
+  m_LightDimmer: 64
   m_VolumetricDimmer: 1
-  m_FadeDistance: 25
+  m_FadeDistance: 50
   m_VolumetricFadeDistance: 10000
   m_AffectDiffuse: 1
   m_AffectSpecular: 1
@@ -42702,10 +42702,10 @@ MonoBehaviour:
   m_ShadowResolution:
     m_Override: 512
     m_UseOverride: 0
-    m_Level: 0
+    m_Level: 1
   m_ShadowDimmer: 1
   m_VolumetricShadowDimmer: 1
-  m_ShadowFadeDistance: 10000
+  m_ShadowFadeDistance: 25
   m_UseContactShadow:
     m_Override: 0
     m_UseOverride: 1
@@ -42759,7 +42759,7 @@ Light:
   m_Type: 2
   m_Color: {r: 0.46598905, g: 0.45977217, b: 0.7924528, a: 1}
   m_Intensity: 3183.0989
-  m_Range: 2.5
+  m_Range: 5
   m_SpotAngle: 30
   m_InnerSpotAngle: 0
   m_CookieSize2D: {x: 10, y: 10}
@@ -73010,9 +73010,9 @@ MonoBehaviour:
   m_ShapeHeight: -1
   m_AspectRatio: 1
   m_SpotIESCutoffPercent: 100
-  m_LightDimmer: 5
+  m_LightDimmer: 64
   m_VolumetricDimmer: 1
-  m_FadeDistance: 25
+  m_FadeDistance: 50
   m_VolumetricFadeDistance: 10000
   m_AffectDiffuse: 1
   m_AffectSpecular: 1
@@ -73083,10 +73083,10 @@ MonoBehaviour:
   m_ShadowResolution:
     m_Override: 512
     m_UseOverride: 0
-    m_Level: 0
+    m_Level: 1
   m_ShadowDimmer: 1
   m_VolumetricShadowDimmer: 1
-  m_ShadowFadeDistance: 10000
+  m_ShadowFadeDistance: 25
   m_UseContactShadow:
     m_Override: 0
     m_UseOverride: 1
@@ -73140,7 +73140,7 @@ Light:
   m_Type: 2
   m_Color: {r: 0.46598905, g: 0.45977217, b: 0.7924528, a: 1}
   m_Intensity: 3183.0989
-  m_Range: 2.5
+  m_Range: 5
   m_SpotAngle: 30
   m_InnerSpotAngle: 0
   m_CookieSize2D: {x: 10, y: 10}
@@ -75048,9 +75048,9 @@ MonoBehaviour:
   m_ShapeHeight: -1
   m_AspectRatio: 1
   m_SpotIESCutoffPercent: 100
-  m_LightDimmer: 5
+  m_LightDimmer: 64
   m_VolumetricDimmer: 1
-  m_FadeDistance: 25
+  m_FadeDistance: 50
   m_VolumetricFadeDistance: 10000
   m_AffectDiffuse: 1
   m_AffectSpecular: 1
@@ -75121,10 +75121,10 @@ MonoBehaviour:
   m_ShadowResolution:
     m_Override: 512
     m_UseOverride: 0
-    m_Level: 0
+    m_Level: 1
   m_ShadowDimmer: 1
   m_VolumetricShadowDimmer: 1
-  m_ShadowFadeDistance: 10000
+  m_ShadowFadeDistance: 25
   m_UseContactShadow:
     m_Override: 0
     m_UseOverride: 1
@@ -75178,7 +75178,7 @@ Light:
   m_Type: 2
   m_Color: {r: 0.46598905, g: 0.45977217, b: 0.7924528, a: 1}
   m_Intensity: 3183.0989
-  m_Range: 2.5
+  m_Range: 5
   m_SpotAngle: 30
   m_InnerSpotAngle: 0
   m_CookieSize2D: {x: 10, y: 10}
@@ -95506,9 +95506,9 @@ MonoBehaviour:
   m_ShapeHeight: -1
   m_AspectRatio: 1
   m_SpotIESCutoffPercent: 100
-  m_LightDimmer: 5
+  m_LightDimmer: 64
   m_VolumetricDimmer: 1
-  m_FadeDistance: 25
+  m_FadeDistance: 50
   m_VolumetricFadeDistance: 10000
   m_AffectDiffuse: 1
   m_AffectSpecular: 1
@@ -95579,10 +95579,10 @@ MonoBehaviour:
   m_ShadowResolution:
     m_Override: 512
     m_UseOverride: 0
-    m_Level: 0
+    m_Level: 1
   m_ShadowDimmer: 1
   m_VolumetricShadowDimmer: 1
-  m_ShadowFadeDistance: 10000
+  m_ShadowFadeDistance: 25
   m_UseContactShadow:
     m_Override: 0
     m_UseOverride: 1
@@ -95636,7 +95636,7 @@ Light:
   m_Type: 2
   m_Color: {r: 0.46598905, g: 0.45977217, b: 0.7924528, a: 1}
   m_Intensity: 3183.0989
-  m_Range: 2.5
+  m_Range: 5
   m_SpotAngle: 30
   m_InnerSpotAngle: 0
   m_CookieSize2D: {x: 10, y: 10}
@@ -96685,7 +96685,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Profile: {fileID: 11400000, guid: 28c4328b906351d4a9d6d3d6112de4f9, type: 2}
-  m_StaticLightingSkyUniqueID: 3
+  m_StaticLightingSkyUniqueID: 5
   m_StaticLightingCloudsUniqueID: 0
   m_StaticLightingVolumetricClouds: 0
   bounces: 2
@@ -99952,9 +99952,9 @@ MonoBehaviour:
   m_ShapeHeight: -1
   m_AspectRatio: 1
   m_SpotIESCutoffPercent: 100
-  m_LightDimmer: 5
+  m_LightDimmer: 64
   m_VolumetricDimmer: 1
-  m_FadeDistance: 25
+  m_FadeDistance: 50
   m_VolumetricFadeDistance: 10000
   m_AffectDiffuse: 1
   m_AffectSpecular: 1
@@ -100025,10 +100025,10 @@ MonoBehaviour:
   m_ShadowResolution:
     m_Override: 512
     m_UseOverride: 0
-    m_Level: 0
+    m_Level: 1
   m_ShadowDimmer: 1
   m_VolumetricShadowDimmer: 1
-  m_ShadowFadeDistance: 10000
+  m_ShadowFadeDistance: 25
   m_UseContactShadow:
     m_Override: 0
     m_UseOverride: 1
@@ -100082,7 +100082,7 @@ Light:
   m_Type: 2
   m_Color: {r: 0.46598905, g: 0.45977217, b: 0.7924528, a: 1}
   m_Intensity: 3183.0989
-  m_Range: 2.5
+  m_Range: 5
   m_SpotAngle: 30
   m_InnerSpotAngle: 0
   m_CookieSize2D: {x: 10, y: 10}
@@ -100133,7 +100133,7 @@ Light:
   m_ShadowRadius: 0
   m_ShadowAngle: 0
   m_LightUnit: 0
-  m_LuxAtDistance: 1
+  m_LuxAtDistance: 5
   m_EnableSpotReflector: 1
 --- !u!4 &1932936130
 Transform:
@@ -100144,7 +100144,7 @@ Transform:
   m_GameObject: {fileID: 1932936127}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -16.936, y: -68.22, z: -621.33}
+  m_LocalPosition: {x: -16.936, y: -67.843, z: -621.33}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -100510,9 +100510,9 @@ MonoBehaviour:
   m_ShapeHeight: -1
   m_AspectRatio: 1
   m_SpotIESCutoffPercent: 100
-  m_LightDimmer: 5
+  m_LightDimmer: 64
   m_VolumetricDimmer: 1
-  m_FadeDistance: 25
+  m_FadeDistance: 50
   m_VolumetricFadeDistance: 10000
   m_AffectDiffuse: 1
   m_AffectSpecular: 1
@@ -100583,10 +100583,10 @@ MonoBehaviour:
   m_ShadowResolution:
     m_Override: 512
     m_UseOverride: 0
-    m_Level: 0
+    m_Level: 1
   m_ShadowDimmer: 1
   m_VolumetricShadowDimmer: 1
-  m_ShadowFadeDistance: 10000
+  m_ShadowFadeDistance: 25
   m_UseContactShadow:
     m_Override: 0
     m_UseOverride: 1
@@ -100640,7 +100640,7 @@ Light:
   m_Type: 2
   m_Color: {r: 0.46598905, g: 0.45977217, b: 0.7924528, a: 1}
   m_Intensity: 3183.0989
-  m_Range: 2.5
+  m_Range: 5
   m_SpotAngle: 30
   m_InnerSpotAngle: 0
   m_CookieSize2D: {x: 10, y: 10}
