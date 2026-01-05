@@ -11,8 +11,8 @@ Shader "Hidden/HDRP/Sky/GradientSky"
     #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
     #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Color.hlsl"
     #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/CommonLighting.hlsl"
-    #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
-    #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Sky/SkyUtils.hlsl"
+    #include "Custom/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
+    #include "Custom/com.unity.render-pipelines.high-definition/Runtime/Sky/SkyUtils.hlsl"
 
     float4 _GradientBottom;
     float4 _GradientMiddle;
@@ -41,7 +41,7 @@ Shader "Hidden/HDRP/Sky/GradientSky"
         return output;
     }
 
-    float4 RenderSky(void)
+    float4 RenderSky(Varyings input)
     {
         float3 viewDirWS = GetSkyViewDirWS(input.positionCS.xy);
         float verticalGradient = viewDirWS.y * _GradientDiffusion;
@@ -54,13 +54,13 @@ Shader "Hidden/HDRP/Sky/GradientSky"
 
     float4 FragBaking(Varyings input) : SV_Target
     {
-        return RenderSky();
+        return RenderSky(input);
     }
 
     float4 FragRender(Varyings input) : SV_Target
     {
         UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
-        float4 color = RenderSky();
+        float4 color = RenderSky(input);
         color.rgb *= GetCurrentExposureMultiplier();
         return color;
     }

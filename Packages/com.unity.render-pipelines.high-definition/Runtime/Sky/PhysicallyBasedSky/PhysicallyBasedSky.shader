@@ -50,7 +50,7 @@ Shader "Hidden/HDRP/Sky/PbrSky"
         return output;
     }
 
-    float4 RenderSky(void)
+    float4 RenderSky(Varyings input)
     {
         const float R = _PlanetaryRadius;
         const float3 V = GetSkyViewDirWS(input.positionCS.xy);
@@ -162,13 +162,13 @@ Shader "Hidden/HDRP/Sky/PbrSky"
 
     float4 FragBaking(Varyings input) : SV_Target
     {
-        return RenderSky(); // The cube map is not pre-exposed
+        return RenderSky(input); // The cube map is not pre-exposed
     }
 
     float4 FragRender(Varyings input) : SV_Target
     {
         UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
-        float4 value = RenderSky();
+        float4 value = RenderSky(input);
         value.rgb *= GetCurrentExposureMultiplier(); // Only the full-screen pass is pre-exposed
         return value;
     }
