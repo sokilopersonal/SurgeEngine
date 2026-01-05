@@ -93,7 +93,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 112000000, guid: 6008de983b6185b439cd0d74c44b398a, type: 2}
+  m_LightingDataAsset: {fileID: 112000000, guid: 7938f522e7a16754cb3270da5bd6a1bb, type: 2}
   m_LightingSettings: {fileID: 4890085278179872738, guid: 221ac07bb8f1f5a4a8df2ca1f5552313, type: 2}
 --- !u!196 &4
 NavMeshSettings:
@@ -307,7 +307,7 @@ MonoBehaviour:
   m_ShapeHeight: -1
   m_AspectRatio: 1
   m_SpotIESCutoffPercent: 100
-  m_LightDimmer: 1
+  m_LightDimmer: 1.4
   m_VolumetricDimmer: 2
   m_FadeDistance: 10000
   m_VolumetricFadeDistance: 10000
@@ -380,7 +380,7 @@ MonoBehaviour:
   m_ShadowResolution:
     m_Override: 512
     m_UseOverride: 0
-    m_Level: 3
+    m_Level: 2
   m_ShadowDimmer: 1
   m_VolumetricShadowDimmer: 1
   m_ShadowFadeDistance: 10000
@@ -435,7 +435,7 @@ Light:
   m_Enabled: 1
   serializedVersion: 12
   m_Type: 1
-  m_Color: {r: 1, g: 0.69411767, b: 0.44705883, a: 1}
+  m_Color: {r: 1, g: 0.8462016, b: 0.7216981, a: 1}
   m_Intensity: 100000
   m_Range: 10
   m_SpotAngle: 30
@@ -481,7 +481,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 10139
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 2.2339e-40, y: 2.1629445e-38, z: 6.7e-43, w: 8.3e-44}
+  m_BoundingSphereOverride: {x: 0, y: 0, z: 1.01e-42, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
@@ -1502,9 +1502,9 @@ MonoBehaviour:
   m_ShapeHeight: -1
   m_AspectRatio: 1
   m_SpotIESCutoffPercent: 100
-  m_LightDimmer: 5
+  m_LightDimmer: 48
   m_VolumetricDimmer: 1
-  m_FadeDistance: 25
+  m_FadeDistance: 50
   m_VolumetricFadeDistance: 10000
   m_AffectDiffuse: 1
   m_AffectSpecular: 1
@@ -1575,10 +1575,10 @@ MonoBehaviour:
   m_ShadowResolution:
     m_Override: 512
     m_UseOverride: 0
-    m_Level: 0
+    m_Level: 1
   m_ShadowDimmer: 1
   m_VolumetricShadowDimmer: 1
-  m_ShadowFadeDistance: 10000
+  m_ShadowFadeDistance: 25
   m_UseContactShadow:
     m_Override: 0
     m_UseOverride: 1
@@ -1632,7 +1632,7 @@ Light:
   m_Type: 2
   m_Color: {r: 0.46598905, g: 0.45977217, b: 0.7924528, a: 1}
   m_Intensity: 3183.0989
-  m_Range: 2.5
+  m_Range: 5
   m_SpotAngle: 30
   m_InnerSpotAngle: 0
   m_CookieSize2D: {x: 10, y: 10}
@@ -1694,7 +1694,7 @@ Transform:
   m_GameObject: {fileID: 77958220}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -18.219, y: -59.993, z: -637.003}
+  m_LocalPosition: {x: -18.219, y: -59.591, z: -637.003}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3206,9 +3206,9 @@ MonoBehaviour:
   m_ShapeHeight: -1
   m_AspectRatio: 1
   m_SpotIESCutoffPercent: 100
-  m_LightDimmer: 5
+  m_LightDimmer: 48
   m_VolumetricDimmer: 1
-  m_FadeDistance: 25
+  m_FadeDistance: 50
   m_VolumetricFadeDistance: 10000
   m_AffectDiffuse: 1
   m_AffectSpecular: 1
@@ -3279,10 +3279,10 @@ MonoBehaviour:
   m_ShadowResolution:
     m_Override: 512
     m_UseOverride: 0
-    m_Level: 0
+    m_Level: 1
   m_ShadowDimmer: 1
   m_VolumetricShadowDimmer: 1
-  m_ShadowFadeDistance: 10000
+  m_ShadowFadeDistance: 25
   m_UseContactShadow:
     m_Override: 0
     m_UseOverride: 1
@@ -3336,7 +3336,7 @@ Light:
   m_Type: 2
   m_Color: {r: 0.46598905, g: 0.45977217, b: 0.7924528, a: 1}
   m_Intensity: 3183.0989
-  m_Range: 2.5
+  m_Range: 5
   m_SpotAngle: 30
   m_InnerSpotAngle: 0
   m_CookieSize2D: {x: 10, y: 10}
@@ -3398,7 +3398,7 @@ Transform:
   m_GameObject: {fileID: 183462283}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.794, y: -59.314, z: -677.469}
+  m_LocalPosition: {x: 0.794, y: -58.912, z: -677.469}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3594,9 +3594,9 @@ MonoBehaviour:
   m_ShapeHeight: -1
   m_AspectRatio: 1
   m_SpotIESCutoffPercent: 100
-  m_LightDimmer: 5
+  m_LightDimmer: 48
   m_VolumetricDimmer: 1
-  m_FadeDistance: 25
+  m_FadeDistance: 50
   m_VolumetricFadeDistance: 10000
   m_AffectDiffuse: 1
   m_AffectSpecular: 1
@@ -3667,10 +3667,10 @@ MonoBehaviour:
   m_ShadowResolution:
     m_Override: 512
     m_UseOverride: 0
-    m_Level: 0
+    m_Level: 1
   m_ShadowDimmer: 1
   m_VolumetricShadowDimmer: 1
-  m_ShadowFadeDistance: 10000
+  m_ShadowFadeDistance: 25
   m_UseContactShadow:
     m_Override: 0
     m_UseOverride: 1
@@ -3724,7 +3724,7 @@ Light:
   m_Type: 2
   m_Color: {r: 0.46598905, g: 0.45977217, b: 0.7924528, a: 1}
   m_Intensity: 3183.0989
-  m_Range: 2.5
+  m_Range: 5
   m_SpotAngle: 30
   m_InnerSpotAngle: 0
   m_CookieSize2D: {x: 10, y: 10}
@@ -3786,7 +3786,7 @@ Transform:
   m_GameObject: {fileID: 190089453}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.623, y: -61.028, z: -665.101}
+  m_LocalPosition: {x: -0.623, y: -60.626, z: -665.101}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4875,9 +4875,9 @@ MonoBehaviour:
   m_ShapeHeight: -1
   m_AspectRatio: 1
   m_SpotIESCutoffPercent: 100
-  m_LightDimmer: 5
+  m_LightDimmer: 48
   m_VolumetricDimmer: 1
-  m_FadeDistance: 25
+  m_FadeDistance: 50
   m_VolumetricFadeDistance: 10000
   m_AffectDiffuse: 1
   m_AffectSpecular: 1
@@ -4948,10 +4948,10 @@ MonoBehaviour:
   m_ShadowResolution:
     m_Override: 512
     m_UseOverride: 0
-    m_Level: 0
+    m_Level: 1
   m_ShadowDimmer: 1
   m_VolumetricShadowDimmer: 1
-  m_ShadowFadeDistance: 10000
+  m_ShadowFadeDistance: 25
   m_UseContactShadow:
     m_Override: 0
     m_UseOverride: 1
@@ -5005,7 +5005,7 @@ Light:
   m_Type: 2
   m_Color: {r: 0.46598905, g: 0.45977217, b: 0.7924528, a: 1}
   m_Intensity: 3183.0989
-  m_Range: 2.5
+  m_Range: 5
   m_SpotAngle: 30
   m_InnerSpotAngle: 0
   m_CookieSize2D: {x: 10, y: 10}
@@ -5067,7 +5067,7 @@ Transform:
   m_GameObject: {fileID: 288526557}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -24.37, y: -61.148, z: -627.95}
+  m_LocalPosition: {x: -24.37, y: -60.746, z: -627.95}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -18589,7 +18589,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -3522446014841687792, guid: d11179971cc592f4fa5a58b8fa9f3398, type: 3}
       propertyPath: m_ReceiveGI
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: -3522446014841687792, guid: d11179971cc592f4fa5a58b8fa9f3398, type: 3}
       propertyPath: m_MotionVectors
@@ -32492,8 +32492,16 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4539481662035048396, guid: d11179971cc592f4fa5a58b8fa9f3398, type: 3}
+      propertyPath: m_CastShadows
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4539481662035048396, guid: d11179971cc592f4fa5a58b8fa9f3398, type: 3}
       propertyPath: m_RenderingLayerMask
       value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 4539481662035048396, guid: d11179971cc592f4fa5a58b8fa9f3398, type: 3}
+      propertyPath: m_StaticShadowCaster
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4543538489578960165, guid: d11179971cc592f4fa5a58b8fa9f3398, type: 3}
       propertyPath: m_ReceiveGI
@@ -42629,9 +42637,9 @@ MonoBehaviour:
   m_ShapeHeight: -1
   m_AspectRatio: 1
   m_SpotIESCutoffPercent: 100
-  m_LightDimmer: 5
+  m_LightDimmer: 48
   m_VolumetricDimmer: 1
-  m_FadeDistance: 25
+  m_FadeDistance: 50
   m_VolumetricFadeDistance: 10000
   m_AffectDiffuse: 1
   m_AffectSpecular: 1
@@ -42702,10 +42710,10 @@ MonoBehaviour:
   m_ShadowResolution:
     m_Override: 512
     m_UseOverride: 0
-    m_Level: 0
+    m_Level: 1
   m_ShadowDimmer: 1
   m_VolumetricShadowDimmer: 1
-  m_ShadowFadeDistance: 10000
+  m_ShadowFadeDistance: 25
   m_UseContactShadow:
     m_Override: 0
     m_UseOverride: 1
@@ -42759,7 +42767,7 @@ Light:
   m_Type: 2
   m_Color: {r: 0.46598905, g: 0.45977217, b: 0.7924528, a: 1}
   m_Intensity: 3183.0989
-  m_Range: 2.5
+  m_Range: 5
   m_SpotAngle: 30
   m_InnerSpotAngle: 0
   m_CookieSize2D: {x: 10, y: 10}
@@ -42821,7 +42829,7 @@ Transform:
   m_GameObject: {fileID: 666257051}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.997, y: -59.109, z: -669.972}
+  m_LocalPosition: {x: -1.997, y: -58.707, z: -669.972}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -70434,6 +70442,974 @@ MonoBehaviour:
     rotation: 266.743
     height: 0.5236275
     width: 0.6391849
+  - position: {x: -16.38005, y: -69.61611, z: -620.06274}
+    rotation: 10.917277
+    height: 0.51822996
+    width: 0.6416951
+  - position: {x: -17.279037, y: -69.63433, z: -621.1371}
+    rotation: 319.2384
+    height: 0.62487733
+    width: 0.6044503
+  - position: {x: -17.33104, y: -69.70386, z: -620.13916}
+    rotation: 61.321865
+    height: 0.64689535
+    width: 0.62705064
+  - position: {x: -15.739914, y: -69.535645, z: -619.9702}
+    rotation: 31.230268
+    height: 0.5201225
+    width: 0.6163752
+  - position: {x: -16.705887, y: -69.64601, z: -620.23694}
+    rotation: 339.63165
+    height: 0.57350636
+    width: 0.6006293
+  - position: {x: -14.522034, y: -69.30385, z: -621.45496}
+    rotation: 85.89549
+    height: 0.6558063
+    width: 0.6458794
+  - position: {x: -16.561462, y: -69.613365, z: -620.4976}
+    rotation: 129.12486
+    height: 0.6366556
+    width: 0.6267755
+  - position: {x: -17.189987, y: -69.69648, z: -620.16345}
+    rotation: 314.09183
+    height: 0.6266735
+    width: 0.62585557
+  - position: {x: -16.403763, y: -69.73503, z: -618.66534}
+    rotation: 17.920376
+    height: 0.5395589
+    width: 0.63961464
+  - position: {x: -17.299896, y: -69.90084, z: -618.1092}
+    rotation: 343.49377
+    height: 0.5902445
+    width: 0.6160661
+  - position: {x: -17.755142, y: -69.92914, z: -618.1262}
+    rotation: 34.181343
+    height: 0.54765844
+    width: 0.6284976
+  - position: {x: -16.414413, y: -69.75577, z: -618.4965}
+    rotation: 282.26474
+    height: 0.6059228
+    width: 0.60102344
+  - position: {x: -16.426224, y: -69.82614, z: -617.8939}
+    rotation: 348.237
+    height: 0.5764916
+    width: 0.6468383
+  - position: {x: -16.416794, y: -69.76346, z: -618.432}
+    rotation: 44.09693
+    height: 0.618685
+    width: 0.64409673
+  - position: {x: -16.53212, y: -69.822464, z: -618.05566}
+    rotation: 20.009495
+    height: 0.6005988
+    width: 0.62987214
+  - position: {x: -16.351593, y: -69.77113, z: -618.2849}
+    rotation: 239.2088
+    height: 0.6968616
+    width: 0.62212086
+  - position: {x: -16.026566, y: -69.89634, z: -616.6206}
+    rotation: 259.73065
+    height: 0.6997114
+    width: 0.62141734
+  - position: {x: -15.246201, y: -69.58455, z: -618.56903}
+    rotation: 60.37648
+    height: 0.5370114
+    width: 0.6225647
+  - position: {x: -16.155289, y: -69.90835, z: -616.73486}
+    rotation: 269.84225
+    height: 0.57377267
+    width: 0.64725673
+  - position: {x: -16.39206, y: -69.80036, z: -618.0782}
+    rotation: 79.629425
+    height: 0.6952985
+    width: 0.60761505
+  - position: {x: -16.069931, y: -69.60753, z: -619.375}
+    rotation: 99.15777
+    height: 0.5837052
+    width: 0.6006343
+  - position: {x: -16.295486, y: -69.84708, z: -617.55054}
+    rotation: 128.08542
+    height: 0.68384784
+    width: 0.602059
+  - position: {x: -16.368988, y: -69.780365, z: -618.22534}
+    rotation: 20.25703
+    height: 0.62032896
+    width: 0.64775586
+  - position: {x: -15.416794, y: -69.66119, z: -618.05444}
+    rotation: 85.978485
+    height: 0.6035545
+    width: 0.6427571
+  - position: {x: -17.038116, y: -69.95581, z: -617.4385}
+    rotation: 57.085648
+    height: 0.56047046
+    width: 0.6068584
+  - position: {x: -16.692932, y: -71.04323, z: -609.72363}
+    rotation: 212.41754
+    height: 0.6222076
+    width: 0.6128873
+  - position: {x: -17.459305, y: -71.42255, z: -608.2323}
+    rotation: 314.32675
+    height: 0.54485
+    width: 0.64636827
+  - position: {x: -16.717377, y: -70.857155, z: -610.8727}
+    rotation: 175.3222
+    height: 0.6483174
+    width: 0.6191528
+  - position: {x: -17.799606, y: -71.12881, z: -609.9755}
+    rotation: 5.2065754
+    height: 0.63260394
+    width: 0.6061207
+  - position: {x: -16.15094, y: -70.94042, z: -609.81335}
+    rotation: 42.20106
+    height: 0.5054133
+    width: 0.6351745
+  - position: {x: -16.856094, y: -70.68565, z: -612.0095}
+    rotation: 243.4778
+    height: 0.66281855
+    width: 0.64597595
+  - position: {x: -17.489487, y: -70.777084, z: -611.87683}
+    rotation: 59.196182
+    height: 0.6282539
+    width: 0.62893605
+  - position: {x: -17.74733, y: -71.04919, z: -610.4158}
+    rotation: 212.44771
+    height: 0.5129345
+    width: 0.641026
+  - position: {x: -17.776657, y: -71.0581, z: -610.3828}
+    rotation: 13.230929
+    height: 0.5028294
+    width: 0.60449
+  - position: {x: -16.432388, y: -70.90877, z: -610.3512}
+    rotation: 130.16818
+    height: 0.56994927
+    width: 0.6138789
+  - position: {x: -15.715332, y: -70.61044, z: -611.2112}
+    rotation: 349.75958
+    height: 0.63460386
+    width: 0.6247572
+  - position: {x: -15.760117, y: -70.97425, z: -609.098}
+    rotation: 129.0704
+    height: 0.5443108
+    width: 0.6015023
+  - position: {x: -15.948837, y: -70.9087, z: -609.7477}
+    rotation: 247.89932
+    height: 0.6168513
+    width: 0.6414548
+  - position: {x: -15.220505, y: -70.53305, z: -611.0486}
+    rotation: 212.25601
+    height: 0.6328059
+    width: 0.645885
+  - position: {x: -15.911392, y: -70.762405, z: -610.56177}
+    rotation: 244.73016
+    height: 0.5158084
+    width: 0.6104996
+  - position: {x: -14.954208, y: -70.3427, z: -611.8363}
+    rotation: 173.6094
+    height: 0.63990086
+    width: 0.62771535
+  - position: {x: -15.952927, y: -70.565384, z: -611.7731}
+    rotation: 267.86282
+    height: 0.5219317
+    width: 0.6354716
+  - position: {x: -17.286667, y: -70.77299, z: -611.766}
+    rotation: 179.29501
+    height: 0.5999065
+    width: 0.63896173
+  - position: {x: -17.767654, y: -70.79621, z: -611.94653}
+    rotation: 79.4793
+    height: 0.6136733
+    width: 0.637459
+  - position: {x: -16.713684, y: -70.77179, z: -611.3898}
+    rotation: 89.5218
+    height: 0.58675313
+    width: 0.64061695
+  - position: {x: -17.17418, y: -70.85207, z: -611.20935}
+    rotation: 31.956612
+    height: 0.5221205
+    width: 0.62413347
+  - position: {x: -16.836197, y: -70.865295, z: -610.90265}
+    rotation: 78.33973
+    height: 0.55273354
+    width: 0.6423768
+  - position: {x: -16.879105, y: -71.03293, z: -609.9109}
+    rotation: 111.53872
+    height: 0.58922285
+    width: 0.62009865
+  - position: {x: -17.57698, y: -70.69624, z: -612.4275}
+    rotation: 101.80238
+    height: 0.50493175
+    width: 0.6224141
+  - position: {x: -15.704346, y: -70.37778, z: -612.5758}
+    rotation: 152.94246
+    height: 0.69739264
+    width: 0.6249764
+  - position: {x: -17.620377, y: -71.36034, z: -608.5807}
+    rotation: 25.682388
+    height: 0.5126653
+    width: 0.6367173
+  - position: {x: -17.67012, y: -71.74248, z: -606.9949}
+    rotation: 257.00864
+    height: 0.58083415
+    width: 0.63803136
+  - position: {x: -16.326584, y: -71.405594, z: -607.6847}
+    rotation: 262.853
+    height: 0.6246674
+    width: 0.62228537
+  - position: {x: -17.26567, y: -71.7397, z: -606.7909}
+    rotation: 193.59467
+    height: 0.53009874
+    width: 0.62278676
+  - position: {x: -16.7332, y: -71.62496, z: -606.9862}
+    rotation: 341.70648
+    height: 0.5032532
+    width: 0.64689666
+  - position: {x: -15.640915, y: -71.05265, z: -608.484}
+    rotation: 354.42224
+    height: 0.5766394
+    width: 0.63879544
+  - position: {x: -16.598312, y: -71.67533, z: -606.6974}
+    rotation: 131.44972
+    height: 0.6101346
+    width: 0.6407759
+  - position: {x: -16.04567, y: -71.52166, z: -606.9166}
+    rotation: 249.49754
+    height: 0.5474792
+    width: 0.6341895
+  - position: {x: -16.22258, y: -71.5604, z: -606.9303}
+    rotation: 44.310265
+    height: 0.6431625
+    width: 0.641514
+  - position: {x: -18.322723, y: -72.00107, z: -606.257}
+    rotation: 33.582844
+    height: 0.6083959
+    width: 0.62290406
+  - position: {x: -17.460373, y: -71.70153, z: -607.0558}
+    rotation: 70.07316
+    height: 0.5661187
+    width: 0.61782986
+  - position: {x: -16.909378, y: -71.63944, z: -607.02246}
+    rotation: 175.63751
+    height: 0.6601815
+    width: 0.6442643
+  - position: {x: -14.836105, y: -71.348915, z: -606.4332}
+    rotation: 130.53854
+    height: 0.650394
+    width: 0.6222693
+  - position: {x: -16.33348, y: -71.983406, z: -605.2418}
+    rotation: 85.21335
+    height: 0.6021179
+    width: 0.6343527
+  - position: {x: -16.860397, y: -71.82982, z: -606.18665}
+    rotation: 242.31549
+    height: 0.51981634
+    width: 0.6025461
+  - position: {x: -16.58751, y: -71.68779, z: -606.6384}
+    rotation: 239.72272
+    height: 0.6035291
+    width: 0.62240684
+  - position: {x: -16.452621, y: -71.81136, z: -606.0387}
+    rotation: 285.20084
+    height: 0.6301502
+    width: 0.6011295
+  - position: {x: -16.756165, y: -72.265724, z: -604.2838}
+    rotation: 253.8622
+    height: 0.6567469
+    width: 0.62226737
+  - position: {x: -17.679367, y: -72.39817, z: -604.27905}
+    rotation: 7.7560472
+    height: 0.5399747
+    width: 0.60596037
+  - position: {x: -17.222748, y: -72.8324, z: -602.6762}
+    rotation: 295.20358
+    height: 0.64441806
+    width: 0.63364595
+  - position: {x: -16.16948, y: -72.18004, z: -604.2722}
+    rotation: 71.98813
+    height: 0.5173343
+    width: 0.60597295
+  - position: {x: -16.462753, y: -72.21192, z: -604.3429}
+    rotation: 167.8994
+    height: 0.5087977
+    width: 0.6125017
+  - position: {x: -17.20259, y: -72.594444, z: -603.43134}
+    rotation: 85.000534
+    height: 0.67861897
+    width: 0.6049211
+  - position: {x: -17.31572, y: -72.72635, z: -603.0592}
+    rotation: 111.38654
+    height: 0.5988586
+    width: 0.60074455
+  - position: {x: -16.431412, y: -71.81154, z: -606.0261}
+    rotation: 51.41743
+    height: 0.5900128
+    width: 0.6271434
+  - position: {x: -16.299408, y: -72.05921, z: -604.9009}
+    rotation: 77.47529
+    height: 0.5230381
+    width: 0.6422889
+  - position: {x: -17.735748, y: -72.23151, z: -604.9663}
+    rotation: 306.69965
+    height: 0.58367205
+    width: 0.6346828
+  - position: {x: -17.067902, y: -72.51876, z: -603.61304}
+    rotation: 178.15213
+    height: 0.57460815
+    width: 0.6208695
+  - position: {x: -16.883484, y: -72.22673, z: -604.51355}
+    rotation: 145.31644
+    height: 0.6575873
+    width: 0.64352727
+  - position: {x: -17.00682, y: -72.304436, z: -604.2736}
+    rotation: 155.0747
+    height: 0.55383813
+    width: 0.6269727
+  - position: {x: -16.253174, y: -72.304115, z: -603.9231}
+    rotation: 351.10803
+    height: 0.61229444
+    width: 0.6047976
+  - position: {x: -16.865707, y: -72.50909, z: -603.552}
+    rotation: 42.871956
+    height: 0.50710857
+    width: 0.62365943
+  - position: {x: -17.628433, y: -70.44234, z: -614.1416}
+    rotation: 248.49367
+    height: 0.5730443
+    width: 0.64962196
+  - position: {x: -17.039627, y: -70.28807, z: -614.82825}
+    rotation: 223.99529
+    height: 0.62875646
+    width: 0.6190636
+  - position: {x: -16.9449, y: -70.25722, z: -614.9879}
+    rotation: 140.02377
+    height: 0.6069957
+    width: 0.60001284
+  - position: {x: -15.886818, y: -69.84804, z: -615.88824}
+    rotation: 77.66566
+    height: 0.61643296
+    width: 0.64970505
+  - position: {x: -17.24498, y: -70.066315, z: -616.5891}
+    rotation: 264.84964
+    height: 0.5798969
+    width: 0.61353016
+  - position: {x: -17.538193, y: -70.31648, z: -614.9496}
+    rotation: 63.09401
+    height: 0.5603241
+    width: 0.6113328
+  - position: {x: -14.777908, y: -70.02548, z: -613.8271}
+    rotation: 69.636154
+    height: 0.5205565
+    width: 0.6320336
+  - position: {x: -16.091858, y: -69.90169, z: -616.6869}
+    rotation: 272.48004
+    height: 0.6888108
+    width: 0.63876194
+  - position: {x: -16.07875, y: -70.27023, z: -613.9464}
+    rotation: 155.71312
+    height: 0.64997935
+    width: 0.6081566
+  - position: {x: -16.45523, y: -70.22943, z: -614.6937}
+    rotation: 72.08104
+    height: 0.6635828
+    width: 0.64181286
+  - position: {x: -17.596176, y: -70.118095, z: -616.4182}
+    rotation: 224.17184
+    height: 0.5458954
+    width: 0.64625186
+  - position: {x: -16.994553, y: -70.32033, z: -614.5674}
+    rotation: 215.0807
+    height: 0.54182255
+    width: 0.64705086
+  - position: {x: -16.368118, y: -70.25557, z: -614.406}
+    rotation: 145.90086
+    height: 0.56461954
+    width: 0.61728275
+  - position: {x: -16.325485, y: -70.217224, z: -614.6167}
+    rotation: 50.956093
+    height: 0.6467934
+    width: 0.62195206
+  - position: {x: -15.981766, y: -70.1768, z: -614.46826}
+    rotation: 214.66266
+    height: 0.67358226
+    width: 0.6235318
+  - position: {x: -23.236084, y: -69.76318, z: -620.97925}
+    rotation: 250.19556
+    height: 0.5209632
+    width: 0.6332633
+  - position: {x: -22.512405, y: -69.83313, z: -620.78796}
+    rotation: 212.89717
+    height: 0.6515967
+    width: 0.6151614
+  - position: {x: -23.35234, y: -69.67345, z: -622.0685}
+    rotation: 296.3097
+    height: 0.67506427
+    width: 0.62096584
+  - position: {x: -24.133453, y: -69.68373, z: -621.1046}
+    rotation: 134.63005
+    height: 0.5423765
+    width: 0.6202344
+  - position: {x: -24.203613, y: -69.68606, z: -620.937}
+    rotation: 193.23541
+    height: 0.540911
+    width: 0.6244496
+  - position: {x: -23.902176, y: -69.752556, z: -620.26935}
+    rotation: 294.39648
+    height: 0.61517906
+    width: 0.6082129
+  - position: {x: -24.636368, y: -69.68584, z: -619.8275}
+    rotation: 335.30496
+    height: 0.6781098
+    width: 0.63604987
+  - position: {x: -23.894638, y: -69.70575, z: -621.13196}
+    rotation: 213.88078
+    height: 0.68697083
+    width: 0.62273
+  - position: {x: -24.698715, y: -69.63657, z: -620.8855}
+    rotation: 75.01654
+    height: 0.6126493
+    width: 0.6205493
+  - position: {x: -23.65532, y: -69.725235, z: -621.1362}
+    rotation: 353.97675
+    height: 0.5934292
+    width: 0.6365218
+  - position: {x: -24.10971, y: -69.64895, z: -621.7704}
+    rotation: 163.64975
+    height: 0.59018004
+    width: 0.6292573
+  - position: {x: -23.677048, y: -69.78459, z: -620.0906}
+    rotation: 354.901
+    height: 0.671787
+    width: 0.60744226
+  - position: {x: -24.534378, y: -69.67828, z: -620.4489}
+    rotation: 116.7586
+    height: 0.65428096
+    width: 0.6012586
+  - position: {x: -24.25737, y: -69.778534, z: -619.4707}
+    rotation: 335.35675
+    height: 0.54149455
+    width: 0.6274995
+  - position: {x: -23.685532, y: -69.811386, z: -619.6992}
+    rotation: 126.24134
+    height: 0.55357635
+    width: 0.6400752
+  - position: {x: -24.323608, y: -69.71019, z: -620.2848}
+    rotation: 61.79445
+    height: 0.6037712
+    width: 0.603413
+  - position: {x: -24.495422, y: -69.69233, z: -620.2682}
+    rotation: 108.76557
+    height: 0.6805832
+    width: 0.61632633
+  - position: {x: -24.162277, y: -69.7626, z: -619.729}
+    rotation: 133.09308
+    height: 0.60767376
+    width: 0.6451652
+  - position: {x: -23.676682, y: -69.751915, z: -620.6841}
+    rotation: 77.321304
+    height: 0.67777085
+    width: 0.6273982
+  - position: {x: -23.695663, y: -69.731606, z: -621.01855}
+    rotation: 344.3612
+    height: 0.6716956
+    width: 0.6380545
+  - position: {x: -23.77658, y: -69.93176, z: -618.5353}
+    rotation: 310.40497
+    height: 0.54683286
+    width: 0.63630295
+  - position: {x: -23.782776, y: -69.9172, z: -618.67615}
+    rotation: 56.442776
+    height: 0.55793893
+    width: 0.64770716
+  - position: {x: -23.617844, y: -69.8591, z: -619.3342}
+    rotation: 358.82648
+    height: 0.5594808
+    width: 0.63963217
+  - position: {x: -23.930939, y: -69.90193, z: -618.6373}
+    rotation: 36.798363
+    height: 0.53320515
+    width: 0.6257255
+  - position: {x: -23.07341, y: -70.10317, z: -617.6342}
+    rotation: 121.009575
+    height: 0.5269208
+    width: 0.6106136
+  - position: {x: -24.359879, y: -69.90068, z: -618.0394}
+    rotation: 61.366196
+    height: 0.6052004
+    width: 0.6187508
+  - position: {x: -24.712692, y: -69.864624, z: -617.84125}
+    rotation: 68.216644
+    height: 0.579893
+    width: 0.6124172
+  - position: {x: -22.829285, y: -70.18919, z: -617.07983}
+    rotation: 312.20157
+    height: 0.6123332
+    width: 0.6278988
+  - position: {x: -23.969513, y: -70.24441, z: -615.5332}
+    rotation: 51.425457
+    height: 0.5717355
+    width: 0.6221004
+  - position: {x: -25.05333, y: -70.055305, z: -615.3584}
+    rotation: 246.33275
+    height: 0.6678264
+    width: 0.6354129
+  - position: {x: -23.36438, y: -70.16516, z: -616.6891}
+    rotation: 183.03224
+    height: 0.57245904
+    width: 0.6419617
+  - position: {x: -23.410843, y: -70.375374, z: -615.1542}
+    rotation: 163.79047
+    height: 0.5602134
+    width: 0.64174545
+  - position: {x: -23.272217, y: -70.231735, z: -616.2883}
+    rotation: 116.26971
+    height: 0.6138985
+    width: 0.64950055
+  - position: {x: -23.640228, y: -70.44324, z: -614.4066}
+    rotation: 47.07088
+    height: 0.53751636
+    width: 0.6415977
+  - position: {x: -23.49971, y: -70.46352, z: -614.4116}
+    rotation: 30.550318
+    height: 0.5827986
+    width: 0.6197448
+  - position: {x: -24.124863, y: -70.39213, z: -614.22107}
+    rotation: 154.82112
+    height: 0.5360917
+    width: 0.60867745
+  - position: {x: -24.126892, y: -70.43577, z: -613.8867}
+    rotation: 60.796623
+    height: 0.6517589
+    width: 0.6018562
+  - position: {x: -23.59439, y: -70.795654, z: -612.06506}
+    rotation: 321.586
+    height: 0.62806606
+    width: 0.62043285
+  - position: {x: -24.251953, y: -70.59456, z: -612.5776}
+    rotation: 265.24808
+    height: 0.5713547
+    width: 0.6484269
+  - position: {x: -24.994156, y: -70.54027, z: -611.8501}
+    rotation: 142.74684
+    height: 0.5937133
+    width: 0.6490259
+  - position: {x: -24.048996, y: -70.90236, z: -610.9714}
+    rotation: 11.854548
+    height: 0.54689527
+    width: 0.648925
+  - position: {x: -23.6922, y: -71.12069, z: -609.9723}
+    rotation: 46.82592
+    height: 0.555953
+    width: 0.606125
+  - position: {x: -24.028503, y: -70.94443, z: -610.74}
+    rotation: 22.747622
+    height: 0.5382429
+    width: 0.63404477
+  - position: {x: -23.148727, y: -71.55986, z: -608.2606}
+    rotation: 8.4859085
+    height: 0.65330225
+    width: 0.6439886
+  - position: {x: -23.724258, y: -71.22948, z: -609.2715}
+    rotation: 212.38702
+    height: 0.5202278
+    width: 0.6228008
+  - position: {x: -23.381653, y: -71.30661, z: -609.1537}
+    rotation: 227.08629
+    height: 0.50703776
+    width: 0.63737804
+  - position: {x: -24.879074, y: -71.095764, z: -608.787}
+    rotation: 212.82806
+    height: 0.5699906
+    width: 0.64505017
+  - position: {x: -24.22435, y: -71.31267, z: -608.5563}
+    rotation: 285.29495
+    height: 0.5592659
+    width: 0.62623984
+  - position: {x: -23.627151, y: -71.685555, z: -607.4651}
+    rotation: 139.48999
+    height: 0.6067653
+    width: 0.6114298
+  - position: {x: -24.395676, y: -71.65483, z: -607.009}
+    rotation: 211.83008
+    height: 0.64065516
+    width: 0.6371938
+  - position: {x: -25.245377, y: -71.15894, z: -608.1643}
+    rotation: 296.84512
+    height: 0.5872123
+    width: 0.6172224
+  - position: {x: -25.015121, y: -71.41553, z: -607.34393}
+    rotation: 331.55533
+    height: 0.522396
+    width: 0.62790513
+  - position: {x: -23.8806, y: -71.65471, z: -607.4403}
+    rotation: 42.398514
+    height: 0.66217035
+    width: 0.6291697
+  - position: {x: -24.737, y: -71.89549, z: -605.69446}
+    rotation: 39.761795
+    height: 0.5948032
+    width: 0.6189591
+  - position: {x: -23.808731, y: -72.072105, z: -605.7823}
+    rotation: 242.3003
+    height: 0.5276828
+    width: 0.6162995
+  - position: {x: -23.682938, y: -71.80354, z: -606.9515}
+    rotation: 172.3075
+    height: 0.5976459
+    width: 0.641967
+  - position: {x: -24.505966, y: -71.83296, z: -606.1818}
+    rotation: 300.91858
+    height: 0.64842695
+    width: 0.6180221
+  - position: {x: -24.830383, y: -71.896935, z: -605.5931}
+    rotation: 41.674316
+    height: 0.58389306
+    width: 0.6144752
+  - position: {x: -24.24887, y: -72.114975, z: -605.31445}
+    rotation: 283.8308
+    height: 0.6673797
+    width: 0.62905943
+  - position: {x: -24.59195, y: -72.178215, z: -604.7988}
+    rotation: 88.87635
+    height: 0.5075587
+    width: 0.62860346
+  - position: {x: -23.884079, y: -72.24393, z: -605.03613}
+    rotation: 141.55684
+    height: 0.6877825
+    width: 0.62417525
+  - position: {x: -24.819199, y: -72.12695, z: -604.78796}
+    rotation: 158.87146
+    height: 0.6655397
+    width: 0.6388545
+  - position: {x: -24.131653, y: -72.57559, z: -603.91797}
+    rotation: 222.53218
+    height: 0.5870968
+    width: 0.62126434
+  - position: {x: -25.085495, y: -71.94445, z: -605.14124}
+    rotation: 269.14368
+    height: 0.65671855
+    width: 0.61084056
+  - position: {x: -24.52269, y: -72.71811, z: -603.2545}
+    rotation: 72.85142
+    height: 0.6010972
+    width: 0.61283326
+  - position: {x: -23.930359, y: -72.70423, z: -603.6122}
+    rotation: 7.10382
+    height: 0.6471166
+    width: 0.60930735
+  - position: {x: -24.916046, y: -72.83324, z: -602.6284}
+    rotation: 51.755863
+    height: 0.5827105
+    width: 0.6364132
+  - position: {x: -24.755325, y: -72.66395, z: -603.244}
+    rotation: 7.5197554
+    height: 0.5215571
+    width: 0.6319411
+  - position: {x: -25.48677, y: -73.02938, z: -601.6344}
+    rotation: 13.139176
+    height: 0.50501466
+    width: 0.63902754
+  - position: {x: -25.278305, y: -72.92277, z: -602.10034}
+    rotation: 156.57472
+    height: 0.65218383
+    width: 0.6237023
+  - position: {x: -26.316422, y: -72.69646, z: -601.82117}
+    rotation: 227.68694
+    height: 0.5576069
+    width: 0.64961207
+  - position: {x: -25.07988, y: -73.42814, z: -600.75806}
+    rotation: 137.86922
+    height: 0.5914177
+    width: 0.6203512
+  - position: {x: -25.092361, y: -73.29797, z: -601.13196}
+    rotation: 35.514595
+    height: 0.5412265
+    width: 0.6046734
+  - position: {x: -24.902557, y: -73.62152, z: -600.3219}
+    rotation: 241.02983
+    height: 0.6251703
+    width: 0.6368522
+  - position: {x: -26.461624, y: -72.799225, z: -601.3567}
+    rotation: 11.446338
+    height: 0.5392435
+    width: 0.61094403
+  - position: {x: -25.605087, y: -73.534676, z: -600.0895}
+    rotation: 341.64346
+    height: 0.6135044
+    width: 0.60983837
+  - position: {x: -25.979996, y: -73.53909, z: -599.8264}
+    rotation: 84.06493
+    height: 0.52657664
+    width: 0.6137789
+  - position: {x: -24.886703, y: -73.86574, z: -599.6633}
+    rotation: 319.81442
+    height: 0.52246976
+    width: 0.6081307
+  - position: {x: -25.32106, y: -73.69868, z: -599.83026}
+    rotation: 109.91064
+    height: 0.50094116
+    width: 0.64815104
+  - position: {x: -23.888474, y: -74.18435, z: -599.2407}
+    rotation: 112.62864
+    height: 0.5102606
+    width: 0.62380505
+  - position: {x: -25.84401, y: -73.882065, z: -598.9776}
+    rotation: 145.02487
+    height: 0.57405996
+    width: 0.6228854
+  - position: {x: -25.281021, y: -73.95405, z: -599.15735}
+    rotation: 130.32533
+    height: 0.5151787
+    width: 0.64879423
+  - position: {x: -25.185028, y: -74.49192, z: -597.7488}
+    rotation: 128.80283
+    height: 0.6583876
+    width: 0.61792797
+  - position: {x: -26.021301, y: -73.92114, z: -598.75183}
+    rotation: 37.848244
+    height: 0.64413506
+    width: 0.64641184
+  - position: {x: -26.001816, y: -74.2238, z: -597.93555}
+    rotation: 26.169304
+    height: 0.51608425
+    width: 0.6383738
+  - position: {x: -26.48349, y: -74.682175, z: -596.3123}
+    rotation: 291.6177
+    height: 0.6876649
+    width: 0.60178536
+  - position: {x: -25.440079, y: -75.1054, z: -595.8985}
+    rotation: 255.30003
+    height: 0.69382304
+    width: 0.6435513
+  - position: {x: -25.972702, y: -74.906456, z: -596.08514}
+    rotation: 40.262146
+    height: 0.5125274
+    width: 0.6138089
+  - position: {x: -26.316391, y: -75.053116, z: -595.4529}
+    rotation: 197.73668
+    height: 0.6308795
+    width: 0.62683415
+  - position: {x: -26.643692, y: -75.14101, z: -594.90424}
+    rotation: 57.258766
+    height: 0.57238877
+    width: 0.6278751
+  - position: {x: -27.220764, y: -77.94519, z: -585.46765}
+    rotation: 345.93805
+    height: 0.58782846
+    width: 0.60153157
+  - position: {x: -28.728836, y: -77.5082, z: -585.13275}
+    rotation: 97.78701
+    height: 0.5939572
+    width: 0.64080656
+  - position: {x: -28.204422, y: -77.23067, z: -586.76874}
+    rotation: 274.87137
+    height: 0.63373226
+    width: 0.62803066
+  - position: {x: -28.757553, y: -77.328094, z: -585.72}
+    rotation: 232.7799
+    height: 0.650365
+    width: 0.6362221
+  - position: {x: -28.397644, y: -77.658615, z: -585.0371}
+    rotation: 92.460014
+    height: 0.50008255
+    width: 0.6223799
+  - position: {x: -27.79802, y: -77.962166, z: -584.75574}
+    rotation: 50.969738
+    height: 0.53953457
+    width: 0.6049278
+  - position: {x: -28.732681, y: -77.34773, z: -585.68396}
+    rotation: 325.02542
+    height: 0.6099541
+    width: 0.6364162
+  - position: {x: -28.521301, y: -77.66534, z: -584.85486}
+    rotation: 96.50333
+    height: 0.5244227
+    width: 0.6331483
+  - position: {x: -28.363342, y: -77.68644, z: -584.98474}
+    rotation: 86.9991
+    height: 0.5148539
+    width: 0.6470525
+  - position: {x: -28.788773, y: -76.91711, z: -587.0586}
+    rotation: 61.952248
+    height: 0.6350934
+    width: 0.6206652
+  - position: {x: -30.226166, y: -76.42222, z: -586.6374}
+    rotation: 37.519985
+    height: 0.58392525
+    width: 0.64297414
+  - position: {x: -29.23346, y: -76.84833, z: -586.6814}
+    rotation: 323.96988
+    height: 0.6252711
+    width: 0.6300525
+  - position: {x: -27.29715, y: -77.28787, z: -587.7367}
+    rotation: 336.35892
+    height: 0.5373629
+    width: 0.6111277
+  - position: {x: -27.571854, y: -77.18664, z: -587.7345}
+    rotation: 179.85265
+    height: 0.62674266
+    width: 0.64083374
+  - position: {x: -29.368912, y: -76.45238, z: -587.78455}
+    rotation: 220.93358
+    height: 0.6090759
+    width: 0.62367666
+  - position: {x: -28.225021, y: -76.58241, z: -588.9235}
+    rotation: 99.49195
+    height: 0.52780944
+    width: 0.6289376
+  - position: {x: -27.620148, y: -76.868866, z: -588.7656}
+    rotation: 280.48676
+    height: 0.5894747
+    width: 0.6156957
+  - position: {x: -28.117172, y: -76.62318, z: -588.9298}
+    rotation: 220.69955
+    height: 0.5058378
+    width: 0.6486319
+  - position: {x: -27.17006, y: -77.02672, z: -588.8052}
+    rotation: 168.99725
+    height: 0.63121295
+    width: 0.64395285
+  - position: {x: -27.55127, y: -76.73451, z: -589.306}
+    rotation: 203.08435
+    height: 0.6784712
+    width: 0.6170424
+  - position: {x: -26.35431, y: -77.25702, z: -588.7455}
+    rotation: 77.93559
+    height: 0.62166554
+    width: 0.61379826
+  - position: {x: -26.134964, y: -77.47735, z: -588.1511}
+    rotation: 106.06032
+    height: 0.6136944
+    width: 0.62501633
+  - position: {x: -26.394089, y: -77.41459, z: -588.14026}
+    rotation: 14.180946
+    height: 0.6242946
+    width: 0.61782646
+  - position: {x: -26.703857, y: -77.46854, z: -587.66174}
+    rotation: 61.621025
+    height: 0.66811603
+    width: 0.62110245
+  - position: {x: -27.718246, y: -77.308975, z: -587.12225}
+    rotation: 89.01908
+    height: 0.6815906
+    width: 0.646417
+  - position: {x: -26.82167, y: -78.23354, z: -584.77783}
+    rotation: 227.61096
+    height: 0.6427736
+    width: 0.6342164
+  - position: {x: -26.378311, y: -78.06489, z: -585.7914}
+    rotation: 136.46979
+    height: 0.58698463
+    width: 0.61280024
+  - position: {x: -26.782532, y: -78.455505, z: -583.9597}
+    rotation: 269.5616
+    height: 0.58450246
+    width: 0.6152885
+  - position: {x: -27.35202, y: -78.63869, z: -582.1043}
+    rotation: 32.608368
+    height: 0.6273943
+    width: 0.60741353
+  - position: {x: -27.100464, y: -78.455284, z: -583.49927}
+    rotation: 138.56422
+    height: 0.50562924
+    width: 0.60256296
+  - position: {x: -27.901688, y: -78.589455, z: -581.531}
+    rotation: 33.98372
+    height: 0.69203424
+    width: 0.62473446
+  - position: {x: -26.126999, y: -79.042274, z: -581.5768}
+    rotation: 248.7654
+    height: 0.532531
+    width: 0.6447813
+  - position: {x: -27.434875, y: -78.66607, z: -581.8303}
+    rotation: 264.35934
+    height: 0.570896
+    width: 0.62643325
+  - position: {x: -26.819504, y: -78.69664, z: -582.5523}
+    rotation: 43.53354
+    height: 0.6903002
+    width: 0.61722904
+  - position: {x: -27.567413, y: -78.657135, z: -581.6879}
+    rotation: 267.45093
+    height: 0.6245862
+    width: 0.644353
+  - position: {x: -27.838577, y: -78.757416, z: -580.7311}
+    rotation: 31.284685
+    height: 0.54539376
+    width: 0.624969
+  - position: {x: -31.33638, y: -75.44119, z: -588.0957}
+    rotation: 126.14079
+    height: 0.6631023
+    width: 0.61650896
+  - position: {x: -31.45044, y: -74.99094, z: -589.3312}
+    rotation: 111.755356
+    height: 0.5894203
+    width: 0.6266762
+  - position: {x: -30.940536, y: -75.310616, z: -589.09814}
+    rotation: 24.005943
+    height: 0.521268
+    width: 0.6410603
+  - position: {x: -31.592804, y: -74.87973, z: -589.461}
+    rotation: 199.35205
+    height: 0.5231095
+    width: 0.604252
+  - position: {x: -31.179764, y: -75.683914, z: -587.5658}
+    rotation: 123.87473
+    height: 0.50943255
+    width: 0.61437726
+  - position: {x: -31.00911, y: -75.711494, z: -587.734}
+    rotation: 30.801373
+    height: 0.6931127
+    width: 0.60948527
+  - position: {x: -30.187378, y: -76.3978, z: -586.7739}
+    rotation: 356.75638
+    height: 0.5222332
+    width: 0.6482504
+  - position: {x: -32.48535, y: -76.54973, z: -582.1737}
+    rotation: 142.9267
+    height: 0.6941578
+    width: 0.6130094
+  - position: {x: -26.912857, y: -79.14424, z: -579.8725}
+    rotation: 67.36568
+    height: 0.512541
+    width: 0.64328337
+  - position: {x: -27.061981, y: -79.128654, z: -579.7497}
+    rotation: 201.87256
+    height: 0.62373614
+    width: 0.6472353
+  - position: {x: -25.733627, y: -79.51559, z: -579.07666}
+    rotation: 308.73697
+    height: 0.6237787
+    width: 0.6081392
+  - position: {x: -25.994171, y: -79.47465, z: -579.09607}
+    rotation: 78.36574
+    height: 0.64544934
+    width: 0.64338225
+  - position: {x: -26.138062, y: -79.72443, z: -576.57245}
+    rotation: 258.5366
+    height: 0.6374219
+    width: 0.64926934
+  - position: {x: -26.908875, y: -79.513756, z: -577.5471}
+    rotation: 80.48713
+    height: 0.6049104
+    width: 0.63670754
+  - position: {x: -26.544617, y: -79.634735, z: -577.0217}
+    rotation: 224.63237
+    height: 0.63767177
+    width: 0.64979404
+  - position: {x: -27.046692, y: -79.47894, z: -577.5149}
+    rotation: 301.00287
+    height: 0.675983
+    width: 0.62975
+  - position: {x: -26.82225, y: -79.58461, z: -576.58826}
+    rotation: 168.62334
+    height: 0.5900589
+    width: 0.6224842
+  - position: {x: -26.401947, y: -79.69067, z: -576.348}
+    rotation: 174.5969
+    height: 0.5769977
+    width: 0.6299956
+  - position: {x: -27.14952, y: -79.49175, z: -576.718}
+    rotation: 355.29465
+    height: 0.5216743
+    width: 0.6343752
 --- !u!4 &670508977
 Transform:
   m_ObjectHideFlags: 0
@@ -73018,9 +73994,9 @@ MonoBehaviour:
   m_ShapeHeight: -1
   m_AspectRatio: 1
   m_SpotIESCutoffPercent: 100
-  m_LightDimmer: 5
+  m_LightDimmer: 48
   m_VolumetricDimmer: 1
-  m_FadeDistance: 25
+  m_FadeDistance: 50
   m_VolumetricFadeDistance: 10000
   m_AffectDiffuse: 1
   m_AffectSpecular: 1
@@ -73091,10 +74067,10 @@ MonoBehaviour:
   m_ShadowResolution:
     m_Override: 512
     m_UseOverride: 0
-    m_Level: 0
+    m_Level: 1
   m_ShadowDimmer: 1
   m_VolumetricShadowDimmer: 1
-  m_ShadowFadeDistance: 10000
+  m_ShadowFadeDistance: 25
   m_UseContactShadow:
     m_Override: 0
     m_UseOverride: 1
@@ -73148,7 +74124,7 @@ Light:
   m_Type: 2
   m_Color: {r: 0.46598905, g: 0.45977217, b: 0.7924528, a: 1}
   m_Intensity: 3183.0989
-  m_Range: 2.5
+  m_Range: 5
   m_SpotAngle: 30
   m_InnerSpotAngle: 0
   m_CookieSize2D: {x: 10, y: 10}
@@ -73210,7 +74186,7 @@ Transform:
   m_GameObject: {fileID: 918097035}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.998, y: -61.294, z: -674.941}
+  m_LocalPosition: {x: 3.998, y: -60.892, z: -674.941}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -75064,9 +76040,9 @@ MonoBehaviour:
   m_ShapeHeight: -1
   m_AspectRatio: 1
   m_SpotIESCutoffPercent: 100
-  m_LightDimmer: 5
+  m_LightDimmer: 48
   m_VolumetricDimmer: 1
-  m_FadeDistance: 25
+  m_FadeDistance: 50
   m_VolumetricFadeDistance: 10000
   m_AffectDiffuse: 1
   m_AffectSpecular: 1
@@ -75137,10 +76113,10 @@ MonoBehaviour:
   m_ShadowResolution:
     m_Override: 512
     m_UseOverride: 0
-    m_Level: 0
+    m_Level: 1
   m_ShadowDimmer: 1
   m_VolumetricShadowDimmer: 1
-  m_ShadowFadeDistance: 10000
+  m_ShadowFadeDistance: 25
   m_UseContactShadow:
     m_Override: 0
     m_UseOverride: 1
@@ -75194,7 +76170,7 @@ Light:
   m_Type: 2
   m_Color: {r: 0.46598905, g: 0.45977217, b: 0.7924528, a: 1}
   m_Intensity: 3183.0989
-  m_Range: 2.5
+  m_Range: 5
   m_SpotAngle: 30
   m_InnerSpotAngle: 0
   m_CookieSize2D: {x: 10, y: 10}
@@ -75256,7 +76232,7 @@ Transform:
   m_GameObject: {fileID: 1041129974}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -16.933, y: -61.148, z: -626.89}
+  m_LocalPosition: {x: -16.933, y: -60.746, z: -626.89}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -85677,8 +86653,8 @@ MonoBehaviour:
   grassMesh: {fileID: -462981019419857548, guid: 65a8ad92f44be884a874dd86eb99d500, type: 3}
   grassMaterial: {fileID: 2100000, guid: a852abbdf114b8d428ffa6256dbea1f0, type: 2}
   maxGrassCount: 10000
-  minHeight: 0.3
-  maxHeight: 0.5
+  minHeight: 0.4
+  maxHeight: 0.6
   minWidth: 0.55
   maxWidth: 0.6
   maxRenderDistance: 100
@@ -94232,6 +95208,462 @@ MonoBehaviour:
     rotation: 287.31992
     height: 0.20936199
     width: 0.53610826
+  - position: {x: -16.43071, y: -70.406235, z: -613.44824}
+    rotation: 4.1648912
+    height: 0.42868418
+    width: 0.58735585
+  - position: {x: -15.7827, y: -70.52232, z: -611.81384}
+    rotation: 236.41531
+    height: 0.5680591
+    width: 0.5870924
+  - position: {x: -17.83223, y: -70.63567, z: -612.9818}
+    rotation: 88.08606
+    height: 0.56480694
+    width: 0.5884273
+  - position: {x: -18.198563, y: -70.82769, z: -612.0552}
+    rotation: 165.54591
+    height: 0.557847
+    width: 0.5951121
+  - position: {x: -14.784058, y: -69.894104, z: -614.85706}
+    rotation: 268.22696
+    height: 0.48901194
+    width: 0.550536
+  - position: {x: -17.378693, y: -70.580795, z: -613.0226}
+    rotation: 240.67534
+    height: 0.550362
+    width: 0.5510715
+  - position: {x: -16.548508, y: -70.70468, z: -611.68774}
+    rotation: 158.86894
+    height: 0.5588056
+    width: 0.55862516
+  - position: {x: -15.563751, y: -70.38773, z: -612.3325}
+    rotation: 349.76627
+    height: 0.45217738
+    width: 0.5683706
+  - position: {x: -15.015518, y: -70.13629, z: -613.3473}
+    rotation: 76.50591
+    height: 0.5003612
+    width: 0.57021093
+  - position: {x: -15.574417, y: -70.13179, z: -614.27246}
+    rotation: 341.91547
+    height: 0.5929947
+    width: 0.5899368
+  - position: {x: -16.1566, y: -70.30667, z: -613.79254}
+    rotation: 32.278435
+    height: 0.5802834
+    width: 0.5601327
+  - position: {x: -17.272522, y: -70.39907, z: -614.1836}
+    rotation: 228.33928
+    height: 0.5447511
+    width: 0.5564054
+  - position: {x: -18.168427, y: -70.70364, z: -612.7782}
+    rotation: 70.64587
+    height: 0.5595529
+    width: 0.55643576
+  - position: {x: -14.8311, y: -70.01616, z: -613.98474}
+    rotation: 111.65901
+    height: 0.5912061
+    width: 0.5772432
+  - position: {x: -16.793488, y: -70.22217, z: -615.1406}
+    rotation: 32.960873
+    height: 0.5909432
+    width: 0.5806505
+  - position: {x: -14.940781, y: -70.01213, z: -614.1917}
+    rotation: 132.60544
+    height: 0.54212224
+    width: 0.5746379
+  - position: {x: -16.406357, y: -70.3385, z: -613.88354}
+    rotation: 96.21961
+    height: 0.40411404
+    width: 0.58337903
+  - position: {x: -15.883347, y: -70.39212, z: -612.7512}
+    rotation: 75.08683
+    height: 0.54920375
+    width: 0.587831
+  - position: {x: -16.38852, y: -70.39615, z: -613.4653}
+    rotation: 2.8032303
+    height: 0.40989295
+    width: 0.56895775
+  - position: {x: -16.409607, y: -70.401665, z: -613.4535}
+    rotation: 233.13156
+    height: 0.5859593
+    width: 0.5643418
+  - position: {x: -14.860367, y: -70.169174, z: -612.8434}
+    rotation: 303.2663
+    height: 0.5749824
+    width: 0.5959671
+  - position: {x: -16.226883, y: -70.40899, z: -613.1707}
+    rotation: 262.83234
+    height: 0.5081305
+    width: 0.5866653
+  - position: {x: -14.6892395, y: -70.020676, z: -613.7223}
+    rotation: 50.581184
+    height: 0.5231322
+    width: 0.5715563
+  - position: {x: -18.352509, y: -70.77188, z: -612.4956}
+    rotation: 341.89825
+    height: 0.519131
+    width: 0.5791952
+  - position: {x: -15.914322, y: -70.02113, z: -615.4544}
+    rotation: 334.68884
+    height: 0.51315767
+    width: 0.5524839
+  - position: {x: -17.413223, y: -70.69571, z: -612.32117}
+    rotation: 121.30011
+    height: 0.45777383
+    width: 0.58304375
+  - position: {x: -18.308853, y: -70.54651, z: -613.9325}
+    rotation: 92.54297
+    height: 0.47924376
+    width: 0.557027
+  - position: {x: -15.90065, y: -70.26698, z: -613.7478}
+    rotation: 6.8520355
+    height: 0.49366724
+    width: 0.59799755
+  - position: {x: -17.948502, y: -69.890465, z: -618.60376}
+    rotation: 48.58502
+    height: 0.45451924
+    width: 0.56184494
+  - position: {x: -16.017227, y: -69.82063, z: -617.4415}
+    rotation: 141.92969
+    height: 0.472609
+    width: 0.5913163
+  - position: {x: -17.42839, y: -69.80677, z: -619.0608}
+    rotation: 134.27235
+    height: 0.5663573
+    width: 0.59374136
+  - position: {x: -17.742798, y: -69.97508, z: -617.7117}
+    rotation: 357.70267
+    height: 0.48744625
+    width: 0.5923103
+  - position: {x: -15.261063, y: -69.71348, z: -617.17566}
+    rotation: 141.71095
+    height: 0.5639389
+    width: 0.5696115
+  - position: {x: -17.05487, y: -70.14824, z: -615.84155}
+    rotation: 245.41428
+    height: 0.56789017
+    width: 0.5740708
+  - position: {x: -15.784775, y: -69.77873, z: -617.4591}
+    rotation: 348.67078
+    height: 0.4534754
+    width: 0.58700925
+  - position: {x: -16.596329, y: -69.89185, z: -617.5258}
+    rotation: 155.19241
+    height: 0.4326529
+    width: 0.5908977
+  - position: {x: -15.137466, y: -69.59971, z: -618.19885}
+    rotation: 33.574604
+    height: 0.5565984
+    width: 0.57697695
+  - position: {x: -17.925766, y: -70.06739, z: -617.0812}
+    rotation: 323.44342
+    height: 0.45070755
+    width: 0.5762788
+  - position: {x: -18.277176, y: -70.13483, z: -616.7807}
+    rotation: 42.78059
+    height: 0.45114446
+    width: 0.55386055
+  - position: {x: -15.213882, y: -69.70825, z: -617.1428}
+    rotation: 287.40268
+    height: 0.4589987
+    width: 0.5782389
+  - position: {x: -15.990158, y: -69.9134, z: -616.1931}
+    rotation: 13.105788
+    height: 0.46972665
+    width: 0.59188014
+  - position: {x: -15.653915, y: -69.72522, z: -617.8006}
+    rotation: 205.3069
+    height: 0.53155434
+    width: 0.5652529
+  - position: {x: -15.012024, y: -69.617035, z: -617.76575}
+    rotation: 213.81972
+    height: 0.5317418
+    width: 0.5642326
+  - position: {x: -17.283691, y: -70.07582, z: -616.5388}
+    rotation: 72.510025
+    height: 0.4417364
+    width: 0.5520529
+  - position: {x: -15.810226, y: -69.76129, z: -617.7013}
+    rotation: 156.62996
+    height: 0.41994447
+    width: 0.59055424
+  - position: {x: -18, y: -70.055336, z: -617.2357}
+    rotation: 341.31955
+    height: 0.50566435
+    width: 0.56903684
+  - position: {x: -16.359818, y: -69.67478, z: -619.1399}
+    rotation: 10.401735
+    height: 0.56500006
+    width: 0.5578215
+  - position: {x: -16.586395, y: -69.863464, z: -617.7626}
+    rotation: 238.36049
+    height: 0.54646134
+    width: 0.5570468
+  - position: {x: -15.91832, y: -69.81136, z: -617.3541}
+    rotation: 88.24107
+    height: 0.4640558
+    width: 0.5519484
+  - position: {x: -16.44075, y: -69.85086, z: -617.69495}
+    rotation: 279.67303
+    height: 0.5438535
+    width: 0.5854707
+  - position: {x: -16.191391, y: -69.71634, z: -618.56946}
+    rotation: 329.6308
+    height: 0.587355
+    width: 0.57999253
+  - position: {x: -17.621017, y: -69.763535, z: -619.58813}
+    rotation: 318.08316
+    height: 0.4453056
+    width: 0.57419294
+  - position: {x: -17.11177, y: -71.362946, z: -608.29834}
+    rotation: 7.8021812
+    height: 0.56306237
+    width: 0.56898737
+  - position: {x: -17.81166, y: -71.72695, z: -607.1359}
+    rotation: 298.88358
+    height: 0.47509634
+    width: 0.56732637
+  - position: {x: -18.082779, y: -71.39075, z: -608.69946}
+    rotation: 134.90501
+    height: 0.4693032
+    width: 0.58142054
+  - position: {x: -16.863297, y: -71.48525, z: -607.6498}
+    rotation: 89.21615
+    height: 0.4375241
+    width: 0.55583715
+  - position: {x: -18.986938, y: -71.44728, z: -608.9449}
+    rotation: 35.74213
+    height: 0.58001137
+    width: 0.58676064
+  - position: {x: -17.227798, y: -71.41988, z: -608.12}
+    rotation: 245.69592
+    height: 0.5885552
+    width: 0.5790593
+  - position: {x: -17.197357, y: -71.381966, z: -608.26373}
+    rotation: 352.51895
+    height: 0.4211121
+    width: 0.5818021
+  - position: {x: -17.669815, y: -71.24895, z: -609.1663}
+    rotation: 74.668495
+    height: 0.47645593
+    width: 0.5829749
+  - position: {x: -17.173752, y: -71.43342, z: -608.03406}
+    rotation: 358.1397
+    height: 0.43778417
+    width: 0.5523968
+  - position: {x: -18.143982, y: -71.29372, z: -609.22766}
+    rotation: 249.92523
+    height: 0.5465889
+    width: 0.5886527
+  - position: {x: -16.558472, y: -71.31855, z: -608.19055}
+    rotation: 244.76904
+    height: 0.55479413
+    width: 0.5513425
+  - position: {x: -24.598297, y: -69.59547, z: -621.85547}
+    rotation: 101.95341
+    height: 0.50059396
+    width: 0.58883345
+  - position: {x: -23.975922, y: -69.65286, z: -621.8286}
+    rotation: 102.72914
+    height: 0.40111044
+    width: 0.55210745
+  - position: {x: -24.743668, y: -69.6636, z: -619.9088}
+    rotation: 177.82211
+    height: 0.46634233
+    width: 0.5950372
+  - position: {x: -24.382431, y: -70.0411, z: -616.5002}
+    rotation: 30.835918
+    height: 0.5568614
+    width: 0.5883386
+  - position: {x: -23.83702, y: -70.101135, z: -616.72217}
+    rotation: 161.05118
+    height: 0.50617015
+    width: 0.5862227
+  - position: {x: -23.421555, y: -70.24952, z: -616.03125}
+    rotation: 49.476627
+    height: 0.5336667
+    width: 0.57135713
+  - position: {x: -25.468124, y: -69.873856, z: -616.0828}
+    rotation: 327.98492
+    height: 0.4414683
+    width: 0.5714847
+  - position: {x: -25.695618, y: -69.85145, z: -615.7368}
+    rotation: 128.6874
+    height: 0.46844158
+    width: 0.58407426
+  - position: {x: -23.9012, y: -69.89209, z: -618.77734}
+    rotation: 3.2640553
+    height: 0.51467746
+    width: 0.5769
+  - position: {x: -22.552551, y: -70.31821, z: -616.287}
+    rotation: 131.37222
+    height: 0.5341356
+    width: 0.5644875
+  - position: {x: -24.935638, y: -69.89191, z: -616.8073}
+    rotation: 225.87834
+    height: 0.46972322
+    width: 0.5945571
+  - position: {x: -25.105804, y: -69.88177, z: -616.627}
+    rotation: 140.74797
+    height: 0.50176185
+    width: 0.55797195
+  - position: {x: -25.583817, y: -69.96594, z: -615.0188}
+    rotation: 73.795685
+    height: 0.56411195
+    width: 0.5789372
+  - position: {x: -24.75145, y: -70.216, z: -614.5808}
+    rotation: 184.3603
+    height: 0.43496516
+    width: 0.58885443
+  - position: {x: -23.846024, y: -70.14536, z: -616.39026}
+    rotation: 135.74327
+    height: 0.5796294
+    width: 0.590368
+  - position: {x: -23.788406, y: -70.0529, z: -617.27985}
+    rotation: 66.06345
+    height: 0.5036883
+    width: 0.55187535
+  - position: {x: -25.489822, y: -69.79914, z: -616.67944}
+    rotation: 168.67574
+    height: 0.5500216
+    width: 0.56577444
+  - position: {x: -24.730667, y: -69.96453, z: -616.5602}
+    rotation: 225.74918
+    height: 0.47779322
+    width: 0.5771061
+  - position: {x: -25.226273, y: -69.823654, z: -616.93225}
+    rotation: 36.394188
+    height: 0.54544914
+    width: 0.5911228
+  - position: {x: -25.398544, y: -69.89553, z: -616.03796}
+    rotation: 311.44583
+    height: 0.5454536
+    width: 0.56180197
+  - position: {x: -25.369446, y: -70.0778, z: -614.5049}
+    rotation: 158.00917
+    height: 0.46325493
+    width: 0.5965845
+  - position: {x: -24.727112, y: -69.9663, z: -616.5521}
+    rotation: 29.201702
+    height: 0.48009443
+    width: 0.56428194
+  - position: {x: -24.957352, y: -69.8663, z: -617.1074}
+    rotation: 332.42752
+    height: 0.45488268
+    width: 0.5550061
+  - position: {x: -24.382034, y: -70.0392, z: -616.51514}
+    rotation: 84.875435
+    height: 0.5426008
+    width: 0.56789786
+  - position: {x: -23.993011, y: -70.20782, z: -615.7821}
+    rotation: 341.74942
+    height: 0.48172212
+    width: 0.55606496
+  - position: {x: -24.72731, y: -69.923416, z: -616.9647}
+    rotation: 253.08887
+    height: 0.53602314
+    width: 0.5759349
+  - position: {x: -25.963104, y: -69.86362, z: -614.9082}
+    rotation: 329.15506
+    height: 0.5866293
+    width: 0.5822215
+  - position: {x: -24.987717, y: -69.86983, z: -616.9694}
+    rotation: 297.16583
+    height: 0.40745834
+    width: 0.5594303
+  - position: {x: -23.942184, y: -70.26531, z: -615.4066}
+    rotation: 104.890015
+    height: 0.53598994
+    width: 0.5685358
+  - position: {x: -25.25888, y: -69.90041, z: -616.25635}
+    rotation: 43.71125
+    height: 0.45945638
+    width: 0.5849114
+  - position: {x: -22.791763, y: -70.17322, z: -617.2569}
+    rotation: 157.2875
+    height: 0.5173757
+    width: 0.59875864
+  - position: {x: -25.451431, y: -69.83113, z: -616.4911}
+    rotation: 47.07959
+    height: 0.46286935
+    width: 0.55189174
+  - position: {x: -25.379166, y: -69.741135, z: -617.6593}
+    rotation: 316.32404
+    height: 0.4174212
+    width: 0.5629833
+  - position: {x: -23.193436, y: -70.38402, z: -615.28516}
+    rotation: 74.14094
+    height: 0.46534285
+    width: 0.58407444
+  - position: {x: -24.568024, y: -70.036026, z: -616.26086}
+    rotation: 169.13815
+    height: 0.40719256
+    width: 0.57275915
+  - position: {x: -24.189621, y: -70.38056, z: -614.212}
+    rotation: 71.12828
+    height: 0.59801793
+    width: 0.57787
+  - position: {x: -24.907074, y: -70.10624, z: -615.21704}
+    rotation: 153.62112
+    height: 0.5731226
+    width: 0.59639776
+  - position: {x: -24.303833, y: -70.0134, z: -616.9169}
+    rotation: 50.166622
+    height: 0.5266575
+    width: 0.55279624
+  - position: {x: -23.885849, y: -70.14879, z: -616.331}
+    rotation: 344.89462
+    height: 0.53603315
+    width: 0.5731652
+  - position: {x: -25.713638, y: -69.97003, z: -614.6329}
+    rotation: 317.49017
+    height: 0.57366145
+    width: 0.58963287
+  - position: {x: -25.05745, y: -69.86827, z: -616.8019}
+    rotation: 2.9572105
+    height: 0.58010495
+    width: 0.5853866
+  - position: {x: -24.475006, y: -70.08016, z: -616.06506}
+    rotation: 273.24188
+    height: 0.42741856
+    width: 0.5538708
+  - position: {x: -25.02156, y: -70.0736, z: -615.26447}
+    rotation: 57.62355
+    height: 0.41076544
+    width: 0.59233767
+  - position: {x: -24.538864, y: -69.95149, z: -617.11316}
+    rotation: 219.96223
+    height: 0.45782205
+    width: 0.5795985
+  - position: {x: -24.314194, y: -70.25212, z: -615.0005}
+    rotation: 69.7879
+    height: 0.55286866
+    width: 0.594137
+  - position: {x: -25.570877, y: -69.94822, z: -615.2114}
+    rotation: 128.91287
+    height: 0.47050112
+    width: 0.5880365
+  - position: {x: -25.849686, y: -69.80708, z: -615.7168}
+    rotation: 343.7438
+    height: 0.5274266
+    width: 0.59281963
+  - position: {x: -24.563965, y: -70.24269, z: -614.69824}
+    rotation: 326.05963
+    height: 0.5697117
+    width: 0.56386566
+  - position: {x: -25.111938, y: -70.18745, z: -614.0813}
+    rotation: 264.3174
+    height: 0.43150574
+    width: 0.5958555
+  - position: {x: -23.365341, y: -70.10021, z: -617.35254}
+    rotation: 322.00397
+    height: 0.5149257
+    width: 0.57185626
+  - position: {x: -25.649384, y: -70.00423, z: -614.50146}
+    rotation: 70.90593
+    height: 0.40887776
+    width: 0.5990642
 --- !u!4 &1456492327
 Transform:
   m_ObjectHideFlags: 0
@@ -95522,9 +96954,9 @@ MonoBehaviour:
   m_ShapeHeight: -1
   m_AspectRatio: 1
   m_SpotIESCutoffPercent: 100
-  m_LightDimmer: 5
+  m_LightDimmer: 48
   m_VolumetricDimmer: 1
-  m_FadeDistance: 25
+  m_FadeDistance: 50
   m_VolumetricFadeDistance: 10000
   m_AffectDiffuse: 1
   m_AffectSpecular: 1
@@ -95595,10 +97027,10 @@ MonoBehaviour:
   m_ShadowResolution:
     m_Override: 512
     m_UseOverride: 0
-    m_Level: 0
+    m_Level: 1
   m_ShadowDimmer: 1
   m_VolumetricShadowDimmer: 1
-  m_ShadowFadeDistance: 10000
+  m_ShadowFadeDistance: 25
   m_UseContactShadow:
     m_Override: 0
     m_UseOverride: 1
@@ -95652,7 +97084,7 @@ Light:
   m_Type: 2
   m_Color: {r: 0.46598905, g: 0.45977217, b: 0.7924528, a: 1}
   m_Intensity: 3183.0989
-  m_Range: 2.5
+  m_Range: 5
   m_SpotAngle: 30
   m_InnerSpotAngle: 0
   m_CookieSize2D: {x: 10, y: 10}
@@ -95714,7 +97146,7 @@ Transform:
   m_GameObject: {fileID: 1540978297}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -25.136, y: -68.272, z: -621.334}
+  m_LocalPosition: {x: -25.136, y: -67.48, z: -621.334}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -96701,7 +98133,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Profile: {fileID: 11400000, guid: 28c4328b906351d4a9d6d3d6112de4f9, type: 2}
-  m_StaticLightingSkyUniqueID: 3
+  m_StaticLightingSkyUniqueID: 5
   m_StaticLightingCloudsUniqueID: 0
   m_StaticLightingVolumetricClouds: 0
   bounces: 2
@@ -99968,9 +101400,9 @@ MonoBehaviour:
   m_ShapeHeight: -1
   m_AspectRatio: 1
   m_SpotIESCutoffPercent: 100
-  m_LightDimmer: 5
+  m_LightDimmer: 48
   m_VolumetricDimmer: 1
-  m_FadeDistance: 25
+  m_FadeDistance: 50
   m_VolumetricFadeDistance: 10000
   m_AffectDiffuse: 1
   m_AffectSpecular: 1
@@ -100041,10 +101473,10 @@ MonoBehaviour:
   m_ShadowResolution:
     m_Override: 512
     m_UseOverride: 0
-    m_Level: 0
+    m_Level: 1
   m_ShadowDimmer: 1
   m_VolumetricShadowDimmer: 1
-  m_ShadowFadeDistance: 10000
+  m_ShadowFadeDistance: 25
   m_UseContactShadow:
     m_Override: 0
     m_UseOverride: 1
@@ -100098,7 +101530,7 @@ Light:
   m_Type: 2
   m_Color: {r: 0.46598905, g: 0.45977217, b: 0.7924528, a: 1}
   m_Intensity: 3183.0989
-  m_Range: 2.5
+  m_Range: 5
   m_SpotAngle: 30
   m_InnerSpotAngle: 0
   m_CookieSize2D: {x: 10, y: 10}
@@ -100149,7 +101581,7 @@ Light:
   m_ShadowRadius: 0
   m_ShadowAngle: 0
   m_LightUnit: 0
-  m_LuxAtDistance: 1
+  m_LuxAtDistance: 5
   m_EnableSpotReflector: 1
 --- !u!4 &1932936130
 Transform:
@@ -100160,7 +101592,7 @@ Transform:
   m_GameObject: {fileID: 1932936127}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -16.936, y: -68.22, z: -621.33}
+  m_LocalPosition: {x: -16.936, y: -67.441, z: -621.33}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -100526,9 +101958,9 @@ MonoBehaviour:
   m_ShapeHeight: -1
   m_AspectRatio: 1
   m_SpotIESCutoffPercent: 100
-  m_LightDimmer: 5
+  m_LightDimmer: 48
   m_VolumetricDimmer: 1
-  m_FadeDistance: 25
+  m_FadeDistance: 50
   m_VolumetricFadeDistance: 10000
   m_AffectDiffuse: 1
   m_AffectSpecular: 1
@@ -100599,10 +102031,10 @@ MonoBehaviour:
   m_ShadowResolution:
     m_Override: 512
     m_UseOverride: 0
-    m_Level: 0
+    m_Level: 1
   m_ShadowDimmer: 1
   m_VolumetricShadowDimmer: 1
-  m_ShadowFadeDistance: 10000
+  m_ShadowFadeDistance: 25
   m_UseContactShadow:
     m_Override: 0
     m_UseOverride: 1
@@ -100656,7 +102088,7 @@ Light:
   m_Type: 2
   m_Color: {r: 0.46598905, g: 0.45977217, b: 0.7924528, a: 1}
   m_Intensity: 3183.0989
-  m_Range: 2.5
+  m_Range: 5
   m_SpotAngle: 30
   m_InnerSpotAngle: 0
   m_CookieSize2D: {x: 10, y: 10}
@@ -100718,7 +102150,7 @@ Transform:
   m_GameObject: {fileID: 1970737240}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -24.509, y: -59.968, z: -637.408}
+  m_LocalPosition: {x: -24.509, y: -59.565998, z: -637.408}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

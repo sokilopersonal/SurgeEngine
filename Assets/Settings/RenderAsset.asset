@@ -110,7 +110,7 @@ MonoBehaviour:
         m_Bits: 0
       supportFabricConvolution: 0
       maxDirectionalLightsOnScreen: 2
-      maxPunctualLightsOnScreen: 64
+      maxPunctualLightsOnScreen: 128
       maxAreaLightsOnScreen: 32
       maxCubeReflectionOnScreen: 32
       maxPlanarReflectionOnScreen: 1
@@ -119,7 +119,7 @@ MonoBehaviour:
       maxLocalVolumetricFogSize: 0
       maxLocalVolumetricFogOnScreen: 128
     hdShadowInitParams:
-      maxShadowRequests: 32
+      maxShadowRequests: 64
       directionalShadowsDepthBits: 32
       punctualShadowFilteringQuality: 1
       directionalShadowFilteringQuality: 0
@@ -150,7 +150,7 @@ MonoBehaviour:
       maxDirectionalShadowMapResolution: 4096
       maxPunctualShadowMapResolution: 2048
       maxAreaShadowMapResolution: 2048
-      supportScreenSpaceShadows: 0
+      supportScreenSpaceShadows: 1
       maxScreenSpaceShadowSlots: 4
       screenSpaceShadowBufferFormat: 48
     decalSettings:
