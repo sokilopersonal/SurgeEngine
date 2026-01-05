@@ -16,7 +16,9 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         [SerializeField] protected bool cancelBoost;
         [SerializeField] protected bool isTo3D;
         [SerializeField] protected bool isWallWalk;
+        [SerializeField] private bool hasBase;
         [SerializeField] private EventReference sound;
+        [SerializeField] GameObject baseModel;
         public float Speed => speed;
         public virtual float KeepVelocityDistance => keepVelocityDistance;
         public bool IsWallWalk => isWallWalk;
@@ -55,6 +57,12 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
                     context.Kinematics.SetDashPath(null);
                 }
             }
+        }
+
+        private void OnValidate()
+        {
+            if (baseModel)
+                baseModel.SetActive(hasBase);
         }
 
         private void OnDrawGizmosSelected()
