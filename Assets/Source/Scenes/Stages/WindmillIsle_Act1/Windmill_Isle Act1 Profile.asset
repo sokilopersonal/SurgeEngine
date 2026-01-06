@@ -93,7 +93,7 @@ MonoBehaviour:
     m_Value: 0
   exposure:
     m_OverrideState: 1
-    m_Value: 13.6
+    m_Value: 14.5
   multiplier:
     m_OverrideState: 0
     m_Value: 1
@@ -117,7 +117,7 @@ MonoBehaviour:
     m_Value: 1
   color:
     m_OverrideState: 1
-    m_Value: {r: 0.1273585, g: 0.19161929, b: 1, a: 1}
+    m_Value: {r: 0.11792451, g: 0.16778067, b: 1, a: 1}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -138,67 +138,7 @@ MonoBehaviour:
   - {fileID: 2642939096983934950}
   - {fileID: -7572545758178807192}
   - {fileID: -5356428353461206626}
-  - {fileID: 171649863824583615}
---- !u!114 &171649863824583615
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 31394aa05878563408489d5c1688f3a0, type: 3}
-  m_Name: PathTracing
-  m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Runtime::UnityEngine.Rendering.HighDefinition.PathTracing
-  active: 0
-  enable:
-    m_OverrideState: 1
-    m_Value: 1
-  layerMask:
-    m_OverrideState: 0
-    m_Value:
-      serializedVersion: 2
-      m_Bits: 4294967295
-  maximumSamples:
-    m_OverrideState: 1
-    m_Value: 32
-  minimumDepth:
-    m_OverrideState: 0
-    m_Value: 1
-  maximumDepth:
-    m_OverrideState: 0
-    m_Value: 4
-  maximumIntensity:
-    m_OverrideState: 0
-    m_Value: 10
-  denoising:
-    m_OverrideState: 1
-    m_Value: 2
-  useAOVs:
-    m_OverrideState: 0
-    m_Value: 1
-  temporal:
-    m_OverrideState: 0
-    m_Value: 0
-  separateVolumetrics:
-    m_OverrideState: 0
-    m_Value: 0
-  asyncDenoising:
-    m_OverrideState: 0
-    m_Value: 1
-  skyImportanceSampling:
-    m_OverrideState: 0
-    m_Value: 0
-  tilingParameters:
-    m_OverrideState: 0
-    m_Value: {x: 1, y: 1, z: 0, w: 0}
-  seedMode:
-    m_OverrideState: 0
-    m_Value: 0
-  customSeed:
-    m_OverrideState: 0
-    m_Value: 0
+  - {fileID: 7564911000618625601}
 --- !u!114 &2642939096983934950
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -287,7 +227,7 @@ MonoBehaviour:
     m_Value: 0
   exposure:
     m_OverrideState: 1
-    m_Value: 14
+    m_Value: 14.4
   multiplier:
     m_OverrideState: 1
     m_Value: 440.54
@@ -484,6 +424,25 @@ MonoBehaviour:
   directionalLightsOnly:
     m_OverrideState: 0
     m_Value: 0
+--- !u!114 &7564911000618625601
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b51a78e223a2e504bb88a059b55229ea, type: 3}
+  m_Name: WhiteBalance
+  m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Runtime::UnityEngine.Rendering.HighDefinition.WhiteBalance
+  active: 0
+  temperature:
+    m_OverrideState: 1
+    m_Value: -15
+  tint:
+    m_OverrideState: 0
+    m_Value: 0
 --- !u!114 &8833914425718981673
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -514,7 +473,7 @@ MonoBehaviour:
     m_Value: 0
   limitMin:
     m_OverrideState: 1
-    m_Value: 12.5
+    m_Value: 13
   limitMax:
     m_OverrideState: 1
     m_Value: 15

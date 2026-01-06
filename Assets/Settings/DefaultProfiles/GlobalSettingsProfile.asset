@@ -1719,6 +1719,32 @@ MonoBehaviour:
   directionalLightsOnly:
     m_OverrideState: 1
     m_Value: 0
+--- !u!114 &-4582170538346808706
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: TestComponent
+  m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Editor.Tests:UnityEditor.Rendering.HighDefinition.Tests:CustomPostProcessComponentListTest/TestComponent
+  active: 1
+--- !u!114 &-4523041352831414531
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: TestComponent2
+  m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Editor.Tests:UnityEditor.Rendering.HighDefinition.Tests:CustomPostProcessComponentListTest/TestComponent2
+  active: 1
 --- !u!114 &-4411424876117451834
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -2978,8 +3004,8 @@ MonoBehaviour:
   - {fileID: 7054568583307864062}
   - {fileID: 8366440330025302430}
   - {fileID: -5968353343242530664}
-  - {fileID: 1275932905431004162}
-  - {fileID: 616889148534799349}
+  - {fileID: -4582170538346808706}
+  - {fileID: -4523041352831414531}
 --- !u!114 &370524497763573843
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -3505,7 +3531,7 @@ MonoBehaviour:
   active: 1
   mode:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 3
   useFullACES:
     m_OverrideState: 1
     m_Value: 0
@@ -3514,7 +3540,7 @@ MonoBehaviour:
     m_Value: 0.1
   toeLength:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0.4
   shoulderStrength:
     m_OverrideState: 1
     m_Value: 0
@@ -3523,7 +3549,7 @@ MonoBehaviour:
     m_Value: 0.5
   shoulderAngle:
     m_OverrideState: 1
-    m_Value: 0.4
+    m_Value: 0
   gamma:
     m_OverrideState: 1
     m_Value: 1
