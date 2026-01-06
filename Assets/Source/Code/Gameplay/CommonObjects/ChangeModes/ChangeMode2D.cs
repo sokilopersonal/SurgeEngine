@@ -8,12 +8,16 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.ChangeModes
         [SerializeField] private float pathEaseTime = 1f;
         [SerializeField] private DominantSpline dominantSpline = DominantSpline.Left;
 
+        protected override SplineTag SplineTagFilter => SplineTag.SideView;
+
         protected override void SetMode(CharacterBase ctx)
         {
-            var kinematics = ctx.Kinematics;
-            kinematics.Set2DPath(kinematics.Path2D == null
-                ? new ChangeMode2DData(new SplineData(path, ctx.transform.position, dominantSpline), ctx.transform.position, isChangeCamera, pathEaseTime)
-                : null);
+            ctx.Kinematics.Set2DPath(new ChangeMode2DData(new SplineData(container, ctx.transform.position, dominantSpline), ctx.transform.position, isChangeCamera, pathEaseTime));
+        }
+
+        protected override void RemoveMode(CharacterBase ctx)
+        {
+            ctx.Kinematics.Set2DPath(null);
         }
     }
 

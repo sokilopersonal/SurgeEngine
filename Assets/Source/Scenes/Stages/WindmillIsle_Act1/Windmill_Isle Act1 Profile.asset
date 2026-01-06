@@ -135,77 +135,8 @@ MonoBehaviour:
   - {fileID: 3563020459224904894}
   - {fileID: 3710790946313969216}
   - {fileID: 8833914425718981673}
-  - {fileID: 2642939096983934950}
   - {fileID: -7572545758178807192}
   - {fileID: -5356428353461206626}
-  - {fileID: 7564911000618625601}
---- !u!114 &2642939096983934950
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aaa3b8214f75b354e9ba2caadd022259, type: 3}
-  m_Name: DepthOfField
-  m_EditorClassIdentifier: 
-  active: 0
-  quality:
-    m_OverrideState: 1
-    m_Value: 3
-  focusMode:
-    m_OverrideState: 1
-    m_Value: 2
-  focusDistance:
-    m_OverrideState: 0
-    m_Value: 10
-  focusDistanceMode:
-    m_OverrideState: 0
-    m_Value: 0
-  nearFocusStart:
-    m_OverrideState: 1
-    m_Value: 0
-  nearFocusEnd:
-    m_OverrideState: 1
-    m_Value: 0.00001
-  farFocusStart:
-    m_OverrideState: 1
-    m_Value: 400
-  farFocusEnd:
-    m_OverrideState: 1
-    m_Value: 800
-  m_NearSampleCount:
-    m_OverrideState: 0
-    m_Value: 5
-  m_NearMaxBlur:
-    m_OverrideState: 0
-    m_Value: 4
-  m_FarSampleCount:
-    m_OverrideState: 1
-    m_Value: 8
-  m_FarMaxBlur:
-    m_OverrideState: 1
-    m_Value: 1
-  m_Resolution:
-    m_OverrideState: 0
-    m_Value: 2
-  m_HighQualityFiltering:
-    m_OverrideState: 0
-    m_Value: 1
-  m_PhysicallyBased:
-    m_OverrideState: 1
-    m_Value: 0
-  m_AdaptiveSamplingWeight:
-    m_OverrideState: 0
-    m_Value: 0.75
-  m_LimitManualRangeNearBlur:
-    m_OverrideState: 0
-    m_Value: 0
-  coCStabilization:
-    m_OverrideState: 0
-    m_Value: 0
 --- !u!114 &3563020459224904894
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -221,7 +152,7 @@ MonoBehaviour:
   active: 1
   rotation:
     m_OverrideState: 1
-    m_Value: 46.077137
+    m_Value: 45
   skyIntensityMode:
     m_OverrideState: 1
     m_Value: 0
@@ -277,7 +208,7 @@ MonoBehaviour:
       multiplyValue: 1
   sunInitialRotation:
     m_OverrideState: 0
-    m_Value: -46.077137
+    m_Value: -45
   lockSun:
     m_OverrideState: 0
     m_Value: 1
@@ -422,25 +353,6 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 0.666
   directionalLightsOnly:
-    m_OverrideState: 0
-    m_Value: 0
---- !u!114 &7564911000618625601
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b51a78e223a2e504bb88a059b55229ea, type: 3}
-  m_Name: WhiteBalance
-  m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Runtime::UnityEngine.Rendering.HighDefinition.WhiteBalance
-  active: 0
-  temperature:
-    m_OverrideState: 1
-    m_Value: -15
-  tint:
     m_OverrideState: 0
     m_Value: 0
 --- !u!114 &8833914425718981673

@@ -1,7 +1,5 @@
-﻿using JetBrains.Annotations;
-using NaughtyAttributes;
+﻿using System;
 using SurgeEngine.Source.Code.Core.Character.System;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Splines;
 
@@ -9,21 +7,25 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects
 {
     public abstract class ModeCollision : StageObject
     {
-        [SerializeField] protected SplineContainer path;
         [SerializeField] protected bool isChangeCamera;
         [SerializeField] protected bool isEnabledFromBack = true;
         [SerializeField] protected bool isEnabledFromFront = true;
+        
+        protected SplineContainer container;
+        protected virtual SplineTag SplineTagFilter => SplineTag.All;
+
+        private CharacterBase _character;
 
         private void Awake()
         {
-            if (path == null)
+            if (container == null)
             {
                 var closePath = FindClosestContainer();
                 if (closePath)
                 {
-                    path = closePath;
+                    container = closePath;
                     
-                    Debug.Log($"Path set for {name} (ID: {SetID})");
+                    Debug.Log($"Path set for {name} (ID: {SetID}). Spline {container.name} with {container.tag} tag.");
                 }
                 else
                 {
@@ -36,13 +38,37 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects
         {
             base.OnEnter(msg, context);
             
-            if (!CheckFacing(context.transform.forward) || !path)
+            if (!CheckFacing(context.transform.forward) || !container)
                 return;
-            
-            SetMode(context);
+
+            _character = context;
+        }
+
+        public override void OnExit(Collider msg, CharacterBase context)
+        {
+            base.OnExit(msg, context);
+
+            _character = null;
+        }
+
+        private void OnTriggerStay(Collider other)
+        {
+            if (_character)
+            {
+                float dot = Vector3.Dot(transform.forward, _character.transform.forward);
+                if (dot > 0)
+                {
+                    SetMode(_character);
+                }
+                else
+                {
+                    RemoveMode(_character);
+                }
+            }
         }
 
         protected abstract void SetMode(CharacterBase ctx);
+        protected abstract void RemoveMode(CharacterBase ctx);
 
         protected bool CheckFacing(Vector3 dir)
         {
@@ -53,16 +79,6 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects
             
             return isEnabledFromBack && dot > 0 || isEnabledFromFront && dot < 0;
         }
-        
-        [Button("Get Nearest Path"), UsedImplicitly]
-        private void SetNearestPath()
-        {
-#if UNITY_EDITOR
-            Undo.RecordObject(this, "Set Nearest Path");
-#endif
-            
-            path = FindClosestContainer();
-        }
 
         private SplineContainer FindClosestContainer()
         {
@@ -72,6 +88,9 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects
 
             foreach (var container in containers)
             {
+                if (!IsSplineInFilter(container))
+                    continue;
+                
                 SplineUtility.GetNearestPoint(container.Spline, container.transform.InverseTransformPoint(transform.position), 
                     out var nearestPoint, out _, 8, 4);
 
@@ -86,6 +105,26 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects
             }
 
             return closest;
+        }
+        
+        private bool IsSplineInFilter(SplineContainer container)
+        {
+            var splineTag = GetSplineTag(container);
+            return (SplineTagFilter & splineTag) != 0;
+        }
+        
+        private SplineTag GetSplineTag(SplineContainer container)
+        {
+            if (container.CompareTag("SideView"))
+                return SplineTag.SideView;
+
+            if (container.CompareTag("Quickstep"))
+                return SplineTag.Quickstep;
+
+            if (container.CompareTag("DashPath"))
+                return SplineTag.DashPath;
+
+            return SplineTag.Default;
         }
     }
 
@@ -119,14 +158,20 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects
             if (gameObject.CompareTag("Quickstep"))
                 return SplineTag.Quickstep;
 
+            if (gameObject.CompareTag("DashPath"))
+                return SplineTag.DashPath;
+
             return SplineTag.Default;
         }
     }
 
+    [Flags]
     public enum SplineTag
     {
-        Default,
-        SideView,
-        Quickstep
+        Default = 0,
+        SideView = 1,
+        Quickstep = 2,
+        DashPath = 4,
+        All = Default | SideView | Quickstep | DashPath
     }
 }

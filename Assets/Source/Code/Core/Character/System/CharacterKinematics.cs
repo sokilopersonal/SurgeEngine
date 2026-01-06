@@ -619,6 +619,9 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
         public void Set2DPath(ChangeMode2DData data)
         {
+            if (Path2D != null && data != null && Path2D.Spline.Container == data.Spline.Container)
+                return;
+            
             Path2D = data;
             
             OnPath2DChange?.Invoke(data);
@@ -636,6 +639,9 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
         public void SetForwardPath(ChangeMode3DData data)
         {
+            if (PathForward != null && data != null && PathForward.Spline.Container == data.Spline.Container)
+                return;
+            
             PathForward = data;
             
             OnPathForwardChange?.Invoke(data);
@@ -653,6 +659,9 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
         public void SetDashPath(ChangeMode3DData data)
         {
+            if (PathDash != null && data != null && PathDash.Spline.Container == data.Spline.Container)
+                return;
+            
             PathDash = data;
             
             OnPathDashChange?.Invoke(data);

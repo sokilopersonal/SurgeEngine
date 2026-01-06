@@ -5,6 +5,7 @@ using SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.Player;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Splines;
 using Debug = UnityEngine.Debug;
 
 namespace SurgeEngine.Source.Editor.ObjectCustomGizmos
@@ -165,6 +166,14 @@ namespace SurgeEngine.Source.Editor.ObjectCustomGizmos
             {
                 Gizmos.DrawCube(Vector3.zero, Vector3.one * 0.75f);
             }
+        }
+
+        [DrawGizmo(GizmoType.Pickable | GizmoType.Selected | GizmoType.NotInSelectionHierarchy)]
+        static void DrawGizmos(SplineContainer type, GizmoType gizmoType)
+        {
+            Gizmos.matrix  = type.transform.localToWorldMatrix;
+            Gizmos.color = Color.darkBlue;
+            Gizmos.DrawSphere(Vector3.zero, 0.3f);
         }
 
         // Call this method to use the material
