@@ -1131,6 +1131,7 @@ namespace UnityEngine.Rendering.HighDefinition
         internal bool deepLearningSuperSamplingUseCustomAttributes => m_AdditionalCameraData == null ? false : m_AdditionalCameraData.deepLearningSuperSamplingUseCustomAttributes;
         internal bool deepLearningSuperSamplingUseOptimalSettings => m_AdditionalCameraData == null ? false : m_AdditionalCameraData.deepLearningSuperSamplingUseOptimalSettings;
         internal float deepLearningSuperSamplingSharpening => m_AdditionalCameraData == null ? 0.0f : m_AdditionalCameraData.deepLearningSuperSamplingSharpening;
+        internal bool deepLearningSuperSamplingUseCas => m_AdditionalCameraData == null ? false : m_AdditionalCameraData.deepLearningSuperSamplingUseCas;
 
         internal bool allowFidelityFX2SuperResolution => m_AdditionalCameraData == null ? false : m_AdditionalCameraData.allowFidelityFX2SuperResolution;
         internal bool fidelityFX2SuperResolutionUseCustomQualitySettings => m_AdditionalCameraData == null ? false : m_AdditionalCameraData.fidelityFX2SuperResolutionUseCustomQualitySettings;

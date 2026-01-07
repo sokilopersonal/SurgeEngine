@@ -12,6 +12,8 @@ namespace SurgeEngine.Source.Code.Infrastructure.Tools.Managers.UI
         [SerializeField] private OptionBar fullscreenBar;
         [SerializeField] private OptionBar upscalingModeBar;
         [SerializeField] private OptionBar upscalingPresetBar;
+        [SerializeField] private OptionBar casBar;
+        [SerializeField] private GameObject antiAliasingSection;
         [SerializeField] private OptionBar antiAliasingBar;
         [SerializeField] private OptionBar antiAliasingQualityBar;
         [SerializeField] private SliderOptionBar sharpnessSliderBar;
@@ -51,6 +53,10 @@ namespace SurgeEngine.Source.Code.Infrastructure.Tools.Managers.UI
                 _display.SetUpscalingMode(mode);
                 
                 upscalingPresetBar.gameObject.SetActive(mode != UpscalingMode.Off);
+                casBar.gameObject.SetActive(mode == UpscalingMode.DLSS);
+
+                bool enableAA = mode == UpscalingMode.Off;
+                antiAliasingSection.SetActive(enableAA);
             };
             
             upscalingPresetBar.OnChanged += b =>
@@ -58,12 +64,17 @@ namespace SurgeEngine.Source.Code.Infrastructure.Tools.Managers.UI
                 _display.SetUpscalingQuality((UpscalingQuality)b.Index);
             };
 
+            casBar.OnChanged += b =>
+            {
+                _display.SetCas(b.Index == 1);
+            };
+
             antiAliasingBar.OnChanged += b =>
             {
                 AntiAliasing mode = Enum.Parse<AntiAliasing>(antiAliasingBar.CurrentValue);
 
                 _display.SetAntiAliasing(mode);
-                
+
                 antiAliasingQualityBar.gameObject.SetActive(mode is AntiAliasing.SMAA or AntiAliasing.TAA);
                 sharpnessSliderBar.gameObject.SetActive(mode == AntiAliasing.TAA);
             };
@@ -81,6 +92,7 @@ namespace SurgeEngine.Source.Code.Infrastructure.Tools.Managers.UI
             fullscreenBar.Set(data.Fullscreen.Value ? 1 : 0);
             upscalingModeBar.Set((int)data.UpscaleMode.Value);
             upscalingPresetBar.Set((int)data.UpscaleQuality.Value);
+            casBar.Set(data.Cas.Value ? 1 : 0);
             antiAliasingBar.Set((int)data.AntiAliasing.Value);
             antiAliasingQualityBar.Set((int)data.AntiAliasingQuality.Value);
             sharpnessSliderBar.Slider.value = data.Sharpness.Value * 100;
@@ -102,6 +114,7 @@ namespace SurgeEngine.Source.Code.Infrastructure.Tools.Managers.UI
                 fullscreenBar.Set(data.Fullscreen.Value ? 1 : 0);
                 upscalingModeBar.Set((int)data.UpscaleMode.Value);
                 upscalingPresetBar.Set((int)data.UpscaleQuality.Value);
+                casBar.Set(data.Cas.Value ? 1 : 0);
                 antiAliasingBar.Set((int)data.AntiAliasing.Value);
                 antiAliasingQualityBar.Set((int)data.AntiAliasingQuality.Value);
                 sharpnessSliderBar.Slider.value = data.Sharpness.Value * 100;

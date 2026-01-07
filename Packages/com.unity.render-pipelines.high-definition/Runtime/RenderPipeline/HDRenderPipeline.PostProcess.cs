@@ -701,7 +701,7 @@ namespace UnityEngine.Rendering.HighDefinition
             if (m_PostProcessEnabled || m_AntialiasingFS)
             {
                 source = StopNaNsPass(renderGraph, hdCamera, source);
-
+                
                 source = DynamicExposurePass(renderGraph, hdCamera, source);
 
                 // Keep the "Before TAA" injection point before any temporal resolve algorithm, it doesn't have to be TAA only and also can perform upsampling.
@@ -723,7 +723,7 @@ namespace UnityEngine.Rendering.HighDefinition
                         {
                             source = DoTemporalAntialiasing(renderGraph, hdCamera, depthBuffer, motionVectors, depthBufferMipChain, source, prepassOutput.stencilBuffer, postDoF: false, "TAA Destination");
                             RestoreNonjitteredMatrices(renderGraph, hdCamera);
-
+                            
                             if (hdCamera.taaSharpenMode == HDAdditionalCameraData.TAASharpenMode.PostSharpen)
                             {
                                 source = SharpeningPass(renderGraph, hdCamera, source);
@@ -735,7 +735,7 @@ namespace UnityEngine.Rendering.HighDefinition
                         }
                     }
                 }
-
+                
                 ComposeLines(renderGraph, hdCamera, source, prepassOutput.depthBuffer, motionVectors, (int)LineRendering.CompositionMode.AfterTemporalAntialiasing);
 
                 source = BeforeCustomPostProcessPass(renderGraph, hdCamera, source, depthBuffer, normalBuffer, motionVectors, m_CustomPostProcessOrdersSettings.beforePostProcessCustomPostProcesses, HDProfileId.CustomPostProcessBeforePP);
@@ -786,6 +786,11 @@ namespace UnityEngine.Rendering.HighDefinition
 
                 source = UberPass(renderGraph, hdCamera, logLutOutput, bloomTexture, source);
                 PushFullScreenDebugTexture(renderGraph, source, hdCamera.postProcessRTScales, FullScreenDebugMode.ColorLog);
+                
+                if (hdCamera.allowDynamicResolution && hdCamera.allowDeepLearningSuperSampling && hdCamera.deepLearningSuperSamplingUseCas)
+                {
+                    source = ContrastAdaptiveSharpeningPass(renderGraph, hdCamera, source, true);
+                }
 
                 source = CustomPostProcessPass(renderGraph, hdCamera, source, depthBuffer, normalBuffer, motionVectors, m_CustomPostProcessOrdersSettings.afterPostProcessCustomPostProcesses, HDProfileId.CustomPostProcessAfterPP);
 

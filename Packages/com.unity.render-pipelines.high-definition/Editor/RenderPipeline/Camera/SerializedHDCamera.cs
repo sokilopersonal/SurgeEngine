@@ -29,6 +29,7 @@ namespace UnityEditor.Rendering.HighDefinition
         public SerializedProperty deepLearningSuperSamplingUseCustomAttributes;
         public SerializedProperty deepLearningSuperSamplingUseOptimalSettings;
         public SerializedProperty deepLearningSuperSamplingSharpening;
+        public SerializedProperty deepLearningSuperSamplingUseCas;
 
         public SerializedProperty allowFidelityFX2SuperResolution;
         public SerializedProperty fidelityFX2SuperResolutionUseCustomQualitySettings;
@@ -93,6 +94,7 @@ namespace UnityEditor.Rendering.HighDefinition
             deepLearningSuperSamplingUseCustomAttributes = serializedAdditionalDataObject.Find((HDAdditionalCameraData d) => d.deepLearningSuperSamplingUseCustomAttributes);
             deepLearningSuperSamplingUseOptimalSettings = serializedAdditionalDataObject.Find((HDAdditionalCameraData d) => d.deepLearningSuperSamplingUseOptimalSettings);
             deepLearningSuperSamplingSharpening = serializedAdditionalDataObject.Find((HDAdditionalCameraData d) => d.deepLearningSuperSamplingSharpening);
+            deepLearningSuperSamplingUseCas = serializedAdditionalDataObject.Find((HDAdditionalCameraData d) => d.deepLearningSuperSamplingUseCas);
 
             allowFidelityFX2SuperResolution = serializedAdditionalDataObject.Find((HDAdditionalCameraData d) => d.allowFidelityFX2SuperResolution);
             fidelityFX2SuperResolutionUseCustomQualitySettings = serializedAdditionalDataObject.Find((HDAdditionalCameraData d) => d.fidelityFX2SuperResolutionUseCustomQualitySettings);

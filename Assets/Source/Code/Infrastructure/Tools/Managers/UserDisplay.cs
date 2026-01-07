@@ -82,6 +82,13 @@ namespace SurgeEngine.Source.Code.Infrastructure.Tools.Managers
             Apply();
         }
 
+        public void SetCas(bool value)
+        {
+            Data.Cas.Value = value;
+            
+            Apply();
+        }
+
         public void SetFullscreen(bool value)
         {
             Data.Fullscreen.Value = value;
@@ -130,6 +137,7 @@ namespace SurgeEngine.Source.Code.Infrastructure.Tools.Managers
             _hdCameraData.deepLearningSuperSamplingUseCustomAttributes = false;
             _hdCameraData.deepLearningSuperSamplingUseCustomQualitySettings = false;
             _hdCameraData.deepLearningSuperSamplingUseOptimalSettings = false;
+            _hdCameraData.deepLearningSuperSamplingUseCas = Data.Cas.Value;
 
             _hdCameraData.fidelityFX2SuperResolutionUseCustomAttributes = false;
             _hdCameraData.fidelityFX2SuperResolutionUseCustomQualitySettings = false;
@@ -183,6 +191,7 @@ namespace SurgeEngine.Source.Code.Infrastructure.Tools.Managers
         public ReactiveVar<float> Sharpness = new(0.25f);
         public ReactiveVar<UpscalingMode> UpscaleMode = new(UpscalingMode.Off);
         public ReactiveVar<UpscalingQuality> UpscaleQuality = new(UpscalingQuality.Native);
+        public ReactiveVar<bool> Cas = new(true);
     }
     
     public enum AntiAliasingQuality

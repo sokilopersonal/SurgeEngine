@@ -418,6 +418,9 @@ namespace UnityEngine.Rendering.HighDefinition
         [Tooltip("Sets the Sharpening value for NVIDIA Deep Learning Super Sampling (DLSS) for this camera.")]
         [Range(0, 1)]
         public float deepLearningSuperSamplingSharpening = 0;
+
+        [Tooltip("If set to true, NVIDIA Deep Learning Super Sampling (DLSS) will apply CAS (Contrast Adaptive Sharpening) on top of the rendered image to improve clarity.")]
+        public bool deepLearningSuperSamplingUseCas = true;
         #endregion
 
         #region FSR2_OVERRIDES
