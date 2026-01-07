@@ -9,14 +9,24 @@ namespace SurgeEngine.Source.Editor.ObjectSet
     [UsedImplicitly]
     public class SurgeToolbar
     {
-        [MainToolbarElement("Surge Engine/Asset Manager", defaultDockPosition = MainToolbarDockPosition.Left)]
+        private const string AssetManagerButtonPath = "Surge Engine/Asset Manager";
+        private const string TimeScaleSliderPath = "Surge Engine/Time Scale Slider";
+        private const string TimeScaleResetPath = "Surge Engine/Time Scale Reset";
+
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+        private static void OnSceneLoad()
+        {
+            MainToolbar.Refresh(TimeScaleSliderPath);
+        }
+        
+        [MainToolbarElement(AssetManagerButtonPath, defaultDockPosition = MainToolbarDockPosition.Left)]
         public static MainToolbarElement AssetManagerButton()
         {
             var content = new MainToolbarContent("Asset Manager");
             return new MainToolbarButton(content, AssetManager.ShowWindow);
         }
 
-        [MainToolbarElement("Surge Engine/Time Scale Slider", defaultDockPosition = MainToolbarDockPosition.Left)]
+        [MainToolbarElement(TimeScaleSliderPath, defaultDockPosition = MainToolbarDockPosition.Left)]
         public static MainToolbarElement TimeScaleSlider()
         {
             var content = new MainToolbarContent("Time Scale");
@@ -27,14 +37,14 @@ namespace SurgeEngine.Source.Editor.ObjectSet
                 menu.AppendAction("Reset", _ =>
                 {
                     Time.timeScale = 1f;
-                    MainToolbar.Refresh("Surge Engine/Time Scale Slider");
+                    MainToolbar.Refresh(TimeScaleSliderPath);
                 });
             };
             
             return slider;
         }
 
-        [MainToolbarElement("Surge Engine/Time Scale Reset", defaultDockPosition = MainToolbarDockPosition.Left)]
+        [MainToolbarElement(TimeScaleResetPath, defaultDockPosition = MainToolbarDockPosition.Left)]
         public static MainToolbarElement ResetTimeScaleButton()
         {
             var icon = EditorGUIUtility.IconContent("Refresh").image as Texture2D;
@@ -42,7 +52,7 @@ namespace SurgeEngine.Source.Editor.ObjectSet
             var button = new MainToolbarButton(content, () =>
             {
                 Time.timeScale = 1f;
-                MainToolbar.Refresh("Surge Engine/Time Scale Slider");
+                MainToolbar.Refresh(TimeScaleSliderPath);
             });
 
             return button;

@@ -118,7 +118,7 @@ namespace SurgeEngine.Source.Code.UI
             var context = _character;
             if (context)
             {
-                PlayerInput playerInput = context.Input.playerInput;
+                PlayerInput playerInput = context.Input.PlayerInput;
                 playerInput.enabled = !isPaused;
             }
             

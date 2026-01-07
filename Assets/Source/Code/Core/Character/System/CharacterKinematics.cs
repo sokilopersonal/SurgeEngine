@@ -164,22 +164,19 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             Vector3 planar = Vector3.ProjectOnPlane(vel, normal);
             Vector3 vertical = Vector3.Project(vel, normal);
             
+            TurnRate = Mathf.Lerp(TurnRate, _config.turnSpeed, _config.turnSmoothing * Time.fixedDeltaTime);
+            float accelRateMod = _config.accelerationCurve.Evaluate(_planarVelocity.magnitude / _config.topSpeed);
+            
             _movementVector = planar;
             _planarVelocity = planar;
 
             if (movementType == MovementType.Ground)
             {
-                if (_inputDir.magnitude > 0.2f)
+                if (_inputDir.magnitude > 0.02f)
                 {
                     if (!Skidding)
                     {
-                        TurnRate = Mathf.Lerp(TurnRate, _config.turnSpeed, _config.turnSmoothing * Time.fixedDeltaTime);
-                        float accelRateMod = _config.accelerationCurve.Evaluate(_planarVelocity.magnitude / _config.topSpeed);
-                        if (_planarVelocity.magnitude < _config.topSpeed)
-                            _planarVelocity += dir * (_config.accelerationRate * accelRateMod * Time.fixedDeltaTime);
-                        else if (CanReturnToBaseSpeed())
-                            _planarVelocity = Vector3.MoveTowards(_planarVelocity, _planarVelocity.normalized * _config.topSpeed, baseSpeedRestorationDelta * Time.fixedDeltaTime);
-                        
+                        AddPlanarVelocity(dir * (_config.accelerationRate * accelRateMod * Time.fixedDeltaTime), CanReturnToBaseSpeed());
                         BaseGroundPhysics();
                     }
                     else
@@ -194,15 +191,11 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             }
             else
             {
-                if (_inputDir.magnitude > 0.2f)
+                if (_inputDir.magnitude > 0.02f)
                 {
                     if (!Skidding)
                     {
-                        TurnRate = Mathf.Lerp(TurnRate, _config.turnSpeed, _config.turnSmoothing * Time.fixedDeltaTime);
-                        float accelRateMod = _config.accelerationCurve.Evaluate(_planarVelocity.magnitude / _config.topSpeed);
-                        if (_planarVelocity.magnitude < _config.topSpeed)
-                            _planarVelocity += dir * (_config.accelerationRate * accelRateMod * Time.fixedDeltaTime);
-                        
+                        AddPlanarVelocity(dir * (_config.accelerationRate * accelRateMod * Time.fixedDeltaTime));
                         BaseAirPhysics();
                     }
                     else
@@ -218,6 +211,15 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             {
                 Rigidbody.linearVelocity += vertical;
             }
+        }
+
+        private void AddPlanarVelocity(Vector3 dir, bool returnToBaseSpeed = false)
+        {
+            if (_planarVelocity.magnitude < _config.topSpeed)
+                _planarVelocity += dir;
+            else if (returnToBaseSpeed)
+                _planarVelocity = Vector3.MoveTowards(_planarVelocity, _planarVelocity.normalized * _config.topSpeed, 
+                    baseSpeedRestorationDelta * Time.fixedDeltaTime);
         }
 
         private void BaseGroundPhysics()
@@ -612,11 +614,14 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         
         public Vector3 GetInputDir()
         {
-            return _inputDir;
+            return _inputDir.normalized;
         }
 
         public void Set2DPath(ChangeMode2DData data)
         {
+            if (Path2D != null && data != null && Path2D.Spline.Container == data.Spline.Container)
+                return;
+            
             Path2D = data;
             
             OnPath2DChange?.Invoke(data);
@@ -634,6 +639,9 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
         public void SetForwardPath(ChangeMode3DData data)
         {
+            if (PathForward != null && data != null && PathForward.Spline.Container == data.Spline.Container)
+                return;
+            
             PathForward = data;
             
             OnPathForwardChange?.Invoke(data);
@@ -651,6 +659,9 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
         public void SetDashPath(ChangeMode3DData data)
         {
+            if (PathDash != null && data != null && PathDash.Spline.Container == data.Spline.Container)
+                return;
+            
             PathDash = data;
             
             OnPathDashChange?.Invoke(data);

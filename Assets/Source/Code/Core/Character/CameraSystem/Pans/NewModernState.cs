@@ -220,7 +220,7 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem.Pans
         {
             float angle = GetAutoAngle() * Time.deltaTime;
             float dot = Vector3.Dot(Vector3.Cross(_stateMachine.Transform.right, Vector3.up), Character.transform.forward);
-            if (dot > -0.95f)
+            if (dot > -0.99f)
             {
                 _yawAuto = angle * multiplier * _stateMachine.BlendFactor;
             }

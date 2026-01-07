@@ -98,6 +98,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             StateMachine.AddState(new FStateBrake(this));
             StateMachine.AddState(new FStateBrakeTurn(this));
             StateMachine.AddState(new FStateAir(this));
+            StateMachine.AddState(new FStateBalloon(this));
             StateMachine.AddState(new FStateSkydive(this));
             StateMachine.AddState(new FStateSpecialJump(this));
             StateMachine.AddState(new FStateSit(this));
@@ -117,6 +118,8 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             StateMachine.AddState(new FStatePulley(this));
             StateMachine.AddState(new FStateTrickJump(this));
             StateMachine.AddState(new FStateTrick(this));
+            StateMachine.AddState(new FStateReactionPlate(this));
+            StateMachine.AddState(new FStateReactionPlateJump(this));
             StateMachine.AddState(new FStateSpring(this));
             StateMachine.AddState(new FStateJumpPanel(this));
             StateMachine.AddState(new FStateDashRing(this));
@@ -151,7 +154,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             Rigidbody.linearVelocity = Vector3.zero;
             Animation.StateAnimator.TransitionToState("Idle", 0f);
             Flags.AddFlag(new Flag(FlagType.OutOfControl, true, 0.5f));
-            Input.playerInput.enabled = true;
+            Input.PlayerInput.enabled = true;
 
             if (StateMachine.CurrentState is IPointMarkerLoader stateLoader)
             {

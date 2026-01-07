@@ -46,7 +46,6 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         private List<QTESequence> _qteSequences;
         private int _buttonId;
         private int _sequenceId;
-        private QuickTimeEventUI _currentQTEUI;
         private float _timer;
         private QTESequence _finishingSequence;
         private CharacterBase _character;
@@ -99,8 +98,6 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
                 if (_character.StateMachine.GetState(out FBoost boost))
                     boost.Active = false;
                 
-                _character.Kinematics.ResetVelocity();
-                _character.Rigidbody.position = StartPosition;
                 _character.transform.forward = Vector3.Cross(-transform.right, Vector3.up);
 
                 Vector3 impulse = Utility.GetImpulseWithPitch(
@@ -113,6 +110,8 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
                 _character.Kinematics.Rigidbody.linearVelocity = impulse;
                 _character.StateMachine.SetState<FStateTrickJump>(true);
                 _character.Flags.AddFlag(new Flag(FlagType.OutOfControl, false));
+                
+                Utility.MoveToPosition(this, _character.Kinematics.Rigidbody, StartPosition);
 
                 yield return SetTime(TargetTimeScale, TimeScaleDuration);
 

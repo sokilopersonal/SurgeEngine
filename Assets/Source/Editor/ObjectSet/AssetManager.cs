@@ -1,471 +1,266 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using Newtonsoft.Json;
 using UnityEditor;
 using UnityEngine;
 
 namespace SurgeEngine.Source.Editor.ObjectSet
 {
-    public class AssetManagerDatabase : ScriptableObject
+    public class AssetManager : EditorWindow
     {
-        [Serializable]
-        public class Category
-        {
-            public string name;
-            public List<string> prefabGUIDs = new List<string>();
-        }
-        
         [Serializable]
         public class PrefabData
         {
             public string guid;
-            public string customName;
+            public string category;
             [JsonIgnore] public GameObject prefab;
-        }
-        
-        public List<Category> categories = new List<Category>();
-        public List<PrefabData> prefabs = new List<PrefabData>();
-        
-        public void RenameCategory(string oldName, string newName)
-        {
-            var category = categories.FirstOrDefault(c => c.name == oldName);
-            if (category != null)
+            public PrefabData(string guid, string category)
             {
-                category.name = newName;
-                EditorUtility.SetDirty(this);
+                this.guid = guid;
+                this.category = category;
             }
         }
-        
-        public void AddPrefabToCategory(string guid, string categoryName)
-        {
-            var prefabData = prefabs.FirstOrDefault(p => p.guid == guid);
-            if (prefabData == null)
-            {
-                prefabData = new PrefabData { guid = guid };
-                prefabs.Add(prefabData);
-            }
-            
-            var category = categories.FirstOrDefault(c => c.name == categoryName);
-            if (category != null && !category.prefabGUIDs.Contains(guid))
-            {
-                category.prefabGUIDs.Add(guid);
-                EditorUtility.SetDirty(this);
-            }
-        }
-        
-        public void RemovePrefabFromCategory(string guid, string categoryName)
-        {
-            var category = categories.FirstOrDefault(c => c.name == categoryName);
-            if (category != null)
-            {
-                category.prefabGUIDs.Remove(guid);
-                EditorUtility.SetDirty(this);
-            }
-        }
-        
-        public void RemovePrefab(string guid)
-        {
-            prefabs.RemoveAll(p => p.guid == guid);
-            foreach (var category in categories)
-            {
-                category.prefabGUIDs.Remove(guid);
-            }
-            EditorUtility.SetDirty(this);
-        }
-    }
 
-    public class AssetManager : EditorWindow
-    {
-        private AssetManagerDatabase _database;
+        private readonly List<PrefabData> _prefabDataList = new List<PrefabData>();
         private Vector2 _scrollPosition;
+        private const string SaveFilePath = "Assets/Source/Editor/ObjectSet/SelectedPrefabs.json";
+        private string[] _categories;
         private GameObject _currentPrefabInstance;
         private bool _isPlacingPrefab;
         
         private int _selectedCategoryIndex = 0;
         private float _normalOffset = 0.1f;
-        private string _searchString = "";
-        
-        private const string DatabasePath = "Assets/Source/Editor/ObjectSet/AssetManagerDatabase.asset";
-        private const string LastCategoryKey = "AssetManagerCategoryIndex";
-        private const string NormalOffsetKey = "AssetManagerNormalOffset";
+        private bool _alwaysDrawPrefabName;
         
         [MenuItem("Surge Engine/Asset Manager")]
         public static void ShowWindow()
         {
             var window = GetWindow<AssetManager>();
-            window.titleContent = new GUIContent("Asset Manager", EditorGUIUtility.IconContent("d_Package Manager").image);
-            window.minSize = new Vector2(400, 300);
+            window.titleContent = new GUIContent("Asset Manager");
             window.Show();
         }
 
         private void OnEnable()
         {
-            _selectedCategoryIndex = EditorPrefs.GetInt(LastCategoryKey, 0);
-            _normalOffset = EditorPrefs.GetFloat(NormalOffsetKey, 0.1f);
+            _selectedCategoryIndex = EditorPrefs.GetInt("AssetManagerCategoryIndex", 0);
+            _normalOffset = EditorPrefs.GetFloat("AssetManagerNormalOffset", 0.1f);
+            _alwaysDrawPrefabName = EditorPrefs.GetBool("AssetManagerAlwaysDrawPrefabName", false);
             
-            LoadDatabase();
-        }
-        
-        private void LoadDatabase()
-        {
-            _database = AssetDatabase.LoadAssetAtPath<AssetManagerDatabase>(DatabasePath);
-            if (_database == null)
-            {
-                _database = CreateInstance<AssetManagerDatabase>();
-                _database.categories.AddRange(new[]
-                {
-                    new AssetManagerDatabase.Category { name = "Common" },
-                    new AssetManagerDatabase.Category { name = "Enemies" },
-                    new AssetManagerDatabase.Category { name = "Ring Groups" },
-                    new AssetManagerDatabase.Category { name = "Cameras" },
-                    new AssetManagerDatabase.Category { name = "System" },
-                    new AssetManagerDatabase.Category { name = "Player System" },
-                    new AssetManagerDatabase.Category { name = "Thorns" },
-                    new AssetManagerDatabase.Category { name = "Object Physics" }
-                });
-                
-                AssetDatabase.CreateAsset(_database, DatabasePath);
-                AssetDatabase.SaveAssets();
-            }
+            LoadAssetsList();
         }
 
         private void OnGUI()
         {
-            DrawHeader();
-            DrawInstructions();
-            DrawSettings();
-            DrawControls();
-            DrawPrefabGrid();
-            HandleDragAndDrop();
-        }
-        
-        private void DrawHeader()
-        {
-            EditorGUILayout.Space(10);
-            var headerStyle = new GUIStyle("IN BigTitle")
+            EditorGUILayout.Space(15);
+            var boxStyle = new GUIStyle("box")
             {
-                fontSize = 18,
-                fontStyle = FontStyle.Bold,
-                alignment = TextAnchor.MiddleCenter,
-                padding = new RectOffset(0, 0, 10, 10)
+                normal = { background = Texture2D.grayTexture }
             };
-            
-            var headerRect = EditorGUILayout.BeginVertical(headerStyle);
-            EditorGUILayout.LabelField("🎮 Asset Manager", headerStyle);
+            EditorGUILayout.BeginVertical(boxStyle);
+            GUIStyle titleStyle = new GUIStyle(EditorStyles.boldLabel)
+            {
+                alignment = TextAnchor.MiddleCenter,
+                fontSize = 16
+            };
+            EditorGUILayout.LabelField("Asset Manager", titleStyle);
             EditorGUILayout.EndVertical();
+            EditorGUILayout.Space(4);
             
-            if (GUI.Button(new Rect(headerRect.xMax - 25, headerRect.y + 5, 20, 20), 
-                new GUIContent(EditorGUIUtility.IconContent("pane options").image, "Settings")))
-            {
-                ShowSettingsMenu();
-            }
-        }
-        
-        private void DrawInstructions()
-        {
-            EditorGUILayout.Space(5);
-            EditorGUILayout.HelpBox(
-                "How to use:\n" +
-                "• Select category or search\n" +
-                "• Click on prefab icon to place\n" +
-                "• Move mouse in scene and click to place\n" +
-                "• Press Esc to cancel", MessageType.Info);
-        }
-        
-        private void DrawSettings()
-        {
-            EditorGUILayout.Space(5);
-            
-            EditorGUILayout.LabelField("Quick Settings", 
-                new GUIStyle(EditorStyles.boldLabel) { fontSize = 14 });
+            EditorGUILayout.HelpBox("How to use: " +
+                                    "\n1. Choose category" +
+                                    "\n2. Click on the object icon" +
+                                    "\n3. Move your mouse to where you want place the object" +
+                                    "\n4. Press LMB or Esc to place/cancel", MessageType.None);
             
             EditorGUILayout.Space(3);
+            EditorGUILayout.HelpBox("Tip: You can drag & drop prefabs in the window to add it in the current category.", MessageType.Info);
 
-            EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField(new GUIContent(EditorGUIUtility.IconContent("Search Icon").image), GUILayout.Width(20));
-            _searchString = EditorGUILayout.TextField(_searchString, GUI.skin.FindStyle("SearchTextField"));
-            if (GUILayout.Button("", GUI.skin.FindStyle("SearchCancelButton")))
-            {
-                _searchString = "";
-                GUI.FocusControl(null);
-            }
-            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.BeginVertical(new GUIStyle("box")); // SETTINGS
             
-            EditorGUILayout.Space(3);
-
-            EditorGUILayout.BeginHorizontal();
-            var categories = new[] { "All" }.Concat(_database.categories.Select(c => c.name)).ToArray();
-            _selectedCategoryIndex = EditorGUILayout.Popup("Category", _selectedCategoryIndex, categories);
-            
-            if (GUILayout.Button(new GUIContent(EditorGUIUtility.IconContent("editicon.sml").image, "Edit Categories"), 
-                GUILayout.Width(25)))
+            var settingsStyle = new GUIStyle(EditorStyles.boldLabel)
             {
-                ShowCategoryEditor();
-            }
-            EditorGUILayout.EndHorizontal();
-
+                alignment = TextAnchor.MiddleCenter,
+                fontSize = 16,
+                padding = new RectOffset(0, 0, 0, -10)
+            };
+            EditorGUILayout.LabelField("Settings", settingsStyle);
+            EditorGUILayout.Space(10);
+            
+            _categories = new[] { "All", "Common", "Enemies", "Ring Groups", "Cameras", "System", "Player System", "Thorns", "Object Physics" };
+            
+            _selectedCategoryIndex = EditorGUILayout.Popup("Category", _selectedCategoryIndex, _categories);
             _normalOffset = EditorGUILayout.Slider("Normal Offset", _normalOffset, 0, 0.5f);
             
-            SaveSettings();
-        }
-        
-        private void SaveSettings()
-        {
-            EditorPrefs.SetInt(LastCategoryKey, _selectedCategoryIndex);
-            EditorPrefs.SetFloat(NormalOffsetKey, _normalOffset);
-        }
-        
-        private void DrawControls()
-        {
-            EditorGUILayout.Space(5);
             EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("Always Draw Prefab Name", GUILayout.Width(155));
+            _alwaysDrawPrefabName = EditorGUILayout.Toggle("", _alwaysDrawPrefabName);
+            EditorGUILayout.EndHorizontal();
             
-            var addContent = new GUIContent(" Add Prefab", EditorGUIUtility.IconContent("Toolbar Plus").image);
-            var saveContent = new GUIContent(" Save Database", EditorGUIUtility.IconContent("SaveActive").image);
+            EditorPrefs.SetInt("AssetManagerCategoryIndex", _selectedCategoryIndex);
+            EditorPrefs.SetFloat("AssetManagerNormalOffset", _normalOffset);
+            EditorPrefs.SetBool("AssetManagerAlwaysDrawPrefabName", _alwaysDrawPrefabName);
             
-            if (GUILayout.Button(addContent, GUILayout.Height(25)))
+            EditorGUILayout.EndVertical(); // SETTINGS END
+            EditorGUILayout.Space(5);
+            
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+            if (GUILayout.Button("Add Prefab", GUILayout.Width(150)))
             {
                 SelectPrefab();
             }
-            
-            GUI.enabled = _database != null;
-            if (GUILayout.Button(saveContent, GUILayout.Height(25)))
+            if (GUILayout.Button("Save List", GUILayout.Width(150)))
             {
-                SaveDatabase();
+                SaveAssetsList();
             }
-            GUI.enabled = true;
-            
+            GUILayout.FlexibleSpace();
             EditorGUILayout.EndHorizontal();
-        }
-        
-        private void DrawPrefabGrid()
-        {
-            EditorGUILayout.Space(5);
-            
-            var filteredPrefabs = GetFilteredPrefabs();
-            
-            if (filteredPrefabs.Count == 0)
-            {
-                EditorGUILayout.HelpBox("No prefabs found. Add some!", MessageType.Warning);
-                return;
-            }
-            
+
+            EditorGUILayout.Space(10);
+            EditorGUILayout.LabelField("Prefabs", EditorStyles.boldLabel);
+
             _scrollPosition = EditorGUILayout.BeginScrollView(_scrollPosition);
-            
-            int itemsPerRow = Mathf.Max(1, (int)(position.width - 40) / 100);
-            int index = 0;
-            
-            foreach (var prefabData in filteredPrefabs)
+            int itemsPerRow = Mathf.Max(1, (int)(position.width / 100));
+            int drawnCount = 0;
+            EditorGUILayout.BeginHorizontal();
+            foreach (var prefabData in _prefabDataList)
             {
-                if (index % itemsPerRow == 0)
+                if (_selectedCategoryIndex != 0 && prefabData.category != _categories[_selectedCategoryIndex])
+                    continue;
+
+                if (DrawPrefabButton(prefabData))
                 {
-                    if (index > 0) EditorGUILayout.EndHorizontal();
+                    ShowContextMenu(prefabData);
+                }
+
+                drawnCount++;
+                if (drawnCount % itemsPerRow == 0)
+                {
+                    EditorGUILayout.EndHorizontal();
                     EditorGUILayout.BeginHorizontal();
                 }
-                
-                DrawPrefabTile(prefabData);
-                index++;
             }
-            
-            if (filteredPrefabs.Count > 0) EditorGUILayout.EndHorizontal();
+            EditorGUILayout.EndHorizontal();
             EditorGUILayout.EndScrollView();
-        }
-        
-        private List<AssetManagerDatabase.PrefabData> GetFilteredPrefabs()
-        {
-            var filtered = _database.prefabs.Where(p => p.prefab != null).ToList();
-
-            if (_selectedCategoryIndex > 0)
-            {
-                var category = _database.categories[_selectedCategoryIndex - 1];
-                filtered = filtered.Where(p => category.prefabGUIDs.Contains(p.guid)).ToList();
-            }
-
-            if (!string.IsNullOrEmpty(_searchString))
-            {
-                filtered = filtered.Where(p => 
-                    (p.customName ?? p.prefab.name).ToLower().Contains(_searchString.ToLower())).ToList();
-            }
             
-            return filtered;
-        }
-        
-        private void DrawPrefabTile(AssetManagerDatabase.PrefabData prefabData)
-        {
-            EditorGUILayout.BeginVertical(GUILayout.Width(110), GUILayout.Height(110));
-            
-            GameObject prefab = prefabData.prefab;
-            string displayName = string.IsNullOrEmpty(prefabData.customName) ? prefab.name : prefabData.customName;
+            var fullWindowRect = new Rect(0, 0, position.width, position.height);
 
-            // Draw tile with subtle border
-            Rect tileRect = GUILayoutUtility.GetRect(110, 110);
-            
-            // Draw preview background
-            EditorGUI.DrawRect(new Rect(tileRect.x + 1, tileRect.y + 1, tileRect.width - 2, tileRect.width - 2), 
-                new Color(0.2f, 0.2f, 0.2f, 0.3f));
-            
-            // Draw border
-            EditorGUI.DrawRect(new Rect(tileRect.x, tileRect.y, tileRect.width, 1), Color.grey);
-            EditorGUI.DrawRect(new Rect(tileRect.x, tileRect.y, 1, tileRect.height), Color.grey);
-            EditorGUI.DrawRect(new Rect(tileRect.x + tileRect.width - 1, tileRect.y, 1, tileRect.height), Color.grey);
-            EditorGUI.DrawRect(new Rect(tileRect.x, tileRect.y + tileRect.height - 1, tileRect.width, 1), Color.grey);
-
-            // Draw prefab preview
-            Texture2D preview = AssetPreview.GetAssetPreview(prefab);
-            if (preview != null)
+            if ((Event.current.type == EventType.DragUpdated || Event.current.type == EventType.DragPerform)
+                && fullWindowRect.Contains(Event.current.mousePosition))
             {
-                var previewRect = new Rect(tileRect.x + 5, tileRect.y + 5, tileRect.width - 10, tileRect.width - 20);
-                GUI.DrawTexture(previewRect, preview, ScaleMode.ScaleToFit);
-            }
+                DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
 
-            // Handle clicks
-            if (Event.current.type == EventType.MouseDown && tileRect.Contains(Event.current.mousePosition))
-            {
-                if (Event.current.button == 0)
+                if (Event.current.type == EventType.DragPerform)
                 {
-                    StartPlacingPrefab(prefab);
+                    DragAndDrop.AcceptDrag();
+                    foreach (var obj in DragAndDrop.objectReferences)
+                    {
+                        if (obj is GameObject go)
+                        {
+                            string path = AssetDatabase.GetAssetPath(go);
+                            if (PrefabUtility.GetPrefabAssetType(go) != PrefabAssetType.NotAPrefab)
+                            {
+                                if (_selectedCategoryIndex == 0)
+                                {
+                                    EditorUtility.DisplayDialog("Asset Manager",
+                                        "You can't add prefab in the 'All' category. Please select something different.", "OK");
+                                    continue;
+                                }
+                                if (!_prefabDataList.Exists(d => d.prefab == go))
+                                {
+                                    string guid = AssetDatabase.AssetPathToGUID(path);
+                                    string category = _categories[_selectedCategoryIndex];
+                                    _prefabDataList.Add(new PrefabData(guid, category) { prefab = go });
+                                }
+                            }
+                        }
+                    }
                 }
-                else if (Event.current.button == 1)
-                {
-                    ShowPrefabContextMenu(prefabData);
-                }
+
                 Event.current.Use();
             }
-            
-            // Draw name label
-            Rect nameRect = new Rect(tileRect.x, tileRect.yMax - 20, tileRect.width, 20);
-            EditorGUI.DrawRect(nameRect, new Color(0, 0, 0, 0.7f));
-                
-            GUIStyle nameStyle = new GUIStyle(EditorStyles.label)
-            {
-                alignment = TextAnchor.MiddleCenter,
-                fontSize = 10,
-                normal = { textColor = Color.white }
-            };
-                
-            EditorGUI.LabelField(nameRect, displayName, nameStyle);
-            
-            EditorGUILayout.EndVertical();
         }
-        
-        private void ShowPrefabContextMenu(AssetManagerDatabase.PrefabData prefabData)
-        {
-            GenericMenu menu = new GenericMenu();
-            menu.AddItem(new GUIContent("Rename..."), false, () => RenamePrefab(prefabData));
-            menu.AddSeparator("");
-            menu.AddItem(new GUIContent("Move To/Top"), false, () => MovePrefabToTop(prefabData));
-            menu.AddItem(new GUIContent("Move To/Bottom"), false, () => MovePrefabToBottom(prefabData));
-            menu.AddSeparator("");
 
-            foreach (var category in _database.categories)
-            {
-                menu.AddItem(new GUIContent($"Move To Category/{category.name}"), false, 
-                    () => MovePrefabToCategory(prefabData, category.name));
-            }
-            
-            menu.AddSeparator("");
-            menu.AddItem(new GUIContent("Remove From Category"), false, 
-                () => RemovePrefabFromCurrentCategory(prefabData));
-            menu.AddItem(new GUIContent("Delete From Database"), false, 
-                () => DeletePrefab(prefabData));
-            
-            menu.ShowAsContext();
-        }
-        
-        private void ShowSettingsMenu()
+        private bool DrawPrefabButton(PrefabData prefabData)
         {
-            GenericMenu menu = new GenericMenu();
-            menu.AddItem(new GUIContent("Edit Categories..."), false, ShowCategoryEditor);
-            menu.AddSeparator("");
-            menu.AddItem(new GUIContent("Delete All Prefabs..."), false, () =>
+            bool rightClick = false;
+            EditorGUILayout.BeginVertical(GUILayout.Width(100));
             {
-                if (EditorUtility.DisplayDialog("Delete All", 
-                    "Are you sure you want to delete ALL prefabs from the database?", "Delete", "Cancel"))
+                Texture2D previewTexture = AssetPreview.GetAssetPreview(prefabData.prefab);
+
+                int size = 110;
+                var buttonStyle = new GUIStyle(GUI.skin.button)
                 {
-                    _database.prefabs.Clear();
-                    foreach (var category in _database.categories)
+                    padding = new RectOffset(1, 1, 1, 1),
+                };
+                var rect = GUILayoutUtility.GetRect(size, size);
+                if (GUI.Button(rect, previewTexture, buttonStyle))
+                {
+                    if (Event.current.button == 0)
                     {
-                        category.prefabGUIDs.Clear();
+                        StartPlacingPrefab(prefabData.prefab);
                     }
-                    SaveDatabase();
+                    else if (Event.current.button == 1)
+                    {
+                        rightClick = true;
+                    }
                 }
-            });
+                
+                GUIStyle style = new GUIStyle
+                {
+                    font = EditorStyles.boldFont,
+                    normal = { textColor = Color.white, background = Texture2D.grayTexture },
+                    alignment = TextAnchor.MiddleCenter,
+                    fontSize = 10,
+                    padding = new RectOffset(2, 2, 2, 2),
+                    wordWrap = true
+                };
+                if (rect.Contains(Event.current.mousePosition) || _alwaysDrawPrefabName)
+                {
+                    float labelHeight = style.CalcHeight(new GUIContent(prefabData.prefab.name), rect.width);
+                    GUI.Label(new Rect(rect.x, rect.y, rect.width, Mathf.Max(20, labelHeight)), prefabData.prefab.name, style);
+                }
+            }
+            EditorGUILayout.EndVertical();
+            return rightClick;
+        }
+
+        private void ShowContextMenu(PrefabData prefabData)
+        {
+            GenericMenu menu = new GenericMenu();
+            menu.AddItem(new GUIContent("Move Up"), false, () => MovePrefab(prefabData, -1));
+            menu.AddItem(new GUIContent("Move Down"), false, () => MovePrefab(prefabData, 1));
+            menu.AddItem(new GUIContent("Move to Top"), false, () => MovePrefabToTop(prefabData));
+            menu.AddItem(new GUIContent("Move to Bottom"), false, () => MovePrefabToBottom(prefabData));
+            menu.AddSeparator("");
+            menu.AddItem(new GUIContent("Remove"), false, () => RemovePrefab(prefabData));
             menu.ShowAsContext();
         }
-        
-        private void ShowCategoryEditor()
-        {
-            var window = EditorWindow.GetWindow<CategoryEditor>("Edit Categories");
-            window.Initialize(_database, SaveDatabase);
-        }
-        
-        private void RenamePrefab(AssetManagerDatabase.PrefabData prefabData)
-        {
-            var newName = EditorInputDialog.Show("Rename Prefab", "Enter new name:", 
-                prefabData.customName ?? prefabData.prefab.name);
-            
-            if (!string.IsNullOrEmpty(newName))
-            {
-                prefabData.customName = newName;
-                SaveDatabase();
-            }
-        }
-        
-        private void MovePrefabToTop(AssetManagerDatabase.PrefabData prefabData)
-        {
-            if (_selectedCategoryIndex > 0)
-            {
-                var category = _database.categories[_selectedCategoryIndex - 1];
-                category.prefabGUIDs.Remove(prefabData.guid);
-                category.prefabGUIDs.Insert(0, prefabData.guid);
-                SaveDatabase();
-            }
-        }
-        
-        private void MovePrefabToBottom(AssetManagerDatabase.PrefabData prefabData)
-        {
-            if (_selectedCategoryIndex > 0)
-            {
-                var category = _database.categories[_selectedCategoryIndex - 1];
-                category.prefabGUIDs.Remove(prefabData.guid);
-                category.prefabGUIDs.Add(prefabData.guid);
-                SaveDatabase();
-            }
-        }
-        
-        private void MovePrefabToCategory(AssetManagerDatabase.PrefabData prefabData, string categoryName)
-        {
-            foreach (var category in _database.categories)
-            {
-                category.prefabGUIDs.Remove(prefabData.guid);
-            }
 
-            var targetCategory = _database.categories.FirstOrDefault(c => c.name == categoryName);
-            if (targetCategory != null && !targetCategory.prefabGUIDs.Contains(prefabData.guid))
-            {
-                targetCategory.prefabGUIDs.Add(prefabData.guid);
-            }
-            
-            SaveDatabase();
-        }
-        
-        private void RemovePrefabFromCurrentCategory(AssetManagerDatabase.PrefabData prefabData)
+        private void MovePrefab(PrefabData prefabData, int direction)
         {
-            if (_selectedCategoryIndex > 0)
+            int index = _prefabDataList.IndexOf(prefabData);
+            int newIndex = Mathf.Clamp(index + direction, 0, _prefabDataList.Count - 1);
+            if (index != newIndex)
             {
-                var category = _database.categories[_selectedCategoryIndex - 1];
-                category.prefabGUIDs.Remove(prefabData.guid);
-                SaveDatabase();
+                _prefabDataList.RemoveAt(index);
+                _prefabDataList.Insert(newIndex, prefabData);
             }
         }
-        
-        private void DeletePrefab(AssetManagerDatabase.PrefabData prefabData)
+
+        private void MovePrefabToTop(PrefabData prefabData)
         {
-            _database.RemovePrefab(prefabData.guid);
-            SaveDatabase();
+            _prefabDataList.Remove(prefabData);
+            _prefabDataList.Insert(0, prefabData);
         }
-        
+
+        private void MovePrefabToBottom(PrefabData prefabData)
+        {
+            _prefabDataList.Remove(prefabData);
+            _prefabDataList.Add(prefabData);
+        }
+
         private void SelectPrefab()
         {
             if (_selectedCategoryIndex == 0)
@@ -481,77 +276,48 @@ namespace SurgeEngine.Source.Editor.ObjectSet
                 path = "Assets" + path.Substring(Application.dataPath.Length);
                 GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
 
-                if (prefab != null)
+                if (prefab != null && !_prefabDataList.Exists(data => data.prefab == prefab))
                 {
-                    string guid = AssetDatabase.AssetPathToGUID(path);
-                    string category = _database.categories[_selectedCategoryIndex - 1].name;
-                    _database.AddPrefabToCategory(guid, category);
-                    SaveDatabase();
+                    string category = _categories[_selectedCategoryIndex];
+                    _prefabDataList.Add(new PrefabData(path, category) { prefab = prefab } );
                 }
             }
         }
-        
-        private void SaveDatabase()
+
+        private void RemovePrefab(PrefabData prefabData)
         {
-            EditorUtility.SetDirty(_database);
-            AssetDatabase.SaveAssets();
+            _prefabDataList.Remove(prefabData);
+        }
+
+        private void SaveAssetsList()
+        {
+            var jsonList = new List<PrefabData>();
+            foreach (var data in _prefabDataList)
+            {
+                var path = AssetDatabase.GetAssetPath(data.prefab);
+                var guid = AssetDatabase.AssetPathToGUID(path);
+                jsonList.Add(new PrefabData(guid, data.category) { prefab = data.prefab });
+            }
+            var json = JsonConvert.SerializeObject(jsonList, Formatting.Indented);
+            File.WriteAllText(SaveFilePath, json);
             AssetDatabase.Refresh();
         }
-        
-        private void HandleDragAndDrop()
+
+        private void LoadAssetsList()
         {
-            var fullWindowRect = new Rect(0, 0, position.width, position.height);
-            
-            if (!fullWindowRect.Contains(Event.current.mousePosition)) return;
-            
-            if (Event.current.type == EventType.DragUpdated || Event.current.type == EventType.DragPerform)
+            _prefabDataList.Clear();
+            if (!File.Exists(SaveFilePath)) return;
+            var json = File.ReadAllText(SaveFilePath);
+            var jsonList = JsonConvert.DeserializeObject<List<PrefabData>>(json);
+            foreach (var data in jsonList)
             {
-                DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
-                
-                if (Event.current.type == EventType.DragPerform)
-                {
-                    DragAndDrop.AcceptDrag();
-                    
-                    if (_selectedCategoryIndex == 0)
-                    {
-                        EditorUtility.DisplayDialog("Asset Manager",
-                            "You can't add prefab in the 'All' category. Please select something different.", "OK");
-                        return;
-                    }
-                    
-                    bool anyAdded = false;
-                    foreach (var obj in DragAndDrop.objectReferences)
-                    {
-                        if (obj is GameObject go && PrefabUtility.GetPrefabAssetType(go) != PrefabAssetType.NotAPrefab)
-                        {
-                            string path = AssetDatabase.GetAssetPath(go);
-                            string guid = AssetDatabase.AssetPathToGUID(path);
-                            string category = _database.categories[_selectedCategoryIndex - 1].name;
-                            
-                            if (!_database.prefabs.Exists(p => p.guid == guid))
-                            {
-                                _database.prefabs.Add(new AssetManagerDatabase.PrefabData 
-                                { 
-                                    guid = guid, 
-                                    prefab = go 
-                                });
-                            }
-                            
-                            _database.AddPrefabToCategory(guid, category);
-                            anyAdded = true;
-                        }
-                    }
-                    
-                    if (anyAdded)
-                    {
-                        SaveDatabase();
-                    }
-                }
-                
-                Event.current.Use();
+                var path = AssetDatabase.GUIDToAssetPath(data.guid);
+                var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+                if (prefab != null)
+                    _prefabDataList.Add(new PrefabData(data.guid, data.category) { prefab = prefab });
             }
         }
-        
+
         private void StartPlacingPrefab(GameObject prefab)
         {
             if (_currentPrefabInstance != null)
@@ -585,210 +351,43 @@ namespace SurgeEngine.Source.Editor.ObjectSet
         
         private void DuringSceneGUI(SceneView sceneView)
         {
-            if (!_isPlacingPrefab || _currentPrefabInstance == null) return;
-            
-            Event e = Event.current;
-            Ray ray = HandleUtility.GUIPointToWorldRay(e.mousePosition);
+            if (_isPlacingPrefab && _currentPrefabInstance != null)
+            {
+                Event e = Event.current;
+                Ray ray = HandleUtility.GUIPointToWorldRay(e.mousePosition);
+                
+                Collider[] colliders = _currentPrefabInstance.GetComponentsInChildren<Collider>();
+                foreach (var collider in colliders)
+                {
+                    collider.enabled = false;
+                }
+                
+                if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, 1 << LayerMask.NameToLayer("Default")))
+                {
+                    _currentPrefabInstance.transform.position = hit.point + hit.normal * _normalOffset;
+                }
 
-            Collider[] colliders = _currentPrefabInstance.GetComponentsInChildren<Collider>();
-            foreach (var collider in colliders)
-            {
-                collider.enabled = false;
-            }
-            
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, 1 << LayerMask.NameToLayer("Default")))
-            {
-                _currentPrefabInstance.transform.position = hit.point + hit.normal * _normalOffset;
-            }
-
-            foreach (var collider in colliders)
-            {
-                collider.enabled = true;
-            }
-
-            Handles.color = Color.green;
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, 1 << LayerMask.NameToLayer("Default")))
-            {
+                foreach (var collider in colliders)
+                {
+                    collider.enabled = true;
+                }
+                
+                Handles.color = Color.green;
                 Handles.SphereHandleCap(0, hit.point, Quaternion.identity, 0.25f, EventType.Repaint);
-            }
 
-            if (e.type == EventType.MouseDown && e.button == 0 && !e.control && !e.alt)
-            {
-                PlacePrefab();
-                e.Use();
-            }
-            
-            if (e.type == EventType.KeyDown && e.keyCode == KeyCode.Escape)
-            {
-                DestroyImmediate(_currentPrefabInstance);
-                _currentPrefabInstance = null;
-                _isPlacingPrefab = false;
-                SceneView.duringSceneGui -= DuringSceneGUI;
-                e.Use();
-            }
-            
-            SceneView.RepaintAll();
-        }
-    }
-
-    public class CategoryEditor : EditorWindow
-    {
-        private AssetManagerDatabase _database;
-        private Action _saveCallback;
-        private Vector2 _scrollPos;
-        private string _newCategoryName = "";
-        private bool[] _categoryFoldouts;
-        
-        public void Initialize(AssetManagerDatabase database, Action saveCallback)
-        {
-            _database = database;
-            _saveCallback = saveCallback;
-            _categoryFoldouts = new bool[_database.categories.Count];
-        }
-        
-        private void OnGUI()
-        {
-            EditorGUILayout.Space(10);
-            EditorGUILayout.LabelField("Category Management", 
-                new GUIStyle(EditorStyles.boldLabel) { fontSize = 18, alignment = TextAnchor.MiddleCenter });
-            
-            EditorGUILayout.Space(10);
-
-            EditorGUILayout.BeginHorizontal();
-            _newCategoryName = EditorGUILayout.TextField("New Category:", _newCategoryName);
-            if (GUILayout.Button("Add", GUILayout.Width(50)) && !string.IsNullOrWhiteSpace(_newCategoryName))
-            {
-                if (!_database.categories.Any(c => c.name == _newCategoryName))
+                if (e.type == EventType.MouseDown && e.button == 0)
                 {
-                    _database.categories.Add(new AssetManagerDatabase.Category { name = _newCategoryName.Trim() });
-                    _saveCallback?.Invoke();
-                    _newCategoryName = "";
-                }
-            }
-            EditorGUILayout.EndHorizontal();
-            
-            EditorGUILayout.Space(10);
-
-            _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos);
-            
-            for (int i = 0; i < _database.categories.Count; i++)
-            {
-                var category = _database.categories[i];
-                
-                EditorGUILayout.BeginVertical(new GUIStyle("box"));
-                
-                EditorGUILayout.BeginHorizontal();
-                _categoryFoldouts[i] = EditorGUILayout.Foldout(_categoryFoldouts[i], category.name, true);
-
-                if (GUILayout.Button(new GUIContent(EditorGUIUtility.IconContent("editicon.sml").image, "Rename"), 
-                        GUILayout.Width(25)))
-                {
-                    RenameCategory(i);
+                    PlacePrefab();
+                    e.Use();
                 }
 
-                if (GUILayout.Button(new GUIContent(EditorGUIUtility.IconContent("Toolbar Minus").image, "Delete"), 
-                        GUILayout.Width(25)))
+                if (e.type == EventType.KeyDown && e.keyCode == KeyCode.Escape)
                 {
-                    if (EditorUtility.DisplayDialog("Delete Category", 
-                        $"Delete '{category.name}'?", "Delete", "Cancel"))
-                    {
-                        _database.categories.RemoveAt(i);
-                        _saveCallback?.Invoke();
-                        return;
-                    }
+                    DestroyImmediate(_currentPrefabInstance);
+                    e.Use();
                 }
-                
-                EditorGUILayout.EndHorizontal();
-                
-                if (_categoryFoldouts[i])
-                {
-                    EditorGUI.indentLevel++;
-                    EditorGUILayout.LabelField($"Prefabs: {category.prefabGUIDs.Count}");
 
-                    for (int j = 0; j < Mathf.Min(3, category.prefabGUIDs.Count); j++)
-                    {
-                        var guid = category.prefabGUIDs[j];
-                        var path = AssetDatabase.GUIDToAssetPath(guid);
-                        var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
-                        if (prefab != null)
-                        {
-                            EditorGUILayout.LabelField($"• {prefab.name}");
-                        }
-                    }
-                    
-                    if (category.prefabGUIDs.Count > 3)
-                    {
-                        EditorGUILayout.LabelField($"... and {category.prefabGUIDs.Count - 3} more");
-                    }
-                    
-                    EditorGUI.indentLevel--;
-                }
-                
-                EditorGUILayout.EndVertical();
-            }
-            
-            EditorGUILayout.EndScrollView();
-        }
-        
-        private void RenameCategory(int index)
-        {
-            var category = _database.categories[index];
-            var newName = EditorInputDialog.Show("Rename Category", "New name:", category.name);
-            
-            if (!string.IsNullOrEmpty(newName) && newName != category.name)
-            {
-                category.name = newName;
-                _saveCallback?.Invoke();
-            }
-        }
-    }
-
-    public static class EditorInputDialog
-    {
-        public static string Show(string title, string message, string defaultValue)
-        {
-            string result = null;
-            
-            var window = EditorWindow.GetWindow<InputDialogWindow>(true);
-            window.titleContent = new GUIContent(title);
-            window.Initialize(message, defaultValue, val => result = val);
-            window.ShowModalUtility();
-            
-            return result;
-        }
-        
-        private class InputDialogWindow : EditorWindow
-        {
-            private string _message;
-            private string _value;
-            private Action<string> _callback;
-            
-            public void Initialize(string message, string defaultValue, Action<string> callback)
-            {
-                _message = message;
-                _value = defaultValue;
-                _callback = callback;
-                minSize = new Vector2(300, 100);
-            }
-            
-            private void OnGUI()
-            {
-                EditorGUILayout.Space();
-                EditorGUILayout.LabelField(_message);
-                _value = EditorGUILayout.TextField(_value);
-                
-                EditorGUILayout.BeginHorizontal();
-                if (GUILayout.Button("OK"))
-                {
-                    _callback?.Invoke(_value);
-                    Close();
-                }
-                if (GUILayout.Button("Cancel"))
-                {
-                    Close();
-                }
-                EditorGUILayout.EndHorizontal();
+                SceneView.RepaintAll();
             }
         }
     }

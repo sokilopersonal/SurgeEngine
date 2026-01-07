@@ -72,7 +72,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         
         private bool HasValidInput(Vector3 inputDir)
         {
-            return inputDir.sqrMagnitude > 0.02f;
+            return inputDir.magnitude > 0.02f;
         }
 
         private void RotateWithInput(Vector3 inputDir, Vector3 currentVelocity, float currentSpeed, 

@@ -150,7 +150,7 @@ namespace SurgeEngine.Source.Code.Infrastructure.Tools
             gameCameraData.GetComponent<HDAdditionalCameraData>().CopyTo(_camera.GetComponent<HDAdditionalCameraData>());
             gameCamera.enabled = !_active;
             
-            _character.Input.playerInput.enabled = !_active;
+            _character.Input.PlayerInput.enabled = !_active;
             _pauseHandler.enabled = !_active;
             _hud.GetComponent<Canvas>().enabled = !_active;
 

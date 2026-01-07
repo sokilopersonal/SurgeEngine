@@ -102,7 +102,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
             }
         }
 
-        public void Load()
+        public virtual void Load()
         {
             IsFallDeath = false;
         }

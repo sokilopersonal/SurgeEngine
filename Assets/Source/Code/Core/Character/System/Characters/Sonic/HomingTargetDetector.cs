@@ -70,6 +70,10 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
 
                 Vector3 dir = targetPos - transform.position;
                 Vector3 dirFlat = new Vector3(dir.x, 0f, dir.z).normalized;
+                
+                Vector3 dirNorm = dir.normalized;
+                float verticalDot = Mathf.Abs(Vector3.Dot(dirNorm, Vector3.up));
+                if (verticalDot > 0.9f) continue;
 
                 float dot = Vector3.Dot(forwardFlat, dirFlat);
                 if (dot < Mathf.Cos(angle * 0.5f * Mathf.Deg2Rad)) continue;

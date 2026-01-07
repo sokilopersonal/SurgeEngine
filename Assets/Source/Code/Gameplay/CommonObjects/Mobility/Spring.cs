@@ -2,6 +2,7 @@
 using SurgeEngine.Source.Code.Core.Character.States;
 using SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStates;
 using SurgeEngine.Source.Code.Core.Character.System;
+using SurgeEngine.Source.Code.Infrastructure.Custom;
 using SurgeEngine.Source.Code.Infrastructure.Custom.Drawers;
 using UnityEngine;
 
@@ -15,7 +16,9 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         [SerializeField] protected bool cancelBoost;
         [SerializeField] protected bool isTo3D;
         [SerializeField] protected bool isWallWalk;
+        [SerializeField] private bool hasBase;
         [SerializeField] private EventReference sound;
+        [SerializeField] GameObject baseModel;
         public float Speed => speed;
         public virtual float KeepVelocityDistance => keepVelocityDistance;
         public bool IsWallWalk => isWallWalk;
@@ -39,6 +42,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             springState.SetKeepVelocityDistance(keepVelocityDistance);
             springState.SetSpringObject(this);
             context.StateMachine.SetState<FStateSpring>();
+            Utility.MoveToPosition(this, context.Kinematics.Rigidbody, transform.position, Direction * speed, 0.1f);
             
             context.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, Mathf.Abs(outOfControl)));
             
@@ -53,6 +57,12 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
                     context.Kinematics.SetDashPath(null);
                 }
             }
+        }
+
+        private void OnValidate()
+        {
+            if (baseModel)
+                baseModel.SetActive(hasBase);
         }
 
         private void OnDrawGizmosSelected()

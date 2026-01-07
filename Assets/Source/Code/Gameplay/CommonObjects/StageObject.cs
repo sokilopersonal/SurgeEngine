@@ -39,5 +39,10 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects
         {
             
         }
+
+        public virtual void OnImport()
+        {
+            
+        }
     }
 }

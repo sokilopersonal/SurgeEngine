@@ -14,7 +14,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Player
             base.OnEnter(msg, context);
 
             CharacterInput input = context.Input;
-            input.playerInput.enabled = false;
+            input.PlayerInput.enabled = false;
             
             context.Camera.StateMachine.SetState<FallCameraState>();
             context.Life.OnDied?.Invoke(context);

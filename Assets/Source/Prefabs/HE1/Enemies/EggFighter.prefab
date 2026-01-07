@@ -106,9 +106,17 @@ MonoBehaviour:
   effects: {fileID: 2565871558992367779}
   ragdollPrefab: {fileID: 3051861874619504407}
   <PunchAnimationCallback>k__BackingField: {fileID: 3076461262156163148}
+  type: 0
   enableAI: 1
   punchRadius: 1.8
   followPlayer: 1
+  style:
+    bodyOneMaterial: {fileID: 2100000, guid: ee85e7513905bec42a1c7c82ca1ab74d, type: 2}
+    bodyTwoMaterial: {fileID: 2100000, guid: 43202930117944646a4d9683717f4518, type: 2}
+    bodyOneTMaterial: {fileID: 2100000, guid: d0d9df4edd56ab7438efb0d9a3f88b53, type: 2}
+    bodyTwoTMaterial: {fileID: 2100000, guid: 7a1b6d3d06a8c994b8202bc4432b514d, type: 2}
+    defaultPieces: {fileID: 2783773666713308101, guid: 995491a75952f7444a646b0ffc7b14f9, type: 3}
+    tutorialPieces: {fileID: 2783773666713308101, guid: db53280ae1e571d44957fe962fb73149, type: 3}
 --- !u!195 &5258658502684184366
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -165,7 +173,6 @@ GameObject:
   - component: {fileID: 5913160398915718345}
   - component: {fileID: 1331910105712177873}
   - component: {fileID: 2565871558992367779}
-  - component: {fileID: 5850585189608530414}
   m_Layer: 12
   m_Name: Model
   m_TagString: Untagged
@@ -232,25 +239,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hitPrefab: {fileID: 8553914193835272593, guid: b0276e20ffdd8564cbea8d0f7e190ce5, type: 3}
---- !u!205 &5850585189608530414
-LODGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6598288326902543729}
-  serializedVersion: 2
-  m_LocalReferencePoint: {x: 0, y: 1.0450497, z: 0.0076293945}
-  m_Size: 4.510803
-  m_FadeMode: 1
-  m_AnimateCrossFading: 1
-  m_LastLODIsBillboard: 0
-  m_LODs:
-  - screenRelativeHeight: 0.016041182
-    fadeTransitionWidth: 0
-    renderers:
-    - renderer: {fileID: 1203498004719646549}
-  m_Enabled: 1
 --- !u!1001 &6018752067041678659
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -439,6 +427,14 @@ PrefabInstance:
       propertyPath: m_UpdateWhenOffscreen
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4842856219945099798, guid: efc2ce8db1f28fa4eba27cea4d948f68, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: ee85e7513905bec42a1c7c82ca1ab74d, type: 2}
+    - target: {fileID: 4842856219945099798, guid: efc2ce8db1f28fa4eba27cea4d948f68, type: 3}
+      propertyPath: 'm_Materials.Array.data[3]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 43202930117944646a4d9683717f4518, type: 2}
     - target: {fileID: 4961351658505836628, guid: efc2ce8db1f28fa4eba27cea4d948f68, type: 3}
       propertyPath: m_Layer
       value: 13
@@ -748,7 +744,7 @@ CharacterJoint:
     bounciness: 0
     contactDistance: 0
   m_EnableProjection: 1
-  m_ProjectionDistance: 0.25
+  m_ProjectionDistance: 1
   m_ProjectionAngle: 180
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
@@ -861,7 +857,7 @@ CharacterJoint:
     bounciness: 0
     contactDistance: 0
   m_EnableProjection: 1
-  m_ProjectionDistance: 0.25
+  m_ProjectionDistance: 1
   m_ProjectionAngle: 180
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
@@ -979,7 +975,7 @@ CharacterJoint:
     bounciness: 0
     contactDistance: 0
   m_EnableProjection: 1
-  m_ProjectionDistance: 0.25
+  m_ProjectionDistance: 1
   m_ProjectionAngle: 180
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
@@ -1092,7 +1088,7 @@ CharacterJoint:
     bounciness: 0
     contactDistance: 0
   m_EnableProjection: 1
-  m_ProjectionDistance: 0.25
+  m_ProjectionDistance: 1
   m_ProjectionAngle: 180
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
@@ -1275,7 +1271,7 @@ CharacterJoint:
     bounciness: 0
     contactDistance: 0
   m_EnableProjection: 1
-  m_ProjectionDistance: 0.25
+  m_ProjectionDistance: 1
   m_ProjectionAngle: 180
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
@@ -1386,7 +1382,7 @@ CharacterJoint:
     bounciness: 0
     contactDistance: 0
   m_EnableProjection: 1
-  m_ProjectionDistance: 0.25
+  m_ProjectionDistance: 1
   m_ProjectionAngle: 180
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
@@ -1499,7 +1495,7 @@ CharacterJoint:
     bounciness: 0
     contactDistance: 0
   m_EnableProjection: 1
-  m_ProjectionDistance: 0.25
+  m_ProjectionDistance: 1
   m_ProjectionAngle: 180
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
@@ -1675,7 +1671,7 @@ CharacterJoint:
     bounciness: 0
     contactDistance: 0
   m_EnableProjection: 1
-  m_ProjectionDistance: 0.25
+  m_ProjectionDistance: 1
   m_ProjectionAngle: 180
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
@@ -1788,7 +1784,7 @@ CharacterJoint:
     bounciness: 0
     contactDistance: 0
   m_EnableProjection: 1
-  m_ProjectionDistance: 0.25
+  m_ProjectionDistance: 1
   m_ProjectionAngle: 180
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
@@ -1908,39 +1904,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stateAnimator: {fileID: 334434458288507473}
-  punchAnimationCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: -0.016842647
-      outSlope: -0.016842647
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.18908626
-    - serializedVersion: 3
-      time: 0.47
-      value: 0.35001022
-      inSlope: 1.3899381
-      outSlope: 1.3899381
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0.019760765
-      outSlope: 0.019760765
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.16116762
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!114 &3076461262156163148
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2046,7 +2009,7 @@ CharacterJoint:
     bounciness: 0
     contactDistance: 0
   m_EnableProjection: 1
-  m_ProjectionDistance: 0.25
+  m_ProjectionDistance: 1
   m_ProjectionAngle: 180
   m_BreakForce: Infinity
   m_BreakTorque: Infinity

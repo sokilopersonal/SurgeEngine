@@ -1,4 +1,5 @@
-﻿using SurgeEngine.Source.Code.Core.Character.System;
+﻿using System;
+using SurgeEngine.Source.Code.Core.Character.System;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.AnimationCallback;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.Interfaces;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.Sensors;
@@ -9,6 +10,7 @@ using SurgeEngine.Source.Code.Gameplay.Enemy.RagdollPhysics;
 using UnityEngine;
 using UnityEngine.AI;
 using Zenject;
+using SurgeEngine.Source.Code.Gameplay.CommonObjects.PhysicsObjects;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -16,6 +18,23 @@ using UnityEditor;
 
 namespace SurgeEngine.Source.Code.Gameplay.Enemy.EggFighter
 {
+    public enum EggFighterType
+    {
+        Normal,
+        Tutorial
+    }
+
+    [Serializable]
+    struct EggFighterStyle
+    {
+        public Material bodyOneMaterial;
+        public Material bodyTwoMaterial;
+        public Material bodyOneTMaterial;
+        public Material bodyTwoTMaterial;
+        public DestroyedPiece defaultPieces;
+        public DestroyedPiece tutorialPieces;
+    }
+    
     public class EggFighter : EnemyBase, IDamageable, IPointMarkerLoader
     {
         [SerializeField] private new EGAnimation animation;
@@ -25,6 +44,7 @@ namespace SurgeEngine.Source.Code.Gameplay.Enemy.EggFighter
         
         public VisionSensor Sensor { get; private set; }
         [field: SerializeField] public AnimationEventCallback PunchAnimationCallback { get; private set; }
+        [SerializeField] private EggFighterType type;
 
         [Header("AI")]
         [SerializeField, Tooltip("Disabling this will disable enemy vision, meaning enemy won't notice you, but still will be functional.")] private bool enableAI = true;
@@ -32,6 +52,9 @@ namespace SurgeEngine.Source.Code.Gameplay.Enemy.EggFighter
         [SerializeField] private bool followPlayer = true;
         public float PunchRadius => punchRadius;
         public bool FollowPlayer => followPlayer;
+
+        [Space(10)] 
+        [SerializeField] private EggFighterStyle style;
 
         public NavMeshAgent Agent { get; private set; }
         public CharacterBase Character => _character;
@@ -41,6 +64,40 @@ namespace SurgeEngine.Source.Code.Gameplay.Enemy.EggFighter
 
         private Vector3 _startPosition;
         private Quaternion _startRotation;
+
+#if UNITY_EDITOR
+        private void OnValidate()
+        {
+            UpdateVisuals();
+        }
+
+        private void UpdateVisuals()
+        {
+            SkinnedMeshRenderer meshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
+
+            if (meshRenderer == null)
+                return;
+
+            Material[] mats = meshRenderer.sharedMaterials;
+
+            if (mats.Length < 4)
+                return;
+
+            mats[0] = type == EggFighterType.Normal ? style.bodyOneMaterial : style.bodyOneTMaterial;
+            mats[3] = type == EggFighterType.Normal ? style.bodyTwoMaterial : style.bodyTwoTMaterial;
+
+            meshRenderer.sharedMaterials = mats;
+
+            View.SetDestroyedPiece(type == EggFighterType.Normal ? style.defaultPieces : style.tutorialPieces);
+        }
+
+        public override void OnImport()
+        {
+            base.OnImport();
+            
+            UpdateVisuals();
+        }
+#endif
 
         protected override void Awake()
         {

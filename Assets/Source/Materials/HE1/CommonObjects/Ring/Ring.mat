@@ -524,9 +524,9 @@ Material:
     - _EMISSION_WEIGHT: 1
     - _EmissionIntensity: 1
     - _EmissionMaskIntensity: 1
-    - _EmissionPowerFalloff: 0.25
-    - _EmissionPowerReflection: 0.2
-    - _EmissionPowerSpecular: 0.1
+    - _EmissionPowerFalloff: 0.1
+    - _EmissionPowerReflection: 0.1
+    - _EmissionPowerSpecular: 0
     - _EmissiveColorMode: 1
     - _EmissiveExposureWeight: 1
     - _EmissiveIntensity: 10000
@@ -667,7 +667,7 @@ Material:
     - _ReceivesSSR: 0
     - _ReceivesSSRTransparent: 0
     - _ReflectionExposure: 0.1
-    - _ReflectionIntensity: 1.02
+    - _ReflectionIntensity: 1
     - _RefractionModel: 0
     - _RenderQueueType: 1
     - _RequireSplitLighting: 0
@@ -784,7 +784,7 @@ Material:
     - _ZTestTransparent: 4
     - _ZWrite: 1
     m_Colors:
-    - _AlbedoColor: {r: 0.4811321, g: 0.19245285, b: 0, a: 1}
+    - _AlbedoColor: {r: 0.6037736, g: 0.5165431, b: 0.259167, a: 1}
     - _BASE_COLOR: {r: 1, g: 0.7535237, b: 0, a: 1}
     - _BaseColor: {r: 1, g: 0.9258024, b: 0.43867922, a: 1}
     - _BaseColor0: {r: 1, g: 1, b: 1, a: 1}
@@ -807,12 +807,12 @@ Material:
     - _EmissionMaskColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissiveColor: {r: 1, g: 1, b: 1, a: 0}
     - _EmissiveColorLDR: {r: 1, g: 0.41141325, b: 0, a: 1}
-    - _FalloffColor: {r: 1, g: 0.8352941, b: 0, a: 1}
+    - _FalloffColor: {r: 1, g: 0.8926423, b: 0.33490568, a: 1}
     - _FalloffParam: {r: 0.02, g: 4, b: 4, a: 0}
     - _InvPrimScale: {r: 1, g: 1, b: 0, a: 0}
     - _IridescenceThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
     - _REFLECTIONS_COLOR: {r: 1, g: 1, b: 1, a: 1}
-    - _ReflectionColor: {r: 1, g: 0.8743312, b: 0.504717, a: 1}
+    - _ReflectionColor: {r: 1, g: 1, b: 1, a: 1}
     - _RimLightColor: {r: 1023.99994, g: 637.7245, b: 0, a: 0}
     - _Specular: {r: 0.0625, g: 0.0625, b: 0.0625, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}

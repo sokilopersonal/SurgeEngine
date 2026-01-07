@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7553918138535884465}
   - component: {fileID: 8315779112442714504}
   - component: {fileID: 6525208774376867337}
-  m_Layer: 14
+  m_Layer: 8
   m_Name: AirSpring
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -50,13 +50,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ae415b787264d82ae306c556e4e577a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <SetID>k__BackingField: 0
   speed: 25
   keepVelocityDistance: 5
   outOfControl: 0.25
   cancelBoost: 0
   isTo3D: 0
   isWallWalk: 0
+  hasBase: 0
   sound:
     Guid:
       Data1: -370211807
@@ -64,6 +64,7 @@ MonoBehaviour:
       Data3: 1095013010
       Data4: 2002191402
     Path: event:/CommonObjects/Spring
+  baseModel: {fileID: 0}
 --- !u!114 &7553918138535884465
 MonoBehaviour:
   m_ObjectHideFlags: 0

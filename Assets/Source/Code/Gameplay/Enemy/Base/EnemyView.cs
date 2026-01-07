@@ -16,6 +16,11 @@ namespace SurgeEngine.Source.Code.Gameplay.Enemy.Base
         [SerializeField] protected EventReference explosionReference;
         [SerializeField] protected EventReference metalHitReference;
 
+        public void SetDestroyedPiece(DestroyedPiece piece)
+        {
+            destroyedPiece = piece;
+        }
+
         private void Update()
         {
             ViewTick();

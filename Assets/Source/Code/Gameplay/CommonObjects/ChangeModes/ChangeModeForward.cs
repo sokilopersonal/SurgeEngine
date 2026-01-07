@@ -4,13 +4,16 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.ChangeModes
 {
     public class ChangeModeForward : ChangeMode3D
     {
+        protected override SplineTag SplineTagFilter => SplineTag.SideView | SplineTag.Quickstep;
+
         protected override void SetMode(CharacterBase ctx)
         {
-            var kinematics = ctx.Kinematics;
-            kinematics.SetForwardPath(kinematics.PathForward == null
-                ? new ChangeMode3DData(new SplineData(path, ctx.transform.position), isChangeCamera, isLimitEdge,
-                    pathCorrectionForce)
-                : null);
+            ctx.Kinematics.SetForwardPath(new ChangeMode3DData(new SplineData(container, ctx.transform.position), isChangeCamera, isLimitEdge, pathCorrectionForce));
+        }
+
+        protected override void RemoveMode(CharacterBase ctx)
+        {
+            ctx.Kinematics.SetForwardPath(null);
         }
     }
 }
