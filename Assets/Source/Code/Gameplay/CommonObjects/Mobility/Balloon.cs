@@ -39,7 +39,6 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
                 ParticleSystem.MainModule mainMod = particle.main;
                 mainMod.startColor = style.balloonColor;
             }
-
         }
 
         public override void OnEnter(Collider msg, CharacterBase context)
@@ -53,13 +52,10 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             target.gameObject.SetActive(false);
 
             RuntimeManager.PlayOneShot(sound, transform.position);
-
             mainParticle.Play();
 
             context.StateMachine.SetState<FStateBalloon>(true);
-
             float speed = Mathf.Clamp(context.Kinematics.Speed, minSpeed, maxSpeed);
-
             context.Rigidbody.linearVelocity = (context.transform.forward * speed) + (context.transform.up * speed * 0.5f);
 
             _triggered = true;

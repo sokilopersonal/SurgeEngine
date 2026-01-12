@@ -13,8 +13,6 @@ Material:
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - _DISABLE_SSR_TRANSPARENT
-  - _MATERIAL_FEATURE_SUBSURFACE_SCATTERING
-  - _MATERIAL_FEATURE_TRANSMISSION
   - _UV_NUMBER_UV0
   m_InvalidKeywords:
   - _NORMALMAP_TANGENT_SPACE
@@ -238,7 +236,7 @@ Material:
     - _IridescenceThickness: 1
     - _LightmapSampleBlend: 1
     - _LinkDetailsWithBase: 1
-    - _MaterialID: 0
+    - _MaterialID: 1
     - _MaterialTypeMask: 19
     - _Metallic: 0
     - _MetallicRemapMax: 1
@@ -273,10 +271,10 @@ Material:
     - _SpecularAAThreshold: 0.2
     - _SpecularOcclusionMode: 1
     - _SrcBlend: 1
-    - _StencilRef: 4
+    - _StencilRef: 0
     - _StencilRefDepth: 8
     - _StencilRefDistortionVec: 4
-    - _StencilRefGBuffer: 14
+    - _StencilRefGBuffer: 10
     - _StencilRefMV: 40
     - _StencilWriteMask: 6
     - _StencilWriteMaskDepth: 9
@@ -289,9 +287,9 @@ Material:
     - _TexWorldScale: 1
     - _TexWorldScaleEmissive: 1
     - _Thickness: 1
-    - _TransmissionEnable: 1
+    - _TransmissionEnable: 0
     - _TransmissionMask: 1
-    - _TransmissionProfile: 2.9945307
+    - _TransmissionProfile: 0
     - _TransmissionThickness: 0.02
     - _TransparentBackfaceEnable: 0
     - _TransparentCullMode: 2
@@ -332,7 +330,7 @@ Material:
     - _ReflectionColor: {r: 1, g: 0, b: 0, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
     - _ThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
-    - _TransmissionProfile_Asset: {r: 9.39771e+22, g: -1.4669291e+32, b: -5.0929926e+36, a: 7.800617e+15}
+    - _TransmissionProfile_Asset: {r: 0, g: 0, b: 0, a: 0}
     - _TransmittanceColor: {r: 1, g: 1, b: 1, a: 1}
     - _UVDetailsMappingMask: {r: 1, g: 0, b: 0, a: 0}
     - _UVMappingMask: {r: 1, g: 0, b: 0, a: 0}
@@ -352,7 +350,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Runtime::UnityEditor.Rendering.HighDefinition.MaterialExternalReferences
   m_DiffusionProfileReferences:
-  - {fileID: 11400000, guid: 12349f65cb70e7f4fb3775fcf5b4dd59, type: 2}
+  - {fileID: 0}
   m_MaterialReferences: []
 --- !u!114 &4525677500622378549
 MonoBehaviour:

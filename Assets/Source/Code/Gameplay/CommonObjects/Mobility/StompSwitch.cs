@@ -3,19 +3,19 @@ using FMODUnity;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.System;
 using UnityEngine;
 using UnityEngine.Events;
-using NotImplementedException = System.NotImplementedException;
 
 namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 {
     [SelectionBase]
     public class StompSwitch : MonoBehaviour, IPointMarkerLoader
     {
-        private static readonly int EmissiveExposureWeight = Shader.PropertyToID("_EmissiveExposureWeight");
+        private static readonly int EmissiveColor = Shader.PropertyToID("_EmissiveColor");
 
         [Header("Main")]
         [SerializeField] private Transform switchTransform;
         [SerializeField] private MeshRenderer meshRenderer;
         [SerializeField] private ParticleSystem particle;
+        [SerializeField] private new Light light;
         
         [Header("Switch Events")]
         public UnityEvent onActivated;
@@ -27,6 +27,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         private const float DownSpeed = 0.5f;
         private const Ease DownEase = Ease.OutBack;
         private Material _buttonMaterial;
+        private float _startLightIntensity;
 
         private int _currentState;
 
@@ -35,7 +36,9 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             Material[] materials = meshRenderer.materials;
             _buttonMaterial = materials[1];
             meshRenderer.materials = materials;
-            _buttonMaterial.SetFloat(EmissiveExposureWeight, 1.0f);
+            _buttonMaterial.SetColor(EmissiveColor, Color.cyan);
+            _startLightIntensity = light.intensity;
+            light.intensity = 0;
         }
         
         public void Activate()
@@ -63,17 +66,18 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
                 case 3:
                     downHeight = -2.25f;
 
-                    float startEmissive = 1f;
-                    float endEmissive = 0f;
+                    float startIntensity = 0f;
+                    float endIntensity = 20000f;
 
-                    float currentEmissive = startEmissive;
+                    float currentEmissive = startIntensity;
 
-                    _buttonMaterial.SetFloat(EmissiveExposureWeight, startEmissive);
-
-                    DOTween.To(() => currentEmissive, x => currentEmissive = x, endEmissive, 0.25f).SetEase(Ease.OutQuad).OnUpdate(() =>
+                    _buttonMaterial.SetColor(EmissiveColor, Color.cyan * startIntensity);
+                    DOTween.To(() => currentEmissive, x => currentEmissive = x, endIntensity, 0.25f).SetEase(Ease.OutQuad).OnUpdate(() =>
                     {
-                        _buttonMaterial.SetFloat(EmissiveExposureWeight, currentEmissive);
+                        _buttonMaterial.SetColor(EmissiveColor, Color.cyan * currentEmissive);
                     });
+                    
+                    light.DOIntensity(_startLightIntensity, 0.25f).SetEase(Ease.OutQuad);
 
                     RuntimeManager.PlayOneShot(onReference, transform.position + Vector3.up);
 
@@ -90,7 +94,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             _currentState = 0;
             switchTransform.localPosition = Vector3.zero;
             particle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
-            _buttonMaterial.SetFloat(EmissiveExposureWeight, 1.0f);
+            _buttonMaterial.SetFloat(EmissiveColor, 1.0f);
         }
     }
 }
