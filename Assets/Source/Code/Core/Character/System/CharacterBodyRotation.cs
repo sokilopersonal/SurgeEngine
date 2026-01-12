@@ -42,14 +42,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             
             Vector3 currentVelocity = Vector3.ProjectOnPlane(vector, normal);
             float currentSpeed = currentVelocity.magnitude;
-            if (HasValidInput(inputDir))
-            {
-                RotateWithInput(inputDir, currentVelocity, currentSpeed, normal, angleDelta, rb);
-            }
-            else
-            {
-                RotateWithVelocity(currentVelocity, currentSpeed, normal, rb);
-            } 
+            RotateWithInput(HasValidInput(inputDir) ? inputDir : rb.transform.forward, currentVelocity, currentSpeed, normal, angleDelta, rb);
         }
 
         /// <summary>
@@ -122,17 +115,6 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             float rotationMultiplier = Mathf.Lerp(1f, 0.5f, Mathf.Pow(speedFactor, 0.5f));
             
             return angleDelta * rotationMultiplier;
-        }
-
-        private void RotateWithVelocity(Vector3 currentVelocity, float currentSpeed, Vector3 normal, Rigidbody rb)
-        {
-            if (currentSpeed > 0.1f)
-            {
-                Vector3 velocityDir = currentVelocity.normalized;
-                Quaternion targetRotation = Quaternion.LookRotation(velocityDir, normal);
-                var towards = Quaternion.RotateTowards(rb.rotation, targetRotation, (64f + currentSpeed) * Time.fixedDeltaTime);
-                rb.MoveRotation(towards);
-            }
         }
 
         private void AlignToNormal(Vector3 normal, Rigidbody rb)

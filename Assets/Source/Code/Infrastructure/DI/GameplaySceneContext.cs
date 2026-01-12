@@ -60,12 +60,11 @@ namespace SurgeEngine.Source.Code.Infrastructure.DI
                 throw new NullReferenceException("Spawn Point is not assigned, please do it. Stopping play mode...");
 #endif
             }
-
-            var data = spawnPoint.StartData;
+            
             var spawn = spawnPoint.transform;
 
             var instance = Container.InstantiatePrefabForComponent<CharacterBase>(characterPrefab, spawn.position + spawn.transform.up, spawn.rotation, null);
-            Container.BindInstance(instance).AsSingle();
+            Container.BindInstance(instance).AsSingle().NonLazy();
             
             Container.Bind<CharacterContext>().FromNew().AsSingle().NonLazy();
         }

@@ -179,14 +179,15 @@ namespace SurgeEngine.Source.Code.Infrastructure.Tools
                     float stored = Time.timeScale;
                     Time.timeScale = 1;
                     
+                    _character.Rigidbody.position = _camera.transform.position + Vector3.up * 0.5f + _camera.transform.forward * 5;
+                    
                     _character.Kinematics.ResetVelocity();
-                    _character.Kinematics.Set2DPath(null);
-                    _character.Kinematics.SetForwardPath(null);
-                    _character.Kinematics.SetDashPath(null);
+                    var uPos = _character.Rigidbody.position;
+                    _character.Kinematics.Path2D?.Spline.UpdateTime(uPos);
+                    _character.Kinematics.PathForward?.Spline.UpdateTime(uPos);
+                    _character.Kinematics.PathDash?.Spline.UpdateTime(uPos);
 
                     _character.Flags.Clear();
-
-                    _character.Rigidbody.position = _camera.transform.position + Vector3.up * 0.5f + _camera.transform.forward * 5;
                     
                     yield return new WaitForSecondsRealtime(0.02f);
                     

@@ -10,20 +10,16 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         public float Length => _container.Spline.GetLength();
         public float NormalizedTime => Mathf.Clamp01(Time / Length);
         public SplineContainer Container => _container;
-        public DominantSpline Dominant { get; private set; }
+        private DominantSpline Dominant { get; }
 
         private readonly SplineContainer _container;
 
         public SplineData(SplineContainer container, Vector3 position, DominantSpline dominant = DominantSpline.Left)
         {
             _container = container;
-            
-            SplineUtility.GetNearestPoint(container.Spline, _container.transform.InverseTransformPoint(position), 
-                out var near, out var f, 12, 8);
-
             Dominant = dominant;
             
-            Time = f * Length;
+            UpdateTime(position);
         }
 
         public void EvaluateWorld(out Vector3 position, out Vector3 tangent, out Vector3 up, out Vector3 right)
@@ -90,6 +86,21 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         {
             EvaluateWorld(out _, out var tg, out _, out _);
             return tg;
+        }
+
+        public void UpdateTime(Vector3 position)
+        {
+            if (_container)
+            {
+                SplineUtility.GetNearestPoint(_container.Spline, _container.transform.InverseTransformPoint(position), 
+                    out _, out var f, 12, 8);
+            
+                Time = f * Length;
+            }
+            else
+            {
+                Debug.LogError("When trying to update time on spline we got null container. How?");
+            }
         }
     }
 }
