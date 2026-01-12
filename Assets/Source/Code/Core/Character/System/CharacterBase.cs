@@ -54,16 +54,6 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             
             InitializeConfigs();
             AddStates();
-            
-            Input.Set(this);
-            Sounds.Set(this);
-            Camera.Set(this);
-            Animation.Set(this);
-            Effects.Set(this);
-            Model.Set(this);
-            Flags.Set(this);
-            Kinematics.Set(this);
-            Life.Set(this);
         }
 
         private void Start()
