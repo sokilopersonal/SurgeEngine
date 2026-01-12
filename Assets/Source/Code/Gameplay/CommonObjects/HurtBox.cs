@@ -24,6 +24,23 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects
             var transformedOffset = transform.TransformVector(offset);
             var hits = Physics.OverlapBox(transform.position + transformedOffset, size, transform.rotation, mask);
 
+            if (ProcessHit(sender, hits)) return true;
+            
+            return false;
+        }
+
+        public static bool CreateWithCollider(MonoBehaviour sender, Collider collider, HurtBoxTarget target)
+        {
+            int mask = GetMask(target);
+            var hits = Physics.OverlapBox(collider.bounds.center, collider.bounds.size, collider.transform.rotation, mask);
+
+            if (ProcessHit(sender, hits)) return true;
+            
+            return false;
+        }
+
+        private static bool ProcessHit(MonoBehaviour sender, Collider[] hits)
+        {
             foreach (var hit in hits)
             {
                 Transform hitTransform = hit.transform;
@@ -34,7 +51,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects
                     return true;
                 }
             }
-            
+
             return false;
         }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using NaughtyAttributes;
 using SurgeEngine.Source.Code.Core.Character.System;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.AnimationCallback;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.Interfaces;
@@ -43,7 +44,10 @@ namespace SurgeEngine.Source.Code.Gameplay.Enemy.EggFighter
         public EGAnimation Animation => animation;
         
         public VisionSensor Sensor { get; private set; }
-        [field: SerializeField] public AnimationEventCallback PunchAnimationCallback { get; private set; }
+        [SerializeField] private AnimationEventCallback punchAnimationCallback;
+        [SerializeField] private BoxCollider punchColliderReference;
+        public AnimationEventCallback PunchAnimationCallback => punchAnimationCallback;
+        public BoxCollider PunchColliderReference => punchColliderReference;
         [SerializeField] private EggFighterType type;
 
         [Header("AI")]
