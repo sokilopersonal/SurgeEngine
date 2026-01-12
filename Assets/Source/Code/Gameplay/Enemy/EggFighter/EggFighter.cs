@@ -1,5 +1,5 @@
 ﻿using System;
-using NaughtyAttributes;
+
 using SurgeEngine.Source.Code.Core.Character.System;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.AnimationCallback;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.Interfaces;

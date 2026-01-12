@@ -1,4 +1,4 @@
-﻿using NaughtyAttributes;
+﻿
 using SurgeEngine.Source.Code.Core.Character.System;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.System;
 using SurgeEngine.Source.Code.Infrastructure.Custom;
@@ -8,8 +8,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 {
     public class RainbowRing : DashRing, IPointMarkerLoader
     {
-        [SerializeField, Space(10), InfoBox("If true then score will be added on every contact, otherwise only once")] 
-        private bool allowDoubleScore;
+        [SerializeField, Space(10)] private bool onlyTriggerOnce;
 
         private bool _triggered;
 
@@ -18,7 +17,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             base.OnEnter(msg, context);
 
             int score = 1000;
-            if (!allowDoubleScore)
+            if (!onlyTriggerOnce)
             {
                 if (!_triggered)
                 {

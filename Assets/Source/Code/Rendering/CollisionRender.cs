@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using Alchemy.Inspector;
 using JetBrains.Annotations;
-using NaughtyAttributes;
+
 using UnityEngine;
 
 namespace SurgeEngine.Source.Code.Rendering

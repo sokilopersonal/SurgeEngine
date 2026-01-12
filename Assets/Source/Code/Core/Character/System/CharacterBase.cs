@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using NaughtyAttributes;
+
 using SurgeEngine.Source.Code.Core.Character.CameraSystem;
 using SurgeEngine.Source.Code.Core.Character.States;
 using SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic;

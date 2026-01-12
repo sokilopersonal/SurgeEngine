@@ -7,55 +7,51 @@ namespace SurgeEngine.Source.Editor
     [CustomEditor(typeof(GameplaySceneContext))]
     public class GameplaySceneContextEditor : UnityEditor.Editor
     {
-        private SerializedProperty _stageField;
-        private SerializedProperty _characterPrefabField;
-        private SerializedProperty _gameCameraPrefabField;
         private SerializedProperty _spawnPointField;
-        private SerializedProperty _hudPrefabField;
-        private SerializedProperty _pmScreenField;
         
         private void OnEnable()
         {
-            _stageField = serializedObject.FindProperty("stage");
-            _characterPrefabField = serializedObject.FindProperty("characterPrefab");
-            _gameCameraPrefabField = serializedObject.FindProperty("gameCameraPrefab");
             _spawnPointField = serializedObject.FindProperty("spawnPoint");
-            _hudPrefabField = serializedObject.FindProperty("hudPrefab");
-            _pmScreenField = serializedObject.FindProperty("pointMarkerLoadingScreenPrefab");
         }
 
         public override void OnInspectorGUI()
         {
-            serializedObject.Update();
+            EditorGUI.BeginChangeCheck();
+            serializedObject.UpdateIfRequiredOrScript();
+            SerializedProperty iterator = serializedObject.GetIterator();
 
-            EditorGUILayout.PropertyField(_stageField);
-
-            EditorGUILayout.PropertyField(_characterPrefabField);
-            EditorGUILayout.PropertyField(_gameCameraPrefabField);
-            EditorGUILayout.PropertyField(_spawnPointField);
-            if (_spawnPointField.objectReferenceValue != null)
+            for (bool enterChildren = true; iterator.NextVisible(enterChildren); enterChildren = false)
             {
-                var spawnSO = new SerializedObject(_spawnPointField.objectReferenceValue);
-                spawnSO.Update();
-                
-                using (new GUILayout.VerticalScope("box"))
+                if (iterator.propertyPath == "spawnPoint")
                 {
-                    var style = new GUIStyle(EditorStyles.boldLabel);
-                    style.alignment = TextAnchor.MiddleCenter;
-                    EditorGUILayout.LabelField("Attached Spawn", style);
+                    var spawnSo = new SerializedObject(_spawnPointField.objectReferenceValue);
+                    spawnSo.Update();
                     
-                    var data = spawnSO.FindProperty("startData");
-                    EditorGUILayout.PropertyField(data.FindPropertyRelative("startType"));
-                    EditorGUILayout.PropertyField(data.FindPropertyRelative("speed"));
-                    EditorGUILayout.PropertyField(data.FindPropertyRelative("time"));
+                    EditorGUILayout.PropertyField(_spawnPointField);
+                    
+                    using (new GUILayout.VerticalScope("box"))
+                    {
+                        var style = new GUIStyle(EditorStyles.boldLabel);
+                        style.alignment = TextAnchor.MiddleCenter;
+                        EditorGUILayout.LabelField("Attached Spawn", style);
+                    
+                        var data = spawnSo.FindProperty("startData");
+                        EditorGUILayout.PropertyField(data.FindPropertyRelative("startType"));
+                        EditorGUILayout.PropertyField(data.FindPropertyRelative("speed"));
+                        EditorGUILayout.PropertyField(data.FindPropertyRelative("time"));
+                    }
+
+                    spawnSo.ApplyModifiedProperties();
+                    
+                    continue;
                 }
-                
-                spawnSO.ApplyModifiedProperties();
+
+                using (new EditorGUI.DisabledScope("m_Script" == iterator.propertyPath))
+                {
+                    EditorGUILayout.PropertyField(iterator, true);
+                }
             }
             
-            EditorGUILayout.PropertyField(_hudPrefabField);
-            EditorGUILayout.PropertyField(_pmScreenField);
-
             serializedObject.ApplyModifiedProperties();
         }
     }
