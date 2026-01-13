@@ -25,7 +25,7 @@ You can help this project by fixing bugs or adding new features and adding these
 > 
 > In general, learn how to use git.
 
-## Knows issues
+## Known issues
 - Transparent particles don't render underwater if "Use Scene Color" is enabled in water material
 
 # License
