@@ -60,7 +60,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         private bool _autoCamera;
 
         public event Action<ButtonType> OnButtonPressed;
-
+        
         private void Awake()
         {
             PlayerInput = GetComponent<PlayerInput>();
