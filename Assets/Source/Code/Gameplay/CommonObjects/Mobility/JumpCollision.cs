@@ -7,7 +7,7 @@ using UnityEngine;
 namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 {
     /// <summary>
-    /// Trigger for applying and clamping an impulse to the player
+    /// Trigger for applying an impulse to the player
     /// </summary>
     public class JumpCollision : StageObject
     {
@@ -18,6 +18,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         [SerializeField, Min(0)] private float impulseOnNormal = 15f;
         [SerializeField, Min(0)] private float impulseOnBoost = 15f;
         [SerializeField] private float outOfControl = 0.5f;
+        [SerializeField] private float terrainIgnoreTime = 0.25f;
 
         public override void OnEnter(Collider msg, CharacterBase context)
         {
@@ -37,6 +38,8 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
                 {
                     if (groundOnly && !context.Kinematics.InAir || !groundOnly)
                     {
+                        context.Model.DisableCollision(terrainIgnoreTime);
+                        
                         Rigidbody body = context.Kinematics.Rigidbody;
                         body.position += transform.up * 1.5f;
 

@@ -185,6 +185,7 @@ namespace SurgeEngine.Source.Editor.HE1Importer
                     HE1Helper.SetFloatReflection(jumpCollision, "impulseOnNormal", HE1Helper.GetFloatWithMultiSetParam(elem, "ImpulseSpeedOnNormal"));
                     HE1Helper.SetFloatReflection(jumpCollision, "impulseOnBoost", HE1Helper.GetFloatWithMultiSetParam(elem, "ImpulseSpeedOnBoost"));
                     HE1Helper.SetFloatReflection(jumpCollision, "pitch", HE1Helper.GetFloatWithMultiSetParam(elem, "Pitch"));
+                    HE1Helper.SetFloatReflection(jumpCollision, "terrainIgnoreTime", HE1Helper.GetFloatWithMultiSetParam(elem, "TerrainIgnoreTime", 0.25f));
                 },
                 ["ObjCameraPan"] = (go, elem) =>
                 {
