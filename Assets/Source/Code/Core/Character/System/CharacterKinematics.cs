@@ -7,6 +7,7 @@ using SurgeEngine.Source.Code.Gameplay.CommonObjects.System;
 using SurgeEngine.Source.Code.Infrastructure.Config;
 using SurgeEngine.Source.Code.Infrastructure.Custom;
 using UnityEngine;
+using UnityEngine.Splines;
 
 namespace SurgeEngine.Source.Code.Core.Character.System
 {
@@ -79,6 +80,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         public event Action<ChangeMode2DData> OnPath2DChange;
         public event Action<ChangeMode3DData> OnPathForwardChange;
         public event Action<ChangeMode3DData> OnPathDashChange;
+        private Vector3 _lastTangent;
 
         private float _moveDot;
         private float _detachTimer;
@@ -244,20 +246,27 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             if (Path2D != null && Path2D.Tag == SplineTag.SideView)
             {
                 var path = Path2D.Spline;
+                float sign = Mathf.Sign(Vector3.Dot(Rigidbody.transform.forward, path.EvaluateTangent()));
+                float skipDelta = CalculateSkipDelta(path, sign);
+                if (skipDelta > 0f)
+                {
+                    path.Time += skipDelta * sign;
+                }
+                
                 path.EvaluateWorld(out var pos, out var tg, out var up, out var right);
                 if (right != Vector3.zero)
                 {
                     Project(right);
                 }
-                
-                if (IsPathOutOfRange(Path2D))
+
+                /*if (IsPathOutOfRange(Path2D))
                 {
                     Set2DPath(null);
                     return;
-                }
+                }*/
                 
                 Vector3 endPos = pos;
-                endPos += up;
+                endPos += Rigidbody.transform.up;
                 endPos.y = Rigidbody.position.y;
 
                 float pathEaseTime = Path2D.PathEaseTime;
@@ -268,7 +277,6 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
                 if (Speed > 0.02f && Character.Flags.HasFlag(FlagType.Autorun))
                 {
-                    float sign = Mathf.Sign(Vector3.Dot(Rigidbody.transform.forward, tg));
                     var rotTarget = Quaternion.LookRotation(tg * sign, up);
                     Rigidbody.MoveRotation(Quaternion.RotateTowards(Rigidbody.rotation, rotTarget, 720f * Time.fixedDeltaTime));
                 }
@@ -288,7 +296,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
                 
                 Rigidbody.MovePosition(target);
                 
-                path.Time += Vector3.Dot(Velocity, tg) * Time.fixedDeltaTime;
+                path.Time += Vector3.Dot(Velocity, Vector3.ProjectOnPlane(tg.normalized, transform.up)) * Time.fixedDeltaTime;
             }
         }
 
@@ -325,6 +333,53 @@ namespace SurgeEngine.Source.Code.Core.Character.System
                         SetDashPath(null);
                     }
                 }
+            }
+        }
+        
+        private float CalculateSkipDelta(SplineData spline, float direction)
+        {
+            var container = spline.Container;
+            var containerTransform = container.transform;
+            const float step = 0.0001f;
+            const float verticalThreshold = 0.99f;
+            float currentNormalizedTime = spline.NormalizedTime;
+            float length = spline.Length;
+    
+            container.Spline.Evaluate(currentNormalizedTime, out _, out var currentTg, out _);
+            Vector3 currentTangent = containerTransform.TransformDirection(currentTg).normalized;
+    
+            if (Mathf.Abs(Vector3.Dot(currentTangent, Vector3.up)) <= verticalThreshold)
+                return 0f;
+
+            if (direction > 0f)
+            {
+                float searchTime = currentNormalizedTime + step;
+                while (searchTime <= 1f)
+                {
+                    container.Spline.Evaluate(searchTime, out _, out var testTg, out _);
+                    Vector3 testTangent = containerTransform.TransformDirection(testTg).normalized;
+            
+                    if (Mathf.Abs(Vector3.Dot(testTangent, Vector3.up)) <= verticalThreshold)
+                        return (searchTime - currentNormalizedTime) * length;
+            
+                    searchTime += step;
+                }
+                return (1f - currentNormalizedTime) * length;
+            }
+            else
+            {
+                float searchTime = currentNormalizedTime - step;
+                while (searchTime >= 0f)
+                {
+                    container.Spline.Evaluate(searchTime, out _, out var testTg, out _);
+                    Vector3 testTangent = containerTransform.TransformDirection(testTg).normalized;
+            
+                    if (Mathf.Abs(Vector3.Dot(testTangent, Vector3.up)) <= verticalThreshold)
+                        return (currentNormalizedTime - searchTime) * length;
+            
+                    searchTime -= step;
+                }
+                return currentNormalizedTime * length;
             }
         }
 
@@ -485,15 +540,20 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             return hit;
         }
         
-        public void Project(Vector3 normal = default)
+        public void Project(Vector3 vector)
         {
-            if (normal == default)
+            if (vector != Vector3.zero)
+            {
+                Rigidbody.linearVelocity = Vector3.ProjectOnPlane(Rigidbody.linearVelocity, vector);
+            }
+        }
+
+        public void ProjectOnNormal()
+        {
+            if (Normal != Vector3.zero)
             {
                 Rigidbody.linearVelocity = Vector3.ProjectOnPlane(Rigidbody.linearVelocity, Normal);
-                return;
             }
-            
-            Rigidbody.linearVelocity = Vector3.ProjectOnPlane(Rigidbody.linearVelocity, normal);
         }
 
         public void ClampVelocityToMax(float max = default)

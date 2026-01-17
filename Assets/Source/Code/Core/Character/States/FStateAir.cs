@@ -26,6 +26,8 @@ namespace SurgeEngine.Source.Code.Core.Character.States
             {
                 Character.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, 0.5f));
             }
+            
+            Kinematics.Normal = Vector3.up;
         }
 
         public override void OnFixedTick(float dt)

@@ -85,7 +85,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
                 }
                 Model.RotateBody(Kinematics.Velocity, Kinematics.Normal, 1400);
 
-                Kinematics.Project(Kinematics.Normal);
+                Kinematics.ProjectOnNormal();
                 Kinematics.SlopePhysics();
 
                 Kinematics.GroundTag.Value = data.transform.gameObject.GetGroundTag();

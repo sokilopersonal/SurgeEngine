@@ -233,7 +233,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
                 bool predicted = Kinematics.CheckForPredictedGround(dt, distance, 4);
                 
                 if (predicted) Kinematics.Snap(hit.point, Kinematics.Normal);
-                Kinematics.Project();
+                Kinematics.ProjectOnNormal();
             }
             else
             {
