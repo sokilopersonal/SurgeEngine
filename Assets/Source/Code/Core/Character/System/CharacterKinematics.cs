@@ -259,11 +259,11 @@ namespace SurgeEngine.Source.Code.Core.Character.System
                     Project(right);
                 }
 
-                /*if (IsPathOutOfRange(Path2D))
+                if (IsPathOutOfRange(Path2D))
                 {
                     Set2DPath(null);
                     return;
-                }*/
+                }
                 
                 Vector3 endPos = pos;
                 endPos += Rigidbody.transform.up;
