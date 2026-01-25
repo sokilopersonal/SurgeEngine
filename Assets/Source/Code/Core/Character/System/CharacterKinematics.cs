@@ -230,15 +230,16 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             Vector3 newVelocity = Quaternion.FromToRotation(_planarVelocity.normalized, _inputDir) * _planarVelocity;
             float handling = TurnRate;
             handling *= _config.turnCurve.Evaluate(Speed / _config.topSpeed);
-            _movementVector = Vector3.Slerp(_planarVelocity, newVelocity, handling * Time.fixedDeltaTime);
+            float t = SurgeMath.Damp(0.2f, handling * Time.fixedDeltaTime);
+            _movementVector = Vector3.Slerp(_planarVelocity, newVelocity, t);
         }
 
         private void BaseAirPhysics()
         {
             float handling = TurnRate;
             handling *= _config.airControl;
-            _movementVector = Vector3.Lerp(_planarVelocity, _inputDir.normalized * _planarVelocity.magnitude, 
-                handling * Time.fixedDeltaTime);
+            float t = SurgeMath.Damp(0.2f, handling * Time.fixedDeltaTime);
+            _movementVector = Vector3.Lerp(_planarVelocity, _inputDir.normalized * _planarVelocity.magnitude, t);
         }
 
         private void CalculatePath2D()

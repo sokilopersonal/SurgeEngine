@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using SurgeEngine.Source.Code.Infrastructure.Custom;
+using UnityEngine;
 
 namespace SurgeEngine.Source.Code.Core.Character.System
 {
@@ -78,7 +79,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             {
                 var targetRot = Quaternion.LookRotation(targetDir, normal);
                 var towards = Quaternion.RotateTowards(rb.rotation, targetRot, rotSpeed * Time.fixedDeltaTime);
-                var finalRot = Quaternion.Slerp(rb.rotation, towards, 70 * Time.fixedDeltaTime);
+                var finalRot = Quaternion.Slerp(rb.rotation, towards, SurgeMath.Damp(0.4f, 64 * Time.fixedDeltaTime));
                 rb.MoveRotation(finalRot);
             }
         }
@@ -92,7 +93,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             {
                 var velDir = Vector3.ProjectOnPlane(currentVelocity.normalized, normal);
                 float t = CalculateVelocityBlendFactor(currentSpeed);
-                targetDir = Vector3.Slerp(inputDir.normalized, velDir, t * 10f).normalized;
+                targetDir = Vector3.Slerp(inputDir.normalized, velDir, t * 5f).normalized;
             }
 
             return targetDir;

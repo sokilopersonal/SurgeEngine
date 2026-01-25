@@ -4,6 +4,7 @@ using SurgeEngine.Source.Code.Core.Character.CameraSystem.Modifiers;
 using SurgeEngine.Source.Code.Core.Character.States;
 using SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic;
 using SurgeEngine.Source.Code.Core.Character.System;
+using SurgeEngine.Source.Code.Infrastructure.Custom;
 using UnityEngine;
 
 namespace SurgeEngine.Source.Code.Core.Character.CameraSystem.Pans
@@ -211,8 +212,10 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem.Pans
             }
             else
             {
-                _yawAuto = Mathf.Lerp(_yawAuto, 0, Time.deltaTime * AutoLookResetSpeed);
-                _pitchAuto = Mathf.Lerp(_pitchAuto, 0, Time.deltaTime * AutoLookResetSpeed);
+                float t = Time.deltaTime * AutoLookResetSpeed;
+                float damp = SurgeMath.Damp(0.3f, t);
+                _yawAuto = Mathf.Lerp(_yawAuto, 0, damp);
+                _pitchAuto = Mathf.Lerp(_pitchAuto, 0, damp);
             }
         }
 
@@ -245,16 +248,16 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem.Pans
 
                 if (viewDot >= 0.9f)
                 {
-                    _lookOffset.x = Mathf.Lerp(_lookOffset.x, 0, Time.deltaTime * LateralOffsetResetSpeed * 4);
+                    _lookOffset.x = Mathf.Lerp(_lookOffset.x, 0, SurgeMath.Damp(0.5f, Time.deltaTime * LateralOffsetResetSpeed * 4));
                 }
                 else
                 {
-                    _lookOffset.x = Mathf.Lerp(_lookOffset.x, x * 0.6f * curve.Evaluate(time) * modifier, Time.deltaTime * 1.25f);
+                    _lookOffset.x = Mathf.Lerp(_lookOffset.x, x * 0.6f * curve.Evaluate(time) * modifier, SurgeMath.Damp(0.5f, Time.deltaTime * 1.25f));
                 }
             }
             else
             {
-                _lookOffset.x = Mathf.Lerp(_lookOffset.x, 0, Time.deltaTime * LateralOffsetResetSpeed);
+                _lookOffset.x = Mathf.Lerp(_lookOffset.x, 0, SurgeMath.Damp(0.3f, Time.deltaTime * LateralOffsetResetSpeed));
             }
         }
         
