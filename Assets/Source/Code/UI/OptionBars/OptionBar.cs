@@ -51,7 +51,21 @@ namespace SurgeEngine.Source.Code.UI.OptionBars
         protected override void OnEnable()
         {
             base.OnEnable();
-            
+
+            SetTitleText();
+            SetTextState();
+        }
+
+        protected override void OnValidate()
+        {
+            base.OnValidate();
+
+            SetTitleText();
+            SetTextState();
+        }
+
+        private void SetTitleText()
+        {
             if (title != null)
             {
                 title.text = DisplayName;
@@ -60,7 +74,10 @@ namespace SurgeEngine.Source.Code.UI.OptionBars
 
         protected virtual void SetTextState()
         {
-            state.text = CurrentValue;
+            if (state != null)
+            {
+                state.text = CurrentValue;
+            }
         }
 
         public virtual void Set(int index)

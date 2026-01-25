@@ -15,6 +15,7 @@ namespace SurgeEngine.Source.Code.Infrastructure.Tools.Managers.UI
         [SerializeField] private OptionBar antiAliasingBar;
         [SerializeField] private OptionBar antiAliasingQualityBar;
         [SerializeField] private SliderOptionBar sharpnessSliderBar;
+        [SerializeField] private OptionBar frameRateLimitBar;
         
         [Inject] private UserDisplay _display;
 
@@ -78,12 +79,18 @@ namespace SurgeEngine.Source.Code.Infrastructure.Tools.Managers.UI
                 _display.SetSharpness(sharpnessSliderBar.Slider.value / 100f);
             };
 
+            frameRateLimitBar.OnChanged += b =>
+            {
+                _display.SetFrameRateLimit(b.Index);
+            };
+
             fullscreenBar.Set(data.Fullscreen.Value ? 1 : 0);
             upscalingModeBar.Set((int)data.UpscaleMode.Value);
             upscalingPresetBar.Set((int)data.UpscaleQuality.Value);
             antiAliasingBar.Set((int)data.AntiAliasing.Value);
             antiAliasingQualityBar.Set((int)data.AntiAliasingQuality.Value);
             sharpnessSliderBar.Slider.value = data.Sharpness.Value * 100;
+            frameRateLimitBar.Set(data.FrameRateLimit.Value);
         }
 
         public override void Save()
@@ -105,6 +112,7 @@ namespace SurgeEngine.Source.Code.Infrastructure.Tools.Managers.UI
                 antiAliasingBar.Set((int)data.AntiAliasing.Value);
                 antiAliasingQualityBar.Set((int)data.AntiAliasingQuality.Value);
                 sharpnessSliderBar.Slider.value = data.Sharpness.Value * 100;
+                frameRateLimitBar.Set(data.FrameRateLimit.Value);
                 
                 Save();
             });

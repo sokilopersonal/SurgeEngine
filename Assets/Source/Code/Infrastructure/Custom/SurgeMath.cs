@@ -19,6 +19,11 @@ namespace SurgeEngine.Source.Code.Infrastructure.Custom
             v2 = Vector3.Cross(axis, right);
             return Mathf.Atan2(Vector3.Dot(v1, right), Vector3.Dot(v1, v2)) * Mathf.Rad2Deg;
         }
+
+        public static float Damp(float smoothing, float source)
+        {
+            return 1 - Mathf.Pow(smoothing, source);
+        }
         
         public static void SplitPlanarVector(Vector3 vector, Vector3 normal, out Vector3 planar, out Vector3 vertical)
         {

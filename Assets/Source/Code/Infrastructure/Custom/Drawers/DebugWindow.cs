@@ -45,7 +45,8 @@ namespace SurgeEngine.Source.Code.Infrastructure.Custom.Drawers
                 "Path 2D: {10}\n" +
                 "Path Forward: {11}\n" +
                 "Path Dash: {12}\n" +
-                "Is Auto Running: {13}\n",
+                "Is Auto Running: {13}\n" +
+                "Turn Rate: {14}\n",
                 character.transform.position,
                 character.transform.rotation.eulerAngles,
                 character.Kinematics.MoveDot,
@@ -59,7 +60,8 @@ namespace SurgeEngine.Source.Code.Infrastructure.Custom.Drawers
                 character.Kinematics.Path2D != null ? "Exists" : "None",
                 character.Kinematics.PathForward != null ? "Exists" : "None",
                 character.Kinematics.PathDash != null ? "Exists" : "None", 
-                character.Flags.HasFlag(FlagType.Autorun));
+                character.Flags.HasFlag(FlagType.Autorun),
+                character.Kinematics.TurnRate);
         }
 
         private void ToggleWindow(InputAction.CallbackContext obj)

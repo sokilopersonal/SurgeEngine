@@ -89,6 +89,13 @@ namespace SurgeEngine.Source.Code.Infrastructure.Tools.Managers
             Apply();
         }
 
+        public void SetFrameRateLimit(int value)
+        {
+            Data.FrameRateLimit.Value = value;
+            
+            Apply();
+        }
+
         public void Apply()
         {
             switch (Data.AntiAliasing.Value)
@@ -171,6 +178,31 @@ namespace SurgeEngine.Source.Code.Infrastructure.Tools.Managers
             }
 
             Screen.SetResolution(Screen.width, Screen.height, Data.Fullscreen.Value ? FullScreenMode.FullScreenWindow : FullScreenMode.Windowed);
+
+            switch (Data.FrameRateLimit.Value)
+            {
+                case 0:
+                    Application.targetFrameRate = 30;
+                    break;
+                case 1:
+                    Application.targetFrameRate = 45;
+                    break;
+                case 2:
+                    Application.targetFrameRate = 60;
+                    break;
+                case 3:
+                    Application.targetFrameRate = 90;
+                    break;
+                case 4:
+                    Application.targetFrameRate = 120;
+                    break;
+                case 5:
+                    Application.targetFrameRate = 240;
+                    break;
+                case 6:
+                    Application.targetFrameRate = -1;
+                    break;
+            }
         }
     }
 
@@ -183,6 +215,7 @@ namespace SurgeEngine.Source.Code.Infrastructure.Tools.Managers
         public ReactiveVar<float> Sharpness = new(0.25f);
         public ReactiveVar<UpscalingMode> UpscaleMode = new(UpscalingMode.Off);
         public ReactiveVar<UpscalingQuality> UpscaleQuality = new(UpscalingQuality.Native);
+        public ReactiveVar<int> FrameRateLimit = new(5);
     }
     
     public enum AntiAliasingQuality
