@@ -1,0 +1,55 @@
+{
+    "version": 1,
+    "name": "GlobalInputActions",
+    "maps": [
+        {
+            "name": "Default",
+            "id": "dc16b1a0-6f90-4f61-b4c5-194f8719aa9b",
+            "actions": [
+                {
+                    "name": "DebugWindow",
+                    "type": "Button",
+                    "id": "687fb05f-295f-4b2f-b94b-d8b6fa7f2fb3",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ToggleCursor",
+                    "type": "Button",
+                    "id": "8e305110-e7d8-4bb9-964f-530e96aa33f8",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "add40b40-df9c-4439-a6f5-e1c996236980",
+                    "path": "<Keyboard>/f2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DebugWindow",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "27a5997d-e16f-4780-8f20-a9d8f58c069a",
+                    "path": "<Keyboard>/f3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ToggleCursor",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
