@@ -4,6 +4,8 @@ using SurgeEngine.Source.Code.Core.Character.System;
 using SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.System;
+using SurgeEngine.Source.Code.Infrastructure.Tools.Managers;
+using SurgeEngine.Source.Code.Rendering;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering.HighDefinition;
@@ -15,25 +17,28 @@ namespace SurgeEngine.Source.Code.Infrastructure.Custom.Drawers
     {
         [SerializeField] private UImGui.UImGui uImGui; 
         private InputAction _toggleAction;
-        private InputAction _toggleCursorAction;
         private bool _active;
         private bool _cursorActive;
         
+        [Inject] private GameSettings _gameSettings;
         [Inject] private CharacterBase _character;
         [Inject] private Stage _stage;
+
+        private CascadeDemandRendering _cdm;
+        private bool _cachedShadowMapsFound;
+        private bool _cachedShadowMaps;
 
         private void Awake()
         {
             if (uImGui == null) uImGui = GetComponent<UImGui.UImGui>();
+
+            _cdm = FindFirstObjectByType<CascadeDemandRendering>();
+            _cachedShadowMapsFound = _cdm != null;
+            if (_cachedShadowMapsFound) _cachedShadowMaps = _cdm.enabled;
             
-            uImGui.SetCamera(Camera.main);
-            uImGui.Reload();
             uImGui.enabled = false;
-            Destroy(uImGui.GetComponent<HDAdditionalCameraData>());
-            Destroy(uImGui.GetComponent<Camera>());
 
             _toggleAction = InputSystem.actions.FindAction("DebugWindow");
-            _toggleCursorAction = InputSystem.actions.FindAction("ToggleCursor");
         }
 
         private void OnEnable()
@@ -41,10 +46,8 @@ namespace SurgeEngine.Source.Code.Infrastructure.Custom.Drawers
             uImGui.Layout += OnLayout;
             
             _toggleAction.Enable();
-            _toggleCursorAction.Enable();
             
             _toggleAction.performed += ToggleWindow;
-            _toggleCursorAction.performed += ToggleCursor;
         }
 
         private void OnDisable()
@@ -52,35 +55,42 @@ namespace SurgeEngine.Source.Code.Infrastructure.Custom.Drawers
             uImGui.Layout -= OnLayout;
             
             _toggleAction.performed -= ToggleWindow;
-            _toggleCursorAction.performed -= ToggleCursor;
         }
 
         private void OnLayout(UImGui.UImGui obj)
         {
             ImGui.Text("Surge Engine");
             ImGui.Text("Press F3 to toggle cursor");
-            
-            ImGui.SeparatorText("Character Info");
-            
-            ImGui.Text($"Position: {_character.Rigidbody.position}");
-            ImGui.Text($"Rotation: {_character.Rigidbody.rotation}");
-            ImGui.Text($"Velocity: {_character.Rigidbody.linearVelocity}");
-            ImGui.Text($"Speed: {_character.Kinematics.Speed}");
-            ImGui.Text($"Vertical Speed: {_character.Kinematics.VerticalVelocity.y}");
-            ImGui.Text($"State: {_character.StateMachine.CurrentState?.GetType().Name}");
-            ImGui.Text($"Camera State: {_character.Camera.StateMachine.CurrentState?.GetType().Name}");
-            ImGui.Text($"Animation State: {_character.Animation.StateAnimator.GetCurrentAnimationState()}");
-            
-            ImGui.SeparatorText("Path Info");
-            if (_character.Kinematics.Path2D != null || _character.Kinematics.PathForward != null || _character.Kinematics.PathDash != null)
+
+            if (ImGui.CollapsingHeader("Application Info"))
             {
-                DrawPathInfo(_character.Kinematics.Path2D, "Path 2D");
-                DrawPathInfo(_character.Kinematics.PathForward, "Path Forward");
-                DrawPathInfo(_character.Kinematics.PathDash, "Path Dash");
+                ImGui.Text($"Version: {Application.version}");
+                ImGui.Text($"Unity Version: {Application.unityVersion}");
+                ImGui.Text($"FPS: {Mathf.RoundToInt(1f / Time.unscaledDeltaTime)}");
             }
-            else
+
+            if (ImGui.CollapsingHeader("Character Info"))
             {
-                ImGui.BulletText("Currently you don't have any active paths.");
+                ImGui.Text($"Position: {_character.Rigidbody.position}");
+                ImGui.Text($"Rotation: {_character.Rigidbody.rotation}");
+                ImGui.Text($"Velocity: {_character.Rigidbody.linearVelocity}");
+                ImGui.Text($"Speed: {_character.Kinematics.Speed}");
+                ImGui.Text($"Vertical Speed: {_character.Kinematics.VerticalVelocity.y}");
+                ImGui.Text($"State: {_character.StateMachine.CurrentState?.GetType().Name}");
+                ImGui.Text($"Camera State: {_character.Camera.StateMachine.CurrentState?.GetType().Name}");
+                ImGui.Text($"Animation State: {_character.Animation.StateAnimator.GetCurrentAnimationState()}");
+            
+                ImGui.SeparatorText("Path Info");
+                if (_character.Kinematics.Path2D != null || _character.Kinematics.PathForward != null || _character.Kinematics.PathDash != null)
+                {
+                    DrawPathInfo(_character.Kinematics.Path2D, "Path 2D");
+                    DrawPathInfo(_character.Kinematics.PathForward, "Path Forward");
+                    DrawPathInfo(_character.Kinematics.PathDash, "Path Dash");
+                }
+                else
+                {
+                    ImGui.BulletText("Currently you don't have any active paths.");
+                }
             }
 
             if (ImGui.CollapsingHeader("Character Utility"))
@@ -111,6 +121,23 @@ namespace SurgeEngine.Source.Code.Infrastructure.Custom.Drawers
                     }
                 }
             }
+            
+            if (ImGui.CollapsingHeader("Rendering"))
+            {
+                if (ImGui.TreeNode("Cached Shadow Maps"))
+                {
+                    if (_cachedShadowMapsFound)
+                    {
+                        ImGui.Checkbox("Enable", ref _cachedShadowMaps);
+                
+                        _cdm.enabled = _cachedShadowMaps;
+                    }
+                    else
+                    {
+                        ImGui.Text("Not found.");
+                    }
+                }
+            }
 
             void DrawPathInfo(ChangeModeData data, string name)
             {
@@ -124,57 +151,18 @@ namespace SurgeEngine.Source.Code.Infrastructure.Custom.Drawers
             }
         }
 
-        private void Update()
-        {
-            /*holder.gameObject.SetActive(_active);
-            
-            if (!_active) return;
-            
-            CharacterBase character = CharacterContext.Context;
-            holder.fontSize = 26;
-            holder.text = string.Format(
-                "Position: {0}\n" +
-                "Euler Angles: {1}\n" +
-                "Move Dot: {2}\n" +
-                "Current Speed: {3:0.0}\n" +
-                "Current Vertical Speed: {4:0.0}\n" +
-                "Body Velocity: {5}\n" +
-                "Planar Velocity: {6}\n" +
-                "State: {7}\n" +
-                "Animation: {8}\n" +
-                "Camera State: {9}\n" +
-                "Path 2D: {10}\n" +
-                "Path Forward: {11}\n" +
-                "Path Dash: {12}\n" +
-                "Is Auto Running: {13}\n" +
-                "Turn Rate: {14}\n",
-                character.transform.position,
-                character.transform.rotation.eulerAngles,
-                character.Kinematics.MoveDot,
-                character.Kinematics.Speed,
-                character.Kinematics.Velocity.y,
-                character.Kinematics.Velocity,
-                character.Kinematics.PlanarVelocity,
-                character.StateMachine.CurrentState?.GetType().Name,
-                character.Animation.StateAnimator.GetCurrentAnimationState(),
-                character.Camera.StateMachine.CurrentState?.GetType().Name,
-                character.Kinematics.Path2D != null ? "Exists" : "None",
-                character.Kinematics.PathForward != null ? "Exists" : "None",
-                character.Kinematics.PathDash != null ? "Exists" : "None", 
-                character.Flags.HasFlag(FlagType.Autorun),
-                character.Kinematics.TurnRate);*/
-        }
-
         private void ToggleWindow(InputAction.CallbackContext obj)
         {
-            if (Debug.isDebugBuild)
+            if (_gameSettings.IsDebug)
             {
                 _active = !_active;
                 uImGui.enabled = _active;
+                
+                ToggleCursor();
             }
         }
 
-        private void ToggleCursor(InputAction.CallbackContext obj)
+        private void ToggleCursor()
         {
             _cursorActive = !_cursorActive;
             if (_cursorActive)

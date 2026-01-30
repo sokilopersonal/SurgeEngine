@@ -56,6 +56,7 @@ namespace SurgeEngine.Source.Code.UI.OptionBars
             SetTextState();
         }
 
+#if UNITY_EDITOR
         protected override void OnValidate()
         {
             base.OnValidate();
@@ -63,6 +64,7 @@ namespace SurgeEngine.Source.Code.UI.OptionBars
             SetTitleText();
             SetTextState();
         }
+#endif
 
         private void SetTitleText()
         {
