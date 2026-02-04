@@ -150,6 +150,8 @@ namespace UnityEditor.Rendering.HighDefinition
                         EditorGUILayout.PropertyField(p.deepLearningSuperSamplingUseOptimalSettings, HDRenderPipelineUI.Styles.DLSSUseOptimalSettingsContent);
                         EditorGUI.indentLevel--;
                     }
+
+                    EditorGUILayout.PropertyField(p.deepLearningSuperSamplingSharpening, Styles.DLSSSharpening);
                 }
 
                 bool isDLSSEnabled = isDLSSEnabledInQualityAsset && p.allowDeepLearningSuperSampling.boolValue;

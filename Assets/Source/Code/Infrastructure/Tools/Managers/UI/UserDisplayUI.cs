@@ -12,6 +12,7 @@ namespace SurgeEngine.Source.Code.Infrastructure.Tools.Managers.UI
         [SerializeField] private OptionBar fullscreenBar;
         [SerializeField] private OptionBar upscalingModeBar;
         [SerializeField] private OptionBar upscalingPresetBar;
+        [SerializeField] private SliderOptionBar dlssSharpnessSliderBar;
         [SerializeField] private OptionBar antiAliasingBar;
         [SerializeField] private OptionBar antiAliasingQualityBar;
         [SerializeField] private SliderOptionBar sharpnessSliderBar;
@@ -52,6 +53,7 @@ namespace SurgeEngine.Source.Code.Infrastructure.Tools.Managers.UI
                 _display.SetUpscalingMode(mode);
                 
                 upscalingPresetBar.gameObject.SetActive(mode != UpscalingMode.Off);
+                dlssSharpnessSliderBar.gameObject.SetActive(mode == UpscalingMode.DLSS);
             };
             
             upscalingPresetBar.OnChanged += b =>
@@ -79,6 +81,11 @@ namespace SurgeEngine.Source.Code.Infrastructure.Tools.Managers.UI
                 _display.SetSharpness(sharpnessSliderBar.Slider.value / 100f);
             };
 
+            dlssSharpnessSliderBar.OnChanged += b =>
+            {
+                _display.SetDLSS_Sharpness(dlssSharpnessSliderBar.Slider.value / 100f);
+            };
+
             frameRateLimitBar.OnChanged += b =>
             {
                 _display.SetFrameRateLimit(b.Index);
@@ -90,6 +97,7 @@ namespace SurgeEngine.Source.Code.Infrastructure.Tools.Managers.UI
             antiAliasingBar.Set((int)data.AntiAliasing.Value);
             antiAliasingQualityBar.Set((int)data.AntiAliasingQuality.Value);
             sharpnessSliderBar.Slider.value = data.Sharpness.Value * 100;
+            dlssSharpnessSliderBar.Slider.value = data.DLSS_Sharpness.Value * 100;
             frameRateLimitBar.Set(data.FrameRateLimit.Value);
         }
 
@@ -112,6 +120,7 @@ namespace SurgeEngine.Source.Code.Infrastructure.Tools.Managers.UI
                 antiAliasingBar.Set((int)data.AntiAliasing.Value);
                 antiAliasingQualityBar.Set((int)data.AntiAliasingQuality.Value);
                 sharpnessSliderBar.Slider.value = data.Sharpness.Value * 100;
+                dlssSharpnessSliderBar.Slider.value = data.DLSS_Sharpness.Value * 100;
                 frameRateLimitBar.Set(data.FrameRateLimit.Value);
                 
                 Save();

@@ -68,6 +68,13 @@ namespace SurgeEngine.Source.Code.Infrastructure.Tools.Managers
             Apply();
         }
 
+        public void SetDLSS_Sharpness(float value)
+        {
+            Data.DLSS_Sharpness.Value = Mathf.Clamp01(value);
+            
+            Apply();
+        }
+
         public void SetUpscalingMode(UpscalingMode mode)
         {
             Data.UpscaleMode.Value = mode;
@@ -129,7 +136,7 @@ namespace SurgeEngine.Source.Code.Infrastructure.Tools.Managers
             }
 
             _hdCameraData.taaSharpenStrength = Data.Sharpness.Value;
-            _hdCameraData.deepLearningSuperSamplingSharpening = Data.Sharpness.Value;
+            _hdCameraData.deepLearningSuperSamplingSharpening = Data.DLSS_Sharpness.Value;
             _hdCameraData.fidelityFX2SuperResolutionEnableSharpening = true;
             _hdCameraData.fidelityFX2SuperResolutionSharpening = Data.Sharpness.Value;
             _hdCameraData.allowDynamicResolution = Data.UpscaleMode.Value != UpscalingMode.Off;
@@ -213,6 +220,7 @@ namespace SurgeEngine.Source.Code.Infrastructure.Tools.Managers
         public ReactiveVar<AntiAliasing> AntiAliasing = new(Managers.AntiAliasing.TAA);
         public ReactiveVar<AntiAliasingQuality> AntiAliasingQuality = new(Managers.AntiAliasingQuality.High);
         public ReactiveVar<float> Sharpness = new(0.25f);
+        public ReactiveVar<float> DLSS_Sharpness = new(0.25f);
         public ReactiveVar<UpscalingMode> UpscaleMode = new(UpscalingMode.Off);
         public ReactiveVar<UpscalingQuality> UpscaleQuality = new(UpscalingQuality.Native);
         public ReactiveVar<int> FrameRateLimit = new(5);
