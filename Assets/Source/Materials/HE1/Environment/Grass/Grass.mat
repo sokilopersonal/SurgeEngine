@@ -149,6 +149,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _TextureArray:
+        m_Texture: {fileID: 18700000, guid: 8cfe82932e04a844197884387c0ee5d7, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _ThicknessMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -185,6 +189,7 @@ Material:
     - _AddPrecomputedVelocity: 0
     - _AffectDistance: 2
     - _AlbedoAffectEmissive: 0
+    - _AlphaClipping: 0.5
     - _AlphaCutoff: 0.25
     - _AlphaCutoffEnable: 1
     - _AlphaCutoffPostpass: 0.5
@@ -251,6 +256,7 @@ Material:
     - _HeightTessAmplitude: 2
     - _HeightTessCenter: 0.5
     - _IncludeIndirectLighting: 1
+    - _Index: 0
     - _InvTilingScale: 1
     - _Ior: 1.5
     - _IridescenceMask: 1
@@ -318,7 +324,7 @@ Material:
     - _UVDetail: 0
     - _UVEmissive: 0
     - _UseEmissiveIntensity: 0
-    - _UseShadowThreshold: 0
+    - _UseShadowThreshold: 1
     - _WindEnable: 1
     - _WindOffsetPower: 1
     - _WindScale: 0.4

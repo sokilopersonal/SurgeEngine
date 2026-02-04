@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace SurgeEngine.Source.Code.Rendering
 {
@@ -13,6 +14,7 @@ namespace SurgeEngine.Source.Code.Rendering
             public float rotation;
             public float height;
             public float width;
+            public int textureIndex;
         }
 
         [Header("Grass Settings")]
@@ -21,10 +23,10 @@ namespace SurgeEngine.Source.Code.Rendering
         [SerializeField] private int maxGrassCount = 10000;
         
         [Header("Rendering Settings")]
-        [SerializeField] private float minHeight = 0.8f;
-        [SerializeField] private float maxHeight = 1.2f;
-        [SerializeField] private float minWidth = 0.7f;
-        [SerializeField] private float maxWidth = 1.3f;
+        [SerializeField] private float minHeight = 0.4f;
+        [SerializeField] private float maxHeight = 0.7f;
+        [SerializeField] private float minWidth = 0.6f;
+        [SerializeField] private float maxWidth = 1f;
         [Tooltip("Maximum distance from camera at which grass will be rendered")]
         [SerializeField] private float maxRenderDistance = 100f;
         
@@ -36,6 +38,8 @@ namespace SurgeEngine.Source.Code.Rendering
         
         private Matrix4x4[] _matrices;
         private Matrix4x4[] _visibleMatrices;
+        private float[] _textureIndices;
+        private float[] _visibleTextureIndices;
         private readonly List<int> _visibleIndices = new();
         private MaterialPropertyBlock _propertyBlock;
         private int _instanceCount;
@@ -46,35 +50,44 @@ namespace SurgeEngine.Source.Code.Rendering
         {
             _matrices = new Matrix4x4[maxGrassCount];
             _visibleMatrices = new Matrix4x4[maxGrassCount];
+            _textureIndices = new float[maxGrassCount];
+            _visibleTextureIndices = new float[maxGrassCount];
             _propertyBlock = new MaterialPropertyBlock();
             
             UpdateMatrices();
         }
 
-        public void UpdateMatrices()
+        private void LateUpdate()
         {
-            _instanceCount = Mathf.Min(grassInstances.Count, maxGrassCount);
+            if (grassMesh == null || grassMaterial == null || _instanceCount == 0)
+                return;
+
+            UpdateVisibleMatrices();
             
-            for (int i = 0; i < _instanceCount; i++)
-            {
-                GrassInstance instance = grassInstances[i];
-        
-                Quaternion rotation = Quaternion.Euler(0, instance.rotation, 0);
-        
-                _matrices[i] = Matrix4x4.TRS(
-                    instance.position,
-                    rotation,
-                    new Vector3(instance.width, instance.height, instance.width)
-                );
-            }
+            if (_visibleInstanceCount == 0)
+                return;
+            
+            _propertyBlock.SetFloatArray("_Index", _visibleTextureIndices);
+            
+            Graphics.DrawMeshInstanced(
+                grassMesh,
+                0,
+                grassMaterial,
+                _visibleMatrices,
+                _visibleInstanceCount,
+                _propertyBlock,
+                ShadowCastingMode.Off,
+                true
+            );
         }
-        
+
         private void UpdateVisibleMatrices()
         {
             if (!useRenderDistance)
             {
                 _visibleInstanceCount = _instanceCount;
                 System.Array.Copy(_matrices, _visibleMatrices, _instanceCount);
+                System.Array.Copy(_textureIndices, _visibleTextureIndices, _instanceCount);
                 return;
             }
             
@@ -85,6 +98,7 @@ namespace SurgeEngine.Source.Code.Rendering
                 {
                     _visibleInstanceCount = _instanceCount;
                     System.Array.Copy(_matrices, _visibleMatrices, _instanceCount);
+                    System.Array.Copy(_textureIndices, _visibleTextureIndices, _instanceCount);
                     return;
                 }
             }
@@ -108,32 +122,38 @@ namespace SurgeEngine.Source.Code.Rendering
             {
                 int originalIndex = _visibleIndices[i];
                 _visibleMatrices[i] = _matrices[originalIndex];
+                _visibleTextureIndices[i] = _textureIndices[originalIndex];
             }
         }
 
-        private void LateUpdate()
+        public void UpdateMatrices()
         {
-            if (grassMesh == null || grassMaterial == null || _instanceCount == 0)
-                return;
-
-            UpdateVisibleMatrices();
+            _instanceCount = Mathf.Min(grassInstances.Count, maxGrassCount);
             
-            if (_visibleInstanceCount == 0)
-                return;
-
-            Graphics.DrawMeshInstanced(
-                grassMesh,
-                0,
-                grassMaterial,
-                _visibleMatrices,
-                _visibleInstanceCount,
-                _propertyBlock,
-                UnityEngine.Rendering.ShadowCastingMode.Off,
-                true
-            );
+            for (int i = 0; i < _instanceCount; i++)
+            {
+                GrassInstance instance = grassInstances[i];
+                Quaternion rotation = Quaternion.Euler(0, instance.rotation, 0);
+        
+                _matrices[i] = Matrix4x4.TRS(
+                    instance.position,
+                    rotation,
+                    new Vector3(instance.width, instance.height, instance.width)
+                );
+                
+                _textureIndices[i] = instance.textureIndex;
+            }
         }
 
-        public void AddGrassInstance(Vector3 position, float size = 1f, Vector3? surfaceNormal = null)
+        public void RegenerateGrass()
+        {
+            for (int i = 0; i < _instanceCount; i++)
+            {
+                RandomizeGrassInstance(i);
+            }
+        }
+
+        public void AddGrassInstance(Vector3 position, float size = 1f)
         {
             if (grassInstances.Count >= maxGrassCount)
                 return;
@@ -141,13 +161,15 @@ namespace SurgeEngine.Source.Code.Rendering
             float randomRotation = Random.Range(0f, 360f);
             float randomHeight = Random.Range(minHeight, maxHeight) * size;
             float randomWidth = Random.Range(minWidth, maxWidth) * size;
+            int randomTextureIndex = Random.Range(0, 4); // 0 to 3 inclusive
         
             GrassInstance instance = new GrassInstance
             {
                 position = position,
                 rotation = randomRotation,
                 height = randomHeight,
-                width = randomWidth
+                width = randomWidth,
+                textureIndex = randomTextureIndex
             };
 
             grassInstances.Add(instance);
@@ -169,36 +191,21 @@ namespace SurgeEngine.Source.Code.Rendering
             UpdateMatrices();
         }
         
-        public void RandomizeGrassInstance(int index, float size = 1f)
+        public void RandomizeGrassInstance(int index)
         {
             if (index < 0 || index >= grassInstances.Count)
                 return;
                 
             GrassInstance instance = grassInstances[index];
             Vector3 position = instance.position;
-
-            instance.rotation = Random.Range(0f, 360f);
-            instance.height = Random.Range(minHeight, maxHeight) * size;
-            instance.width = Random.Range(minWidth, maxWidth) * size;
-
             instance.position = position;
+            instance.rotation = Random.Range(0f, 360f);
+            instance.height = Random.Range(minHeight, maxHeight);
+            instance.width = Random.Range(minWidth, maxWidth);
+            instance.textureIndex = Random.Range(0, 4);
 
             grassInstances[index] = instance;
             UpdateMatrices();
-        }
-        
-        public void RandomizeGrassInRadius(Vector3 center, float radius, float size = 1f)
-        {
-            float sqrRadius = radius * radius;
-            
-            for (int i = 0; i < grassInstances.Count; i++)
-            {
-                GrassInstance instance = grassInstances[i];
-                if ((instance.position - center).sqrMagnitude <= sqrRadius)
-                {
-                    RandomizeGrassInstance(i, size);
-                }
-            }
         }
     }
 }
