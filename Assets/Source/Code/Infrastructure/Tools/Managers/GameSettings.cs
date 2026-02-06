@@ -1,5 +1,6 @@
 using System;
 using SurgeEngine.Source.Code.Infrastructure.Tools.Services;
+using UnityEngine;
 
 namespace SurgeEngine.Source.Code.Infrastructure.Tools.Managers
 {
@@ -13,7 +14,7 @@ namespace SurgeEngine.Source.Code.Infrastructure.Tools.Managers
         
         public bool IsDebug
         {
-            get => Data.isDebug;
+            get => Application.isEditor || Data.isDebug;
             set => Data.isDebug = value;
         }
     }

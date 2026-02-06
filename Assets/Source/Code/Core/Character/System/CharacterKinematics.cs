@@ -92,6 +92,8 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         {
             Rigidbody = Character.Rigidbody;
             Rigidbody.sleepThreshold = -1;
+            Rigidbody.solverIterations = 24;
+            Rigidbody.solverVelocityIterations = 16;
 
             _config = Character.Config;
 
@@ -284,7 +286,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
                 Vector3 target;
                 if (pathEaseTime > 0f)
                 {
-                    Path2D.CurrentEaseTime += Time.deltaTime / pathEaseTime;
+                    Path2D.CurrentEaseTime += Time.fixedDeltaTime / pathEaseTime;
                     Path2D.CurrentEaseTime = Mathf.Clamp01(Path2D.CurrentEaseTime);
                     Path2D.StartPosition += Velocity * Time.fixedDeltaTime;
                     target = Vector3.Lerp(Path2D.StartPosition, endPos, Path2D.CurrentEaseTime);

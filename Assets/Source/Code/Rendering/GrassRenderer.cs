@@ -7,6 +7,8 @@ namespace SurgeEngine.Source.Code.Rendering
     [ExecuteInEditMode]
     public class GrassRenderer : MonoBehaviour
     {
+        private static readonly int Index = Shader.PropertyToID("_Index");
+
         [System.Serializable]
         public struct GrassInstance
         {
@@ -67,7 +69,7 @@ namespace SurgeEngine.Source.Code.Rendering
             if (_visibleInstanceCount == 0)
                 return;
             
-            _propertyBlock.SetFloatArray("_Index", _visibleTextureIndices);
+            _propertyBlock.SetFloatArray(Index, _visibleTextureIndices);
             
             Graphics.DrawMeshInstanced(
                 grassMesh,
