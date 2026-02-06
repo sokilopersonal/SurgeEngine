@@ -640,7 +640,7 @@ namespace UnityEngine.Rendering.HighDefinition
                 { isAdvancedUpsampler: false, regularUpsampler: DynamicResUpscaleFilter.TAAU}
                     => DoTemporalAntialiasing(renderGraph, hdCamera, depthBuffer, motionVectors, depthBufferMipChain, source, stencilBuffer, postDoF: false, "TAA Destination"),
                 { isAdvancedUpsampler: false, regularUpsampler: DynamicResUpscaleFilter.ContrastAdaptiveSharpen}
-                    => ContrastAdaptiveSharpeningPass(renderGraph, hdCamera, source, taaUsesCAS),
+                    => ContrastAdaptiveSharpeningPass(renderGraph, hdCamera, source, taaUsesCAS, 0.8f),
                 { isAdvancedUpsampler: false, regularUpsampler: DynamicResUpscaleFilter.EdgeAdaptiveScalingUpres}
                     => EdgeAdaptiveSpatialUpsampling(renderGraph, hdCamera, source),
                 _ => source
@@ -789,7 +789,8 @@ namespace UnityEngine.Rendering.HighDefinition
                 
                 if (hdCamera.allowDynamicResolution && hdCamera.allowDeepLearningSuperSampling)
                 {
-                    source = SharpeningPass(renderGraph, hdCamera, source, hdCamera.deepLearningSuperSamplingSharpening);
+                    source = ContrastAdaptiveSharpeningPass(renderGraph, hdCamera, source, true,
+                        hdCamera.deepLearningSuperSamplingSharpening);
                 }
 
                 source = CustomPostProcessPass(renderGraph, hdCamera, source, depthBuffer, normalBuffer, motionVectors, m_CustomPostProcessOrdersSettings.afterPostProcessCustomPostProcesses, HDProfileId.CustomPostProcessAfterPP);
@@ -5792,6 +5793,7 @@ namespace UnityEngine.Rendering.HighDefinition
             public int inputHeight;
             public int outputWidth;
             public int outputHeight;
+            public float strength;
             public Vector4 hdroutParams;
 
             public TextureHandle source;
@@ -5800,7 +5802,7 @@ namespace UnityEngine.Rendering.HighDefinition
             public BufferHandle casParametersBuffer;
         }
 
-        TextureHandle ContrastAdaptiveSharpeningPass(RenderGraph renderGraph, HDCamera hdCamera, TextureHandle source, bool runsAsAfterTAA = false)
+        TextureHandle ContrastAdaptiveSharpeningPass(RenderGraph renderGraph, HDCamera hdCamera, TextureHandle source, bool runsAsAfterTAA = false, float strength = 0f)
         {
             bool runsAsUpscale = hdCamera.DynResRequest.enabled && hdCamera.DynResRequest.filter == DynamicResUpscaleFilter.ContrastAdaptiveSharpen;
 
@@ -5842,7 +5844,7 @@ namespace UnityEngine.Rendering.HighDefinition
                     builder.SetRenderFunc(
                         (CASData data, UnsafeGraphContext ctx) =>
                         {
-                            ctx.cmd.SetComputeFloatParam(data.casCS, HDShaderIDs._Sharpness, 1);
+                            ctx.cmd.SetComputeFloatParam(data.casCS, HDShaderIDs._Sharpness, strength);
                             ctx.cmd.SetComputeTextureParam(data.casCS, data.mainKernel, HDShaderIDs._InputTexture, data.source);
                             ctx.cmd.SetComputeVectorParam(data.casCS, HDShaderIDs._InputTextureDimensions, new Vector4(data.inputWidth, data.inputHeight));
                             ctx.cmd.SetComputeTextureParam(data.casCS, data.mainKernel, HDShaderIDs._OutputTexture, data.destination);
