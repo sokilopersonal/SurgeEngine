@@ -131,12 +131,12 @@ namespace SurgeEngine.Source.Code.Gameplay.UI
 
         public void LoadToMenu()
         {
-            SceneLoader.LoadGameScene("MainMenu");
+            SceneLoader.LoadGameScene("MainMenu", "");
         }
 
         public void Restart()
         {
-            SceneLoader.LoadGameScene(SceneManager.GetActiveScene().name);
+            SceneLoader.LoadGameScene(SceneManager.GetActiveScene().name, _stage.Data.Name);
         }
 
         private static string GetTimeInString(float time)

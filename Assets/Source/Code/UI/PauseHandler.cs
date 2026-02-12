@@ -3,6 +3,7 @@ using SurgeEngine.Source.Code.Core.Character.States;
 using SurgeEngine.Source.Code.Core.Character.System;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.GoalRing;
+using SurgeEngine.Source.Code.Gameplay.CommonObjects.System;
 using SurgeEngine.Source.Code.Infrastructure.Tools.Managers;
 using SurgeEngine.Source.Code.UI.Pages.Baseline;
 using UnityEngine;
@@ -159,12 +160,12 @@ namespace SurgeEngine.Source.Code.UI
 
         public void RestartAction()
         {
-            SceneLoader.LoadGameScene(SceneManager.GetActiveScene().name);
+            SceneLoader.LoadGameScene(SceneManager.GetActiveScene().name, Stage.Instance.Data.Name);
         }
 
         public void QuitAction()
         {
-            SceneLoader.LoadGameScene("MainMenu");
+            SceneLoader.LoadGameScene("MainMenu", "");
         }
     }
 }

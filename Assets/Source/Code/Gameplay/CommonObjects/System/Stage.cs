@@ -54,7 +54,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.System
         {
             ObjectEvents.OnObjectTriggered += OnObjectTriggered;
 
-            _character.StateMachine.OnStateAssign += OnActorState;
+            _character.StateMachine.OnStateAssign += OnCharacterState;
         }
 
         private void OnDisable()
@@ -62,7 +62,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.System
             ObjectEvents.OnObjectTriggered -= OnObjectTriggered;
         }
 
-        private void OnActorState(FState obj)
+        private void OnCharacterState(FState obj)
         {
             if (_character.StateMachine.PreviousState is FStateStart)
             {
@@ -87,11 +87,12 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.System
     [Serializable]
     public class StageData
     {
+        [SerializeField, Tooltip("Used for loading screen")] private string name = "Stage Act 1";
         [SerializeField] private int ringCount;
         [SerializeField] private float time;
         [SerializeField] private StageState state;
         [SerializeField] private int score;
-        [SerializeField] private StageResult result = new StageResult();
+        [SerializeField] private StageResult result = new();
 
         [SerializeField] private float bonusOptimalTime = 120f;
         [SerializeField] private float bonusZeroTime = 300f;
@@ -122,6 +123,8 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.System
             get => score;
             set => score = value;
         }
+        
+        public string Name => name;
 
         public void AddScore(int value)
         {
