@@ -1,5 +1,6 @@
 using System.Collections;
 using DG.Tweening;
+using SurgeEngine.Source.Code.Infrastructure.Custom;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -16,11 +17,13 @@ namespace SurgeEngine.Source.Code.Infrastructure.Tools.Managers
         [SerializeField] private GameObject stageNameHolder;
         [SerializeField] private TMP_Text stageName;
         [SerializeField] private float transitionDuration = 0.5f;
+        [SerializeField] private float minimalLoadTime = 2f;
         [SerializeField] private float fadeOutDelay = 1.25f;
 
         private Tween _groupTween;
         private Animator _animator;
         private bool _isLoading;
+        private AsyncOperation _asyncOperation;
 
         private static SceneLoader Instance { get; set; }
 
@@ -54,12 +57,39 @@ namespace SurgeEngine.Source.Code.Infrastructure.Tools.Managers
             Instance._groupTween.SetLink(Instance.gameObject);
             yield return Instance._groupTween.WaitForCompletion();
             
-            var asyncOperation = SceneManager.LoadSceneAsync(name);
-            while (asyncOperation != null && !asyncOperation.isDone)
+            Instance._asyncOperation = SceneManager.LoadSceneAsync(name);
+            var asyncOperation = Instance._asyncOperation;
+
+            if (asyncOperation != null)
             {
-                Instance.progressBar.fillAmount = asyncOperation.progress;
-                Instance.progress.text = Mathf.RoundToInt(asyncOperation.progress * 100f) + "%";
-                yield return null;
+                asyncOperation.allowSceneActivation = false;
+
+                float timer = 0f;
+                float waitTime = Instance.minimalLoadTime + Random.Range(-0.5f, 0.2f);
+                if (waitTime < 0)
+                {
+                    waitTime = 0;
+                }
+                while (asyncOperation.progress < 0.9f)
+                {
+                    float normalized = Mathf.Clamp01(asyncOperation.progress / 0.9f);
+                    Instance.progressBar.fillAmount = normalized;
+                    Instance.progress.text = Mathf.RoundToInt(normalized * 100f) + "%";
+
+                    timer += Time.unscaledDeltaTime;
+                    yield return null;
+                }
+                
+                Instance.progressBar.fillAmount = 1f;
+                Instance.progress.text = "100%";
+                
+                while (timer < waitTime)
+                {
+                    timer += Time.unscaledDeltaTime;
+                    yield return null;
+                }
+
+                asyncOperation.allowSceneActivation = true;
             }
             
             Time.timeScale = 1;

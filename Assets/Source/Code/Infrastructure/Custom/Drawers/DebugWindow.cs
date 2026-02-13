@@ -27,6 +27,7 @@ namespace SurgeEngine.Source.Code.Infrastructure.Custom.Drawers
         private CascadeDemandRendering _cdm;
         private bool _cachedShadowMapsFound;
         private bool _cachedShadowMaps;
+        private int _frameRateLimit;
 
         private void Awake()
         {
@@ -136,6 +137,12 @@ namespace SurgeEngine.Source.Code.Infrastructure.Custom.Drawers
                     {
                         ImGui.Text("Not found.");
                     }
+                }
+
+                if (ImGui.TreeNode("Framerate"))
+                {
+                    ImGui.SliderInt("Limit", ref _frameRateLimit, 10, 240);
+                    Application.targetFrameRate = _frameRateLimit;
                 }
             }
 
