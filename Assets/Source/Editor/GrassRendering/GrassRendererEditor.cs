@@ -16,6 +16,7 @@ namespace SurgeEngine.Source.Editor.GrassRendering
         
         private SerializedProperty _grassMeshProperty;
         private SerializedProperty _grassMaterialProperty;
+        private SerializedProperty _cullingShaderProperty;
         private SerializedProperty _maxGrassCountProperty;
         private SerializedProperty _minHeightProperty;
         private SerializedProperty _maxHeightProperty;
@@ -23,6 +24,7 @@ namespace SurgeEngine.Source.Editor.GrassRendering
         private SerializedProperty _maxWidthProperty;
         private SerializedProperty _maxRenderDistanceProperty;
         private SerializedProperty _useRenderDistanceProperty;
+        private SerializedProperty _debugCameraProperty;
     
         private GUIStyle _boldLabelStyle;
 
@@ -34,6 +36,7 @@ namespace SurgeEngine.Source.Editor.GrassRendering
             
             _grassMeshProperty = serializedObject.FindProperty("grassMesh");
             _grassMaterialProperty = serializedObject.FindProperty("grassMaterial");
+            _cullingShaderProperty = serializedObject.FindProperty("cullingShader");
             _maxGrassCountProperty = serializedObject.FindProperty("maxGrassCount");
             _minHeightProperty = serializedObject.FindProperty("minHeight");
             _maxHeightProperty = serializedObject.FindProperty("maxHeight");
@@ -41,6 +44,7 @@ namespace SurgeEngine.Source.Editor.GrassRendering
             _maxWidthProperty = serializedObject.FindProperty("maxWidth");
             _maxRenderDistanceProperty = serializedObject.FindProperty("maxRenderDistance");
             _useRenderDistanceProperty = serializedObject.FindProperty("useRenderDistance");
+            _debugCameraProperty = serializedObject.FindProperty("debugCamera");
         
             SceneView.duringSceneGui += OnSceneGUIRender;
         }
@@ -63,10 +67,8 @@ namespace SurgeEngine.Source.Editor.GrassRendering
             serializedObject.Update();
             EditorGUILayout.PropertyField(_grassMeshProperty);
             EditorGUILayout.PropertyField(_grassMaterialProperty);
+            EditorGUILayout.PropertyField(_cullingShaderProperty);
             EditorGUILayout.PropertyField(_maxGrassCountProperty);
-        
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Grass Properties", _boldLabelStyle);
             EditorGUILayout.PropertyField(_minHeightProperty);
             EditorGUILayout.PropertyField(_maxHeightProperty);
             EditorGUILayout.PropertyField(_minWidthProperty);
@@ -75,6 +77,7 @@ namespace SurgeEngine.Source.Editor.GrassRendering
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Performance Settings", _boldLabelStyle);
             EditorGUILayout.PropertyField(_useRenderDistanceProperty, new GUIContent("Use Distance Culling"));
+            EditorGUILayout.PropertyField(_debugCameraProperty, new GUIContent("Debug Camera"));
             
             EditorGUI.BeginDisabledGroup(!_useRenderDistanceProperty.boolValue);
             EditorGUILayout.PropertyField(_maxRenderDistanceProperty);
