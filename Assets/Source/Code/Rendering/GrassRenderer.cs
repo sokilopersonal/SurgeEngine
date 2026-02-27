@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.Rendering;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 namespace SurgeEngine.Source.Code.Rendering
@@ -14,11 +13,10 @@ namespace SurgeEngine.Source.Code.Rendering
         public Matrix4x4 mat;
         public Vector4 posAndTex;
     }
-    
+
     [ExecuteInEditMode]
     public class GrassRenderer : MonoBehaviour
     {
-        private static readonly int PropIndex = Shader.PropertyToID("_Index");
         private static readonly int PropCameraPos = Shader.PropertyToID("_CameraPosition");
         private static readonly int PropMaxDistanceSqr = Shader.PropertyToID("_MaxDistanceSqr");
         private static readonly int PropUseDistance = Shader.PropertyToID("_UseDistance");
@@ -27,7 +25,8 @@ namespace SurgeEngine.Source.Code.Rendering
         private static readonly int PropAllInstances = Shader.PropertyToID("_AllInstances");
         private static readonly int PropVisibleInst = Shader.PropertyToID("_VisibleInstances");
         private static readonly int PropCounter = Shader.PropertyToID("_Counter");
-        
+        private static readonly int PropArgs = Shader.PropertyToID("_Args");
+
         private const int GPUStride = 80;
 
         [Serializable]
@@ -50,11 +49,7 @@ namespace SurgeEngine.Source.Code.Rendering
         [SerializeField] private float maxHeight = 0.7f;
         [SerializeField] private float minWidth = 0.6f;
         [SerializeField] private float maxWidth = 1f;
-
-        [Tooltip("Maximum distance to render grass")]
         [SerializeField] private float maxRenderDistance = 100f;
-
-        [Tooltip("Enable distance-based culling")]
         [SerializeField] private bool useRenderDistance = true;
 
         [Header("GPU Culling")]
@@ -63,34 +58,30 @@ namespace SurgeEngine.Source.Code.Rendering
 
         [HideInInspector] public List<GrassInstance> grassInstances = new();
 
-        private Matrix4x4[] _visibleMatrices;
-        private float[] _visibleTextureIndices;
-        private int _visibleInstanceCount;
-
         private ComputeBuffer _allInstancesBuffer;
         private ComputeBuffer _visibleBuffer;
         private ComputeBuffer _counterBuffer;
+        private ComputeBuffer _argsBuffer;
         private int _totalInstanceCount;
 
         private MaterialPropertyBlock _propertyBlock;
 
         private readonly Plane[] _frustumPlanes = new Plane[6];
         private readonly Vector4[] _frustumPlanesVec = new Vector4[6];
+        private readonly int[] _counterReset = new int[1];
 
-        private GPUGrassInstance[] _gpuReadbackBuffer;
-        private readonly int[] _counterData = new int[1];
-
-        private int _kernelIndex;
+        private int _kernelCSMain;
+        private int _kernelCopyArgs;
 
         private void OnEnable()
         {
-            _visibleMatrices = new Matrix4x4[maxGrassCount];
-            _visibleTextureIndices = new float[maxGrassCount];
-            _gpuReadbackBuffer = new GPUGrassInstance[maxGrassCount];
             _propertyBlock = new MaterialPropertyBlock();
 
             if (cullingShader != null)
-                _kernelIndex = cullingShader.FindKernel("CSMain");
+            {
+                _kernelCSMain = cullingShader.FindKernel("CSMain");
+                _kernelCopyArgs = cullingShader.FindKernel("CopyArgs");
+            }
 
             RebuildGPUBuffers();
             RenderPipelineManager.beginCameraRendering += Render;
@@ -107,15 +98,16 @@ namespace SurgeEngine.Source.Code.Rendering
             _allInstancesBuffer?.Release();
             _visibleBuffer?.Release();
             _counterBuffer?.Release();
+            _argsBuffer?.Release();
             _allInstancesBuffer = null;
             _visibleBuffer = null;
             _counterBuffer = null;
+            _argsBuffer = null;
         }
 
         private void RebuildGPUBuffers()
         {
             _totalInstanceCount = Mathf.Min(grassInstances.Count, maxGrassCount);
-
             ReleaseBuffers();
 
             if (_totalInstanceCount == 0) return;
@@ -139,6 +131,16 @@ namespace SurgeEngine.Source.Code.Rendering
 
             _visibleBuffer = new ComputeBuffer(_totalInstanceCount, GPUStride, ComputeBufferType.Structured);
             _counterBuffer = new ComputeBuffer(1, sizeof(int), ComputeBufferType.Structured);
+
+            uint[] args = new uint[5];
+            args[0] = grassMesh.GetIndexCount(0);
+            args[1] = 0;
+            args[2] = grassMesh.GetIndexStart(0);
+            args[3] = grassMesh.GetBaseVertex(0);
+            args[4] = 0;
+
+            _argsBuffer = new ComputeBuffer(5, sizeof(uint), ComputeBufferType.IndirectArguments);
+            _argsBuffer.SetData(args);
         }
 
         private void Render(ScriptableRenderContext ctx, Camera cam)
@@ -146,32 +148,29 @@ namespace SurgeEngine.Source.Code.Rendering
             if (grassMesh == null || grassMaterial == null || cullingShader == null) return;
             if (_totalInstanceCount == 0 || _allInstancesBuffer == null) return;
             if (cam == null) return;
+            if (cam.cameraType == CameraType.Preview) return;
+            
             if (debugCamera != null) cam = debugCamera;
 
-            if (cam.cameraType == CameraType.Preview) return;
-            if (cam.cameraType == CameraType.Reflection) return;
-
             DispatchCulling(cam);
-            ReadbackResults();
 
-            if (_visibleInstanceCount == 0) return;
+            _propertyBlock.SetBuffer(PropVisibleInst, _visibleBuffer);
 
-            _propertyBlock.SetFloatArray(PropIndex, _visibleTextureIndices);
-            Graphics.DrawMeshInstanced(
+            Graphics.DrawMeshInstancedIndirect(
                 grassMesh,
                 0,
                 grassMaterial,
-                _visibleMatrices,
-                _visibleInstanceCount,
+                new Bounds(Vector3.zero, Vector3.one * 10000f),
+                _argsBuffer,
+                0,
                 _propertyBlock,
-                ShadowCastingMode.Off,
-                true
+                ShadowCastingMode.Off
             );
         }
 
         private void DispatchCulling(Camera cam)
         {
-            _counterBuffer.SetData(new int[] { 0 });
+            _counterBuffer.SetData(_counterReset);
 
             GeometryUtility.CalculateFrustumPlanes(cam, _frustumPlanes);
             for (int i = 0; i < 6; i++)
@@ -187,34 +186,16 @@ namespace SurgeEngine.Source.Code.Rendering
             cullingShader.SetInt(PropUseDistance, useRenderDistance ? 1 : 0);
             cullingShader.SetVectorArray(PropFrustumPlanes, _frustumPlanesVec);
 
-            cullingShader.SetBuffer(_kernelIndex, PropAllInstances, _allInstancesBuffer);
-            cullingShader.SetBuffer(_kernelIndex, PropVisibleInst, _visibleBuffer);
-            cullingShader.SetBuffer(_kernelIndex, PropCounter, _counterBuffer);
+            cullingShader.SetBuffer(_kernelCSMain, PropAllInstances, _allInstancesBuffer);
+            cullingShader.SetBuffer(_kernelCSMain, PropVisibleInst, _visibleBuffer);
+            cullingShader.SetBuffer(_kernelCSMain, PropCounter, _counterBuffer);
 
-            int groups = Mathf.CeilToInt(_totalInstanceCount / 64f);
-            cullingShader.Dispatch(_kernelIndex, groups, 1, 1);
-        }
+            cullingShader.Dispatch(_kernelCSMain, Mathf.CeilToInt(_totalInstanceCount / 64f), 1, 1);
 
-        private void ReadbackResults()
-        {
-            _counterBuffer.GetData(_counterData);
-            int count = Mathf.Clamp(_counterData[0], 0, _totalInstanceCount);
+            cullingShader.SetBuffer(_kernelCopyArgs, PropCounter, _counterBuffer);
+            cullingShader.SetBuffer(_kernelCopyArgs, PropArgs, _argsBuffer);
 
-            if (count == 0)
-            {
-                _visibleInstanceCount = 0;
-                return;
-            }
-
-            _visibleBuffer.GetData(_gpuReadbackBuffer, 0, 0, count);
-
-            for (int i = 0; i < count; i++)
-            {
-                _visibleMatrices[i] = _gpuReadbackBuffer[i].mat;
-                _visibleTextureIndices[i] = _gpuReadbackBuffer[i].posAndTex.w;
-            }
-
-            _visibleInstanceCount = count;
+            cullingShader.Dispatch(_kernelCopyArgs, 1, 1, 1);
         }
 
         public void UpdateMatrices() => RebuildGPUBuffers();
@@ -244,8 +225,7 @@ namespace SurgeEngine.Source.Code.Rendering
         public void RemoveGrassInRadius(Vector3 center, float radius)
         {
             float sqrRadius = radius * radius;
-            grassInstances.RemoveAll(inst =>
-                (inst.position - center).sqrMagnitude <= sqrRadius);
+            grassInstances.RemoveAll(inst => (inst.position - center).sqrMagnitude <= sqrRadius);
             RebuildGPUBuffers();
         }
 

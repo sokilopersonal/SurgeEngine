@@ -1,4 +1,5 @@
 ﻿#pragma kernel CSMain
+#pragma kernel CopyArgs
 
 struct GPUGrassInstance
 {
@@ -9,6 +10,7 @@ struct GPUGrassInstance
 StructuredBuffer<GPUGrassInstance> _AllInstances;
 RWStructuredBuffer<GPUGrassInstance> _VisibleInstances;
 RWStructuredBuffer<int> _Counter;
+RWStructuredBuffer<uint> _Args;
 
 int _TotalCount;
 float3 _CameraPosition;
@@ -35,7 +37,7 @@ void CSMain(uint3 id : SV_DispatchThreadID)
 
     GPUGrassInstance inst = _AllInstances[index];
     float3 pos = inst.posAndTex.xyz;
-    
+
     float height = length(float3(inst.mat[0][1], inst.mat[1][1], inst.mat[2][1]));
     float3 centerPos = pos + float3(0, height * 0.5, 0);
     float cullRadius = height + 0.1;
@@ -51,4 +53,10 @@ void CSMain(uint3 id : SV_DispatchThreadID)
     int writeIndex;
     InterlockedAdd(_Counter[0], 1, writeIndex);
     _VisibleInstances[writeIndex] = inst;
+}
+
+[numthreads(1, 1, 1)]
+void CopyArgs(uint3 id : SV_DispatchThreadID)
+{
+    _Args[1] = (uint)_Counter[0];
 }
