@@ -13,7 +13,7 @@ namespace SurgeEngine.Source.Editor.GrassRendering
         private float _brushSize = 5f;
         private float _brushDensity = 2f;
         private LayerMask _paintLayer;
-        
+
         private SerializedProperty _grassMeshProperty;
         private SerializedProperty _grassMaterialProperty;
         private SerializedProperty _cullingShaderProperty;
@@ -25,15 +25,15 @@ namespace SurgeEngine.Source.Editor.GrassRendering
         private SerializedProperty _maxRenderDistanceProperty;
         private SerializedProperty _useRenderDistanceProperty;
         private SerializedProperty _debugCameraProperty;
-    
+
         private GUIStyle _boldLabelStyle;
 
         private void OnEnable()
         {
             _grassRenderer = (GrassRenderer)target;
-            
+
             _paintLayer = LayerMask.NameToLayer("Default");
-            
+
             _grassMeshProperty = serializedObject.FindProperty("grassMesh");
             _grassMaterialProperty = serializedObject.FindProperty("grassMaterial");
             _cullingShaderProperty = serializedObject.FindProperty("cullingShader");
@@ -45,7 +45,10 @@ namespace SurgeEngine.Source.Editor.GrassRendering
             _maxRenderDistanceProperty = serializedObject.FindProperty("maxRenderDistance");
             _useRenderDistanceProperty = serializedObject.FindProperty("useRenderDistance");
             _debugCameraProperty = serializedObject.FindProperty("debugCamera");
-        
+
+            _brushSize = _grassRenderer.brushSize;
+            _brushDensity = _grassRenderer.brushDensity;
+
             SceneView.duringSceneGui += OnSceneGUIRender;
         }
 
@@ -53,7 +56,7 @@ namespace SurgeEngine.Source.Editor.GrassRendering
         {
             SceneView.duringSceneGui -= OnSceneGUIRender;
         }
-    
+
         public override void OnInspectorGUI()
         {
             if (_boldLabelStyle == null)
@@ -63,7 +66,7 @@ namespace SurgeEngine.Source.Editor.GrassRendering
                     fontStyle = FontStyle.Bold
                 };
             }
-        
+
             serializedObject.Update();
             EditorGUILayout.PropertyField(_grassMeshProperty);
             EditorGUILayout.PropertyField(_grassMaterialProperty);
@@ -73,70 +76,78 @@ namespace SurgeEngine.Source.Editor.GrassRendering
             EditorGUILayout.PropertyField(_maxHeightProperty);
             EditorGUILayout.PropertyField(_minWidthProperty);
             EditorGUILayout.PropertyField(_maxWidthProperty);
-            
+
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Performance Settings", _boldLabelStyle);
             EditorGUILayout.PropertyField(_useRenderDistanceProperty, new GUIContent("Use Distance Culling"));
             EditorGUILayout.PropertyField(_debugCameraProperty, new GUIContent("Debug Camera"));
-            
+
             EditorGUI.BeginDisabledGroup(!_useRenderDistanceProperty.boolValue);
             EditorGUILayout.PropertyField(_maxRenderDistanceProperty);
             if (_maxRenderDistanceProperty.floatValue <= 0)
-            {
                 EditorGUILayout.HelpBox("Render distance must be greater than zero.", MessageType.Warning);
-            }
             EditorGUI.EndDisabledGroup();
-            
+
             if (_useRenderDistanceProperty.boolValue)
-            {
                 EditorGUILayout.HelpBox("Grass will only be rendered within the specified distance from the camera, improving performance.", MessageType.Info);
-            }
-        
+
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Grass Painter", _boldLabelStyle);
-        
+
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.PrefixLabel("Brush Size");
-            _brushSize = EditorGUILayout.Slider(_brushSize, 0.5f, 20f);
+            float newSize = EditorGUILayout.Slider(_brushSize, 0.5f, 8f);
+            if (newSize != _brushSize)
+            {
+                _brushSize = newSize;
+                _grassRenderer.brushSize = newSize;
+                EditorUtility.SetDirty(_grassRenderer);
+            }
             EditorGUILayout.EndHorizontal();
-        
+
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.PrefixLabel("Brush Density");
-            _brushDensity = EditorGUILayout.Slider(_brushDensity, 0.1f, 5f);
+            float newDensity = EditorGUILayout.Slider(_brushDensity, 0.5f, 10f);
+            if (newDensity != _brushDensity)
+            {
+                _brushDensity = newDensity;
+                _grassRenderer.brushDensity = newDensity;
+                EditorUtility.SetDirty(_grassRenderer);
+            }
             EditorGUILayout.EndHorizontal();
-        
+
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.PrefixLabel("Paint Layer");
             _paintLayer = EditorGUILayout.LayerField(_paintLayer);
             EditorGUILayout.EndHorizontal();
-        
+
             EditorGUILayout.Space();
-        
+
             EditorGUILayout.BeginHorizontal();
-        
+
             GUI.backgroundColor = _isPainting ? Color.green : Color.white;
             if (GUILayout.Button("Paint"))
             {
                 _isPainting = !_isPainting;
                 _isErasing = false;
             }
-        
+
             GUI.backgroundColor = _isErasing ? Color.red : Color.white;
             if (GUILayout.Button("Erase"))
             {
                 _isErasing = !_isErasing;
                 _isPainting = false;
             }
-                    
+
             GUI.backgroundColor = Color.white;
             EditorGUILayout.EndHorizontal();
-        
+
             EditorGUILayout.BeginVertical();
             EditorGUI.BeginDisabledGroup(_grassRenderer.grassInstances.Count == 0);
             if (GUILayout.Button("Regenerate Grass"))
             {
-                if (EditorUtility.DisplayDialog("Regenerate Grass", 
-                        "Are you sure you want to regenerate all grass instances?", 
+                if (EditorUtility.DisplayDialog("Regenerate Grass",
+                        "Are you sure you want to regenerate all grass instances?",
                         "Yes", "Cancel"))
                 {
                     Undo.RecordObject(_grassRenderer, "Regenerate Grass");
@@ -146,8 +157,8 @@ namespace SurgeEngine.Source.Editor.GrassRendering
             }
             if (GUILayout.Button("Clear All Grass"))
             {
-                if (EditorUtility.DisplayDialog("Clear Grass", 
-                        "Are you sure you want to remove all grass instances?", 
+                if (EditorUtility.DisplayDialog("Clear Grass",
+                        "Are you sure you want to remove all grass instances?",
                         "Yes", "Cancel"))
                 {
                     Undo.RecordObject(_grassRenderer, "Clear Grass");
@@ -157,28 +168,21 @@ namespace SurgeEngine.Source.Editor.GrassRendering
             }
             EditorGUI.EndDisabledGroup();
             EditorGUILayout.EndVertical();
-        
-            EditorGUILayout.Space();
-            EditorGUILayout.BeginHorizontal();
-        
-            EditorGUILayout.EndHorizontal();
-        
+
             EditorGUILayout.Space();
             EditorGUILayout.LabelField($"Grass Count: {_grassRenderer.grassInstances.Count} / {_maxGrassCountProperty.intValue}");
-        
+
             serializedObject.ApplyModifiedProperties();
-        
+
             if (GUI.changed)
-            {
                 EditorUtility.SetDirty(_grassRenderer);
-            }
         }
-    
+
         private void OnSceneGUIRender(SceneView obj)
         {
             if (!_isPainting && !_isErasing && !Event.current.alt)
                 return;
-            
+
             Event e = Event.current;
             Ray ray = HandleUtility.GUIPointToWorldRay(e.mousePosition);
             RaycastHit hit;
@@ -228,83 +232,93 @@ namespace SurgeEngine.Source.Editor.GrassRendering
 
             if (Physics.Raycast(ray, out hit, 500f, GetMask()))
             {
-                Color previewColor;
                 bool validSurface = Vector3.Dot(hit.normal, Vector3.up) > 0.5f;
-                
+
+                Color previewColor;
                 if (_isPainting)
-                {
-                    previewColor = validSurface ? 
-                        new Color(0, 1, 0, 0.2f) : new Color(1, 0.5f, 0, 0.2f);
-                }
+                    previewColor = validSurface ? new Color(0, 1, 0, 0.2f) : new Color(1, 0.5f, 0, 0.2f);
                 else if (_isErasing)
-                {
                     previewColor = new Color(1, 0, 0, 0.2f);
-                }
                 else
-                {
                     previewColor = new Color(0.5f, 0.5f, 0.5f, 0.2f);
-                }
-                    
+
                 Handles.color = previewColor;
                 Handles.DrawSolidDisc(hit.point, hit.normal, _brushSize);
 
-                Handles.color = _isPainting ? 
-                    (validSurface ? Color.green : new Color(1, 0.5f, 0)) : 
+                Handles.color = _isPainting ?
+                    (validSurface ? Color.green : new Color(1, 0.5f, 0)) :
                     _isErasing ? Color.red : Color.gray;
-                    
+
                 Handles.DrawWireDisc(hit.point, hit.normal, _brushSize);
-            
+
                 SceneView.RepaintAll();
             }
         }
-    
+
         private void PaintGrass(Vector3 center, Vector3 surfaceNormal)
         {
             Undo.RecordObject(_grassRenderer, "Paint Grass");
 
             int instanceCount = Mathf.RoundToInt(Mathf.Pow(_brushSize, 2) * _brushDensity * 0.2f);
-
             Quaternion surfaceRotation = Quaternion.FromToRotation(Vector3.up, surfaceNormal);
-        
+            float minSpacingSqr = Mathf.Pow(_brushSize / (Mathf.Sqrt(instanceCount) + 5f), 2);
+            int mask = GetMask();
+            bool anyAdded = false;
+
             for (int i = 0; i < instanceCount; i++)
             {
                 float angle = Random.Range(0f, Mathf.PI * 2f);
-                float distance = Random.Range(0f, _brushSize);
+                float distance = Mathf.Sqrt(Random.value) * _brushSize;
 
-                Vector3 flatOffset = new Vector3(
-                    Mathf.Cos(angle) * distance,
-                    0f,
-                    Mathf.Sin(angle) * distance
-                );
+                Vector3 flatOffset = new Vector3(Mathf.Cos(angle) * distance, 0f, Mathf.Sin(angle) * distance);
+                Vector3 position = center + surfaceRotation * flatOffset;
 
-                Vector3 alignedOffset = surfaceRotation * flatOffset;
-            
-                Vector3 position = center + alignedOffset;
+                if (!Physics.Raycast(position + surfaceNormal * 10f, -surfaceNormal, out RaycastHit hit, 20f, mask, QueryTriggerInteraction.Ignore))
+                    continue;
 
-                RaycastHit hit;
-                Vector3 rayStart = position + surfaceNormal * 10f;
-                Vector3 rayDirection = -surfaceNormal;
-                
-                if (Physics.Raycast(rayStart, rayDirection, out hit, 20f, GetMask(), QueryTriggerInteraction.Ignore))
+                if (Vector3.Dot(hit.normal, Vector3.up) <= 0.5f)
+                    continue;
+
+                Vector3 spawnPos = hit.point;
+
+                bool tooClose = false;
+                foreach (var existing in _grassRenderer.grassInstances)
                 {
-                    if (Vector3.Dot(hit.normal, Vector3.up) > 0.5f)
+                    if ((existing.position - spawnPos).sqrMagnitude < minSpacingSqr)
                     {
-                        position = hit.point;
-                        _grassRenderer.AddGrassInstance(position);
+                        tooClose = true;
+                        break;
                     }
                 }
+
+                if (tooClose) continue;
+
+                _grassRenderer.grassInstances.Add(new GrassRenderer.GrassInstance
+                {
+                    position = spawnPos,
+                    rotation = Random.Range(0f, 360f),
+                    height = Random.Range(_minHeightProperty.floatValue, _maxHeightProperty.floatValue),
+                    width = Random.Range(_minWidthProperty.floatValue, _maxWidthProperty.floatValue),
+                    textureIndex = Random.Range(0, 4)
+                });
+
+                anyAdded = true;
             }
-        
-            EditorUtility.SetDirty(_grassRenderer);
+
+            if (anyAdded)
+            {
+                _grassRenderer.UpdateMatrices();
+                EditorUtility.SetDirty(_grassRenderer);
+            }
         }
-    
+
         private void EraseGrass(Vector3 center)
         {
             Undo.RecordObject(_grassRenderer, "Erase Grass");
             _grassRenderer.RemoveGrassInRadius(center, _brushSize);
             EditorUtility.SetDirty(_grassRenderer);
         }
-        
+
         private LayerMask GetMask() => 1 << _paintLayer;
     }
 }

@@ -189,7 +189,7 @@ Material:
     - _AddPrecomputedVelocity: 0
     - _AffectDistance: 2
     - _AlbedoAffectEmissive: 0
-    - _AlphaClipping: 0.5
+    - _AlphaClipping: 0.4
     - _AlphaCutoff: 0.25
     - _AlphaCutoffEnable: 1
     - _AlphaCutoffPostpass: 0.5
@@ -201,7 +201,7 @@ Material:
     - _AlphaSrcBlend: 1
     - _Anisotropy: 0
     - _BlendMode: 0
-    - _Brightness: 1.5
+    - _Brightness: 1
     - _CoatMask: 0
     - _ConservativeDepthOffsetEnable: 0
     - _Contrast: 1
@@ -234,7 +234,7 @@ Material:
     - _DistortionVectorScale: 2
     - _DoubleSidedEnable: 1
     - _DoubleSidedGIMode: 0
-    - _DoubleSidedNormalMode: 1
+    - _DoubleSidedNormalMode: 2
     - _DstBlend: 0
     - _DstBlend2: 0
     - _EmissiveColorMode: 1
@@ -327,9 +327,9 @@ Material:
     - _UseShadowThreshold: 1
     - _WindEnable: 1
     - _WindOffsetPower: 1
-    - _WindScale: 0.4
+    - _WindScale: 1
     - _WindSpeed: 2
-    - _WindStrength: 0.3
+    - _WindStrength: 0.2
     - _ZTestDepthEqualForOpaque: 3
     - _ZTestGBuffer: 3
     - _ZTestModeDistortion: 4
@@ -339,7 +339,7 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _DiffusionProfileAsset: {r: 0, g: 0, b: 0, a: 0}
-    - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
+    - _DoubleSidedConstants: {r: 1, g: 1, b: 1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissiveColorLDR: {r: 0, g: 0, b: 0, a: 1}

@@ -42,7 +42,7 @@ namespace SurgeEngine.Source.Code.Rendering
         [Header("Assets")]
         [SerializeField] private Mesh grassMesh;
         [SerializeField] private Material grassMaterial;
-        [SerializeField] private int maxGrassCount = 10000;
+        [SerializeField] private int maxGrassCount = 100000;
 
         [Header("Appearance Settings")]
         [SerializeField] private float minHeight = 0.4f;
@@ -57,11 +57,15 @@ namespace SurgeEngine.Source.Code.Rendering
         [SerializeField] private Camera debugCamera;
 
         [HideInInspector] public List<GrassInstance> grassInstances = new();
+        [HideInInspector] public float brushSize = 2f;
+        [HideInInspector] public float brushDensity = 5f;
+
+        private RenderParams _rp;
 
         private ComputeBuffer _allInstancesBuffer;
         private ComputeBuffer _visibleBuffer;
         private ComputeBuffer _counterBuffer;
-        private ComputeBuffer _argsBuffer;
+        private GraphicsBuffer _argsBuffer;
         private int _totalInstanceCount;
 
         private MaterialPropertyBlock _propertyBlock;
@@ -98,7 +102,7 @@ namespace SurgeEngine.Source.Code.Rendering
             _allInstancesBuffer?.Release();
             _visibleBuffer?.Release();
             _counterBuffer?.Release();
-            _argsBuffer?.Release();
+            _argsBuffer?.Dispose();
             _allInstancesBuffer = null;
             _visibleBuffer = null;
             _counterBuffer = null;
@@ -139,8 +143,16 @@ namespace SurgeEngine.Source.Code.Rendering
             args[3] = grassMesh.GetBaseVertex(0);
             args[4] = 0;
 
-            _argsBuffer = new ComputeBuffer(5, sizeof(uint), ComputeBufferType.IndirectArguments);
+            _argsBuffer = new GraphicsBuffer(GraphicsBuffer.Target.IndirectArguments, 5, sizeof(uint));
             _argsBuffer.SetData(args);
+
+            _rp = new RenderParams(grassMaterial)
+            {
+                worldBounds = new Bounds(Vector3.zero, Vector3.one * 10000f),
+                matProps = _propertyBlock,
+                shadowCastingMode = ShadowCastingMode.Off,
+                receiveShadows = true
+            };
         }
 
         private void Render(ScriptableRenderContext ctx, Camera cam)
@@ -149,23 +161,14 @@ namespace SurgeEngine.Source.Code.Rendering
             if (_totalInstanceCount == 0 || _allInstancesBuffer == null) return;
             if (cam == null) return;
             if (cam.cameraType == CameraType.Preview) return;
-            
+
             if (debugCamera != null) cam = debugCamera;
 
             DispatchCulling(cam);
 
-            _propertyBlock.SetBuffer(PropVisibleInst, _visibleBuffer);
+            _rp.matProps.SetBuffer(PropVisibleInst, _visibleBuffer);
 
-            Graphics.DrawMeshInstancedIndirect(
-                grassMesh,
-                0,
-                grassMaterial,
-                new Bounds(Vector3.zero, Vector3.one * 10000f),
-                _argsBuffer,
-                0,
-                _propertyBlock,
-                ShadowCastingMode.Off
-            );
+            Graphics.RenderMeshIndirect(_rp, grassMesh, _argsBuffer);
         }
 
         private void DispatchCulling(Camera cam)

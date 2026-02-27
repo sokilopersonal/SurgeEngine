@@ -9,18 +9,15 @@ struct GPUGrassInstance
 
 StructuredBuffer<GPUGrassInstance> _VisibleInstances;
 
-void GetGrassInstanceData_float(uint InstanceID, out float3 WorldPosition, out float TextureIndex)
+void GetGrassInstanceData_float(uint InstanceID, out float3 WorldPosition, out float TextureIndex, out float Width, out float Height, out float Angle)
 {
     GPUGrassInstance inst = _VisibleInstances[InstanceID];
+    float4x4 m = inst.mat;
     WorldPosition = inst.posAndTex.xyz;
     TextureIndex = inst.posAndTex.w;
-}
-
-void GetGrassInstanceScale_float(uint InstanceID, out float Width, out float Height)
-{
-    float4x4 m = _VisibleInstances[InstanceID].mat;
     Width = length(float3(m[0][0], m[1][0], m[2][0]));
     Height = length(float3(m[0][1], m[1][1], m[2][1]));
+    Angle = atan2(m[2][0] / Width, m[0][0] / Width);
 }
 
 #endif
