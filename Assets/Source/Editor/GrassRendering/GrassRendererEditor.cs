@@ -24,6 +24,7 @@ namespace SurgeEngine.Source.Editor.GrassRendering
         private SerializedProperty _maxWidthProperty;
         private SerializedProperty _maxRenderDistanceProperty;
         private SerializedProperty _useRenderDistanceProperty;
+        private SerializedProperty _fadeRangeProperty;
         private SerializedProperty _debugCameraProperty;
 
         private GUIStyle _boldLabelStyle;
@@ -44,6 +45,7 @@ namespace SurgeEngine.Source.Editor.GrassRendering
             _maxWidthProperty = serializedObject.FindProperty("maxWidth");
             _maxRenderDistanceProperty = serializedObject.FindProperty("maxRenderDistance");
             _useRenderDistanceProperty = serializedObject.FindProperty("useRenderDistance");
+            _fadeRangeProperty = serializedObject.FindProperty("fadeRange");
             _debugCameraProperty = serializedObject.FindProperty("debugCamera");
 
             _brushSize = _grassRenderer.brushSize;
@@ -87,6 +89,8 @@ namespace SurgeEngine.Source.Editor.GrassRendering
             if (_maxRenderDistanceProperty.floatValue <= 0)
                 EditorGUILayout.HelpBox("Render distance must be greater than zero.", MessageType.Warning);
             EditorGUI.EndDisabledGroup();
+            
+            EditorGUILayout.PropertyField(_fadeRangeProperty);
 
             if (_useRenderDistanceProperty.boolValue)
                 EditorGUILayout.HelpBox("Grass will only be rendered within the specified distance from the camera, improving performance.", MessageType.Info);

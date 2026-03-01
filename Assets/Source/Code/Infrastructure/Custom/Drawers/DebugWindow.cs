@@ -1,4 +1,7 @@
-﻿using ImGuiNET;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using ImGuiNET;
 using SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStates;
 using SurgeEngine.Source.Code.Core.Character.System;
 using SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic;
@@ -24,19 +27,27 @@ namespace SurgeEngine.Source.Code.Infrastructure.Custom.Drawers
         [Inject] private CharacterBase _character;
         [Inject] private Stage _stage;
 
+        // CSM
         private CascadeDemandRendering _cdm;
         private bool _cachedShadowMapsFound;
         private bool _cachedShadowMaps;
+        
+        // Frame Rate Limit
         private int _frameRateLimit;
+        
+        // Grass Renderer
+        private GrassRenderer _grassRenderer;
+        private bool _grassRendererEnabled;
+        private float _grassRenderDistance;
+        private bool _grassUseRenderDistance;
 
         private void Awake()
         {
             if (uImGui == null) uImGui = GetComponent<UImGui.UImGui>();
 
-            _cdm = FindFirstObjectByType<CascadeDemandRendering>();
-            _cachedShadowMapsFound = _cdm != null;
-            if (_cachedShadowMapsFound) _cachedShadowMaps = _cdm.enabled;
-            
+            FindCDM();
+            FindGrassRenderer();
+
             uImGui.enabled = false;
 
             _toggleAction = InputSystem.actions.FindAction("DebugWindow");
@@ -137,12 +148,44 @@ namespace SurgeEngine.Source.Code.Infrastructure.Custom.Drawers
                     {
                         ImGui.Text("Not found.");
                     }
+                    
+                    ImGui.TreePop();
                 }
 
                 if (ImGui.TreeNode("Framerate"))
                 {
                     ImGui.SliderInt("Limit", ref _frameRateLimit, 10, 240);
                     Application.targetFrameRate = _frameRateLimit;
+                    
+                    ImGui.TreePop();
+                }
+
+                if (ImGui.TreeNode("Grass Renderers"))
+                {
+                    if (_grassRenderer != null)
+                    {
+                        var type = _grassRenderer.GetType();
+                        var flags = BindingFlags.Instance | BindingFlags.NonPublic;
+                        var distanceField = type.GetField("maxRenderDistance", 
+                            flags);
+                        var useDistanceField = type.GetField("useRenderDistance", 
+                            flags);
+
+                        ImGui.Checkbox("Enable", ref _grassRendererEnabled);
+                        _grassRenderer.enabled = _grassRendererEnabled;
+                    
+                        ImGui.SliderFloat("Render Distance", ref _grassRenderDistance, 10f, 1000f);
+                        ImGui.Checkbox("Use Distance Culling", ref _grassUseRenderDistance);
+                    
+                        distanceField.SetValue(_grassRenderer, _grassRenderDistance);
+                        useDistanceField.SetValue(_grassRenderer, _grassUseRenderDistance);
+                    }
+                    else
+                    {
+                        ImGui.Text("Not found.");
+                    }
+                    
+                    ImGui.TreePop();
                 }
             }
 
@@ -156,6 +199,37 @@ namespace SurgeEngine.Source.Code.Infrastructure.Custom.Drawers
                     ImGui.Text($"Time: {data.Spline.NormalizedTime}");
                 }
             }
+        }
+
+        private void FindCDM()
+        {
+            _cdm = FindFirstObjectByType<CascadeDemandRendering>();
+            _cachedShadowMapsFound = _cdm != null;
+            if (_cachedShadowMapsFound) _cachedShadowMaps = _cdm.enabled;
+        }
+
+        private void FindGrassRenderer()
+        {
+            _grassRenderer = FindFirstObjectByType<GrassRenderer>();
+            
+            if (_grassRenderer != null)
+            {
+                _grassRendererEnabled = _grassRenderer.enabled;
+                GetGrassRendererData(_grassRenderer, out _grassRenderDistance, out _grassUseRenderDistance);
+            }
+        }
+
+        private void GetGrassRendererData(GrassRenderer grassRenderer, out float distance, out bool useDistance)
+        {
+            var type = grassRenderer.GetType();
+            var flags = BindingFlags.Instance | BindingFlags.NonPublic;
+            var distanceField = type.GetField("maxRenderDistance", 
+                flags);
+            var useDistanceField = type.GetField("useRenderDistance", 
+                flags);
+
+            distance = (float)distanceField.GetValue(grassRenderer);
+            useDistance = (bool)useDistanceField.GetValue(grassRenderer);
         }
 
         private void ToggleWindow(InputAction.CallbackContext obj)
