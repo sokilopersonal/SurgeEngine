@@ -1,45 +1,56 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.Rendering.HighDefinition;
 
 namespace SurgeEngine.Source.Code.Rendering
 {
+    [AddComponentMenu("Lighting/Cascade Demand Rendering")]
     public class CascadeDemandRendering : MonoBehaviour
     {
-        [SerializeField] private HDAdditionalLightData lightData;
- 
-        private const int Cascade_0 = 1;
-        private const int Cascade_1 = 2;
-        private const int Cascade_2 = 4;
-        private const int Cascade_3 = 5;
- 
+        private HDAdditionalLightData _lightData;
         private int _frameCounter = 1;
         
+        private void Awake()
+        {
+            if (enabled && !_lightData) _lightData = GetComponent<HDAdditionalLightData>();
+        }
+
+        private void OnEnable()
+        {
+            _lightData.shadowUpdateMode = ShadowUpdateMode.OnDemand;
+            _lightData.alwaysDrawDynamicShadows = true;
+        }
+
+        private void OnDisable()
+        {
+            _lightData.shadowUpdateMode = ShadowUpdateMode.EveryFrame;
+            _lightData.alwaysDrawDynamicShadows = false;
+        }
+
         private void Update()
         {
-            if (lightData.shadowUpdateMode != ShadowUpdateMode.OnDemand) return;
+            if (!_lightData) return;
+            if (_lightData.shadowUpdateMode != ShadowUpdateMode.OnDemand) return;
             
             switch (_frameCounter)
             {
                 case 0:
-                    lightData.RequestSubShadowMapRendering(0);
+                    _lightData.RequestSubShadowMapRendering(0);
                     break;
-                    
+                case 1:
+                    _lightData.RequestSubShadowMapRendering(1);
+                    break;
                 case 2:
-                    lightData.RequestSubShadowMapRendering(1);
+                    _lightData.RequestSubShadowMapRendering(2);
                     break;
-                    
-                case 4:
-                    lightData.RequestSubShadowMapRendering(2);
-                    break;
-                    
-                case 6:
-                    lightData.RequestSubShadowMapRendering(3);
+                case 3:
+                    _lightData.RequestSubShadowMapRendering(3);
                     break;
             }
- 
+            
             _frameCounter++;
- 
-            if (_frameCounter > Cascade_3)
+            
+            if (_frameCounter > 3)
                 _frameCounter = 0;
         }
     }

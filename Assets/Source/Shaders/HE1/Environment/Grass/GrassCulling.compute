@@ -1,0 +1,62 @@
+﻿#pragma kernel CSMain
+#pragma kernel CopyArgs
+
+struct GPUGrassInstance
+{
+    float4x4 mat;
+    float4 posAndTex;
+};
+
+StructuredBuffer<GPUGrassInstance> _AllInstances;
+RWStructuredBuffer<GPUGrassInstance> _VisibleInstances;
+RWStructuredBuffer<int> _Counter;
+RWStructuredBuffer<uint> _Args;
+
+int _TotalCount;
+float3 _CameraPosition;
+float _MaxDistanceSqr;
+int _UseDistance;
+float4 _FrustumPlanes[6];
+
+bool PassesFrustum(float3 pos, float radius)
+{
+    [unroll]
+    for (int i = 0; i < 6; i++)
+    {
+        if (dot(_FrustumPlanes[i].xyz, pos) + _FrustumPlanes[i].w < -radius)
+            return false;
+    }
+    return true;
+}
+
+[numthreads(64, 1, 1)]
+void CSMain(uint3 id : SV_DispatchThreadID)
+{
+    uint index = id.x;
+    if (index >= (uint)_TotalCount) return;
+
+    GPUGrassInstance inst = _AllInstances[index];
+    float3 pos = inst.posAndTex.xyz;
+
+    float height = length(float3(inst.mat[0][1], inst.mat[1][1], inst.mat[2][1]));
+    float3 centerPos = pos + float3(0, height * 0.5, 0);
+    float cullRadius = height + 0.1;
+
+    if (_UseDistance)
+    {
+        float3 diff = pos - _CameraPosition;
+        if (dot(diff, diff) > _MaxDistanceSqr) return;
+    }
+
+    if (!PassesFrustum(centerPos, cullRadius)) return;
+
+    int writeIndex;
+    InterlockedAdd(_Counter[0], 1, writeIndex);
+    _VisibleInstances[writeIndex] = inst;
+}
+
+[numthreads(1, 1, 1)]
+void CopyArgs(uint3 id : SV_DispatchThreadID)
+{
+    _Args[1] = (uint)_Counter[0];
+}

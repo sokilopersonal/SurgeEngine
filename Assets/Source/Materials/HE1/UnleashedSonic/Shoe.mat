@@ -58,7 +58,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BlinnMask:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: c2281bb06a182e049b1986ffb515df69, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _CoatMaskMap:
@@ -258,7 +258,7 @@ Material:
     - _LinkDetailsWithBase: 1
     - _MaterialID: 1
     - _MaterialTypeMask: 2
-    - _Metallic: 0.1
+    - _Metallic: 0.25
     - _MetallicRemapMax: 1
     - _MetallicRemapMin: 0
     - _NormalIntensity: 1
@@ -327,7 +327,7 @@ Material:
     - _UseLightmapColor: 1
     - _UseNormalMap: 0
     - _UsePBRMap: 0
-    - _UseReflectedCubeMap: 1
+    - _UseReflectedCubeMap: 0
     - _UseReflection: 1
     - _UseSecondNormalMap: 0
     - _UseShadowThreshold: 0
@@ -339,8 +339,8 @@ Material:
     m_Colors:
     - _AlbedoColor: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _BlinnParam: {r: 500, g: 1, b: 0, a: 0}
-    - _BlinnParam2: {r: 100, g: 0.25, b: 0, a: 0}
+    - _BlinnParam: {r: 500, g: 25, b: 0, a: 0}
+    - _BlinnParam2: {r: 100, g: 5, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _DiffusionProfileAsset: {r: 0, g: 0, b: 0, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
@@ -349,7 +349,7 @@ Material:
     - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissiveColorLDR: {r: 0, g: 0, b: 0, a: 1}
     - _FalloffColor: {r: 1, g: 1, b: 1, a: 1}
-    - _FalloffParam: {r: 0, g: 0, b: 0, a: 0}
+    - _FalloffParam: {r: 0, g: 2, b: 3, a: 0}
     - _InvPrimScale: {r: 1, g: 1, b: 0, a: 0}
     - _IridescenceThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
     - _ReflectionColor: {r: 1, g: 0, b: 0, a: 1}

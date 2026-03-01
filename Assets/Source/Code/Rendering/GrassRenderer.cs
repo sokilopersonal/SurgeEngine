@@ -1,204 +1,255 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
+using UnityEngine.Rendering;
+using Random = UnityEngine.Random;
 
 namespace SurgeEngine.Source.Code.Rendering
 {
+    [StructLayout(LayoutKind.Sequential)]
+    struct GPUGrassInstance
+    {
+        public Matrix4x4 mat;
+        public Vector4 posAndTex;
+    }
+
     [ExecuteInEditMode]
     public class GrassRenderer : MonoBehaviour
     {
-        [System.Serializable]
+        private static readonly int PropCameraPos = Shader.PropertyToID("_CameraPosition");
+        private static readonly int PropMaxDistanceSqr = Shader.PropertyToID("_MaxDistanceSqr");
+        private static readonly int PropUseDistance = Shader.PropertyToID("_UseDistance");
+        private static readonly int PropFrustumPlanes = Shader.PropertyToID("_FrustumPlanes");
+        private static readonly int PropTotalCount = Shader.PropertyToID("_TotalCount");
+        private static readonly int PropAllInstances = Shader.PropertyToID("_AllInstances");
+        private static readonly int PropVisibleInst = Shader.PropertyToID("_VisibleInstances");
+        private static readonly int PropCounter = Shader.PropertyToID("_Counter");
+        private static readonly int PropArgs = Shader.PropertyToID("_Args");
+
+        private const int GPUStride = 80;
+
+        [Serializable]
         public struct GrassInstance
         {
             public Vector3 position;
             public float rotation;
             public float height;
             public float width;
+            public int textureIndex;
         }
 
-        [Header("Grass Settings")]
+        [Header("Assets")]
         [SerializeField] private Mesh grassMesh;
         [SerializeField] private Material grassMaterial;
-        [SerializeField] private int maxGrassCount = 10000;
-        
-        [Header("Rendering Settings")]
-        [SerializeField] private float minHeight = 0.8f;
-        [SerializeField] private float maxHeight = 1.2f;
-        [SerializeField] private float minWidth = 0.7f;
-        [SerializeField] private float maxWidth = 1.3f;
-        [Tooltip("Maximum distance from camera at which grass will be rendered")]
+        [SerializeField] private int maxGrassCount = 100000;
+
+        [Header("Appearance Settings")]
+        [SerializeField] private float minHeight = 0.4f;
+        [SerializeField] private float maxHeight = 0.7f;
+        [SerializeField] private float minWidth = 0.6f;
+        [SerializeField] private float maxWidth = 1f;
         [SerializeField] private float maxRenderDistance = 100f;
-        
-        [Tooltip("Enable or disable distance-based rendering")]
         [SerializeField] private bool useRenderDistance = true;
-        
-        [HideInInspector]
-        public List<GrassInstance> grassInstances = new();
-        
-        private Matrix4x4[] _matrices;
-        private Matrix4x4[] _visibleMatrices;
-        private readonly List<int> _visibleIndices = new();
+
+        [Header("GPU Culling")]
+        [SerializeField] private ComputeShader cullingShader;
+        [SerializeField] private Camera debugCamera;
+
+        [HideInInspector] public List<GrassInstance> grassInstances = new();
+        [HideInInspector] public float brushSize = 2f;
+        [HideInInspector] public float brushDensity = 5f;
+
+        private RenderParams _rp;
+
+        private ComputeBuffer _allInstancesBuffer;
+        private ComputeBuffer _visibleBuffer;
+        private ComputeBuffer _counterBuffer;
+        private GraphicsBuffer _argsBuffer;
+        private int _totalInstanceCount;
+
         private MaterialPropertyBlock _propertyBlock;
-        private int _instanceCount;
-        private int _visibleInstanceCount;
-        private Camera _camera;
+
+        private readonly Plane[] _frustumPlanes = new Plane[6];
+        private readonly Vector4[] _frustumPlanesVec = new Vector4[6];
+        private readonly int[] _counterReset = new int[1];
+
+        private int _kernelCSMain;
+        private int _kernelCopyArgs;
 
         private void OnEnable()
         {
-            _matrices = new Matrix4x4[maxGrassCount];
-            _visibleMatrices = new Matrix4x4[maxGrassCount];
             _propertyBlock = new MaterialPropertyBlock();
-            
-            UpdateMatrices();
+
+            if (cullingShader != null)
+            {
+                _kernelCSMain = cullingShader.FindKernel("CSMain");
+                _kernelCopyArgs = cullingShader.FindKernel("CopyArgs");
+            }
+
+            RebuildGPUBuffers();
+            RenderPipelineManager.beginCameraRendering += Render;
         }
 
-        public void UpdateMatrices()
+        private void OnDisable()
         {
-            _instanceCount = Mathf.Min(grassInstances.Count, maxGrassCount);
-            
-            for (int i = 0; i < _instanceCount; i++)
-            {
-                GrassInstance instance = grassInstances[i];
-        
-                Quaternion rotation = Quaternion.Euler(0, instance.rotation, 0);
-        
-                _matrices[i] = Matrix4x4.TRS(
-                    instance.position,
-                    rotation,
-                    new Vector3(instance.width, instance.height, instance.width)
-                );
-            }
-        }
-        
-        private void UpdateVisibleMatrices()
-        {
-            if (!useRenderDistance)
-            {
-                _visibleInstanceCount = _instanceCount;
-                System.Array.Copy(_matrices, _visibleMatrices, _instanceCount);
-                return;
-            }
-            
-            if (_camera == null)
-            {
-                _camera = Camera.main;
-                if (_camera == null)
-                {
-                    _visibleInstanceCount = _instanceCount;
-                    System.Array.Copy(_matrices, _visibleMatrices, _instanceCount);
-                    return;
-                }
-            }
-            
-            Vector3 cameraPosition = _camera.transform.position;
-            float sqrMaxDistance = maxRenderDistance * maxRenderDistance;
-            
-            _visibleIndices.Clear();
-
-            for (int i = 0; i < _instanceCount; i++)
-            {
-                float sqrDistance = (grassInstances[i].position - cameraPosition).sqrMagnitude;
-                if (sqrDistance <= sqrMaxDistance)
-                {
-                    _visibleIndices.Add(i);
-                }
-            }
-
-            _visibleInstanceCount = _visibleIndices.Count;
-            for (int i = 0; i < _visibleInstanceCount; i++)
-            {
-                int originalIndex = _visibleIndices[i];
-                _visibleMatrices[i] = _matrices[originalIndex];
-            }
+            RenderPipelineManager.beginCameraRendering -= Render;
+            ReleaseBuffers();
         }
 
-        private void LateUpdate()
+        private void ReleaseBuffers()
         {
-            if (grassMesh == null || grassMaterial == null || _instanceCount == 0)
-                return;
-
-            UpdateVisibleMatrices();
-            
-            if (_visibleInstanceCount == 0)
-                return;
-
-            Graphics.DrawMeshInstanced(
-                grassMesh,
-                0,
-                grassMaterial,
-                _visibleMatrices,
-                _visibleInstanceCount,
-                _propertyBlock,
-                UnityEngine.Rendering.ShadowCastingMode.Off,
-                true
-            );
+            _allInstancesBuffer?.Release();
+            _visibleBuffer?.Release();
+            _counterBuffer?.Release();
+            _argsBuffer?.Dispose();
+            _allInstancesBuffer = null;
+            _visibleBuffer = null;
+            _counterBuffer = null;
+            _argsBuffer = null;
         }
 
-        public void AddGrassInstance(Vector3 position, float size = 1f, Vector3? surfaceNormal = null)
+        private void RebuildGPUBuffers()
         {
-            if (grassInstances.Count >= maxGrassCount)
+            _totalInstanceCount = Mathf.Min(grassInstances.Count, maxGrassCount);
+            ReleaseBuffers();
+
+            if (_totalInstanceCount == 0) return;
+            if (cullingShader == null)
+            {
+                Debug.LogWarning("GrassRenderer: Compute Shader is not assigned!");
                 return;
-        
-            float randomRotation = Random.Range(0f, 360f);
-            float randomHeight = Random.Range(minHeight, maxHeight) * size;
-            float randomWidth = Random.Range(minWidth, maxWidth) * size;
-        
-            GrassInstance instance = new GrassInstance
+            }
+
+            var gpuData = new GPUGrassInstance[_totalInstanceCount];
+            for (int i = 0; i < _totalInstanceCount; i++)
+            {
+                GrassInstance inst = grassInstances[i];
+                Quaternion rotation = Quaternion.Euler(0, inst.rotation, 0);
+                gpuData[i].mat = Matrix4x4.TRS(inst.position, rotation, new Vector3(inst.width, inst.height, inst.width));
+                gpuData[i].posAndTex = new Vector4(inst.position.x, inst.position.y, inst.position.z, inst.textureIndex);
+            }
+
+            _allInstancesBuffer = new ComputeBuffer(_totalInstanceCount, GPUStride, ComputeBufferType.Structured);
+            _allInstancesBuffer.SetData(gpuData);
+
+            _visibleBuffer = new ComputeBuffer(_totalInstanceCount, GPUStride, ComputeBufferType.Structured);
+            _counterBuffer = new ComputeBuffer(1, sizeof(int), ComputeBufferType.Structured);
+
+            uint[] args = new uint[5];
+            args[0] = grassMesh.GetIndexCount(0);
+            args[1] = 0;
+            args[2] = grassMesh.GetIndexStart(0);
+            args[3] = grassMesh.GetBaseVertex(0);
+            args[4] = 0;
+
+            _argsBuffer = new GraphicsBuffer(GraphicsBuffer.Target.IndirectArguments, 5, sizeof(uint));
+            _argsBuffer.SetData(args);
+
+            _rp = new RenderParams(grassMaterial)
+            {
+                worldBounds = new Bounds(Vector3.zero, Vector3.one * 10000f),
+                matProps = _propertyBlock,
+                shadowCastingMode = ShadowCastingMode.Off,
+                receiveShadows = true
+            };
+        }
+
+        private void Render(ScriptableRenderContext ctx, Camera cam)
+        {
+            if (grassMesh == null || grassMaterial == null || cullingShader == null) return;
+            if (_totalInstanceCount == 0 || _allInstancesBuffer == null) return;
+            if (cam == null) return;
+            if (cam.cameraType == CameraType.Preview) return;
+
+            if (debugCamera != null) cam = debugCamera;
+
+            DispatchCulling(cam);
+
+            _rp.matProps.SetBuffer(PropVisibleInst, _visibleBuffer);
+
+            Graphics.RenderMeshIndirect(_rp, grassMesh, _argsBuffer);
+        }
+
+        private void DispatchCulling(Camera cam)
+        {
+            _counterBuffer.SetData(_counterReset);
+
+            GeometryUtility.CalculateFrustumPlanes(cam, _frustumPlanes);
+            for (int i = 0; i < 6; i++)
+                _frustumPlanesVec[i] = new Vector4(
+                    _frustumPlanes[i].normal.x,
+                    _frustumPlanes[i].normal.y,
+                    _frustumPlanes[i].normal.z,
+                    _frustumPlanes[i].distance);
+
+            cullingShader.SetInt(PropTotalCount, _totalInstanceCount);
+            cullingShader.SetVector(PropCameraPos, cam.transform.position);
+            cullingShader.SetFloat(PropMaxDistanceSqr, maxRenderDistance * maxRenderDistance);
+            cullingShader.SetInt(PropUseDistance, useRenderDistance ? 1 : 0);
+            cullingShader.SetVectorArray(PropFrustumPlanes, _frustumPlanesVec);
+
+            cullingShader.SetBuffer(_kernelCSMain, PropAllInstances, _allInstancesBuffer);
+            cullingShader.SetBuffer(_kernelCSMain, PropVisibleInst, _visibleBuffer);
+            cullingShader.SetBuffer(_kernelCSMain, PropCounter, _counterBuffer);
+
+            cullingShader.Dispatch(_kernelCSMain, Mathf.CeilToInt(_totalInstanceCount / 64f), 1, 1);
+
+            cullingShader.SetBuffer(_kernelCopyArgs, PropCounter, _counterBuffer);
+            cullingShader.SetBuffer(_kernelCopyArgs, PropArgs, _argsBuffer);
+
+            cullingShader.Dispatch(_kernelCopyArgs, 1, 1, 1);
+        }
+
+        public void UpdateMatrices() => RebuildGPUBuffers();
+
+        public void AddGrassInstance(Vector3 position, float size = 1f)
+        {
+            if (grassInstances.Count >= maxGrassCount) return;
+
+            grassInstances.Add(new GrassInstance
             {
                 position = position,
-                rotation = randomRotation,
-                height = randomHeight,
-                width = randomWidth
-            };
+                rotation = Random.Range(0f, 360f),
+                height = Random.Range(minHeight, maxHeight) * size,
+                width = Random.Range(minWidth, maxWidth) * size,
+                textureIndex = Random.Range(0, 4)
+            });
 
-            grassInstances.Add(instance);
-            UpdateMatrices();
+            RebuildGPUBuffers();
         }
 
         public void ClearGrass()
         {
             grassInstances.Clear();
-            UpdateMatrices();
+            RebuildGPUBuffers();
         }
 
         public void RemoveGrassInRadius(Vector3 center, float radius)
         {
             float sqrRadius = radius * radius;
-            grassInstances.RemoveAll(instance => 
-                (instance.position - center).sqrMagnitude <= sqrRadius
-            );
-            UpdateMatrices();
+            grassInstances.RemoveAll(inst => (inst.position - center).sqrMagnitude <= sqrRadius);
+            RebuildGPUBuffers();
         }
-        
-        public void RandomizeGrassInstance(int index, float size = 1f)
+
+        public void RandomizeGrassInstance(int index)
         {
-            if (index < 0 || index >= grassInstances.Count)
-                return;
-                
-            GrassInstance instance = grassInstances[index];
-            Vector3 position = instance.position;
+            if (index < 0 || index >= grassInstances.Count) return;
 
-            instance.rotation = Random.Range(0f, 360f);
-            instance.height = Random.Range(minHeight, maxHeight) * size;
-            instance.width = Random.Range(minWidth, maxWidth) * size;
+            GrassInstance inst = grassInstances[index];
+            inst.rotation = Random.Range(0f, 360f);
+            inst.height = Random.Range(minHeight, maxHeight);
+            inst.width = Random.Range(minWidth, maxWidth);
+            inst.textureIndex = Random.Range(0, 4);
+            grassInstances[index] = inst;
 
-            instance.position = position;
-
-            grassInstances[index] = instance;
-            UpdateMatrices();
+            RebuildGPUBuffers();
         }
-        
-        public void RandomizeGrassInRadius(Vector3 center, float radius, float size = 1f)
+
+        public void RegenerateGrass()
         {
-            float sqrRadius = radius * radius;
-            
             for (int i = 0; i < grassInstances.Count; i++)
-            {
-                GrassInstance instance = grassInstances[i];
-                if ((instance.position - center).sqrMagnitude <= sqrRadius)
-                {
-                    RandomizeGrassInstance(i, size);
-                }
-            }
+                RandomizeGrassInstance(i);
         }
     }
 }

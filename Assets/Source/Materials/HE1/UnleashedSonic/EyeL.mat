@@ -52,6 +52,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _CatchlightTex:
+        m_Texture: {fileID: 2800000, guid: 9a4161c8e12ccc34087abc0a848696ea, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _CoatMaskMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -206,6 +210,7 @@ Material:
     - _AlphaSrcBlend: 1
     - _Anisotropy: 0
     - _BlendMode: 0
+    - _CatchlightLookIntensity: 0.5
     - _CoatMask: 0
     - _ConservativeDepthOffsetEnable: 0
     - _CullMode: 2
@@ -217,6 +222,7 @@ Material:
     - _DetailSmoothnessScale: 1
     - _DiffusionProfile: 0
     - _DiffusionProfileHash: 0
+    - _DirectionalOffset: -1
     - _DisplacementLockObjectScale: 1
     - _DisplacementLockTilingScale: 1
     - _DisplacementMode: 0
@@ -334,9 +340,12 @@ Material:
     - _BlinnParam: {r: 50, g: 0, b: 0, a: 0}
     - _BlinnParam2: {r: 0, g: 0, b: 0, a: 0}
     - _BoundsX: {r: 0, g: 0, b: 0, a: 0}
-    - _CatchlightOffset: {r: -0.6, g: 0.2, b: -0.25, a: 0}
+    - _CatchlightBounds: {r: 0.3, g: 0.9, b: 0, a: 0}
+    - _CatchlightOffset: {r: 0.5, g: 0.4, b: 0, a: 0}
+    - _CatchlightScale: {r: 8, g: 9, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _DiffusionProfileAsset: {r: 0, g: 0, b: 0, a: 0}
+    - _DirectionalOffset: {r: -1, g: 0, b: 0, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}

@@ -72,7 +72,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
                 }
             }
             
-            bool predictedGround = Kinematics.CheckForPredictedGround(dt, Character.Config.castDistance, 4);
+            bool predictedGround = Kinematics.CheckForPredictedGround(dt, distance, 4);
             if (ground && predictedGround)
             {
                 Vector3 point = hit.point;
@@ -82,13 +82,13 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
                 Vector3 dir = Input.MoveVector;
                 _driftXDirection = Mathf.Sign(dir.x);
 
-                Model.RotateBody(Kinematics.Velocity, Kinematics.Normal, 1600);
+                Model.RotateBody(Kinematics.Normal);
                 
                 Kinematics.SlopePhysics();
                 
                 float force = 1f;
                 if (Character.StateMachine.GetState(out FBoost boost) && boost.Active)
-                    force *= 0.5f;
+                    force *= 0.66f;
                 
                 Quaternion angle = Quaternion.AngleAxis(_driftXDirection * _config.centrifugalForce * force, Kinematics.Normal);
                 Vector3 driftVelocity = angle * Rigidbody.linearVelocity;
@@ -99,7 +99,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
                 if (!isWater) Kinematics.Snap(point, Kinematics.Normal);
                 else Kinematics.SnapOnWater(point);
                 
-                Kinematics.Project(Kinematics.Normal);
+                Kinematics.ProjectOnNormal();
                 Kinematics.GroundTag.Value = hit.transform.gameObject.GetGroundTag();
             }
             else

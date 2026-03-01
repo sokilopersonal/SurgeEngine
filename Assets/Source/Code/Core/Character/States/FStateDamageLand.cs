@@ -17,7 +17,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
         {
             base.OnEnter();
 
-            _timer = 2f;
+            _timer = 1.5f;
         }
 
         public override void OnTick(float dt)
@@ -30,7 +30,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
                 Kinematics.Snap(hit.point, Vector3.up);
             }
             
-            if (Utility.TickTimer(ref _timer, 2f, false))
+            if (Utility.TickTimer(ref _timer, _timer, false))
             {
                 StateMachine.SetState<FStateIdle>();
             }

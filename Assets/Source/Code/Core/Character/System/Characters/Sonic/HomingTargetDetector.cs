@@ -4,6 +4,7 @@ using SurgeEngine.Source.Code.Infrastructure.Config.Sonic;
 using SurgeEngine.Source.Code.Infrastructure.Custom.Extensions;
 using UnityEngine;
 using UnityEngine.Splines;
+using Zenject;
 
 namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
 {
@@ -11,14 +12,9 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
     {
         [SerializeField] private HomingConfig config;
 
-        private CharacterBase _character;
+        [Inject] private CharacterBase _character;
 
         public HomingTarget Target { get; private set; }
-
-        private void Awake()
-        {
-            _character = GetComponent<CharacterBase>();
-        }
 
         private void FixedUpdate()
         {
@@ -70,6 +66,10 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
 
                 Vector3 dir = targetPos - transform.position;
                 Vector3 dirFlat = new Vector3(dir.x, 0f, dir.z).normalized;
+                
+                Vector3 dirNorm = dir.normalized;
+                float verticalDot = Mathf.Abs(Vector3.Dot(dirNorm, Vector3.up));
+                if (verticalDot > 0.9f) continue;
 
                 float dot = Vector3.Dot(forwardFlat, dirFlat);
                 if (dot < Mathf.Cos(angle * 0.5f * Mathf.Deg2Rad)) continue;

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using NaughtyAttributes;
+
 using SurgeEngine.Source.Code.Core.Character.CameraSystem;
 using SurgeEngine.Source.Code.Core.Character.States;
 using SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic;
@@ -8,13 +8,12 @@ using SurgeEngine.Source.Code.Core.StateMachine;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.System;
 using SurgeEngine.Source.Code.Infrastructure.Config;
 using UnityEngine;
+using Zenject;
 
 namespace SurgeEngine.Source.Code.Core.Character.System
 {
     public class CharacterBase : MonoBehaviour, IPointMarkerLoader
     {
-        public new Transform transform => Rigidbody.transform;
-        
         [Header("Components")]
         [SerializeField] private CharacterInput input;
         [SerializeField] private CharacterSounds sounds; 
@@ -41,7 +40,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         
         private readonly Dictionary<Type, ScriptableObject> _configs = new();
         
-        private StartData _startData;
+        [Inject] private StartData _startData;
 
         public FStateMachine StateMachine { get; private set; }
         public Rigidbody Rigidbody { get; private set; }
@@ -55,16 +54,19 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             
             InitializeConfigs();
             AddStates();
-            
-            Input.Set(this);
-            Sounds.Set(this);
-            Camera.Set(this);
-            Animation.Set(this);
-            Effects.Set(this);
-            Model.Set(this);
-            Flags.Set(this);
-            Kinematics.Set(this);
-            Life.Set(this);
+        }
+
+        private void Start()
+        {
+            if (_startData.startType != StartType.None)
+            {
+                StateMachine.GetState<FStateStart>().SetData(_startData);
+                StateMachine.SetState<FStateStart>();
+            }
+            else
+            {
+                StateMachine.SetState<FStateIdle>();
+            }
         }
 
         private void Update()
@@ -86,6 +88,8 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             StateMachine.AddState(new FStateBrake(this));
             StateMachine.AddState(new FStateBrakeTurn(this));
             StateMachine.AddState(new FStateAir(this));
+            StateMachine.AddState(new FStateBalloon(this));
+            StateMachine.AddState(new FStateSkydive(this));
             StateMachine.AddState(new FStateSpecialJump(this));
             StateMachine.AddState(new FStateSit(this));
             StateMachine.AddState(new FStateJump(this));
@@ -101,31 +105,17 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             StateMachine.AddState(new FStateDamage(this));
             StateMachine.AddState(new FStateDamageLand(this));
             StateMachine.AddState(new FStateUpreel(this));
+            StateMachine.AddState(new FStatePulley(this));
             StateMachine.AddState(new FStateTrickJump(this));
             StateMachine.AddState(new FStateTrick(this));
+            StateMachine.AddState(new FStateReactionPlate(this));
+            StateMachine.AddState(new FStateReactionPlateJump(this));
             StateMachine.AddState(new FStateSpring(this));
             StateMachine.AddState(new FStateJumpPanel(this));
             StateMachine.AddState(new FStateDashRing(this));
             StateMachine.AddState(new FStateDead(this));
             StateMachine.AddState(new FStateGoal(this));
             StateMachine.AddState(new FStateStumble(this));
-        }
-
-        public void SetStart(StartData data)
-        {
-            _startData = data;
-            
-            if (data.startType != StartType.None)
-            {
-                StateMachine.GetState<FStateStart>().SetData(data);
-                StateMachine.SetState<FStateStart>();
-            }
-            else
-            {
-                StateMachine.SetState<FStateIdle>();
-            }
-            
-            Model.Root.forward = transform.forward;
         }
 
         protected virtual void InitializeConfigs()
@@ -154,7 +144,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             Rigidbody.linearVelocity = Vector3.zero;
             Animation.StateAnimator.TransitionToState("Idle", 0f);
             Flags.AddFlag(new Flag(FlagType.OutOfControl, true, 0.5f));
-            Input.playerInput.enabled = true;
+            Input.PlayerInput.enabled = true;
 
             if (StateMachine.CurrentState is IPointMarkerLoader stateLoader)
             {

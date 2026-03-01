@@ -21,7 +21,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
 
         public override void OnTick(float dt)
         {
-            if (Kinematics.GetInputDir().magnitude > 0.1f || Kinematics.HorizontalVelocity.magnitude > 0.1f)
+            if (Kinematics.GetInputDir().magnitude > 0.02f || Kinematics.HorizontalVelocity.magnitude > 0.02f)
             {
                 StateMachine.SetState<FStateGround>();
             }
@@ -53,7 +53,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
                 }
                 
                 Quaternion target = Quaternion.FromToRotation(Rigidbody.transform.up, Vector3.up) * Rigidbody.rotation;
-                Rigidbody.rotation = Quaternion.Lerp(Rigidbody.rotation, target, Time.fixedDeltaTime * 8f);
+                Rigidbody.rotation = target;
                 
                 Kinematics.Snap(hit.point, Kinematics.Normal);
                 Kinematics.SlopePhysics();

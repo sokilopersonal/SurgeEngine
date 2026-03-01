@@ -9,6 +9,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
     {
         private readonly CharacterBase _character;
         private const float SpeedThreshold = 3.5f;
+        private const float AngleThreshold = 0.1f;
 
         public CharacterBodyRotation(CharacterBase character)
         {
@@ -37,19 +38,11 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             var rb = kinematics.Rigidbody;
             Vector3 inputDir = kinematics.GetInputDir();
             
+            AlignToNormal(normal, rb);
+            
             Vector3 currentVelocity = Vector3.ProjectOnPlane(vector, normal);
             float currentSpeed = currentVelocity.magnitude;
-
-            if (HasValidInput(inputDir))
-            {
-                RotateWithInput(inputDir, currentVelocity, currentSpeed, normal, angleDelta, rb);
-            }
-            else
-            {
-                RotateWithVelocity(currentVelocity, currentSpeed, normal, rb);
-            }
-            
-            AlignToNormal(normal, rb);
+            RotateWithInput(HasValidInput(inputDir) ? inputDir : rb.transform.forward, currentVelocity, currentSpeed, normal, angleDelta, rb);
         }
 
         /// <summary>
@@ -68,13 +61,11 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             {
                 AlignToVelocity(vel, left);
             }
-            
-            _character.Model.Root.rotation = _character.Kinematics.Rigidbody.rotation;
         }
-
+        
         private bool HasValidInput(Vector3 inputDir)
         {
-            return inputDir.sqrMagnitude > 0.02f;
+            return inputDir.magnitude > 0.02f;
         }
 
         private void RotateWithInput(Vector3 inputDir, Vector3 currentVelocity, float currentSpeed, 
@@ -87,7 +78,8 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             {
                 var targetRot = Quaternion.LookRotation(targetDir, normal);
                 var towards = Quaternion.RotateTowards(rb.rotation, targetRot, rotSpeed * Time.fixedDeltaTime);
-                rb.MoveRotation(towards);
+                var finalRot = Quaternion.Slerp(rb.rotation, towards, 70 * Time.fixedDeltaTime);
+                rb.MoveRotation(finalRot);
             }
         }
 
@@ -120,22 +112,9 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
             float speedRange = _character.Config.topSpeed - SpeedThreshold;
             float speedFactor = (currentSpeed - SpeedThreshold) / speedRange;
-            float rotationMultiplier = Mathf.Lerp(1f, 0.15f, Mathf.Pow(speedFactor, 0.5f));
+            float rotationMultiplier = Mathf.Lerp(1f, 0.5f, Mathf.Pow(speedFactor, 0.5f));
             
             return angleDelta * rotationMultiplier;
-        }
-
-        private void RotateWithVelocity(Vector3 currentVelocity, float currentSpeed, 
-            Vector3 normal, Rigidbody rb)
-        {
-            if (currentSpeed > 0.1f)
-            {
-                Vector3 velocityDir = currentVelocity.normalized;
-                Quaternion targetRotation = Quaternion.LookRotation(velocityDir, normal);
-                var towards = Quaternion.RotateTowards(rb.rotation, targetRotation,
-                    (128f + currentSpeed) * Time.fixedDeltaTime);
-                rb.MoveRotation(towards);
-            }
         }
 
         private void AlignToNormal(Vector3 normal, Rigidbody rb)
@@ -147,7 +126,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         private void AlignToUpward()
         {
             var rb = _character.Kinematics.Rigidbody;
-            Quaternion upAlignment = Quaternion.FromToRotation(_character.transform.up, Vector3.up) * rb.rotation;
+            Quaternion upAlignment = Quaternion.FromToRotation(_character.Rigidbody.transform.up, Vector3.up) * rb.rotation;
             rb.MoveRotation(upAlignment);
         }
 
@@ -158,6 +137,49 @@ namespace SurgeEngine.Source.Code.Core.Character.System
                 Vector3 forward = Vector3.Cross(vel, left);
                 _character.Kinematics.Rigidbody.MoveRotation(Quaternion.LookRotation(forward, vel));
             }
+        }
+        
+        public bool AlignToUpOverTime(float deltaTime, ref float remainingTime)
+        {
+            var rb = _character.Kinematics.Rigidbody;
+            
+            float currentAngle = Vector3.Angle(rb.transform.up, Vector3.up);
+            if (currentAngle < AngleThreshold)
+            {
+                return true;
+            }
+
+            if (remainingTime <= 0)
+            {
+                SmoothAlignToUp(100f);
+                return true;
+            }
+
+            float rotationSpeed = currentAngle / remainingTime;
+
+            Vector3 currentForward = rb.transform.forward;
+            Vector3 right = Vector3.Cross(rb.transform.up, currentForward);
+            Vector3 newForward = Vector3.Cross(right, Vector3.up).normalized;
+            if (newForward == Vector3.zero)
+            {
+                newForward = currentForward;
+            }
+            
+            Quaternion targetRotation = Quaternion.LookRotation(newForward, Vector3.up);
+
+            float step = rotationSpeed * deltaTime;
+            rb.MoveRotation(Quaternion.RotateTowards(rb.rotation, targetRotation, step));
+
+            remainingTime -= deltaTime;
+            
+            return false;
+        }
+        
+        public void SmoothAlignToUp(float speed = 5f)
+        {
+            var rb = _character.Kinematics.Rigidbody;
+            Quaternion target = Quaternion.FromToRotation(rb.transform.up, Vector3.up) * rb.rotation;
+            rb.MoveRotation(Quaternion.Slerp(rb.rotation, target, speed * Time.fixedDeltaTime));
         }
     }
 }

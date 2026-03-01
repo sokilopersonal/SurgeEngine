@@ -1,5 +1,6 @@
 ﻿using System;
 using SurgeEngine.Source.Code.Core.Character.HUD;
+using SurgeEngine.Source.Code.Core.Character.States;
 using SurgeEngine.Source.Code.Core.Character.System;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.System;
@@ -15,8 +16,9 @@ namespace SurgeEngine.Source.Code.Infrastructure.DI
         [SerializeField] private Stage stage;
         
         [Header("Character")]
-        [SerializeField] private Transform characterPrefab;
+        [SerializeField] private CharacterBase characterPrefab;
         [SerializeField] private CharacterSpawn spawnPoint;
+        [SerializeField] private Camera gameCameraPrefab;
         
         [Header("HUD")]
         [SerializeField] private CharacterStageHUD hudPrefab;
@@ -27,6 +29,8 @@ namespace SurgeEngine.Source.Code.Infrastructure.DI
         public override void InstallBindings()
         {
             SetupStage();
+            SetupGameCamera();
+            SetupSpawn();
             SetupCharacter();
             SetupHUD();
             SetupPointMarkerScreen();
@@ -37,29 +41,32 @@ namespace SurgeEngine.Source.Code.Infrastructure.DI
             Container.BindInstance(stage).AsSingle().NonLazy();
         }
 
+        private void SetupGameCamera()
+        {
+            Container.InstantiatePrefabForComponent<Camera>(gameCameraPrefab);
+        }
+
+        private void SetupSpawn()
+        {
+            Container.Bind<StartData>().FromInstance(spawnPoint.StartData).AsSingle().NonLazy();
+        }
+
         private void SetupCharacter()
         {
             if (!spawnPoint)
             {
 #if UNITY_EDITOR
                 UnityEditor.EditorApplication.isPlaying = false;
-                throw new NullReferenceException("Spawn Point is not assigned, please do it in ActorInstaller under GameplaySceneContext. Stopping play mode...");
+                throw new NullReferenceException("Spawn Point is not assigned, please do it. Stopping play mode...");
 #endif
             }
-
-            var data = spawnPoint.StartData;
+            
             var spawn = spawnPoint.transform;
 
-            var instance = Container.InstantiatePrefabForComponent<CharacterBase>(characterPrefab, spawn.position, spawn.rotation, null);
+            var instance = Container.InstantiatePrefabForComponent<CharacterBase>(characterPrefab, spawn.position + spawn.transform.up, spawn.rotation, null);
             Container.BindInstance(instance).AsSingle().NonLazy();
-            var parent = instance.transform.parent;
-            Quaternion par = parent.rotation;
-            parent.rotation = Quaternion.identity;
-            instance.transform.rotation = par;
             
             Container.Bind<CharacterContext>().FromNew().AsSingle().NonLazy();
-            
-            instance.SetStart(data);
         }
 
         private void SetupHUD()

@@ -33,7 +33,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.GoalRing
                 
                 RuntimeManager.PlayOneShot(goalRingSound, transform.position);
 
-                context.Input.playerInput.enabled = false;
+                context.Input.PlayerInput.enabled = false;
                 context.Flags.AddFlag(new AutorunFlag(default, true, 1f, 0f, 0.2f));
 
                 var eventEmitter = GetComponent<StudioEventEmitter>();

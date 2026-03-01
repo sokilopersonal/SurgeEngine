@@ -1,16 +1,15 @@
-﻿using SurgeEngine.Source.Code.Core.Character.Sound;
+﻿using System;
+using SurgeEngine.Source.Code.Core.Character.Sound;
 
 namespace SurgeEngine.Source.Code.Core.Character.System
 {
     public class CharacterSounds : CharacterComponent
     {
-        public override void Set(CharacterBase character)
+        private void Awake()
         {
-            base.Set(character);
-            
             foreach (CharacterSound sound in GetComponents<CharacterSound>())
             {
-                sound.Initialize(character);
+                sound.Initialize(Character);
             }
         }
     }

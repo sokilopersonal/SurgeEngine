@@ -18,18 +18,21 @@ namespace SurgeEngine.Source.Code.Core.Character.HUD
         
         private List<QuickTimeEventUIButton> _buttons = new List<QuickTimeEventUIButton>();
 
+        private ReactionPlate _reactionPlateObject;
+        private ReactionPanelUI _reactionPanelUI;
         private TrickJumper _trickJumperObject;
         private TrickJumperUI _trickJumperUI;
 
         private void Update()
         {
-            if (_trickJumperObject == null)
-            {
-                Destroy(gameObject);
-            }
-            else
+            if (_trickJumperObject != null)
             {
                 barFill.fillAmount = _trickJumperObject.GetTimer() / _trickJumperObject.GetCurrentSequence().time;
+            }
+            else if (_reactionPlateObject != null)
+            {
+                barFill.color = Color.Lerp(Color.red, Color.yellow, _reactionPlateObject.GetTimer() / _reactionPlateObject.GetCurrentSequence().time);
+                barFill.fillAmount = _reactionPlateObject.GetTimer() / _reactionPlateObject.GetCurrentSequence().time;
             }
         }
 
@@ -41,9 +44,17 @@ namespace SurgeEngine.Source.Code.Core.Character.HUD
             trickJumper.OnCorrectButton += OnCorrectButtonPressed;
         }
 
+        public void SetReactionPanel(ReactionPlate reactionPlate, ReactionPanelUI ui)
+        {
+            _reactionPlateObject = reactionPlate;
+            _reactionPanelUI = ui;
+
+            reactionPlate.OnCorrectButton += OnCorrectButtonPressed;
+        }
+
         private void OnCorrectButtonPressed()
         {
-            GameObject click = Instantiate(qteClick, _trickJumperUI.transform);
+            GameObject click = Instantiate(qteClick, _trickJumperUI != null ? _trickJumperUI.transform : _reactionPanelUI.transform);
             click.transform.position = _buttons[0].transform.position;
             Destroy(click, 0.65f);
             _buttons[0].Destroy();
@@ -70,6 +81,7 @@ namespace SurgeEngine.Source.Code.Core.Character.HUD
                 if (tempButton != null)
                 {
                     _buttons.Add(tempButton);
+                    tempButton.gameObject.SetActive(true);
                 }
             }
         }
@@ -79,6 +91,11 @@ namespace SurgeEngine.Source.Code.Core.Character.HUD
             if (_trickJumperObject != null)
             {
                 _trickJumperObject.OnCorrectButton -= OnCorrectButtonPressed;                
+            }
+
+            if (_reactionPlateObject != null)
+            {
+                _reactionPlateObject.OnCorrectButton -= OnCorrectButtonPressed;
             }
         }
     }

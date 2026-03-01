@@ -1,6 +1,7 @@
 ﻿using SurgeEngine.Source.Code.Core.Character.States;
 using SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStates;
 using SurgeEngine.Source.Code.Core.Character.System;
+using SurgeEngine.Source.Code.Infrastructure.Custom;
 using SurgeEngine.Source.Code.Infrastructure.Custom.Drawers;
 using UnityEngine;
 
@@ -26,8 +27,9 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             context.StateMachine.SetState<FStateDashRing>(true);
 
             Rigidbody body = context.Kinematics.Rigidbody;
-            body.position = transform.position;
             body.linearVelocity = -transform.forward * speed;
+            
+            Utility.MoveToPosition(this, body, transform.position);
             
             context.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, Mathf.Abs(outOfControl)));
         }

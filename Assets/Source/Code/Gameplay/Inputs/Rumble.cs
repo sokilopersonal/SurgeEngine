@@ -1,34 +1,55 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using SurgeEngine.Source.Code.Core.Character.System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Zenject;
 
 namespace SurgeEngine.Source.Code.Gameplay.Inputs
 {
-    public class Rumble
+    public sealed class Rumble : ITickable, ILateDisposable
     {
-        public void Vibrate(float low, float high, float duration)
+        private static Rumble instance;
+        private float _timer;
+
+        [Inject] private void Inject(Rumble self) => instance = self;
+
+        public static void Vibrate(float low, float high, float duration = 0.2f)
         {
-            if (Gamepad.current == null)
+            Gamepad pad = Gamepad.current;
+            GameDevice device = CharacterContext.Context.Input.GetDevice();
+            
+            if (pad == null || device == GameDevice.Keyboard)
                 return;
 
-            if (Gamepad.current.wasUpdatedThisFrame) // We don't want to rumble if the input was from another device
+            instance.Rumbling(low, high, duration);
+        }
+
+        private void Rumbling(float low, float high, float duration)
+        {
+            _timer = duration;
+
+            Gamepad.current.SetMotorSpeeds(low, high);
+        }
+
+        public void Tick()
+        {
+            Gamepad pad = Gamepad.current;
+            
+            if (pad == null)
+                return;
+            
+            if (_timer > 0)
             {
-                _ = Rumbling(low, high, duration);
+                _timer -= Time.unscaledDeltaTime;
+            }
+            else
+            {
+                pad.SetMotorSpeeds(0, 0);
             }
         }
 
-        private async UniTask Rumbling(float low, float high, float duration)
+        public void LateDispose()
         {
-            float t = 0;
-            Gamepad pad = Gamepad.current;
-            pad.SetMotorSpeeds(low, high);
-            while (t < duration)
-            {
-                t += Time.unscaledDeltaTime;
-                await UniTask.Yield();
-            }
-            
-            pad.SetMotorSpeeds(0, 0);
+            Gamepad.current?.SetMotorSpeeds(0, 0);
         }
     }
 }

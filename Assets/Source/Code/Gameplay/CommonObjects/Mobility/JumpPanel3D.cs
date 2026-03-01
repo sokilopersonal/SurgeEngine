@@ -1,4 +1,5 @@
-﻿using SurgeEngine.Source.Code.Core.Character.System;
+﻿using System.Collections;
+using SurgeEngine.Source.Code.Core.Character.System;
 using SurgeEngine.Source.Code.Infrastructure.Custom;
 using SurgeEngine.Source.Code.Infrastructure.Custom.Drawers;
 using UnityEngine;
@@ -7,15 +8,12 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 {
     public class JumpPanel3D : JumpPanelBase
     {
-        private Vector3 StartPosition => transform.position + transform.up * Mathf.Max(transform.localScale.y, 1f);
+        protected override Vector3 StartPosition => transform.position + transform.up * Mathf.Max(transform.localScale.y, 1f);
         private const float Pitch = 30f;
         
         public override void OnEnter(Collider msg, CharacterBase context)
         {
             base.OnEnter(msg, context);
-            
-            var body = context.Kinematics.Rigidbody;
-            body.position = StartPosition;
             
             Launch(context, Pitch);
         }

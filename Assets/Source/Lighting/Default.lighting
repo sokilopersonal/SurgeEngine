@@ -12,31 +12,31 @@ LightingSettings:
   m_EnableRealtimeLightmaps: 0
   m_RealtimeEnvironmentLighting: 1
   m_BounceScale: 1
-  m_AlbedoBoost: 1.5
-  m_IndirectOutputScale: 1
+  m_AlbedoBoost: 2
+  m_IndirectOutputScale: 1.5
   m_UsingShadowmask: 1
   m_BakeBackend: 2
-  m_LightmapMaxSize: 1024
+  m_LightmapMaxSize: 2048
   m_LightmapSizeFixed: 0
   m_UseMipmapLimits: 0
   m_BakeResolution: 3
-  m_Padding: 10
+  m_Padding: 8
   m_LightmapCompression: 3
-  m_LightmapPackingMode: 1
+  m_LightmapPackingMode: 0
   m_LightmapPackingMethod: 1
-  m_XAtlasPackingAttempts: 14935
+  m_XAtlasPackingAttempts: 16150
   m_XAtlasBruteForce: 0
   m_XAtlasBlockAlign: 0
   m_XAtlasRepackUnderutilizedLightmaps: 1
   m_AO: 1
-  m_AOMaxDistance: 5
+  m_AOMaxDistance: 2
   m_CompAOExponent: 1
   m_CompAOExponentDirect: 0
   m_ExtractAO: 0
   m_MixedBakeMode: 2
   m_LightmapsBakeMode: 0
   m_FilterMode: 1
-  m_LightmapParameters: {fileID: 15200, guid: 0000000000000000f000000000000000, type: 0}
+  m_LightmapParameters: {fileID: 15204, guid: 0000000000000000f000000000000000, type: 0}
   m_ExportTrainingData: 0
   m_EnableWorkerProcessBaking: 1
   m_TrainingDataDestination: TrainingData
@@ -45,12 +45,12 @@ LightingSettings:
   m_ForceUpdates: 0
   m_PVRCulling: 1
   m_PVRSampling: 1
-  m_PVRDirectSampleCount: 128
-  m_PVRSampleCount: 256
-  m_PVREnvironmentSampleCount: 128
+  m_PVRDirectSampleCount: 32
+  m_PVRSampleCount: 64
+  m_PVREnvironmentSampleCount: 32
   m_PVREnvironmentReferencePointCount: 2048
-  m_LightProbeSampleCountMultiplier: 3
-  m_PVRBounces: 3
+  m_LightProbeSampleCountMultiplier: 2
+  m_PVRBounces: 5
   m_PVRMinBounces: 2
   m_PVREnvironmentImportanceSampling: 0
   m_PVRFilteringMode: 1

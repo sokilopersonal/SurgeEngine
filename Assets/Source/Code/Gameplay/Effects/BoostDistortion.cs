@@ -1,6 +1,8 @@
-﻿using SurgeEngine.Source.Code.Infrastructure.Custom;
+﻿using SurgeEngine.Source.Code.Core.Character.System;
+using SurgeEngine.Source.Code.Infrastructure.Custom;
 using UnityEngine;
 using UnityEngine.Rendering.HighDefinition;
+using Zenject;
 
 namespace SurgeEngine.Source.Code.Gameplay.Effects
 {
@@ -23,8 +25,8 @@ namespace SurgeEngine.Source.Code.Gameplay.Effects
             distortionMaterial = Instantiate(distortionMaterial);
 
             CustomPass pass = volume.customPasses[0];
-            FullScreenCustomPass fPass = pass as FullScreenCustomPass;
-            fPass.fullscreenPassMaterial = distortionMaterial;
+            volume.targetCamera = Camera.main;
+            if (pass is FullScreenCustomPass fPass) fPass.fullscreenPassMaterial = distortionMaterial;
         }
 
         private void Update()

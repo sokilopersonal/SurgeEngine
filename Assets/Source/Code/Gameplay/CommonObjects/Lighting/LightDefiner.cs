@@ -20,12 +20,12 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Lighting
             Component = GetComponent<Light>();
             Data = GetComponent<HDAdditionalLightData>();
             
-            _graphics.AddLight(this);
+            _graphics?.AddLight(this);
         }
 
         private void OnDestroy()
         {
-            _graphics.RemoveLight(this);
+            _graphics?.RemoveLight(this);
         }
     }
 }

@@ -59,8 +59,8 @@ namespace SurgeEngine.Source.Code.Core.Character.States
             Vector3 midPoint = (_start + _end) * 0.5f + Vector3.up * 4f;
             Vector3 p1 = Vector3.Lerp(_start, midPoint, t);
             Vector3 p2 = Vector3.Lerp(midPoint, _end, t);
-            Rigidbody.position = Vector3.Lerp(p1, p2, Character.Config.railSwitchCurve.Evaluate(t));
-            Rigidbody.rotation = Quaternion.LookRotation(tg * dot, up);
+            Rigidbody.MovePosition(Vector3.Lerp(p1, p2, Character.Config.railSwitchCurve.Evaluate(t)));
+            Rigidbody.MoveRotation(Quaternion.LookRotation(tg * dot, up));
 
             _lastTangent = tg;
             

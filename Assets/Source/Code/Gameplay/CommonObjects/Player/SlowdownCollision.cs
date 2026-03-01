@@ -17,7 +17,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Player
 
         private void OnTriggerExit(Collider other)
         {
-            if (other.TryGetCharacter(out var character))
+            if (other.TryGetComponent(out CharacterBase character))
             {
                 character.Flags.RemoveFlag(FlagType.Slowdown);
             }

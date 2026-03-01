@@ -14,7 +14,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.TryGetCharacter(out CharacterBase ctx))
+            if (other.TryGetComponent(out CharacterBase ctx))
             {
                 OnEnter(other, ctx);
             }
@@ -22,7 +22,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects
 
         private void OnTriggerExit(Collider other)
         {
-            if (other.TryGetCharacter(out CharacterBase ctx))
+            if (other.TryGetComponent(out CharacterBase ctx))
             {
                 OnExit(other, ctx);
             }
@@ -36,6 +36,11 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects
         }
 
         public virtual void OnExit(Collider msg, CharacterBase context)
+        {
+            
+        }
+
+        public virtual void OnImport()
         {
             
         }

@@ -90,7 +90,6 @@ namespace SurgeEngine.Source.Code.Core.Character.States
                 }
             }
             
-            
             if (Character.Animation.StateAnimator.GetCurrentAnimationState() == "Ball" 
                 && HurtBox.CreateAttached(Character, Character.transform, new Vector3(0f, -0.45f, 0f), new Vector3(0.6f, 0.6f, 0.6f), 
                     HurtBoxTarget.Enemy | HurtBoxTarget.Breakable))

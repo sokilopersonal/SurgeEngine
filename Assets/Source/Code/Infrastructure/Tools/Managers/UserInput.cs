@@ -10,11 +10,17 @@ namespace SurgeEngine.Source.Code.Infrastructure.Tools.Managers
         {
             Data.Sensitivity.Value = value;
         }
+
+        public void SetHoming(string value)
+        {
+            Data.homingOnX.Value = value.StartsWith("West");
+        }
     }
 
     [Serializable]
     public class UserInputSettings
     {
+        public ReactiveVar<bool> homingOnX = new(false);
         public ReactiveVar<float> Sensitivity = new(1f);
     }
 }

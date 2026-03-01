@@ -3,7 +3,7 @@
 --- !u!55 &1
 PhysicsManager:
   m_ObjectHideFlags: 0
-  serializedVersion: 21
+  serializedVersion: 23
   m_Gravity: {x: 0, y: -35, z: 0}
   m_DefaultMaterial: {fileID: 0}
   m_BounceThreshold: 2
@@ -34,10 +34,12 @@ PhysicsManager:
   m_EnableEnhancedDeterminism: 1
   m_ImprovedPatchFriction: 1
   m_GenerateOnTriggerStayEvents: 1
-  m_SolverType: 1
+  m_SolverType: 0
   m_DefaultMaxAngularSpeed: 50
   m_ScratchBufferChunkCount: 4
   m_CurrentBackendId: 4072204805
   m_FastMotionThreshold: 3.4028235e+38
   m_SceneBuffersReleaseInterval: 0
   m_ReleaseSceneBuffers: 0
+  m_LogVerbosity: 3
+  m_IncrementalStaticBroadphase: 1

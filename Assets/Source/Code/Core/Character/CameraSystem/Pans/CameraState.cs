@@ -18,7 +18,7 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem.Pans
         {
             Character = owner;
             _stateMachine = owner.Camera.StateMachine;
-            _master= _stateMachine.Master;
+            _master = _stateMachine.Master;
         }
     }
 }

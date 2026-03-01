@@ -83,9 +83,9 @@ namespace SurgeEngine.Source.Code.Core.Character.States
                 {
                     Kinematics.SnapOnWater(data.point);
                 }
-                Model.RotateBody(Kinematics.Velocity, Kinematics.Normal);
+                Model.RotateBody(Kinematics.Velocity, Kinematics.Normal, 1400);
 
-                Kinematics.Project(Kinematics.Normal);
+                Kinematics.ProjectOnNormal();
                 Kinematics.SlopePhysics();
 
                 Kinematics.GroundTag.Value = data.transform.gameObject.GetGroundTag();

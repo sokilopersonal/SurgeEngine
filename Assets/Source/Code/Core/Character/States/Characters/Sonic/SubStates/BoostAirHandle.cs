@@ -1,4 +1,5 @@
 ﻿using SurgeEngine.Source.Code.Core.Character.System;
+using SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic;
 using SurgeEngine.Source.Code.Infrastructure.Config.Sonic;
 using UnityEngine;
 

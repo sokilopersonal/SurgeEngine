@@ -1,5 +1,5 @@
 ﻿using System;
-using NaughtyAttributes;
+using Alchemy.Inspector;
 using SurgeEngine.Source.Code.Core.StateMachine;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.System;

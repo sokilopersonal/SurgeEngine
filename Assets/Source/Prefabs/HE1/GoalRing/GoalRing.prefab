@@ -323,8 +323,8 @@ MonoBehaviour:
       Data4: 318390678
     Path: event:/CommonObjects/GoalRing/GoalRingLoop
   Event: 
-  PlayEvent: 1
-  StopEvent: 2
+  EventPlayTrigger: 1
+  EventStopTrigger: 2
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 1
@@ -436,25 +436,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: bdd0712cdbc875d42bee47c1b3bd45c2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4006474228132081088}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: bdd0712cdbc875d42bee47c1b3bd45c2, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 6074462997559447094}
   m_SourcePrefab: {fileID: 100100000, guid: bdd0712cdbc875d42bee47c1b3bd45c2, type: 3}
---- !u!23 &5524340641298862410 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: -4818106957885473086, guid: bdd0712cdbc875d42bee47c1b3bd45c2, type: 3}
-  m_PrefabInstance: {fileID: 8181003903324303240}
-  m_PrefabAsset: {fileID: 0}
---- !u!23 &5616838115916573468 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: -4865075940391238508, guid: bdd0712cdbc875d42bee47c1b3bd45c2, type: 3}
-  m_PrefabInstance: {fileID: 8181003903324303240}
-  m_PrefabAsset: {fileID: 0}
---- !u!23 &5804622849083173073 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 2379846801463002969, guid: bdd0712cdbc875d42bee47c1b3bd45c2, type: 3}
-  m_PrefabInstance: {fileID: 8181003903324303240}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8503494054246860899 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: bdd0712cdbc875d42bee47c1b3bd45c2, type: 3}
@@ -487,24 +469,3 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!205 &6074462997559447094
-LODGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9027934280683590361}
-  serializedVersion: 2
-  m_LocalReferencePoint: {x: 0, y: 2.25, z: 0}
-  m_Size: 3.9900002
-  m_FadeMode: 1
-  m_AnimateCrossFading: 1
-  m_LastLODIsBillboard: 0
-  m_LODs:
-  - screenRelativeHeight: 0.011232156
-    fadeTransitionWidth: 0
-    renderers:
-    - renderer: {fileID: 5804622849083173073}
-    - renderer: {fileID: 5524340641298862410}
-    - renderer: {fileID: 5616838115916573468}
-  m_Enabled: 1

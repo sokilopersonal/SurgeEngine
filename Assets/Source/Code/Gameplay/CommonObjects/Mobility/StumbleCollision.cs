@@ -16,7 +16,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 
         private void OnTriggerStay(Collider other)
         {
-            if (other.TryGetCharacter(out CharacterBase character))
+            if (other.TryGetComponent(out CharacterBase character))
             {
                 if (character.StateMachine.CurrentState is not FStateStumble && character.Kinematics.Speed >= launchVelocity && character.Kinematics.CheckForGround(out _))
                 {

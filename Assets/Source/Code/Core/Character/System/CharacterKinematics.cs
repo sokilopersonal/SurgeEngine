@@ -7,6 +7,7 @@ using SurgeEngine.Source.Code.Gameplay.CommonObjects.System;
 using SurgeEngine.Source.Code.Infrastructure.Config;
 using SurgeEngine.Source.Code.Infrastructure.Custom;
 using UnityEngine;
+using UnityEngine.Splines;
 
 namespace SurgeEngine.Source.Code.Core.Character.System
 {
@@ -53,7 +54,8 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         public Vector3 VerticalVelocity => Vector3.Project(Velocity, Rigidbody.transform.up);
         public Vector3 PlanarVelocity => _planarVelocity;
         public float TurnRate { get; set; }
-        public bool Skidding => _moveDot < _config.skiddingThreshold;
+        public bool BlockSkidding { get; set; }
+        public bool Skidding => _moveDot < _config.skiddingThreshold && !BlockSkidding;
         public float MoveDot => _moveDot;
         
         /// <summary>
@@ -78,6 +80,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         public event Action<ChangeMode2DData> OnPath2DChange;
         public event Action<ChangeMode3DData> OnPathForwardChange;
         public event Action<ChangeMode3DData> OnPathDashChange;
+        private Vector3 _lastTangent;
 
         private float _moveDot;
         private float _detachTimer;
@@ -89,6 +92,8 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         {
             Rigidbody = Character.Rigidbody;
             Rigidbody.sleepThreshold = -1;
+            Rigidbody.solverIterations = 24;
+            Rigidbody.solverVelocityIterations = 16;
 
             _config = Character.Config;
 
@@ -163,22 +168,19 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             Vector3 planar = Vector3.ProjectOnPlane(vel, normal);
             Vector3 vertical = Vector3.Project(vel, normal);
             
+            TurnRate = Mathf.Lerp(TurnRate, _config.turnSpeed, _config.turnSmoothing * Time.fixedDeltaTime);
+            float accelRateMod = _config.accelerationCurve.Evaluate(_planarVelocity.magnitude / _config.topSpeed);
+            
             _movementVector = planar;
             _planarVelocity = planar;
 
             if (movementType == MovementType.Ground)
             {
-                if (_inputDir.magnitude > 0.2f)
+                if (_inputDir.magnitude > 0.02f)
                 {
                     if (!Skidding)
                     {
-                        TurnRate = Mathf.Lerp(TurnRate, _config.turnSpeed, _config.turnSmoothing * Time.fixedDeltaTime);
-                        float accelRateMod = _config.accelerationCurve.Evaluate(_planarVelocity.magnitude / _config.topSpeed);
-                        if (_planarVelocity.magnitude < _config.topSpeed)
-                            _planarVelocity += dir * (_config.accelerationRate * accelRateMod * Time.fixedDeltaTime);
-                        else if (CanReturnToBaseSpeed())
-                            _planarVelocity = Vector3.MoveTowards(_planarVelocity, _planarVelocity.normalized * _config.topSpeed, baseSpeedRestorationDelta * Time.fixedDeltaTime);
-                        
+                        AddPlanarVelocity(dir * (_config.accelerationRate * accelRateMod * Time.fixedDeltaTime), CanReturnToBaseSpeed());
                         BaseGroundPhysics();
                     }
                     else
@@ -193,15 +195,11 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             }
             else
             {
-                if (_inputDir.magnitude > 0.2f)
+                if (_inputDir.magnitude > 0.02f)
                 {
                     if (!Skidding)
                     {
-                        TurnRate = Mathf.Lerp(TurnRate, _config.turnSpeed, _config.turnSmoothing * Time.fixedDeltaTime);
-                        float accelRateMod = _config.accelerationCurve.Evaluate(_planarVelocity.magnitude / _config.topSpeed);
-                        if (_planarVelocity.magnitude < _config.topSpeed)
-                            _planarVelocity += dir * (_config.accelerationRate * accelRateMod * Time.fixedDeltaTime);
-                        
+                        AddPlanarVelocity(dir * (_config.accelerationRate * accelRateMod * Time.fixedDeltaTime));
                         BaseAirPhysics();
                     }
                     else
@@ -217,6 +215,15 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             {
                 Rigidbody.linearVelocity += vertical;
             }
+        }
+
+        private void AddPlanarVelocity(Vector3 dir, bool returnToBaseSpeed = false)
+        {
+            if (_planarVelocity.magnitude < _config.topSpeed)
+                _planarVelocity += dir;
+            else if (returnToBaseSpeed)
+                _planarVelocity = Vector3.MoveTowards(_planarVelocity, _planarVelocity.normalized * _config.topSpeed, 
+                    baseSpeedRestorationDelta * Time.fixedDeltaTime);
         }
 
         private void BaseGroundPhysics()
@@ -241,12 +248,19 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             if (Path2D != null && Path2D.Tag == SplineTag.SideView)
             {
                 var path = Path2D.Spline;
+                float sign = Mathf.Sign(Vector3.Dot(Rigidbody.transform.forward, path.EvaluateTangent()));
+                float skipDelta = CalculateSkipDelta(path, sign);
+                if (skipDelta > 0f)
+                {
+                    path.Time += skipDelta * sign;
+                }
+                
                 path.EvaluateWorld(out var pos, out var tg, out var up, out var right);
                 if (right != Vector3.zero)
                 {
                     Project(right);
                 }
-                
+
                 if (IsPathOutOfRange(Path2D))
                 {
                     Set2DPath(null);
@@ -254,7 +268,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
                 }
                 
                 Vector3 endPos = pos;
-                endPos += up;
+                endPos += Rigidbody.transform.up;
                 endPos.y = Rigidbody.position.y;
 
                 float pathEaseTime = Path2D.PathEaseTime;
@@ -263,10 +277,16 @@ namespace SurgeEngine.Source.Code.Core.Character.System
                     pathEaseTime = autoRunFlag.PathEaseTime;
                 }
 
+                if (Speed > 0.02f && Character.Flags.HasFlag(FlagType.Autorun))
+                {
+                    var rotTarget = Quaternion.LookRotation(tg * sign, up);
+                    Rigidbody.MoveRotation(Quaternion.RotateTowards(Rigidbody.rotation, rotTarget, 720f * Time.fixedDeltaTime));
+                }
+
                 Vector3 target;
                 if (pathEaseTime > 0f)
                 {
-                    Path2D.CurrentEaseTime += Time.deltaTime / pathEaseTime;
+                    Path2D.CurrentEaseTime += Time.fixedDeltaTime / pathEaseTime;
                     Path2D.CurrentEaseTime = Mathf.Clamp01(Path2D.CurrentEaseTime);
                     Path2D.StartPosition += Velocity * Time.fixedDeltaTime;
                     target = Vector3.Lerp(Path2D.StartPosition, endPos, Path2D.CurrentEaseTime);
@@ -278,7 +298,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
                 
                 Rigidbody.MovePosition(target);
                 
-                path.Time += Vector3.Dot(Velocity, tg) * Time.fixedDeltaTime;
+                path.Time += Vector3.Dot(Velocity, Vector3.ProjectOnPlane(tg.normalized, transform.up)) * Time.fixedDeltaTime;
             }
         }
 
@@ -315,6 +335,53 @@ namespace SurgeEngine.Source.Code.Core.Character.System
                         SetDashPath(null);
                     }
                 }
+            }
+        }
+        
+        private float CalculateSkipDelta(SplineData spline, float direction)
+        {
+            var container = spline.Container;
+            var containerTransform = container.transform;
+            const float step = 0.0001f;
+            const float verticalThreshold = 0.99f;
+            float currentNormalizedTime = spline.NormalizedTime;
+            float length = spline.Length;
+    
+            container.Spline.Evaluate(currentNormalizedTime, out _, out var currentTg, out _);
+            Vector3 currentTangent = containerTransform.TransformDirection(currentTg).normalized;
+    
+            if (Mathf.Abs(Vector3.Dot(currentTangent, Vector3.up)) <= verticalThreshold)
+                return 0f;
+
+            if (direction > 0f)
+            {
+                float searchTime = currentNormalizedTime + step;
+                while (searchTime <= 1f)
+                {
+                    container.Spline.Evaluate(searchTime, out _, out var testTg, out _);
+                    Vector3 testTangent = containerTransform.TransformDirection(testTg).normalized;
+            
+                    if (Mathf.Abs(Vector3.Dot(testTangent, Vector3.up)) <= verticalThreshold)
+                        return (searchTime - currentNormalizedTime) * length;
+            
+                    searchTime += step;
+                }
+                return (1f - currentNormalizedTime) * length;
+            }
+            else
+            {
+                float searchTime = currentNormalizedTime - step;
+                while (searchTime >= 0f)
+                {
+                    container.Spline.Evaluate(searchTime, out _, out var testTg, out _);
+                    Vector3 testTangent = containerTransform.TransformDirection(testTg).normalized;
+            
+                    if (Mathf.Abs(Vector3.Dot(testTangent, Vector3.up)) <= verticalThreshold)
+                        return (currentNormalizedTime - searchTime) * length;
+            
+                    searchTime -= step;
+                }
+                return currentNormalizedTime * length;
             }
         }
 
@@ -475,15 +542,20 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             return hit;
         }
         
-        public void Project(Vector3 normal = default)
+        public void Project(Vector3 vector)
         {
-            if (normal == default)
+            if (vector != Vector3.zero)
+            {
+                Rigidbody.linearVelocity = Vector3.ProjectOnPlane(Rigidbody.linearVelocity, vector);
+            }
+        }
+
+        public void ProjectOnNormal()
+        {
+            if (Normal != Vector3.zero)
             {
                 Rigidbody.linearVelocity = Vector3.ProjectOnPlane(Rigidbody.linearVelocity, Normal);
-                return;
             }
-            
-            Rigidbody.linearVelocity = Vector3.ProjectOnPlane(Rigidbody.linearVelocity, normal);
         }
 
         public void ClampVelocityToMax(float max = default)
@@ -567,7 +639,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         protected virtual bool CanDecelerate()
         {
             var flags = Character.Flags;
-            bool canDecelerate = !flags.HasFlag(FlagType.OutOfControl) && !flags.HasFlag(FlagType.Autorun);
+            bool canDecelerate = !flags.HasFlag(FlagType.OutOfControl) && !flags.HasFlag(FlagType.Autorun) && !flags.HasFlag(FlagType.Skydiving);
             return canDecelerate;
         }
         
@@ -604,11 +676,14 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         
         public Vector3 GetInputDir()
         {
-            return _inputDir;
+            return _inputDir.normalized;
         }
 
         public void Set2DPath(ChangeMode2DData data)
         {
+            if (Path2D != null && data != null && Path2D.Spline.Container == data.Spline.Container)
+                return;
+            
             Path2D = data;
             
             OnPath2DChange?.Invoke(data);
@@ -626,6 +701,9 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
         public void SetForwardPath(ChangeMode3DData data)
         {
+            if (PathForward != null && data != null && PathForward.Spline.Container == data.Spline.Container)
+                return;
+            
             PathForward = data;
             
             OnPathForwardChange?.Invoke(data);
@@ -643,6 +721,9 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
         public void SetDashPath(ChangeMode3DData data)
         {
+            if (PathDash != null && data != null && PathDash.Spline.Container == data.Spline.Container)
+                return;
+            
             PathDash = data;
             
             OnPathDashChange?.Invoke(data);

@@ -57,7 +57,7 @@ namespace SurgeEngine.Source.Code.Core.Character.HUD
 
             _currentMessageUI = Instantiate(quickTimeMessageUI, transform);
             _currentMessageUI.Play(result, _trickJumper.GetTimer() / _trickJumper.GetFinishingSequence().time);
-            Destroy(_currentMessageUI, 1f);
+            Destroy(_currentMessageUI.gameObject, 1f);
         }
         
         private void CleanupUIElements()

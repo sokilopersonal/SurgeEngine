@@ -47,7 +47,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ae639532e8348b7bf97dab29d476305, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <SetID>k__BackingField: 0
   speed: 28
   outOfControl: 0.5
 --- !u!114 &527969792048578355
@@ -178,6 +177,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &3968561280086812950
 GameObject:
@@ -267,6 +267,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &4548827432261854874
 GameObject:
@@ -356,6 +357,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &9195267539889930652
 GameObject:
@@ -366,8 +368,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1637187481975684983}
-  - component: {fileID: 3159875677107833833}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -392,24 +393,3 @@ Transform:
   - {fileID: 7923947801625766776}
   m_Father: {fileID: 3137035908481546978}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!205 &3159875677107833833
-LODGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9195267539889930652}
-  serializedVersion: 2
-  m_LocalReferencePoint: {x: 0.00000011920929, y: -0.01663211, z: 0}
-  m_Size: 1.6773177
-  m_FadeMode: 1
-  m_AnimateCrossFading: 1
-  m_LastLODIsBillboard: 0
-  m_LODs:
-  - screenRelativeHeight: 0.02384894
-    fadeTransitionWidth: 0
-    renderers:
-    - renderer: {fileID: 4226868559069254121}
-    - renderer: {fileID: 8760774597875419126}
-    - renderer: {fileID: 7431537314664897939}
-  m_Enabled: 1

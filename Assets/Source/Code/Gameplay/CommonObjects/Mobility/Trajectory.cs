@@ -19,14 +19,14 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 
                 Vector3 newPosition = position + velocity * timeStep + gravity * (0.5f * Mathf.Pow(timeStep, 2));
 
-                position = newPosition;
+                position = new Vector3(newPosition.x, newPosition.y, newPosition.z);
                 velocity += gravity * timeStep;
             }
         }
 
         public static void CalculateTrick(Vector3 startPosition, Vector3 direction, float impulse, float timeStep, int trajectoryPoints, out Vector3[] positions, out Vector3[] velocities)
         {
-            Vector3 gravity = UnityEngine.Physics.gravity;
+            Vector3 gravity = Physics.gravity;
 
             Calculate(startPosition, direction, impulse, timeStep, trajectoryPoints, gravity, out positions, out velocities);
         }
@@ -36,7 +36,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             int trajectoryPoints = 240;
             float timeStep = 0.1f;
             int layerMask = 1 << LayerMask.NameToLayer("Default");
-            Vector3 gravity = UnityEngine.Physics.gravity.y * Vector3.up;
+            Vector3 gravity = Physics.gravity.y * Vector3.up;
             
             Calculate(startPosition, direction, impulse, timeStep, trajectoryPoints, gravity, out Vector3[] positions, out Vector3[] velocities);
 
@@ -45,7 +45,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 
             for (int i = 0; i < positions.Length - 1; i++)
             {
-                if (UnityEngine.Physics.Linecast(positions[i], positions[i + 1], out _, layerMask, QueryTriggerInteraction.Ignore))
+                if (Physics.Linecast(positions[i], positions[i + 1], out _, layerMask, QueryTriggerInteraction.Ignore))
                 {
                     break;
                 }
