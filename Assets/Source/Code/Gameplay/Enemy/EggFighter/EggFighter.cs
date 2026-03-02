@@ -103,13 +103,8 @@ namespace SurgeEngine.Source.Code.Gameplay.Enemy.EggFighter
         }
 #endif
 
-        protected override void Awake()
+        private void Awake()
         {
-            base.Awake();
-            
-            animation.Initialize(this);
-            effects.Initialize(this);
-            
             _startPosition = transform.position;
             _startRotation = transform.rotation;
 

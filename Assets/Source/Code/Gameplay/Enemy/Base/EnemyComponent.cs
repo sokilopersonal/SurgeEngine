@@ -1,11 +1,16 @@
 using UnityEngine;
+using Zenject;
 
 namespace SurgeEngine.Source.Code.Gameplay.Enemy.Base
 {
     public class EnemyComponent : MonoBehaviour
     {
-        protected EnemyBase enemyBase;
+        protected EnemyBase EnemyBase;
 
-        public virtual void Initialize(EnemyBase enemyBase) => this.enemyBase = enemyBase;
+        [Inject]
+        private void Initialize(EnemyBase enemyBase)
+        {
+            EnemyBase = enemyBase;
+        }
     }
 }

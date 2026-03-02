@@ -64,6 +64,8 @@ GameObject:
   - component: {fileID: 2043217692609733557}
   - component: {fileID: 5258658502684184366}
   - component: {fileID: 2504031105690306439}
+  - component: {fileID: 272195431531046524}
+  - component: {fileID: 1372953574025337865}
   m_Layer: 12
   m_Name: EggFighter
   m_TagString: Untagged
@@ -164,6 +166,37 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &272195431531046524
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1134928124351879982}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08eca9f7688a0a24685b89133b020c8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Zenject::Zenject.GameObjectContext
+  _scriptableObjectInstallers: []
+  _monoInstallers:
+  - {fileID: 1372953574025337865}
+  _installerPrefabs: []
+  _findSiblingMonoInstallers: 0
+  _autoRun: 1
+  _kernel: {fileID: 0}
+--- !u!114 &1372953574025337865
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1134928124351879982}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aac302aa70f547fe99043d4badd8fbfb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SurgeEngine.Source.Code.Gameplay.Enemy.Base.EnemyInstaller
 --- !u!1 &3544209870388219614
 GameObject:
   m_ObjectHideFlags: 0
