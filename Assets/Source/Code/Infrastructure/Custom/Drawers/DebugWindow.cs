@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using ImGuiNET;
@@ -56,6 +57,7 @@ namespace SurgeEngine.Source.Code.Infrastructure.Custom.Drawers
         private void OnEnable()
         {
             uImGui.Layout += OnLayout;
+            uImGui.OnInitialize += OnInitialize;
             
             _toggleAction.Enable();
             
@@ -65,6 +67,7 @@ namespace SurgeEngine.Source.Code.Infrastructure.Custom.Drawers
         private void OnDisable()
         {
             uImGui.Layout -= OnLayout;
+            uImGui.OnInitialize -= OnInitialize;
             
             _toggleAction.performed -= ToggleWindow;
         }
@@ -199,6 +202,20 @@ namespace SurgeEngine.Source.Code.Infrastructure.Custom.Drawers
                     ImGui.Text($"Time: {data.Spline.NormalizedTime}");
                 }
             }
+        }
+
+        private void OnInitialize(UImGui.UImGui obj)
+        {
+            float dpiScale = Mathf.Max(1f, Screen.dpi / 96f);
+
+            var io = ImGui.GetIO();
+            
+            io.Fonts.Clear();
+            io.Fonts.AddFontDefault();
+            io.FontGlobalScale = dpiScale;
+            
+            var style = ImGui.GetStyle();
+            style.ScaleAllSizes(dpiScale);
         }
 
         private void FindCDM()
