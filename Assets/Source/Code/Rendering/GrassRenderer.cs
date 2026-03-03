@@ -5,6 +5,10 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using Random = UnityEngine.Random;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 namespace SurgeEngine.Source.Code.Rendering
 {
     [StructLayout(LayoutKind.Sequential)]
@@ -18,6 +22,8 @@ namespace SurgeEngine.Source.Code.Rendering
     public class GrassRenderer : MonoBehaviour
     {
         private static readonly int PropCameraPos = Shader.PropertyToID("_CameraPosition");
+        private static readonly int PropMaxDistance = Shader.PropertyToID("_MaxDistance");
+        private static readonly int PropFadeRange = Shader.PropertyToID("_FadeRange");
         private static readonly int PropMaxDistanceSqr = Shader.PropertyToID("_MaxDistanceSqr");
         private static readonly int PropUseDistance = Shader.PropertyToID("_UseDistance");
         private static readonly int PropFrustumPlanes = Shader.PropertyToID("_FrustumPlanes");
@@ -49,8 +55,9 @@ namespace SurgeEngine.Source.Code.Rendering
         [SerializeField] private float maxHeight = 0.7f;
         [SerializeField] private float minWidth = 0.6f;
         [SerializeField] private float maxWidth = 1f;
-        [SerializeField] private float maxRenderDistance = 100f;
+        [SerializeField] private float maxRenderDistance = 300f;
         [SerializeField] private bool useRenderDistance = true;
+        [SerializeField, Range(0, 1)] private float fadeRange = 0.3f;
 
         [Header("GPU Culling")]
         [SerializeField] private ComputeShader cullingShader;
@@ -167,6 +174,11 @@ namespace SurgeEngine.Source.Code.Rendering
             DispatchCulling(cam);
 
             _rp.matProps.SetBuffer(PropVisibleInst, _visibleBuffer);
+            _rp.matProps.SetInt(PropTotalCount, _totalInstanceCount);
+            
+            _rp.matProps.SetFloat(PropMaxDistance, useRenderDistance ? maxRenderDistance : -1);
+            _rp.matProps.SetVector(PropCameraPos, cam.transform.position);
+            _rp.matProps.SetFloat(PropFadeRange, Mathf.Clamp(fadeRange, 0, fadeRange));
 
             Graphics.RenderMeshIndirect(_rp, grassMesh, _argsBuffer);
         }

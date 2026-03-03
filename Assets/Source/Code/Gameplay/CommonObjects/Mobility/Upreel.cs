@@ -68,7 +68,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         {
             if (_isMovingUp || _isMovingDown)
             {
-                float acceleration = 30f;
+                float acceleration = 32f;
                 _currentSpeed = Mathf.MoveTowards(_currentSpeed, upMaxSpeed, acceleration * Time.fixedDeltaTime);
 
                 Vector3 direction = (_targetLocalPosition - model.localPosition).normalized;

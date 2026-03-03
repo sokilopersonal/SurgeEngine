@@ -26,7 +26,7 @@ namespace SurgeEngine.Source.Code.Gameplay.Enemy.Base
             ViewTick();
         }
 
-        protected virtual void ViewTick()
+        protected void ViewTick()
         {
             
         }
@@ -43,7 +43,7 @@ namespace SurgeEngine.Source.Code.Gameplay.Enemy.Base
             }
             
             RuntimeManager.PlayOneShot(explosionReference, explosionPoint.position);
-            ObjectEvents.OnEnemyDied?.Invoke(enemyBase);
+            ObjectEvents.OnEnemyDied?.Invoke(EnemyBase);
             
             transform.parent.gameObject.SetActive(false);
         }

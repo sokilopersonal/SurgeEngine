@@ -1,18 +1,28 @@
-﻿using FMODUnity;
+﻿using System;
+using FMODUnity;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.System;
 using UnityEngine;
 
 namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 {
+    public enum MykonosFloorType
+    {
+        Stationary,
+        Unknown1,
+        PingPong,
+        Falling
+    }
+    
     public class MykonosFloor : StageObject, IPointMarkerLoader
     {
         [SerializeField] private float amplitude = 5f;
         [SerializeField] private float cycle = 0.5f;
         [SerializeField] private float phase;
         [SerializeField] private float gravity = 35f;
-        [SerializeField] private int moveType = 1;
+        [SerializeField] private MykonosFloorType moveType = MykonosFloorType.PingPong;
         [SerializeField] private float onFloorTime = 2f;
         [SerializeField] private float resetTime = 5f;
+        [SerializeField] private bool pingPongDebug = true;
         [SerializeField] private Transform model;
         [SerializeField] private EventReference fallStepSound;
         
@@ -43,11 +53,11 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 
         private void FixedUpdate()
         {
-            if (moveType == 2)
+            if (moveType == MykonosFloorType.PingPong)
             {
                 PingPong();
             }
-            else if (moveType == 3) // Falling platform 
+            else if (moveType == MykonosFloorType.Falling) // Falling platform 
             {
                 Fall();
             }
@@ -107,6 +117,28 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         private void OnBodyAdded(Rigidbody obj)
         {
             _bodyTriggered = true;
+        }
+
+        private void OnDrawGizmos()
+        {
+            if (moveType == MykonosFloorType.PingPong && pingPongDebug)
+            {
+                Vector3 startPos = Application.isPlaying ? _startPos : transform.position;
+                Vector3 phasePos = startPos + transform.right * Mathf.Sin((Time.time * cycle + phase) * Mathf.PI * 2f) * amplitude;
+                Vector3 minPos = startPos - transform.right * amplitude;
+                Vector3 maxPos = startPos + transform.right * amplitude;
+
+                Gizmos.color = Color.yellow;
+                Gizmos.DrawWireSphere(minPos, 0.5f);
+                Gizmos.DrawWireSphere(maxPos, 0.5f);
+
+                Gizmos.color = Color.green;
+                Gizmos.DrawLine(minPos, maxPos);
+                
+                Gizmos.color = Color.red;
+                Gizmos.DrawLine(startPos, phasePos);
+                Gizmos.DrawWireSphere(phasePos, 0.25f);
+            }
         }
 
         public void Load()

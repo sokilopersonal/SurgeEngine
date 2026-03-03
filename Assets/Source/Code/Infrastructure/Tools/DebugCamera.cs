@@ -130,9 +130,9 @@ namespace SurgeEngine.Source.Code.Infrastructure.Tools
 
         private void Rotation()
         {
-            var userSensitivity = _userInput.GetData().Sensitivity.Value;
-            _yaw += LookInput.x * sensitivity * 10 * userSensitivity * Time.unscaledDeltaTime;
-            _pitch -= LookInput.y * sensitivity * 10 * userSensitivity * Time.unscaledDeltaTime;
+            var userSensitivity = _userInput.GetData().Sensitivity.Value * 0.077f;
+            _yaw += LookInput.x * sensitivity * userSensitivity;
+            _pitch -= LookInput.y * sensitivity * userSensitivity;
             
             var rotation = Quaternion.Euler(_pitch, _yaw, 0);
             _camera.transform.rotation = rotation;

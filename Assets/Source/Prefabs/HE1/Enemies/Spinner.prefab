@@ -115,6 +115,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7023684038278278309}
   - component: {fileID: 2074637427471224825}
+  - component: {fileID: 2920780437416558150}
+  - component: {fileID: 153108479075367270}
   m_Layer: 12
   m_Name: Spinner
   m_TagString: Untagged
@@ -150,8 +152,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f50756c955c4b78847492b29215d99d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <SetID>k__BackingField: 0
   view: {fileID: 1932007215240878132}
+--- !u!114 &2920780437416558150
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7238826073587535379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08eca9f7688a0a24685b89133b020c8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Zenject::Zenject.GameObjectContext
+  _scriptableObjectInstallers: []
+  _monoInstallers:
+  - {fileID: 153108479075367270}
+  _installerPrefabs: []
+  _findSiblingMonoInstallers: 0
+  _autoRun: 1
+  _kernel: {fileID: 0}
+--- !u!114 &153108479075367270
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7238826073587535379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aac302aa70f547fe99043d4badd8fbfb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SurgeEngine.Source.Code.Gameplay.Enemy.Base.EnemyInstaller
+  enemyBase: {fileID: 2074637427471224825}
 --- !u!1001 &4371102358636233317
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -375,7 +375,12 @@ namespace SurgeEngine.Source.Editor.HE1Importer
                     HE1Helper.SetFloatReflection(floor, "amplitude", HE1Helper.GetFloatWithMultiSetParam(elem, "Amplitude"));
                     HE1Helper.SetFloatReflection(floor, "cycle", HE1Helper.GetFloatWithMultiSetParam(elem, "Cycle"));
                     HE1Helper.SetFloatReflection(floor, "phase", HE1Helper.GetFloatWithMultiSetParam(elem, "Phase"));
-                    HE1Helper.SetIntReflection(floor, "moveType", HE1Helper.GetIntWithMultiSetParam(elem, "MoveType"));
+                    
+                    var type = floor.GetType();
+                    var typeField = type.GetField("moveType", BindingFlags.Instance | BindingFlags.NonPublic);
+                    var moveType = (MykonosFloorType)HE1Helper.GetIntWithMultiSetParam(elem, "MoveType");
+                    typeField?.SetValue(floor, moveType);
+                    
                     HE1Helper.SetFloatReflection(floor, "onGroundTime", HE1Helper.GetFloatWithMultiSetParam(elem, "OnGroundTime"));
                     HE1Helper.SetFloatReflection(floor, "resetTime", HE1Helper.GetFloatWithMultiSetParam(elem, "ResetTime"));
                     HE1Helper.SetFloatReflection(floor, "gravity", HE1Helper.GetFloatWithMultiSetParam(elem, "Gravity"));
