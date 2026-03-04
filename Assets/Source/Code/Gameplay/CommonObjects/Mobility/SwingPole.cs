@@ -16,10 +16,10 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         {
             base.OnEnter(msg, context);
 
+            float lookDot = Vector3.Dot(context.Kinematics.Velocity, transform.forward);
+            
             context.Rigidbody.position = grip.position;
             context.Effects.SwingTrail.trail2D = trail2D;
-
-            float lookDot = Vector3.Dot(context.transform.forward + context.Kinematics.HorizontalVelocity, transform.forward);
 
             if (lookDot < 0f)
                 grip.localEulerAngles = new Vector3(grip.localEulerAngles.x, 180, grip.localEulerAngles.z);
