@@ -11,24 +11,26 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
     {
         [Header("Main")]
         [Space(10)]
-        public bool toggleOnce = true;
-        public Transform buttonTransform;
-        public SkinnedMeshRenderer meshRenderer;
+        [SerializeField] private bool toggleOnce = true;
+        [SerializeField] private Transform buttonTransform;
+        [SerializeField] private SkinnedMeshRenderer meshRenderer;
+        [SerializeField] private new Light light;
 
         [Header("Switch Events")]
         [Space(10)]
-        public UnityEvent onActivated;
-        public UnityEvent onDeactivated;
+        [SerializeField] private UnityEvent onActivated;
+        [SerializeField] private UnityEvent onDeactivated;
 
         [Header("Sounds")]
         [Space(10)]
-        public EventReference onReference;
-        public EventReference offReference;
+        [SerializeField] private EventReference onReference;
+        [SerializeField] private EventReference offReference;
 
         private bool _toggled = false;
         private bool _hasBeenToggled = false;
         private BoxCollider _collider;
         private Material _buttonMaterial;
+        private float _startLightIntensity;
 
         private void Start()
         {
@@ -37,6 +39,8 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             mats[2] = _buttonMaterial;
             meshRenderer.sharedMaterials = mats;
             _buttonMaterial.SetFloat("_EmissiveExposureWeight", _toggled ? 0f : 1f);
+            _startLightIntensity = light.intensity;
+            light.intensity = 0;
         }
 
         public override void OnEnter(Collider msg, CharacterBase context)
@@ -63,6 +67,8 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 
             buttonTransform.DOKill(true);
             buttonTransform.DOLocalMoveY(_toggled ? -0.175f : -0.1f, 0.25f).SetEase(Ease.OutQuart);
+
+            light.DOIntensity(_toggled ? _startLightIntensity : 0f, 0.25f).SetEase(Ease.OutQuad);
 
             if (_toggled)
                 onActivated.Invoke();
