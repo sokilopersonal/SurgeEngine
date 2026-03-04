@@ -30,9 +30,9 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
         private void Update()
         {
-            bool isObject = Character.StateMachine.PreviousState is FStateObject;
-
-            if (isObject)
+            var previousState = Character.StateMachine.PreviousState;
+            bool isObject = previousState is FStateObject;
+            if (isObject && previousState is IWallJumpDetect { WallDetected: false })
             {
                 if (_isAirRestoring)
                 {

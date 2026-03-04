@@ -20,6 +20,9 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic.Actions
             {
                 airState.SetActions(this);
             }
+            
+            if (stateMachine.GetState(out FStateWallJump wallJump))
+                wallJump.SetActions(this);
         }
 
         public override void Execute()

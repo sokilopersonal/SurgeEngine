@@ -10,13 +10,12 @@ namespace SurgeEngine.Source.Code.Core.Character.States
         public Spring SpringObject => _springObject;
 
         public FStateSpring(CharacterBase owner) : base(owner) { }
- 
+
         public override void OnEnter()
         {
             base.OnEnter();
             
             Kinematics.SetDetachTime(0.1f);
-            
             Model.SetLowerCollision();
         }
 

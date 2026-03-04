@@ -14,6 +14,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
     /// <summary>
     /// Base character class for a movement physics.
     /// </summary>
+    [RequireComponent(typeof(WallJumpDetector))]
     public class CharacterKinematics : CharacterComponent, IPointMarkerLoader
     {
         public Rigidbody Rigidbody { get; private set; }
@@ -57,6 +58,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         public bool BlockSkidding { get; set; }
         public bool Skidding => _moveDot < _config.skiddingThreshold && !BlockSkidding;
         public float MoveDot => _moveDot;
+        public WallJumpDetector WallJumpDetector  { get; private set; }
         
         /// <summary>
         /// Instead of using Rigidbody.isKinematic, use this property.
@@ -90,6 +92,8 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
         protected virtual void Awake()
         {
+            WallJumpDetector = GetComponent<WallJumpDetector>();
+            
             Rigidbody = Character.Rigidbody;
             Rigidbody.sleepThreshold = -1;
             Rigidbody.solverIterations = 24;
@@ -524,7 +528,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         }
         
         public bool CheckForGroundWithDirection(out RaycastHit result, Vector3 direction,
-            float castDistance = 0f)
+            float castDistance = 0)
         {
             Vector3 origin = Character.transform.position;
             

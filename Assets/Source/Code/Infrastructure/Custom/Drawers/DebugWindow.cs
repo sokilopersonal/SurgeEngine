@@ -21,6 +21,7 @@ namespace SurgeEngine.Source.Code.Infrastructure.Custom.Drawers
     {
         [SerializeField] private UImGui.UImGui uImGui; 
         private InputAction _toggleAction;
+        private InputAction _toggleCursorAction;
         private bool _active;
         private bool _cursorActive;
         
@@ -52,24 +53,29 @@ namespace SurgeEngine.Source.Code.Infrastructure.Custom.Drawers
             uImGui.enabled = false;
 
             _toggleAction = InputSystem.actions.FindAction("DebugWindow");
+            _toggleCursorAction  = InputSystem.actions.FindAction("ToggleCursor");
         }
 
         private void OnEnable()
         {
             uImGui.Layout += OnLayout;
-            uImGui.OnInitialize += OnInitialize;
             
             _toggleAction.Enable();
-            
             _toggleAction.performed += ToggleWindow;
+            
+            _toggleCursorAction.Enable();
+            _toggleCursorAction.performed += ToggleCursor;
         }
 
         private void OnDisable()
         {
             uImGui.Layout -= OnLayout;
-            uImGui.OnInitialize -= OnInitialize;
             
+            _toggleAction.Disable();
             _toggleAction.performed -= ToggleWindow;
+            
+            _toggleCursorAction.Disable();
+            _toggleCursorAction.performed -= ToggleCursor;
         }
 
         private void OnLayout(UImGui.UImGui obj)
@@ -204,20 +210,6 @@ namespace SurgeEngine.Source.Code.Infrastructure.Custom.Drawers
             }
         }
 
-        private void OnInitialize(UImGui.UImGui obj)
-        {
-            float dpiScale = Mathf.Max(1f, Screen.dpi / 96f);
-
-            var io = ImGui.GetIO();
-            
-            io.Fonts.Clear();
-            io.Fonts.AddFontDefault();
-            io.FontGlobalScale = dpiScale;
-            
-            var style = ImGui.GetStyle();
-            style.ScaleAllSizes(dpiScale);
-        }
-
         private void FindCDM()
         {
             _cdm = FindFirstObjectByType<CascadeDemandRendering>();
@@ -255,12 +247,10 @@ namespace SurgeEngine.Source.Code.Infrastructure.Custom.Drawers
             {
                 _active = !_active;
                 uImGui.enabled = _active;
-                
-                ToggleCursor();
             }
         }
 
-        private void ToggleCursor()
+        private void ToggleCursor(InputAction.CallbackContext obj)
         {
             _cursorActive = !_cursorActive;
             if (_cursorActive)

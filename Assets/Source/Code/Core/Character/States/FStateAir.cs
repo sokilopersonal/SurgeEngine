@@ -1,17 +1,14 @@
 ﻿using SurgeEngine.Source.Code.Core.Character.States.BaseStates;
 using SurgeEngine.Source.Code.Core.Character.System;
-using SurgeEngine.Source.Code.Gameplay.CommonObjects.Environment;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.System;
 using SurgeEngine.Source.Code.Infrastructure.Custom;
 using UnityEngine;
 
 namespace SurgeEngine.Source.Code.Core.Character.States
 {
-    public class FStateAir : FCharacterState, IDamageableState, IPointMarkerLoader
+    public class FStateAir : FCharacterState, IDamageableState, IPointMarkerLoader, IWallJumpDetect
     {
-        public float AirTime { get; private set; }
-
-        public bool IsFallDeath { get; set; }
+        public bool WallDetected { get; set; }
 
         public FStateAir(CharacterBase owner) : base(owner)
         {
@@ -106,7 +103,6 @@ namespace SurgeEngine.Source.Code.Core.Character.States
 
         public virtual void Load()
         {
-            IsFallDeath = false;
         }
     }
 }

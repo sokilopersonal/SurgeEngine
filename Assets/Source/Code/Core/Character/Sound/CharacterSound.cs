@@ -13,10 +13,7 @@ namespace SurgeEngine.Source.Code.Core.Character.Sound
         public virtual void Initialize(CharacterBase character)
         {
             Character = character;
-        }
-
-        private void Awake()
-        {
+            
             Voice = GetComponent<VoiceHandler>();
         }
 

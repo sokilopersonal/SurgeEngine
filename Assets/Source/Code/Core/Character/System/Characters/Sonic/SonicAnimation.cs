@@ -184,6 +184,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
                     FStateJump or FStateHoming => 0f,
                     FStateRailSwitch => 0.5f,
                     FStateJumpSelectorLaunch => 0.3f,
+                    FStateWallJump => 0.6f,
                     _ => 0.2f
                 });
             }
@@ -400,6 +401,14 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
             if (obj is FStateReactionPlateJump)
             {
                 StateAnimator.TransitionToState("Jump Standard", 0f);
+            }
+            if (obj is FStateWall)
+            {
+                StateAnimator.TransitionToState("WallStickS", 0f);
+            }
+            if (obj is FStateWallJump)
+            {
+                StateAnimator.TransitionToState("WallJumpA");
             }
         }
         

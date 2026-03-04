@@ -116,6 +116,8 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             StateMachine.AddState(new FStateDead(this));
             StateMachine.AddState(new FStateGoal(this));
             StateMachine.AddState(new FStateStumble(this));
+            StateMachine.AddState(new FStateWall(this));
+            StateMachine.AddState(new FStateWallJump(this));
         }
 
         protected virtual void InitializeConfigs()
