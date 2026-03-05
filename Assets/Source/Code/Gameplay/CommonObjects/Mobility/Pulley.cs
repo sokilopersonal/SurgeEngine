@@ -25,7 +25,14 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         [SerializeField] private HomingTarget homingTarget;
         [SerializeField] private Transform longStand;
         [SerializeField] private Transform shortStand;
+        [SerializeField] private Transform longEndpoint;
+        [SerializeField] private Transform shortEndpoint;
         [SerializeField] private Transform handle;
+
+        [Header("Raycast")]
+        [SerializeField] private LayerMask rayMask;
+        [SerializeField] private float longRayDistance;
+        [SerializeField] private float shortRayDistance;
 
         [Header("Sound")]
         [SerializeField] private EventReference sound;
@@ -33,36 +40,26 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         private SplineData _splineData;
         private bool _isPlayerAttached;
         private CharacterBase _character;
-        private float _time;
         private float _speed;
         private bool _trackPulley;
         private bool _triggered;
         private BoxCollider _collider;
         private EventInstance _eventInstance;
-<<<<<<< Updated upstream
 
-=======
-        
->>>>>>> Stashed changes
         private void Awake()
         {
-            _collider = GetComponent<BoxCollider>();
+            if (!_collider) _collider = GetComponent<BoxCollider>();
             _eventInstance = RuntimeManager.CreateInstance(sound);
             _eventInstance.set3DAttributes(transform.To3DAttributes());
-<<<<<<< Updated upstream
-=======
+
 #if UNITY_EDITOR
             UpdateVisual();
 #endif
->>>>>>> Stashed changes
         }
 
-        private void OnValidate()
+#if UNITY_EDITOR
+        private void UpdateVisual()
         {
-<<<<<<< Updated upstream
-            if (!longStand || !shortStand)
-                return;
-=======
             if (!longEndpoint || !shortEndpoint || !spline) return;
 
             Vector3 pos = spline.transform.TransformPoint(spline.Spline.EvaluatePosition(1f));
@@ -80,9 +77,6 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
                 bool longCast = Physics.Raycast(pos, Vector3.down, longRayDistance, rayMask);
                 longEndpoint.gameObject.SetActive(longCast);
             }
-
-            longStand.gameObject.SetActive(type == PulleyType.Long);
-            shortStand.gameObject.SetActive(type == PulleyType.Short);
         }
 
         private void OnDrawGizmos()
@@ -93,22 +87,21 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
                 Gizmos.DrawRay(longEndpoint.position, Vector3.down * longRayDistance);
             else
                 Gizmos.DrawRay(shortEndpoint.position, Vector3.down * shortRayDistance);
->>>>>>> Stashed changes
-            
-            longStand.gameObject.SetActive(type == PulleyType.Long);
-            shortStand.gameObject.SetActive(type == PulleyType.Short);
+
+            UpdateVisual();
         }
+#endif
 
         private void FixedUpdate()
         {
             if (_splineData != null)
             {
                 float time = _splineData.NormalizedTime;
-                
+
                 if (_trackPulley)
                 {
                     _splineData.EvaluateWorld(out var pos, out var tangent, out _, out _);
-                    
+
                     handle.position = pos;
                     if (tangent != Vector3.zero) handle.rotation = Quaternion.LookRotation(tangent);
                     _eventInstance.set3DAttributes(handle.To3DAttributes());
@@ -120,7 +113,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
                         _eventInstance.stop(STOP_MODE.IMMEDIATE);
                     }
                 }
-            
+
                 if (_isPlayerAttached)
                 {
                     _character.Rigidbody.MovePosition(attachPoint.position);
@@ -131,12 +124,12 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
                         _character.Kinematics.SetDetachTime(0.1f);
                         _character.Kinematics.Rigidbody.linearVelocity = _character.Kinematics.Velocity;
                         _character.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, Mathf.Abs(outOfControl)));
-                        _character.StateMachine.SetState<FStateAir>(); 
+                        _character.StateMachine.SetState<FStateAir>();
                     }
                 }
-            
+
                 _collider.center = handle.localPosition - Vector3.up;
-                homingTarget.gameObject.SetActive(_time < 0.99f);
+                homingTarget.gameObject.SetActive(_trackPulley);
             }
         }
 
@@ -153,7 +146,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         public void AttachPlayer(CharacterBase context)
         {
             _splineData = new SplineData(spline, context.transform.position);
-            
+
             _speed = Mathf.Clamp(context.Kinematics.Speed, minSpeed, maxSpeed);
             _character = context;
             _character.StateMachine.OnStateAssign += OnCharacterStateAssign;
@@ -179,7 +172,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         private void Cancel()
         {
             _character.StateMachine.OnStateAssign -= OnCharacterStateAssign;
-            
+
             _isPlayerAttached = false;
             _character = null;
         }
@@ -196,7 +189,6 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             _trackPulley = false;
             _triggered = false;
             _character = null;
-            _time = 0.0f;
             _eventInstance.stop(STOP_MODE.IMMEDIATE);
         }
     }
