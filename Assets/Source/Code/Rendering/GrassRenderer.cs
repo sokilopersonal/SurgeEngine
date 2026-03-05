@@ -86,6 +86,19 @@ namespace SurgeEngine.Source.Code.Rendering
 
         private void OnEnable()
         {
+            Create();
+
+            RenderPipelineManager.beginCameraRendering += Render;
+        }
+
+        private void OnDisable()
+        {
+            RenderPipelineManager.beginCameraRendering -= Render;
+            ReleaseBuffers();
+        }
+
+        public void Create()
+        {
             _propertyBlock = new MaterialPropertyBlock();
 
             if (cullingShader != null)
@@ -95,13 +108,6 @@ namespace SurgeEngine.Source.Code.Rendering
             }
 
             RebuildGPUBuffers();
-            RenderPipelineManager.beginCameraRendering += Render;
-        }
-
-        private void OnDisable()
-        {
-            RenderPipelineManager.beginCameraRendering -= Render;
-            ReleaseBuffers();
         }
 
         private void ReleaseBuffers()

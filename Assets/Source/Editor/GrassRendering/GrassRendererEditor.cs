@@ -50,6 +50,8 @@ namespace SurgeEngine.Source.Editor.GrassRendering
 
             _brushSize = _grassRenderer.brushSize;
             _brushDensity = _grassRenderer.brushDensity;
+            
+            _grassRenderer.Create();
 
             SceneView.duringSceneGui += OnSceneGUIRender;
         }
