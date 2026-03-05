@@ -39,18 +39,61 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         private bool _triggered;
         private BoxCollider _collider;
         private EventInstance _eventInstance;
+<<<<<<< Updated upstream
 
+=======
+        
+>>>>>>> Stashed changes
         private void Awake()
         {
             _collider = GetComponent<BoxCollider>();
             _eventInstance = RuntimeManager.CreateInstance(sound);
             _eventInstance.set3DAttributes(transform.To3DAttributes());
+<<<<<<< Updated upstream
+=======
+#if UNITY_EDITOR
+            UpdateVisual();
+#endif
+>>>>>>> Stashed changes
         }
 
         private void OnValidate()
         {
+<<<<<<< Updated upstream
             if (!longStand || !shortStand)
                 return;
+=======
+            if (!longEndpoint || !shortEndpoint || !spline) return;
+
+            Vector3 pos = spline.transform.TransformPoint(spline.Spline.EvaluatePosition(1f));
+
+            shortEndpoint.position = pos;
+            longEndpoint.position = pos;
+
+            if (type == PulleyType.Short)
+            {
+                bool shortCast = Physics.Raycast(pos, Vector3.down, shortRayDistance, rayMask);
+                shortEndpoint.gameObject.SetActive(shortCast);
+            }
+            else
+            {
+                bool longCast = Physics.Raycast(pos, Vector3.down, longRayDistance, rayMask);
+                longEndpoint.gameObject.SetActive(longCast);
+            }
+
+            longStand.gameObject.SetActive(type == PulleyType.Long);
+            shortStand.gameObject.SetActive(type == PulleyType.Short);
+        }
+
+        private void OnDrawGizmos()
+        {
+            if (!longEndpoint || !shortEndpoint) return;
+
+            if (type == PulleyType.Long)
+                Gizmos.DrawRay(longEndpoint.position, Vector3.down * longRayDistance);
+            else
+                Gizmos.DrawRay(shortEndpoint.position, Vector3.down * shortRayDistance);
+>>>>>>> Stashed changes
             
             longStand.gameObject.SetActive(type == PulleyType.Long);
             shortStand.gameObject.SetActive(type == PulleyType.Short);
