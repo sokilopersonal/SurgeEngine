@@ -141,6 +141,12 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects
             Tag = DetermineSplineTag(spline);
         }
 
+        public void SetSpline(SplineData spline)
+        {
+            Spline = spline;
+            Tag = DetermineSplineTag(spline);
+        }
+
         private SplineTag DetermineSplineTag(SplineData spline)
         {
             if (spline == null)

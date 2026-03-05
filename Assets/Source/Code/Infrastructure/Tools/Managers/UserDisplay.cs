@@ -68,6 +68,13 @@ namespace SurgeEngine.Source.Code.Infrastructure.Tools.Managers
             Apply();
         }
 
+        public void SetDLSS_Sharpness(float value)
+        {
+            Data.DLSS_Sharpness.Value = Mathf.Clamp01(value);
+            
+            Apply();
+        }
+
         public void SetUpscalingMode(UpscalingMode mode)
         {
             Data.UpscaleMode.Value = mode;
@@ -85,6 +92,13 @@ namespace SurgeEngine.Source.Code.Infrastructure.Tools.Managers
         public void SetFullscreen(bool value)
         {
             Data.Fullscreen.Value = value;
+            
+            Apply();
+        }
+
+        public void SetFrameRateLimit(int value)
+        {
+            Data.FrameRateLimit.Value = value;
             
             Apply();
         }
@@ -122,7 +136,7 @@ namespace SurgeEngine.Source.Code.Infrastructure.Tools.Managers
             }
 
             _hdCameraData.taaSharpenStrength = Data.Sharpness.Value;
-            _hdCameraData.deepLearningSuperSamplingSharpening = Data.Sharpness.Value;
+            _hdCameraData.deepLearningSuperSamplingSharpening = Data.DLSS_Sharpness.Value;
             _hdCameraData.fidelityFX2SuperResolutionEnableSharpening = true;
             _hdCameraData.fidelityFX2SuperResolutionSharpening = Data.Sharpness.Value;
             _hdCameraData.allowDynamicResolution = Data.UpscaleMode.Value != UpscalingMode.Off;
@@ -171,6 +185,31 @@ namespace SurgeEngine.Source.Code.Infrastructure.Tools.Managers
             }
 
             Screen.SetResolution(Screen.width, Screen.height, Data.Fullscreen.Value ? FullScreenMode.FullScreenWindow : FullScreenMode.Windowed);
+
+            switch (Data.FrameRateLimit.Value)
+            {
+                case 0:
+                    Application.targetFrameRate = 30;
+                    break;
+                case 1:
+                    Application.targetFrameRate = 45;
+                    break;
+                case 2:
+                    Application.targetFrameRate = 60;
+                    break;
+                case 3:
+                    Application.targetFrameRate = 90;
+                    break;
+                case 4:
+                    Application.targetFrameRate = 120;
+                    break;
+                case 5:
+                    Application.targetFrameRate = 240;
+                    break;
+                case 6:
+                    Application.targetFrameRate = -1;
+                    break;
+            }
         }
     }
 
@@ -181,8 +220,10 @@ namespace SurgeEngine.Source.Code.Infrastructure.Tools.Managers
         public ReactiveVar<AntiAliasing> AntiAliasing = new(Managers.AntiAliasing.TAA);
         public ReactiveVar<AntiAliasingQuality> AntiAliasingQuality = new(Managers.AntiAliasingQuality.High);
         public ReactiveVar<float> Sharpness = new(0.25f);
+        public ReactiveVar<float> DLSS_Sharpness = new(0.25f);
         public ReactiveVar<UpscalingMode> UpscaleMode = new(UpscalingMode.Off);
         public ReactiveVar<UpscalingQuality> UpscaleQuality = new(UpscalingQuality.Native);
+        public ReactiveVar<int> FrameRateLimit = new(5);
     }
     
     public enum AntiAliasingQuality

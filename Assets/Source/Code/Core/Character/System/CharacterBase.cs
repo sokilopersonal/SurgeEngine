@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using NaughtyAttributes;
+
 using SurgeEngine.Source.Code.Core.Character.CameraSystem;
 using SurgeEngine.Source.Code.Core.Character.States;
 using SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic;
@@ -54,16 +54,6 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             
             InitializeConfigs();
             AddStates();
-            
-            Input.Set(this);
-            Sounds.Set(this);
-            Camera.Set(this);
-            Animation.Set(this);
-            Effects.Set(this);
-            Model.Set(this);
-            Flags.Set(this);
-            Kinematics.Set(this);
-            Life.Set(this);
         }
 
         private void Start()
@@ -126,6 +116,8 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             StateMachine.AddState(new FStateDead(this));
             StateMachine.AddState(new FStateGoal(this));
             StateMachine.AddState(new FStateStumble(this));
+            StateMachine.AddState(new FStateWall(this));
+            StateMachine.AddState(new FStateWallJump(this));
         }
 
         protected virtual void InitializeConfigs()

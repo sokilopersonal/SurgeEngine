@@ -1,4 +1,5 @@
-﻿using SurgeEngine.Source.Code.Core.Character.States;
+﻿using System.Collections;
+using SurgeEngine.Source.Code.Core.Character.States;
 using UnityEngine;
 
 namespace SurgeEngine.Source.Code.Core.Character.System
@@ -29,9 +30,9 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
         private void Update()
         {
-            bool isObject = Character.StateMachine.PreviousState is FStateObject;
-
-            if (isObject)
+            var previousState = Character.StateMachine.PreviousState;
+            bool isObject = previousState is FStateObject;
+            if (isObject && previousState is IWallJumpDetect { WallDetected: false })
             {
                 if (_isAirRestoring)
                 {
@@ -128,6 +129,15 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             _isUpRestoring = false;
             _restoreTimer = 0;
             _upRestoreTimer = 0;
+        }
+
+        public void DisableCollision(float time) => StartCoroutine(DisableCollisionRoutine(time));
+        
+        private IEnumerator DisableCollisionRoutine(float time)
+        {
+            Collision.enabled = false;
+            yield return new WaitForSeconds(time);
+            Collision.enabled = true;
         }
     }
 }

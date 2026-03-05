@@ -5232,7 +5232,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 441482e8936e35048a1dffac814e3ef8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Profile: {fileID: 11400000, guid: 28c4328b906351d4a9d6d3d6112de4f9, type: 2}
+  m_Profile: {fileID: 11400000, guid: d2fa14213ef685443b30e7f707b34662, type: 2}
   m_StaticLightingSkyUniqueID: 5
   m_StaticLightingCloudsUniqueID: 0
   m_StaticLightingVolumetricClouds: 0
@@ -15342,7 +15342,7 @@ MonoBehaviour:
   m_ShapeHeight: -1
   m_AspectRatio: 1
   m_SpotIESCutoffPercent: 100
-  m_LightDimmer: 2.391
+  m_LightDimmer: 1.4
   m_VolumetricDimmer: 2
   m_FadeDistance: 10000
   m_VolumetricFadeDistance: 10000
@@ -15364,7 +15364,7 @@ MonoBehaviour:
   m_AreaLightShadowCone: 120
   m_UseScreenSpaceShadows: 0
   m_InteractsWithSky: 1
-  m_AngularDiameter: 5
+  m_AngularDiameter: 1
   diameterMultiplerMode: 0
   diameterMultiplier: 1
   diameterOverride: 0.5
@@ -15470,7 +15470,7 @@ Light:
   m_Enabled: 1
   serializedVersion: 12
   m_Type: 1
-  m_Color: {r: 0.5019608, g: 0.3529412, b: 0.2, a: 1}
+  m_Color: {r: 1, g: 0.7835089, b: 0.5613208, a: 1}
   m_Intensity: 130000
   m_Range: 10
   m_SpotAngle: 30
@@ -15513,15 +15513,15 @@ Light:
   m_Lightmapping: 1
   m_LightShadowCasterMode: 2
   m_AreaSize: {x: 0.5, y: 0.5}
-  m_BounceIntensity: 1
+  m_BounceIntensity: 1.77
   m_ColorTemperature: 5500
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 1.010207e-39, y: 1.285711e-39, z: 1.377548e-39, w: 1.010209e-39}
+  m_BoundingSphereOverride: {x: 9.275525e-39, y: 9.459199e-39, z: 9.275528e-39, w: 9.551036e-39}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
   m_ShadowRadius: 0
-  m_ShadowAngle: 5
+  m_ShadowAngle: 1
   m_LightUnit: 2
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
@@ -86929,7 +86929,7 @@ MonoBehaviour:
   priority: 0
   blendDistance: 0
   weight: 1
-  sharedProfile: {fileID: 11400000, guid: 28c4328b906351d4a9d6d3d6112de4f9, type: 2}
+  sharedProfile: {fileID: 11400000, guid: d2fa14213ef685443b30e7f707b34662, type: 2}
 --- !u!1001 &1779968092
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -92508,6 +92508,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1035884821754579409, guid: 17fe1b2335965bf458073bda81e475b5, type: 3}
+      propertyPath: data.name
+      value: Windmill Isle Act 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1035884821754579409, guid: 17fe1b2335965bf458073bda81e475b5, type: 3}
       propertyPath: data.bonusMax
       value: 125000
       objectReference: {fileID: 0}
@@ -92535,7 +92539,7 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 922834922717481319, guid: 17fe1b2335965bf458073bda81e475b5, type: 3}
-      insertIndex: 1
+      insertIndex: -1
       addedObject: {fileID: 1841282441}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 17fe1b2335965bf458073bda81e475b5, type: 3}

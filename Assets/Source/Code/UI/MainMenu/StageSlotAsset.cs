@@ -15,7 +15,7 @@ namespace SurgeEngine.Source.Code.UI.MainMenu
 
         public void Load()
         {
-            SceneLoader.LoadGameScene(sceneName);
+            SceneLoader.LoadGameScene(sceneName, name);
         }
     }
 }

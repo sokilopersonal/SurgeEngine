@@ -8,13 +8,11 @@ namespace SurgeEngine.Source.Code.Gameplay.Enemy.Base
     public class EnemyAnimation : EnemyComponent
     {
         [SerializeField] protected StateAnimator stateAnimator;
-        
         public Animator Animator => stateAnimator.Animator;
 
-        public override void Initialize(EnemyBase enemyBase)
+        private void Awake()
         {
-            base.Initialize(enemyBase);
-            enemyBase.StateMachine.OnStateAssign += ChangeStateAnimation;
+            EnemyBase.StateMachine.OnStateAssign += ChangeStateAnimation;
         }
 
         protected virtual void ChangeStateAnimation(FState obj)

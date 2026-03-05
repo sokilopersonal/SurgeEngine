@@ -19,7 +19,7 @@ namespace SurgeEngine.Source.Editor.ObjectSet
             MainToolbar.Refresh(TimeScaleSliderPath);
         }
         
-        [MainToolbarElement(AssetManagerButtonPath, defaultDockPosition = MainToolbarDockPosition.Left)]
+        [MainToolbarElement(AssetManagerButtonPath, defaultDockPosition = MainToolbarDockPosition.Middle)]
         public static MainToolbarElement AssetManagerButton()
         {
             var content = new MainToolbarContent("Asset Manager");
@@ -58,7 +58,7 @@ namespace SurgeEngine.Source.Editor.ObjectSet
             return button;
         }
 
-        [MainToolbarElement("Surge Engine/HE1 Tools", defaultDockPosition = MainToolbarDockPosition.Left)]
+        [MainToolbarElement("Surge Engine/HE1 Tools", defaultDockPosition = MainToolbarDockPosition.Middle)]
         public static MainToolbarElement HE1ToolsDropdown()
         {
             var content = new MainToolbarContent("HE1 Tools");

@@ -34986,8 +34986,6 @@ GameObject:
   - component: {fileID: 907601504675248714}
   - component: {fileID: 6198144299295848599}
   - component: {fileID: 7306317934262625023}
-  - component: {fileID: 2946195742853269600}
-  - component: {fileID: 7793544833317675291}
   - component: {fileID: 6723189841479653579}
   - component: {fileID: 2283545800925041114}
   - component: {fileID: 1551706808057493988}
@@ -35003,6 +35001,9 @@ GameObject:
   - component: {fileID: 6511473085365060971}
   - component: {fileID: 6071698925568684358}
   - component: {fileID: 7302058023141224401}
+  - component: {fileID: 285226414386789052}
+  - component: {fileID: 8659520757776401293}
+  - component: {fileID: 7463413252243251277}
   m_Layer: 3
   m_Name: Audio
   m_TagString: Untagged
@@ -35037,6 +35038,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7afbe1dbf9f3441fa4ce0d2500f51d29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sounds: []
 --- !u!114 &7306317934262625023
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35047,52 +35049,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f62e7baa04ec4e1780ac166c9d135435, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &2946195742853269600
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1542517866752370036}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1f9172ad337c4de09b9b179f43ce84ed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  boostSound:
-    Guid:
-      Data1: -1064555830
-      Data2: 1148808271
-      Data3: -1847433813
-      Data4: 1052353624
-    Path: event:/Characters/Sonic/BoostImpulse
-  boostLoopSound:
-    Guid:
-      Data1: 2039611763
-      Data2: 1225947171
-      Data3: -854967156
-      Data4: 1380982145
-    Path: event:/Characters/Sonic/BoostLoop
-  boostVoiceSound:
-    Guid:
-      Data1: 1062457407
-      Data2: 1213593328
-      Data3: -877308747
-      Data4: -319852053
-    Path: event:/Characters/Sonic/BoostVoice
-  boostAudioDistortion: {fileID: 7793544833317675291}
---- !u!114 &7793544833317675291
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1542517866752370036}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 184af7d9d3904ac99854edcb2ee520a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &6723189841479653579
@@ -35185,21 +35141,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 638fc67c49004e5f89f396a27b93764c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _jumpSound:
+  jumpSound:
     Guid:
       Data1: -1745611785
       Data2: 1124644020
       Data3: 2035541378
       Data4: -1990077957
     Path: event:/Characters/Sonic/Jump
-  _spinSound:
+  spinSound:
     Guid:
       Data1: 2015944784
       Data2: 1179692746
       Data3: -2136057174
       Data4: 1581743355
     Path: event:/Characters/Sonic/Spin
-  _voiceSound:
+  voiceSound:
     Guid:
       Data1: 736188590
       Data2: 1225455178
@@ -35471,6 +35427,85 @@ MonoBehaviour:
       Data3: -2083234649
       Data4: -334347515
     Path: event:/CommonObjects/DashRing
+--- !u!114 &285226414386789052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1542517866752370036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 301d216b5132cc448880f06cd8c6576c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SurgeEngine.Source.Code.Core.Character.Sound.Characters.Sonic.BoostAudioDistortion
+--- !u!114 &8659520757776401293
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1542517866752370036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16d6c63931c9b234bbe66065cabd7a87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SurgeEngine.Source.Code.Core.Character.Sound.Characters.Sonic.BoostSound
+  boostSound:
+    Guid:
+      Data1: -1064555830
+      Data2: 1148808271
+      Data3: -1847433813
+      Data4: 1052353624
+    Path: event:/Characters/Sonic/BoostImpulse
+  boostLoopSound:
+    Guid:
+      Data1: 2039611763
+      Data2: 1225947171
+      Data3: -854967156
+      Data4: 1380982145
+    Path: event:/Characters/Sonic/BoostLoop
+  boostVoiceSound:
+    Guid:
+      Data1: 1062457407
+      Data2: 1213593328
+      Data3: -877308747
+      Data4: -319852053
+    Path: event:/Characters/Sonic/BoostVoice
+  boostAudioDistortion: {fileID: 285226414386789052}
+--- !u!114 &7463413252243251277
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1542517866752370036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ff118a846e24a70945b57c3e9090d22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SurgeEngine.Source.Code.Core.Character.Sound.WallJumpSound
+  wallStickSound:
+    Guid:
+      Data1: 282266566
+      Data2: 1218439799
+      Data3: 1891073425
+      Data4: -985354981
+    Path: event:/Common/Land
+  wallStickLoopSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  wallJumpSound:
+    Guid:
+      Data1: -1745611785
+      Data2: 1124644020
+      Data3: 2035541378
+      Data4: -1990077957
+    Path: event:/Characters/Sonic/Jump
 --- !u!1 &1545620063383477941
 GameObject:
   m_ObjectHideFlags: 0
@@ -106067,6 +106102,9 @@ GameObject:
   - component: {fileID: 8840034248951514102}
   - component: {fileID: 5329638351937773268}
   - component: {fileID: 7406824387918309845}
+  - component: {fileID: 2671633414377098041}
+  - component: {fileID: 3979352695895426392}
+  - component: {fileID: 4613503439004562623}
   m_Layer: 3
   m_Name: + Sonic
   m_TagString: Untagged
@@ -106228,7 +106266,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: daaf94f2b73d48f49533d8449fe6b6f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerInput: {fileID: 0}
+  enableAutoCameraByDefault: 1
+  autoCameraTime: 1.5
 --- !u!114 &6828878786053416422
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -106362,6 +106401,49 @@ MonoBehaviour:
   m_DefaultActionMap: Gameplay
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &2671633414377098041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5673036700509009099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08eca9f7688a0a24685b89133b020c8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Zenject::Zenject.GameObjectContext
+  _scriptableObjectInstallers: []
+  _monoInstallers:
+  - {fileID: 3979352695895426392}
+  _installerPrefabs: []
+  _findSiblingMonoInstallers: 0
+  _autoRun: 1
+  _kernel: {fileID: 0}
+--- !u!114 &3979352695895426392
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5673036700509009099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46075137f7ac4af2818712d2c2101609, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SurgeEngine.Source.Code.Infrastructure.DI.CharacterInstaller
+--- !u!114 &4613503439004562623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5673036700509009099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06d3400cbc4b4a12a4d3aa6e43845b5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SurgeEngine.Source.Code.Core.Character.System.WallJumpDetector
 --- !u!1 &5675775637917401601
 GameObject:
   m_ObjectHideFlags: 0

@@ -20,7 +20,10 @@ QualitySettings:
     shadowmaskMode: 1
     skinWeights: 255
     globalTextureMipmapLimit: 0
-    textureMipmapLimitSettings: []
+    textureMipmapLimitSettings:
+    - serializedVersion: 0
+      limitBiasMode: 1
+      limitBias: 0
     anisotropicTextures: 2
     antiAliasing: 0
     softParticles: 0
@@ -34,7 +37,7 @@ QualitySettings:
     adaptiveVsyncExtraA: 0
     adaptiveVsyncExtraB: 0
     lodBias: 1
-    meshLodThreshold: 1
+    meshLodThreshold: 0.5
     maximumLODLevel: 0
     enableLODCrossFade: 1
     streamingMipmapsActive: 1
@@ -59,7 +62,8 @@ QualitySettings:
     terrainFadeLength: 5
     terrainMaxTrees: 50
     excludedTargetPlatforms: []
-  m_TextureMipmapLimitGroupNames: []
+  m_TextureMipmapLimitGroupNames:
+  - Grass
   m_PerPlatformDefaultQuality:
     Android: 0
     CloudRendering: 0

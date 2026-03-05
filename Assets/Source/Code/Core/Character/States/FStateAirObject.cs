@@ -3,11 +3,13 @@ using UnityEngine;
 
 namespace SurgeEngine.Source.Code.Core.Character.States
 {
-    public abstract class FStateAirObject : FStateObject
+    public abstract class FStateAirObject : FStateObject, IWallJumpDetect
     {
+        public bool WallDetected { get; set; }
+        
         protected float keepVelocityDistance;
         protected float travelledDistance;
-        
+
         protected FStateAirObject(CharacterBase owner) : base(owner) { }
 
         public override void OnEnter()
@@ -20,12 +22,12 @@ namespace SurgeEngine.Source.Code.Core.Character.States
         protected void CalculateTravelledDistance()
         {
             travelledDistance += Kinematics.Speed * Time.fixedDeltaTime;
-            if (travelledDistance > keepVelocityDistance + 0.5f)
+            if (travelledDistance > keepVelocityDistance + 0.5f && !WallDetected)
             {
                 StateMachine.SetState<FStateAir>();
             }
         }
-        
+
         public void SetKeepVelocityDistance(float distance) => keepVelocityDistance = distance;
     }
 }

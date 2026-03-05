@@ -15,6 +15,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.BaseStates
         protected CharacterActions Actions { get; private set; }
         protected Rigidbody Rigidbody => Character.Rigidbody;
         protected FStateMachine StateMachine { get; private set; }
+        protected Transform Transform => Character.Rigidbody.transform;
 
         protected FCharacterState(CharacterBase owner)
         {

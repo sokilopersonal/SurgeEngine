@@ -44,7 +44,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             jumpPanelState.SetKeepVelocity(outOfControl);
             context.StateMachine.SetState<FStateJumpPanel>(true);
             
-            Utility.MoveToPosition(this, context.Kinematics.Rigidbody, StartPosition, impulse);
+            Utility.MoveToPosition(this, context.Kinematics.Rigidbody, StartPosition, context.Kinematics.Rigidbody.linearVelocity);
 
             context.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, Mathf.Abs(outOfControl)));
 

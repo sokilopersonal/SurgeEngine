@@ -99,7 +99,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
                 if (!isWater) Kinematics.Snap(point, Kinematics.Normal);
                 else Kinematics.SnapOnWater(point);
                 
-                Kinematics.Project(Kinematics.Normal);
+                Kinematics.ProjectOnNormal();
                 Kinematics.GroundTag.Value = hit.transform.gameObject.GetGroundTag();
             }
             else

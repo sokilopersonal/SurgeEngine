@@ -4,6 +4,7 @@ using SurgeEngine.Source.Code.Infrastructure.Config.Sonic;
 using SurgeEngine.Source.Code.Infrastructure.Custom.Extensions;
 using UnityEngine;
 using UnityEngine.Splines;
+using Zenject;
 
 namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
 {
@@ -11,14 +12,9 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
     {
         [SerializeField] private HomingConfig config;
 
-        private CharacterBase _character;
+        [Inject] private CharacterBase _character;
 
         public HomingTarget Target { get; private set; }
-
-        private void Awake()
-        {
-            _character = GetComponent<CharacterBase>();
-        }
 
         private void FixedUpdate()
         {

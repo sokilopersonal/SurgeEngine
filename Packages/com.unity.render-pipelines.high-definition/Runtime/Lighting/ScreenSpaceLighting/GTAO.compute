@@ -12,10 +12,6 @@
 // --------------------------------------------
 // Options
 // --------------------------------------------
-
-// Integral type
-#define INTEGRAL_UNIFORM 0
-#define INTEGRAL_COSINE 1
 #define INTEGRAL_TYPE INTEGRAL_COSINE
 
 // Noise options
@@ -29,15 +25,9 @@
 // --------------------------------------------
 // Integration functions
 // --------------------------------------------
-
-float IntegrateArcUniform(float horizon1, float horizon2)
+float IntegrateArcCosWeighted(float horizon1, float horizon2, float n, float cosN)
 {
-    return (1.0f - cos(horizon1) + (1.0 - cos(horizon2)));
-}
-
-float IntegrateArcCosWeighted(float horzion1, float horizon2, float n, float cosN)
-{
-    float h1 = horzion1 * 2.0;
+    float h1 = horizon1 * 2.0;
     float h2 = horizon2 * 2.0;
     float sinN = sin(n);
     return 0.25 * ((-cos(h1 - n) + cosN + h1 * sinN) + (-cos(h2 - n) + cosN + h2 * sinN));
@@ -46,14 +36,12 @@ float IntegrateArcCosWeighted(float horzion1, float horizon2, float n, float cos
 float UpdateHorizon(float maxH, float candidateH, float distSq)
 {
     float falloff = saturate((1.0 - (distSq * _AOInvRadiusSq)));
-
-    return (candidateH > maxH) ? lerp(maxH, candidateH, falloff) : lerp(maxH, candidateH, 0.03f);        // TODO: Thickness heuristic here.
+    return (candidateH > maxH) ? lerp(maxH, candidateH, falloff) : lerp(maxH, candidateH, 0.03f);
 }
 
 // --------------------------------------------
 // Direction functions
 // --------------------------------------------
-
 float2 GetDirection(uint2 positionSS, int offset)
 {
     float noise = InterleavedGradientNoise(positionSS.xy, 0);
@@ -74,7 +62,6 @@ float2 GetDirection(uint2 positionSS, int offset)
 // --------------------------------------------
 // Get sample start offset
 // --------------------------------------------
-
 float GetOffset(uint2 positionSS)
 {
     // Spatial offset
@@ -91,7 +78,6 @@ float GetOffset(uint2 positionSS)
 // --------------------------------------------
 // Input generation functions
 // --------------------------------------------
-
 float3 GetPositionVS(float2 positionSS, float depth)
 {
     float linearDepth = LinearEyeDepth(depth, _ZBufferParams);
@@ -115,10 +101,9 @@ float3 GetNormalVS(float4 normalBufferData)
 // --------------------------------------------
 // Kernel
 // --------------------------------------------
-
 float HorizonLoop(float3 positionVS, float3 V, float2 rayStart, float2 rayDir, float rayOffset, float rayStep, int mipModifier)
 {
-    float maxHorizon = -1.0f;  // cos(pi)
+    float maxHorizon = -1.0f;
     float t = rayOffset * rayStep + rayStep;
 
     const uint startWithLowerRes = min(max(0, _AOStepCount / 2 - 2), 3);
@@ -126,15 +111,20 @@ float HorizonLoop(float3 positionVS, float3 V, float2 rayStart, float2 rayDir, f
     {
         float2 samplePos = max(2, min(rayStart + t * rayDir, _AOBufferSize.xy - 2));
 
-        // Find horizons at these steps:
         float sampleDepth = GetDepthSample(samplePos, i > startWithLowerRes);
         float3 samplePosVS = GetPositionVS(samplePos.xy, sampleDepth);
 
         float3 deltaPos = samplePosVS - positionVS;
         float deltaLenSq = dot(deltaPos, deltaPos);
-
-        float currHorizon = dot(deltaPos, V) * rsqrt(deltaLenSq);
-        maxHorizon = UpdateHorizon(maxHorizon, currHorizon, deltaLenSq);
+        
+        float depthDiff = abs(samplePosVS.z - positionVS.z);
+        float minDepthThreshold = 0.02 * positionVS.z;
+        
+        if (depthDiff > minDepthThreshold)
+        {
+            float currHorizon = dot(deltaPos, V) * rsqrt(deltaLenSq);
+            maxHorizon = UpdateHorizon(maxHorizon, currHorizon, deltaLenSq);
+        }
 
         t += rayStep;
     }
@@ -212,6 +202,11 @@ void GTAOMain(uint3 dispatchThreadId : SV_DispatchThreadID)
     }
 
     integral /= dirCount;
+    
+    float3 normalVS = GetNormalVS(normalBufferData);
+    float normalFacing = saturate(dot(normalVS, V));
+    float flatnessFactor = pow(normalFacing, 16.0);
+    integral = lerp(integral, 1.0, flatnessFactor * 0.6);
 
     if (currDepth == UNITY_RAW_FAR_CLIP_VALUE || integral < -1e-2f)
     {

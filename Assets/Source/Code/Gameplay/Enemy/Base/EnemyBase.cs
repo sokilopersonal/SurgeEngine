@@ -1,26 +1,27 @@
 ﻿using System;
-using NaughtyAttributes;
+using Alchemy.Inspector;
 using SurgeEngine.Source.Code.Core.StateMachine;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.System;
 using UnityEngine;
+using Zenject;
 
 namespace SurgeEngine.Source.Code.Gameplay.Enemy.Base
 {
+    [RequireComponent(typeof(GameObjectContext), typeof(EnemyInstaller))]
     public class EnemyBase : StageObject
     {
-        [SerializeField, Required] private EnemyView view;
+        [SerializeField] private EnemyView view;
         public EnemyView View => view;
         public FStateMachine StateMachine { get; private set; }
 
         public Action OnDied;
         protected bool IsDead { get; set; }
 
-        protected virtual void Awake()
+        [Inject]
+        private void Initialize()
         {
             StateMachine = new FStateMachine();
-            
-            View.Initialize(this);
         }
 
         private void OnEnable()
@@ -42,11 +43,7 @@ namespace SurgeEngine.Source.Code.Gameplay.Enemy.Base
         {
             StateMachine.FixedTick(Time.fixedDeltaTime);
         }
-
-        private void LateUpdate()
-        {
-        }
-
+        
         private void OnDeath()
         {
             IsDead = true;

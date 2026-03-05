@@ -1,4 +1,5 @@
 ﻿using System;
+
 using SurgeEngine.Source.Code.Core.Character.System;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.AnimationCallback;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.Interfaces;
@@ -43,7 +44,10 @@ namespace SurgeEngine.Source.Code.Gameplay.Enemy.EggFighter
         public EGAnimation Animation => animation;
         
         public VisionSensor Sensor { get; private set; }
-        [field: SerializeField] public AnimationEventCallback PunchAnimationCallback { get; private set; }
+        [SerializeField] private AnimationEventCallback punchAnimationCallback;
+        [SerializeField] private BoxCollider punchColliderReference;
+        public AnimationEventCallback PunchAnimationCallback => punchAnimationCallback;
+        public BoxCollider PunchColliderReference => punchColliderReference;
         [SerializeField] private EggFighterType type;
 
         [Header("AI")]
@@ -99,13 +103,8 @@ namespace SurgeEngine.Source.Code.Gameplay.Enemy.EggFighter
         }
 #endif
 
-        protected override void Awake()
+        private void Awake()
         {
-            base.Awake();
-            
-            animation.Initialize(this);
-            effects.Initialize(this);
-            
             _startPosition = transform.position;
             _startRotation = transform.rotation;
 
@@ -136,12 +135,7 @@ namespace SurgeEngine.Source.Code.Gameplay.Enemy.EggFighter
             if (!IsDead)
             {
                 Vector3 force = sender.GetComponentInChildren<Rigidbody>().linearVelocity;
-                
-                Vector3 horizontal = Vector3.ProjectOnPlane(force, Vector3.up);
-                Vector3 vertical = Vector3.Project(force, Vector3.up);
-                vertical = Vector3.ClampMagnitude(vertical, 2f);
-                
-                Kill(horizontal + vertical);
+                Kill(force);
             
                 OnDied?.Invoke();
             }

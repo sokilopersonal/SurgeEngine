@@ -84,7 +84,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
                 Kinematics.ClampVelocityToMax(_crawlConfig.maxSpeed);
 
                 Kinematics.BasePhysics(Kinematics.Normal);
-                Kinematics.Project(Kinematics.Normal);
+                Kinematics.ProjectOnNormal();
                 
                 Kinematics.Snap(Kinematics.Point, Vector3.up);
                 Model.RotateBody(Vector3.up);

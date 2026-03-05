@@ -16,7 +16,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
         
         public FStateSwing(CharacterBase owner) : base(owner)
         {
-            _soundReference = owner.Sounds.GetComponent<SwingSound>();
+            _soundReference = owner.Sounds.Get<SwingSound>();
         }
 
         public override void OnEnter()

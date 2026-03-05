@@ -10,8 +10,7 @@ namespace SurgeEngine.Source.Code.Infrastructure.DI
 
         public override void InstallBindings()
         {
-            var window = Container.InstantiatePrefabForComponent<DebugWindow>(windowPrefab);
-            Container.Bind<DebugWindow>().FromInstance(window).AsSingle().NonLazy();
+            Container.InstantiatePrefabForComponent<DebugWindow>(windowPrefab);
         }
     }
 }

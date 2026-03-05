@@ -726,7 +726,7 @@ namespace UnityEngine.Rendering.HighDefinition
 
                             if (hdCamera.taaSharpenMode == HDAdditionalCameraData.TAASharpenMode.PostSharpen)
                             {
-                                source = SharpeningPass(renderGraph, hdCamera, source);
+                                source = SharpeningPass(renderGraph, hdCamera, source, hdCamera.taaSharpenStrength);
                             }
                         }
                         else if (hdCamera.antialiasing == HDAdditionalCameraData.AntialiasingMode.SubpixelMorphologicalAntiAliasing)
@@ -786,6 +786,11 @@ namespace UnityEngine.Rendering.HighDefinition
 
                 source = UberPass(renderGraph, hdCamera, logLutOutput, bloomTexture, source);
                 PushFullScreenDebugTexture(renderGraph, source, hdCamera.postProcessRTScales, FullScreenDebugMode.ColorLog);
+                
+                if (hdCamera.allowDynamicResolution && hdCamera.allowDeepLearningSuperSampling)
+                {
+                    source = SharpeningPass(renderGraph, hdCamera, source, hdCamera.deepLearningSuperSamplingSharpening);
+                }
 
                 source = CustomPostProcessPass(renderGraph, hdCamera, source, depthBuffer, normalBuffer, motionVectors, m_CustomPostProcessOrdersSettings.afterPostProcessCustomPostProcesses, HDProfileId.CustomPostProcessAfterPP);
 
@@ -5741,13 +5746,13 @@ namespace UnityEngine.Rendering.HighDefinition
             public TextureHandle destination;
         }
 
-        TextureHandle SharpeningPass(RenderGraph renderGraph, HDCamera hdCamera, TextureHandle source)
+        TextureHandle SharpeningPass(RenderGraph renderGraph, HDCamera hdCamera, TextureHandle source, float strength)
         {
             using (var builder = renderGraph.AddUnsafePass<SharpenData>("Sharpening", out var passData, ProfilingSampler.Get(HDProfileId.ContrastAdaptiveSharpen)))
             {
                 passData.sharpenCS = runtimeShaders.sharpeningCS;
                 passData.sharpenKernel = passData.sharpenCS.FindKernel("SharpenCS");
-                passData.sharpenParam = new Vector4(hdCamera.taaSharpenStrength, hdCamera.taaRingingReduction, 0, 0);
+                passData.sharpenParam = new Vector4(strength, hdCamera.taaRingingReduction, 0, 0);
                 passData.dispatchSize = new Vector3Int(HDUtils.DivRoundUp(postProcessViewportSize.x, 8), HDUtils.DivRoundUp(postProcessViewportSize.y, 8), hdCamera.viewCount);
                 passData.source = source;
                 builder.UseTexture(passData.source, AccessFlags.Read);
@@ -5837,7 +5842,6 @@ namespace UnityEngine.Rendering.HighDefinition
                     builder.SetRenderFunc(
                         (CASData data, UnsafeGraphContext ctx) =>
                         {
-                            ctx.cmd.SetComputeFloatParam(data.casCS, HDShaderIDs._Sharpness, 1);
                             ctx.cmd.SetComputeTextureParam(data.casCS, data.mainKernel, HDShaderIDs._InputTexture, data.source);
                             ctx.cmd.SetComputeVectorParam(data.casCS, HDShaderIDs._InputTextureDimensions, new Vector4(data.inputWidth, data.inputHeight));
                             ctx.cmd.SetComputeTextureParam(data.casCS, data.mainKernel, HDShaderIDs._OutputTexture, data.destination);

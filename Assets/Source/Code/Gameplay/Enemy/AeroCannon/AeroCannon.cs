@@ -21,12 +21,8 @@ namespace SurgeEngine.Source.Code.Gameplay.Enemy.AeroCannon
         public Transform shootPoint;
         public AeroCannonBullet bulletPrefab;
         
-        protected override void Awake()
+        private void Awake()
         {
-            base.Awake();
-            
-            animation.Initialize(this);
-            
             StateMachine.AddState(new ACStateIdle(this));
             StateMachine.AddState(new ACStatePrepare(this));
             StateMachine.AddState(new ACStateShoot(this));

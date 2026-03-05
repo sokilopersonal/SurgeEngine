@@ -10,6 +10,9 @@ Scaleable, Easy and Fast - Boost framework created with Unity 6. Working on High
 - Easy to add new functionality
 - Ported particles from SU and Gens
 
+## Wiki
+We have a wiki that you can read. It will help you developing and probably will answer your questions.
+
 ## Repository Support
 You can help this project by fixing bugs or adding new features and adding these changes to the Pull Request
 
@@ -25,7 +28,7 @@ You can help this project by fixing bugs or adding new features and adding these
 > 
 > In general, learn how to use git.
 
-## Knows issues
+## Known issues
 - Transparent particles don't render underwater if "Use Scene Color" is enabled in water material
 
 # License

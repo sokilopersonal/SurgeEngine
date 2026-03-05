@@ -1,8 +1,10 @@
 ﻿using SurgeEngine.Source.Code.Gameplay.CommonObjects;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.CameraObjects;
+using SurgeEngine.Source.Code.Gameplay.CommonObjects.Collectables;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.Environment;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.Player;
+using TreeEditor;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Splines;
@@ -174,6 +176,14 @@ namespace SurgeEngine.Source.Editor.ObjectCustomGizmos
             Gizmos.matrix  = type.transform.localToWorldMatrix;
             Gizmos.color = Color.darkBlue;
             Gizmos.DrawSphere(Vector3.zero, 0.3f);
+        }
+
+        [DrawGizmo(GizmoType.Pickable | GizmoType.Selected | GizmoType.NotInSelectionHierarchy)]
+        static void DrawGizmos(Ring type, GizmoType gizmoType)
+        {
+            Gizmos.matrix = type.transform.localToWorldMatrix;
+            Gizmos.color = Color.clear;
+            Gizmos.DrawSphere(Vector3.zero, 0.4f);
         }
 
         // Call this method to use the material

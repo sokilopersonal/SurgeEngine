@@ -66,6 +66,14 @@ namespace SurgeEngine.Source.Code.Infrastructure.Config
         public float railSearchDistance = 10f;
         public AnimationCurve railSwitchCurve;
 
+        [Header("Wall Jump")] 
+        [SerializeField] private float wallJumpForce = 12;
+        [SerializeField] private float wallJumpHeightForce = 8;
+        [SerializeField] private float wallSphereDetectionRadius = 0.25f;
+        public float WallJumpForce => wallJumpForce;
+        public float WallJumpHeightForce => wallJumpHeightForce;
+        public float WallSphereDetectionRadius => wallSphereDetectionRadius;
+
         /// <summary>
         /// Evaluates the cast distance over time based on a animation curve and base distance.
         /// </summary>

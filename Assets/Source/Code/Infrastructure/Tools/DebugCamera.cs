@@ -130,9 +130,9 @@ namespace SurgeEngine.Source.Code.Infrastructure.Tools
 
         private void Rotation()
         {
-            var userSensitivity = _userInput.GetData().Sensitivity.Value;
-            _yaw += LookInput.x * sensitivity * 10 * userSensitivity * Time.unscaledDeltaTime;
-            _pitch -= LookInput.y * sensitivity * 10 * userSensitivity * Time.unscaledDeltaTime;
+            var userSensitivity = _userInput.GetData().Sensitivity.Value * 0.077f;
+            _yaw += LookInput.x * sensitivity * userSensitivity;
+            _pitch -= LookInput.y * sensitivity * userSensitivity;
             
             var rotation = Quaternion.Euler(_pitch, _yaw, 0);
             _camera.transform.rotation = rotation;
@@ -179,14 +179,15 @@ namespace SurgeEngine.Source.Code.Infrastructure.Tools
                     float stored = Time.timeScale;
                     Time.timeScale = 1;
                     
+                    _character.Rigidbody.position = _camera.transform.position + Vector3.up * 0.5f + _camera.transform.forward * 5;
+                    
                     _character.Kinematics.ResetVelocity();
-                    _character.Kinematics.Set2DPath(null);
-                    _character.Kinematics.SetForwardPath(null);
-                    _character.Kinematics.SetDashPath(null);
+                    var uPos = _character.Rigidbody.position;
+                    _character.Kinematics.Path2D?.Spline.UpdateTime(uPos);
+                    _character.Kinematics.PathForward?.Spline.UpdateTime(uPos);
+                    _character.Kinematics.PathDash?.Spline.UpdateTime(uPos);
 
                     _character.Flags.Clear();
-
-                    _character.Rigidbody.position = _camera.transform.position + Vector3.up * 0.5f + _camera.transform.forward * 5;
                     
                     yield return new WaitForSecondsRealtime(0.02f);
                     
