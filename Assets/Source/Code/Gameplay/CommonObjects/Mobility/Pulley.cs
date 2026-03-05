@@ -77,6 +77,9 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
                 bool longCast = Physics.Raycast(pos, Vector3.down, longRayDistance, rayMask);
                 longEndpoint.gameObject.SetActive(longCast);
             }
+
+            longStand.gameObject.SetActive(type == PulleyType.Long);
+            shortStand.gameObject.SetActive(type == PulleyType.Short);
         }
 
         private void OnDrawGizmos()
