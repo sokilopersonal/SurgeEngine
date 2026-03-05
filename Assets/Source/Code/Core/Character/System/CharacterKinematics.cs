@@ -288,16 +288,35 @@ namespace SurgeEngine.Source.Code.Core.Character.System
                 }
 
                 Vector3 target;
+                Vector3 physicsTarget = Vector3.MoveTowards(Rigidbody.position, endPos, Mathf.Min(Speed / 32f, 1) * 4f * Time.fixedDeltaTime);
                 if (pathEaseTime > 0f)
                 {
                     Path2D.CurrentEaseTime += Time.fixedDeltaTime / pathEaseTime;
                     Path2D.CurrentEaseTime = Mathf.Clamp01(Path2D.CurrentEaseTime);
                     Path2D.StartPosition += Velocity * Time.fixedDeltaTime;
-                    target = Vector3.Lerp(Path2D.StartPosition, endPos, Path2D.CurrentEaseTime);
+
+                    if (Mathf.Approximately(Path2D.CurrentEaseTime, 1f))
+                    {
+                        target = physicsTarget;
+                    }
+                    else
+                    {
+                        float distanceToTarget = Vector3.Distance(Rigidbody.position, endPos);
+                        float timeToReach = Speed > 0f ? distanceToTarget / Speed : float.MaxValue;
+
+                        if (timeToReach < pathEaseTime) // safety first bro
+                        {
+                            target = physicsTarget;
+                        }
+                        else
+                        {
+                            target = Vector3.Lerp(Path2D.StartPosition, endPos, Path2D.CurrentEaseTime);
+                        }
+                    }
                 }
                 else
                 {
-                    target = Vector3.MoveTowards(Rigidbody.position, endPos, Mathf.Min(Speed / 32f, 1) * 16f * Time.fixedDeltaTime);
+                    target = physicsTarget;
                 }
                 
                 Rigidbody.MovePosition(target);
