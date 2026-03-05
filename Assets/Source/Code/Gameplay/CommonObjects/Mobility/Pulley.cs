@@ -5,12 +5,14 @@ using SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStates;
 using SurgeEngine.Source.Code.Core.Character.System;
 using SurgeEngine.Source.Code.Core.StateMachine.Base;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.System;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Splines;
 using STOP_MODE = FMOD.Studio.STOP_MODE;
 
 namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 {
+    [ExecuteInEditMode]
     public class Pulley : StageObject, IPointMarkerLoader
     {
         [Header("Pulley")]
@@ -25,7 +27,14 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         [SerializeField] private HomingTarget homingTarget;
         [SerializeField] private Transform longStand;
         [SerializeField] private Transform shortStand;
+        [SerializeField] private Transform longEndpoint;
+        [SerializeField] private Transform shortEndpoint;
         [SerializeField] private Transform handle;
+
+        [Header("Raycast")]
+        [SerializeField] private LayerMask rayMask;
+        [SerializeField] private float longRayDistance;
+        [SerializeField] private float shortRayDistance;
 
         [Header("Sound")]
         [SerializeField] private EventReference sound;
@@ -33,31 +42,61 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         private SplineData _splineData;
         private bool _isPlayerAttached;
         private CharacterBase _character;
-        private float _time;
         private float _speed;
         private bool _trackPulley;
         private bool _triggered;
         private BoxCollider _collider;
         private EventInstance _eventInstance;
-
-        private void Awake()
+        private void Start()
         {
+            if (!Application.isPlaying)
+                return;
+            
             _collider = GetComponent<BoxCollider>();
             _eventInstance = RuntimeManager.CreateInstance(sound);
             _eventInstance.set3DAttributes(transform.To3DAttributes());
         }
-
+#if UNITY_EDITOR
         private void OnValidate()
         {
-            if (!longStand || !shortStand)
-                return;
-            
-            longStand.gameObject.SetActive(type == PulleyType.Long);
-            shortStand.gameObject.SetActive(type == PulleyType.Short);
-        }
+            UnityEditor.EditorApplication.delayCall += () =>
+            {
+                if (!longStand || !shortStand) return;
 
+                longStand.gameObject.SetActive(type == PulleyType.Long);
+                shortStand.gameObject.SetActive(type == PulleyType.Short);
+            };
+        }
+        private void OnDrawGizmos()
+        {
+            if (!longEndpoint || !shortEndpoint) return;
+
+            if (type == PulleyType.Long)
+                Gizmos.DrawRay(longEndpoint.position, Vector3.down * longRayDistance);
+            else
+                Gizmos.DrawRay(shortEndpoint.position, Vector3.down * shortRayDistance);
+        }
+        void Update()
+        {
+            UnityEditor.EditorApplication.delayCall += () =>
+            {
+                if (!longEndpoint || !shortEndpoint || !spline) return;
+
+                Vector3 pos = spline.transform.TransformPoint(spline.Spline.EvaluatePosition(1f));
+
+                shortEndpoint.position = pos;
+                longEndpoint.position = pos;
+
+                shortEndpoint.gameObject.SetActive(Physics.Raycast(pos, Vector3.down, shortRayDistance, rayMask));
+                longEndpoint.gameObject.SetActive(Physics.Raycast(pos, Vector3.down, longRayDistance, rayMask));
+            };
+        }
+#endif
         private void FixedUpdate()
         {
+            if (!Application.isPlaying)
+                return;
+
             if (_splineData != null)
             {
                 float time = _splineData.NormalizedTime;
@@ -93,12 +132,15 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
                 }
             
                 _collider.center = handle.localPosition - Vector3.up;
-                homingTarget.gameObject.SetActive(_time < 0.99f);
+                homingTarget.gameObject.SetActive(_trackPulley);
             }
         }
 
         public override void OnEnter(Collider msg, CharacterBase context)
         {
+            if (!Application.isPlaying)
+                return;
+
             base.OnEnter(msg, context);
 
             if (!_isPlayerAttached && !_triggered)
@@ -143,6 +185,9 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 
         private void OnDestroy()
         {
+            if (!Application.isPlaying)
+                return;
+
             _eventInstance.stop(STOP_MODE.IMMEDIATE);
         }
 
@@ -153,7 +198,6 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             _trackPulley = false;
             _triggered = false;
             _character = null;
-            _time = 0.0f;
             _eventInstance.stop(STOP_MODE.IMMEDIATE);
         }
     }
