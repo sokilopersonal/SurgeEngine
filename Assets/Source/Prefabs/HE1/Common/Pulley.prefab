@@ -9,14 +9,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6954119044296928861}
-  - component: {fileID: 8737537474719981233}
   m_Layer: 0
   m_Name: Endpoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6954119044296928861
 Transform:
   m_ObjectHideFlags: 0
@@ -25,37 +24,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 673898819088343083}
   serializedVersion: 2
-  m_LocalRotation: {x: -1.1423927e-27, y: 0.0000000842937, z: -1.1646773e-20, w: 1.000005}
-  m_LocalPosition: {x: 0.00000028499596, y: 2.9199996, z: 30.000008}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 4.5474735e-13, y: 0.049999952, z: 30.000008}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1947688934054390143}
   m_Father: {fileID: 6743429924343860102}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8737537474719981233
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 673898819088343083}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29a074d529cf945029ef7cf40540c9df, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.Splines::UnityEngine.Splines.SplineAnimate
-  m_Target: {fileID: 6169627345259645617}
-  m_PlayOnAwake: 0
-  m_LoopMode: 1
-  m_Method: 0
-  m_Duration: 0
-  m_MaxSpeed: Infinity
-  m_EasingMode: 0
-  m_AlignmentMode: 0
-  m_ObjectForwardAxis: 2
-  m_ObjectUpAxis: 1
-  m_StartOffset: 1
 --- !u!1 &2338477452547102887
 GameObject:
   m_ObjectHideFlags: 0
@@ -65,14 +41,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2324695333695789040}
-  - component: {fileID: 7546019721347327204}
   m_Layer: 0
   m_Name: Endpoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2324695333695789040
 Transform:
   m_ObjectHideFlags: 0
@@ -81,37 +56,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2338477452547102887}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1.0000092}
-  m_LocalPosition: {x: 0.00000028499596, y: 5.4199996, z: 30.000008}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 4.5474735e-13, y: 2.55, z: 30.000008}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4418373794540113945}
   m_Father: {fileID: 7965336337267246169}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7546019721347327204
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2338477452547102887}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29a074d529cf945029ef7cf40540c9df, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.Splines::UnityEngine.Splines.SplineAnimate
-  m_Target: {fileID: 6169627345259645617}
-  m_PlayOnAwake: 0
-  m_LoopMode: 1
-  m_Method: 0
-  m_Duration: 0
-  m_MaxSpeed: Infinity
-  m_EasingMode: 0
-  m_AlignmentMode: 0
-  m_ObjectForwardAxis: 2
-  m_ObjectUpAxis: 1
-  m_StartOffset: 1
 --- !u!1 &5641699957231898548
 GameObject:
   m_ObjectHideFlags: 0
@@ -201,7 +153,14 @@ MonoBehaviour:
   homingTarget: {fileID: 4974820090153400342}
   longStand: {fileID: 7965336337267246169}
   shortStand: {fileID: 6743429924343860102}
+  longEndpoint: {fileID: 2324695333695789040}
+  shortEndpoint: {fileID: 6954119044296928861}
   handle: {fileID: 2966871384320699021}
+  rayMask:
+    serializedVersion: 2
+    m_Bits: 1
+  longRayDistance: 7.105
+  shortRayDistance: 2.22
   sound:
     Guid:
       Data1: -609260542
@@ -313,7 +272,7 @@ MonoBehaviour:
           w: 1
     - Position:
         x: 0
-        y: 2.87
+        y: 0
         z: 30
       TangentIn:
         x: 0
