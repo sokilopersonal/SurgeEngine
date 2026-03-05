@@ -2,7 +2,7 @@
 #define EVAL_APV
 #ifdef EVAL_APV
 
-void EvaluateProbes_half(in float3 posWS, in float2 positionSS, out float3 bakeDiffuseLighting){
+void EvaluateProbes_half(in float3 posWS, in float2 positionSS, out half3 bakeDiffuseLighting){
     EvaluateAdaptiveProbeVolume(posWS, positionSS, bakeDiffuseLighting);
 }
 
