@@ -53229,7 +53229,7 @@ MonoBehaviour:
   maxWidth: 0.65
   maxRenderDistance: 300
   useRenderDistance: 1
-  fadeRange: 0.2
+  fadeRange: 0.3
   cullingShader: {fileID: 7200000, guid: b5e9e5b7eb9046d6866e6cbd4083d275, type: 3}
   debugCamera: {fileID: 0}
   grassInstances:
@@ -96300,6 +96300,10 @@ PrefabInstance:
     - target: {fileID: 3405328811069570354, guid: 17fe1b2335965bf458073bda81e475b5, type: 3}
       propertyPath: m_Name
       value: + Gameplay Scene Context
+      objectReference: {fileID: 0}
+    - target: {fileID: 3405328811069570354, guid: 17fe1b2335965bf458073bda81e475b5, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5054113536844244027, guid: 17fe1b2335965bf458073bda81e475b5, type: 3}
       propertyPath: startData.time

@@ -5,7 +5,6 @@ using SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStates;
 using SurgeEngine.Source.Code.Core.Character.System;
 using SurgeEngine.Source.Code.Core.StateMachine.Base;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.System;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Splines;
 using STOP_MODE = FMOD.Studio.STOP_MODE;
@@ -47,7 +46,8 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         private bool _triggered;
         private BoxCollider _collider;
         private EventInstance _eventInstance;
-        private void Start()
+        
+        private void Awake()
         {
             if (!Application.isPlaying)
                 return;
@@ -56,17 +56,21 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             _eventInstance = RuntimeManager.CreateInstance(sound);
             _eventInstance.set3DAttributes(transform.To3DAttributes());
         }
+        
 #if UNITY_EDITOR
-        private void OnValidate()
+        void Update()
         {
-            UnityEditor.EditorApplication.delayCall += () =>
-            {
-                if (!longStand || !shortStand) return;
+            if (!longEndpoint || !shortEndpoint || !spline) return;
 
-                longStand.gameObject.SetActive(type == PulleyType.Long);
-                shortStand.gameObject.SetActive(type == PulleyType.Short);
-            };
+            Vector3 pos = spline.transform.TransformPoint(spline.Spline.EvaluatePosition(1f));
+
+            shortEndpoint.position = pos;
+            longEndpoint.position = pos;
+
+            shortEndpoint.gameObject.SetActive(Physics.Raycast(pos, Vector3.down, shortRayDistance, rayMask));
+            longEndpoint.gameObject.SetActive(Physics.Raycast(pos, Vector3.down, longRayDistance, rayMask));
         }
+
         private void OnDrawGizmos()
         {
             if (!longEndpoint || !shortEndpoint) return;
@@ -76,22 +80,8 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             else
                 Gizmos.DrawRay(shortEndpoint.position, Vector3.down * shortRayDistance);
         }
-        void Update()
-        {
-            UnityEditor.EditorApplication.delayCall += () =>
-            {
-                if (!longEndpoint || !shortEndpoint || !spline) return;
-
-                Vector3 pos = spline.transform.TransformPoint(spline.Spline.EvaluatePosition(1f));
-
-                shortEndpoint.position = pos;
-                longEndpoint.position = pos;
-
-                shortEndpoint.gameObject.SetActive(Physics.Raycast(pos, Vector3.down, shortRayDistance, rayMask));
-                longEndpoint.gameObject.SetActive(Physics.Raycast(pos, Vector3.down, longRayDistance, rayMask));
-            };
-        }
 #endif
+        
         private void FixedUpdate()
         {
             if (!Application.isPlaying)
@@ -138,9 +128,6 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 
         public override void OnEnter(Collider msg, CharacterBase context)
         {
-            if (!Application.isPlaying)
-                return;
-
             base.OnEnter(msg, context);
 
             if (!_isPlayerAttached && !_triggered)
