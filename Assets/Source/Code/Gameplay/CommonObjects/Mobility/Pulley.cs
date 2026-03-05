@@ -11,7 +11,6 @@ using STOP_MODE = FMOD.Studio.STOP_MODE;
 
 namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 {
-    [ExecuteInEditMode]
     public class Pulley : StageObject, IPointMarkerLoader
     {
         [Header("Pulley")]
@@ -46,29 +45,43 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         private bool _triggered;
         private BoxCollider _collider;
         private EventInstance _eventInstance;
+
+#if UNITY_EDITOR
+        private Vector3 _lastPosition;
+#endif
         
         private void Awake()
         {
-            if (!Application.isPlaying)
-                return;
-            
-            _collider = GetComponent<BoxCollider>();
+            if (!_collider) _collider = GetComponent<BoxCollider>();
             _eventInstance = RuntimeManager.CreateInstance(sound);
             _eventInstance.set3DAttributes(transform.To3DAttributes());
+            
+            UpdateVisual();
         }
         
 #if UNITY_EDITOR
-        void Update()
+        private void UpdateVisual()
         {
             if (!longEndpoint || !shortEndpoint || !spline) return;
+
+            if (_lastPosition == transform.position) return; // Only check when moved
+            _lastPosition = transform.position;
 
             Vector3 pos = spline.transform.TransformPoint(spline.Spline.EvaluatePosition(1f));
 
             shortEndpoint.position = pos;
             longEndpoint.position = pos;
 
-            shortEndpoint.gameObject.SetActive(Physics.Raycast(pos, Vector3.down, shortRayDistance, rayMask));
-            longEndpoint.gameObject.SetActive(Physics.Raycast(pos, Vector3.down, longRayDistance, rayMask));
+            if (type == PulleyType.Short)
+            {
+                bool shortCast = Physics.Raycast(pos, Vector3.down, shortRayDistance, rayMask);
+                shortEndpoint.gameObject.SetActive(shortCast);
+            }
+            else
+            {
+                bool longCast = Physics.Raycast(pos, Vector3.down, longRayDistance, rayMask);
+                longEndpoint.gameObject.SetActive(longCast);
+            }
         }
 
         private void OnDrawGizmos()
@@ -79,14 +92,13 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
                 Gizmos.DrawRay(longEndpoint.position, Vector3.down * longRayDistance);
             else
                 Gizmos.DrawRay(shortEndpoint.position, Vector3.down * shortRayDistance);
+            
+            UpdateVisual();
         }
 #endif
         
         private void FixedUpdate()
         {
-            if (!Application.isPlaying)
-                return;
-
             if (_splineData != null)
             {
                 float time = _splineData.NormalizedTime;
@@ -172,9 +184,6 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 
         private void OnDestroy()
         {
-            if (!Application.isPlaying)
-                return;
-
             _eventInstance.stop(STOP_MODE.IMMEDIATE);
         }
 
