@@ -11,5 +11,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects
 
         public static Action<TrickJumper> OnTrickJumperTriggered;
         public static Action<ReactionPlate> OnReactionPanelTriggered;
+
+        public static Action<HintRing> OnHintTriggered;
     }
 }

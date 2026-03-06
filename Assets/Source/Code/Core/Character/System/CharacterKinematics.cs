@@ -472,7 +472,15 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             
             Rigidbody.linearVelocity = Vector3.zero;
         }
-        
+
+        public void ResetHorizontalVelocity()
+        {
+            if (Rigidbody.isKinematic)
+                return;
+
+            Rigidbody.linearVelocity = VerticalVelocity;
+        }
+
         public void ApplyGravity(float yGravity)
         {
             if (!Rigidbody.isKinematic)

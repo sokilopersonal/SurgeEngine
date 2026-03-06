@@ -7,8 +7,10 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects
     public class EventCollision : StageObject
     {
         [SerializeField] private int defaultStatus;
+        [SerializeField] private bool oneTime = true;
         [SerializeField] private int durability;
         [SerializeField] private UnityEvent eventOnContact;
+        [SerializeField] private UnityEvent<CharacterBase> eventOnCharacterContact;
 
         private Collider _collider;
 
@@ -25,12 +27,13 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects
             base.OnEnter(msg, context);
             
             eventOnContact.Invoke();
+            eventOnCharacterContact.Invoke(context);
 
             if (durability == 0)
             {
                 Destroy(gameObject);
             }
-            else
+            else if (oneTime)
             {
                 _collider.enabled = false;
             }
