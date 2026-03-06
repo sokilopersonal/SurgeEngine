@@ -288,7 +288,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
                 }
 
                 Vector3 target;
-                Vector3 physicsTarget = Vector3.MoveTowards(Rigidbody.position, endPos, Mathf.Min(Speed / 32f, 1) * 4f * Time.fixedDeltaTime);
+                Vector3 physicsTarget = Vector3.MoveTowards(Rigidbody.position, endPos, Mathf.Min(Speed / 8f, 1) * 4f * Time.fixedDeltaTime);
                 if (pathEaseTime > 0f)
                 {
                     Path2D.CurrentEaseTime += Time.fixedDeltaTime / pathEaseTime;

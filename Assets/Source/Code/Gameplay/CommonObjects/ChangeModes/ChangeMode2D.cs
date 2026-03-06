@@ -12,7 +12,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.ChangeModes
 
         protected override void SetMode(CharacterBase ctx)
         {
-            ctx.Kinematics.Set2DPath(new ChangeMode2DData(new SplineData(container, ctx.transform.position, dominantSpline), ctx.transform.position, isChangeCamera, pathEaseTime));
+            ctx.Kinematics.Set2DPath(new ChangeMode2DData(new SplineData(Container, ctx.transform.position, dominantSpline), ctx.transform.position, isChangeCamera, pathEaseTime));
         }
 
         protected override void RemoveMode(CharacterBase ctx)

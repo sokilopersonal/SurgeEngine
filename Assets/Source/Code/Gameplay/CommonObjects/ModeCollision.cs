@@ -11,21 +11,21 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects
         [SerializeField] protected bool isEnabledFromBack = true;
         [SerializeField] protected bool isEnabledFromFront = true;
         
-        protected SplineContainer container;
+        protected SplineContainer Container;
         protected virtual SplineTag SplineTagFilter => SplineTag.All;
 
         private CharacterBase _character;
 
         private void Awake()
         {
-            if (container == null)
+            if (Container == null)
             {
                 var closePath = FindClosestContainer();
                 if (closePath)
                 {
-                    container = closePath;
+                    Container = closePath;
                     
-                    Debug.Log($"Path set for {name} (ID: {SetID}). Spline {container.name} with {container.tag} tag.");
+                    Debug.Log($"Path set for {name} (ID: {SetID}). Spline {Container.name} with {Container.tag} tag.");
                 }
                 else
                 {
@@ -38,7 +38,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects
         {
             base.OnEnter(msg, context);
             
-            if (!CheckFacing(context.transform.forward) || !container)
+            if (!CheckFacing(context.transform.forward) || !Container)
                 return;
 
             _character = context;
@@ -115,13 +115,13 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects
         
         private SplineTag GetSplineTag(SplineContainer container)
         {
-            if (container.CompareTag("SideView"))
+            if (container.CompareTag("Splines/SideView"))
                 return SplineTag.SideView;
 
-            if (container.CompareTag("Quickstep"))
+            if (container.CompareTag("Splines/Quickstep"))
                 return SplineTag.Quickstep;
 
-            if (container.CompareTag("DashPath"))
+            if (container.CompareTag("Splines/DashPath"))
                 return SplineTag.DashPath;
 
             return SplineTag.Default;
@@ -158,13 +158,13 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects
             
             var gameObject = container.gameObject;
             
-            if (gameObject.CompareTag("SideView"))
+            if (gameObject.CompareTag("Splines/SideView"))
                 return SplineTag.SideView;
 
-            if (gameObject.CompareTag("Quickstep"))
+            if (gameObject.CompareTag("Splines/Quickstep"))
                 return SplineTag.Quickstep;
 
-            if (gameObject.CompareTag("DashPath"))
+            if (gameObject.CompareTag("Splines/DashPath"))
                 return SplineTag.DashPath;
 
             return SplineTag.Default;

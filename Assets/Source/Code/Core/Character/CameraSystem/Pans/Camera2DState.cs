@@ -38,7 +38,7 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem.Pans
             tg *= Mathf.Sign(Vector3.Dot(Character.transform.forward, tg));
             _tg = Vector3.SmoothDamp(_tg, tg * 0.5f, ref _tgVelocity, 0.2f);
 
-            return CalculateTarget() + _tg + _right * 6f;
+            return CalculateTarget() + _tg + _right * 8f;
         }
     }
 }
