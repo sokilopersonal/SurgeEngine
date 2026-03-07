@@ -4,6 +4,9 @@ using SurgeEngine.Source.Code.Core.Character.States;
 using SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic;
 using SurgeEngine.Source.Code.Core.Character.System;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 
@@ -11,10 +14,16 @@ namespace SurgeEngine
 {
     public class HintRing : MonoBehaviour
     {
+        [System.Serializable]
+        private struct HintMessage
+        {
+            public bool outOfControl;
+            [Multiline] public string message;
+            public float messageDuration;
+        }
+
         [Title("General")]
-        [SerializeField] private bool outOfControl = false;
-        [SerializeField] [Multiline] private string message;
-        [SerializeField] private float messageDuration;
+        [SerializeField] private List<HintMessage> messages = new List<HintMessage>();
         [SerializeField] private float cooldown = 2f;
 
         [FoldoutGroup("Visuals")]
@@ -29,34 +38,51 @@ namespace SurgeEngine
         [FoldoutGroup("Sound")]
         [SerializeField] private EventReference disappearSound;
 
-        public string GetMessage() { return message; }
-        public float GetMessageDuration() { return messageDuration; }
-
-        float _timer = 0f;
-        bool _activated = false;
+        private float _timer = 0f;
+        private bool _activated = false;
+        private bool _isCurrent = false;
+        private HintMessage currentMessage;
+        
+        public string GetMessage() { return currentMessage.message; }
+        public float GetMessageDuration() { return currentMessage.messageDuration; }
 
         public void OnActivated(CharacterBase context)
         {
             if (_activated) return;
 
-            ObjectEvents.OnHintTriggered?.Invoke(this);
-
             Hide();
 
-            if (outOfControl)
-            {
-                context.Kinematics.ResetHorizontalVelocity();
-                context.Flags.RemoveFlag(FlagType.OutOfControl);
-                context.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, messageDuration));
+            StartCoroutine(PlayMessages(context));
+        }
 
-                if (context.StateMachine.CurrentState is FStateGround)
+        IEnumerator PlayMessages(CharacterBase context)
+        {
+            for (int i = 0; i < messages.Count; i++)
+            {
+                currentMessage = messages[i];
+
+                ObjectEvents.OnHintTriggered?.Invoke(this);
+
+                if (currentMessage.outOfControl)
                 {
-                    context.StateMachine.SetState<FStateIdle>();
+                    context.Kinematics.ResetHorizontalVelocity();
+                    context.Flags.RemoveFlag(FlagType.OutOfControl);
+                    context.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, currentMessage.messageDuration));
+
+                    if (context.StateMachine.CurrentState is FStateGround)
+                    {
+                        context.StateMachine.SetState<FStateIdle>();
+                    }
+                    else if (context.StateMachine.CurrentState is FStateJump || context.StateMachine.CurrentState is FStateHoming)
+                    {
+                        context.StateMachine.SetState<FStateAir>();
+                    }
                 }
-                else if (context.StateMachine.CurrentState is FStateJump || context.StateMachine.CurrentState is FStateHoming)
-                {
-                    context.StateMachine.SetState<FStateAir>();
-                }
+
+                yield return new WaitForSeconds(currentMessage.messageDuration);
+
+                if (!_isCurrent)
+                    yield break;
             }
         }
 
@@ -64,7 +90,7 @@ namespace SurgeEngine
         {
             _activated = true;
 
-            _timer = messageDuration + cooldown;
+            _timer = cooldown;
 
             animator.Play("Touch", 0, 0);
 
@@ -77,6 +103,16 @@ namespace SurgeEngine
             _activated = false;
             animator.Play("Appear", 0, 0);
             RuntimeManager.PlayOneShot(appearSound, transform.position);
+        }
+        
+        private void OnTriggered(HintRing hint)
+        {
+            _isCurrent = hint == this;
+        }
+
+        private void Awake()
+        {
+            ObjectEvents.OnHintTriggered += OnTriggered;
         }
 
         private void Update()

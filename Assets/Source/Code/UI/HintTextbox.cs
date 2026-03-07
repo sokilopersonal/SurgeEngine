@@ -1,4 +1,6 @@
+using Alchemy.Inspector;
 using DG.Tweening;
+using SurgeEngine.Source.Code.Core.Character.System;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects;
 using TMPro;
 using UnityEngine;
@@ -7,13 +9,38 @@ namespace SurgeEngine
 {
     public class HintTextbox : MonoBehaviour
     {
-        [SerializeField] private GameObject hintBox;
-        [SerializeField] private TextMeshProUGUI textAsset;
+        [Header("Tween")]
         [SerializeField] private float easeTime = 0.5f;
         [SerializeField] private Ease ease = Ease.OutBack;
 
+        [Header("References")]
+        [SerializeField] private GameObject hintBox;
+        [SerializeField] private TextMeshProUGUI textAsset;
+
+        [FoldoutGroup("Button Prompts")]
+        [SerializeField] private TMP_SpriteAsset xboxSprite;
+        [FoldoutGroup("Button Prompts")]
+        [SerializeField] private TMP_SpriteAsset playstationSprite;
+        [FoldoutGroup("Button Prompts")]
+        [SerializeField] private TMP_SpriteAsset keyboardSprite;
+
         float _timer = 0f;
         HintRing _hint;
+
+        private TMP_SpriteAsset GetSpriteAsset()
+        {
+            switch (CharacterContext.Context.Input.GetDevice())
+            {
+                case GameDevice.Keyboard:
+                    return keyboardSprite;
+                case GameDevice.XboxController:
+                    return xboxSprite;
+                case GameDevice.Playstation:
+                    return playstationSprite;
+            }
+
+            return null;
+        }
 
         private void OnEnable()
         {
@@ -37,6 +64,7 @@ namespace SurgeEngine
             hintBox.transform.localScale = Vector3.up;
             hintBox.transform.DOScaleX(1f, easeTime).SetEase(ease);
             textAsset.text = _hint.GetMessage();
+            textAsset.spriteAsset = GetSpriteAsset();
         }
 
         public void Hide()

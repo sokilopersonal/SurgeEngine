@@ -2549,10 +2549,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e41c4cdfed4b80d4db9b62437842348d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SurgeEngine.HintTextbox
-  hintBox: {fileID: 5957973009033766403}
-  textAsset: {fileID: 7343425734716314158}
   easeTime: 0.2
   ease: 21
+  hintBox: {fileID: 5957973009033766403}
+  textAsset: {fileID: 7343425734716314158}
+  xboxSprite: {fileID: 11400000, guid: f46ee3cd10ddfcd4ab41a48330588663, type: 2}
+  playstationSprite: {fileID: 11400000, guid: a782e6bdb7e53114aaf8fd0135fe763a, type: 2}
+  keyboardSprite: {fileID: 11400000, guid: b60ffa8937e9d6d44b7e91417df038ce, type: 2}
 --- !u!1 &5756602815509513380
 GameObject:
   m_ObjectHideFlags: 0
@@ -3767,7 +3770,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Hello World!
+  m_text: Press the <sprite=0> button to jump!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f7ece2441ca34ba4aa0f4f9341214331, type: 2}
   m_sharedMaterial: {fileID: -6085641044547780390, guid: f7ece2441ca34ba4aa0f4f9341214331, type: 2}
@@ -3786,7 +3789,7 @@ MonoBehaviour:
     bottomLeft: {r: 1, g: 1, b: 1, a: 1}
     bottomRight: {r: 1, g: 1, b: 1, a: 1}
   m_fontColorGradientPreset: {fileID: 0}
-  m_spriteAsset: {fileID: 0}
+  m_spriteAsset: {fileID: 11400000, guid: f46ee3cd10ddfcd4ab41a48330588663, type: 2}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
   m_TextStyleHashCode: -1183493901
@@ -3794,12 +3797,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 50
+  m_fontSize: 70
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 50
+  m_fontSizeMax: 70
   m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
