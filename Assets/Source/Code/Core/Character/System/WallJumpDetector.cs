@@ -8,7 +8,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 {
     public class WallJumpDetector : MonoBehaviour
     {
-        private const string WallJumpTag = "WallJump";
+        private const string WallJumpTag = "Surge Engine/WallJump";
         private const float WallNormalMultiplier = 0.4f;
 
         [Inject] private CharacterBase _character;
@@ -44,8 +44,8 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             var wallRay = new Ray(body.position, body.linearVelocity);
             if (Physics.Raycast(wallRay, out var wallHit, 0.5f, _character.Config.castLayer))
             {
-                bool isWallJump = wallHit.collider.CompareTag(WallJumpTag);
-                if (isWallJump && Vector3.Dot(wallHit.normal, Vector3.up) == 0)
+                bool isWallJump = wallHit.collider.CompareTag(WallJumpTag) || _character.Kinematics.Path2D != null;
+                if (isWallJump && Mathf.Abs(Vector3.Angle(wallHit.normal, Vector3.up) - 90f) < 0.02)
                 {
                     _currentDetect.WallDetected = true;
                     body.position = wallHit.point + wallHit.normal * WallNormalMultiplier;

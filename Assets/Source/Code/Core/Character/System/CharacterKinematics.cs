@@ -6,6 +6,7 @@ using SurgeEngine.Source.Code.Gameplay.CommonObjects.ChangeModes;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.System;
 using SurgeEngine.Source.Code.Infrastructure.Config;
 using SurgeEngine.Source.Code.Infrastructure.Custom;
+using SurgeEngine.Source.Code.Infrastructure.Custom.Extensions;
 using UnityEngine;
 using UnityEngine.Splines;
 
@@ -82,6 +83,8 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         public event Action<ChangeMode2DData> OnPath2DChange;
         public event Action<ChangeMode3DData> OnPathForwardChange;
         public event Action<ChangeMode3DData> OnPathDashChange;
+        private PointSample _2dSample;
+        private float _lastRelativeTime;
         private Vector3 _lastTangent;
 
         private float _moveDot;
@@ -139,8 +142,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
                 if (Path2D != null)
                 {
-                    Path2D.Spline.EvaluateWorld(out _, out _, out _, out var right);
-                    _inputDir = Vector3.ProjectOnPlane(_inputDir, right);
+                    _inputDir = Vector3.ProjectOnPlane(_inputDir, _2dSample.Right);
                 }
             }
             
@@ -253,17 +255,20 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             {
                 var path = Path2D.Spline;
                 float sign = Mathf.Sign(Vector3.Dot(Rigidbody.transform.forward, path.EvaluateTangent()));
-                float skipDelta = CalculateSkipDelta(path, sign);
-                if (skipDelta > 0f)
-                {
-                    path.Time += skipDelta * sign;
-                }
                 
-                path.EvaluateWorld(out var pos, out var tg, out var up, out var right);
-                if (right != Vector3.zero)
+                _2dSample = path.EvaluateRelative(Rigidbody.position, _lastRelativeTime);
+                // _2dSample = path.Evaluate(path.Time / path.Length);
+                if (_2dSample.Right != Vector3.zero)
                 {
-                    Project(right);
+                    Project(Vector3.Cross(_2dSample.Tangent, Vector3.up));
                 }
+
+                SplineUtility.GetNearestPoint(path.Container.Spline,
+                    path.Container.transform.InverseTransformPoint(Rigidbody.position), out _, out var f);
+                
+                Debug.DrawRay(_2dSample.Position, _2dSample.Tangent, Color.purple, 0, false);
+                Debug.DrawRay(_2dSample.Position, _2dSample.Up, Color.green, 0, false);
+                Debug.DrawRay(_2dSample.Position, _2dSample.Right, Color.red, 0, false);
 
                 if (IsPathOutOfRange(Path2D))
                 {
@@ -271,8 +276,8 @@ namespace SurgeEngine.Source.Code.Core.Character.System
                     return;
                 }
                 
-                Vector3 endPos = pos;
-                endPos += Rigidbody.transform.up;
+                Vector3 endPos = _2dSample.Position;
+                endPos += _2dSample.Up;
                 endPos.y = Rigidbody.position.y;
 
                 float pathEaseTime = Path2D.PathEaseTime;
@@ -283,7 +288,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
                 if (Speed > 0.02f && Character.Flags.HasFlag(FlagType.Autorun))
                 {
-                    var rotTarget = Quaternion.LookRotation(tg * sign, up);
+                    var rotTarget = Quaternion.LookRotation(_2dSample.Tangent * sign, _2dSample.Up);
                     Rigidbody.MoveRotation(Quaternion.RotateTowards(Rigidbody.rotation, rotTarget, 720f * Time.fixedDeltaTime));
                 }
 
@@ -318,10 +323,19 @@ namespace SurgeEngine.Source.Code.Core.Character.System
                 {
                     target = physicsTarget;
                 }
+
+                Vector3 newPos = _2dSample.Position;
+                var targetY = Rigidbody.position.y;
+                    
+                SurgeMath.SplitPlanarVector(Rigidbody.position, _2dSample.Tangent.ProjectOnUp().normalized, out var pLat, out var pVer);
+                SurgeMath.SplitPlanarVector(newPos, _2dSample.Tangent.ProjectOnUp().normalized, out var nLat, out var nVer);
+                    
+                pLat = Vector3.MoveTowards(pLat, nLat, Mathf.Min(Speed / 2f, 1) * 12 * Time.fixedDeltaTime);
+                pLat.y = targetY;
+
+                Rigidbody.position = pLat + pVer;
                 
-                Rigidbody.MovePosition(target);
-                
-                path.Time += Vector3.Dot(Velocity, Vector3.ProjectOnPlane(tg.normalized, transform.up)) * Time.fixedDeltaTime;
+                path.Time += Vector3.Dot(Velocity, _2dSample.Tangent) * Time.fixedDeltaTime;
             }
         }
 
@@ -706,8 +720,13 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         {
             if (Path2D != null && data != null && Path2D.Spline.Container == data.Spline.Container)
                 return;
-            
+
             Path2D = data;
+            if (data != null)
+            {
+                SplineUtility.GetNearestPoint(data.Spline.Container.Spline, data.Spline.Container.transform.InverseTransformPoint(Rigidbody.position), out _, out _lastRelativeTime, 16, 4);
+                Debug.Log($"Set relative time: {_lastRelativeTime}");
+            }
             
             OnPath2DChange?.Invoke(data);
 
@@ -777,4 +796,6 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         Ground,
         Air
     }
+    
+    public interface ISkip2D { }
 }

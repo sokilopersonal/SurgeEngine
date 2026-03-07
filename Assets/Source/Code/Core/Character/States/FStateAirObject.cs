@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace SurgeEngine.Source.Code.Core.Character.States
 {
-    public abstract class FStateAirObject : FStateObject, IWallJumpDetect
+    public abstract class FStateAirObject : FStateObject, IWallJumpDetect, ISkip2D
     {
         public bool WallDetected { get; set; }
         

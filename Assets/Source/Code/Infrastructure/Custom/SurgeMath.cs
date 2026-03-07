@@ -28,7 +28,7 @@ namespace SurgeEngine.Source.Code.Infrastructure.Custom
         public static void SplitPlanarVector(Vector3 vector, Vector3 normal, out Vector3 planar, out Vector3 vertical)
         {
             planar = Vector3.ProjectOnPlane(vector, normal);
-            vertical = vector - Vector3.ProjectOnPlane(vector, normal);
+            vertical = vector - planar;
         }
     }
 }

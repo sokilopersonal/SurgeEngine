@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace SurgeEngine.Source.Code.Core.Character.States
 {
-    public class FStateWall : FCharacterState
+    public class FStateWall : FCharacterState, ISkip2D
     {
         public FStateWall(CharacterBase owner) : base(owner)
         {

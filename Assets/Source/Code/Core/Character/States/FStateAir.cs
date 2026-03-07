@@ -61,7 +61,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
                 vel.y = 0;
                 Model.RotateBody(vel, Vector3.up, 360f);
                 
-                if (Kinematics.Path2D != null && Kinematics.GetAttachState())
+                /*if (Kinematics.Path2D != null && Kinematics.GetAttachState()) // fix it in the future??
                 {
                     var path = Kinematics.Path2D.Spline;
                     var pos = path.EvaluatePosition();
@@ -75,12 +75,12 @@ namespace SurgeEngine.Source.Code.Core.Character.States
                         Rigidbody.rotation = Quaternion.FromToRotation(Vector3.up, up) * Rigidbody.rotation;
                         Rigidbody.linearVelocity = Vector3.ProjectOnPlane(Rigidbody.linearVelocity, up);
                     }
-                }
+                }*/
             }
             else
             {
                 bool predictedGround = Kinematics.CheckForPredictedGround(dt, Character.Config.castDistance, 4);
-                if (Kinematics.GetAttachState() && predictedGround)
+                if (Kinematics.GetAttachState())
                 {
                     var vel = Kinematics.Velocity;
                     vel.y = 0;

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace SurgeEngine.Source.Code.Core.Character.States
 {
-    public class FStateWallJump : FCharacterState, IWallJumpDetect
+    public class FStateWallJump : FCharacterState, IWallJumpDetect, ISkip2D
     {
         public bool WallDetected { get; set; }
         
