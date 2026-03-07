@@ -45,10 +45,6 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         private bool _triggered;
         private BoxCollider _collider;
         private EventInstance _eventInstance;
-
-#if UNITY_EDITOR
-        private Vector3 _lastPosition;
-#endif
         
         private void Awake()
         {
@@ -59,13 +55,9 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             UpdateVisual();
         }
         
-#if UNITY_EDITOR
         private void UpdateVisual()
         {
             if (!longEndpoint || !shortEndpoint || !spline) return;
-
-            if (_lastPosition == transform.position) return; // Only check when moved
-            _lastPosition = transform.position;
 
             Vector3 pos = spline.transform.TransformPoint(spline.Spline.EvaluatePosition(1f));
 
@@ -83,7 +75,8 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
                 longEndpoint.gameObject.SetActive(longCast);
             }
         }
-
+        
+#if UNITY_EDITOR
         private void OnDrawGizmos()
         {
             if (!longEndpoint || !shortEndpoint) return;

@@ -254,31 +254,22 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             if (Path2D != null && Path2D.Tag == SplineTag.SideView)
             {
                 var path = Path2D.Spline;
-                float sign = Mathf.Sign(Vector3.Dot(Rigidbody.transform.forward, path.EvaluateTangent()));
+
+                Vector3 rbPos = Rigidbody.position - transform.up;
                 
-                _2dSample = path.EvaluateRelative(Rigidbody.position, _lastRelativeTime);
-                // _2dSample = path.Evaluate(path.Time / path.Length);
+                _2dSample = path.EvaluateRelative(rbPos, _lastRelativeTime);
+                _lastRelativeTime = _2dSample.T;
                 if (_2dSample.Right != Vector3.zero)
                 {
-                    Project(Vector3.Cross(_2dSample.Tangent, Vector3.up));
+                    Project(_2dSample.Right);
                 }
-
-                SplineUtility.GetNearestPoint(path.Container.Spline,
-                    path.Container.transform.InverseTransformPoint(Rigidbody.position), out _, out var f);
                 
-                Debug.DrawRay(_2dSample.Position, _2dSample.Tangent, Color.purple, 0, false);
-                Debug.DrawRay(_2dSample.Position, _2dSample.Up, Color.green, 0, false);
-                Debug.DrawRay(_2dSample.Position, _2dSample.Right, Color.red, 0, false);
-
-                if (IsPathOutOfRange(Path2D))
+                float sign = Mathf.Sign(Vector3.Dot(Rigidbody.transform.forward, _2dSample.Tangent));
+                if (_2dSample.T <= 0f || _2dSample.T >= 1f)
                 {
                     Set2DPath(null);
                     return;
                 }
-                
-                Vector3 endPos = _2dSample.Position;
-                endPos += _2dSample.Up;
-                endPos.y = Rigidbody.position.y;
 
                 float pathEaseTime = Path2D.PathEaseTime;
                 if (Character.Flags.GetFlag<AutorunFlag>(out var autoRunFlag))
@@ -288,54 +279,27 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
                 if (Speed > 0.02f && Character.Flags.HasFlag(FlagType.Autorun))
                 {
-                    var rotTarget = Quaternion.LookRotation(_2dSample.Tangent * sign, _2dSample.Up);
+                    var rotTarget = Quaternion.LookRotation(_2dSample.Tangent * sign, Normal);
                     Rigidbody.MoveRotation(Quaternion.RotateTowards(Rigidbody.rotation, rotTarget, 720f * Time.fixedDeltaTime));
                 }
 
                 Vector3 target;
-                Vector3 physicsTarget = Vector3.MoveTowards(Rigidbody.position, endPos, Mathf.Min(Speed / 8f, 1) * 4f * Time.fixedDeltaTime);
+                Vector3 newPos = _2dSample.Position;
+                Vector3 physicsTarget = newPos + Vector3.ProjectOnPlane(Rigidbody.position - newPos, _2dSample.Right);
                 if (pathEaseTime > 0f)
                 {
                     Path2D.CurrentEaseTime += Time.fixedDeltaTime / pathEaseTime;
                     Path2D.CurrentEaseTime = Mathf.Clamp01(Path2D.CurrentEaseTime);
                     Path2D.StartPosition += Velocity * Time.fixedDeltaTime;
-
-                    if (Mathf.Approximately(Path2D.CurrentEaseTime, 1f))
-                    {
-                        target = physicsTarget;
-                    }
-                    else
-                    {
-                        float distanceToTarget = Vector3.Distance(Rigidbody.position, endPos);
-                        float timeToReach = Speed > 0f ? distanceToTarget / Speed : float.MaxValue;
-
-                        if (timeToReach < pathEaseTime) // safety first bro
-                        {
-                            target = physicsTarget;
-                        }
-                        else
-                        {
-                            target = Vector3.Lerp(Path2D.StartPosition, endPos, Path2D.CurrentEaseTime);
-                        }
-                    }
+                    
+                    target = Vector3.Lerp(Path2D.StartPosition, physicsTarget, Path2D.CurrentEaseTime);
                 }
                 else
                 {
                     target = physicsTarget;
                 }
-
-                Vector3 newPos = _2dSample.Position;
-                var targetY = Rigidbody.position.y;
-                    
-                SurgeMath.SplitPlanarVector(Rigidbody.position, _2dSample.Tangent.ProjectOnUp().normalized, out var pLat, out var pVer);
-                SurgeMath.SplitPlanarVector(newPos, _2dSample.Tangent.ProjectOnUp().normalized, out var nLat, out var nVer);
-                    
-                pLat = Vector3.MoveTowards(pLat, nLat, Mathf.Min(Speed / 2f, 1) * 12 * Time.fixedDeltaTime);
-                pLat.y = targetY;
-
-                Rigidbody.position = pLat + pVer;
                 
-                path.Time += Vector3.Dot(Velocity, _2dSample.Tangent) * Time.fixedDeltaTime;
+                Rigidbody.MovePosition(target);
             }
         }
 
@@ -344,8 +308,6 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             if (PathForward != null)
             {
                 AdjustVelocityForPath(PathForward);
-                
-                PathForward.Spline.Time += Vector3.Dot(Velocity, PathForward.Spline.EvaluateTangent()) * Time.fixedDeltaTime;
 
                 if (PathForward.IsLimitEdge)
                 {
@@ -362,8 +324,6 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             if (PathDash != null)
             {
                 AdjustVelocityForPath(PathDash);
-                
-                PathDash.Spline.Time += Vector3.Dot(Velocity, PathDash.Spline.EvaluateTangent()) * Time.fixedDeltaTime;
 
                 if (PathDash.IsLimitEdge)
                 {
@@ -374,53 +334,6 @@ namespace SurgeEngine.Source.Code.Core.Character.System
                 }
             }
         }
-        
-        private float CalculateSkipDelta(SplineData spline, float direction)
-        {
-            var container = spline.Container;
-            var containerTransform = container.transform;
-            const float step = 0.0001f;
-            const float verticalThreshold = 0.99f;
-            float currentNormalizedTime = spline.NormalizedTime;
-            float length = spline.Length;
-    
-            container.Spline.Evaluate(currentNormalizedTime, out _, out var currentTg, out _);
-            Vector3 currentTangent = containerTransform.TransformDirection(currentTg).normalized;
-    
-            if (Mathf.Abs(Vector3.Dot(currentTangent, Vector3.up)) <= verticalThreshold)
-                return 0f;
-
-            if (direction > 0f)
-            {
-                float searchTime = currentNormalizedTime + step;
-                while (searchTime <= 1f)
-                {
-                    container.Spline.Evaluate(searchTime, out _, out var testTg, out _);
-                    Vector3 testTangent = containerTransform.TransformDirection(testTg).normalized;
-            
-                    if (Mathf.Abs(Vector3.Dot(testTangent, Vector3.up)) <= verticalThreshold)
-                        return (searchTime - currentNormalizedTime) * length;
-            
-                    searchTime += step;
-                }
-                return (1f - currentNormalizedTime) * length;
-            }
-            else
-            {
-                float searchTime = currentNormalizedTime - step;
-                while (searchTime >= 0f)
-                {
-                    container.Spline.Evaluate(searchTime, out _, out var testTg, out _);
-                    Vector3 testTangent = containerTransform.TransformDirection(testTg).normalized;
-            
-                    if (Mathf.Abs(Vector3.Dot(testTangent, Vector3.up)) <= verticalThreshold)
-                        return (currentNormalizedTime - searchTime) * length;
-            
-                    searchTime -= step;
-                }
-                return currentNormalizedTime * length;
-            }
-        }
 
         private void AdjustVelocityForPath(ChangeMode3DData data)
         {
@@ -429,7 +342,8 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             {
                 if (CheckForGround(out _))
                 {
-                    data.Spline.EvaluateWorld(out _, out var tg, out _, out _);
+                    var sample = data.Spline.EvaluateNearest(Rigidbody.position);
+                    var tg = sample.Tangent;
                     
                     float dot = Vector3.Dot(Velocity.normalized, tg);
                     float sign = Mathf.Sign(dot);
@@ -721,13 +635,8 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             if (Path2D != null && data != null && Path2D.Spline.Container == data.Spline.Container)
                 return;
 
+            UpdateRelativeTime(data);
             Path2D = data;
-            if (data != null)
-            {
-                SplineUtility.GetNearestPoint(data.Spline.Container.Spline, data.Spline.Container.transform.InverseTransformPoint(Rigidbody.position), out _, out _lastRelativeTime, 16, 4);
-                Debug.Log($"Set relative time: {_lastRelativeTime}");
-            }
-            
             OnPath2DChange?.Invoke(data);
 
             if (PathForward != null)
@@ -746,8 +655,8 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             if (PathForward != null && data != null && PathForward.Spline.Container == data.Spline.Container)
                 return;
             
+            UpdateRelativeTime(data);
             PathForward = data;
-            
             OnPathForwardChange?.Invoke(data);
 
             if (Path2D != null)
@@ -766,8 +675,8 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             if (PathDash != null && data != null && PathDash.Spline.Container == data.Spline.Container)
                 return;
             
+            UpdateRelativeTime(data);
             PathDash = data;
-            
             OnPathDashChange?.Invoke(data);
             
             if (Path2D != null)
@@ -778,6 +687,14 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             if (PathForward != null)
             {
                 SetForwardPath(null);
+            }
+        }
+
+        private void UpdateRelativeTime(ChangeModeData data)
+        {
+            if (data != null)
+            {
+                SplineUtility.GetNearestPoint(data.Spline.Container.Spline, data.Spline.Container.transform.InverseTransformPoint(Rigidbody.position), out _, out _lastRelativeTime);
             }
         }
 

@@ -76,8 +76,8 @@ namespace SurgeEngine.Source.Editor.HE1Importer
         }
         private const string HESideViewTag = "@SV";
         private const string HEQuickstepTag = "@QS";
-        private const string UnitySideViewTag = "SideView";
-        private const string UnityQuickstepTag = "Quickstep";
+        private const string UnitySideViewTag = "Splines/SideView";
+        private const string UnityQuickstepTag = "Splines/Quickstep";
         
         public static void ReadSpline(string xmlPath)
         {

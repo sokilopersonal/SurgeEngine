@@ -88,6 +88,9 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects
 
             foreach (var container in containers)
             {
+                if (!container.gameObject.activeInHierarchy)
+                    continue;
+                
                 if (!IsSplineInFilter(container))
                     continue;
                 
