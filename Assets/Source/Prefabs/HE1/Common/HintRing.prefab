@@ -133,9 +133,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14769ff606ecfe644818604895d9ace5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SurgeEngine.HintRing
-  outOfControl: 0
-  message: Hello World!
-  messageDuration: 2
+  messages:
+  - outOfControl: 0
+    message: Hello World!
+    messageDuration: 2
+    animationDuration: 0.5
   cooldown: 2
   model: {fileID: 3769251421792876950}
   animator: {fileID: 49496737828730296}

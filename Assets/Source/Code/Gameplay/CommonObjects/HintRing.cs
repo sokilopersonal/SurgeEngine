@@ -15,16 +15,17 @@ namespace SurgeEngine
     public class HintRing : MonoBehaviour
     {
         [System.Serializable]
-        private struct HintMessage
+        public class HintMessage
         {
-            public bool outOfControl;
-            [Multiline] public string message;
-            public float messageDuration;
+            [Tooltip("Determines if the player has control while the hint is displayed")]public bool outOfControl;
+            [Multiline] public string message = "Hello World!";
+            [Tooltip("How long the hint will be seen on screen")] public float messageDuration = 2f;
+            [Tooltip("Set to zero to disable text animation")] public float animationDuration = 0.5f;
         }
 
         [Title("General")]
         [SerializeField] private List<HintMessage> messages = new List<HintMessage>();
-        [SerializeField] private float cooldown = 2f;
+        [Tooltip("The time until the hint ring can be activated again")][SerializeField] private float cooldown = 2f;
 
         [FoldoutGroup("Visuals")]
         [SerializeField] private GameObject model;
@@ -43,8 +44,7 @@ namespace SurgeEngine
         private bool _isCurrent = false;
         private HintMessage currentMessage;
         
-        public string GetMessage() { return currentMessage.message; }
-        public float GetMessageDuration() { return currentMessage.messageDuration; }
+        public HintMessage GetMessage() { return currentMessage; }
 
         public void OnActivated(CharacterBase context)
         {
