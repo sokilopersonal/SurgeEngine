@@ -74,14 +74,15 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
                 Vector3 worldPosL = transform.TransformPoint(posL);
                 Vector3 worldPosR = transform.TransformPoint(posR);
-                Debug.DrawRay(worldPosL, Vector3.up, Color.white);
-                Debug.DrawRay(worldPosR, Vector3.up, Color.white);
                 Vector3 worldTgR = transform.TransformDirection(tgR);
 
                 var position = Vector3.Lerp(worldPosL, worldPosR, 0.5f);
                 var tangent = worldTgR.normalized;
                 var right = Vector3.Normalize(worldPosR - worldPosL);
                 var up = Vector3.Cross(tangent, right);
+                
+                Debug.DrawRay(worldPosL, up, Color.white);
+                Debug.DrawRay(worldPosR, up, Color.white);
                 DrawDebug(position, tangent, up, right);
                 return new PointSample(position, tangent, up, right, t);
             }

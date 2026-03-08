@@ -143,14 +143,6 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
                 kinematics.Rigidbody.linearVelocity = newPlanarVelocity + verticalVelocity;
 
-                var path = kinematics.Path2D;
-                if (path != null)
-                {
-                    path.Spline.EvaluateWorld(out _, out var tg, out var up, out var right);
-                    
-                    kinematics.Project(right);
-                }
-
                 if (_targetSpeed == 0)
                 {
                     if (_currentEaseTime >= _easeTime)

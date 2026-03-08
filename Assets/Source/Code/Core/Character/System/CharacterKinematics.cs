@@ -264,6 +264,8 @@ namespace SurgeEngine.Source.Code.Core.Character.System
                     Project(_2dSample.Right);
                 }
                 
+                if (_lastTangent == Vector3.zero) _lastTangent = _2dSample.Tangent;
+                
                 float sign = Mathf.Sign(Vector3.Dot(Rigidbody.transform.forward, _2dSample.Tangent));
                 if (_2dSample.T <= 0f || _2dSample.T >= 1f)
                 {
@@ -272,15 +274,19 @@ namespace SurgeEngine.Source.Code.Core.Character.System
                 }
 
                 float pathEaseTime = Path2D.PathEaseTime;
-                if (Character.Flags.GetFlag<AutorunFlag>(out var autoRunFlag))
+                if (Character.Flags.GetFlag<AutorunFlag>(out var autoRunFlag) && autoRunFlag.PathEaseTime > 0)
                 {
                     pathEaseTime = autoRunFlag.PathEaseTime;
                 }
+                
+                Rigidbody.linearVelocity = Quaternion.FromToRotation(Vector3.ProjectOnPlane(_lastTangent, Vector3.up).normalized, 
+                    Vector3.ProjectOnPlane(_2dSample.Tangent, Vector3.up).normalized) * Rigidbody.linearVelocity;
+                _lastTangent = _2dSample.Tangent;
 
                 if (Speed > 0.02f && Character.Flags.HasFlag(FlagType.Autorun))
                 {
                     var rotTarget = Quaternion.LookRotation(_2dSample.Tangent * sign, Normal);
-                    Rigidbody.MoveRotation(Quaternion.RotateTowards(Rigidbody.rotation, rotTarget, 720f * Time.fixedDeltaTime));
+                    Rigidbody.MoveRotation(Quaternion.RotateTowards(Rigidbody.rotation, rotTarget, 720 * Time.fixedDeltaTime));
                 }
 
                 Vector3 target;
@@ -637,6 +643,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
             UpdateRelativeTime(data);
             Path2D = data;
+            _lastTangent = Vector3.zero;
             OnPath2DChange?.Invoke(data);
 
             if (PathForward != null)

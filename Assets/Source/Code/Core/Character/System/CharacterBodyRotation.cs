@@ -107,13 +107,10 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
         private float CalculateRotationSpeed(float angleDelta, float currentSpeed)
         {
-            if (currentSpeed <= SpeedThreshold)
-                return angleDelta;
+            float t = Mathf.InverseLerp(SpeedThreshold, _character.Config.topSpeed, currentSpeed);
+            float smooth = Mathf.SmoothStep(0f, 1f, t);
 
-            float speedRange = _character.Config.topSpeed - SpeedThreshold;
-            float speedFactor = (currentSpeed - SpeedThreshold) / speedRange;
-            float rotationMultiplier = Mathf.Lerp(1f, 0.5f, Mathf.Pow(speedFactor, 0.5f));
-            
+            float rotationMultiplier = Mathf.Lerp(1f, 0.5f, smooth);
             return angleDelta * rotationMultiplier;
         }
 
