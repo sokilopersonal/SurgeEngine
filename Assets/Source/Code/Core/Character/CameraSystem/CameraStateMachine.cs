@@ -210,14 +210,11 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem
             }
             else if (data == null)
             {
-                if (CurrentState is Camera2DState)
-                {
-                    _is2dCamera = false;
-                    ResetBlendFactor();
-                    SetDirection(_character.transform.forward);
-                    CurrentData = new();
-                    SetState<NewModernState>();
-                }
+                _is2dCamera = false;
+                ResetBlendFactor();
+                SetDirection(_character.transform.forward);
+                CurrentData = new();
+                SetState<NewModernState>();
             }
         }
 
