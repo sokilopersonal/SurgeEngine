@@ -2,7 +2,6 @@
 using SurgeEngine.Source.Code.Core.Character.System;
 using SurgeEngine.Source.Code.Core.StateMachine.Base;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.ChangeModes;
-using SurgeEngine.Source.Code.Infrastructure.Custom.Extensions;
 using UnityEngine;
 using UnityEngine.Splines;
 
@@ -21,9 +20,12 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility.Rails
         public HomingTarget HomingTarget { get; private set; }
 
         private CharacterBase _character;
+        private Collider _collider;
 
         private void Awake()
         {
+            _collider = GetComponentInChildren<Collider>();
+            
             if (!container)
                 container = GetComponent<SplineContainer>();
             
@@ -47,7 +49,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility.Rails
 
         private void AttachToRail(CharacterBase character)
         {
-            Physics.IgnoreCollision(GetComponentInChildren<Collider>(), character.Kinematics.Rigidbody.GetComponent<Collider>(), true);
+            Physics.IgnoreCollision(_collider, character.Model.Collision, true);
             character.StateMachine.SetState<FStateGrind>()?.SetRail(this, dominant);
             _character = character;
             _character.StateMachine.OnStateAssign += DisableCollision;
@@ -57,7 +59,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility.Rails
         {
             if (obj is not FStateGrind)
             {
-                Physics.IgnoreCollision(GetComponentInChildren<Collider>(), _character.Kinematics.Rigidbody.GetComponent<Collider>(), false);
+                Physics.IgnoreCollision(_collider, _character.Model.Collision, false);
                 _character.StateMachine.OnStateAssign -= DisableCollision;
             }
         }

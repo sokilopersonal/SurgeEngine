@@ -258,7 +258,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
                 Vector3 rbPos = Rigidbody.position - transform.up;
                 
                 _2dSample = path.EvaluateRelative(rbPos, _lastRelativeTime);
-                _lastRelativeTime = _2dSample.T;
+                _lastRelativeTime = _2dSample.Time;
                 if (_2dSample.Right != Vector3.zero)
                 {
                     Project(_2dSample.Right);
@@ -267,7 +267,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
                 if (_lastTangent == Vector3.zero) _lastTangent = _2dSample.Tangent;
                 
                 float sign = Mathf.Sign(Vector3.Dot(Rigidbody.transform.forward, _2dSample.Tangent));
-                if (_2dSample.T <= 0f || _2dSample.T >= 1f)
+                if (_2dSample.Time <= 0f || _2dSample.Time >= 1f)
                 {
                     Set2DPath(null);
                     return;

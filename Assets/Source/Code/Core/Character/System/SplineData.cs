@@ -29,7 +29,6 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         {
             var transform = _container.transform;
             float t = NormalizedTime;
-            
             if (_container.Splines.Count == 2)
             {
                 var splineL = _container.Splines[Dominant == DominantSpline.Left ? 0 : 1];
@@ -107,7 +106,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         
         public PointSample EvaluateNearest(Vector3 position, int resolution = 4, int iterations = 2)
         {
-            SplineUtility.GetNearestPoint(_container.Spline, _container.transform.InverseTransformPoint(position), out var t, out var f, resolution, iterations);
+            SplineUtility.GetNearestPoint(_container.Spline, _container.transform.InverseTransformPoint(position), out _, out var f, resolution, iterations);
 
             return Evaluate(f);
         }
@@ -143,8 +142,8 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
             PointSample result = bestDist <= backDist ? bestSample : backSample;
             
-            if (result.T >= 1f - step) return Evaluate(1f);
-            if (result.T <= step)      return Evaluate(0f);
+            if (result.Time >= 1f - step) return Evaluate(1f);
+            if (result.Time <= step)      return Evaluate(0f);
 
             return result;
         }
@@ -189,7 +188,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         public Vector3 Tangent;
         public Vector3 Up;
         public Vector3 Right;
-        public readonly float T;
+        public readonly float Time;
         
         public PointSample(Vector3 position, Vector3 tangent, Vector3 up, Vector3 right, float t)
         {
@@ -197,7 +196,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             Tangent = tangent;
             Up = up;
             Right = right;
-            T = t;
+            Time = t;
         }
         
         public Vector3 ProjectOnUp(Vector3 plane) => Vector3.ProjectOnPlane(plane, Up);

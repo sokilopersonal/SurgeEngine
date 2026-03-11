@@ -23,7 +23,7 @@ namespace SurgeEngine.Source.Code.Tests
         private void FixedUpdate()
         {
             var sample = _splineData.EvaluateRelative(searchTarget.position, _relative, 64);
-            _relative = sample.T;
+            _relative = sample.Time;
             
             Debug.DrawRay(sample.Position, sample.Tangent, Color.purple, 0, false);
             Debug.DrawRay(sample.Position, sample.Up, Color.green, 0, false);
