@@ -26,6 +26,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
             _switchTimer = 0;
 
             Kinematics.IsKinematic = true;
+            Rigidbody.isKinematic = true;
         }
 
         public override void OnExit()
@@ -33,17 +34,19 @@ namespace SurgeEngine.Source.Code.Core.Character.States
             base.OnExit();
 
             Kinematics.IsKinematic = false;
+            Rigidbody.isKinematic = false;
         }
 
-        public override void OnTick(float dt)
+        public override void OnFixedTick(float dt)
         {
-            base.OnTick(dt);
+            base.OnFixedTick(dt);
     
             _data.EvaluateWorld(out var pos, out var tg, out var up, out var right);
 
             if (tg == Vector3.zero)
             {
                 Kinematics.IsKinematic = false;
+                Rigidbody.isKinematic = false;
                 Rigidbody.linearVelocity = _savedVelocity;
                 StateMachine.SetState<FStateAir>();
                 return;
@@ -72,6 +75,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
             if (_switchTimer >= 1f)
             {
                 Kinematics.IsKinematic = false;
+                Rigidbody.isKinematic = false;
                 if (!Physics.Raycast(new Ray(Rigidbody.position, Vector3.down), out var hit, 2f, Character.Config.railMask))
                 {
                     Vector3 vertical = p2 - p1;

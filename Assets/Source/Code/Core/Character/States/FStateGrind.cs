@@ -15,13 +15,13 @@ namespace SurgeEngine.Source.Code.Core.Character.States
         
         private bool _isForward;
         private float _timer;
-        private bool _switching => Character.Animation.StateAnimator.GetCurrentAnimationState().Contains("GrindSwitch");
+        private bool Switching => Character.Animation.StateAnimator.GetCurrentAnimationState().Contains("GrindSwitch");
 
-        protected float gravityPower;
+        protected float GravityPower;
         
         public FStateGrind(CharacterBase owner) : base(owner)
         {
-            gravityPower = 10f;
+            GravityPower = 10f;
         }
 
         public override void OnEnter()
@@ -46,17 +46,17 @@ namespace SurgeEngine.Source.Code.Core.Character.States
 
             if (this is not FStateGrindSquat)
             {
-                if (Input.BHeld && !_switching)
+                if (Input.BHeld && !Switching)
                 {
                     StateMachine.SetState<FStateGrindSquat>()?.Share(_rail, _data, _isForward);
                 }
             }
 
-            if (Input.LeftBumperHeld && !_switching)
+            if (Input.LeftBumperHeld && !Switching)
             {
                 FindRailInDirection(true);
             }
-            else if (Input.RightBumperHeld && !_switching)
+            else if (Input.RightBumperHeld && !Switching)
             {
                 FindRailInDirection(false);
             }
@@ -79,7 +79,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
                 Rigidbody.linearVelocity = Vector3.ProjectOnPlane(Rigidbody.linearVelocity, targetUp);
                 Rigidbody.linearVelocity = Vector3.ProjectOnPlane(Rigidbody.linearVelocity, right);
                 
-                Vector3 downForce = Vector3.ProjectOnPlane(Vector3.down, targetUp) * gravityPower;
+                Vector3 downForce = Vector3.ProjectOnPlane(Vector3.down, targetUp) * GravityPower;
                 Rigidbody.AddForce(downForce * dt, ForceMode.Impulse);
                 
                 Vector3 endPos = pos + targetUp * (1 + _rail.Radius);
@@ -172,6 +172,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
         {
             _timer = Mathf.Abs(time);
         }
+        
         public bool IsRailCooldown() => _timer > 0;
     }
 }

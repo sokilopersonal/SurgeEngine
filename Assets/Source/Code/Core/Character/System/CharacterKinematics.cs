@@ -6,7 +6,6 @@ using SurgeEngine.Source.Code.Gameplay.CommonObjects.ChangeModes;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.System;
 using SurgeEngine.Source.Code.Infrastructure.Config;
 using SurgeEngine.Source.Code.Infrastructure.Custom;
-using SurgeEngine.Source.Code.Infrastructure.Custom.Extensions;
 using UnityEngine;
 using UnityEngine.Splines;
 

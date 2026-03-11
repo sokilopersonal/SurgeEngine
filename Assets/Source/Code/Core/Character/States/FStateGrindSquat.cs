@@ -6,7 +6,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
     {
         public FStateGrindSquat(CharacterBase owner) : base(owner)
         {
-            gravityPower = 14;
+            GravityPower = 14;
         }
 
         public override void OnEnter()
