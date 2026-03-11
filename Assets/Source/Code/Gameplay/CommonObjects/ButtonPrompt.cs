@@ -1,23 +1,29 @@
+using Alchemy.Inspector;
 using FMODUnity;
 using SurgeEngine.Source.Code.Core.Character.System;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects;
+using SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility;
 using UnityEngine;
 
 namespace SurgeEngine
 {
     public class ButtonPrompt : StageObject
     {
-        [System.Serializable]
-        private struct PlatformSprite
-        {
-            public Sprite keyboardSprite;
-            public Sprite xboxSprite;
-            public Sprite playstationSprite;
-        }
+        [FoldoutGroup("Button Sprites")]
+        [SerializeField] private PlatformSprite aPrompt;
+        [FoldoutGroup("Button Sprites")]
+        [SerializeField] private PlatformSprite bPrompt;
+        [FoldoutGroup("Button Sprites")]
+        [SerializeField] private PlatformSprite xPrompt;
+        [FoldoutGroup("Button Sprites")]
+        [SerializeField] private PlatformSprite yPrompt;
+        [FoldoutGroup("Button Sprites")]
+        [SerializeField] private PlatformSprite lbPrompt;
+        [FoldoutGroup("Button Sprites")]
+        [SerializeField] private PlatformSprite rbPrompt;
 
         [Header("General")]
-        [SerializeField] private PlatformSprite sprite;
-        [Space(10)]
+        [SerializeField] private ButtonType buttonType;
         [SerializeField] private float activeTime;
         [SerializeField] private Transform trackTransform;
 
@@ -26,15 +32,22 @@ namespace SurgeEngine
 
         public float GetActiveTime() { return activeTime; }
         public Transform GetTransform() { return trackTransform; }
+        public ButtonType GetButtonType() { return buttonType; }
         public Sprite GetSprite() {
-            switch (CharacterContext.Context.Input.GetDevice())
+            switch (buttonType)
             {
-                case GameDevice.Keyboard:
-                    return sprite.keyboardSprite;
-                case GameDevice.XboxController:
-                    return sprite.xboxSprite;
-                case GameDevice.Playstation:
-                    return sprite.playstationSprite;
+                case ButtonType.A:
+                    return aPrompt.GetDeviceSprite();
+                case ButtonType.B:
+                    return bPrompt.GetDeviceSprite();
+                case ButtonType.X:
+                    return xPrompt.GetDeviceSprite();
+                case ButtonType.Y:
+                    return yPrompt.GetDeviceSprite();
+                case ButtonType.LB:
+                    return lbPrompt.GetDeviceSprite();
+                case ButtonType.RB:
+                    return rbPrompt.GetDeviceSprite();
                 default:
                     return null;
             }

@@ -1,6 +1,8 @@
 using DG.Tweening;
 using FMODUnity;
+using SurgeEngine.Source.Code.Core.Character.System;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects;
+using SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,21 +11,55 @@ namespace SurgeEngine
     public class ButtonPromptUI : MonoBehaviour
     {
         [SerializeField] private Image buttonImage;
+
+        [SerializeField] private Transform center;
+        [SerializeField] private Transform left;
+        [SerializeField] private Transform right;
+
+        [SerializeField] private Animator effectAnimator;
+
         ButtonPrompt _prompt;
         float _time;
 
         private void OnEnable()
         {
             ObjectEvents.OnButtonPromptTriggered += OnPrompt;
+            CharacterContext.Context.Input.OnButtonPressed += OnButtonPressed;
         }
         private void OnDisable()
         {
             ObjectEvents.OnButtonPromptTriggered -= OnPrompt;
+            CharacterContext.Context.Input.OnButtonPressed -= OnButtonPressed;
+        }
+
+        private void OnButtonPressed(ButtonType type)
+        {
+            if (_prompt == null || type != _prompt.GetButtonType() || _time <= 0f || effectAnimator.gameObject.activeSelf)
+                return;
+
+            _time = .15f;
+            effectAnimator.gameObject.SetActive(true);
+            effectAnimator.Play("Click", 0, 0);
         }
         private void OnPrompt(ButtonPrompt buttonPrompt)
         {
+            effectAnimator.gameObject.SetActive(false);
+
             _prompt = buttonPrompt;
             _time = _prompt.GetActiveTime();
+
+            switch (_prompt.GetButtonType())
+            {
+                case ButtonType.LB:
+                    buttonImage.transform.SetParent(left);
+                    break;
+                case ButtonType.RB:
+                    buttonImage.transform.SetParent(right);
+                    break;
+                default:
+                    buttonImage.transform.SetParent(center);
+                    break;
+            }
 
             buttonImage.enabled = true;
 
@@ -37,6 +73,14 @@ namespace SurgeEngine
             buttonImage.transform.DOScale(Vector3.one, 0.1f);
         }
 
+        private void Hide()
+        {
+            _time = 0f;
+            buttonImage.DOFade(0f, 0.1f);
+            effectAnimator.gameObject.SetActive(false);
+            _prompt = null;
+        }
+
         private void Update()
         {
             if (_prompt == null)
@@ -48,8 +92,7 @@ namespace SurgeEngine
 
                 if (_time < 0f)
                 {
-                    buttonImage.DOFade(0f, 0.1f);
-                    _prompt = null;
+                    Hide();
                     return;
                 }
             }
