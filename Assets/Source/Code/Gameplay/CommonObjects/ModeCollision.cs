@@ -1,4 +1,5 @@
 ﻿using System;
+using Alchemy.Inspector;
 using SurgeEngine.Source.Code.Core.Character.System;
 using UnityEngine;
 using UnityEngine.Splines;
@@ -11,7 +12,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects
         [SerializeField] protected bool isEnabledFromBack = true;
         [SerializeField] protected bool isEnabledFromFront = true;
         
-        protected SplineContainer Container;
+        [SerializeField, ReadOnly] protected SplineContainer Container;
         protected virtual SplineTag SplineTagFilter => SplineTag.All;
 
         private CharacterBase _character;

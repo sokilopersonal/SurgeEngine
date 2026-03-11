@@ -266,7 +266,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
                 if (_lastTangent == Vector3.zero) _lastTangent = _2dSample.Tangent;
                 
                 float sign = Mathf.Sign(Vector3.Dot(Rigidbody.transform.forward, _2dSample.Tangent));
-                if (_2dSample.Time <= 0f || _2dSample.Time >= 1f)
+                if (IsPathOutOfRange(_2dSample.Time))
                 {
                     Set2DPath(null);
                     return;
@@ -313,14 +313,6 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             if (PathForward != null)
             {
                 AdjustVelocityForPath(PathForward);
-
-                if (PathForward.IsLimitEdge)
-                {
-                    if (IsPathOutOfRange(PathForward))
-                    {
-                        SetForwardPath(null);
-                    }
-                }
             }
         }
 
@@ -329,14 +321,6 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             if (PathDash != null)
             {
                 AdjustVelocityForPath(PathDash);
-
-                if (PathDash.IsLimitEdge)
-                {
-                    if (IsPathOutOfRange(PathDash))
-                    {
-                        SetDashPath(null);
-                    }
-                }
             }
         }
 
@@ -349,6 +333,16 @@ namespace SurgeEngine.Source.Code.Core.Character.System
                 {
                     var sample = data.Spline.EvaluateNearest(Rigidbody.position);
                     var tg = sample.Tangent;
+                    
+                    if (data.IsLimitEdge)
+                    {
+                        if (IsPathOutOfRange(sample.Time))
+                        {
+                            SetForwardPath(null);
+                            SetDashPath(null);
+                            return;
+                        }
+                    }
                     
                     float dot = Vector3.Dot(Velocity.normalized, tg);
                     float sign = Mathf.Sign(dot);
@@ -711,7 +705,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             SetDashPath(null);
         }
 
-        private static bool IsPathOutOfRange(ChangeModeData data) => data.Spline.Time > data.Spline.Length || data.Spline.Time < 0;
+        private static bool IsPathOutOfRange(float t) => t >= 1f || t <= 0;
     }
 
     public enum MovementType

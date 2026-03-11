@@ -110,11 +110,11 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem
                 {
                     Vector3 center = _characterPosition;
                     Vector3 diff = pos - center;
-                    _position = Vector3.Lerp(_data.position, diff, t);
+                    _position = Vector3.Slerp(_data.Position, diff, t);
                     _position += center;
                     
-                    _rotation = Quaternion.Lerp(_data.rotation, rot, t);
-                    _fovY = Mathf.Lerp(_data.fov, currentCameraState.StateFOV, t);
+                    _rotation = Quaternion.Slerp(_data.Rotation, rot, t);
+                    _fovY = Mathf.Lerp(_data.FOV, currentCameraState.StateFOV, t);
                 }
                 
                 if (BlendFactor >= 1)
@@ -208,7 +208,7 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem
                 CurrentData = new();
                 SetState<Camera2DState>();
             }
-            else if (data == null)
+            else if (data == null && _is2dCamera) // why reset the camera from 2d state if we are not in 2d state?
             {
                 _is2dCamera = false;
                 ResetBlendFactor();
@@ -245,9 +245,9 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem
             Vector3 center = _characterPosition;
             _data = new()
             {
-                position = _position - center,
-                rotation = _rotation,
-                fov = Camera.fieldOfView,
+                Position = _position - center,
+                Rotation = _rotation,
+                FOV = Camera.fieldOfView,
             };
         }
 
@@ -275,9 +275,9 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem
                 
                 _data = new()
                 {
-                    position = pos - _characterPosition,
-                    rotation = rot,
-                    fov = fov,
+                    Position = pos - _characterPosition,
+                    Rotation = rot,
+                    FOV = fov,
                 };
 
                 BlendFactor = 1;
@@ -287,8 +287,8 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem
 
     public class CameraData
     {
-        public Vector3 position;
-        public Quaternion rotation;
-        public float fov;
+        public Vector3 Position;
+        public Quaternion Rotation;
+        public float FOV;
     }
 }
