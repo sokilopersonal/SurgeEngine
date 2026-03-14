@@ -260,7 +260,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
                 _lastRelativeTime = _2dSample.Time;
                 if (_2dSample.Right != Vector3.zero)
                 {
-                    Project(_2dSample.Right);
+                    //Project(_2dSample.Right);
                 }
                 
                 if (_lastTangent == Vector3.zero) _lastTangent = _2dSample.Tangent;
@@ -543,7 +543,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         {
             if (Speed > normalSpeedThreshold)
             {
-                float t = Speed / 2;
+                float t = Speed;
                 Normal = Vector3.Slerp(Normal, targetNormal, t * Time.fixedDeltaTime);
             }
             else
