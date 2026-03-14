@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.System;
-using SurgeEngine.Source.Code.Gameplay.Enemy.EggFighter;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -15,24 +14,23 @@ namespace SurgeEngine.Source.Code.Gameplay.Enemy.RagdollPhysics
         [SerializeField] private UnityEvent onPointMarkerLoad;
         [SerializeField] private List<EnemyRagdollLimb> limbs;
         [SerializeField] private float limbMassScale = 1f;
-        public LayerMask collideLayers;
+        [SerializeField] private LayerMask collideLayers;
+        public LayerMask CollideLayers => collideLayers;
 
-        private float timer;
-        public float Timer => timer;
+        private float _timer;
+        public float Timer => _timer;
 
         private bool _hit;
         private bool _isInRagdoll;
 
         [Header("Lifetime")]
-        public float minimumLifeTime = 0.25f;
-        public float maximumLifeTime = 4f;
-
-        private EggFighter.EggFighter _eggFighter;
+        [SerializeField] private float minimumLifeTime = 0.25f;
+        [SerializeField] private float maximumLifeTime = 4f;
+        public float MinimumLifeTime => minimumLifeTime;
+        public float MaximumLifeTime => maximumLifeTime;
 
         private void Start()
         {
-            _eggFighter = GetComponentInParent<EggFighter.EggFighter>();
-            
             foreach (EnemyRagdollLimb limb in limbs)
             {
                 limb.SetRagdoll(this);
@@ -40,7 +38,7 @@ namespace SurgeEngine.Source.Code.Gameplay.Enemy.RagdollPhysics
             }
         }
 
-        public void Ragdoll(Vector3 force = new Vector3(), ForceMode mode = ForceMode.VelocityChange)
+        public void Ragdoll(Vector3 force = new(), ForceMode mode = ForceMode.VelocityChange)
         {
             if (_isInRagdoll)
                 return;
@@ -67,9 +65,9 @@ namespace SurgeEngine.Source.Code.Gameplay.Enemy.RagdollPhysics
             if (!_isInRagdoll)
                 return;
             
-            timer += Time.deltaTime;
+            _timer += Time.deltaTime;
             
-            if (timer > maximumLifeTime)
+            if (_timer > MaximumLifeTime)
                 Explode();
         }
 
@@ -79,15 +77,16 @@ namespace SurgeEngine.Source.Code.Gameplay.Enemy.RagdollPhysics
                 return;
 
             _hit = true;
-
-            (_eggFighter.View as EGView)?.Destroy();
+            OnExplode();
         }
+
+        protected virtual void OnExplode() { }
 
         public void Load()
         {
             _isInRagdoll = false;
             _hit = false;
-            timer = 0;
+            _timer = 0;
 
             foreach (var limb in limbs)
             {

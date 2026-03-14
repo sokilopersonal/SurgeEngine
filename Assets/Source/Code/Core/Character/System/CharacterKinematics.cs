@@ -260,7 +260,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
                 _lastRelativeTime = _2dSample.Time;
                 if (_2dSample.Right != Vector3.zero)
                 {
-                    //Project(_2dSample.Right);
+                    Project(_2dSample.Right);
                 }
                 
                 if (_lastTangent == Vector3.zero) _lastTangent = _2dSample.Tangent;

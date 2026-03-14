@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace SurgeEngine.Source.Code.Gameplay.Enemy.RagdollPhysics
@@ -18,12 +19,13 @@ namespace SurgeEngine.Source.Code.Gameplay.Enemy.RagdollPhysics
             _rb = GetComponent<Rigidbody>();
             SetActive(_active);
         }
-        
-        public void SetActive(bool set)
+
+        public void SetActive(bool active)
         {
-            _active = set;
+            _active = active;
             _col.enabled = _active;
             _rb.isKinematic = !_active;
+            _rb.interpolation = RigidbodyInterpolation.None;
         }
         
         public void AddForce(Vector3 force, ForceMode mode)
@@ -41,13 +43,13 @@ namespace SurgeEngine.Source.Code.Gameplay.Enemy.RagdollPhysics
         
         public void OnCollisionEnter(Collision collision)
         {
-            if (_active && _ragdoll != null && _ragdoll.Timer > _ragdoll.minimumLifeTime && _ragdoll.collideLayers == (_ragdoll.collideLayers | (1 << collision.gameObject.layer)))
+            if (_active && _ragdoll != null && _ragdoll.Timer > _ragdoll.MinimumLifeTime && _ragdoll.CollideLayers == (_ragdoll.CollideLayers | (1 << collision.gameObject.layer)))
                 _ragdoll.Explode();
         }
         
         public void OnCollisionStay(Collision collision)
         {
-            if (_active && _ragdoll != null && _ragdoll.Timer > _ragdoll.minimumLifeTime && _ragdoll.collideLayers == (_ragdoll.collideLayers | (1 << collision.gameObject.layer)))
+            if (_active && _ragdoll != null && _ragdoll.Timer > _ragdoll.MinimumLifeTime && _ragdoll.CollideLayers == (_ragdoll.CollideLayers | (1 << collision.gameObject.layer)))
                 _ragdoll.Explode();
         }
 

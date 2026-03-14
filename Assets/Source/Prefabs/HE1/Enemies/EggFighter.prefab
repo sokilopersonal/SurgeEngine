@@ -107,7 +107,7 @@ MonoBehaviour:
   view: {fileID: 1331910105712177873}
   animation: {fileID: 1855336814515770894}
   effects: {fileID: 2565871558992367779}
-  ragdollPrefab: {fileID: 3051861874619504407}
+  ragdollPrefab: {fileID: 5592203014478498480}
   punchAnimationCallback: {fileID: 3076461262156163148}
   punchColliderReference: {fileID: 8346790580485942229}
   type: 0
@@ -585,13 +585,13 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: efc2ce8db1f28fa4eba27cea4d948f68, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 3051861874619504407}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: efc2ce8db1f28fa4eba27cea4d948f68, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 334434458288507473}
+      addedObject: {fileID: 5592203014478498480}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: efc2ce8db1f28fa4eba27cea4d948f68, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1855336814515770894}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: efc2ce8db1f28fa4eba27cea4d948f68, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 334434458288507473}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: efc2ce8db1f28fa4eba27cea4d948f68, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3076461262156163148}
@@ -1902,7 +1902,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: efc2ce8db1f28fa4eba27cea4d948f68, type: 3}
   m_PrefabInstance: {fileID: 6018752067041678659}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &3051861874619504407
+--- !u!114 &5592203014478498480
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1911,9 +1911,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 6865613164431009810}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa14b8f1724d6984ba87b6f871759b2a, type: 3}
+  m_Script: {fileID: 11500000, guid: c792eac4d8634033ad0f545662276ba7, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::SurgeEngine.Source.Code.Gameplay.Enemy.EggFighter.EGRagdoll
   meshRenderer: {fileID: 1203498004719646549}
   disableWhenRagdoll:
   - {fileID: 2504031105690306439}
@@ -1965,20 +1965,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4097
   minimumLifeTime: 0.75
-  maximumLifeTime: 4
---- !u!114 &334434458288507473
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6865613164431009810}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da6493e362584b0ab638b59ffe29f5f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 210669400954136786}
+  maximumLifeTime: 3
 --- !u!114 &1855336814515770894
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1992,6 +1979,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stateAnimator: {fileID: 334434458288507473}
+--- !u!114 &334434458288507473
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6865613164431009810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da6493e362584b0ab638b59ffe29f5f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 210669400954136786}
 --- !u!114 &3076461262156163148
 MonoBehaviour:
   m_ObjectHideFlags: 0
