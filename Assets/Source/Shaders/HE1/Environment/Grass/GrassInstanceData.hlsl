@@ -7,13 +7,10 @@ struct GPUGrassInstance
     float4 posAndTex;
 };
 
-int _TotalCount;
 StructuredBuffer<GPUGrassInstance> _VisibleInstances;
 
 void GetGrassInstanceData_float(uint InstanceID, out float3 WorldPosition, out float TextureIndex, out half Width, out half Height, out half Angle)
 {
-    if (_TotalCount == 0) return;
-    
     GPUGrassInstance inst = _VisibleInstances[InstanceID];
     float4x4 m = inst.mat;
     WorldPosition = inst.posAndTex.xyz;

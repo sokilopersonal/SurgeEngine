@@ -5,10 +5,6 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using Random = UnityEngine.Random;
 
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
-
 namespace SurgeEngine.Source.Code.Rendering
 {
     [StructLayout(LayoutKind.Sequential)]
@@ -32,8 +28,6 @@ namespace SurgeEngine.Source.Code.Rendering
         private static readonly int PropVisibleInst = Shader.PropertyToID("_VisibleInstances");
         private static readonly int PropCounter = Shader.PropertyToID("_Counter");
         private static readonly int PropArgs = Shader.PropertyToID("_Args");
-
-        private const int GPUStride = 80;
 
         [Serializable]
         public struct GrassInstance
@@ -142,11 +136,13 @@ namespace SurgeEngine.Source.Code.Rendering
                 gpuData[i].mat = Matrix4x4.TRS(inst.position, rotation, new Vector3(inst.width, inst.height, inst.width));
                 gpuData[i].posAndTex = new Vector4(inst.position.x, inst.position.y, inst.position.z, inst.textureIndex);
             }
+            
+            int stride = Marshal.SizeOf(typeof(GPUGrassInstance));
 
-            _allInstancesBuffer = new ComputeBuffer(_totalInstanceCount, GPUStride, ComputeBufferType.Structured);
+            _allInstancesBuffer = new ComputeBuffer(_totalInstanceCount, stride, ComputeBufferType.Structured);
             _allInstancesBuffer.SetData(gpuData);
 
-            _visibleBuffer = new ComputeBuffer(_totalInstanceCount, GPUStride, ComputeBufferType.Structured);
+            _visibleBuffer = new ComputeBuffer(_totalInstanceCount, stride, ComputeBufferType.Structured);
             _counterBuffer = new ComputeBuffer(1, sizeof(int), ComputeBufferType.Structured);
 
             uint[] args = new uint[5];
@@ -166,6 +162,7 @@ namespace SurgeEngine.Source.Code.Rendering
                 shadowCastingMode = ShadowCastingMode.Off,
                 receiveShadows = true
             };
+            _propertyBlock.SetBuffer(PropVisibleInst, _visibleBuffer);
         }
 
         private void Render(ScriptableRenderContext ctx, Camera cam)
@@ -178,9 +175,6 @@ namespace SurgeEngine.Source.Code.Rendering
             if (debugCamera != null) cam = debugCamera;
 
             DispatchCulling(cam);
-
-            _rp.matProps.SetBuffer(PropVisibleInst, _visibleBuffer);
-            _rp.matProps.SetInt(PropTotalCount, _totalInstanceCount);
             
             _rp.matProps.SetFloat(PropMaxDistance, useRenderDistance ? maxRenderDistance : -1);
             _rp.matProps.SetVector(PropCameraPos, cam.transform.position);
