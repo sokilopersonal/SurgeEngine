@@ -297,6 +297,11 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
                 StateAnimator.ResetCurrentAnimationState();
                 StateAnimator.TransitionToState("Jump Spring", 0.2f);
             }
+            if (obj is FStateSpecialJump && machine.GetState<FStateSpecialJump>().SpecialJumpData.type == SpecialJumpType.Spring)
+            {
+                StateAnimator.ResetCurrentAnimationState();
+                StateAnimator.TransitionToState("Jump Spring", 0f);
+            }
             if (obj is FStateDashRing)
             {
                 StateAnimator.ResetCurrentAnimationState();
