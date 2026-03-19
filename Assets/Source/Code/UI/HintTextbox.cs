@@ -7,6 +7,7 @@ using SurgeEngine.Source.Code.Core.Character.System;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects;
 using TMPro;
 using UnityEngine;
+using Zenject;
 
 namespace SurgeEngine.Source.Code.UI
 {
@@ -33,6 +34,8 @@ namespace SurgeEngine.Source.Code.UI
         private float _timer;
         private HintRing _hint;
         private EventInstance _letterSoundInstance;
+        
+        [Inject] private CharacterBase _character;
 
         private void Awake()
         {
@@ -161,7 +164,7 @@ namespace SurgeEngine.Source.Code.UI
 
         private TMP_SpriteAsset GetSpriteAsset()
         {
-            switch (CharacterContext.Context.Input.GetDevice())
+            switch (_character.Input.GetDevice())
             {
                 case GameDevice.Keyboard:
                     return keyboardSprite;

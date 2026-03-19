@@ -13,6 +13,6 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects
         public static Action<ReactionPlate> OnReactionPanelTriggered;
 
         public static Action<HintRing> OnHintTriggered;
-        public static Action<ButtonPrompt> OnButtonPromptTriggered;
+        public static Action<NavigationPrompt> OnButtonPromptTriggered;
     }
 }

@@ -1,14 +1,16 @@
 using DG.Tweening;
-using FMODUnity;
 using SurgeEngine.Source.Code.Core.Character.System;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility;
+using SurgeEngine.Source.Code.Gameplay.CommonObjects.System;
+using SurgeEngine.Source.Code.Infrastructure.Custom;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
-namespace SurgeEngine
+namespace SurgeEngine.Source.Code.UI
 {
-    public class ButtonPromptUI : MonoBehaviour
+    public class NavigationPromptUI : MonoBehaviour, IPointMarkerLoader
     {
         [SerializeField] private Image buttonImage;
 
@@ -17,15 +19,20 @@ namespace SurgeEngine
         [SerializeField] private Transform right;
 
         [SerializeField] private Animator effectAnimator;
+        
+        private Camera _camera;
+        private NavigationPrompt _prompt;
+        private float _time;
 
-        ButtonPrompt _prompt;
-        float _time;
+        [Inject]
+        private void InitializeCamera(CharacterBase character) => _camera = character.Camera.GetCamera();
 
         private void OnEnable()
         {
             ObjectEvents.OnButtonPromptTriggered += OnPrompt;
             CharacterContext.Context.Input.OnButtonPressed += OnButtonPressed;
         }
+        
         private void OnDisable()
         {
             ObjectEvents.OnButtonPromptTriggered -= OnPrompt;
@@ -34,21 +41,22 @@ namespace SurgeEngine
 
         private void OnButtonPressed(ButtonType type)
         {
-            if (_prompt == null || type != _prompt.GetButtonType() || _time <= 0f || effectAnimator.gameObject.activeSelf)
+            if (_prompt == null || type != _prompt.ButtonType || _time <= 0f || effectAnimator.gameObject.activeSelf)
                 return;
 
-            _time = .15f;
+            _time = 0.15f;
             effectAnimator.gameObject.SetActive(true);
             effectAnimator.Play("Click", 0, 0);
         }
-        private void OnPrompt(ButtonPrompt buttonPrompt)
+        
+        private void OnPrompt(NavigationPrompt navigationPrompt)
         {
             effectAnimator.gameObject.SetActive(false);
 
-            _prompt = buttonPrompt;
-            _time = _prompt.GetActiveTime();
+            _prompt = navigationPrompt;
+            _time = _prompt.ActiveTime;
 
-            switch (_prompt.GetButtonType())
+            switch (_prompt.ButtonType)
             {
                 case ButtonType.LB:
                     buttonImage.transform.SetParent(left);
@@ -97,19 +105,22 @@ namespace SurgeEngine
                 }
             }
 
-            Transform track = _prompt.GetTransform();
-
+            Transform track = _prompt.TrackTransform;
             if (track != null)
             {
-                Vector3 pos = Camera.main.WorldToScreenPoint(track.position);
-
-                bool onScreen = pos.z >= 0f && (pos.x >= Screen.safeArea.xMin && pos.x <= Screen.safeArea.xMax) && (pos.y >= Screen.safeArea.yMin && pos.y <= Screen.safeArea.yMax); // Make sure point is on screen
+                Vector3 pos = _camera.WorldToScreenPoint(track.position);
+                bool onScreen = _camera.IsObjectInView(track); // Make sure point is on screen
 
                 buttonImage.enabled = onScreen;
 
                 if (onScreen)
                     buttonImage.transform.position = pos;
             }
+        }
+
+        public void Load()
+        {
+            Hide();
         }
     }
 }

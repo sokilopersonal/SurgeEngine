@@ -62,7 +62,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
                 }
             }
             
-            bool predictedGround = Kinematics.CheckForPredictedGround(dt, distance, 6);
+            bool predictedGround = Kinematics.CheckForPredictedGround(dt, distance, 8);
             if (ground)
             {
                 Kinematics.Point = data.point;

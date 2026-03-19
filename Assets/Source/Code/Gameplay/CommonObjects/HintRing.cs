@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using Alchemy.Inspector;
 using FMODUnity;
 using SurgeEngine.Source.Code.Core.Character.States;
-using SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic;
 using SurgeEngine.Source.Code.Core.Character.System;
+using SurgeEngine.Source.Code.Gameplay.CommonObjects.System;
 using UnityEngine;
 
 namespace SurgeEngine.Source.Code.Gameplay.CommonObjects
 {
-    public class HintRing : MonoBehaviour
+    public class HintRing : StageObject, IPointMarkerLoader
     {
         [Serializable]
         public class HintMessage
@@ -40,8 +40,9 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects
         private float _timer;
         private bool _activated;
         private bool _isCurrent;
-        private HintMessage _currentMessage;
-        public HintMessage CurrentMessage => _currentMessage;
+        private Coroutine _messagesCoroutine;
+
+        public HintMessage CurrentMessage { get; private set; }
 
         private void OnEnable()
         {
@@ -64,40 +65,41 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects
             }
         }
 
-        public void OnActivated(CharacterBase context)
+        public override void OnEnter(Collider msg, CharacterBase context)
         {
+            base.OnEnter(msg, context);
+            
             if (_activated) return;
 
             Hide();
-
-            StartCoroutine(PlayMessages(context));
+            _messagesCoroutine = StartCoroutine(PlayMessages(context));
         }
 
-        IEnumerator PlayMessages(CharacterBase context)
+        private IEnumerator PlayMessages(CharacterBase context)
         {
             for (int i = 0; i < messages.Count; i++)
             {
-                _currentMessage = messages[i];
+                CurrentMessage = messages[i];
 
                 ObjectEvents.OnHintTriggered?.Invoke(this);
 
-                if (_currentMessage.outOfControl)
+                if (CurrentMessage.outOfControl)
                 {
                     context.Kinematics.ResetHorizontalVelocity();
                     context.Flags.RemoveFlag(FlagType.OutOfControl);
-                    context.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, _currentMessage.messageDuration));
+                    context.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, CurrentMessage.messageDuration));
 
                     if (context.StateMachine.CurrentState is FStateGround)
                     {
                         context.StateMachine.SetState<FStateIdle>();
                     }
-                    else if (context.StateMachine.CurrentState is FStateJump || context.StateMachine.CurrentState is FStateHoming)
+                    else if (context.Kinematics.InAir)
                     {
                         context.StateMachine.SetState<FStateAir>();
                     }
                 }
 
-                yield return new WaitForSeconds(_currentMessage.messageDuration);
+                yield return new WaitForSeconds(CurrentMessage.messageDuration);
 
                 if (!_isCurrent)
                     yield break;
@@ -114,6 +116,13 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects
 
             RuntimeManager.PlayOneShot(hintSound, transform.position);
             RuntimeManager.PlayOneShot(disappearSound, transform.position);
+        }
+
+        public void Load()
+        {
+            Hide();
+            if (_messagesCoroutine != null)
+                StopCoroutine(_messagesCoroutine);
         }
 
         private void Show()
