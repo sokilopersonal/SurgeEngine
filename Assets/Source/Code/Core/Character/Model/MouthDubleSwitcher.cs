@@ -1,18 +1,18 @@
 ﻿using SurgeEngine.Source.Code.Core.Character.System;
 using UnityEngine;
+using Zenject;
 
 namespace SurgeEngine.Source.Code.Core.Character.Model
 {
     public class MouthDubleSwitcher : MonoBehaviour
     {
-        [SerializeField] Transform mouthReference;
+        [SerializeField] private Transform mouthReference;
 
+        [Inject] private CharacterBase _character;
         private Transform _cameraTransform;
-        private CharacterBase _character;
 
-        private void Start()
+        private void Awake()
         {
-            _character = CharacterContext.Context;
             _cameraTransform = _character.Camera.GetCamera().transform;
         }
 

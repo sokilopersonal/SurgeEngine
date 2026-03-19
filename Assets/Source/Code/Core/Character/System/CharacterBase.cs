@@ -50,8 +50,6 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             StateMachine = new FStateMachine();
             Rigidbody = GetComponent<Rigidbody>();
             
-            CharacterContext.Set(this);
-            
             InitializeConfigs();
             AddStates();
         }

@@ -1,7 +1,9 @@
-﻿using SurgeEngine.Source.Code.Gameplay.CommonObjects.Interfaces;
+﻿using SurgeEngine.Source.Code.Core.Character.System;
+using SurgeEngine.Source.Code.Gameplay.CommonObjects.Interfaces;
 using SurgeEngine.Source.Code.Gameplay.Enemy.AeroCannon.States;
 using SurgeEngine.Source.Code.Gameplay.Enemy.Base;
 using UnityEngine;
+using Zenject;
 
 namespace SurgeEngine.Source.Code.Gameplay.Enemy.AeroCannon
 {
@@ -21,11 +23,13 @@ namespace SurgeEngine.Source.Code.Gameplay.Enemy.AeroCannon
         public Transform shootPoint;
         public AeroCannonBullet bulletPrefab;
         
+        [Inject] private CharacterBase _character;
+        
         private void Awake()
         {
-            StateMachine.AddState(new ACStateIdle(this));
-            StateMachine.AddState(new ACStatePrepare(this));
-            StateMachine.AddState(new ACStateShoot(this));
+            StateMachine.AddState(new ACStateIdle(this, _character));
+            StateMachine.AddState(new ACStatePrepare(this, _character));
+            StateMachine.AddState(new ACStateShoot(this, _character));
             
             StateMachine.SetState<ACStateIdle>().SetStartRotation(transform.rotation);
         }

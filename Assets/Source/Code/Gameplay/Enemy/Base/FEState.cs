@@ -4,15 +4,15 @@ using UnityEngine;
 
 namespace SurgeEngine.Source.Code.Gameplay.Enemy.Base
 {
-    public class FEState : FState
+    public abstract class FEState : FState
     {
         protected readonly FStateMachine StateMachine;
-        protected readonly Transform transform;
+        protected readonly Transform Transform;
 
-        public FEState(EnemyBase enemy)
+        protected FEState(EnemyBase enemy)
         {
             StateMachine = enemy.StateMachine;
-            transform = enemy.transform;
+            Transform = enemy.transform;
         }
     }
 }

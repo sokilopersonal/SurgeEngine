@@ -7,6 +7,7 @@ using SurgeEngine.Source.Code.Core.Character.System;
 using SurgeEngine.Source.Code.Core.StateMachine;
 using SurgeEngine.Source.Code.Infrastructure.Custom;
 using UnityEngine;
+using Zenject;
 using Random = UnityEngine.Random;
 
 
@@ -31,6 +32,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
     [ExecuteAlways]
     public class ReactionPlate : StageObject
     {
+        private static readonly int InputDevice = Shader.PropertyToID("_InputDevice");
         private const float MaxFrameTime = 0.33f;
 
         [Header("General Settings")]
@@ -73,10 +75,11 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         private float _timer;
         private float _remainedTime;
         private QTESequence _finishingSequence;
-        private CharacterBase _character;
         private Material _material;
         private ReactionPlateJumpInfo _info;
         private bool _countdown;
+
+        [Inject] private CharacterBase _character;
 
         private void OnEnable()
         {
@@ -108,9 +111,9 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
                         OnQTEResultReceived?.Invoke(QTEResult.Fail);
                     }
                 }
-
+                
                 if (_material != null)
-                    _material.SetFloat("_InputDevice", (int)CharacterContext.Context.Input.GetDevice());
+                    _material.SetFloat(InputDevice, (int)_character.Input.GetDevice());
             }
         }
 
@@ -253,15 +256,10 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 
                 RuntimeManager.PlayOneShot(qteFailSound);
             }
-
-            _character = null;
         }
 
         private void Launch(CharacterBase context)
         {
-            target._character = context;
-            _character = context;
-
             FStateMachine st = context.StateMachine;
             FStateReactionPlateJump plateJump = st.GetState<FStateReactionPlateJump>();
             ReactionPlateJumpInfo info = new ReactionPlateJumpInfo(context.transform.position, target);

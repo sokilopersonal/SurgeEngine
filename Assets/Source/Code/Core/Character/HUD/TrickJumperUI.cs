@@ -2,6 +2,7 @@
 using SurgeEngine.Source.Code.Gameplay.CommonObjects;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility;
 using UnityEngine;
+using Zenject;
 
 namespace SurgeEngine.Source.Code.Core.Character.HUD
 {
@@ -9,6 +10,8 @@ namespace SurgeEngine.Source.Code.Core.Character.HUD
     {
         [SerializeField] private QuickTimeEventUI quickTimeEventUI;
         [SerializeField] private QuickTimeMessageUI quickTimeMessageUI;
+        
+        [Inject] private IInstantiator _instantiator;
         
         private TrickJumper _trickJumper;
         private QuickTimeEventUI _currentUI;
@@ -44,8 +47,8 @@ namespace SurgeEngine.Source.Code.Core.Character.HUD
                 Destroy(_currentUI.gameObject);
                 _activeUIs.Remove(_currentUI);
             }
-            
-            _currentUI = Instantiate(quickTimeEventUI);
+
+            _currentUI = _instantiator.InstantiatePrefab(quickTimeEventUI).GetComponent<QuickTimeEventUI>();
             _currentUI.SetTrickJumper(_trickJumper, this);
             _currentUI.CreateButtonIcon(sequence);
             _activeUIs.Add(_currentUI);

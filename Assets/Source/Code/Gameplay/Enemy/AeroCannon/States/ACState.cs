@@ -4,25 +4,27 @@ using UnityEngine;
 
 namespace SurgeEngine.Source.Code.Gameplay.Enemy.AeroCannon.States
 {
-    public class ACState : FEState
+    public abstract class ACState : FEState
     {
-        protected readonly AeroCannon aeroCannon;
-        protected float timer;
-        
-        public ACState(EnemyBase enemy) : base(enemy)
+        protected readonly AeroCannon AeroCannon;
+        protected readonly CharacterBase Character;
+        protected float Timer;
+
+        protected ACState(EnemyBase enemy, CharacterBase character) : base(enemy)
         {
-            aeroCannon = (AeroCannon)enemy;
+            AeroCannon = (AeroCannon)enemy;
+            Character = character;
         }
         
         protected bool IsInSight(out Transform target)
         {
-            CharacterBase context = CharacterContext.Context;
-            float viewDistance = aeroCannon.ViewDistance;
-            LayerMask mask = aeroCannon.Mask;
+            CharacterBase context = Character;
+            float viewDistance = AeroCannon.ViewDistance;
+            LayerMask mask = AeroCannon.Mask;
 
-            if (Vector3.Distance(context.transform.position, transform.position) < viewDistance)
+            if (Vector3.Distance(context.transform.position, Transform.position) < viewDistance)
             {
-                bool result = UnityEngine.Physics.Linecast(transform.position, context.transform.position, mask);
+                bool result = Physics.Linecast(Transform.position, context.transform.position, mask);
                 if (!result)
                 {
                     target = context.transform;

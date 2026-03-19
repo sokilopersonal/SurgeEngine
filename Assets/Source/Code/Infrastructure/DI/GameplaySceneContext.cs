@@ -65,8 +65,6 @@ namespace SurgeEngine.Source.Code.Infrastructure.DI
 
             var instance = Container.InstantiatePrefabForComponent<CharacterBase>(characterPrefab, spawn.position + spawn.transform.up, spawn.rotation, null);
             Container.BindInstance(instance).AsSingle().NonLazy();
-            
-            Container.Bind<CharacterContext>().FromNew().AsSingle().NonLazy();
         }
 
         private void SetupHUD()

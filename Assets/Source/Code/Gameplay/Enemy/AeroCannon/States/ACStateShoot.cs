@@ -1,4 +1,5 @@
-﻿using SurgeEngine.Source.Code.Gameplay.Enemy.Base;
+﻿using SurgeEngine.Source.Code.Core.Character.System;
+using SurgeEngine.Source.Code.Gameplay.Enemy.Base;
 using SurgeEngine.Source.Code.Infrastructure.Custom;
 using UnityEngine;
 
@@ -6,7 +7,7 @@ namespace SurgeEngine.Source.Code.Gameplay.Enemy.AeroCannon.States
 {
     public class ACStateShoot : ACState
     {
-        public ACStateShoot(EnemyBase enemy) : base(enemy)
+        public ACStateShoot(EnemyBase enemy, CharacterBase character) : base(enemy, character)
         {
         }
 
@@ -14,14 +15,14 @@ namespace SurgeEngine.Source.Code.Gameplay.Enemy.AeroCannon.States
         {
             base.OnEnter();
 
-            timer = 1;
+            Timer = 1;
 
             if (IsInSight(out var target))
             {
-                Vector3 direction = (target.position - Vector3.up * 0.5f) - transform.position;
+                Vector3 direction = (target.position - Vector3.up * 0.5f) - Transform.position;
                 direction.Normalize();
 
-                var bullet = Object.Instantiate(aeroCannon.bulletPrefab, aeroCannon.shootPoint.position, Quaternion.identity);
+                var bullet = Object.Instantiate(AeroCannon.bulletPrefab, AeroCannon.shootPoint.position, Quaternion.identity);
                 bullet.SetDirection(direction);
             }
         }
@@ -30,7 +31,7 @@ namespace SurgeEngine.Source.Code.Gameplay.Enemy.AeroCannon.States
         {
             base.OnTick(dt);
 
-            if (Utility.TickTimer(ref timer, 1, false))
+            if (Utility.TickTimer(ref Timer, 1, false))
             {
                 StateMachine.SetState<ACStateIdle>();
             }

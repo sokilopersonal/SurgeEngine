@@ -4,6 +4,7 @@ using SurgeEngine.Source.Code.Core.Character.System;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 namespace SurgeEngine.Source.Code.Core.Character.HUD
 {
@@ -18,6 +19,7 @@ namespace SurgeEngine.Source.Code.Core.Character.HUD
         
         private List<QuickTimeEventUIButton> _buttons = new List<QuickTimeEventUIButton>();
 
+        [Inject] private CharacterBase _character;
         private ReactionPlate _reactionPlateObject;
         private ReactionPanelUI _reactionPanelUI;
         private TrickJumper _trickJumperObject;
@@ -64,8 +66,7 @@ namespace SurgeEngine.Source.Code.Core.Character.HUD
         public void CreateButtonIcon(QTESequence sequence)
         {
             _buttons.Capacity = sequence.buttons.Count;
-            CharacterBase context = CharacterContext.Context;
-            CharacterInput input = context.Input;
+            CharacterInput input = _character.Input;
             for (int i = 0; i < sequence.buttons.Count; i++)
             {
                 ButtonType buttonType = sequence.buttons[i].type;

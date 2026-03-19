@@ -19,24 +19,23 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.HUD
         private float _distance;
 
         [Inject] private CharacterBase _character;
-        private Camera _camera => _character.Camera.GetCamera();
+        private Camera Camera => _character.Camera.GetCamera();
         private CharacterStageHUD _characterStageHUD;
 
         public void Initialize(CharacterStageHUD hud)
         {
             _characterStageHUD = hud;
             
-            transform.SetParent(_camera.transform, true);
+            transform.SetParent(Camera.transform, true);
             _startPosition = transform.localPosition;
             _startRotation = transform.localRotation;
             _startScale = transform.localScale;
-
-            var context = CharacterContext.Context;
-            float t = context.Kinematics.Speed / context.Config.topSpeed;
+            
+            float t = _character.Kinematics.Speed / _character.Config.topSpeed;
             _startScale *= Mathf.Lerp(1f, Random.Range(1.2f, 1.6f), t);
             _startPosition += Vector3.up * (Random.Range(-0.175f, 0.175f) * t);
             _startPosition += Vector3.right * (Random.Range(-0.175f, 0.175f) * t);
-            _distance = Vector3.Distance(_camera.transform.TransformPoint(_startPosition), _camera.transform.position) / 2;
+            _distance = Vector3.Distance(Camera.transform.TransformPoint(_startPosition), Camera.transform.position) / 2;
             
             const float distanceThreshold = 6f;
             if (_distance <= distanceThreshold)
@@ -49,7 +48,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.HUD
             }
         }
 
-        private void FixedUpdate()
+        private void Update()
         {
             Align();
             
@@ -66,7 +65,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.HUD
         private void Align()
         {
             Vector3 worldPos =
-                MatrixHelper.GetMatrixRectTransformPosition(_characterStageHUD.RingCounterRect.rectTransform, _camera,
+                MatrixHelper.GetMatrixRectTransformPosition(_characterStageHUD.RingCounterRect.rectTransform, Camera,
                     _distance);
 
             float easedFactor = easingCurve.Evaluate(_factor);
@@ -76,12 +75,12 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.HUD
             Vector3 targetLocalPos = transform.parent.InverseTransformPoint(worldPos);
             transform.localPosition = Vector3.Lerp(_startPosition, targetLocalPos, easedFactor);
             
-            Vector3 cameraForward = _camera.cameraToWorldMatrix.inverse.MultiplyVector(_camera.transform.right);
+            Vector3 cameraForward = Camera.cameraToWorldMatrix.inverse.MultiplyVector(Camera.transform.right);
             transform.localRotation = Quaternion.Lerp(_startRotation, Quaternion.LookRotation(cameraForward, Vector3.up), Easings.Get(Easing.OutCubic, _factor *
                 Mathf.Lerp(1f, Random.Range(1.25f, 1.5f), speedT)));
 
             const float maxScale = 0.003f;
-            Vector3 targetScale = Vector3.one * (maxScale * _distance * _camera.fieldOfView);
+            Vector3 targetScale = Vector3.one * (maxScale * _distance * Camera.fieldOfView);
             transform.localScale = Vector3.Lerp(_startScale, targetScale, easedFactor);
         }
     }

@@ -19,24 +19,29 @@ namespace SurgeEngine.Source.Code.UI
         [SerializeField] private Transform right;
 
         [SerializeField] private Animator effectAnimator;
-        
+
+        private CharacterBase _character;
         private Camera _camera;
         private NavigationPrompt _prompt;
         private float _time;
 
         [Inject]
-        private void InitializeCamera(CharacterBase character) => _camera = character.Camera.GetCamera();
+        private void InitializeCamera(CharacterBase character)
+        {
+            _character = character;
+            _camera = character.Camera.GetCamera();
+        }
 
         private void OnEnable()
         {
             ObjectEvents.OnButtonPromptTriggered += OnPrompt;
-            CharacterContext.Context.Input.OnButtonPressed += OnButtonPressed;
+            _character.Input.OnButtonPressed += OnButtonPressed;
         }
         
         private void OnDisable()
         {
             ObjectEvents.OnButtonPromptTriggered -= OnPrompt;
-            CharacterContext.Context.Input.OnButtonPressed -= OnButtonPressed;
+            _character.Input.OnButtonPressed -= OnButtonPressed;
         }
 
         private void OnButtonPressed(ButtonType type)

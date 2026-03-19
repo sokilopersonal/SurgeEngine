@@ -1,4 +1,5 @@
-﻿using SurgeEngine.Source.Code.Gameplay.Enemy.Base;
+﻿using SurgeEngine.Source.Code.Core.Character.System;
+using SurgeEngine.Source.Code.Gameplay.Enemy.Base;
 using SurgeEngine.Source.Code.Infrastructure.Custom;
 using UnityEngine;
 
@@ -6,7 +7,7 @@ namespace SurgeEngine.Source.Code.Gameplay.Enemy.AeroCannon.States
 {
     public class ACStatePrepare : ACState
     {
-        public ACStatePrepare(EnemyBase enemy) : base(enemy)
+        public ACStatePrepare(EnemyBase enemy, CharacterBase character) : base(enemy, character)
         {
         }
 
@@ -14,7 +15,7 @@ namespace SurgeEngine.Source.Code.Gameplay.Enemy.AeroCannon.States
         {
             base.OnEnter();
 
-            timer = aeroCannon.PrepareTime;
+            Timer = AeroCannon.PrepareTime;
         }
 
         public override void OnTick(float dt)
@@ -23,12 +24,12 @@ namespace SurgeEngine.Source.Code.Gameplay.Enemy.AeroCannon.States
 
             if (IsInSight(out var target))
             {
-                Vector3 direction = target.position - transform.position;
+                Vector3 direction = target.position - Transform.position;
                 direction.Normalize();
                 Quaternion rotation = Quaternion.LookRotation(direction, Vector3.up);
-                transform.rotation = Quaternion.Slerp(transform.rotation, rotation, 8f * Time.deltaTime);
+                Transform.rotation = Quaternion.Slerp(Transform.rotation, rotation, 8f * Time.deltaTime);
                 
-                if (Utility.TickTimer(ref timer, aeroCannon.PrepareTime, false))
+                if (Utility.TickTimer(ref Timer, AeroCannon.PrepareTime, false))
                 {
                     StateMachine.SetState<ACStateShoot>();
                 }

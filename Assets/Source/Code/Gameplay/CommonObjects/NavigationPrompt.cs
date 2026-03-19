@@ -2,7 +2,9 @@ using Alchemy.Inspector;
 using FMODUnity;
 using SurgeEngine.Source.Code.Core.Character.System;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility;
+using SurgeEngine.Source.Code.UI;
 using UnityEngine;
+using Zenject;
 
 namespace SurgeEngine.Source.Code.Gameplay.CommonObjects
 {
@@ -32,28 +34,32 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects
         [Header("Sound")]
         [SerializeField] private EventReference navigationSound;
 
+        [Inject] private CharacterBase _character;
+
         public override void OnEnter(Collider msg, CharacterBase context)
         {
             ObjectEvents.OnButtonPromptTriggered?.Invoke(this);
             RuntimeManager.PlayOneShot(navigationSound);
         }
 
-        public Sprite GetSprite() 
+        public Sprite GetSprite()
         {
+            var device = _character.Input.GetDevice();
+            
             switch (buttonType)
             {
                 case ButtonType.A:
-                    return aPrompt.GetDeviceSprite();
+                    return aPrompt.GetDeviceSprite(device);
                 case ButtonType.B:
-                    return bPrompt.GetDeviceSprite();
+                    return bPrompt.GetDeviceSprite(device);
                 case ButtonType.X:
-                    return xPrompt.GetDeviceSprite();
+                    return xPrompt.GetDeviceSprite(device);
                 case ButtonType.Y:
-                    return yPrompt.GetDeviceSprite();
+                    return yPrompt.GetDeviceSprite(device);
                 case ButtonType.LB:
-                    return lbPrompt.GetDeviceSprite();
+                    return lbPrompt.GetDeviceSprite(device);
                 case ButtonType.RB:
-                    return rbPrompt.GetDeviceSprite();
+                    return rbPrompt.GetDeviceSprite(device);
                 default:
                     return null;
             }

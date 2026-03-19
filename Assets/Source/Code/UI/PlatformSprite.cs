@@ -1,10 +1,7 @@
 using SurgeEngine.Source.Code.Core.Character.System;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.DualShock;
-using UnityEngine.InputSystem.XInput;
 
-namespace SurgeEngine
+namespace SurgeEngine.Source.Code.UI
 {
     [CreateAssetMenu(fileName = "PlatformSprite", menuName = "Surge Engine/UI/PlatformSprite")]
     public class PlatformSprite : ScriptableObject
@@ -13,9 +10,9 @@ namespace SurgeEngine
         [SerializeField] private Sprite psSprite;
         [SerializeField] private Sprite xbSprite;
 
-        public Sprite GetDeviceSprite()
+        public Sprite GetDeviceSprite(GameDevice device)
         {
-            switch (CharacterContext.Context.Input.GetDevice())
+            switch (device)
             {
                 case GameDevice.Keyboard:
                     return mkSprite;

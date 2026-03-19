@@ -18,7 +18,7 @@ namespace SurgeEngine.Source.Code.Gameplay.Enemy.EggFighter.States
             bool hasTarget = sensor.FindVisibleTarget(out var pos, out var character);
             if (!hasTarget)
             {
-                Debug.DrawLine(transform.position, pos, Color.blue);
+                Debug.DrawLine(Transform.position, pos, Color.blue);
             }
 
             var agent = eggFighter.Agent;
@@ -29,7 +29,7 @@ namespace SurgeEngine.Source.Code.Gameplay.Enemy.EggFighter.States
                 StateMachine.SetState<EGStateIdle>();
             }
             
-            if (Vector3.Distance(pos, transform.position) < eggFighter.PunchRadius)
+            if (Vector3.Distance(pos, Transform.position) < eggFighter.PunchRadius)
             {
                 if (hasTarget && !character.Life.IsDead && !character.Flags.HasFlag(FlagType.Invincible))
                 {
@@ -49,7 +49,7 @@ namespace SurgeEngine.Source.Code.Gameplay.Enemy.EggFighter.States
             
             var rootPos = obj.rootPosition;
             rootPos.y = agent.nextPosition.y;
-            transform.position = rootPos;
+            Transform.position = rootPos;
             agent.nextPosition = rootPos;
         }
     }

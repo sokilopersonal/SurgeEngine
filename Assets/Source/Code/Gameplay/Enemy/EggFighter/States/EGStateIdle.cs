@@ -42,7 +42,7 @@ namespace SurgeEngine.Source.Code.Gameplay.Enemy.EggFighter.States
 
             if (!eggFighter.FollowPlayer)
             {
-                if (Vector3.Distance(transform.position, eggFighter.Character.transform.position) <=
+                if (Vector3.Distance(Transform.position, eggFighter.Character.transform.position) <=
                     eggFighter.PunchRadius)
                 {
                     StateMachine.SetState<EGStatePunch>();

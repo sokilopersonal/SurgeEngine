@@ -31,8 +31,6 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Environment
 
         private void Awake()
         {
-            GetComponent<Collider>();
-            
             _splashSound = RuntimeManager.PathToEventReference(SplashEventPath);
             
             gameObject.layer = LayerMask.NameToLayer("WaterCollision");
