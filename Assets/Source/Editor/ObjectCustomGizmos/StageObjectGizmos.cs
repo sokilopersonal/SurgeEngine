@@ -31,7 +31,7 @@ namespace SurgeEngine.Source.Editor.ObjectCustomGizmos
             Gizmos.matrix = type.transform.localToWorldMatrix;
             Gizmos.DrawCube(Vector3.zero, Vector3.one * 0.75f);
 
-            if ((gizmoType & GizmoType.Selected) != 0)
+            if (IsSelected(gizmoType))
             {
                 DrawColliderGizmo(type, new Color(0.15f, 1f, 0f, 0.1f));
             }
@@ -53,7 +53,7 @@ namespace SurgeEngine.Source.Editor.ObjectCustomGizmos
             GetEditorMaterial();
             Graphics.DrawMeshNow(mesh, matrix);
 
-            if ((gizmoType & GizmoType.Selected) != 0)
+            if (IsSelected(gizmoType))
             {
                 DrawColliderGizmo(type, new Color(0f, 0.35f, 1f, 0.1f));
             }
@@ -66,7 +66,7 @@ namespace SurgeEngine.Source.Editor.ObjectCustomGizmos
             Gizmos.color = Color.yellow;
             Gizmos.DrawCube(Vector3.zero, Vector3.one * 0.75f);
 
-            if ((gizmoType & GizmoType.Selected) != 0)
+            if (IsSelected(gizmoType))
             {
                 DrawColliderGizmo(type, new Color(1f, 0.94f, 0.13f, 0.1f));
             }
@@ -94,7 +94,7 @@ namespace SurgeEngine.Source.Editor.ObjectCustomGizmos
             Gizmos.matrix = type.transform.localToWorldMatrix;
             Gizmos.DrawCube(Vector3.zero, Vector3.one * 0.75f);
             
-            if ((gizmoType & GizmoType.Selected) != 0)
+            if (IsSelected(gizmoType))
             {
                 DrawColliderGizmo(type, new Color(1f, 0f, 0f, 0.1f));
             }
@@ -106,7 +106,7 @@ namespace SurgeEngine.Source.Editor.ObjectCustomGizmos
             Gizmos.matrix = type.transform.localToWorldMatrix;
             Gizmos.DrawCube(Vector3.zero, Vector3.one * 0.75f);
             
-            if ((gizmoType & GizmoType.Selected) != 0)
+            if (IsSelected(gizmoType))
             {
                 DrawColliderGizmo(type, new Color(0f, 1f, 0f, 0.1f));
             }
@@ -118,7 +118,7 @@ namespace SurgeEngine.Source.Editor.ObjectCustomGizmos
             Gizmos.matrix = type.transform.localToWorldMatrix;
             Gizmos.DrawCube(Vector3.zero, Vector3.one * 0.75f);
             
-            if ((gizmoType & GizmoType.Selected) != 0)
+            if (IsSelected(gizmoType))
             {
                 DrawColliderGizmo(type, new Color(0f, 0f, 1f, 0.1f));
             }
@@ -130,7 +130,7 @@ namespace SurgeEngine.Source.Editor.ObjectCustomGizmos
             Gizmos.matrix = type.transform.localToWorldMatrix;
             Gizmos.DrawCube(Vector3.zero, Vector3.one * 0.75f);
             
-            if ((gizmoType & GizmoType.Selected) != 0)
+            if (IsSelected(gizmoType))
             {
                 DrawColliderGizmo(type, new Color(1f, 1f, 0f, 0.1f));
             }
@@ -142,7 +142,7 @@ namespace SurgeEngine.Source.Editor.ObjectCustomGizmos
             Gizmos.matrix = type.transform.localToWorldMatrix;
             Gizmos.DrawCube(Vector3.zero, Vector3.one * 0.75f);
             
-            if ((gizmoType & GizmoType.Selected) != 0)
+            if (IsSelected(gizmoType))
             {
                 DrawColliderGizmo(type, new Color(0.15f, 1f, 0f, 0.1f));
             }
@@ -154,7 +154,7 @@ namespace SurgeEngine.Source.Editor.ObjectCustomGizmos
             Gizmos.matrix = type.transform.localToWorldMatrix;
             Gizmos.DrawCube(Vector3.zero, Vector3.one * 0.75f);
             
-            if ((gizmoType & GizmoType.Selected) != 0)
+            if (IsSelected(gizmoType))
             {
                 DrawColliderGizmo(type, new Color(0f, 1f, 1f, 0.1f));
             }
@@ -185,6 +185,20 @@ namespace SurgeEngine.Source.Editor.ObjectCustomGizmos
             Gizmos.color = Color.clear;
             Gizmos.DrawSphere(Vector3.zero, 0.4f);
         }
+
+        [DrawGizmo(GizmoType.Pickable | GizmoType.Selected | GizmoType.NotInSelectionHierarchy)]
+        static void DrawGizmos(NavigationPrompt type, GizmoType gizmoType)
+        {
+            Gizmos.matrix = type.transform.localToWorldMatrix;
+            Gizmos.DrawCube(Vector3.zero, Vector3.one * 0.75f);
+
+            if (IsSelected(gizmoType))
+            {
+                DrawColliderGizmo(type, new Color(0.15f, 1f, 0f, 0.1f));
+            }
+        }
+        
+        static bool IsSelected(GizmoType gizmoType) => (gizmoType & GizmoType.Selected) != 0;
 
         // Call this method to use the material
         private static void GetEditorMaterial()

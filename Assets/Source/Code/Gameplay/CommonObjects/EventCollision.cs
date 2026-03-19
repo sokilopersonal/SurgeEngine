@@ -1,14 +1,17 @@
 ﻿using SurgeEngine.Source.Code.Core.Character.System;
+using SurgeEngine.Source.Code.Gameplay.CommonObjects.System;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace SurgeEngine.Source.Code.Gameplay.CommonObjects
 {
-    public class EventCollision : StageObject
+    public class EventCollision : StageObject, IPointMarkerLoader
     {
         [SerializeField] private int defaultStatus;
+        [SerializeField] private bool oneTime = true;
         [SerializeField] private int durability;
         [SerializeField] private UnityEvent eventOnContact;
+        [SerializeField] private UnityEvent<CharacterBase> eventOnCharacterContact;
 
         private Collider _collider;
 
@@ -25,15 +28,22 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects
             base.OnEnter(msg, context);
             
             eventOnContact.Invoke();
+            eventOnCharacterContact.Invoke(context);
 
             if (durability == 0)
             {
-                Destroy(gameObject);
+                gameObject.SetActive(false);
             }
-            else
+            else if (oneTime)
             {
                 _collider.enabled = false;
             }
+        }
+
+        public void Load()
+        {
+            _collider.enabled = defaultStatus == 0;
+            gameObject.SetActive(true);
         }
     }
 }

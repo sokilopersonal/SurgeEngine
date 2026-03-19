@@ -66,7 +66,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         /// That can be useful in situations where you need to use velocity, but some logic right now moves the character position.
         /// </summary>
         public bool IsKinematic { get; set; }
-        public virtual bool InAir => Character.StateMachine.CurrentState is FStateAir or FStateSpring or FStateDashRing;
+        public bool InAir => Character.StateMachine.CurrentState is FStateAir or FStateAirObject;
         
         private Vector3 _inputDir;
         private Transform _cameraTransform;
@@ -418,7 +418,15 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             
             Rigidbody.linearVelocity = Vector3.zero;
         }
-        
+
+        public void ResetHorizontalVelocity()
+        {
+            if (Rigidbody.isKinematic)
+                return;
+
+            Rigidbody.linearVelocity = VerticalVelocity;
+        }
+
         public void ApplyGravity(float yGravity)
         {
             if (!Rigidbody.isKinematic)
