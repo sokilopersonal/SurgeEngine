@@ -1,15 +1,14 @@
+using System.Collections;
 using Alchemy.Inspector;
 using DG.Tweening;
 using FMOD.Studio;
 using FMODUnity;
 using SurgeEngine.Source.Code.Core.Character.System;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects;
-using System.Collections;
 using TMPro;
 using UnityEngine;
-using static UnityEngine.AdaptivePerformance.Provider.AdaptivePerformanceSubsystemDescriptor;
 
-namespace SurgeEngine
+namespace SurgeEngine.Source.Code.UI
 {
     public class HintTextbox : MonoBehaviour
     {
@@ -29,25 +28,16 @@ namespace SurgeEngine
         [SerializeField] private TMP_SpriteAsset keyboardSprite;
 
         [FoldoutGroup("Sound")]
-        [SerializeField] EventReference letterSound;
+        [SerializeField] private EventReference letterSound;
 
-        float _timer = 0f;
-        HintRing _hint;
+        private float _timer;
+        private HintRing _hint;
         private EventInstance _letterSoundInstance;
 
-        private TMP_SpriteAsset GetSpriteAsset()
+        private void Awake()
         {
-            switch (CharacterContext.Context.Input.GetDevice())
-            {
-                case GameDevice.Keyboard:
-                    return keyboardSprite;
-                case GameDevice.XboxController:
-                    return xboxSprite;
-                case GameDevice.Playstation:
-                    return playstationSprite;
-            }
-
-            return null;
+            hintBox.SetActive(false);
+            _letterSoundInstance = RuntimeManager.CreateInstance(letterSound);
         }
 
         private void OnEnable()
@@ -60,30 +50,36 @@ namespace SurgeEngine
             ObjectEvents.OnHintTriggered -= OnTriggered;
         }
 
-        private void Awake()
+        private void Update()
         {
-            hintBox.SetActive(false);
-            _letterSoundInstance = RuntimeManager.CreateInstance(letterSound);
+            if (_timer > 0f)
+            {
+                _timer -= Time.deltaTime;
+
+                if (_timer <= 0f)
+                    Hide();
+            }
         }
 
-        public void Show()
+        private void Show()
         {
             StopCoroutine(Typewriter());
 
             hintBox.SetActive(true);
-            _timer = _hint.GetMessage().messageDuration;
+            _timer = _hint.CurrentMessage.messageDuration;
             hintBox.transform.localScale = Vector3.up;
             hintBox.transform.DOScaleX(1f, easeTime).SetEase(ease);
 
-            textAsset.text = _hint.GetMessage().message;
+            textAsset.text = _hint.CurrentMessage.message;
 
             textAsset.spriteAsset = GetSpriteAsset();
 
-            if (_hint.GetMessage().animationDuration > 0f)
+            if (_hint.CurrentMessage.animationDuration > 0f)
                 StartCoroutine(Typewriter());
             else
                 ResetTextAlpha();
         }
+
         private void SetCharAlpha(TMP_TextInfo textInfo, int iCharId, int iAlpha)
         {
             if (iCharId >= textInfo.characterInfo.Length)
@@ -120,9 +116,7 @@ namespace SurgeEngine
         private IEnumerator Typewriter()
         {
             ResetTextAlpha(0);
-
             TMP_TextInfo info = textAsset.textInfo;
-
             int charCount = 0;
             
             for (int i = 0; i < info.characterCount; i++)
@@ -133,7 +127,7 @@ namespace SurgeEngine
                 charCount++;
             }
 
-            float textTime = _hint.GetMessage().animationDuration / charCount;
+            float textTime = _hint.CurrentMessage.animationDuration / charCount;
             
             for (int i = 0; i < info.characterCount; i++)
             {
@@ -159,22 +153,25 @@ namespace SurgeEngine
             hintBox.transform.DOScaleX(0f, easeTime).SetEase(ease);
         }
 
-        public void OnTriggered(HintRing hintRing)
+        private void OnTriggered(HintRing hintRing)
         {
             _hint = hintRing;
             Show();
         }
 
-        // Update is called once per frame
-        void Update()
+        private TMP_SpriteAsset GetSpriteAsset()
         {
-            if (_timer > 0f)
+            switch (CharacterContext.Context.Input.GetDevice())
             {
-                _timer -= Time.deltaTime;
-
-                if (_timer <= 0f)
-                    Hide();
+                case GameDevice.Keyboard:
+                    return keyboardSprite;
+                case GameDevice.XboxController:
+                    return xboxSprite;
+                case GameDevice.Playstation:
+                    return playstationSprite;
             }
+
+            return null;
         }
     }
 }

@@ -1,23 +1,21 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using Alchemy.Inspector;
 using FMODUnity;
 using SurgeEngine.Source.Code.Core.Character.States;
 using SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic;
 using SurgeEngine.Source.Code.Core.Character.System;
-using SurgeEngine.Source.Code.Gameplay.CommonObjects;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
 
-namespace SurgeEngine
+namespace SurgeEngine.Source.Code.Gameplay.CommonObjects
 {
     public class HintRing : MonoBehaviour
     {
-        [System.Serializable]
+        [Serializable]
         public class HintMessage
         {
-            [Tooltip("Determines if the player has control while the hint is displayed")]public bool outOfControl;
+            [Tooltip("Determines if the player has control while the hint is displayed")] public bool outOfControl;
             [Multiline] public string message = "Hello World!";
             [Tooltip("How long the hint will be seen on screen")] public float messageDuration = 2f;
             [Tooltip("Set to zero to disable text animation")] public float animationDuration = 0.5f;
@@ -39,12 +37,32 @@ namespace SurgeEngine
         [FoldoutGroup("Sound")]
         [SerializeField] private EventReference disappearSound;
 
-        private float _timer = 0f;
-        private bool _activated = false;
-        private bool _isCurrent = false;
-        private HintMessage currentMessage;
-        
-        public HintMessage GetMessage() { return currentMessage; }
+        private float _timer;
+        private bool _activated;
+        private bool _isCurrent;
+        private HintMessage _currentMessage;
+        public HintMessage CurrentMessage => _currentMessage;
+
+        private void OnEnable()
+        {
+            ObjectEvents.OnHintTriggered += OnTriggered;
+        }
+
+        private void OnDisable()
+        {
+            ObjectEvents.OnHintTriggered -= OnTriggered;
+        }
+
+        private void Update()
+        {
+            if (_timer > 0f)
+            {
+                _timer -= Time.deltaTime;
+
+                if (_timer <= 0f)
+                    Show();
+            }
+        }
 
         public void OnActivated(CharacterBase context)
         {
@@ -59,15 +77,15 @@ namespace SurgeEngine
         {
             for (int i = 0; i < messages.Count; i++)
             {
-                currentMessage = messages[i];
+                _currentMessage = messages[i];
 
                 ObjectEvents.OnHintTriggered?.Invoke(this);
 
-                if (currentMessage.outOfControl)
+                if (_currentMessage.outOfControl)
                 {
                     context.Kinematics.ResetHorizontalVelocity();
                     context.Flags.RemoveFlag(FlagType.OutOfControl);
-                    context.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, currentMessage.messageDuration));
+                    context.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, _currentMessage.messageDuration));
 
                     if (context.StateMachine.CurrentState is FStateGround)
                     {
@@ -79,14 +97,14 @@ namespace SurgeEngine
                     }
                 }
 
-                yield return new WaitForSeconds(currentMessage.messageDuration);
+                yield return new WaitForSeconds(_currentMessage.messageDuration);
 
                 if (!_isCurrent)
                     yield break;
             }
         }
 
-        void Hide()
+        private void Hide()
         {
             _activated = true;
 
@@ -98,32 +116,16 @@ namespace SurgeEngine
             RuntimeManager.PlayOneShot(disappearSound, transform.position);
         }
 
-        void Show()
+        private void Show()
         {
             _activated = false;
             animator.Play("Appear", 0, 0);
             RuntimeManager.PlayOneShot(appearSound, transform.position);
         }
-        
+
         private void OnTriggered(HintRing hint)
         {
             _isCurrent = hint == this;
-        }
-
-        private void Awake()
-        {
-            ObjectEvents.OnHintTriggered += OnTriggered;
-        }
-
-        private void Update()
-        {
-            if (_timer > 0f)
-            {
-                _timer -= Time.deltaTime;
-
-                if (_timer <= 0f)
-                    Show();
-            }
         }
     }
 }
