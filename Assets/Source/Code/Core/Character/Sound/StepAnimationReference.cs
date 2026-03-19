@@ -1,5 +1,4 @@
-﻿using SurgeEngine.Source.Code.Gameplay.Effects;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace SurgeEngine.Source.Code.Core.Character.Sound
 {
@@ -8,9 +7,21 @@ namespace SurgeEngine.Source.Code.Core.Character.Sound
     {
         [SerializeField] private StepSound stepSound;
 
+        private float _timer;
+
+        private void Update()
+        {
+            if (_timer > 0f)
+                _timer -= Time.deltaTime;
+        }
+
         public void Play()
         {
-            stepSound.PlaySound();
+            if (_timer <= 0)
+            {
+                stepSound.PlaySound();
+                _timer = 0.04f;
+            }
         }
     }
 }
