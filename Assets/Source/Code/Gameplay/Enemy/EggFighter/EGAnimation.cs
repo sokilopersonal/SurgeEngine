@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using SurgeEngine.Source.Code.Core.StateMachine.Base;
 using SurgeEngine.Source.Code.Core.StateMachine.Components;
 using SurgeEngine.Source.Code.Gameplay.Enemy.Base;

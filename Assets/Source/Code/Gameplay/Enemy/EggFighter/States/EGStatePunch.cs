@@ -16,7 +16,7 @@ namespace SurgeEngine.Source.Code.Gameplay.Enemy.EggFighter.States
         {
             base.OnEnter();
             
-            eggFighter.PunchAnimationCallback.OnAnimationEvent += Punch;
+            EggFighter.PunchAnimationCallback.OnAnimationEvent += Punch;
             
             _stayTimer = 0f;
         }
@@ -25,27 +25,27 @@ namespace SurgeEngine.Source.Code.Gameplay.Enemy.EggFighter.States
         {
             base.OnExit();
             
-            eggFighter.PunchAnimationCallback.OnAnimationEvent -= Punch;
+            EggFighter.PunchAnimationCallback.OnAnimationEvent -= Punch;
         }
 
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
 
-            eggFighter.Agent.velocity = Vector3.zero;
+            Agent.velocity = Vector3.zero;
             if (_stayTimer < 1f)
             {
                 _stayTimer += Time.deltaTime;
             }
             else
             {
-                eggFighter.StateMachine.SetState<EGStateIdle>().SetStayTimer(2.5f);
+                EggFighter.StateMachine.SetState<EGStateIdle>().SetStayTimer(2.5f);
             }
         }
 
         private void Punch()
         {
-            HurtBox.CreateWithCollider(eggFighter, eggFighter.PunchColliderReference, HurtBoxTarget.Player);
+            HurtBox.CreateWithCollider(EggFighter, EggFighter.PunchColliderReference, HurtBoxTarget.Player);
         }
     }
 }

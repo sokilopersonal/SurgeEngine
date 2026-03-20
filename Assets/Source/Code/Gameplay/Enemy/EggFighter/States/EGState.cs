@@ -1,17 +1,29 @@
 ﻿using SurgeEngine.Source.Code.Gameplay.CommonObjects.Sensors;
 using SurgeEngine.Source.Code.Gameplay.Enemy.Base;
+using UnityEngine.AI;
 
 namespace SurgeEngine.Source.Code.Gameplay.Enemy.EggFighter.States
 {
-    public class EGState : FEState
+    public abstract class EGState : FEState
     {
-        protected readonly EggFighter eggFighter;
-        protected readonly VisionSensor sensor;
+        protected readonly EggFighter EggFighter;
+        protected readonly NavMeshAgent Agent;
+        protected readonly VisionSensor Sensor;
 
-        public EGState(EnemyBase enemy) : base(enemy)
+        protected EGState(EnemyBase enemy) : base(enemy)
         {
-            eggFighter = (EggFighter)enemy;
-            sensor = eggFighter.Sensor;
+            EggFighter = (EggFighter)enemy;
+            Agent = EggFighter.Agent;
+            Sensor = EggFighter.Sensor;
+        }
+
+        protected bool IsNavMeshValid()
+        {
+            var path = new NavMeshPath();
+            bool result = Agent.CalculatePath(Transform.position, path);
+            if (result)
+                return path.status == NavMeshPathStatus.PathComplete;
+            return false;
         }
     }
 }

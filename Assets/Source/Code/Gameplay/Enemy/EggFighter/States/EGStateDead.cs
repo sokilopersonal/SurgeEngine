@@ -12,15 +12,10 @@ namespace SurgeEngine.Source.Code.Gameplay.Enemy.EggFighter.States
         {
         }
 
-        public override void OnEnter()
-        {
-            base.OnEnter();
-        }
-
         public void ApplyKnockback(Vector3 force, EnemyRagdoll ragdoll)
         {
             ragdoll.Ragdoll(force);
-            eggFighter.Animation.Animator.enabled = false;
+            EggFighter.Animation.Animator.enabled = false;
         }
     }
 }

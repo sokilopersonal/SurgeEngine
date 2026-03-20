@@ -18,34 +18,37 @@ namespace SurgeEngine.Source.Code.Gameplay.Enemy.EggFighter.States
         {
             base.OnTick(dt);
 
-            bool hasTarget = sensor.FindVisibleTarget(out var pos, out var character);
-            Utility.TickTimer(ref _stayTimer, _stayTimer, false);
-
-            if (_stayTimer <= 0 && eggFighter.FollowPlayer)
+            var character = EggFighter.Character;
+            if (!EggFighter.FollowPlayer || !Agent.enabled)
             {
-                var agent = eggFighter.Agent;
-                agent.velocity = Vector3.zero;
+                if (Vector3.Distance(Transform.position, EggFighter.Character.transform.position) <=
+                    EggFighter.PunchRadius && !character.Flags.HasFlag(FlagType.Invincible))
+                {
+                    StateMachine.SetState<EGStatePunch>();
+                    return;
+                }
+            }
+
+            if (!Agent.enabled)
+                return;
+
+            bool hasTarget = Sensor.FindVisibleTarget(out var pos, out _);
+            Utility.TickTimer(ref _stayTimer, _stayTimer, false);
+            if (_stayTimer <= 0 && EggFighter.FollowPlayer)
+            {
+                Agent.velocity = Vector3.zero;
 
                 var path = new NavMeshPath();
                 if (hasTarget)
                 {
-                    if (!agent.hasPath)
+                    if (!Agent.hasPath)
                         StateMachine.SetState<EGStateChase>();
                     else
                     {
-                        agent.CalculatePath(pos, path);
+                        Agent.CalculatePath(pos, path);
                         if (path.status == NavMeshPathStatus.PathComplete && !character.Flags.HasFlag(FlagType.Invincible))
                             StateMachine.SetState<EGStateChase>();
                     }
-                }
-            }
-
-            if (!eggFighter.FollowPlayer)
-            {
-                if (Vector3.Distance(Transform.position, eggFighter.Character.transform.position) <=
-                    eggFighter.PunchRadius)
-                {
-                    StateMachine.SetState<EGStatePunch>();
                 }
             }
         }

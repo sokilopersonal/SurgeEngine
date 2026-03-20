@@ -8,28 +8,40 @@ namespace SurgeEngine.Source.Code.Gameplay.Enemy.EggFighter.States
     {
         public EGStateChase(EnemyBase enemy) : base(enemy)
         {
-            eggFighter.Animation.OnAnimatorMoveEvent += OnAnimatorMove;
+        }
+
+        public override void OnEnter()
+        {
+            base.OnEnter();
+            
+            EggFighter.Animation.OnAnimatorMoveEvent += OnAnimatorMove;
+        }
+
+        public override void OnExit()
+        {
+            base.OnExit();
+            
+            EggFighter.Animation.OnAnimatorMoveEvent -= OnAnimatorMove;
         }
 
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
 
-            bool hasTarget = sensor.FindVisibleTarget(out var pos, out var character);
+            bool hasTarget = Sensor.FindVisibleTarget(out var pos, out var character);
             if (!hasTarget)
             {
                 Debug.DrawLine(Transform.position, pos, Color.blue);
             }
-
-            var agent = eggFighter.Agent;
-            agent.SetDestination(pos);
-            if (agent.remainingDistance < agent.stoppingDistance)
+            
+            Agent.SetDestination(pos);
+            if (Agent.remainingDistance < Agent.stoppingDistance)
             {
-                agent.velocity = Vector3.zero;
+                Agent.velocity = Vector3.zero;
                 StateMachine.SetState<EGStateIdle>();
             }
             
-            if (Vector3.Distance(pos, Transform.position) < eggFighter.PunchRadius)
+            if (Vector3.Distance(pos, Transform.position) < EggFighter.PunchRadius)
             {
                 if (hasTarget && !character.Life.IsDead && !character.Flags.HasFlag(FlagType.Invincible))
                 {
@@ -44,13 +56,12 @@ namespace SurgeEngine.Source.Code.Gameplay.Enemy.EggFighter.States
 
         private void OnAnimatorMove(Animator obj)
         {
-            var agent = eggFighter.Agent;
-            if (!agent.enabled || agent.remainingDistance < agent.stoppingDistance) return;
+            if (!Agent.enabled || Agent.remainingDistance < Agent.stoppingDistance) return;
             
             var rootPos = obj.rootPosition;
-            rootPos.y = agent.nextPosition.y;
+            rootPos.y = Agent.nextPosition.y;
             Transform.position = rootPos;
-            agent.nextPosition = rootPos;
+            Agent.nextPosition = rootPos;
         }
     }
 }

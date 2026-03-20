@@ -109,15 +109,14 @@ namespace SurgeEngine.Source.Code.Gameplay.Enemy.EggFighter
             _startRotation = transform.rotation;
 
             _ragdollLayer = LayerMask.NameToLayer("EnemyRagdoll");
-
+            
             Agent = GetComponent<NavMeshAgent>();
             Agent.updatePosition = false;
             Agent.updateRotation = true;
             
-            if (!NavMesh.SamplePosition(Vector3.zero, out var hit, 1000.0f, NavMesh.AllAreas))
-            {
+            bool sample = NavMesh.SamplePosition(Vector3.zero, out var hit, 100f, NavMesh.AllAreas);
+            if (!sample)
                 Agent.enabled = false;
-            }
             
             Sensor = GetComponentInChildren<VisionSensor>();
             Sensor.enabled = enableAI;
