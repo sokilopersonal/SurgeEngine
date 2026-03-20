@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using SurgeEngine.Source.Code.Core.Character.HUD;
+using SurgeEngine.Source.Code.Core.Character.States;
 using SurgeEngine.Source.Code.Core.Character.System;
 using SurgeEngine.Source.Code.Infrastructure.Tools.Managers;
 using SurgeEngine.Source.Code.UI;
@@ -187,6 +188,7 @@ namespace SurgeEngine.Source.Code.Infrastructure.Tools
                     _character.Kinematics.PathForward?.Spline.UpdateTime(uPos);
                     _character.Kinematics.PathDash?.Spline.UpdateTime(uPos);
 
+                    _character.StateMachine.SetState<FStateIdle>();
                     _character.Flags.Clear();
                     
                     yield return new WaitForSecondsRealtime(0.02f);
