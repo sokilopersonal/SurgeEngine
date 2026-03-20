@@ -481,6 +481,19 @@ MonoBehaviour:
   ambientProbeDimmer:
     m_OverrideState: 1
     m_Value: 1
+--- !u!114 &-8582526847168490664
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: TestComponent
+  m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Editor.Tests:UnityEditor.Rendering.HighDefinition.Tests:CustomPostProcessComponentListTest/TestComponent
+  active: 1
 --- !u!114 &-8399462715485500619
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -3186,8 +3199,8 @@ MonoBehaviour:
   - {fileID: 7054568583307864062}
   - {fileID: 8366440330025302430}
   - {fileID: -5968353343242530664}
-  - {fileID: 7566527682804438130}
-  - {fileID: 4838625831746882670}
+  - {fileID: -8582526847168490664}
+  - {fileID: 4599219916230909843}
 --- !u!114 &370524497763573843
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -4631,6 +4644,19 @@ MonoBehaviour:
   scale:
     m_OverrideState: 1
     m_Value: 1
+--- !u!114 &4599219916230909843
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: TestComponent2
+  m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Editor.Tests:UnityEditor.Rendering.HighDefinition.Tests:CustomPostProcessComponentListTest/TestComponent2
+  active: 1
 --- !u!114 &4615441918913068017
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -5678,7 +5704,7 @@ MonoBehaviour:
     m_Value: 3
   threshold:
     m_OverrideState: 1
-    m_Value: 1.75
+    m_Value: 1.66
   intensity:
     m_OverrideState: 1
     m_Value: 1
