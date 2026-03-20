@@ -114,7 +114,7 @@ namespace SurgeEngine.Source.Code.UI
             if (track != null)
             {
                 Vector3 pos = _camera.WorldToScreenPoint(track.position);
-                bool onScreen = _camera.IsObjectInView(track); // Make sure point is on screen
+                bool onScreen = _camera.IsObjectInView(track); // Make sure the point is on screen
 
                 buttonImage.enabled = onScreen;
 

@@ -106097,10 +106097,10 @@ GameObject:
   - component: {fileID: 7795931357321953404}
   - component: {fileID: 6322482385637542623}
   - component: {fileID: 210073571643444696}
-  - component: {fileID: 6828878786053416422}
   - component: {fileID: 6986871942719812936}
   - component: {fileID: 8840034248951514102}
   - component: {fileID: 5329638351937773268}
+  - component: {fileID: 6937236189594370272}
   - component: {fileID: 7406824387918309845}
   - component: {fileID: 2671633414377098041}
   - component: {fileID: 3979352695895426392}
@@ -106268,19 +106268,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enableAutoCameraByDefault: 1
   autoCameraTime: 1.5
---- !u!114 &6828878786053416422
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5673036700509009099}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c5943ebccb744399b0780a9b7cc3ec50, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SurgeEngine._Source.Code.Core.Character.System.Characters.Sonic.HomingTargetDetector
-  config: {fileID: 11400000, guid: 26d8aa117f8802940838f20a3156f005, type: 2}
 --- !u!114 &6986871942719812936
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -106356,7 +106343,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10537bbdaf744484a584312d63000c13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flagType: 0
+  flags: 0
 --- !u!114 &5329638351937773268
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -106371,6 +106358,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SurgeEngine.Code.Core.Actor.System.CharacterLife
   invincibleTime: 3
   directionalForce: 2.66
+--- !u!114 &6937236189594370272
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5673036700509009099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 047ef17dafb9c404590de1a6b3fa2078, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SurgeEngine.Source.Code.Core.Character.System.HomingTargetDetector
+  config: {fileID: 11400000, guid: 26d8aa117f8802940838f20a3156f005, type: 2}
 --- !u!114 &7406824387918309845
 MonoBehaviour:
   m_ObjectHideFlags: 0

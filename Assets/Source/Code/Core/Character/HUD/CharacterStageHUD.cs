@@ -102,9 +102,10 @@ namespace SurgeEngine.Source.Code.Core.Character.HUD
                 var target = detector.Target;
                 if (target)
                 {
-                    if (_camera.IsObjectInView(target.transform)) homingIcon.gameObject.SetActive(true);
+                    bool isVisible = _camera.IsObjectInView(target.transform);
+                    homingIcon.gameObject.SetActive(isVisible);
                     homingIcon.Activate();
-                    homingIcon.transform.position = _camera.WorldToScreenPoint(target.transform.position);
+                    if (isVisible) homingIcon.transform.position = _camera.WorldToScreenPoint(target.transform.position);
                 }
                 else
                 {
