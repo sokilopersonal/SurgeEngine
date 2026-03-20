@@ -87,7 +87,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects
                 {
                     context.Kinematics.ResetHorizontalVelocity();
                     context.Flags.RemoveFlag(FlagType.OutOfControl);
-                    context.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, CurrentMessage.messageDuration));
+                    context.Flags.AddFlag(new Flag(FlagType.OutOfControl, CurrentMessage.messageDuration));
 
                     if (context.StateMachine.CurrentState is FStateGround)
                     {

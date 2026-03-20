@@ -143,7 +143,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         {
             Rigidbody.linearVelocity = Vector3.zero;
             Animation.StateAnimator.TransitionToState("Idle", 0f);
-            Flags.AddFlag(new Flag(FlagType.OutOfControl, true, 0.5f));
+            Flags.AddFlag(new Flag(FlagType.OutOfControl, 0.5f));
             Input.PlayerInput.enabled = true;
 
             if (StateMachine.CurrentState is IPointMarkerLoader stateLoader)

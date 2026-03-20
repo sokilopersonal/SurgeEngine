@@ -62,7 +62,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
                 }
 
                 if (changeState) damageable.TakeDamage();
-                Character.Flags.AddFlag(new Flag(FlagType.Invincible, true, invincibleTime + 1.5f));
+                Character.Flags.AddFlag(new Flag(FlagType.Invincible, invincibleTime + 1.5f));
             }
         }
 

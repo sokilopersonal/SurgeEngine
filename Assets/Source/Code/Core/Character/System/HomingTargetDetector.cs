@@ -1,12 +1,11 @@
 ﻿using SurgeEngine.Source.Code.Gameplay.CommonObjects;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility.Rails;
 using SurgeEngine.Source.Code.Infrastructure.Config.Sonic;
-using SurgeEngine.Source.Code.Infrastructure.Custom.Extensions;
 using UnityEngine;
 using UnityEngine.Splines;
 using Zenject;
 
-namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
+namespace SurgeEngine.Source.Code.Core.Character.System
 {
     public class HomingTargetDetector : MonoBehaviour
     {
@@ -48,7 +47,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
                 if (col.TryGetComponent(out Rail rail))
                 {
                     var spline = rail.Container.Spline;
-                    var railTarget = rail.HomingTarget;
+                    var railTarget = rail.GetComponentInChildren<HomingTarget>();
                     Vector3 localPos = rail.transform.InverseTransformPoint(transform.position + transform.forward * radius / 2);
                     SplineUtility.GetNearestPoint(spline, localPos, out _, out var f);
 

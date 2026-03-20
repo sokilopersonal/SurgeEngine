@@ -46,7 +46,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
                         Vector3 force = Utility.GetImpulseWithPitch(transform.forward, -transform.right, pitch, impulse);
                         body.linearVelocity = force;
                             
-                        context.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, outOfControl));
+                        context.Flags.AddFlag(new Flag(FlagType.OutOfControl, outOfControl));
                     }
                 }
             }

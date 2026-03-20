@@ -251,7 +251,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
                     await UniTask.Delay(TimeSpan.FromSeconds(mainAcceptingTime), DelayType.DeltaTime);
 
                 _character.Flags.RemoveFlag(FlagType.OutOfControl);
-                _character.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, failOutOfControlTime));
+                _character.Flags.AddFlag(new Flag(FlagType.OutOfControl, failOutOfControlTime));
                 _character.StateMachine.SetState<FStateAir>();
 
                 RuntimeManager.PlayOneShot(qteFailSound);

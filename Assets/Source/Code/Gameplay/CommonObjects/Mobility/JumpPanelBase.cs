@@ -46,7 +46,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             
             Utility.MoveToPosition(this, context.Kinematics.Rigidbody, StartPosition, context.Kinematics.Rigidbody.linearVelocity);
 
-            context.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, Mathf.Abs(outOfControl)));
+            context.Flags.AddFlag(new Flag(FlagType.OutOfControl, Mathf.Abs(outOfControl)));
 
             Rumble.Vibrate(0.3f, 0.4f);
         }

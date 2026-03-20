@@ -3,7 +3,9 @@ using SurgeEngine.Source.Code.Core.Character.System;
 using SurgeEngine.Source.Code.Core.StateMachine.Base;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.ChangeModes;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.Splines;
+using Zenject;
 
 namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility.Rails
 {
@@ -12,12 +14,11 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility.Rails
     {
         [SerializeField] private SplineContainer container;
         [SerializeField] private DominantSpline dominant;
-        
         [SerializeField] private float radius = 0.25f;
-        [SerializeField] private HomingTarget homingTargetPrefab;
         public SplineContainer Container => container;
         public float Radius => radius;
-        public HomingTarget HomingTarget { get; private set; }
+
+        [Inject] private DiContainer _diContainer;
 
         private CharacterBase _character;
         private Collider _collider;
@@ -28,23 +29,37 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility.Rails
             
             if (!container)
                 container = GetComponent<SplineContainer>();
-            
-            HomingTarget = Instantiate(homingTargetPrefab, transform, false);
-            HomingTarget.OnTargetReached.AddListener(AttachToRail);
-            HomingTarget.SetDistanceThreshold(1f);
 
-            var pos = Container.Spline.EvaluatePosition(0f);
-            HomingTarget.transform.position = transform.TransformPoint(pos);
+            var player = _diContainer.Resolve<CharacterBase>();
+            if (player.GetComponent<HomingTargetDetector>()) // Check if the player is actually able to do homing attack,
+                                                             // otherwise homing target is not needed 
+            {
+                const string key = "HomingTargetPrefab";
+                Addressables.LoadAssetAsync<GameObject>(key).Completed += op =>
+                {
+                    var homingTargetPrefab = op.Result.GetComponent<HomingTarget>();
+                    var target = Instantiate(homingTargetPrefab, transform, false);
+                    target.OnTargetReached.AddListener(AttachToRail);
+                    target.SetDistanceThreshold(1f);
+
+                    var pos = Container.Spline.EvaluatePosition(0f);
+                    target.transform.position = transform.TransformPoint(pos);
+                };
+            }
             
             gameObject.layer = LayerMask.NameToLayer("Rail");
         }
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.TryGetComponent(out CharacterBase character) && character.StateMachine.CurrentState is not FStateRailSwitch)
+            if (other.TryGetComponent(out CharacterBase character) 
+                && !IsStateExcluded(character.StateMachine.CurrentState))
             {
                 AttachToRail(character);
             }
+            
+            bool IsStateExcluded(FState current) 
+                => current is FStateRailSwitch or FStateAirObject;
         }
 
         private void AttachToRail(CharacterBase character)

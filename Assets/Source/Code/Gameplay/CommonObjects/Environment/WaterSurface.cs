@@ -132,7 +132,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Environment
                 DestroyRunSplash();
                 _currentRunSplash = Instantiate(runSplash, _cRigidbody.transform);
 
-                _character.Flags.AddFlag(new Flag(FlagType.OnWater, false));
+                _character.Flags.AddFlag(new Flag(FlagType.OnWater));
             }
         }
 

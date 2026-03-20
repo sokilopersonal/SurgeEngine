@@ -25,7 +25,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
                     character.Rigidbody.linearVelocity = character.transform.forward * stumbleSpeed + 
                                                        character.transform.up * stumbleSpeed;
                 
-                    character.Flags.AddFlag(new Flag(FlagType.OutOfControl, true, noControlTime));
+                    character.Flags.AddFlag(new Flag(FlagType.OutOfControl, noControlTime));
                     if (character.StateMachine.GetState(out FBoost boost))
                     {
                         boost.Active = false;

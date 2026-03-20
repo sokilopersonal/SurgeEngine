@@ -26,7 +26,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
         {
             base.OnEnter();
             
-            Character.Flags.AddFlag(new Flag(FlagType.Skydiving, false));
+            Character.Flags.AddFlag(new Flag(FlagType.Skydiving));
             Kinematics.BlockSkidding = true;
             
             _diving = false;
