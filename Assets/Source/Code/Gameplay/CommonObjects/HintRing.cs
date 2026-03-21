@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using Alchemy.Inspector;
 using FMODUnity;
 using SurgeEngine.Source.Code.Core.Character.States;
-using SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStates;
 using SurgeEngine.Source.Code.Core.Character.System;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.System;
 using UnityEngine;
@@ -88,7 +87,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects
                     context.Kinematics.ResetHorizontalVelocity();
                     context.Flags.AddFlag(new Flag(FlagType.OutOfControl, CurrentMessage.messageDuration));
 
-                    if (context.StateMachine.GetState(out FBoost boost))
+                    if (context.StateMachine.GetState(out Core.Character.States.Characters.Sonic.SubStates.FBoost boost))
                     {
                         boost.Active = false;
                     }
