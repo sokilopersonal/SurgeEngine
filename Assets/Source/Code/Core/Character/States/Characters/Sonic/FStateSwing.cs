@@ -10,14 +10,8 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
     {
         public Transform poleGrip;
         private float _rotationAngle;
-
-        private bool _swingSound;
-        private readonly SwingSound _soundReference;
         
-        public FStateSwing(CharacterBase owner) : base(owner)
-        {
-            _soundReference = owner.Sounds.Get<SwingSound>();
-        }
+        public FStateSwing(CharacterBase owner) : base(owner) {}
 
         public override void OnEnter()
         {
@@ -40,16 +34,6 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
             base.OnTick(dt);
 
             _rotationAngle = Character.Animation.StateAnimator.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime % 1;
-
-            if (_rotationAngle > 0.9f && !_swingSound)
-            {
-                _swingSound = true;
-                _soundReference?.Swing();
-            }
-            else if (_rotationAngle < 0.9f && _swingSound)
-            {
-                _swingSound = false;
-            }
 
             if(Input.APressed)
                 Jump();
