@@ -21,13 +21,13 @@ namespace SurgeEngine.Source.Code.Core.Character.States
 
         public override void OnTick(float dt)
         {
-            if (Kinematics.GetInputDir().magnitude > 0.02f || Kinematics.HorizontalVelocity.magnitude > 0.02f)
-            {
-                StateMachine.SetState<FStateGround>();
-            }
-
             if (!Character.Flags.HasFlag(FlagType.OutOfControl))
             {
+                if (Kinematics.GetInputDir().magnitude > 0.02f || Kinematics.HorizontalVelocity.magnitude > 0.02f)
+                {
+                    StateMachine.SetState<FStateGround>();
+                }
+                
                 if (Input.APressed)
                 {
                     Kinematics.SetDetachTime(0.1f);

@@ -80,15 +80,13 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects
             for (int i = 0; i < messages.Count; i++)
             {
                 CurrentMessage = messages[i];
-
                 ObjectEvents.OnHintTriggered?.Invoke(this);
 
                 if (CurrentMessage.outOfControl)
                 {
                     context.Kinematics.ResetHorizontalVelocity();
-                    context.Flags.RemoveFlag(FlagType.OutOfControl);
                     context.Flags.AddFlag(new Flag(FlagType.OutOfControl, CurrentMessage.messageDuration));
-
+                    
                     if (context.StateMachine.CurrentState is FStateGround)
                     {
                         context.StateMachine.SetState<FStateIdle>();
