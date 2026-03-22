@@ -67,6 +67,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
                 if (_timer >= 1f)
                 {
                     Debug.Log("Stuck");
+                    Kinematics.ResetVelocity();
                     StateMachine.SetState<FStateAir>();
                 }
             }

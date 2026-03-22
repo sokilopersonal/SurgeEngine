@@ -161,7 +161,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             _eventInstance.stop(STOP_MODE.ALLOWFADEOUT);
             _currentSpeed = 0f;
             Lower();
-            ctx.Flags.AddFlag(new Flag(FlagType.OutOfControl, Mathf.Abs(outOfControl)));
+            if (outOfControl > 0) ctx.Flags.AddFlag(new Flag(FlagType.OutOfControl, outOfControl));
 
             _attachedCharacter = null;
         }

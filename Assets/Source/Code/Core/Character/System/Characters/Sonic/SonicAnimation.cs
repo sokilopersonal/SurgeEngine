@@ -12,8 +12,9 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
 {
     public class SonicAnimation : CharacterAnimation
     {
+        private static readonly int GrindFlip = Animator.StringToHash("GrindFlip");
         private string _hopAnimation = "HopL";
-        private string GrindSuffix => StateAnimator.Animator.GetBool("GrindFlip") ? "_L" : "";
+        private string GrindSuffix => StateAnimator.Animator.GetBool(GrindFlip) ? "_L" : "";
 
         protected override void ChangeAnimationState(FState obj)
         {
@@ -250,7 +251,8 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
             }
             if (obj is FStateHoming)
             {
-                StateAnimator.TransitionToState("HomingBall", 0f).After(0.2f, () => StateAnimator.TransitionToState(AnimatorParams.AirCycle, 0.15f));
+                StateAnimator.TransitionToState("HomingBall", 0f)
+                    .After(0.2f, () => StateAnimator.TransitionToState(AnimatorParams.AirCycle, 0.15f));
             }
             if (obj is FStateStomp)
             {
