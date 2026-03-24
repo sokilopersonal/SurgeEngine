@@ -30,7 +30,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
             Rigidbody.position = _attachedJumpSelector.transform.position + Vector3.up * 0.5f;
             Rigidbody.rotation = _attachedJumpSelector.transform.rotation;
             
-            Character.Flags.AddFlag(new Flag(FlagType.OutOfControl));
+            Character.Flags.AddFlag(FlagType.OutOfControl);
             
             _attachedJumpSelector.OnJumpSelectorResult?.Invoke(JumpSelectorResultType.Start);
         }
@@ -98,7 +98,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
             void Launch(float speed, float outOfControl, Vector3 forward, Vector3 right, JumpSelectorButton button, float pitch = 0)
             {
                 Rigidbody.linearVelocity = Utility.GetImpulseWithPitch(forward, right, pitch, speed);
-                Character.Flags.AddFlag(new Flag(FlagType.OutOfControl, outOfControl));
+                if (outOfControl > 0) Character.Flags.AddFlag(new Flag(FlagType.OutOfControl, outOfControl));
                 
                 StateMachine.SetState<FStateJumpSelectorLaunch>().SetData(outOfControl, button, JumpSelectorResultType.OK);
             }

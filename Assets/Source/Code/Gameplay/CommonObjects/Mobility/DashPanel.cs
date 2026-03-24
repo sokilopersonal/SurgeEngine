@@ -30,7 +30,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             
             body.rotation = Quaternion.LookRotation(transform.forward, transform.up);
 
-            context.Flags.AddFlag(new Flag(FlagType.OutOfControl, Mathf.Abs(outOfControl)));
+            if (outOfControl > 0) context.Flags.AddFlag(new Flag(FlagType.OutOfControl, outOfControl));
             
             Rumble.Vibrate(0.7f, 0.9f, 0.5f);
         }

@@ -126,7 +126,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
                     {
                         _character.Kinematics.SetDetachTime(0.1f);
                         _character.Kinematics.Rigidbody.linearVelocity = _character.Kinematics.Velocity;
-                        _character.Flags.AddFlag(new Flag(FlagType.OutOfControl, Mathf.Abs(outOfControl)));
+                        if (outOfControl > 0) _character.Flags.AddFlag(new Flag(FlagType.OutOfControl, outOfControl));
                         _character.StateMachine.SetState<FStateAir>();
                     }
                 }

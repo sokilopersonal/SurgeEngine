@@ -31,7 +31,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             
             Utility.MoveToPosition(this, body, transform.position);
             
-            context.Flags.AddFlag(new Flag(FlagType.OutOfControl, Mathf.Abs(outOfControl)));
+            if (outOfControl > 0) context.Flags.AddFlag(new Flag(FlagType.OutOfControl, outOfControl));
         }
 
         private void OnDrawGizmosSelected()

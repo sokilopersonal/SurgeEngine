@@ -12,7 +12,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Player
         {
             base.OnEnter(msg, context);
             
-            context.Flags.AddFlag(new SlowdownFlag(FlagType.Slowdown, 0, maxSpeed));
+            context.Flags.AddFlag(new SlowdownFlag(0, maxSpeed));
         }
 
         private void OnTriggerExit(Collider other)

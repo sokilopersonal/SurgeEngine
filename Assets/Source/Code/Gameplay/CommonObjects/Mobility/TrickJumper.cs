@@ -109,7 +109,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
                 
                 _character.Kinematics.Rigidbody.linearVelocity = impulse;
                 _character.StateMachine.SetState<FStateTrickJump>(true);
-                _character.Flags.AddFlag(new Flag(FlagType.OutOfControl));
+                _character.Flags.AddFlag(FlagType.OutOfControl);
                 
                 Utility.MoveToPosition(this, _character.Kinematics.Rigidbody, StartPosition);
 
@@ -225,7 +225,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             if (result.success)
             {
                 _character.Flags.RemoveFlag(FlagType.OutOfControl);
-                _character.Flags.AddFlag(new Flag(FlagType.OutOfControl, secondOutOfControl));
+                if (secondOutOfControl > 0) _character.Flags.AddFlag(new Flag(FlagType.OutOfControl, secondOutOfControl));
                 _character.Kinematics.ResetVelocity();
 
                 Vector3 arcPeak = Trajectory.GetArcPosition(
@@ -247,7 +247,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             else
             {
                 _character.Flags.RemoveFlag(FlagType.OutOfControl);
-                _character.Flags.AddFlag(new Flag(FlagType.OutOfControl, firstOutOfControl));
+                if (firstOutOfControl > 0) _character.Flags.AddFlag(new Flag(FlagType.OutOfControl, firstOutOfControl));
                 _character.StateMachine.SetState<FStateAir>();
                 
                 RuntimeManager.PlayOneShot(qteFailSound);

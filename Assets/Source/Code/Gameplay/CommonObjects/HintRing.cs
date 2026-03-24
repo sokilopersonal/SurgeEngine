@@ -85,7 +85,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects
                 if (CurrentMessage.outOfControl)
                 {
                     context.Kinematics.ResetHorizontalVelocity();
-                    context.Flags.AddFlag(new Flag(FlagType.OutOfControl, CurrentMessage.messageDuration));
+                    if (CurrentMessage.messageDuration > 0) context.Flags.AddFlag(new Flag(FlagType.OutOfControl, CurrentMessage.messageDuration));
 
                     if (context.StateMachine.GetState(out Core.Character.States.Characters.Sonic.SubStates.FBoost boost))
                     {

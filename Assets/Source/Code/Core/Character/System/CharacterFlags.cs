@@ -4,109 +4,115 @@ using System.Linq;
 using Alchemy.Inspector;
 using SurgeEngine.Source.Code.Core.Character.States;
 using UnityEngine;
-using Zenject;
 
 namespace SurgeEngine.Source.Code.Core.Character.System
 {
     public class CharacterFlags : CharacterComponent
     {
         [SerializeField, ReadOnly] private FlagType flags;
-        private HashSet<Flag> _list;
-        
-        [Inject] private DiContainer _diContainer;
+
+        private Dictionary<FlagType, Flag> _runtimeFlags;
 
         private void Awake()
         {
-            _list = new HashSet<Flag>();
+            _runtimeFlags = new Dictionary<FlagType, Flag>();
         }
 
         private void Update()
         {
-            foreach (var flag in _list.ToList())
+            foreach (var pair in _runtimeFlags.ToArray())
             {
+                var flag = pair.Value;
                 flag.Update();
+
                 if (flag.IsFinished)
-                    RemoveFlag(flag.Type);
+                    RemoveFlag(pair.Key);
             }
         }
-
+        
+        public void AddFlag(FlagType type)
+        {
+            if (type == FlagType.None) return;
+            flags |= type;
+        }
+        
         public void AddFlag(Flag flag)
         {
-            Flag existingFlag = _list.FirstOrDefault(f => f.Type == flag.Type);
-            if (existingFlag != null)
-            {
-                _list.Remove(existingFlag);
-            }
+            _runtimeFlags.Remove(flag.Type, out _);
+
+            flag.Character = Character;
+
+            _runtimeFlags[flag.Type] = flag;
             flags |= flag.Type;
-            _list.Add(flag);
-            _diContainer.Inject(flag);
         }
 
         public void RemoveFlag(FlagType type)
         {
+            _runtimeFlags.Remove(type, out var flag);
+
             flags &= ~type;
-            Flag flagToRemove = _list.FirstOrDefault(f => f.Type == type);
-            if (flagToRemove != null)
-            {
-                _list.Remove(flagToRemove);
-            }
         }
-        
+
         public bool GetFlag<T>(out T flag) where T : Flag
         {
-            flag = _list.OfType<T>().FirstOrDefault();
-            return flag != null;
+            foreach (var f in _runtimeFlags.Values)
+            {
+                if (f is T typed)
+                {
+                    flag = typed;
+                    return true;
+                }
+            }
+
+            flag = null;
+            return false;
         }
 
         public void Clear()
         {
-            _list.Clear();
+            _runtimeFlags.Clear();
             flags = FlagType.None;
         }
 
         public bool HasFlag(FlagType type)
         {
-            return flags.HasFlag(type);
+            return (flags & type) != 0;
         }
     }
-    
+
     public class Flag
     {
-        [Inject] protected CharacterBase Character { get; }
-        
-        public FlagType Type { get; protected set; }
+        public CharacterBase Character { get; set; }
+
+        public FlagType Type { get; }
         public bool IsFinished => _isTemporary && _timer >= _time;
+
         private readonly bool _isTemporary;
         private readonly float _time;
         private float _timer;
 
         public Flag(FlagType type)
         {
-            Type = type;
             if (type == FlagType.None)
                 throw new ArgumentException("Flag type cannot be None.");
+
+            Type = type;
         }
-        
+
         public Flag(FlagType type, float time)
         {
+            if (type == FlagType.None)
+                throw new ArgumentException("Flag type cannot be None.");
+
             Type = type;
             _isTemporary = time > 0;
             _time = time;
-            
-            if (type == FlagType.None)
-                throw new ArgumentException("Flag type cannot be None.");
         }
 
-        /// <summary>
-        /// Update flag logic.
-        /// </summary>
-        /// <returns>true when time finished.</returns>
         public virtual void Update()
         {
             if (_isTemporary)
-            {
                 _timer += Time.deltaTime;
-            }
         }
     }
 
@@ -120,14 +126,11 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
         public float PathEaseTime { get; }
 
-        public AutorunFlag(FlagType type, float time, float speed, float easeTime, float pathEaseTime = 0) : base(type, time)
+        public AutorunFlag(float time, float speed, float easeTime, float pathEaseTime = 0)
+            : base(FlagType.Autorun, time)
         {
-            Type = FlagType.Autorun;
-            
             _targetSpeed = speed;
             _easeTime = easeTime;
-            _currentEaseTime = 0f;
-            _accelerationStarted = false;
             PathEaseTime = pathEaseTime;
         }
 
@@ -147,6 +150,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
             float progress = Mathf.Clamp01(_currentEaseTime / _easeTime);
             float currentTargetSpeed = Mathf.Lerp(_initialSpeed, _targetSpeed, progress);
+
             if (kinematics.Speed < currentTargetSpeed || _targetSpeed == 0)
             {
                 Vector3 currentVelocity = kinematics.Velocity;
@@ -157,14 +161,11 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
                 kinematics.Rigidbody.linearVelocity = newPlanarVelocity + verticalVelocity;
 
-                if (_targetSpeed == 0)
+                if (_targetSpeed == 0 && _currentEaseTime >= _easeTime)
                 {
-                    if (_currentEaseTime >= _easeTime)
+                    if (kinematics.CheckForGround(out _))
                     {
-                        if (kinematics.CheckForGround(out _))
-                        {
-                            Character.StateMachine.SetState<FStateIdle>();
-                        }
+                        Character.StateMachine.SetState<FStateIdle>();
                     }
                 }
             }
@@ -175,7 +176,8 @@ namespace SurgeEngine.Source.Code.Core.Character.System
     {
         private readonly float _maxSpeed;
 
-        public SlowdownFlag(FlagType type, float time, float maxSpeed) : base(type, time)
+        public SlowdownFlag(float time, float maxSpeed)
+            : base(FlagType.Slowdown, time)
         {
             _maxSpeed = maxSpeed;
         }
@@ -183,7 +185,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         public override void Update()
         {
             base.Update();
-            
+
             var kinematics = Character.Kinematics;
             if (kinematics.CheckForGround(out _))
             {

@@ -44,7 +44,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             context.StateMachine.SetState<FStateSpring>();
             Utility.MoveToPosition(this, context.Kinematics.Rigidbody, transform.position, 0.1f);
             
-            context.Flags.AddFlag(new Flag(FlagType.OutOfControl, Mathf.Abs(outOfControl)));
+            if (outOfControl > 0) context.Flags.AddFlag(new Flag(FlagType.OutOfControl, outOfControl));
             
             RuntimeManager.PlayOneShot(sound, transform.position);
 
