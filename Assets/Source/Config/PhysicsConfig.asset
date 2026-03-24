@@ -12,27 +12,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1f37b37c23e94746a87aa4ac3191046, type: 3}
   m_Name: PhysicsConfig
   m_EditorClassIdentifier: 
-  castDistance: 1.15
+  castDistance: 1.2
   castDistanceCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
       value: 1
-      inSlope: 0.54792964
-      outSlope: 0.4000008
-      tangentMode: 69
+      inSlope: 0.7570684
+      outSlope: 0.7570684
+      tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.059365366
+      outWeight: 0.041292287
     - serializedVersion: 3
       time: 1
-      value: 1.4000008
-      inSlope: 0.4000008
-      outSlope: -0.009080429
-      tangentMode: 69
+      value: 1.5
+      inSlope: 0.30480015
+      outSlope: 0.30480015
+      tangentMode: 0
       weightedMode: 0
-      inWeight: 0.14714038
+      inWeight: 0.07845086
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -47,7 +47,7 @@ MonoBehaviour:
   maxVerticalSpeed: 25
   airControl: 0.2
   landingSpeed: 14
-  accelerationRate: 15
+  accelerationRate: 14
   accelerationCurve:
     serializedVersion: 2
     m_Curve:

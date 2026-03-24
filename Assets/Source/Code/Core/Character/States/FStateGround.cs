@@ -69,13 +69,14 @@ namespace SurgeEngine.Source.Code.Core.Character.States
                 if (predictedGround) Kinematics.RotateSnapNormal(data.normal);
                 else
                 {
+                    Kinematics.Normal = Vector3.up;
                     StateMachine.SetState<FStateSlip>();
                 }
                 
                 Kinematics.ClampVelocityToMax();
                 
                 Kinematics.BasePhysics(Kinematics.Normal);
-                if (!isWater)
+                if (!isWater || predictedGround)
                 {
                     Kinematics.Snap(Kinematics.Point, Kinematics.Normal);
                 }

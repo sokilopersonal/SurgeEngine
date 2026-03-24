@@ -91,6 +91,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         private bool _canAttach;
 
         private PhysicsConfig _config;
+        private Vector3 _normalVelocity;
 
         protected virtual void Awake()
         {
@@ -551,13 +552,11 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         {
             if (Speed > normalSpeedThreshold)
             {
-                float t = Speed;
-                Normal = Vector3.Slerp(Normal, targetNormal, t * Time.fixedDeltaTime);
+                Normal = Vector3.SmoothDamp(Normal, targetNormal, ref _normalVelocity, 0.02f, Speed / 2);
             }
             else
             {
-                float t = normalLerpSpeed;
-                Normal = Vector3.Slerp(Normal, Vector3.up, t * Time.fixedDeltaTime);
+                Normal = Vector3.SmoothDamp(Normal, Vector3.up, ref _normalVelocity, 0.1f);
             }
         }
 
