@@ -1,14 +1,18 @@
-﻿using SurgeEngine.Source.Code.Core.Character.CameraSystem.Pans;
+﻿using SurgeEngine.Source.Code.Core.Character.CameraSystem;
+using SurgeEngine.Source.Code.Core.Character.CameraSystem.Pans;
 using SurgeEngine.Source.Code.Core.Character.CameraSystem.Pans.Data;
 using SurgeEngine.Source.Code.Core.Character.System;
-using UnityEditor;
 using UnityEngine;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.CameraObjects
 {
     public abstract class ObjCameraBase : StageObject
     {
-        public abstract void SetPan(CharacterBase ctx);
+        public abstract void SetPan(CharacterBase ctx, CameraEaseData? easeOverride = null);
         public abstract void RemovePan(CharacterBase context);
     }
     
@@ -18,11 +22,17 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.CameraObjects
     {
         [SerializeField] protected TData data;
 
-        public override void SetPan(CharacterBase ctx)
+        public override void SetPan(CharacterBase ctx, CameraEaseData? easeOverride = null)
         {
-            var st = ctx.Camera.StateMachine.GetState<TState>();
+            var stateMachine = ctx.Camera.StateMachine;
+            var st = stateMachine.GetState<TState>();
             st?.SetData(data);
-            ctx.Camera.StateMachine.SetState<TState>(allowSameState: true);
+            
+            stateMachine.EaseData = easeOverride ?? CameraEaseData.FromPan(data);
+            stateMachine.IsExiting = false;
+            stateMachine.Blending.Reset();
+
+            stateMachine.SetState<TState>(allowSameState: true);
         }
 
         public override void RemovePan(CharacterBase ctx)

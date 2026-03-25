@@ -8,17 +8,12 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem.Pans.Data
     public class PanData
     {
         [HideInInspector] public Vector3 position;
-        public float easeTimeEnter = 0.5f;
-        public float easeTimeExit = 1f;
+        public float easeTimeEnter = 1;
+        public float easeTimeLeave = 1;
         public float fov = 60f;
-        public bool allowRotation = true;
-        [Tooltip("Only works on cameras that are just modifications of a normal camera")] public bool isCollision = true;
 
-        public PanData()
-        {
-            easeTimeEnter = 1;
-            easeTimeExit = 1;
-        }
+        [Tooltip("Only works on cameras that are just modifications of a normal camera")] 
+        public bool isCollision = true;
     }
 
     [Serializable]
@@ -48,7 +43,6 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem.Pans.Data
         public float distance = 4f;
         public float yOffset = 0.25f;
         public Transform target;
-        public Vector3 Forward { get; set; }
     }
 
     [Serializable]

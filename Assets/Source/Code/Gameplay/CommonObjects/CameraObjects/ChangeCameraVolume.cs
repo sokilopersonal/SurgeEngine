@@ -6,10 +6,12 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.CameraObjects
     public class ChangeCameraVolume : StageObject
     {
         [SerializeField] private ObjCameraBase target;
-        [SerializeField] private float easeTimeEnter = 0.5f;
-        [SerializeField] private float easeTimeLeave = 0.5f;
+        [SerializeField] private float easeTimeEnter = 1f;
+        [SerializeField] private float easeTimeLeave = 1f;
         [SerializeField] private int priority;
         public ObjCameraBase Target => target;
+        public float EaseTimeEnter => easeTimeEnter;
+        public float EaseTimeLeave => easeTimeLeave;
         public int Priority => priority;
 
         private CharacterBase _character;

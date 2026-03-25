@@ -1,14 +1,11 @@
-using System.Collections.Generic;
-using System.Linq;
 using SurgeEngine.Source.Code.Core.Character.CameraSystem.Pans;
-using SurgeEngine.Source.Code.Core.Character.CameraSystem.Pans.Data;
+using SurgeEngine.Source.Code.Core.Character.States;
 using SurgeEngine.Source.Code.Core.Character.System;
 using SurgeEngine.Source.Code.Core.StateMachine;
 using SurgeEngine.Source.Code.Core.StateMachine.Base;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.CameraObjects;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.ChangeModes;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.System;
-using SurgeEngine.Source.Code.Infrastructure.Custom;
 using UnityEngine;
 
 namespace SurgeEngine.Source.Code.Core.Character.CameraSystem
@@ -16,185 +13,128 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem
     public class CameraStateMachine : FStateMachine, IPointMarkerLoader
     {
         public CharacterCamera Master { get; }
-        public Camera Camera { get; }
+        private Camera Camera { get; }
         public Transform Transform { get; }
 
         public float Yaw { get; set; }
         public float Pitch { get; set; }
+        public float BaseFov { get; }
 
-        public float BaseFov { get; private set; }
+        public CameraEaseData EaseData { get; set; }
+        public float BlendFactor => _blending.BlendFactor;
+        public ChangeCameraVolume Top => _volumeStack.Top;
+        public bool IsExiting { get; set; }
+        private int VolumeCount => _volumeStack.Count;
 
         private Vector3 _position;
         private Vector3 _characterPosition;
         private Quaternion _rotation;
         private float _fovY;
-
-        public PanData CurrentData { get; set; }
-        public float BlendFactor { get; private set; }
-
         private bool _is2dCamera;
-        
-        private readonly Stack<ChangeCameraVolume> _volumes;
-        private ChangeCameraVolume _lastTop;
-        public int VolumeCount => _volumes.Count;
-        public ChangeCameraVolume Top => _volumes.Count > 0 ? _volumes.Peek() : null;
 
-        private CameraData _data;
-        
+        private readonly CameraBlending _blending = new();
+        private readonly CameraVolumeStack _volumeStack = new();
         private readonly CharacterBase _character;
+        
+        public CameraBlending Blending => _blending;
 
         public CameraStateMachine(Camera camera, Transform transform, CharacterBase character)
         {
-            _volumes = new();
-            
             Camera = camera;
             Transform = transform;
             _character = character;
             Master = character.Camera;
-            
             BaseFov = Camera.fieldOfView;
             _fovY = BaseFov;
 
             OnStateEarlyAssign += _ => RememberRelativeData();
             _character.Kinematics.OnPath2DChange += Set2DCamera;
+            _volumeStack.OnTopChanged += HandleTopChanged;
+        }
+        
+        public void Initialize()
+        {
+            var animState = GetState<CameraAnimState>();
+            if (animState != null)
+                animState.OnFinished += HandleAnimFinished;
+            
+            _blending.Complete();
+        }
+        
+        private void HandleAnimFinished(CameraAnimState state)
+        {
+            _blending.Reset();
 
-            CompleteBlend();
+            if (VolumeCount == 0)
+            {
+                var startData = _character.GetStartData();
+                float exit = startData.startType == StartType.Standing ? 0.5f : 0f;
+                EaseData = new CameraEaseData(0, exit);
+                IsExiting = true;
+                
+                SetState<NewModernState>();
+            }
+            else
+            {
+                var top = Top;
+                _volumeStack.ResetLastTop();
+                top.Target.SetPan(_character, CameraEaseData.FromVolume(top));
+            }
+            
+            state.OnFinished -= HandleAnimFinished;
         }
 
         public override void Tick(float dt)
         {
             _characterPosition = _character.transform.position;
-            
             base.Tick(dt);
-            
-            Blend();
-            UpdateBlendFactor();
+
+            if (CurrentState is CameraState cam)
+            {
+                _blending.Tick(dt, EaseData, IsExiting);
+                (_position, _rotation, _fovY) = _blending.Evaluate(
+                    cam.StatePosition, cam.StateRotation, cam.StateFOV, _characterPosition);
+            }
 
             Transform.position = _position;
             Transform.rotation = _rotation;
             Camera.fieldOfView = _fovY;
         }
 
-        private void UpdateBlendFactor()
-        {
-            bool isExit = VolumeCount == 0;
-            if (CurrentData != null)
-            {
-                PanData baseData = CurrentData;
-                float enterTime = baseData.easeTimeEnter;
-                float exitTime = baseData.easeTimeExit;
-                float easeTime = !isExit ? enterTime : exitTime;
-
-                if (easeTime > 0)
-                {
-                    BlendFactor += Time.deltaTime / easeTime;
-                }
-                else
-                {
-                    BlendFactor = 1f;
-                }
-                
-                BlendFactor = Mathf.Clamp01(BlendFactor);
-            }
-        }
-
-        private void Blend()
-        {
-            if (CurrentState is CameraState currentCameraState)
-            {
-                Vector3 pos = currentCameraState.StatePosition;
-                Quaternion rot = currentCameraState.StateRotation;
-                float t = Easings.Get(Easing.Gens, BlendFactor);
-
-                if (BlendFactor < 1)
-                {
-                    Vector3 center = _characterPosition;
-                    Vector3 diff = pos - center;
-                    _position = Vector3.Slerp(_data.Position, diff, t);
-                    _position += center;
-                    
-                    _rotation = Quaternion.Slerp(_data.Rotation, rot, t);
-                    _fovY = Mathf.Lerp(_data.FOV, currentCameraState.StateFOV, t);
-                }
-                
-                if (BlendFactor >= 1)
-                {
-                    _position = pos;
-                    _rotation = rot;
-                    _fovY = currentCameraState.StateFOV;
-                }
-            }
-        }
-
         protected override void EnterState(FState newState)
         {
-            if (_is2dCamera)
+            if (_is2dCamera && newState.GetType() == typeof(NewModernState))
             {
-                var type = newState.GetType();
-                if (type == typeof(NewModernState))
-                {
-                    if (states.TryGetValue(typeof(Camera2DState), out var value))
-                    {
-                        newState = value;
-                    }
-                }
+                if (states.TryGetValue(typeof(Camera2DState), out var camera2DState))
+                    newState = camera2DState;
             }
-            
+
             base.EnterState(newState);
         }
 
         public void RegisterVolume(ChangeCameraVolume vol)
         {
-            if (!_volumes.Contains(vol) && vol.Target)
-            {
-                var tempList = new List<ChangeCameraVolume>(_volumes) { vol };
-                tempList = tempList.OrderBy(v => v.Priority).ToList();
-
-                _volumes.Clear();
-                foreach (var t in tempList)
-                {
-                    _volumes.Push(t);
-                }
-                
-                if (CurrentState is not CameraAnimState)
-                {
-                    ApplyTop();
-                }
-            }
+            _volumeStack.Register(vol);
         }
 
         public void UnregisterVolume(ChangeCameraVolume vol)
         {
-            if (_volumes.Contains(vol))
-            {
-                var tempList = new List<ChangeCameraVolume>(_volumes);
-                tempList.Remove(vol);
-                tempList = tempList.OrderBy(v => v.Priority).ToList();
-
-                _volumes.Clear();
-                for (int i = 0; i < tempList.Count; i++)
-                {
-                    _volumes.Push(tempList[i]);
-                }
-
-                if (CurrentState is not CameraAnimState)
-                {
-                    ApplyTop();
-                }
-            }
+            _volumeStack.Unregister(vol);
         }
 
-        public void ApplyTop()
+        private void HandleTopChanged(ChangeCameraVolume top)
         {
-            var top = Top;
-            if (top == _lastTop) return;
-            _lastTop = top;
+            if (CurrentState is CameraAnimState) return;
+            _blending.Reset();
 
-            ResetBlendFactor();
-
-            if (top != null) top.Target.SetPan(_character);
+            if (top != null)
+            {
+                IsExiting = false;
+                top.Target.SetPan(_character, CameraEaseData.FromVolume(top));
+            }
             else
             {
+                IsExiting = true;
                 SetState<NewModernState>();
             }
         }
@@ -204,32 +144,23 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem
             if (data != null && data.IsCameraChange)
             {
                 _is2dCamera = true;
-                ResetBlendFactor();
-                CurrentData = new();
+                _blending.Reset();
                 SetState<Camera2DState>();
             }
-            else if (data == null && _is2dCamera) // why reset the camera from 2d state if we are not in 2d state?
+            else if (data == null && _is2dCamera)
             {
                 _is2dCamera = false;
-                ResetBlendFactor();
+                _blending.Reset();
                 SetDirection(_character.transform.forward);
-                CurrentData = new();
                 SetState<NewModernState>();
             }
         }
 
-        public void CompleteBlend() => BlendFactor = 1f;
-        
-        public void ResetBlendFactor()
-        {
-            BlendFactor = 0f;
-        }
-
-        public void SetDirection(Vector3 forward, bool resetY = false)
+        public void SetDirection(Vector3 forward, bool resetPitch = false)
         {
             Quaternion dir = Quaternion.LookRotation(forward).normalized;
             Yaw = dir.eulerAngles.y;
-            Pitch = !resetY ? dir.eulerAngles.x : 0f;
+            Pitch = resetPitch ? 0f : dir.eulerAngles.x;
         }
 
         public void SetDirection(float yaw, float pitch)
@@ -238,17 +169,14 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem
             Pitch = pitch;
         }
 
-        public void ClearVolumes() => _volumes.Clear();
+        public void ClearVolumes() => _volumeStack.Clear();
 
         private void RememberRelativeData()
         {
-            Vector3 center = _characterPosition;
-            _data = new()
-            {
-                Position = _position - center,
-                Rotation = _rotation,
-                FOV = Camera.fieldOfView,
-            };
+            _blending.RememberFrom(
+                _position - _characterPosition,
+                _rotation,
+                Camera.fieldOfView);
         }
 
         public void Load()
@@ -256,39 +184,26 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem
             if (VolumeCount == 0)
             {
                 SetState<NewModernState>();
-                _lastTop = null;
+                _volumeStack.ResetLastTop();
             }
             else
             {
-                ApplyTop();
+                HandleTopChanged(Top);
             }
-            
+
             if (CurrentState is CameraState state)
             {
-                var pos = state.StatePosition;
-                var rot = state.StateRotation;
-                var fov = state.StateFOV;
-                
-                _position = pos;
-                _rotation = rot;
-                _fovY = fov;
-                
-                _data = new()
-                {
-                    Position = pos - _characterPosition,
-                    Rotation = rot,
-                    FOV = fov,
-                };
+                _position = state.StatePosition;
+                _rotation = state.StateRotation;
+                _fovY = state.StateFOV;
 
-                BlendFactor = 1;
+                _blending.RememberFrom(
+                    _position - _characterPosition,
+                    _rotation,
+                    _fovY);
+
+                _blending.Complete();
             }
         }
-    }
-
-    public class CameraData
-    {
-        public Vector3 Position;
-        public Quaternion Rotation;
-        public float FOV;
     }
 }

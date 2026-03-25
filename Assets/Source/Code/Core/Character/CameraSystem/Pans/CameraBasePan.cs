@@ -13,7 +13,6 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem.Pans
         public virtual void SetData(T data)
         {
             _panData = data;
-            _stateMachine.CurrentData = data;
         }
     }
     

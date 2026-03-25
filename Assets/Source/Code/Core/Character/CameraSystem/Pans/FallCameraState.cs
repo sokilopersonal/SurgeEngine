@@ -17,8 +17,6 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem.Pans
         public override void OnEnter()
         {
             base.OnEnter();
-
-            _stateMachine.CurrentData = _panData;
             
             StatePosition = _stateMachine.Transform.position;
         }

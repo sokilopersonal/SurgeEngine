@@ -123,7 +123,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 
         private void UpdateVisual()
         {
-            col.enabled = type == ReactionPlateType.Spring;
+            if (col) col.enabled = type == ReactionPlateType.Spring;
 
             if (springRenderer && plateRenderer)
             {

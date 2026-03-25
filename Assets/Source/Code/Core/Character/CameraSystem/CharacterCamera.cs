@@ -118,8 +118,7 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem
             {
                 StateMachine.RegisterVolume(volume);
             }
-            
-            StateMachine.CompleteBlend();
+            StateMachine.Initialize();
 
             var cameraModifiers = _cameraTransform.GetComponentsInChildren<BaseCameraModifier>();
             foreach (var modifier in cameraModifiers)
@@ -127,11 +126,6 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem
                 modifier.Set(Character);
                 _modifiersDictionary.Add(modifier.GetType(), modifier);
             }
-        }
-
-        private void Start()
-        {
-            
         }
 
         private void Update()
@@ -142,10 +136,6 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem
         private void FixedUpdate()
         {
             StateMachine.FixedTick(Time.fixedDeltaTime);
-        }
-
-        private void LateUpdate()
-        {
         }
         
         public Camera GetCamera()
