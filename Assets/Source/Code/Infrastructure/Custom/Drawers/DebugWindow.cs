@@ -263,6 +263,8 @@ namespace SurgeEngine.Source.Code.Infrastructure.Custom.Drawers
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
             }
+            
+            _character.Input.enabled = !_cursorActive;
         }
     }
 }
