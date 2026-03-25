@@ -10,6 +10,9 @@ using UnityEngine;
 using Zenject;
 using Random = UnityEngine.Random;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 {
@@ -29,7 +32,6 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         Random = 4
     }
     
-    [ExecuteAlways]
     public class ReactionPlate : StageObject
     {
         private static readonly int InputDevice = Shader.PropertyToID("_InputDevice");
@@ -92,29 +94,31 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             OnQTEResultReceived -= HandleQTEResult;
         }
 
+#if UNITY_EDITOR
+        private void OnValidate()
+        {
+            EditorApplication.delayCall += UpdateVisual;
+        }
+        
+#endif
         private void Update()
         {
-            UpdateVisual();
-
-            if (Application.isPlaying)
+            if (_qteSequence != null)
             {
-                if (_qteSequence != null)
+                float deltaTime = Time.deltaTime;
+                if (deltaTime < MaxFrameTime && _countdown)
                 {
-                    float deltaTime = Time.deltaTime;
-                    if (deltaTime < MaxFrameTime && _countdown)
-                    {
-                        _timer -= deltaTime;
-                    }
-
-                    if (_timer <= 0)
-                    {
-                        OnQTEResultReceived?.Invoke(QTEResult.Fail);
-                    }
+                    _timer -= deltaTime;
                 }
-                
-                if (_material != null)
-                    _material.SetFloat(InputDevice, (int)_character.Input.GetDevice());
+
+                if (_timer <= 0)
+                {
+                    OnQTEResultReceived?.Invoke(QTEResult.Fail);
+                }
             }
+                
+            if (_material != null)
+                _material.SetFloat(InputDevice, (int)_character.Input.GetDevice());
         }
 
         private void UpdateVisual()

@@ -6,16 +6,13 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.CameraObjects
     public class ChangeCameraVolume : StageObject
     {
         [SerializeField] private ObjCameraBase target;
-        public ObjCameraBase Target => target;
+        [SerializeField] private float easeTimeEnter = 0.5f;
+        [SerializeField] private float easeTimeLeave = 0.5f;
         [SerializeField] private int priority;
+        public ObjCameraBase Target => target;
         public int Priority => priority;
 
         private CharacterBase _character;
-
-        private void Awake()
-        {
-
-        }
 
         private void OnDisable()
         {
@@ -28,18 +25,18 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.CameraObjects
 
         private void OnTriggerStay(Collider other)
         {
-            if (target && other.transform.TryGetComponent(out CharacterBase actor))
+            if (target && other.transform.TryGetComponent(out CharacterBase character))
             {
-                _character = actor;
+                _character = character;
                 _character.Camera.StateMachine.RegisterVolume(this);
             }
         }
         
         private void OnTriggerExit(Collider other)
         {
-            if (target && other.transform.TryGetComponent(out CharacterBase actor))
+            if (target && other.transform.TryGetComponent(out CharacterBase character))
             {
-                actor.Camera.StateMachine.UnregisterVolume(this);
+                character.Camera.StateMachine.UnregisterVolume(this);
                 _character = null;
             }
         }

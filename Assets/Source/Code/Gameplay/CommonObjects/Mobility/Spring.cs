@@ -6,6 +6,10 @@ using SurgeEngine.Source.Code.Infrastructure.Custom;
 using SurgeEngine.Source.Code.Infrastructure.Custom.Drawers;
 using UnityEngine;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 {
     public class Spring : StageObject
@@ -59,11 +63,16 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             }
         }
 
+#if UNITY_EDITOR
         private void OnValidate()
         {
-            if (baseModel)
-                baseModel.SetActive(hasBase);
+            EditorApplication.delayCall += () =>
+            {
+                if (baseModel)
+                    baseModel.SetActive(hasBase);
+            };
         }
+#endif
 
         private void OnDrawGizmosSelected()
         {

@@ -88,6 +88,8 @@ namespace SurgeEngine.Source.Editor.HE1Importer
 
                     var camVolume = go.GetComponent<ChangeCameraVolume>();
                     float priority = HE1Helper.GetFloatWithMultiSetParam(elem, "Priority");
+                    HE1Helper.SetFloatReflection(camVolume, "easeTimeEnter", easeTimeEnter);
+                    HE1Helper.SetFloatReflection(camVolume, "easeTimeExit", easeTimeExit);
                     camVolume.GetType().GetField("priority", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)?.SetValue(camVolume, (int)priority);
                     var targetField = camVolume.GetType().GetField("target", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
                     var volumeConnectedId = elem.Element("Target").Element("SetObjectID")?.Value.Trim() ?? "0";
