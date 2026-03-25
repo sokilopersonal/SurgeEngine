@@ -18,11 +18,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.CameraObjects
 
         private void OnDisable()
         {
-            if (_character != null)
-            {
-                _character.Camera.StateMachine.UnregisterVolume(this);
-                _character = null;
-            }
+            Clear();
         }
 
         private void OnTriggerStay(Collider other)
@@ -33,12 +29,20 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.CameraObjects
                 _character.Camera.StateMachine.RegisterVolume(this);
             }
         }
-        
+
         private void OnTriggerExit(Collider other)
         {
             if (target && other.transform.TryGetComponent(out CharacterBase character))
             {
-                character.Camera.StateMachine.UnregisterVolume(this);
+                Clear();
+            }
+        }
+
+        private void Clear()
+        {
+            if (_character != null)
+            {
+                _character.Camera.StateMachine.UnregisterVolume(this);
                 _character = null;
             }
         }
