@@ -151,7 +151,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
         private void CalculateMovementStats()
         {
-            _moveDot = Vector3.Dot(_inputDir.normalized, Rigidbody.transform.forward);
+            _moveDot = Vector3.Dot(_inputDir.normalized, Rigidbody.linearVelocity.normalized);
         }
 
         private void CheckIfIsInAir()
@@ -234,7 +234,6 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
         private void BaseGroundPhysics()
         {
-            // why the fuck I've put the projected inputDir on vec3.up??
             Vector3 newVelocity = Quaternion.FromToRotation(_planarVelocity.normalized, _inputDir) * _planarVelocity;
             float handling = TurnRate;
             handling *= _config.turnCurve.Evaluate(Speed / _config.topSpeed);
