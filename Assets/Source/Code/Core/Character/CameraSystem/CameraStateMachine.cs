@@ -22,7 +22,7 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem
 
         public CameraEaseData EaseData { get; set; }
         public float BlendFactor => _blending.BlendFactor;
-        public ChangeCameraVolume Top => _volumeStack.Top;
+        public ChangeVolumeCamera Top => _volumeStack.Top;
         public bool IsExiting { get; set; }
         private int VolumeCount => _volumeStack.Count;
 
@@ -112,17 +112,17 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem
             base.EnterState(newState);
         }
 
-        public void RegisterVolume(ChangeCameraVolume vol)
+        public void RegisterVolume(ChangeVolumeCamera vol)
         {
             _volumeStack.Register(vol);
         }
 
-        public void UnregisterVolume(ChangeCameraVolume vol)
+        public void UnregisterVolume(ChangeVolumeCamera vol)
         {
             _volumeStack.Unregister(vol);
         }
 
-        private void HandleTopChanged(ChangeCameraVolume top)
+        private void HandleTopChanged(ChangeVolumeCamera top)
         {
             if (CurrentState is CameraAnimState) return;
             _blending.Reset();

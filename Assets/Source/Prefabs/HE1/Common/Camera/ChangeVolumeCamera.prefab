@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8763458577138613339}
   - component: {fileID: 5568359874421509112}
   m_Layer: 8
-  m_Name: ChangeCameraVolume
+  m_Name: ChangeVolumeCamera
   m_TagString: Untagged
   m_Icon: {fileID: 2800000, guid: dccc60f0e6c71c044b507f76a486a91d, type: 3}
   m_NavMeshLayer: 0
@@ -45,7 +45,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d2fa9a52da01d044a150bf38ac9a03a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <SetID>k__BackingField: 0
   target: {fileID: 0}
+  easeTimeEnter: 1
+  easeTimeLeave: 1
+  priority: 0
 --- !u!65 &5568359874421509112
 BoxCollider:
   m_ObjectHideFlags: 0

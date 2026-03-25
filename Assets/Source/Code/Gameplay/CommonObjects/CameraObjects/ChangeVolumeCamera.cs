@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.CameraObjects
 {
-    public class ChangeCameraVolume : StageObject
+    public class ChangeVolumeCamera : StageObject
     {
         [SerializeField] private ObjCameraBase target;
         [SerializeField] private float easeTimeEnter = 1f;

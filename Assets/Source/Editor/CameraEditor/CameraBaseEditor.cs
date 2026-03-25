@@ -62,10 +62,10 @@ namespace SurgeEngine.Source.Editor.CameraEditor
                 var go = HandleUtility.PickGameObject(e.mousePosition, false);
                 if (go != null)
                 {
-                    var comp = go.GetComponent<ChangeCameraVolume>();
+                    var comp = go.GetComponent<ChangeVolumeCamera>();
                     if (comp != null)
                     {
-                        var f = typeof(ChangeCameraVolume).GetField("target", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+                        var f = typeof(ChangeVolumeCamera).GetField("target", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
                         if (f != null)
                         {
                             Undo.RecordObject(comp, "Assign Camera Target");

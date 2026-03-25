@@ -6,16 +6,16 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem
 {
     public class CameraVolumeStack
     {
-        private readonly List<ChangeCameraVolume> _volumes = new();
-        private ChangeCameraVolume _lastTop;
+        private readonly List<ChangeVolumeCamera> _volumes = new();
+        private ChangeVolumeCamera _lastTop;
         private bool _hasNotified;
 
         public int Count => _volumes.Count;
-        public ChangeCameraVolume Top => _volumes.Count > 0 ? _volumes[^1] : null;
+        public ChangeVolumeCamera Top => _volumes.Count > 0 ? _volumes[^1] : null;
 
-        public event Action<ChangeCameraVolume> OnTopChanged;
+        public event Action<ChangeVolumeCamera> OnTopChanged;
 
-        public void Register(ChangeCameraVolume vol)
+        public void Register(ChangeVolumeCamera vol)
         {
             if (_volumes.Contains(vol) || !vol.Target) return;
 
@@ -24,7 +24,7 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem
             NotifyTopChanged();
         }
 
-        public void Unregister(ChangeCameraVolume vol)
+        public void Unregister(ChangeVolumeCamera vol)
         {
             if (!_volumes.Remove(vol)) return;
 

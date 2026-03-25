@@ -85,7 +85,7 @@ namespace SurgeEngine.Source.Editor.HE1Importer
 
                     float easeTimeEnter = HE1Helper.GetFloat(elem, "Ease_Time_Enter");
                     float easeTimeExit = HE1Helper.GetFloat(elem, "Ease_Time_Leave");
-                    var camVolume = go.GetComponent<ChangeCameraVolume>();
+                    var camVolume = go.GetComponent<ChangeVolumeCamera>();
                     float priority = HE1Helper.GetFloat(elem, "Priority");
                     HE1Helper.SetFloat(camVolume, "easeTimeEnter", easeTimeEnter);
                     HE1Helper.SetFloat(camVolume, "easeTimeLeave", easeTimeExit);
