@@ -90,7 +90,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
                 if (Character.StateMachine.GetState(out FBoost boost) && boost.Active)
                     force *= 0.66f;
                 
-                Quaternion angle = Quaternion.AngleAxis(_driftXDirection * _config.centrifugalForce * force, Kinematics.Normal);
+                Quaternion angle = Quaternion.AngleAxis(_driftXDirection * _config.centrifugalForce * force * dt, Kinematics.Normal);
                 Vector3 driftVelocity = angle * Rigidbody.linearVelocity;
                 Rigidbody.linearVelocity = driftVelocity;
                 if (Kinematics.Speed < _config.maxSpeed) Rigidbody.linearVelocity += Rigidbody.linearVelocity.normalized *
