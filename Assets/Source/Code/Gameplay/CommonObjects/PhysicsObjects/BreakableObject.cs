@@ -36,10 +36,5 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.PhysicsObjects
                 _destroyed = true;
             }
         }
-
-        private void OnCollisionEnter(Collision other)
-        {
-            
-        }
     }
 }
