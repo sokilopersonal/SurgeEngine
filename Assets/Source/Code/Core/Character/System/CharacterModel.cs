@@ -71,12 +71,12 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             _bodyRotation.RotateBody(normal);
         }
 
-        public void RotateBody(Vector3 vector, Vector3 normal, float angleDelta = 1000f)
+        public void RotateBody(Vector3 vector, Vector3 normal, float angleDelta = 25f)
         {
             if (_isAirRestoring || _isUpRestoring)
                 return;
             
-            _bodyRotation.RotateBody(vector, normal, angleDelta);
+            _bodyRotation.RotateBody(vector, normal, angleDelta * Mathf.Rad2Deg);
         }
 
         public void VelocityRotation(Vector3 vel)

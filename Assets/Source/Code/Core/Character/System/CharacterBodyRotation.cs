@@ -77,8 +77,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             if (targetDir != Vector3.zero)
             {
                 var targetRot = Quaternion.LookRotation(targetDir, normal);
-                var towards = Quaternion.RotateTowards(rb.rotation, targetRot, rotSpeed * Time.fixedDeltaTime);
-                var finalRot = Quaternion.Slerp(rb.rotation, towards, 70 * Time.fixedDeltaTime);
+                var finalRot = Quaternion.RotateTowards(rb.rotation, targetRot, rotSpeed * Time.deltaTime);
                 rb.MoveRotation(finalRot);
             }
         }
@@ -176,7 +175,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         {
             var rb = _character.Kinematics.Rigidbody;
             Quaternion target = Quaternion.FromToRotation(rb.transform.up, Vector3.up) * rb.rotation;
-            rb.MoveRotation(Quaternion.Slerp(rb.rotation, target, speed * Time.fixedDeltaTime));
+            rb.MoveRotation(Quaternion.Slerp(rb.rotation, target, speed * Time.deltaTime));
         }
     }
 }
