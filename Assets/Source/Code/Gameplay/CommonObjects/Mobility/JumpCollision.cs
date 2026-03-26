@@ -1,4 +1,5 @@
-﻿using SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStates;
+﻿using System;
+using SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStates;
 using SurgeEngine.Source.Code.Core.Character.System;
 using SurgeEngine.Source.Code.Infrastructure.Custom;
 using SurgeEngine.Source.Code.Infrastructure.Custom.Drawers;
@@ -24,29 +25,38 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         {
             base.OnEnter(msg, context);
             
-            float dot = Vector3.Dot(context.transform.forward, transform.forward);
-            float impulse = impulseOnNormal;
-            if (context.StateMachine.GetState(out FBoost boost))
-            {
-                if (boost.Active)
-                    impulse = impulseOnBoost;
-            }
             
-            if (dot > 0) // Make sure the player is facing the same direction as the jump collision
-            {
-                if (context.Kinematics.Speed >= speedMin)
-                {
-                    if (groundOnly && !context.Kinematics.InAir || !groundOnly)
-                    {
-                        context.Model.DisableCollision(terrainIgnoreTime);
-                        
-                        Rigidbody body = context.Kinematics.Rigidbody;
-                        body.position += transform.up * 1.5f;
+        }
 
-                        Vector3 force = Utility.GetImpulseWithPitch(transform.forward, -transform.right, pitch, impulse);
-                        body.linearVelocity = force;
+        private void OnTriggerStay(Collider other)
+        {
+            if (other.transform.TryGetComponent(out CharacterBase context))
+            {
+                float dot = Vector3.Dot(context.transform.forward, transform.forward);
+                float impulse = impulseOnNormal;
+                if (context.StateMachine.GetState(out FBoost boost))
+                {
+                    if (boost.Active)
+                        impulse = impulseOnBoost;
+                }
+            
+                if (dot > 0) // Make sure the player is facing the same direction as the jump collision
+                {
+                    if (context.Kinematics.Speed >= speedMin)
+                    {
+                        if (groundOnly && !context.Kinematics.InAir || !groundOnly)
+                        {
+                            context.Model.DisableCollision(terrainIgnoreTime);
+                            context.Kinematics.SetDetachTime(terrainIgnoreTime);
+                        
+                            Rigidbody body = context.Kinematics.Rigidbody;
+                            body.position += transform.up * 2f;
+
+                            Vector3 force = Utility.GetImpulseWithPitch(transform.forward, -transform.right, pitch, impulse);
+                            body.linearVelocity = force;
                             
-                        if (outOfControl > 0) context.Flags.AddFlag(new Flag(FlagType.OutOfControl, outOfControl));
+                            if (outOfControl > 0) context.Flags.AddFlag(new Flag(FlagType.OutOfControl, outOfControl));
+                        }
                     }
                 }
             }
