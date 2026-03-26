@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using SurgeEngine.Source.Code.Core.Character.States;
 using SurgeEngine.Source.Code.Core.StateMachine.Base;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects;
@@ -12,7 +14,7 @@ using UnityEngine.Splines;
 namespace SurgeEngine.Source.Code.Core.Character.System
 {
     /// <summary>
-    /// Base character class for a movement physics.
+    /// Base character class for movement physics.
     /// </summary>
     [RequireComponent(typeof(WallJumpDetector))]
     public class CharacterKinematics : CharacterComponent, IPointMarkerLoader
@@ -24,8 +26,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
         [Header("Gravity")] 
         [SerializeField] private float initialGravity;
-        public float Gravity { get; set; }
-        public float InitialGravity => initialGravity;
+        public float Gravity { get; private set; }
         public float AirTime { get; private set; }
         
         [Header("Prediction")]
@@ -53,16 +54,18 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         }
         public Vector3 HorizontalVelocity => Vector3.ProjectOnPlane(Velocity, Rigidbody.transform.up);
         public Vector3 VerticalVelocity => Vector3.Project(Velocity, Rigidbody.transform.up);
-        public Vector3 PlanarVelocity => _planarVelocity;
-        public float TurnRate { get; set; }
+        private float TurnRate { get; set; }
         public bool BlockSkidding { get; set; }
-        public bool Skidding => _moveDot < _config.skiddingThreshold && !BlockSkidding;
-        public float MoveDot => _moveDot;
+        public bool Skidding => MoveDot < _config.skiddingThreshold && !BlockSkidding;
+        public float MoveDot { get; private set; }
         public WallJumpDetector WallJumpDetector  { get; private set; }
+        
+        private readonly List<TurnRateData> _turnRates = new();
+        private float _turnRateVelocity;
         
         /// <summary>
         /// Instead of using Rigidbody.isKinematic, use this property.
-        /// The only thing it does it make scripts use Kinematic Velocity instead of Physics Velocity.
+        /// The only thing it does is make scripts use Kinematic Velocity instead of Physics Velocity.
         /// That can be useful in situations where you need to use velocity, but some logic right now moves the character position.
         /// </summary>
         public bool IsKinematic { get; set; }
@@ -86,7 +89,6 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         private float _lastRelativeTime;
         private Vector3 _lastTangent;
 
-        private float _moveDot;
         private float _detachTimer;
         private bool _canAttach;
 
@@ -108,6 +110,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             Gravity = initialGravity;
 
             Normal = Vector3.up;
+            TurnRate = _config.turnSpeed;
         }
 
         protected virtual void Update()
@@ -116,6 +119,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             CalculateMovementStats();
             CalculateDetachState();
             CheckIfIsInAir();
+            CalculateTurnRate();
         }
 
         protected virtual void FixedUpdate()
@@ -151,7 +155,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
         private void CalculateMovementStats()
         {
-            _moveDot = Vector3.Dot(_inputDir.normalized, Rigidbody.linearVelocity.normalized);
+            MoveDot = Vector3.Dot(_inputDir.normalized, Rigidbody.linearVelocity.normalized);
         }
 
         private void CheckIfIsInAir()
@@ -166,6 +170,24 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             }
         }
 
+        private void CalculateTurnRate()
+        {
+            float turnRate = _config.turnSpeed;
+            foreach (var rate in _turnRates)
+            {
+                turnRate *= rate.Value;
+            }
+            TurnRate = Mathf.SmoothDamp(TurnRate, turnRate, 
+                ref _turnRateVelocity, 
+                0.33f);
+
+            float diff = Mathf.Abs(TurnRate - turnRate);
+            if (diff < 0.02f)
+            {
+                TurnRate = turnRate;
+            }
+        }
+
         public void BasePhysics(Vector3 normal, MovementType movementType = MovementType.Ground)
         {
             Vector3 vel = Rigidbody.linearVelocity;
@@ -174,7 +196,6 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             Vector3 planar = Vector3.ProjectOnPlane(vel, normal);
             Vector3 vertical = Vector3.Project(vel, normal);
             
-            TurnRate = Mathf.Lerp(TurnRate, _config.turnSpeed, _config.turnSmoothing * Time.fixedDeltaTime);
             float accelRateMod = _config.accelerationCurve.Evaluate(_planarVelocity.magnitude / _config.topSpeed);
             
             _movementVector = planar;
@@ -362,6 +383,18 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             }
         }
 
+        public void RegisterTurnRate(TurnRateData value)
+        {
+            if (_turnRates.Contains(value)) return;
+            
+            _turnRates.Add(value);
+        }
+
+        public void UnregisterTurnRate(TurnRateData value)
+        {
+            if (_turnRates.Contains(value)) _turnRates.Remove(value);
+        }
+
         public void SlopePhysics()
         {
             if (Speed < _config.slopeMinSpeed && Angle >= _config.slopeDeslopeAngle)
@@ -462,7 +495,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
                     direction = -Character.Kinematics.Normal;
                     break;
                 case CheckGroundType.PredictEdge:
-                    origin = Character.transform.position + Vector3.ClampMagnitude(PlanarVelocity * 0.075f, 1f);
+                    origin = Character.transform.position + Vector3.ClampMagnitude(_planarVelocity * 0.075f, 1f);
                     direction = -Character.Kinematics.Normal;
                     break;
                 default:
@@ -516,7 +549,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             }
         }
 
-        public void ClampVelocityToMax(float max = default)
+        public void ClampVelocityToMax(float max = 0)
         {
             var flags = Character.Flags;
             if (!flags.HasFlag(FlagType.OutOfControl) && !flags.HasFlag(FlagType.Autorun))
@@ -558,8 +591,61 @@ namespace SurgeEngine.Source.Code.Core.Character.System
                 Normal = Vector3.SmoothDamp(Normal, Vector3.up, ref _normalVelocity, 0.1f);
             }
         }
+        
+        public void MoveToPosition(Rigidbody body, Vector3 targetPosition, float duration = 0.2f)
+        {
+            StartCoroutine(MoveToPositionVelocityRoutine(body, targetPosition, duration));
+        }
+        
+        public void MoveToPosition(Rigidbody body, Vector3 targetPosition,
+            Vector3 velocity, float duration = 0.2f)
+        {
+            StartCoroutine(MoveToPositionRoutine(body, targetPosition, velocity, duration));
+        }
+        
+        private IEnumerator MoveToPositionVelocityRoutine(Rigidbody body, Vector3 targetPosition, float duration)
+        {
+            Vector3 startPos = body.position;
+            Vector3 endPos = targetPosition;
+            float elapsed = 0f;
 
-        public void Deceleration(float min, float max)
+            while (elapsed < duration)
+            {
+                elapsed += Time.fixedDeltaTime;
+                float t = elapsed / duration;
+                
+                startPos += body.linearVelocity * Time.fixedDeltaTime;
+                endPos += body.linearVelocity * Time.fixedDeltaTime;
+
+                body.MovePosition(Vector3.Lerp(startPos, endPos, t));
+                yield return new WaitForFixedUpdate();
+            }
+
+            body.position = endPos;
+        }
+        
+        private IEnumerator MoveToPositionRoutine(Rigidbody body, Vector3 targetPosition, Vector3 velocity, float duration)
+        {
+            Vector3 startPos = body.position;
+            Vector3 endPos = targetPosition;
+            float elapsed = 0f;
+
+            while (elapsed < duration)
+            {
+                elapsed += Time.fixedDeltaTime;
+                float t = elapsed / duration;
+                
+                startPos += velocity * Time.fixedDeltaTime;
+                endPos += velocity * Time.fixedDeltaTime;
+
+                body.MovePosition(Vector3.Lerp(startPos, endPos, t));
+                yield return new WaitForFixedUpdate();
+            }
+
+            body.position = endPos;
+        }
+
+        private void Deceleration(float min, float max)
         {
             if (!CanDecelerate())
                 return;
@@ -718,6 +804,31 @@ namespace SurgeEngine.Source.Code.Core.Character.System
     {
         Ground,
         Air
+    }
+
+    public struct TurnRateData : IEquatable<TurnRateData>
+    {
+        public float Value;
+        
+        public TurnRateData(float value)
+        {
+            Value = value;
+        }
+
+        public bool Equals(TurnRateData other)
+        {
+            return Value.Equals(other.Value);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is TurnRateData other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return Value.GetHashCode();
+        }
     }
     
     public interface ISkip2D { }

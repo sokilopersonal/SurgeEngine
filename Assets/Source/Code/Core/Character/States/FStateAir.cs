@@ -1,12 +1,11 @@
 ﻿using SurgeEngine.Source.Code.Core.Character.States.BaseStates;
 using SurgeEngine.Source.Code.Core.Character.System;
-using SurgeEngine.Source.Code.Gameplay.CommonObjects.System;
 using SurgeEngine.Source.Code.Infrastructure.Custom;
 using UnityEngine;
 
 namespace SurgeEngine.Source.Code.Core.Character.States
 {
-    public class FStateAir : FCharacterState, IDamageableState, IPointMarkerLoader, IWallJumpDetect
+    public class FStateAir : FCharacterState, IDamageableState, IWallJumpDetect
     {
         public bool WallDetected { get; set; }
 
@@ -25,6 +24,15 @@ namespace SurgeEngine.Source.Code.Core.Character.States
             }
             
             Kinematics.Normal = Vector3.up;
+        }
+
+        public override void OnTick(float dt)
+        {
+            base.OnTick(dt);
+            
+            Vector3 vel = Kinematics.Velocity;
+            vel.y = 0;
+            Model.RotateBody(vel, Vector3.up, 4f);
         }
 
         public override void OnFixedTick(float dt)
@@ -57,10 +65,6 @@ namespace SurgeEngine.Source.Code.Core.Character.States
                 
                 Kinematics.BasePhysics(Vector3.up, MovementType.Air);
                 
-                Vector3 vel = Kinematics.Velocity;
-                vel.y = 0;
-                Model.RotateBody(vel, Vector3.up, 360f);
-                
                 /*if (Kinematics.Path2D != null && Kinematics.GetAttachState()) // fix it in the future??
                 {
                     var path = Kinematics.Path2D.Spline;
@@ -85,7 +89,10 @@ namespace SurgeEngine.Source.Code.Core.Character.States
                     var vel = Kinematics.Velocity;
                     vel.y = 0;
                     float speed = vel.magnitude;
-                    if (speed > Character.Config.landingSpeed) StateMachine.SetState<FStateGround>();
+                    if (speed > Character.Config.landingSpeed)
+                    {
+                        StateMachine.SetState<FStateGround>();
+                    }
                     else
                     {
                         if (Kinematics.GetInputDir().magnitude < 0.1f)
@@ -99,10 +106,6 @@ namespace SurgeEngine.Source.Code.Core.Character.States
                     }
                 }
             }
-        }
-
-        public virtual void Load()
-        {
         }
     }
 }

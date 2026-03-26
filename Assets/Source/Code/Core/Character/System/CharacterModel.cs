@@ -28,7 +28,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             _bodyRotation = new CharacterBodyRotation(Character);
         }
 
-        private void Update()
+        private void FixedUpdate()
         {
             var previousState = Character.StateMachine.PreviousState;
             bool isObject = previousState is FStateObject;
@@ -37,7 +37,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
                 if (_isAirRestoring)
                 {
                     _bodyRotation.VelocityRotation(Character.Kinematics.Velocity.normalized);
-                    _restoreTimer -= Time.deltaTime;
+                    _restoreTimer -= Time.fixedDeltaTime;
 
                     if (_restoreTimer <= 0)
                     {
@@ -49,7 +49,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
                 }
                 else if (_isUpRestoring)
                 {
-                    bool isComplete = _bodyRotation.AlignToUpOverTime(Time.deltaTime, ref _upRestoreTimer); // I can't bruh
+                    bool isComplete = _bodyRotation.AlignToUpOverTime(Time.fixedDeltaTime, ref _upRestoreTimer);
                     if (isComplete)
                     {
                         _isUpRestoring = false;
@@ -71,12 +71,12 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             _bodyRotation.RotateBody(normal);
         }
 
-        public void RotateBody(Vector3 vector, Vector3 normal, float angleDelta = 1000f)
+        public void RotateBody(Vector3 vector, Vector3 normal, float angleDelta = 25f)
         {
             if (_isAirRestoring || _isUpRestoring)
                 return;
             
-            _bodyRotation.RotateBody(vector, normal, angleDelta);
+            _bodyRotation.RotateBody(vector, normal, angleDelta * Mathf.Rad2Deg);
         }
 
         public void VelocityRotation(Vector3 vel)

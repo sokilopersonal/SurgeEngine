@@ -43,6 +43,10 @@ namespace SurgeEngine.Source.Code.Infrastructure.Custom.Drawers
         private float _grassRenderDistance;
         private bool _grassUseRenderDistance;
 
+        private int _frameRate;
+        private double _cpuFrameTime;
+        private double _gpuFrameTime;
+
         private void Awake()
         {
             if (uImGui == null) uImGui = GetComponent<UImGui.UImGui>();
@@ -54,6 +58,23 @@ namespace SurgeEngine.Source.Code.Infrastructure.Custom.Drawers
 
             _toggleAction = InputSystem.actions.FindAction("DebugWindow");
             _toggleCursorAction  = InputSystem.actions.FindAction("ToggleCursor");
+        }
+
+        private void Update()
+        {
+            if (Time.unscaledTime % 0.1f < Time.unscaledDeltaTime)
+            {
+                _frameRate = Mathf.RoundToInt(1f / Time.unscaledDeltaTime);
+                
+                FrameTimingManager.CaptureFrameTimings();
+                var frameT = new FrameTiming[1];
+                var ret = FrameTimingManager.GetLatestTimings((uint)frameT.Length, frameT);
+                if (ret > 0)
+                {
+                    _cpuFrameTime = frameT[0].cpuFrameTime;
+                    _gpuFrameTime = frameT[0].gpuFrameTime;
+                }
+            }
         }
 
         private void OnEnable()
@@ -87,7 +108,9 @@ namespace SurgeEngine.Source.Code.Infrastructure.Custom.Drawers
             {
                 ImGui.Text($"Version: {Application.version}");
                 ImGui.Text($"Unity Version: {Application.unityVersion}");
-                ImGui.Text($"FPS: {Mathf.RoundToInt(1f / Time.unscaledDeltaTime)}");
+                ImGui.Text($"FPS: {_frameRate}");
+                ImGui.Text($"CPU Frame Time: {_cpuFrameTime:F2}ms");
+                ImGui.Text($"GPU Frame Time: {_gpuFrameTime:F2}ms");
             }
 
             if (ImGui.CollapsingHeader("Character Info"))
@@ -163,7 +186,10 @@ namespace SurgeEngine.Source.Code.Infrastructure.Custom.Drawers
 
                 if (ImGui.TreeNode("Framerate"))
                 {
-                    ImGui.SliderInt("Limit", ref _frameRateLimit, 10, 240);
+                    ImGui.SliderInt("Limit", ref _frameRateLimit, 15, 240);
+                    if (_frameRateLimit <= 15)
+                        _frameRateLimit = 0;
+                    
                     Application.targetFrameRate = _frameRateLimit;
                     
                     ImGui.TreePop();
@@ -263,6 +289,8 @@ namespace SurgeEngine.Source.Code.Infrastructure.Custom.Drawers
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
             }
+            
+            _character.Input.enabled = !_cursorActive;
         }
     }
 }

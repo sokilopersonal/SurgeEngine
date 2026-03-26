@@ -85,7 +85,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
 
                 Vector3 vel = Kinematics.Velocity;
                 vel.y = 0;
-                Model.RotateBody(vel, Vector3.up, 180f);
+                Model.RotateBody(vel, Vector3.up, 7.5f);
 
                 if (Kinematics.Path2D != null && Kinematics.GetAttachState())
                 {

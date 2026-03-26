@@ -26,6 +26,8 @@ namespace SurgeEngine.Source.Code.Core.Character.States
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
+            
+            Model.RotateBody(Kinematics.Velocity, Kinematics.Normal, 18);
 
             if (!Character.Flags.HasFlag(FlagType.OutOfControl))
             {
@@ -84,7 +86,6 @@ namespace SurgeEngine.Source.Code.Core.Character.States
                 {
                     Kinematics.SnapOnWater(data.point);
                 }
-                Model.RotateBody(Kinematics.Velocity, Kinematics.Normal, 1400);
 
                 Kinematics.ProjectOnNormal();
                 Kinematics.SlopePhysics();

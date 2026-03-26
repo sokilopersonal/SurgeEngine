@@ -11,6 +11,7 @@ using SurgeEngine.Source.Code.Infrastructure.Tools.Managers;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Zenject;
+using NotImplementedException = System.NotImplementedException;
 
 namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStates
 {
@@ -36,11 +37,15 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStat
         private float _boostKeepTimer;
         private float _boostNoEnergyCancelTimer;
 
+        private TurnRateData _turnRateData;
+
         [Inject] private UserInput _userInput;
 
         public FBoost(CharacterBase owner) : base(owner)
         {
             owner.TryGetConfig(out _config);
+            
+            _turnRateData = new TurnRateData(_config.TurnSpeedMultiplier);
 
             CanAirBoost = true;
             BoostEnergy = MaxBoostEnergy * _config.StartBoostCapacity;
@@ -50,6 +55,8 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStat
 
             ObjectEvents.OnObjectTriggered += OnRingCollected;
             ObjectEvents.OnEnemyDied += OnEnemyDied;
+
+            OnActiveChanged += RegisterTurnRate;
         }
 
         ~FBoost()
@@ -132,8 +139,6 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStat
                 {
                     _boostNoEnergyCancelTimer += dt / 0.1f;
                 }
-
-                Character.Kinematics.TurnRate *= _config.TurnSpeedMultiplier;
             }
             else
             {
@@ -141,6 +146,17 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStat
             }
 
             BoostEnergy = Mathf.Clamp(BoostEnergy, 0, MaxBoostEnergy);
+        }
+
+        public override void OnFixedTick(float dt)
+        {
+            base.OnFixedTick(dt);
+
+            if (Active)
+            {
+                CreateDamage();
+                FindRings();
+            }
         }
 
         private void OnStateAssign(FState obj)
@@ -172,21 +188,24 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStat
             }
         }
 
-        public override void OnFixedTick(float dt)
-        {
-            base.OnFixedTick(dt);
-
-            if (Active)
-            {
-                CreateDamage();
-                FindRings();
-            }
-        }
-
         private void CreateDamage()
         {
             HurtBox.CreateAttached(Character, Character.transform, new Vector3(0f, 0f, -0.1f), new Vector3(0.5f, 1f, 1.15f),
                 HurtBoxTarget.Enemy | HurtBoxTarget.Breakable);
+        }
+
+        private void RegisterTurnRate(FSubState state, bool active)
+        {
+            var kinematics = Character.Kinematics;
+            _turnRateData.Value = _config.TurnSpeedMultiplier;
+            if (active)
+            {
+                kinematics.RegisterTurnRate(_turnRateData);
+            }
+            else
+            {
+                kinematics.UnregisterTurnRate(_turnRateData);
+            }
         }
 
         private void FindRings()
@@ -226,12 +245,13 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStat
                 Active = obj.started && !Character.Flags.HasFlag(FlagType.OutOfControl);
             }
 
+            var kinematics = Character.Kinematics;
             if (Active)
             {
-                Rigidbody body = Character.Kinematics.Rigidbody;
+                Rigidbody body = kinematics.Rigidbody;
                 float startSpeed = _config.StartSpeed;
 
-                if (Character.Kinematics.Speed < startSpeed)
+                if (kinematics.Speed < startSpeed)
                 {
                     body.linearVelocity = body.transform.forward * startSpeed;
                 }

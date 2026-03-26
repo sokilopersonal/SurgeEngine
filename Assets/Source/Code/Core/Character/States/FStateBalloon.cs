@@ -9,7 +9,8 @@ namespace SurgeEngine.Source.Code.Core.Character.States
 {
     public class FStateBalloon : FStateAir
     {
-        float _airTime = 0f;
+        private float _airTime;
+        
         public FStateBalloon(CharacterBase owner) : base(owner)
         {
 
@@ -18,6 +19,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
         public override void OnEnter()
         {
             base.OnEnter();
+            
             _airTime = 0f;
         }
 
@@ -29,11 +31,6 @@ namespace SurgeEngine.Source.Code.Core.Character.States
 
             if (_airTime >= 1f)
                 StateMachine.SetState<FStateAir>();
-        }
-
-        public override void Load()
-        {
-            base.Load();
         }
     }
 }
