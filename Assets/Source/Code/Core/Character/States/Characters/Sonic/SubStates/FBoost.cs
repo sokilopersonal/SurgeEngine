@@ -36,11 +36,15 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStat
         private float _boostKeepTimer;
         private float _boostNoEnergyCancelTimer;
 
+        private TurnRateData _turnRateData;
+
         [Inject] private UserInput _userInput;
 
         public FBoost(CharacterBase owner) : base(owner)
         {
             owner.TryGetConfig(out _config);
+            
+            _turnRateData = new TurnRateData(_config.TurnSpeedMultiplier);
 
             CanAirBoost = true;
             BoostEnergy = MaxBoostEnergy * _config.StartBoostCapacity;
@@ -132,8 +136,6 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStat
                 {
                     _boostNoEnergyCancelTimer += dt / 0.1f;
                 }
-
-                Character.Kinematics.TurnRate *= _config.TurnSpeedMultiplier;
             }
             else
             {
@@ -226,18 +228,26 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStat
                 Active = obj.started && !Character.Flags.HasFlag(FlagType.OutOfControl);
             }
 
+            var kinematics = Character.Kinematics;
             if (Active)
             {
-                Rigidbody body = Character.Kinematics.Rigidbody;
+                _turnRateData.Value = _config.TurnSpeedMultiplier;
+                kinematics.RegisterTurnRate(_turnRateData);
+                
+                Rigidbody body = kinematics.Rigidbody;
                 float startSpeed = _config.StartSpeed;
 
-                if (Character.Kinematics.Speed < startSpeed)
+                if (kinematics.Speed < startSpeed)
                 {
                     body.linearVelocity = body.transform.forward * startSpeed;
                 }
 
                 BoostEnergy -= _config.StartDrain;
                 Rumble.Vibrate(0.6f, 0.7f, 0.66f);
+            }
+            else
+            {
+                kinematics.UnregisterTurnRate(_turnRateData);
             }
         }
     }
