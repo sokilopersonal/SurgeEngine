@@ -1,7 +1,9 @@
-﻿using FMODUnity;
+﻿using System;
+using FMODUnity;
 using SurgeEngine.Source.Code.Core.Character.States;
 using SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStates;
 using SurgeEngine.Source.Code.Core.Character.System;
+using SurgeEngine.Source.Code.Core.StateMachine.Base;
 using SurgeEngine.Source.Code.Infrastructure.Custom;
 using SurgeEngine.Source.Code.Infrastructure.Custom.Drawers;
 using UnityEngine;
@@ -39,14 +41,14 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         {
             var springState = context.StateMachine.GetState<FStateSpring>();
             if (springState.SpringObject == this) return;
-            
+
             if (cancelBoost && context.StateMachine.GetState(out FBoost boost)) 
                 boost.Active = false;
             
             springState.SetKeepVelocityDistance(keepVelocityDistance);
             springState.SetSpringObject(this);
             context.StateMachine.SetState<FStateSpring>();
-            Utility.MoveToPosition(this, context.Kinematics.Rigidbody, transform.position, 0.1f);
+            context.Kinematics.MoveToPosition(context.Kinematics.Rigidbody, transform.position, 0.1f);
             
             if (outOfControl > 0) context.Flags.AddFlag(new Flag(FlagType.OutOfControl, outOfControl));
             

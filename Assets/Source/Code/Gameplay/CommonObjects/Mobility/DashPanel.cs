@@ -15,7 +15,9 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         {
             base.OnEnter(msg, context);
             
+            context.StateMachine.SetState<FStateGround>();
             Rigidbody body = context.Kinematics.Rigidbody;
+            body.rotation = Quaternion.LookRotation(transform.forward, transform.up);
             var bodySpeed = context.Kinematics.Speed;
             if (bodySpeed < speed)
             {
@@ -25,10 +27,6 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             {
                 body.linearVelocity = transform.forward * bodySpeed;
             }
-            
-            context.StateMachine.SetState<FStateGround>();
-            
-            body.rotation = Quaternion.LookRotation(transform.forward, transform.up);
 
             if (outOfControl > 0) context.Flags.AddFlag(new Flag(FlagType.OutOfControl, outOfControl));
             

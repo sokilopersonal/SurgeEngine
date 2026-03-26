@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using SurgeEngine.Source.Code.Core.Character.States;
 using SurgeEngine.Source.Code.Core.StateMachine.Base;
@@ -118,6 +119,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             CalculateMovementStats();
             CalculateDetachState();
             CheckIfIsInAir();
+            CalculateTurnRate();
         }
 
         protected virtual void FixedUpdate()
@@ -168,14 +170,8 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             }
         }
 
-        public void BasePhysics(Vector3 normal, MovementType movementType = MovementType.Ground)
+        private void CalculateTurnRate()
         {
-            Vector3 vel = Rigidbody.linearVelocity;
-            Vector3 dir = _inputDir;
-            
-            Vector3 planar = Vector3.ProjectOnPlane(vel, normal);
-            Vector3 vertical = Vector3.Project(vel, normal);
-            
             float turnRate = _config.turnSpeed;
             foreach (var rate in _turnRates)
             {
@@ -183,9 +179,22 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             }
             TurnRate = Mathf.SmoothDamp(TurnRate, turnRate, 
                 ref _turnRateVelocity, 
-                0.33f, 
-                Mathf.Infinity,
-                Time.fixedDeltaTime);
+                0.33f);
+
+            float diff = Mathf.Abs(TurnRate - turnRate);
+            if (diff < 0.02f)
+            {
+                TurnRate = turnRate;
+            }
+        }
+
+        public void BasePhysics(Vector3 normal, MovementType movementType = MovementType.Ground)
+        {
+            Vector3 vel = Rigidbody.linearVelocity;
+            Vector3 dir = _inputDir;
+            
+            Vector3 planar = Vector3.ProjectOnPlane(vel, normal);
+            Vector3 vertical = Vector3.Project(vel, normal);
             
             float accelRateMod = _config.accelerationCurve.Evaluate(_planarVelocity.magnitude / _config.topSpeed);
             
@@ -581,6 +590,59 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             {
                 Normal = Vector3.SmoothDamp(Normal, Vector3.up, ref _normalVelocity, 0.1f);
             }
+        }
+        
+        public void MoveToPosition(Rigidbody body, Vector3 targetPosition, float duration = 0.2f)
+        {
+            StartCoroutine(MoveToPositionVelocityRoutine(body, targetPosition, duration));
+        }
+        
+        public void MoveToPosition(Rigidbody body, Vector3 targetPosition,
+            Vector3 velocity, float duration = 0.2f)
+        {
+            StartCoroutine(MoveToPositionRoutine(body, targetPosition, velocity, duration));
+        }
+        
+        private IEnumerator MoveToPositionVelocityRoutine(Rigidbody body, Vector3 targetPosition, float duration)
+        {
+            Vector3 startPos = body.position;
+            Vector3 endPos = targetPosition;
+            float elapsed = 0f;
+
+            while (elapsed < duration)
+            {
+                elapsed += Time.fixedDeltaTime;
+                float t = elapsed / duration;
+                
+                startPos += body.linearVelocity * Time.fixedDeltaTime;
+                endPos += body.linearVelocity * Time.fixedDeltaTime;
+
+                body.MovePosition(Vector3.Lerp(startPos, endPos, t));
+                yield return new WaitForFixedUpdate();
+            }
+
+            body.position = endPos;
+        }
+        
+        private IEnumerator MoveToPositionRoutine(Rigidbody body, Vector3 targetPosition, Vector3 velocity, float duration)
+        {
+            Vector3 startPos = body.position;
+            Vector3 endPos = targetPosition;
+            float elapsed = 0f;
+
+            while (elapsed < duration)
+            {
+                elapsed += Time.fixedDeltaTime;
+                float t = elapsed / duration;
+                
+                startPos += velocity * Time.fixedDeltaTime;
+                endPos += velocity * Time.fixedDeltaTime;
+
+                body.MovePosition(Vector3.Lerp(startPos, endPos, t));
+                yield return new WaitForFixedUpdate();
+            }
+
+            body.position = endPos;
         }
 
         private void Deceleration(float min, float max)

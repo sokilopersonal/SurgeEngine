@@ -9,7 +9,6 @@ namespace SurgeEngine.Source.Code.Core.Character.System
     {
         private readonly CharacterBase _character;
         private const float SpeedThreshold = 3.5f;
-        private const float AngleThreshold = 0.1f;
 
         public CharacterBodyRotation(CharacterBase character)
         {
@@ -90,8 +89,8 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             if (currentSpeed > SpeedThreshold)
             {
                 var velDir = Vector3.ProjectOnPlane(currentVelocity.normalized, normal);
-                float t = CalculateVelocityBlendFactor(currentSpeed);
-                targetDir = Vector3.Slerp(inputDir.normalized, velDir, t * 10f).normalized;
+                float t = CalculateVelocityBlendFactor(currentSpeed) * 8f;
+                targetDir = Vector3.Slerp(inputDir.normalized, velDir, t).normalized;
             }
 
             return targetDir;
@@ -101,7 +100,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         {
             float speedRange = _character.Config.topSpeed - SpeedThreshold;
             float t = Mathf.Clamp01((currentSpeed - SpeedThreshold) / speedRange);
-            return Mathf.Sqrt(t);
+            return t;
         }
 
         private float CalculateRotationSpeed(float angleDelta, float currentSpeed)
@@ -138,44 +137,30 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         public bool AlignToUpOverTime(float deltaTime, ref float remainingTime)
         {
             var rb = _character.Kinematics.Rigidbody;
-            
-            float currentAngle = Vector3.Angle(rb.transform.up, Vector3.up);
-            if (currentAngle < AngleThreshold)
-            {
+
+            Vector3 currentUp = rb.transform.up;
+            float angle = Vector3.Angle(currentUp, Vector3.up);
+
+            if (angle < 0.1f)
                 return true;
-            }
 
-            if (remainingTime <= 0)
+            float t = 1f;
+            if (remainingTime > 0f)
             {
-                SmoothAlignToUp(100f);
-                return true;
+                t = Mathf.Clamp01(deltaTime / remainingTime);
+                remainingTime -= deltaTime;
             }
 
-            float rotationSpeed = currentAngle / remainingTime;
+            Vector3 newUp = Vector3.Slerp(currentUp, Vector3.up, t).normalized;
+            Vector3 forward = rb.transform.forward;
+            Vector3 newForward = Vector3.ProjectOnPlane(forward, newUp).normalized;
+            if (newForward.sqrMagnitude < 0.001f)
+                newForward = Vector3.ProjectOnPlane(rb.transform.right, newUp).normalized;
 
-            Vector3 currentForward = rb.transform.forward;
-            Vector3 right = Vector3.Cross(rb.transform.up, currentForward);
-            Vector3 newForward = Vector3.Cross(right, Vector3.up).normalized;
-            if (newForward == Vector3.zero)
-            {
-                newForward = currentForward;
-            }
-            
-            Quaternion targetRotation = Quaternion.LookRotation(newForward, Vector3.up);
+            Quaternion targetRotation = Quaternion.LookRotation(newForward, newUp);
+            rb.MoveRotation(targetRotation);
 
-            float step = rotationSpeed * deltaTime;
-            rb.MoveRotation(Quaternion.RotateTowards(rb.rotation, targetRotation, step));
-
-            remainingTime -= deltaTime;
-            
-            return false;
-        }
-        
-        public void SmoothAlignToUp(float speed = 5f)
-        {
-            var rb = _character.Kinematics.Rigidbody;
-            Quaternion target = Quaternion.FromToRotation(rb.transform.up, Vector3.up) * rb.rotation;
-            rb.MoveRotation(Quaternion.Slerp(rb.rotation, target, speed * Time.deltaTime));
+            return remainingTime <= 0f;
         }
     }
 }

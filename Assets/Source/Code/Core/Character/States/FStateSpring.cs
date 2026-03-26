@@ -39,20 +39,15 @@ namespace SurgeEngine.Source.Code.Core.Character.States
             base.OnFixedTick(dt);
             
             Vector3 dir = _springObject.Direction;
-            Vector3 pos = _springObject.transform.position + dir * Mathf.Max(1f, travelledDistance);
-            
+    
             Rigidbody.linearVelocity = dir * _springObject.Speed;
             travelledDistance += _springObject.Speed * dt;
-
-            if (travelledDistance >= _springObject.KeepVelocityDistance + 0.25f)
-            {
-                StateMachine.SetState<FStateAir>();
-            }
 
             if (_springObject)
             {
                 if (_springObject.IsWallWalk)
                 {
+                    Vector3 pos = _springObject.transform.position + dir * Mathf.Max(1f, travelledDistance);
                     var ray = new Ray(pos, dir);
                     if (Physics.Raycast(ray, out var hit, Character.Config.castDistance, Character.Config.castLayer))
                     {
@@ -69,6 +64,15 @@ namespace SurgeEngine.Source.Code.Core.Character.States
                 }
             }
             
+            float targetDistance = _springObject.KeepVelocityDistance + 0.25f;
+            if (travelledDistance >= targetDistance)
+            {
+                Vector3 targetPos = _springObject.transform.position + dir * targetDistance;
+                Rigidbody.position = targetPos;
+        
+                StateMachine.SetState<FStateAir>();
+            }
+            
             Model.VelocityRotation(dir);
         }
 
@@ -76,8 +80,8 @@ namespace SurgeEngine.Source.Code.Core.Character.States
         {
             travelledDistance = 0;
             _springObject = springObject;
-
-            Rigidbody.linearVelocity = Vector3.zero;
+            
+            Rigidbody.linearVelocity = springObject.Direction * _springObject.Speed;
         }
     }
 }

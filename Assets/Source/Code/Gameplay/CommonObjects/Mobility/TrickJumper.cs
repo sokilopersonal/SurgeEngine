@@ -111,7 +111,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
                 _character.StateMachine.SetState<FStateTrickJump>(true);
                 _character.Flags.AddFlag(FlagType.OutOfControl);
                 
-                Utility.MoveToPosition(this, _character.Kinematics.Rigidbody, StartPosition);
+                _character.Kinematics.MoveToPosition(_character.Kinematics.Rigidbody, StartPosition);
 
                 yield return SetTime(TargetTimeScale, TimeScaleDuration);
 

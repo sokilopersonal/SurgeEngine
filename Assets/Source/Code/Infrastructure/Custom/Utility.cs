@@ -92,59 +92,6 @@ namespace SurgeEngine.Source.Code.Infrastructure.Custom
             Vector3 impulseV = dir * impulse;
             return impulseV;
         }
-        
-        public static void MoveToPosition(MonoBehaviour runner, Rigidbody body, Vector3 targetPosition, float duration = 0.2f)
-        {
-            runner.StartCoroutine(MoveToPositionVelocityRoutine(body, targetPosition, duration));
-        }
-
-        public static void MoveToPosition(MonoBehaviour runner, Rigidbody body, Vector3 targetPosition,
-            Vector3 velocity, float duration = 0.2f)
-        {
-            runner.StartCoroutine(MoveToPositionRoutine(body, targetPosition, velocity, duration));
-        }
-
-        private static IEnumerator MoveToPositionVelocityRoutine(Rigidbody body, Vector3 targetPosition, float duration)
-        {
-            Vector3 startPos = body.position;
-            Vector3 endPos = targetPosition;
-            float elapsed = 0f;
-
-            while (elapsed < duration)
-            {
-                elapsed += Time.deltaTime;
-                float t = elapsed / duration;
-                
-                startPos += body.linearVelocity * Time.deltaTime;
-                endPos += body.linearVelocity * Time.deltaTime;
-
-                body.MovePosition(Vector3.Lerp(startPos, endPos, t));
-                yield return null;
-            }
-
-            body.MovePosition(endPos);
-        }
-
-        private static IEnumerator MoveToPositionRoutine(Rigidbody body, Vector3 targetPosition, Vector3 velocity, float duration)
-        {
-            Vector3 startPos = body.position;
-            Vector3 endPos = targetPosition;
-            float elapsed = 0f;
-
-            while (elapsed < duration)
-            {
-                elapsed += Time.deltaTime;
-                float t = elapsed / duration;
-                
-                startPos += velocity * Time.deltaTime;
-                endPos += velocity * Time.deltaTime;
-
-                body.MovePosition(Vector3.Lerp(startPos, endPos, t));
-                yield return null;
-            }
-
-            body.MovePosition(endPos);
-        }
 
         public static bool IsObjectInView(this Camera camera, Transform obj)
         {

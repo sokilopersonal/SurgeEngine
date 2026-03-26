@@ -29,7 +29,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             Rigidbody body = context.Kinematics.Rigidbody;
             body.linearVelocity = -transform.forward * speed;
             
-            Utility.MoveToPosition(this, body, transform.position);
+            context.Kinematics.MoveToPosition(body, transform.position);
             
             if (outOfControl > 0) context.Flags.AddFlag(new Flag(FlagType.OutOfControl, outOfControl));
         }
