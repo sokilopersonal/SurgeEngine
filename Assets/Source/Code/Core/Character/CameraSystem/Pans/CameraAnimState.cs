@@ -1,4 +1,5 @@
-﻿using SurgeEngine.Source.Code.Core.Character.CameraSystem.Pans.Data;
+﻿using System;
+using SurgeEngine.Source.Code.Core.Character.CameraSystem.Pans.Data;
 using SurgeEngine.Source.Code.Core.Character.States;
 using SurgeEngine.Source.Code.Core.Character.System;
 using SurgeEngine.Source.Code.Infrastructure.Custom;
@@ -8,9 +9,11 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem.Pans
 {
     public class CameraAnimState : CameraState
     {
-        private Vector3 _playerCenter;
+        private readonly Vector3 _playerCenter;
         private readonly CameraAnimStateData _data;
         private float _time;
+
+        public event Action<CameraAnimState> OnFinished;
 
         public CameraAnimState(CharacterBase owner) : base(owner)
         {
@@ -57,24 +60,9 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem.Pans
             StateFOV = 50;
 
             _time += dt / _data.duration;
-            
             if (_time >= 1f)
             {
-                if (_stateMachine.VolumeCount == 0)
-                {
-                    _stateMachine.ResetBlendFactor();
-                    
-                    _stateMachine.CurrentData = new PanData
-                    {
-                        easeTimeEnter = Character.GetStartData().startType == StartType.Standing ? 0.5f : 0.75f,
-                        easeTimeExit = Character.GetStartData().startType == StartType.Standing ? 0.5f : 0
-                    };
-                    _stateMachine.SetState<NewModernState>();
-                }
-                else
-                {
-                    _stateMachine.ApplyTop();
-                }
+                OnFinished?.Invoke(this);
             }
         }
     }

@@ -26,7 +26,7 @@ namespace SurgeEngine.Source.Editor.ObjectCustomGizmos
         }
 
         [DrawGizmo(GizmoType.Pickable | GizmoType.Selected | GizmoType.NotInSelectionHierarchy)]
-        static void DrawGizmos(ChangeCameraVolume type, GizmoType gizmoType)
+        static void DrawGizmos(ChangeVolumeCamera type, GizmoType gizmoType)
         {
             Gizmos.matrix = type.transform.localToWorldMatrix;
             Gizmos.DrawCube(Vector3.zero, Vector3.one * 0.75f);

@@ -3,24 +3,22 @@ using UnityEngine;
 
 namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.CameraObjects
 {
-    public class ChangeCameraVolume : StageObject
+    public class ChangeVolumeCamera : StageObject
     {
         [SerializeField] private ObjCameraBase target;
-        [SerializeField] private float easeTimeEnter = 0.5f;
-        [SerializeField] private float easeTimeLeave = 0.5f;
+        [SerializeField] private float easeTimeEnter = 1f;
+        [SerializeField] private float easeTimeLeave = 1f;
         [SerializeField] private int priority;
         public ObjCameraBase Target => target;
+        public float EaseTimeEnter => easeTimeEnter;
+        public float EaseTimeLeave => easeTimeLeave;
         public int Priority => priority;
 
         private CharacterBase _character;
 
         private void OnDisable()
         {
-            if (_character != null)
-            {
-                _character.Camera.StateMachine.UnregisterVolume(this);
-                _character = null;
-            }
+            Clear();
         }
 
         private void OnTriggerStay(Collider other)
@@ -31,12 +29,20 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.CameraObjects
                 _character.Camera.StateMachine.RegisterVolume(this);
             }
         }
-        
+
         private void OnTriggerExit(Collider other)
         {
             if (target && other.transform.TryGetComponent(out CharacterBase character))
             {
-                character.Camera.StateMachine.UnregisterVolume(this);
+                Clear();
+            }
+        }
+
+        private void Clear()
+        {
+            if (_character != null)
+            {
+                _character.Camera.StateMachine.UnregisterVolume(this);
                 _character = null;
             }
         }

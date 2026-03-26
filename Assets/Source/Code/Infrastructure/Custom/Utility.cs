@@ -99,9 +99,9 @@ namespace SurgeEngine.Source.Code.Infrastructure.Custom
             return viewport.x > 0 && viewport.x < 1 && viewport.y > 0 && viewport.y < 1 && viewport.z > 0;
         }
 
-        public static List<ChangeCameraVolume> GetVolumesInBounds(Vector3 position)
+        public static List<ChangeVolumeCamera> GetVolumesInBounds(Vector3 position)
         {
-            return Object.FindObjectsByType<ChangeCameraVolume>(FindObjectsInactive.Include, FindObjectsSortMode.None)
+            return Object.FindObjectsByType<ChangeVolumeCamera>(FindObjectsInactive.Include, FindObjectsSortMode.None)
                 .Where(volume => volume.GetComponent<BoxCollider>().bounds.Contains(position)).ToList();
         }
     }

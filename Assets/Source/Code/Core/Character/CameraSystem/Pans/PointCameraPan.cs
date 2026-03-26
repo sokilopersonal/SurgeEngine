@@ -44,7 +44,6 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem.Pans
         public void SetData(PointPanData data)
         {
             _pData = data;
-            _stateMachine.CurrentData = data;
         }
 
         protected override float CalculateCollisionDistance(Vector3 origin, Vector3 direction, float baseDistance)

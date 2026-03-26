@@ -46,7 +46,6 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem.Pans
         public void SetData(ParallelPanData data)
         {
             _vData = data;
-            _stateMachine.CurrentData = data;
         }
 
         protected override float GetDistance() => _vData.distance;
