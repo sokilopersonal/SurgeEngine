@@ -1,4 +1,5 @@
-﻿using FMODUnity;
+﻿using System;
+using FMODUnity;
 using SurgeEngine.Source.Code.Core.Character.States;
 using SurgeEngine.Source.Code.Core.Character.System;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.System;
@@ -20,16 +21,23 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.GoalRing
         public GoalRingScreen CurrentGoalScreen { get; private set; }
 
         private bool _triggered;
+        private Animator _animator;
 
         [Inject] private PauseHandler _pauseHandler;
-        
         [Inject] private DiContainer _container;
+
+        private void Awake()
+        {
+            _animator = GetComponentInChildren<Animator>();
+        }
 
         public override void OnEnter(Collider msg, CharacterBase context)
         {
             if (!_triggered)
             {
                 _triggered = true;
+                
+                _animator.CrossFadeInFixedTime("GoalRingExit", 0.2f);
                 
                 RuntimeManager.PlayOneShot(goalRingSound, transform.position);
 
