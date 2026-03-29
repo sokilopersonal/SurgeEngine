@@ -1366,17 +1366,17 @@ MonoBehaviour:
         - serializedVersion: 3
           time: 0
           value: 0
-          inSlope: 1
+          inSlope: 0
           outSlope: 1
           tangentMode: 0
           weightedMode: 0
           inWeight: 0
           outWeight: 0
         - serializedVersion: 3
-          time: 0.942813
-          value: 1
-          inSlope: 0.7874635
-          outSlope: 0.7874635
+          time: 0.95966387
+          value: 0.9477352
+          inSlope: 1
+          outSlope: 0
           tangentMode: 0
           weightedMode: 0
           inWeight: 0
@@ -1555,6 +1555,19 @@ MonoBehaviour:
   texture:
     m_OverrideState: 1
     m_Value: {fileID: 0}
+--- !u!114 &-4981506984328522936
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: TestComponent
+  m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Editor.Tests:UnityEditor.Rendering.HighDefinition.Tests:CustomPostProcessComponentListTest/TestComponent
+  active: 1
 --- !u!114 &-4893514573459977141
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -3199,8 +3212,8 @@ MonoBehaviour:
   - {fileID: 7054568583307864062}
   - {fileID: 8366440330025302430}
   - {fileID: -5968353343242530664}
-  - {fileID: -8582526847168490664}
-  - {fileID: 4599219916230909843}
+  - {fileID: -4981506984328522936}
+  - {fileID: 980123368783991994}
 --- !u!114 &370524497763573843
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -3609,6 +3622,19 @@ MonoBehaviour:
     m_OverrideState: 1
     m_Value: {x: 0, y: 0, z: 0}
 --- !u!114 &908156276283181157
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: TestComponent2
+  m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Editor.Tests:UnityEditor.Rendering.HighDefinition.Tests:CustomPostProcessComponentListTest/TestComponent2
+  active: 1
+--- !u!114 &980123368783991994
 MonoBehaviour:
   m_ObjectHideFlags: 3
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6168,40 +6194,40 @@ MonoBehaviour:
   active: 1
   quality:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 1
   enable:
     m_OverrideState: 1
     m_Value: 0
   length:
     m_OverrideState: 1
-    m_Value: 0.3
+    m_Value: 0.15
   opacity:
     m_OverrideState: 1
     m_Value: 1
   distanceScaleFactor:
     m_OverrideState: 1
-    m_Value: 0.3
+    m_Value: 0.5
   maxDistance:
     m_OverrideState: 1
     m_Value: 50
   minDistance:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0
   fadeDistance:
     m_OverrideState: 1
     m_Value: 5
   fadeInDistance:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0
   rayBias:
     m_OverrideState: 1
-    m_Value: 0.05
+    m_Value: 0.2
   thicknessScale:
     m_OverrideState: 1
-    m_Value: 0.2
+    m_Value: 0.15
   m_SampleCount:
     m_OverrideState: 1
-    m_Value: 4
+    m_Value: 10
 --- !u!114 &8410490367051478567
 MonoBehaviour:
   m_ObjectHideFlags: 3
