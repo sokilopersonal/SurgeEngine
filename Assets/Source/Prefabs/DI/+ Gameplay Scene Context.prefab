@@ -87,6 +87,7 @@ GameObject:
   - component: {fileID: 7721305305310426510}
   - component: {fileID: 993120408517786402}
   - component: {fileID: 2857119228063774259}
+  - component: {fileID: 6599226908271562438}
   m_Layer: 0
   m_Name: + Gameplay Scene Context
   m_TagString: Untagged
@@ -123,6 +124,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data:
+    name: Stage Act 1
     ringCount: 0
     time: 0
     state: 0
@@ -151,6 +153,7 @@ MonoBehaviour:
   - {fileID: 7721305305310426510}
   - {fileID: 993120408517786402}
   - {fileID: 2857119228063774259}
+  - {fileID: 6599226908271562438}
   _installerPrefabs: []
   _findSiblingMonoInstallers: 0
   _autoRun: 1
@@ -226,3 +229,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SurgeEngine._Source.Code.Infrastructure.DI.DebugCameraInstaller
   debugCameraPrefab: {fileID: 510963956201618939, guid: 46af5397d12f52049ae6785d2e111983, type: 3}
+--- !u!114 &6599226908271562438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3405328811069570354}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9de6deafc02047a7b8b3f91e0ea3fddf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SurgeEngine.Source.Code.Infrastructure.DI.RumbleInstaller

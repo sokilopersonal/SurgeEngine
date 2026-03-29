@@ -8,18 +8,23 @@ using Zenject;
 
 namespace SurgeEngine.Source.Code.Gameplay.Inputs
 {
-    public sealed class Rumble : ITickable, ILateDisposable
+    public class Rumble : ITickable, ILateDisposable
     {
         private static Rumble _instance;
         private float _timer;
-        private InputDevice _device;
+        private CharacterInput _characterInput;
 
-        [Inject] private void Inject(Rumble self) => _instance = self;
+        [Inject] 
+        private void Inject(Rumble self, CharacterBase character)
+        {
+            _instance = self;
+            _characterInput = character.Input;
+        }
 
         public static void Vibrate(float low, float high, float duration = 0.2f)
         {
             Gamepad pad = Gamepad.current;
-            GameDevice device = _instance.GetDevice();
+            GameDevice device = _instance._characterInput.Device;
             
             if (pad == null || device == GameDevice.Keyboard)
                 return;
@@ -36,8 +41,6 @@ namespace SurgeEngine.Source.Code.Gameplay.Inputs
 
         public void Tick()
         {
-            UpdateDevice();
-            
             Gamepad pad = Gamepad.current;
             if (pad == null)
                 return;
@@ -50,51 +53,6 @@ namespace SurgeEngine.Source.Code.Gameplay.Inputs
             {
                 pad.SetMotorSpeeds(0, 0);
             }
-        }
-
-        private void UpdateDevice()
-        {
-            ReadOnlyArray<InputDevice> devices = InputSystem.devices;
-            foreach (InputDevice device in devices)
-            {
-                if (device.wasUpdatedThisFrame)
-                {
-                    if (device is Keyboard)
-                    {
-                        _device = device;
-                    }
-                    else if (device is Gamepad)
-                    {
-                        _device = device;
-                    }
-                }
-            }
-        }
-        
-        public GameDevice GetDevice()
-        {
-            GameDevice device = GameDevice.Keyboard;
-
-            switch (_device)
-            {
-                case Keyboard:
-                    device = GameDevice.Keyboard;
-                    break;
-                case XInputController:
-                    device = GameDevice.XboxController;
-                    break;
-                case Gamepad:
-                {
-                    if (_device is DualShockGamepad)
-                    {
-                        device = GameDevice.Playstation;
-                    }
-
-                    break;
-                }
-            }
-
-            return device;
         }
 
         public void LateDispose()
