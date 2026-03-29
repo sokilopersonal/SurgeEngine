@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using SurgeEngine.Source.Code.Core.Character.HUD;
 using SurgeEngine.Source.Code.Core.Character.States;
 using SurgeEngine.Source.Code.Core.Character.System;
@@ -11,27 +12,28 @@ using Zenject;
 
 namespace SurgeEngine.Source.Code.Infrastructure.Tools
 {
-    [RequireComponent(typeof(PlayerInput), typeof(Camera))]
+    [RequireComponent(typeof(Camera))]
     public class DebugCamera : MonoBehaviour
     {
-        [SerializeField] private PlayerInput playerInput;
         [SerializeField] private float speed = 10f;
         [SerializeField] private float sensitivity = 1f;
         [SerializeField] private float accelerationTime = 1f;
         [SerializeField] private float maxSpeedMultiplier = 5f;
         
+        private DebugCameraInput _input;
+        
         private Vector2 MoveInput => MoveAction.ReadValue<Vector2>();
         private float VerticalInput => VerticalAction.ReadValue<Vector2>().y;
         private Vector2 LookInput => !_blocked ? LookAction.ReadValue<Vector2>() : Vector2.zero;
         
-        private InputAction MoveAction => playerInput.actions["Move"];
-        private InputAction VerticalAction => playerInput.actions["Vertical"];
-        private InputAction LookAction => playerInput.actions["Look"];
-        private InputAction ToggleAction => playerInput.actions["Toggle"];
-        private InputAction TeleportPlayerAction => playerInput.actions["Teleport"];
-        private InputAction TimeAction => playerInput.actions["Time"];
-        private InputAction SlowdownAction => playerInput.actions["Slowdown"];
-        private InputAction AccelerateAction => playerInput.actions["Accelerate"];
+        private InputAction MoveAction => _input.Debug.Move;
+        private InputAction VerticalAction => _input.Debug.Vertical;
+        private InputAction LookAction => _input.Debug.Look;
+        private InputAction ToggleAction => _input.Debug.Toggle;
+        private InputAction TeleportPlayerAction => _input.Debug.Teleport;
+        private InputAction TimeAction => _input.Debug.Time;
+        private InputAction SlowdownAction => _input.Debug.Slowdown;
+        private InputAction AccelerateAction => _input.Debug.Accelerate;
 
         [Inject] private CharacterBase _character;
         [Inject] private CharacterStageHUD _hud;
@@ -52,10 +54,11 @@ namespace SurgeEngine.Source.Code.Infrastructure.Tools
 
         private void Awake()
         {
+            _input = new DebugCameraInput();
+            _input.Enable();
+            
             _camera = GetComponent<Camera>();
             _camera.enabled = false;
-
-            gameObject.hideFlags = HideFlags.HideInHierarchy;
 
             if (!_gameSettings.IsDebug)
             {
@@ -72,12 +75,14 @@ namespace SurgeEngine.Source.Code.Infrastructure.Tools
                 Rotation();
                 
 #if UNITY_EDITOR
-                if (Keyboard.current.escapeKey.wasPressedThisFrame)
+                var keyboard = Keyboard.current;
+                if (keyboard != null && keyboard.escapeKey.wasPressedThisFrame)
                 {
                     CameraLock(true);
                 }
 
-                if (Mouse.current.leftButton.wasPressedThisFrame)
+                var mouse = Mouse.current;
+                if (mouse != null && mouse.leftButton.wasPressedThisFrame)
                 {
                     CameraLock(false);
                 }
@@ -211,6 +216,12 @@ namespace SurgeEngine.Source.Code.Infrastructure.Tools
         private void CameraLock(bool value)
         {
             _blocked = value;
+        }
+
+        private void OnDestroy()
+        {
+            _input.Disable();
+            _input.Dispose();
         }
     }
 }

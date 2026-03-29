@@ -44,7 +44,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects
 
         public Sprite GetSprite()
         {
-            var device = _character.Input.GetDevice();
+            var device = _character.Input.Device;
             
             switch (buttonType)
             {

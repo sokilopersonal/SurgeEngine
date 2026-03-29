@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using FMODUnity;
 using SurgeEngine.Source.Code.UI.Animated;
 using UnityEngine;
@@ -45,16 +46,27 @@ namespace SurgeEngine.Source.Code.UI.Navigation
                 }
             }
             Profiler.EndSample();
-            
+        }
+
+        private void OnEnable()
+        {
             navigationActionReference.action.Enable();
-            navigationActionReference.action.performed += _ =>
+            navigationActionReference.action.performed += OnNavigation;
+        }
+
+        private void OnDisable()
+        {
+            navigationActionReference.action.Disable();
+            navigationActionReference.action.performed -= OnNavigation;
+        }
+
+        private void OnNavigation(InputAction.CallbackContext _)
+        {
+            var current = EventSystem.current;
+            if (current.currentSelectedGameObject == null && _lastSelected != null)
             {
-                var current = EventSystem.current;
-                if (current.currentSelectedGameObject == null && _lastSelected != null)
-                {
-                    Select(_lastSelected.gameObject);
-                }
-            };
+                Select(_lastSelected.gameObject);
+            }
         }
 
         private void SetupTrigger(Selectable selectable)

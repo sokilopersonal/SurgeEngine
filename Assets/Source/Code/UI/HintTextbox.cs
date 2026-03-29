@@ -164,7 +164,7 @@ namespace SurgeEngine.Source.Code.UI
 
         private TMP_SpriteAsset GetSpriteAsset()
         {
-            switch (_character.Input.GetDevice())
+            switch (_character.Input.Device)
             {
                 case GameDevice.Keyboard:
                     return keyboardSprite;

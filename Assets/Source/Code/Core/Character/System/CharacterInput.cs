@@ -52,9 +52,9 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         protected InputAction YInputAction => PlayerInput.actions["YAction"];
         protected InputAction BumperInputAction => PlayerInput.actions["Bumper"];
         protected InputAction TriggerAction => PlayerInput.actions["Trigger"];
+        public GameDevice Device { get; private set; }
 
         private bool _lockCamera;
-        private InputDevice _device;
 
         private float _noInputTimer;
         private bool _autoCamera;
@@ -85,6 +85,8 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             
             PlayerInput.actions["Bumper"].started += BumperInput;
             PlayerInput.actions["Bumper"].canceled += BumperInput;
+            
+            PlayerInput.onControlsChanged += OnControlsChanged;
         }
 
         private void OnDisable()
@@ -107,6 +109,8 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             PlayerInput.actions["Bumper"].started -= BumperInput;
             PlayerInput.actions["Bumper"].canceled -= BumperInput;
             
+            PlayerInput.onControlsChanged -= OnControlsChanged;
+            
             Gamepad pad = Gamepad.current;
             pad?.SetMotorSpeeds(0, 0);
         }
@@ -115,25 +119,9 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         {
             Vector2 temp = MovementAction.ReadValue<Vector2>();
             MoveVector = new Vector3(temp.x, 0, temp.y);
-            LookVector = LookAction.ReadValue<Vector2>() * (_device is Gamepad ? 100f * Time.deltaTime : 1f);
+            LookVector = LookAction.ReadValue<Vector2>() * (Device is GameDevice.Playstation or GameDevice.XboxController ? 100f * Time.deltaTime : 1f);
 
             UpdateNoInputTimer();
-            
-            ReadOnlyArray<InputDevice> devices = InputSystem.devices;
-            foreach (InputDevice device in devices)
-            {
-                if (device.wasUpdatedThisFrame)
-                {
-                    if (device is Keyboard)
-                    {
-                        _device = device;
-                    }
-                    else if (device is Gamepad)
-                    {
-                        _device = device;
-                    }
-                }
-            }
 
 #if UNITY_EDITOR
             if (Keyboard.current.escapeKey.wasPressedThisFrame)
@@ -214,15 +202,6 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             }
         }
 
-        private void StartInput(InputAction.CallbackContext obj)
-        {
-            if (obj.started)
-            {
-                InputDevice dv = obj.control.device;
-                _device = dv;
-            }
-        }
-
         public void CameraLock(bool value)
         {
             _lockCamera = value;
@@ -232,34 +211,25 @@ namespace SurgeEngine.Source.Code.Core.Character.System
                 LookVector = Vector2.zero;
             }
         }
-        
-        public bool IsAutoCamera() { return _autoCamera; }
 
-        public GameDevice GetDevice()
+        private void OnControlsChanged(PlayerInput obj)
         {
-            GameDevice device = GameDevice.Keyboard;
-
-            switch (_device)
+            if (obj.currentControlScheme == "Keyboard")
             {
-                case Keyboard:
-                    device = GameDevice.Keyboard;
-                    break;
-                case XInputController:
-                    device = GameDevice.XboxController;
-                    break;
-                case Gamepad:
+                Device = GameDevice.Keyboard;
+            }
+            else if (obj.currentControlScheme == "Gamepad")
+            {
+                Device = GameDevice.XboxController;
+                foreach (var device in obj.devices)
                 {
-                    if (_device is DualShockGamepad)
-                    {
-                        device = GameDevice.Playstation;
-                    }
-
-                    break;
+                    if (device is DualShockGamepad)
+                        Device = GameDevice.Playstation;
                 }
             }
-
-            return device;
         }
+
+        public bool IsAutoCamera() { return _autoCamera; }
     }
 
     public enum GameDevice

@@ -118,7 +118,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             }
                 
             if (_material != null)
-                _material.SetFloat(InputDevice, (int)_character.Input.GetDevice());
+                _material.SetFloat(InputDevice, (int)_character.Input.Device);
         }
 
         private void UpdateVisual()

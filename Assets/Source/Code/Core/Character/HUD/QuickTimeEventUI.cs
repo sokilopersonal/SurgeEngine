@@ -70,7 +70,7 @@ namespace SurgeEngine.Source.Code.Core.Character.HUD
             for (int i = 0; i < sequence.buttons.Count; i++)
             {
                 ButtonType buttonType = sequence.buttons[i].type;
-                GameDevice dv = input.GetDevice();
+                GameDevice dv = input.Device;
                 QTEButtonSprites buttons = quickTimeEventUIButtons.Find(x => x.device == dv);
                 
                 QuickTimeEventUIButton tempButton = Instantiate(button, buttonParent);
