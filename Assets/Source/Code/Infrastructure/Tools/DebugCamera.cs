@@ -196,7 +196,7 @@ namespace SurgeEngine.Source.Code.Infrastructure.Tools
                     _character.StateMachine.SetState<FStateIdle>();
                     _character.Flags.Clear();
                     
-                    yield return new WaitForSecondsRealtime(0.02f);
+                    yield return new WaitForFixedUpdate();
                     
                     Time.timeScale = stored;
                 }
