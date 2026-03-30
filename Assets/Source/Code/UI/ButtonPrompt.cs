@@ -59,24 +59,26 @@ namespace SurgeEngine.Source.Code.UI
             {
                 if (device.wasUpdatedThisFrame)
                 {
-                    if (device is Keyboard)
+                    switch (device)
                     {
-                        _image.sprite = mkSprite;
-                    }
-                    else if (device is Mouse mouse)
-                    {
-                        if (mouse.delta.ReadValue().magnitude > 0.1f)
-                        {
+                        case Keyboard:
                             _image.sprite = mkSprite;
+                            break;
+                        case Mouse mouse:
+                        {
+                            if (mouse.delta.ReadValue().magnitude > 0.1f)
+                            {
+                                _image.sprite = mkSprite;
+                            }
+
+                            break;
                         }
-                    }
-                    else if (device is DualShockGamepad)
-                    {
-                        _image.sprite = psSprite;
-                    }
-                    else if (device is XInputController)
-                    {
-                        _image.sprite = xbSprite;
+                        case DualShockGamepad:
+                            _image.sprite = psSprite;
+                            break;
+                        case XInputController:
+                            _image.sprite = xbSprite;
+                            break;
                     }
                 }
             }
