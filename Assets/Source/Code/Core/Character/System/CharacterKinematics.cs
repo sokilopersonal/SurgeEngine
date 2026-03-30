@@ -91,6 +91,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
         private float _detachTimer;
         private bool _canAttach;
+        private Coroutine _moveCoroutine;
 
         private PhysicsConfig _config;
         private Vector3 _normalVelocity;
@@ -478,25 +479,9 @@ namespace SurgeEngine.Source.Code.Core.Character.System
                     origin = Character.transform.position;
                     direction = -Character.Kinematics.Normal;
                     break;
-                case CheckGroundType.DefaultDown:
-                    origin = Character.transform.position;
-                    direction = -Character.transform.up;
-                    break;
                 case CheckGroundType.Predict:
-                    origin = Character.transform.position;
-                    direction = Character.Kinematics.Rigidbody.linearVelocity.normalized;
-                    break;
-                case CheckGroundType.PredictJump:
                     origin = Character.transform.position - Character.transform.up * 0.5f;
                     direction = Character.Kinematics.Rigidbody.linearVelocity.normalized;
-                    break;
-                case CheckGroundType.PredictOnRail:
-                    origin = Character.transform.position + Character.transform.forward;
-                    direction = -Character.Kinematics.Normal;
-                    break;
-                case CheckGroundType.PredictEdge:
-                    origin = Character.transform.position + Vector3.ClampMagnitude(_planarVelocity * 0.075f, 1f);
-                    direction = -Character.Kinematics.Normal;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
@@ -588,19 +573,24 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             }
             else
             {
-                Normal = Vector3.SmoothDamp(Normal, Vector3.up, ref _normalVelocity, 0.1f);
+                if (Angle < _config.slopeDeslopeAngle)
+                    Normal = Vector3.SmoothDamp(Normal, Vector3.up, ref _normalVelocity, 0.1f);
             }
         }
         
         public void MoveToPosition(Rigidbody body, Vector3 targetPosition, float duration = 0.2f)
         {
-            StartCoroutine(MoveToPositionVelocityRoutine(body, targetPosition, duration));
+            if (_moveCoroutine != null)
+                StopCoroutine(_moveCoroutine);
+            _moveCoroutine = StartCoroutine(MoveToPositionVelocityRoutine(body, targetPosition, duration));
         }
         
         public void MoveToPosition(Rigidbody body, Vector3 targetPosition,
             Vector3 velocity, float duration = 0.2f)
         {
-            StartCoroutine(MoveToPositionRoutine(body, targetPosition, velocity, duration));
+            if (_moveCoroutine != null)
+                StopCoroutine(_moveCoroutine);
+            _moveCoroutine = StartCoroutine(MoveToPositionRoutine(body, targetPosition, velocity, duration));
         }
         
         private IEnumerator MoveToPositionVelocityRoutine(Rigidbody body, Vector3 targetPosition, float duration)

@@ -73,7 +73,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
             }
             else
             {
-                if (Kinematics.CheckForGround(out var predictHit, CheckGroundType.PredictJump, 1f))
+                if (Kinematics.CheckForGround(out var predictHit, CheckGroundType.Predict, 1f))
                 {
                     if (!predictHit.transform.GetComponent<BreakableObject>())
                     {

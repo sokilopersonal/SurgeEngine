@@ -109,10 +109,6 @@ namespace SurgeEngine.Source.Code.Infrastructure.Custom
     public enum CheckGroundType
     {
         Normal,
-        DefaultDown,
-        Predict,
-        PredictJump,
-        PredictOnRail,
-        PredictEdge
+        Predict
     }
 }
