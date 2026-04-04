@@ -145,6 +145,7 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem
             {
                 _is2dCamera = true;
                 _blending.Reset();
+                EaseData = new CameraEaseData(1, 1);
                 SetState<Camera2DState>();
             }
             else if (data == null && _is2dCamera)
