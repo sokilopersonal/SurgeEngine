@@ -45,8 +45,8 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
             
             float speed = !IsRun ? _config.force : _config.runForce;
             var sideDir = _direction == QuickstepDirection.Left ? -speed : speed;
-            var pathForward = Kinematics.PathForward;
-            var pathDash = Kinematics.PathDash;
+            var pathForward = Mode.PathForward;
+            var pathDash = Mode.PathDash;
             if (pathForward == null && pathDash == null)
             {
                 SetSideVelocity(sideDir);
@@ -237,8 +237,8 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
             }
             else
             {
-                if ((Kinematics.PathForward != null && Kinematics.PathForward.Tag == SplineTag.Quickstep) ||
-                    (Kinematics.PathDash != null && Kinematics.PathDash.Tag == SplineTag.Quickstep))
+                if ((Mode.PathForward != null && Mode.PathForward.Tag == SplineTag.Quickstep) ||
+                    (Mode.PathDash != null && Mode.PathDash.Tag == SplineTag.Quickstep))
                 {
                     float speed = _config.runForce;
                     var sideDir = _direction == QuickstepDirection.Left ? -speed : speed;

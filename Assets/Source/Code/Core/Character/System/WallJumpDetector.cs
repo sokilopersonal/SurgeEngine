@@ -44,7 +44,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             var wallRay = new Ray(body.position, body.linearVelocity);
             if (Physics.Raycast(wallRay, out var wallHit, 0.5f, _character.Config.castLayer))
             {
-                bool isWallJump = wallHit.collider.CompareTag(WallJumpTag) || _character.Kinematics.Path2D != null;
+                bool isWallJump = wallHit.collider.CompareTag(WallJumpTag) || _character.Kinematics.Mode.Path2D != null;
                 if (isWallJump && Mathf.Abs(Vector3.Angle(wallHit.normal, Vector3.up) - 90f) < 0.02)
                 {
                     _currentDetect.WallDetected = true;

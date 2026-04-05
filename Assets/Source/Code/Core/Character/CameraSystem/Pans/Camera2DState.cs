@@ -26,16 +26,17 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem.Pans
         
         private Vector3 Calculate2DCameraTarget()
         {
-            var path2D = Character.Kinematics.Path2D;
+            var path2D = Character.Kinematics.Mode.Path2D;
             if (path2D == null)
             {
                 return Vector3.zero;
             }
 
-            path2D.Spline.EvaluateWorld(out var pos, out var tg, out var up, out var right);
-            _right = Vector3.SmoothDamp(_right, right, ref _rightVelocity, 0.2f);
-            
-            tg *= Mathf.Sign(Vector3.Dot(Character.transform.forward, tg));
+            var sample = Character.Kinematics.Mode.SideSample;
+            _right = Vector3.SmoothDamp(_right, sample.Right, ref _rightVelocity, 0.2f);
+
+            var tg = sample.Tangent;
+            tg *= Mathf.Sign(Vector3.Dot(Character.transform.forward, sample.Tangent));
             _tg = Vector3.SmoothDamp(_tg, tg * 0.5f, ref _tgVelocity, 0.2f);
 
             return CalculateTarget() + _tg + _right * 8f;

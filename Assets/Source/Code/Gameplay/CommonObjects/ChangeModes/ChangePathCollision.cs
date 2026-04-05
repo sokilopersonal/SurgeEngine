@@ -14,7 +14,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.ChangeModes
         {
             base.OnEnter(msg, context);
             
-            context.Kinematics.Path2D?.SetSpline(new SplineData(Container, context.Rigidbody.position, dominantSpline));
+            context.Kinematics.Mode.Path2D?.SetSpline(new SplineData(Container, context.Rigidbody.position, dominantSpline));
         }
 
         protected override void SetMode(CharacterBase ctx)

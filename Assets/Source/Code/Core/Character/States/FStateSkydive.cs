@@ -87,9 +87,9 @@ namespace SurgeEngine.Source.Code.Core.Character.States
                 vel.y = 0;
                 Model.RotateBody(vel, Vector3.up, 7.5f);
 
-                if (Kinematics.Path2D != null && Kinematics.GetAttachState())
+                if (Mode.Path2D != null && Kinematics.GetAttachState())
                 {
-                    var path = Kinematics.Path2D.Spline;
+                    var path = Mode.Path2D.Spline;
                     var pos = path.EvaluatePosition();
                     var up = path.EvaluateUp();
 

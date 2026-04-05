@@ -189,9 +189,9 @@ namespace SurgeEngine.Source.Code.Infrastructure.Tools
                     
                     _character.Kinematics.ResetVelocity();
                     var uPos = _character.Rigidbody.position;
-                    _character.Kinematics.Path2D?.Spline.UpdateTime(uPos);
-                    _character.Kinematics.PathForward?.Spline.UpdateTime(uPos);
-                    _character.Kinematics.PathDash?.Spline.UpdateTime(uPos);
+                    _character.Kinematics.Mode.Path2D?.Spline.UpdateTime(uPos);
+                    _character.Kinematics.Mode.PathForward?.Spline.UpdateTime(uPos);
+                    _character.Kinematics.Mode.PathDash?.Spline.UpdateTime(uPos);
 
                     _character.StateMachine.SetState<FStateIdle>();
                     _character.Flags.Clear();

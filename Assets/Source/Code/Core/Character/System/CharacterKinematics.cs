@@ -16,8 +16,8 @@ namespace SurgeEngine.Source.Code.Core.Character.System
     /// <summary>
     /// Base character class for movement physics.
     /// </summary>
-    [RequireComponent(typeof(WallJumpDetector))]
-    public class CharacterKinematics : CharacterComponent, IPointMarkerLoader
+    [RequireComponent(typeof(WallJumpDetector), typeof(CharacterMode))]
+    public class CharacterKinematics : CharacterComponent
     {
         public Rigidbody Rigidbody { get; private set; }
 
@@ -59,6 +59,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         public bool Skidding => MoveDot < _config.skiddingThreshold && !BlockSkidding;
         public float MoveDot { get; private set; }
         public WallJumpDetector WallJumpDetector  { get; private set; }
+        public CharacterMode Mode { get; private set; }
         
         private readonly List<TurnRateData> _turnRates = new();
         private float _turnRateVelocity;
@@ -79,16 +80,6 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         private Vector3 _lastPosition;
         private Vector3 _waterSnapVelocity;
 
-        public ChangeMode2DData Path2D { get; private set; }
-        public ChangeMode3DData PathForward { get; private set; }
-        public ChangeMode3DData PathDash { get; private set; }
-        public event Action<ChangeMode2DData> OnPath2DChange;
-        public event Action<ChangeMode3DData> OnPathForwardChange;
-        public event Action<ChangeMode3DData> OnPathDashChange;
-        private PointSample _2dSample;
-        private float _lastRelativeTime;
-        private Vector3 _lastTangent;
-
         private float _detachTimer;
         private bool _canAttach;
         private Coroutine _moveCoroutine;
@@ -99,6 +90,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         protected virtual void Awake()
         {
             WallJumpDetector = GetComponent<WallJumpDetector>();
+            Mode = GetComponent<CharacterMode>();
             
             Rigidbody = Character.Rigidbody;
             Rigidbody.sleepThreshold = -1;
@@ -125,10 +117,6 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
         protected virtual void FixedUpdate()
         {
-            CalculatePath2D();
-            CalculatePathForward();
-            CalculatePathDash();
-
             Vector3 position = Rigidbody.position;
             _kinematicVelocity = (position - _lastPosition) / Time.fixedDeltaTime;
             _lastPosition = position;
@@ -145,10 +133,10 @@ namespace SurgeEngine.Source.Code.Core.Character.System
                 _inputDir = SurgeMath.GetMovementDirectionProjectedOnPlane(orientedInput, Normal, _cameraTransform.up)
                             * Character.Input.MoveVector.magnitude;
 
-                if (Path2D != null)
+                /*if (Path2D != null)
                 {
                     _inputDir = Vector3.ProjectOnPlane(_inputDir, _2dSample.Right);
-                }
+                }*/
             }
             
             Debug.DrawRay(transform.position, _inputDir, Color.red, 0, false);
@@ -268,120 +256,6 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             handling *= _config.airControl;
             _movementVector = Vector3.Lerp(_planarVelocity, _inputDir.normalized * _planarVelocity.magnitude, 
                 handling * Time.fixedDeltaTime);
-        }
-
-        private void CalculatePath2D()
-        {
-            if (Path2D != null && Path2D.Tag == SplineTag.SideView)
-            {
-                var path = Path2D.Spline;
-
-                Vector3 rbPos = Rigidbody.position - transform.up;
-                
-                _2dSample = path.EvaluateRelative(rbPos, _lastRelativeTime);
-                _lastRelativeTime = _2dSample.Time;
-                if (_2dSample.Right != Vector3.zero)
-                {
-                    Project(_2dSample.Right);
-                }
-                
-                if (_lastTangent == Vector3.zero) _lastTangent = _2dSample.Tangent;
-                
-                float sign = Mathf.Sign(Vector3.Dot(Rigidbody.transform.forward, _2dSample.Tangent));
-                if (IsPathOutOfRange(_2dSample.Time))
-                {
-                    Set2DPath(null);
-                    return;
-                }
-
-                float pathEaseTime = Path2D.PathEaseTime;
-                if (Character.Flags.GetFlag<AutorunFlag>(out var autoRunFlag) && autoRunFlag.PathEaseTime > 0)
-                {
-                    pathEaseTime = autoRunFlag.PathEaseTime;
-                }
-                
-                Rigidbody.linearVelocity = Quaternion.FromToRotation(Vector3.ProjectOnPlane(_lastTangent, Vector3.up).normalized, 
-                    Vector3.ProjectOnPlane(_2dSample.Tangent, Vector3.up).normalized) * Rigidbody.linearVelocity;
-                _lastTangent = _2dSample.Tangent;
-
-                if (Speed > 0.02f && Character.Flags.HasFlag(FlagType.Autorun))
-                {
-                    var rotTarget = Quaternion.LookRotation(_2dSample.Tangent * sign, Normal);
-                    Rigidbody.MoveRotation(Quaternion.RotateTowards(Rigidbody.rotation, rotTarget, 720 * Time.fixedDeltaTime));
-                }
-
-                Vector3 target;
-                Vector3 newPos = _2dSample.Position;
-                Vector3 physicsTarget = newPos + Vector3.ProjectOnPlane(Rigidbody.position - newPos, _2dSample.Right);
-                if (pathEaseTime > 0f)
-                {
-                    Path2D.CurrentEaseTime += Time.fixedDeltaTime / pathEaseTime;
-                    Path2D.CurrentEaseTime = Mathf.Clamp01(Path2D.CurrentEaseTime);
-                    Path2D.StartPosition += Velocity * Time.fixedDeltaTime;
-                    
-                    target = Vector3.Lerp(Path2D.StartPosition, physicsTarget, Path2D.CurrentEaseTime);
-                }
-                else
-                {
-                    target = physicsTarget;
-                }
-                
-                Rigidbody.MovePosition(target);
-            }
-        }
-
-        private void CalculatePathForward()
-        {
-            if (PathForward != null)
-            {
-                AdjustVelocityForPath(PathForward);
-            }
-        }
-
-        private void CalculatePathDash()
-        {
-            if (PathDash != null)
-            {
-                AdjustVelocityForPath(PathDash);
-            }
-        }
-
-        private void AdjustVelocityForPath(ChangeMode3DData data)
-        {
-            var force = data.PathCorrectionForce;
-            if (force > 0)
-            {
-                if (CheckForGround(out _))
-                {
-                    var sample = data.Spline.EvaluateNearest(Rigidbody.position);
-                    var tg = sample.Tangent;
-                    
-                    if (data.IsLimitEdge)
-                    {
-                        if (IsPathOutOfRange(sample.Time))
-                        {
-                            SetForwardPath(null);
-                            SetDashPath(null);
-                            return;
-                        }
-                    }
-                    
-                    float dot = Vector3.Dot(Velocity.normalized, tg);
-                    float sign = Mathf.Sign(dot);
-                    tg = sign * tg;
-                    
-                    var targetDir = tg.normalized * Velocity.magnitude;
-                    float speedFactor = Mathf.Clamp01(1f - HorizontalVelocity.magnitude / (_config.maxSpeed * 2f));
-                    float adjustedForce = force * speedFactor;
-
-                    if (HorizontalVelocity.magnitude > 0.1f)
-                    {
-                        var rotation = Quaternion.RotateTowards(Quaternion.LookRotation(HorizontalVelocity), 
-                            Quaternion.LookRotation(targetDir), adjustedForce * Mathf.Rad2Deg * Time.fixedDeltaTime);
-                        Rigidbody.linearVelocity = rotation * Vector3.forward * HorizontalVelocity.magnitude + VerticalVelocity;
-                    }
-                }
-            }
         }
 
         public void RegisterTurnRate(TurnRateData value)
@@ -710,84 +584,6 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         {
             return _inputDir.normalized;
         }
-
-        public void Set2DPath(ChangeMode2DData data)
-        {
-            if (Path2D != null && data != null && Path2D.Spline.Container == data.Spline.Container)
-                return;
-
-            UpdateRelativeTime(data);
-            Path2D = data;
-            _lastTangent = Vector3.zero;
-            OnPath2DChange?.Invoke(data);
-
-            if (PathForward != null)
-            {
-                SetForwardPath(null);
-            }
-
-            if (PathDash != null)
-            {
-                SetDashPath(null);
-            }
-        }
-
-        public void SetForwardPath(ChangeMode3DData data)
-        {
-            if (PathForward != null && data != null && PathForward.Spline.Container == data.Spline.Container)
-                return;
-            
-            UpdateRelativeTime(data);
-            PathForward = data;
-            OnPathForwardChange?.Invoke(data);
-
-            if (Path2D != null)
-            {
-                Set2DPath(null);
-            }
-
-            if (PathDash != null)
-            {
-                SetDashPath(null);
-            }
-        }
-
-        public void SetDashPath(ChangeMode3DData data)
-        {
-            if (PathDash != null && data != null && PathDash.Spline.Container == data.Spline.Container)
-                return;
-            
-            UpdateRelativeTime(data);
-            PathDash = data;
-            OnPathDashChange?.Invoke(data);
-            
-            if (Path2D != null)
-            {
-                Set2DPath(null);
-            }
-            
-            if (PathForward != null)
-            {
-                SetForwardPath(null);
-            }
-        }
-
-        private void UpdateRelativeTime(ChangeModeData data)
-        {
-            if (data != null)
-            {
-                SplineUtility.GetNearestPoint(data.Spline.Container.Spline, data.Spline.Container.transform.InverseTransformPoint(Rigidbody.position), out _, out _lastRelativeTime);
-            }
-        }
-
-        public void Load()
-        {
-            Set2DPath(null);
-            SetForwardPath(null);
-            SetDashPath(null);
-        }
-
-        private static bool IsPathOutOfRange(float t) => t >= 1f || t <= 0;
     }
 
     public enum MovementType

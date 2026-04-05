@@ -54,13 +54,13 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             
             RuntimeManager.PlayOneShot(sound, transform.position);
 
-            if (context.Kinematics.Path2D != null)
+            if (context.Kinematics.Mode.Path2D != null)
             {
                 if (isTo3D)
                 {
-                    context.Kinematics.Set2DPath(null);
-                    context.Kinematics.SetForwardPath(null);
-                    context.Kinematics.SetDashPath(null);
+                    context.Kinematics.Mode.Set2DPath(null);
+                    context.Kinematics.Mode.SetForwardPath(null);
+                    context.Kinematics.Mode.SetDashPath(null);
                 }
             }
         }

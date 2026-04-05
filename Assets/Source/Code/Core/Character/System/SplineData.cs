@@ -8,12 +8,12 @@ namespace SurgeEngine.Source.Code.Core.Character.System
     public class SplineData
     {
         public float Time { get; set; }
-        public readonly float Length;
+        public float Length;
         public float NormalizedTime => Mathf.Clamp01(Time / Length);
         public SplineContainer Container => _container;
         private DominantSpline Dominant { get; }
 
-        private readonly SplineContainer _container;
+        private SplineContainer _container;
 
         public SplineData(SplineContainer container, Vector3 position, DominantSpline dominant = DominantSpline.Left)
         {
@@ -164,6 +164,15 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         {
             EvaluateWorld(out _, out var tg, out _, out _);
             return tg;
+        }
+
+        public void UpdateContainer(SplineContainer container)
+        {
+            if (_container == container)
+                return;
+            
+            _container = container;
+            Length = _container.Spline.GetLength();
         }
 
         public void UpdateTime(Vector3 position)

@@ -9,6 +9,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.BaseStates
     {
         protected CharacterBase Character { get; }
         protected CharacterKinematics Kinematics => Character.Kinematics;
+        protected CharacterMode Mode => Kinematics.Mode;
         protected CharacterInput Input => Character.Input;
         protected CharacterModel Model => Character.Model;
         protected CharacterAnimation Animation => Character.Animation;

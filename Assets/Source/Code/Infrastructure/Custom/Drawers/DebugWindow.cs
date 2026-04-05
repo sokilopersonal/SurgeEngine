@@ -125,11 +125,12 @@ namespace SurgeEngine.Source.Code.Infrastructure.Custom.Drawers
                 ImGui.Text($"Animation State: {_character.Animation.StateAnimator.GetCurrentAnimationState()}");
             
                 ImGui.SeparatorText("Path Info");
-                if (_character.Kinematics.Path2D != null || _character.Kinematics.PathForward != null || _character.Kinematics.PathDash != null)
+                var mode = _character.Kinematics.Mode;
+                if (mode.Path2D != null || mode.PathForward != null || mode.PathDash != null)
                 {
-                    DrawPathInfo(_character.Kinematics.Path2D, "Path 2D");
-                    DrawPathInfo(_character.Kinematics.PathForward, "Path Forward");
-                    DrawPathInfo(_character.Kinematics.PathDash, "Path Dash");
+                    DrawPathInfo(mode.Path2D, "Path 2D");
+                    DrawPathInfo(mode.PathForward, "Path Forward");
+                    DrawPathInfo(mode.PathDash, "Path Dash");
                 }
                 else
                 {

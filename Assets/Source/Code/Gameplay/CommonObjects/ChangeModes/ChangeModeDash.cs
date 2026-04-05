@@ -8,12 +8,12 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.ChangeModes
         
         protected override void SetMode(CharacterBase ctx)
         {
-            ctx.Kinematics.SetDashPath(new ChangeMode3DData(new SplineData(Container, ctx.transform.position), isChangeCamera, isLimitEdge, pathCorrectionForce));
+            ctx.Kinematics.Mode.SetDashPath(new ChangeMode3DData(new SplineData(Container, ctx.transform.position), isChangeCamera, isLimitEdge, pathCorrectionForce));
         }
 
         protected override void RemoveMode(CharacterBase ctx)
         {
-            ctx.Kinematics.SetDashPath(null);
+            ctx.Kinematics.Mode.SetDashPath(null);
         }
     }
 }
