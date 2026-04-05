@@ -1,4 +1,5 @@
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.ChangeModes;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Profiling;
 using UnityEngine.Splines;
@@ -65,25 +66,12 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             var transform = _container.transform;
             if (_container.Splines.Count == 2)
             {
-                var splineL = _container.Splines[Dominant == DominantSpline.Left ? 0 : 1];
-                var splineR = _container.Splines[Dominant == DominantSpline.Left ? 1 : 0];
+                PointSample sample = HasCurve(t)
+                    ? GetSplineVectorsCurve(t)
+                    : GetSplineVectorsSimple(t);
 
-                splineL.Evaluate(t, out var posL, out var tgL, out _);
-                splineR.Evaluate(t, out var posR, out var tgR, out _);
-
-                Vector3 worldPosL = transform.TransformPoint(posL);
-                Vector3 worldPosR = transform.TransformPoint(posR);
-                Vector3 worldTgR = transform.TransformDirection(tgR);
-
-                var position = Vector3.Lerp(worldPosL, worldPosR, 0.5f);
-                var tangent = worldTgR.normalized;
-                var right = Vector3.Normalize(worldPosR - worldPosL);
-                var up = Vector3.Cross(tangent, right);
-                
-                Debug.DrawRay(worldPosL, up, Color.white);
-                Debug.DrawRay(worldPosR, up, Color.white);
-                DrawDebug(position, tangent, up, right);
-                return new PointSample(position, tangent, up, right, t);
+                DrawDebug(sample.Position, sample.Tangent, sample.Up, sample.Right);
+                return sample;
             }
             else
             {
@@ -98,10 +86,76 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
             void DrawDebug(Vector3 position, Vector3 tangent, Vector3 up, Vector3 right)
             {
-                Debug.DrawRay(position, tangent, Color.purple, 0, false);
+                Debug.DrawRay(position, tangent, Color.blue, 0, false);
                 Debug.DrawRay(position, up, Color.green, 0, false);
                 Debug.DrawRay(position, right, Color.red, 0, false);
             }
+        }
+        
+        private PointSample GetSplineVectorsSimple(float t)
+        {
+            var transform = _container.transform;
+            var splineL = _container.Splines[Dominant == DominantSpline.Left ? 0 : 1];
+            var splineR = _container.Splines[Dominant == DominantSpline.Left ? 1 : 0];
+
+            splineL.Evaluate(t, out var posL, out _, out _);
+            splineR.Evaluate(t, out var posR, out var tgR, out _);
+
+            Vector3 worldPosL = transform.TransformPoint(posL);
+            Vector3 worldPosR = transform.TransformPoint(posR);
+            Vector3 forward = transform.TransformDirection(tgR).normalized;
+            Vector3 right = Vector3.Normalize(worldPosR - worldPosL);
+            Vector3 up = Vector3.Cross(forward, right);
+            Vector3 position = Vector3.Lerp(worldPosL, worldPosR, 0.5f);
+
+            return new PointSample(position, forward, up, right, t);
+        }
+
+        private PointSample GetSplineVectorsCurve(float t)
+        {
+            var transform = _container.transform;
+            var splineL = _container.Splines[Dominant == DominantSpline.Left ? 0 : 1];
+            var splineR = _container.Splines[Dominant == DominantSpline.Left ? 1 : 0];
+
+            Spline spline0 = Dominant == DominantSpline.Left ? splineL : splineR;
+            spline0.Evaluate(t, out float3 position0, out float3 tangent0, out _);
+            int curveIndex = spline0.SplineToCurveT(t, out float t1);
+
+            BezierCurve curve0 = spline0.GetCurve(curveIndex);
+            if ((Vector3)curve0.P0 == (Vector3)curve0.P1)
+            {
+                while ((Vector3)curve0.P0 == (Vector3)curve0.P1 && curveIndex < splineL.Count)
+                    curve0 = splineL.GetCurve(curveIndex++);
+
+                curve0 = splineL.GetCurve(curveIndex--);
+                t1 = 0;
+            }
+
+            Spline spline1 = Dominant == DominantSpline.Left ? splineR : splineL;
+            float3 position1 = CurveUtility.EvaluatePosition(spline1.GetCurve(curveIndex), t1);
+
+            Vector3 positionL = transform.TransformPoint(Dominant == DominantSpline.Left ? position0 : position1);
+            Vector3 positionR = transform.TransformPoint(Dominant == DominantSpline.Left ? position1 : position0);
+
+            Vector3 position = Vector3.Lerp(positionL, positionR, 0.5f);
+            Vector3 forward = transform.TransformDirection(tangent0).normalized;
+            if (forward.magnitude < 0.5f)
+                forward = transform.TransformDirection(SplineUtility.GetCatmullRomTangent(curve0.P0, curve0.P3)).normalized;
+
+            Vector3 right = Vector3.Normalize(positionR - positionL);
+            Vector3 up = Vector3.Cross(forward, right).normalized;
+
+            return new PointSample(position, forward, up, right, t);
+        }
+        
+        private bool HasCurve(float t)
+        {
+            Spline spline0 = _container.Splines[Dominant == DominantSpline.Left ? 0 : 1];
+            int curveIndex = spline0.SplineToCurveT(t, out _);
+            BezierCurve curve = spline0.GetCurve(curveIndex);
+
+            return (Vector3)curve.P0 != (Vector3)curve.P1
+                   || (Vector3)curve.P2 != (Vector3)curve.P3;
         }
         
         public PointSample EvaluateNearest(Vector3 position, int resolution = 4, int iterations = 2)
