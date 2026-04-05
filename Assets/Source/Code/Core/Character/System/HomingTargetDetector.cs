@@ -10,6 +10,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
     public class HomingTargetDetector : MonoBehaviour
     {
         [SerializeField] private HomingConfig config;
+        [SerializeField] private bool drawGizmos;
 
         [Inject] private CharacterBase _character;
 
@@ -86,6 +87,8 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         
         private void OnDrawGizmos()
         {
+            if (!drawGizmos) return;
+            
             Gizmos.matrix = transform.localToWorldMatrix;
             Gizmos.color = Color.green;
             Gizmos.DrawWireSphere(Vector3.zero, config.findDistance);

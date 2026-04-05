@@ -3,19 +3,19 @@ using UnityEngine;
 
 namespace SurgeEngine.Source.Code.Core.Character.States
 {
-    public class FStateJumpPanel : FStateObject
+    public class FStateJumpPanel : FStateObject, IWallJumpDetect
     {
+        public bool WallDetected { get; set; }
         private bool _isDelux;
         public bool IsDelux => _isDelux;
-        
+
         private float _outOfControlTimer;
-        
+
         public FStateJumpPanel(CharacterBase owner) : base(owner) { }
 
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
-            
             _outOfControlTimer -= dt;
         }
 
@@ -32,7 +32,6 @@ namespace SurgeEngine.Source.Code.Core.Character.States
                 {
                     StateMachine.SetState<FStateGround>();
                 }
-                
                 if (_outOfControlTimer <= 0)
                 {
                     StateMachine.SetState<FStateAir>();
@@ -41,7 +40,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
         }
 
         public void SetDelux(bool isDelux) => _isDelux = isDelux;
-
+        
         public void SetKeepVelocity(float outOfControl)
         {
             _outOfControlTimer = outOfControl;

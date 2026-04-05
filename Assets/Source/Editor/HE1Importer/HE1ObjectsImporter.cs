@@ -49,7 +49,7 @@ namespace SurgeEngine.Source.Editor.HE1Importer
                 ["TrickJumper"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Common/TrickPanel.prefab"),
                 ["UpReel"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Common/Upreel.prefab"),
                 ["JumpCollision"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Common/JumpCollision.prefab"),
-                ["ChangeVolumeCamera"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Common/Camera/ChangeCameraVolume.prefab"),
+                ["ChangeVolumeCamera"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Common/Camera/ChangeVolumeCamera.prefab"),
                 ["StumbleCollision"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Common/StumbleCollision.prefab"),
                 ["DashRing"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Common/DashRing.prefab"),
                 ["RainbowRing"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Common/RainbowDashRing.prefab"),
@@ -66,6 +66,7 @@ namespace SurgeEngine.Source.Editor.HE1Importer
                 ["EventCollision"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Common/EventCollision.prefab"),
                 ["MykonosFloor"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Apotos/MykonosFloor.prefab"),
                 ["ReactionPlate"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Common/ReactionPlate.prefab"),
+                ["JumpPole"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Common/SpringPole.prefab"),
             };
         }
 
@@ -440,7 +441,7 @@ namespace SurgeEngine.Source.Editor.HE1Importer
                     var eg = go.GetComponent<EggFighter>();
                     
                     HE1Helper.SetInt(eg, "type", (int)EggFighterType.Tutorial);
-                },
+                }
             };
         }
 

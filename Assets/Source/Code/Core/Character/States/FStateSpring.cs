@@ -15,6 +15,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
         {
             base.OnEnter();
             
+            Model.StopAirRestore();
             Kinematics.SetDetachTime(0.1f);
             Model.SetLowerCollision();
         }

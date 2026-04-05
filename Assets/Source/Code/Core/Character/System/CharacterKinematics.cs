@@ -133,10 +133,10 @@ namespace SurgeEngine.Source.Code.Core.Character.System
                 _inputDir = SurgeMath.GetMovementDirectionProjectedOnPlane(orientedInput, Normal, _cameraTransform.up)
                             * Character.Input.MoveVector.magnitude;
 
-                /*if (Path2D != null)
+                if (Mode.Path2D != null)
                 {
-                    _inputDir = Vector3.ProjectOnPlane(_inputDir, _2dSample.Right);
-                }*/
+                    _inputDir = Vector3.ProjectOnPlane(_inputDir, Mode.SideSample.Right);
+                }
             }
             
             Debug.DrawRay(transform.position, _inputDir, Color.red, 0, false);

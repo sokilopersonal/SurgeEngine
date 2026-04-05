@@ -55,7 +55,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
                 SearchSideSplines(rbPos);
                 
-                SideSample = path.EvaluateRelative(rbPos, _lastRelativeTime, 6);
+                SideSample = path.EvaluateRelative(rbPos, _lastRelativeTime);
                 _lastRelativeTime = SideSample.Time;
                 if (SideSample.Right != Vector3.zero)
                 {
@@ -71,10 +71,6 @@ namespace SurgeEngine.Source.Code.Core.Character.System
                     pathEaseTime = autoRunFlag.PathEaseTime;
                 }
                 
-                Rigidbody.linearVelocity = Quaternion.FromToRotation(Vector3.ProjectOnPlane(_lastTangent, Vector3.up).normalized, 
-                    Vector3.ProjectOnPlane(SideSample.Tangent, Vector3.up).normalized) * Rigidbody.linearVelocity;
-                _lastTangent = SideSample.Tangent;
-
                 if (Kinematics.Speed > 0.02f && _character.Flags.HasFlag(FlagType.Autorun))
                 {
                     var rotTarget = Quaternion.LookRotation(SideSample.Tangent * sign, Kinematics.Normal);

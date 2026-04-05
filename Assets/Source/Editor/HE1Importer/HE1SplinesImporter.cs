@@ -175,8 +175,8 @@ namespace SurgeEngine.Source.Editor.HE1Importer
 
                     spline.Add(new BezierKnot(
                         p,
-                        Vector3.zero,
-                        Vector3.zero,
+                        i - p,
+                        o - p,
                         Quaternion.identity
                     ));
                 }
