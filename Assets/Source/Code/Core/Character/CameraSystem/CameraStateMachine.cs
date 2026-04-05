@@ -151,9 +151,13 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem
             else if (data == null && _is2dCamera)
             {
                 _is2dCamera = false;
-                _blending.Reset();
-                SetDirection(_character.transform.forward);
-                SetState<NewModernState>();
+
+                if (Top == null)
+                {
+                    _blending.Reset();
+                    SetDirection(_character.transform.forward);
+                    SetState<NewModernState>();
+                }
             }
         }
 
