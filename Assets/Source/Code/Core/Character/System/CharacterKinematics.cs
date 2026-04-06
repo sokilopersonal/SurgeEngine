@@ -94,7 +94,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             
             Rigidbody = Character.Rigidbody;
             Rigidbody.sleepThreshold = -1;
-            Rigidbody.solverIterations = 24;
+            Rigidbody.solverIterations = 32;
             Rigidbody.solverVelocityIterations = 16;
 
             _config = Character.Config;
@@ -443,7 +443,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         {
             if (Speed > normalSpeedThreshold)
             {
-                Normal = Vector3.SmoothDamp(Normal, targetNormal, ref _normalVelocity, 0.02f, Speed / 2);
+                Normal = Vector3.SmoothDamp(Normal, targetNormal, ref _normalVelocity, 0.02f, Speed);
             }
             else
             {

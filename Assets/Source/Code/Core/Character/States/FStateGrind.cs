@@ -107,7 +107,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
             }
         }
 
-        public void SetRail(Rail rail, DominantSpline dominant = DominantSpline.Left)
+        public void SetRail(Rail rail, DominantSide dominant = DominantSide.Left)
         {
             Vector3 pos = Rigidbody.position - Character.transform.up * rail.Radius;
             _data = new SplineData(rail.Container, pos, dominant);

@@ -5,7 +5,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.ChangeModes
 {
     public class ChangePathCollision : ModeCollision
     {
-        [SerializeField] private DominantSpline dominantSpline = DominantSpline.Left;
+        [SerializeField] private DominantSide dominantSide = DominantSide.Left;
         
         // TODO: Implement changing path on other modes?
         protected override SplineTag SplineTagFilter => SplineTag.SideView;
@@ -14,7 +14,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.ChangeModes
         {
             base.OnEnter(msg, context);
             
-            context.Kinematics.Mode.Path2D?.SetSpline(new SplineData(Container, context.Rigidbody.position, dominantSpline));
+            context.Kinematics.Mode.Path2D?.SetSpline(new SplineData(Container, context.Rigidbody.position, dominantSide));
         }
 
         protected override void SetMode(CharacterBase ctx)

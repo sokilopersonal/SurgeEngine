@@ -83,10 +83,10 @@ namespace SurgeEngine.Source.Editor.HE1Importer
         {
             var doc = XDocument.Load(xmlPath);
 
-            var geometries = doc.Descendants("geometry").ToDictionary(
-                g => g.Attribute("id")?.Value,
-                g => g
-            );
+            var geometries = doc.Descendants("geometry")
+                .GroupBy(g => g.Attribute("id")?.Value)
+                .Where(g => g.Key != null)
+                .ToDictionary(g => g.Key, g => g.First());
 
             var splineDataList = new List<SplineData>();
             var nodes = doc.Descendants("node");

@@ -27,7 +27,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         private Vector3 _lastTangent;
         
         private SplineContainer[] _allSideSplines;
-        private readonly float _sideSplineSearchRadius = 5f;
+        private readonly float _sideSplineSearchRadius = 6.5f;
 
         public PointSample SideSample { get; private set; }
         
@@ -175,7 +175,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
                     container.Spline,
                     container.transform.InverseTransformPoint(position),
                     out var nearestLocal, out _,
-                    resolution: 4, iterations: 2);
+                    resolution: 8, iterations: 4);
 
                 float dist = (container.transform.TransformPoint(nearestLocal) - position).sqrMagnitude;
                 if (dist < bestDist)

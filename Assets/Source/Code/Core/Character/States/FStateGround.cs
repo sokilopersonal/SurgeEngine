@@ -11,6 +11,8 @@ namespace SurgeEngine.Source.Code.Core.Character.States
     {
         private const float BreakableThreshold = 0.7f; // If Speed Percent is greater than this, character will destroy Breakable objects
 
+        private Vector3 _lastNormal;
+
         public FStateGround(CharacterBase owner) : base(owner)
         {
             
@@ -19,7 +21,8 @@ namespace SurgeEngine.Source.Code.Core.Character.States
         public override void OnEnter()
         {
             base.OnEnter();
-            
+
+            _lastNormal = Kinematics.Normal;
             Kinematics.SetDetachTime(0f);
         }
 
@@ -64,20 +67,20 @@ namespace SurgeEngine.Source.Code.Core.Character.States
                 }
             }
             
-            bool predictedGround = Kinematics.CheckForPredictedGround(dt, distance, 8);
-            if (ground)
+            bool predictedGround = Kinematics.CheckForPredictedGround(dt, distance, 4);
+            if (ground && predictedGround)
             {
-                Kinematics.Point = data.point;
-                if (predictedGround) Kinematics.RotateSnapNormal(data.normal);
-                else
+                if (_lastNormal != Vector3.zero)
                 {
-                    StateMachine.SetState<FStateSlip>();
+                    Rigidbody.linearVelocity = Quaternion.FromToRotation(_lastNormal, data.normal) * Rigidbody.linearVelocity;
                 }
                 
-                Kinematics.ClampVelocityToMax();
+                Kinematics.Point = data.point;
+                Kinematics.RotateSnapNormal(data.normal);
                 
+                Kinematics.ClampVelocityToMax();
                 Kinematics.BasePhysics(Kinematics.Normal);
-                if (!isWater || predictedGround)
+                if (!isWater)
                 {
                     Kinematics.Snap(Kinematics.Point, Kinematics.Normal);
                 }
@@ -90,6 +93,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
                 Kinematics.SlopePhysics();
 
                 Kinematics.GroundTag.Value = data.transform.gameObject.GetGroundTag();
+                _lastNormal = data.normal;
             }
             else
             {

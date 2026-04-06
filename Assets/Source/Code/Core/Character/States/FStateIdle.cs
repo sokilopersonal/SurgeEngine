@@ -16,7 +16,13 @@ namespace SurgeEngine.Source.Code.Core.Character.States
         {
             base.OnEnter();
             
+            Kinematics.Normal = Vector3.up;
             Rigidbody.linearVelocity = Vector3.zero;
+
+            if (Kinematics.CheckForGround(out RaycastHit hit))
+            {
+                Kinematics.Snap(hit.point, Kinematics.Normal);
+            }
         }
 
         public override void OnTick(float dt)
@@ -44,9 +50,6 @@ namespace SurgeEngine.Source.Code.Core.Character.States
             
             if (Kinematics.CheckForGroundWithDirection(out RaycastHit hit, Vector3.down))
             {
-                Kinematics.Point = hit.point;
-                Kinematics.Normal = Vector3.up;
-                
                 if (!Kinematics.CheckForPredictedGround(dt, Character.Config.castDistance, 4))
                 {
                     StateMachine.SetState<FStateSlip>();
@@ -55,7 +58,6 @@ namespace SurgeEngine.Source.Code.Core.Character.States
                 Quaternion target = Quaternion.FromToRotation(Rigidbody.transform.up, Vector3.up) * Rigidbody.rotation;
                 Rigidbody.rotation = target;
                 
-                Kinematics.Snap(hit.point, Kinematics.Normal);
                 Kinematics.SlopePhysics();
             }
             else

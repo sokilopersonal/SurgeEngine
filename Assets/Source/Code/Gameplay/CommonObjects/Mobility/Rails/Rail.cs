@@ -13,7 +13,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility.Rails
     public class Rail : MonoBehaviour
     {
         [SerializeField] private SplineContainer container;
-        [SerializeField] private DominantSpline dominant;
+        [SerializeField] private DominantSide dominant;
         [SerializeField] private float radius = 0.25f;
         public SplineContainer Container => container;
         public float Radius => radius;
