@@ -106105,6 +106105,7 @@ GameObject:
   - component: {fileID: 2671633414377098041}
   - component: {fileID: 3979352695895426392}
   - component: {fileID: 4613503439004562623}
+  - component: {fileID: 7988637028108016118}
   m_Layer: 3
   m_Name: + Sonic
   m_TagString: Untagged
@@ -106234,9 +106235,9 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.25
-  m_Height: 1
+  m_Height: 1.1
   m_Direction: 1
-  m_Center: {x: 0, y: -0.5, z: 0}
+  m_Center: {x: 0, y: -0.475, z: 0}
 --- !u!114 &6322482385637542623
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -106251,7 +106252,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseSpeedRestorationDelta: 16
   initialGravity: 0
-  maxAngleDifference: 50
+  maxAngleDifference: 45
   normalLerpSpeed: 7
   normalSpeedThreshold: 10
 --- !u!114 &210073571643444696
@@ -106371,6 +106372,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SurgeEngine.Source.Code.Core.Character.System.HomingTargetDetector
   config: {fileID: 11400000, guid: 26d8aa117f8802940838f20a3156f005, type: 2}
+  drawGizmos: 0
 --- !u!114 &7406824387918309845
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -106444,6 +106446,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06d3400cbc4b4a12a4d3aa6e43845b5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SurgeEngine.Source.Code.Core.Character.System.WallJumpDetector
+--- !u!114 &7988637028108016118
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5673036700509009099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74ca554d166b4f52967a73786d5144fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SurgeEngine.Source.Code.Core.Character.System.CharacterMode
 --- !u!1 &5675775637917401601
 GameObject:
   m_ObjectHideFlags: 0

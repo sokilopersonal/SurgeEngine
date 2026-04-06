@@ -296,7 +296,7 @@ namespace SurgeEngine.Source.Editor.HE1Importer
                 ["ChangeMode_3DtoForward"] = (go, elem) =>
                 {
                     var box = go.GetComponent<BoxCollider>();
-                    HE1Helper.SetBoxColliderSize(box, elem, 0.2f);
+                    HE1Helper.SetBoxColliderSize(box, elem, box.size.z);
 
                     var mode = go.GetComponent<ChangeMode3D>();
                     HE1Helper.SetChangeMode3DProperties(mode, elem);
@@ -304,7 +304,7 @@ namespace SurgeEngine.Source.Editor.HE1Importer
                 ["ChangeMode_3DtoDash"] = (go, elem) =>
                 {
                     var box = go.GetComponent<BoxCollider>();
-                    HE1Helper.SetBoxColliderSize(box, elem, 0.2f);
+                    HE1Helper.SetBoxColliderSize(box, elem, box.size.z);
 
                     var mode = go.GetComponent<ChangeMode3D>();
                     HE1Helper.SetChangeMode3DProperties(mode, elem);
@@ -312,7 +312,7 @@ namespace SurgeEngine.Source.Editor.HE1Importer
                 ["ChangeMode_3Dto2D"] = (go, elem) =>
                 {
                     var box = go.GetComponent<BoxCollider>();
-                    HE1Helper.SetBoxColliderSize(box, elem, 0.2f);
+                    HE1Helper.SetBoxColliderSize(box, elem, box.size.z);
 
                     var mode = go.GetComponent<ChangeMode2D>();
                     HE1Helper.SetChangeMode2DProperties(mode, elem);

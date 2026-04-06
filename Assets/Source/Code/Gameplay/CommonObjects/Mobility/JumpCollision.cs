@@ -1,4 +1,5 @@
 ﻿using System;
+using SurgeEngine.Source.Code.Core.Character.States;
 using SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStates;
 using SurgeEngine.Source.Code.Core.Character.System;
 using SurgeEngine.Source.Code.Infrastructure.Custom;
@@ -20,11 +21,30 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         [SerializeField, Min(0)] private float impulseOnBoost = 15f;
         [SerializeField] private float outOfControl = 0.5f;
         [SerializeField] private float terrainIgnoreTime = 0.25f;
+        
+        private const float CoyoteTime = 0.1f;
+        
+        private CharacterBase _character;
+        private float _lastGroundedTime = float.NegativeInfinity;
+
+        private void Update()
+        {
+            if (_character != null && !_character.Kinematics.InAir)
+                _lastGroundedTime = Time.time;
+        }
 
         public override void OnEnter(Collider msg, CharacterBase context)
         {
             base.OnEnter(msg, context);
             
+            _character = context;
+            _lastGroundedTime = Time.time;
+
+            Launch(context);
+        }
+
+        private void Launch(CharacterBase context)
+        {
             float dot = Vector3.Dot(context.transform.forward, transform.forward);
             float impulse = impulseOnNormal;
             if (context.StateMachine.GetState(out FBoost boost))
@@ -32,29 +52,23 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
                 if (boost.Active)
                     impulse = impulseOnBoost;
             }
-            
-            if (dot > 0) // Make sure the player is facing the same direction as the jump collision
-            {
-                if (context.Kinematics.Speed >= speedMin)
-                {
-                    if (groundOnly && !context.Kinematics.InAir || !groundOnly)
-                    {
-                        context.Model.DisableCollision(terrainIgnoreTime);
-                        context.Kinematics.SetDetachTime(terrainIgnoreTime);
-                        
-                        Rigidbody body = context.Kinematics.Rigidbody;
-                        Vector3 force = Utility.GetImpulseWithPitch(transform.forward, -transform.right, pitch, impulse);
-                        body.linearVelocity = force;
-                            
-                        if (outOfControl > 0) context.Flags.AddFlag(new Flag(FlagType.OutOfControl, outOfControl));
-                    }
-                }
-            }
-        }
 
-        private void OnTriggerStay(Collider other)
-        {
-            
+            if (dot <= 0) return;
+            if (context.Kinematics.Speed < speedMin) return;
+
+            bool wasRecentlyGrounded = Time.time - _lastGroundedTime <= 0.2f;
+            if ((groundOnly && !wasRecentlyGrounded) || !groundOnly) return;
+
+            context.Model.DisableCollision(terrainIgnoreTime);
+            context.Kinematics.SetDetachTime(terrainIgnoreTime);
+
+            context.StateMachine.SetState<FStateAir>();
+
+            Rigidbody body = context.Kinematics.Rigidbody;
+            Vector3 force = Utility.GetImpulseWithPitch(transform.forward, -transform.right, pitch, impulse);
+            body.linearVelocity = force;
+
+            if (outOfControl > 0) context.Flags.AddFlag(new Flag(FlagType.OutOfControl, outOfControl));
         }
 
         private void OnDrawGizmosSelected()

@@ -82,11 +82,13 @@ namespace SurgeEngine.Source.Code.Core.Character.States
                 Vector3 downForce = Vector3.ProjectOnPlane(Vector3.down, targetUp) * GravityPower;
                 Rigidbody.AddForce(downForce * dt, ForceMode.Impulse);
                 
+                Vector3 newPos = pos;
                 Vector3 endPos = pos + targetUp * (1 + _rail.Radius);
-                Rigidbody.position = endPos;
+                Vector3 physicsTarget = newPos + Vector3.ProjectOnPlane(Rigidbody.position - newPos, right);
+                Rigidbody.MovePosition(endPos);
                 
                 Vector3 targetTangent = _isForward ? tg : -tg;
-                Rigidbody.rotation = Quaternion.LookRotation(targetTangent, targetUp);
+                Rigidbody.MoveRotation(Quaternion.LookRotation(targetTangent, targetUp));
                 
                 Kinematics.Normal = targetUp;
                 
@@ -131,7 +133,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
             
             Debug.DrawRay(Rigidbody.position, rayDirection * dist, Color.green);
             
-            if (Physics.SphereCast(Rigidbody.position, 1.45f, rayDirection, out var hit, dist))
+            if (Physics.SphereCast(Rigidbody.position, 1.75f, rayDirection, out var hit, dist))
             {
                 if (hit.collider.TryGetComponent(out Rail rail) && rail != _rail && hit.distance <= dist / 2)
                 {

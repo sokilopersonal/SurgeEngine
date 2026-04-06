@@ -45,12 +45,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdb6f5b50f114da9aa1b7761623c0911, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <SetID>k__BackingField: 0
   speedMin: 20
   pitch: 45
   groundOnly: 1
   impulseOnNormal: 30
   impulseOnBoost: 47
   outOfControl: 1
+  terrainIgnoreTime: 0.25
 --- !u!65 &2434895846924912876
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -70,5 +72,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 4, y: 2, z: 0.3}
+  m_Size: {x: 4, y: 2, z: 0.4}
   m_Center: {x: 0, y: 0, z: 0}

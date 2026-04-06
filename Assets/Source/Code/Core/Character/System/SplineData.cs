@@ -26,33 +26,12 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
         public void EvaluateWorld(out Vector3 position, out Vector3 tangent, out Vector3 up, out Vector3 right)
         {
-            var transform = _container.transform;
             float t = NormalizedTime;
-            if (_container.Splines.Count == 2)
-            {
-                var splineL = _container.Splines[Dominant == DominantSide.Left ? 0 : 1];
-                var splineR = _container.Splines[Dominant == DominantSide.Left ? 1 : 0];
-
-                splineL.Evaluate(t, out var posL, out var tgL, out _);
-                splineR.Evaluate(t, out var posR, out var tgR, out _);
-
-                Vector3 worldPosL = transform.TransformPoint(posL);
-                Vector3 worldPosR = transform.TransformPoint(posR);
-                Vector3 worldTgR = transform.TransformDirection(tgR);
-
-                position = Vector3.Lerp(worldPosL, worldPosR, 0.5f);
-                tangent = worldTgR.normalized;
-                right = Vector3.Normalize(worldPosR - worldPosL);
-                up = Vector3.Cross(tangent, right);
-            }
-            else
-            {
-                _container.Spline.Evaluate(t, out var pos, out var tg, out var upVector);
-                position = transform.TransformPoint(pos);
-                tangent = transform.TransformDirection(tg).normalized;
-                right = Vector3.Cross(upVector, tangent).normalized;
-                up = upVector;
-            }
+            var sample = Evaluate(t);
+            position = sample.Position;
+            tangent = sample.Tangent;
+            up = sample.Up;
+            right = sample.Right;
             
             Debug.DrawRay(position, tangent, Color.blue);
             Debug.DrawRay(position, up, Color.green);
