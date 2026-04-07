@@ -26,8 +26,8 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem.Pans
         
         private Vector3 Calculate2DCameraTarget()
         {
-            var path2D = Character.Kinematics.Mode.Path2D;
-            if (path2D == null)
+            var modeSide = Character.Kinematics.Mode.ModeSide;
+            if (modeSide == null)
             {
                 return Vector3.zero;
             }

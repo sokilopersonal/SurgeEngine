@@ -15,7 +15,6 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility.Rails
     public class Rail : MonoBehaviour
     {
         [SerializeField] private SplineContainer container;
-        [SerializeField] private DominantSide dominant;
         [SerializeField] private float radius;
         public SplineContainer Container => container;
         public float Radius => radius;
@@ -144,6 +143,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility.Rails
         private PointSample GetSplineVectorsCurve(float t)
         {
             var containerTransform = container.transform;
+            var dominant = gameObject.GetComponent<HESpline>().Dominant;
             var splineL = container.Splines[dominant == DominantSide.Left ? 0 : 1];
             var splineR = container.Splines[dominant == DominantSide.Left ? 1 : 0];
 
@@ -193,7 +193,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility.Rails
         private void AttachToRail(CharacterBase character)
         {
             Physics.IgnoreCollision(_collider, character.Model.Collision, true);
-            character.StateMachine.SetState<FStateGrind>()?.SetRail(this, dominant);
+            character.StateMachine.SetState<FStateGrind>()?.SetRail(this);
             _character = character;
             _character.StateMachine.OnStateAssign += DisableCollision;
         }

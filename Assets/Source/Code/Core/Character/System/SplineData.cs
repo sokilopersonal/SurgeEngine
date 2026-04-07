@@ -1,5 +1,4 @@
 using SurgeEngine.Source.Code.Gameplay.CommonObjects;
-using SurgeEngine.Source.Code.Gameplay.CommonObjects.ChangeModes;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Splines;
@@ -11,16 +10,17 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         public float Time { get; set; }
         public float Length;
         public float NormalizedTime => Mathf.Clamp01(Time / Length);
+        public SplineTag Tag { get; private set; }
         public SplineContainer Container => _container;
         private DominantSide Dominant { get; set; }
 
         private SplineContainer _container;
 
-        public SplineData(SplineContainer container, Vector3 position, DominantSide dominant = DominantSide.Left)
+        public SplineData(SplineContainer container, Vector3 position)
         {
-            Dominant = dominant;
-            UpdateContainer(container);
+            Dominant = DominantSide.Left;
             
+            UpdateContainer(container);
             UpdateTime(position);
         }
 
@@ -32,10 +32,6 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             tangent = sample.Tangent;
             up = sample.Up;
             right = sample.Right;
-            
-            Debug.DrawRay(position, tangent, Color.blue);
-            Debug.DrawRay(position, up, Color.green);
-            Debug.DrawRay(position, right, Color.red);
         }
 
         public PointSample Evaluate(float t)
@@ -134,6 +130,37 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             return (Vector3)curve.P0 != (Vector3)curve.P1
                    || (Vector3)curve.P2 != (Vector3)curve.P3;
         }
+        
+        private DominantSide DetectDominant(SplineContainer container)
+        {
+            if (container.Splines.Count < 2) return DominantSide.Left;
+
+            var transform = container.transform;
+            var spline0 = container.Splines[0];
+            var spline1 = container.Splines[1];
+            
+            const int samples = 8;
+            float totalCross = 0f;
+
+            for (int i = 0; i < samples; i++)
+            {
+                float t = i / (float)(samples - 1);
+
+                spline0.Evaluate(t, out var pos0, out var tg0, out _);
+                spline1.Evaluate(t, out var pos1, out _, out _);
+
+                Vector3 worldPos0 = transform.TransformPoint(pos0);
+                Vector3 worldPos1 = transform.TransformPoint(pos1);
+                Vector3 worldTg0  = transform.TransformDirection(tg0).normalized;
+
+                Vector3 toSpline1 = (worldPos1 - worldPos0).normalized;
+                if ((worldPos1 - worldPos0).sqrMagnitude < 0.001f) continue;
+
+                totalCross += Vector3.Dot(Vector3.Cross(worldTg0, toSpline1), Vector3.up);
+            }
+            
+            return totalCross >= 0 ? DominantSide.Left : DominantSide.Right;
+        }
 
         public PointSample EvaluateNearest(Vector3 position, int resolution = 4, int iterations = 2)
         {
@@ -147,39 +174,36 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             if (resolution <= 0)
                 return Evaluate(relative);
 
-            PointSample nearestP = March(1, out float distanceP);
-            PointSample nearestM = March(-1, out float distanceM);
+            float step = 1f / resolution / Length;
 
-            PointSample nearest = distanceP < distanceM
-                ? nearestP
-                : nearestM;
-
-            return nearest;
+            PointSample bestSample = Evaluate(relative);
+            float bestDist = (position - bestSample.Position).sqrMagnitude;
             
-            PointSample March(float direction, out float distance)
+            for (float t = relative + step; t <= 1f; t += step)
             {
-                PointSample nearestSample = Evaluate(relative);
-                distance = Vector3.Distance(nearestSample.Position, position);
-
-                bool Condition(float t) => direction >= 0 ? t <= 1 : t >= 0;
-                float step = Mathf.Sign(direction) / resolution / Length;
-
-                for (float t = relative; Condition(t); t += step)
-                {
-                    PointSample thisPoint = Evaluate(t);
-                    float thisDistance = Vector3.Distance(thisPoint.Position, position);
-
-                    if (thisDistance <= distance)
-                    {
-                        nearestSample = thisPoint;
-                        distance = thisDistance;
-                    }
-                    else
-                        return nearestSample;
-                }
-
-                return Evaluate(direction >= 0 ? 1 : 0);
+                PointSample candidate = Evaluate(t);
+                float d = (position - candidate.Position).sqrMagnitude;
+                if (d <= bestDist) { bestSample = candidate; bestDist = d; }
+                else break;
             }
+
+            PointSample backSample = Evaluate(relative);
+            float backDist = (position - backSample.Position).sqrMagnitude;
+            
+            for (float t = relative - step; t >= 0f; t -= step)
+            {
+                PointSample candidate = Evaluate(t);
+                float d = (position - candidate.Position).sqrMagnitude;
+                if (d <= backDist) { backSample = candidate; backDist = d; }
+                else break;
+            }
+
+            PointSample result = bestDist <= backDist ? bestSample : backSample;
+            
+            if (result.Time >= 1f - step) return Evaluate(1f);
+            if (result.Time <= step)      return Evaluate(0f);
+
+            return result;
         }
 
         public Vector3 EvaluatePosition()
@@ -202,13 +226,17 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
         public void UpdateContainer(SplineContainer container)
         {
-            if (_container == container)
-                return;
-            
-            _container = container;
-            Length = _container.Spline.GetLength();
-            if (container.TryGetComponent(out DominantSpline dominant))
-                Dominant = dominant.OverrideDominantSide;
+            if (container != null)
+            {
+                _container = container;
+                Length = container.Spline.GetLength();
+                if (container.TryGetComponent(out HESpline dominant))
+                {
+                    Tag = dominant.SplineTag;
+                }
+                
+                Dominant = DetectDominant(container);
+            }
         }
 
         public void UpdateTime(Vector3 position)
@@ -219,10 +247,6 @@ namespace SurgeEngine.Source.Code.Core.Character.System
                     out _, out var f, 8, 4);
             
                 Time = f * Length;
-            }
-            else
-            {
-                Debug.LogError("When trying to update time on spline we got null container. How?");
             }
         }
     }

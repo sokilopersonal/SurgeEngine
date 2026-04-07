@@ -183,21 +183,30 @@ namespace SurgeEngine.Source.Code.Infrastructure.Tools
                 IEnumerator Routine()
                 {
                     float stored = Time.timeScale;
-                    Time.timeScale = 1;
-                    
+
                     _character.Rigidbody.position = _camera.transform.position + Vector3.up * 0.5f + _camera.transform.forward * 5;
-                    
                     _character.Kinematics.ResetVelocity();
+
                     var uPos = _character.Rigidbody.position;
-                    _character.Kinematics.Mode.Path2D?.Spline.UpdateTime(uPos);
-                    _character.Kinematics.Mode.PathForward?.Spline.UpdateTime(uPos);
-                    _character.Kinematics.Mode.PathDash?.Spline.UpdateTime(uPos);
+                    var mode = _character.Kinematics.Mode;
+                    mode.SideSplineData?.UpdateTime(uPos);
+                    mode.ForwardSplineData?.UpdateTime(uPos);
+                    mode.DashSplineData?.UpdateTime(uPos);
+                    if (mode.SideSplineData != null) mode.UpdateRelativeTime(mode.SideSplineData);
 
                     _character.StateMachine.SetState<FStateIdle>();
                     _character.Flags.Clear();
-                    
-                    yield return new WaitForFixedUpdate();
-                    
+
+                    Time.timeScale = 1;
+    
+                    float elapsed = 0f;
+                    float duration = 0.1f;
+                    while (elapsed < duration)
+                    {
+                        elapsed += Time.unscaledDeltaTime;
+                        yield return null;
+                    }
+
                     Time.timeScale = stored;
                 }
 

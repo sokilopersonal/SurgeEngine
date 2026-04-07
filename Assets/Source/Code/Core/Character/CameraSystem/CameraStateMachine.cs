@@ -48,7 +48,7 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem
             _fovY = BaseFov;
 
             OnStateEarlyAssign += _ => RememberRelativeData();
-            _character.Kinematics.Mode.OnPath2DChange += Set2DCamera;
+            _character.Kinematics.Mode.OnMode2DChange += Set2DCamera;
             _volumeStack.OnTopChanged += HandleTopChanged;
         }
         

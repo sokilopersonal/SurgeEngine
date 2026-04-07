@@ -45,8 +45,8 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
             
             float speed = !IsRun ? _config.force : _config.runForce;
             var sideDir = _direction == QuickstepDirection.Left ? -speed : speed;
-            var pathForward = Mode.PathForward;
-            var pathDash = Mode.PathDash;
+            var pathForward = Mode.ForwardSplineData;
+            var pathDash = Mode.DashSplineData;
             if (pathForward == null && pathDash == null)
             {
                 SetSideVelocity(sideDir);
@@ -55,7 +55,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
             {
                 if (IsRun)
                 {
-                    ChangeMode3DData quickstepPath = null;
+                    SplineData quickstepPath = null;
                     if (pathForward != null && pathForward.Tag == SplineTag.Quickstep)
                     {
                         quickstepPath = pathForward;
@@ -135,9 +135,9 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
             }
         }
 
-        private bool SnapToSpline(ChangeMode3DData pathData)
+        private bool SnapToSpline(SplineData pathData)
         {
-            var container = pathData.Spline.Container;
+            var container = pathData.Container;
             var splines = container.Splines;
             
             if (splines.Count < 2) 
@@ -237,8 +237,8 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
             }
             else
             {
-                if ((Mode.PathForward != null && Mode.PathForward.Tag == SplineTag.Quickstep) ||
-                    (Mode.PathDash != null && Mode.PathDash.Tag == SplineTag.Quickstep))
+                if ((Mode.ModeForward != null && Mode.ForwardSplineData.Tag == SplineTag.Quickstep) ||
+                    (Mode.ModeDash != null && Mode.DashSplineData.Tag == SplineTag.Quickstep))
                 {
                     float speed = _config.runForce;
                     var sideDir = _direction == QuickstepDirection.Left ? -speed : speed;

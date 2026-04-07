@@ -1,10 +1,26 @@
-﻿using SurgeEngine.Source.Code.Core.Character.CameraSystem.Pans;
+﻿using SurgeEngine.Source.Code.Core.Character.CameraSystem;
+using SurgeEngine.Source.Code.Core.Character.CameraSystem.Pans;
 using SurgeEngine.Source.Code.Core.Character.CameraSystem.Pans.Data;
+using SurgeEngine.Source.Code.Core.Character.System;
 
 namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.CameraObjects
 {
     public class ObjCameraPathTarget : ObjCameraBase<PathTargetCameraPan, PathPanData>
     {
-        
+        public override void SetPan(CharacterBase ctx, CameraEaseData? easeOverride = null)
+        {
+            if (data.container != null)
+            {
+                base.SetPan(ctx, easeOverride);
+            }
+        }
+
+        public override void RemovePan(CharacterBase ctx)
+        {
+            if (data.container != null)
+            {
+                base.RemovePan(ctx);
+            }
+        }
     }
 }

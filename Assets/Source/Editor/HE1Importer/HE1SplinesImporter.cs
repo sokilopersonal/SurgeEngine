@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Linq;
 using System.Xml.Linq;
+using SurgeEngine.Source.Code.Gameplay.CommonObjects;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Splines;
@@ -16,6 +17,7 @@ namespace SurgeEngine.Source.Editor.HE1Importer
             public XElement Node;
             public XElement Geometry;
             public bool Selected;
+            public HESpline ExistingSpline;
         }
 
         private class SplineImporterWindow : EditorWindow
@@ -47,16 +49,20 @@ namespace SurgeEngine.Source.Editor.HE1Importer
                         spline.Selected = false;
                 }
                 EditorGUILayout.EndHorizontal();
-
                 EditorGUILayout.Space();
 
                 _scrollPosition = EditorGUILayout.BeginScrollView(_scrollPosition);
                 foreach (var spline in _splines)
                 {
+                    EditorGUILayout.BeginHorizontal();
                     spline.Selected = EditorGUILayout.ToggleLeft(spline.Name, spline.Selected);
+                    if (spline.ExistingSpline != null)
+                    {
+                        EditorGUILayout.LabelField("(Exists - will update)", EditorStyles.miniLabel, GUILayout.Width(150));
+                    }
+                    EditorGUILayout.EndHorizontal();
                 }
                 EditorGUILayout.EndScrollView();
-
                 EditorGUILayout.Space();
 
                 if (GUILayout.Button("Import Selected"))
@@ -70,14 +76,14 @@ namespace SurgeEngine.Source.Editor.HE1Importer
             {
                 foreach (var splineData in _splines.Where(s => s.Selected))
                 {
-                    CreateSplineGameObject(splineData.Node, splineData.Geometry, splineData.Name);
+                    CreateSplineGameObject(splineData.Node, splineData.Geometry, splineData.Name, splineData.ExistingSpline);
                 }
             }
         }
         private const string HESideViewTag = "@SV";
         private const string HEQuickstepTag = "@QS";
-        private const string UnitySideViewTag = "Splines/SideView";
-        private const string UnityQuickstepTag = "Splines/Quickstep";
+        private const string HEDashPathTag = "@DP";
+        private const string HEGrindTag = "@GR";
         
         public static void ReadSpline(string xmlPath)
         {
@@ -91,6 +97,8 @@ namespace SurgeEngine.Source.Editor.HE1Importer
             var splineDataList = new List<SplineData>();
             var nodes = doc.Descendants("node");
 
+            var existingSplines = Object.FindObjectsByType<HESpline>(FindObjectsSortMode.None);
+
             foreach (var node in nodes)
             {
                 var instanceUrl = node.Element("instance")?.Attribute("url")?.Value;
@@ -101,12 +109,15 @@ namespace SurgeEngine.Source.Editor.HE1Importer
 
                 string nodeName = node.Attribute("name")?.Value ?? geomId;
 
+                var existingSpline = existingSplines.FirstOrDefault(s => s.Id == nodeName);
+
                 splineDataList.Add(new SplineData
                 {
                     Name = nodeName,
                     Node = node,
                     Geometry = geometry,
-                    Selected = true
+                    Selected = existingSpline == null,
+                    ExistingSpline = existingSpline
                 });
             }
 
@@ -120,16 +131,38 @@ namespace SurgeEngine.Source.Editor.HE1Importer
             }
         }
 
-        private static void CreateSplineGameObject(XElement node, XElement geometry, string nodeName)
+        private static void CreateSplineGameObject(XElement node, XElement geometry, string nodeName, HESpline existingSpline = null)
         {
-            GameObject go = new GameObject(nodeName);
-            Undo.RegisterCreatedObjectUndo(go, "Import Splines");
+            GameObject go;
+            SplineContainer container;
+            HESpline heSpline;
 
-            var container = go.AddComponent<SplineContainer>();
-            Undo.RegisterCreatedObjectUndo(container, "Import Splines");
+            if (existingSpline != null)
+            {
+                go = existingSpline.gameObject;
+                Undo.RegisterCompleteObjectUndo(go, "Update Spline");
 
-            if (container.Splines.Count > 0)
-                container.RemoveSplineAt(0);
+                container = go.GetComponent<SplineContainer>();
+                heSpline = existingSpline;
+
+                while (container.Splines.Count > 0)
+                    container.RemoveSplineAt(0);
+            }
+            else
+            {
+                go = new GameObject(nodeName);
+                Undo.RegisterCreatedObjectUndo(go, "Import Splines");
+
+                container = go.AddComponent<SplineContainer>();
+                Undo.RegisterCreatedObjectUndo(container, "Import Splines");
+                if (container.Splines.Count > 0)
+                    container.RemoveSplineAt(0);
+
+                heSpline = go.AddComponent<HESpline>();
+                Undo.RegisterCreatedObjectUndo(heSpline, "Import Splines");
+
+                heSpline.SetID(nodeName);
+            }
 
             var translateStr = node.Element("translate")?.Value;
             if (!string.IsNullOrEmpty(translateStr))
@@ -155,10 +188,16 @@ namespace SurgeEngine.Source.Editor.HE1Importer
             }
 
             if (nodeName.Contains(HEQuickstepTag))
-                go.gameObject.tag = UnityQuickstepTag;
+                heSpline.SetSplineTag(SplineTag.Quickstep);
 
-            if (nodeName.Contains(HESideViewTag))
-                go.gameObject.tag = UnitySideViewTag;
+            if (nodeName.Contains(HESideViewTag)) 
+                heSpline.SetSplineTag(SplineTag.SideView);
+            
+            if (nodeName.Contains(HEDashPathTag)) 
+                heSpline.SetSplineTag(SplineTag.DashPath);
+            
+            if (nodeName.Contains(HEGrindTag)) 
+                heSpline.SetSplineTag(SplineTag.Grind);
 
             var splines = geometry.Descendants("spline3d");
             foreach (var splineNode in splines)

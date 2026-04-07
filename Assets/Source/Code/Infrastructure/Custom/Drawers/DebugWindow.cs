@@ -126,11 +126,11 @@ namespace SurgeEngine.Source.Code.Infrastructure.Custom.Drawers
             
                 ImGui.SeparatorText("Path Info");
                 var mode = _character.Kinematics.Mode;
-                if (mode.Path2D != null || mode.PathForward != null || mode.PathDash != null)
+                if (mode.ModeSide != null || mode.ModeForward != null || mode.ModeDash != null)
                 {
-                    DrawPathInfo(mode.Path2D, "Path 2D");
-                    DrawPathInfo(mode.PathForward, "Path Forward");
-                    DrawPathInfo(mode.PathDash, "Path Dash");
+                    DrawPathInfo(mode.SideSplineData, "Path 2D", mode.SideSample.Time);
+                    DrawPathInfo(mode.ForwardSplineData, "Path Forward", mode.ForwardSample.Time);
+                    DrawPathInfo(mode.DashSplineData, "Path Dash", mode.DashSample.Time);
                 }
                 else
                 {
@@ -225,14 +225,14 @@ namespace SurgeEngine.Source.Code.Infrastructure.Custom.Drawers
                 }
             }
 
-            void DrawPathInfo(ChangeModeData data, string name)
+            void DrawPathInfo(SplineData data, string name, float time)
             {
                 if (data != null)
                 {
                     ImGui.BulletText(name);
                 
-                    ImGui.Text($"Name: {data.Spline.Container.name}");
-                    ImGui.Text($"Time: {data.Spline.NormalizedTime}");
+                    ImGui.Text($"Name: {data.Container.name}");
+                    ImGui.Text($"Time: {time}");
                 }
             }
         }

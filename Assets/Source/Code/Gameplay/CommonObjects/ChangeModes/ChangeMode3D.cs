@@ -15,7 +15,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.ChangeModes
         public bool IsLimitEdge { get; private set; }
         public float PathCorrectionForce { get; private set; }
         
-        public ChangeMode3DData(SplineData spline, bool isCameraChange, bool isLimitEdge, float pathCorrectionForce) : base(spline, isCameraChange)
+        public ChangeMode3DData(bool isCameraChange, bool isLimitEdge, float pathCorrectionForce) : base(isCameraChange)
         {
             IsLimitEdge = isLimitEdge;
             PathCorrectionForce = pathCorrectionForce;

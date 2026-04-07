@@ -173,9 +173,21 @@ namespace SurgeEngine.Source.Editor.ObjectCustomGizmos
         [DrawGizmo(GizmoType.Pickable | GizmoType.Selected | GizmoType.NotInSelectionHierarchy)]
         static void DrawGizmos(SplineContainer type, GizmoType gizmoType)
         {
-            Gizmos.matrix  = type.transform.localToWorldMatrix;
-            Gizmos.color = Color.darkBlue;
-            Gizmos.DrawSphere(Vector3.zero, 0.3f);
+            Gizmos.color = Color.cyan;
+
+            Vector3 pos = type.transform.position;
+            if (type.Splines.Count == 1)
+            {
+                pos = type.transform.TransformPoint(type.Splines[0].EvaluatePosition(0f));
+            }
+            else if (type.Splines.Count == 2)
+            {
+                Vector3 pos1 = type.transform.TransformPoint(type.Splines[0].EvaluatePosition(0f));
+                Vector3 pos2 = type.transform.TransformPoint(type.Splines[1].EvaluatePosition(0f));
+                pos = Vector3.Lerp(pos1, pos2, 0.5f);
+            }
+            
+            Gizmos.DrawSphere(pos, 0.5f);
         }
 
         [DrawGizmo(GizmoType.Pickable | GizmoType.Selected | GizmoType.NotInSelectionHierarchy)]

@@ -1,5 +1,6 @@
 ﻿using SurgeEngine.Source.Code.Core.Character.States.BaseStates;
 using SurgeEngine.Source.Code.Core.Character.System;
+using SurgeEngine.Source.Code.Gameplay.CommonObjects;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.ChangeModes;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility.Rails;
 using UnityEngine;
@@ -7,7 +8,7 @@ using Debug = UnityEngine.Debug;
 
 namespace SurgeEngine.Source.Code.Core.Character.States
 {
-    public class FStateGrind : FCharacterState
+    public class FStateGrind : FCharacterState, ISkip2D
     {
         private Rail _rail;
         private SplineData _data;
@@ -71,10 +72,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
             if (_rail != null)
             {
                 _data.EvaluateWorld(out var pos,  out var tg, out var targetUp, out var right);
-                
-                Debug.DrawRay(pos, tg, Color.white);
-                Debug.DrawRay(pos, targetUp, Color.green);
-                Debug.DrawRay(pos, right, Color.yellow);
+                //right = Vector3.Cross(targetUp, tg).normalized;
                 
                 Rigidbody.linearVelocity = Vector3.ProjectOnPlane(Rigidbody.linearVelocity, targetUp);
                 Rigidbody.linearVelocity = Vector3.ProjectOnPlane(Rigidbody.linearVelocity, right);
@@ -109,10 +107,10 @@ namespace SurgeEngine.Source.Code.Core.Character.States
             }
         }
 
-        public void SetRail(Rail rail, DominantSide dominant = DominantSide.Left)
+        public void SetRail(Rail rail)
         {
             Vector3 pos = Rigidbody.position - Character.transform.up * rail.Radius;
-            _data = new SplineData(rail.Container, pos, dominant);
+            _data = new SplineData(rail.Container, pos);
             _data.EvaluateWorld(out _, out Vector3 tg, out var up, out var right);
             
             float dot = Vector3.Dot(Kinematics.Velocity.normalized, tg);
@@ -124,31 +122,61 @@ namespace SurgeEngine.Source.Code.Core.Character.States
         private void FindRailInDirection(bool isLeft)
         {
             Vector3 direction = isLeft ? -Rigidbody.transform.right : Rigidbody.transform.right;
-            float mult = Vector3.ClampMagnitude(Rigidbody.linearVelocity / 32f, 1f).magnitude;
-            Vector3 forward = Rigidbody.transform.forward * mult;
-            Vector3 predictedPoint = Rigidbody.position + Vector3.Normalize(Vector3.Lerp(direction, forward, 0.5f));
-
             float dist = Character.Config.railSearchDistance;
-            Vector3 rayDirection = (predictedPoint - Rigidbody.position).normalized;
-            
-            Debug.DrawRay(Rigidbody.position, rayDirection * dist, Color.green);
-            
-            if (Physics.SphereCast(Rigidbody.position, 1.75f, rayDirection, out var hit, dist))
-            {
-                if (hit.collider.TryGetComponent(out Rail rail) && rail != _rail && hit.distance <= dist / 2)
-                {
-                    Debug.Log($"Found rail {rail.name}");
-                    
-                    var splineData = new SplineData(rail.Container, Rigidbody.position);
-                    splineData.EvaluateWorld(out var pos, out var tangent, out var up, out _);
-                    Vector3 nextPos = pos + up * (1 + rail.Radius);
-                    
-                    SetCooldown(0.1f);
-                    Vector3 savedVelocity = Rigidbody.linearVelocity;
 
-                    StateMachine.GetState<FStateRailSwitch>()?.Set(Rigidbody.position, nextPos, rail, savedVelocity, isLeft);
-                    StateMachine.SetState<FStateRailSwitch>();
+            Vector3 searchCenter = Rigidbody.position + direction * (dist * 0.5f);
+            Vector3 boxHalfExtents = new Vector3(dist * 0.5f, dist * 0.8f, dist * 0.5f);
+
+            Collider[] hits = Physics.OverlapBox(searchCenter, boxHalfExtents, Rigidbody.rotation,
+                Character.Config.railMask, QueryTriggerInteraction.Ignore);
+
+            Rail bestRail = null;
+            float bestScore = float.MaxValue;
+
+            foreach (var hit in hits)
+            {
+                if (!hit.TryGetComponent(out Rail rail) || rail == _rail)
+                    continue;
+
+                var tempData = new SplineData(rail.Container, Rigidbody.position);
+                tempData.EvaluateWorld(out var railPos, out var tangent, out var up, out var right);
+
+                Vector3 toRail = railPos - Rigidbody.position;
+                float lateralDist = Vector3.Dot(toRail, direction);
+
+                if (lateralDist < 0.5f)
+                    continue;
+
+                float verticalDiff = Mathf.Abs(toRail.y);
+
+                float tangentAlignment = Mathf.Abs(Vector3.Dot(tangent.normalized, Rigidbody.transform.forward));
+
+                float forwardDistance = Vector3.Dot(toRail, Rigidbody.transform.forward);
+                float score = toRail.magnitude
+                    - (tangentAlignment * 2f) + (verticalDiff * 0.5f) - (Mathf.Max(0, forwardDistance) * 0.3f);
+
+                Debug.DrawLine(Rigidbody.position, railPos, Color.yellow);
+
+                if (score < bestScore && lateralDist < dist)
+                {
+                    bestScore = score;
+                    bestRail = rail;
                 }
+            }
+
+            if (bestRail != null)
+            {
+                Debug.Log($"Found rail {bestRail.name}");
+
+                var splineData = new SplineData(bestRail.Container, Rigidbody.position);
+                splineData.EvaluateWorld(out var pos, out var tangent, out var up, out _);
+                Vector3 nextPos = pos + up * (1 + bestRail.Radius);
+
+                SetCooldown(0.1f);
+                Vector3 savedVelocity = Rigidbody.linearVelocity;
+
+                StateMachine.GetState<FStateRailSwitch>()?.Set(Rigidbody.position, nextPos, bestRail, savedVelocity, isLeft);
+                StateMachine.SetState<FStateRailSwitch>();
             }
         }
 
