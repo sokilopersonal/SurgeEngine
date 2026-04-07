@@ -48,7 +48,8 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             springState.SetKeepVelocityDistance(keepVelocityDistance);
             springState.SetSpringObject(this);
             context.StateMachine.SetState<FStateSpring>();
-            context.Kinematics.MoveToPosition(context.Kinematics.Rigidbody, transform.position, 0.1f);
+            
+            Snap(context);
             
             if (outOfControl > 0) context.Flags.AddFlag(new Flag(FlagType.OutOfControl, outOfControl));
             
@@ -63,6 +64,11 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
                     context.Kinematics.Mode.SetDashPath(null);
                 }
             }
+        }
+
+        protected virtual void Snap(CharacterBase context)
+        {
+            context.Kinematics.MoveToPosition(context.Kinematics.Rigidbody, transform.position, 0.1f);
         }
 
 #if UNITY_EDITOR

@@ -1,10 +1,13 @@
-﻿using UnityEngine;
+﻿using SurgeEngine.Source.Code.Core.Character.System;
+using UnityEngine;
 
 namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 {
     public class WideSpring : Spring
     {
         public override Vector3 Direction => Vector3.up;
+
+        protected override void Snap(CharacterBase context) { }
 
         private void OnDrawGizmosSelected()
         {
