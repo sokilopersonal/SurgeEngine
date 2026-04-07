@@ -116,7 +116,7 @@ namespace SurgeEngine.Source.Editor.HE1Importer
                     int angleType = (int)HE1Helper.GetFloat(elem, "AngleType");
                     var jumpPanel = go.GetComponent<JumpPanel>();
                     HE1Helper.SetJumpPanelProperties(jumpPanel, elem);
-                    HE1Helper.SetFloat(jumpPanel, "pitch", angleType == 0 ? 15 : 30);
+                    HE1Helper.SetFloat(jumpPanel, "pitch", angleType == 0 ? 15 : angleType == 1 ? 30 : angleType > 1 ? angleType : 0);
                 },
                 ["JumpBoard3D"] = (go, elem) =>
                 {
