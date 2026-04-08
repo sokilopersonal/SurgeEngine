@@ -33,7 +33,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         private Dictionary<SplineTag, List<HESpline>> _splinesByTag;
         private Dictionary<HESpline, Bounds> _cachedBounds;
 
-        private readonly float _sideSplineSearchRadius = 9f;
+        private readonly float _sideSplineSearchRadius = 16f;
 
         public PointSample SideSample { get; private set; }
         public PointSample ForwardSample { get; private set; }

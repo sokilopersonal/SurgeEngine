@@ -49,7 +49,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
                 DrawDebug(sample.Position, sample.Tangent, sample.Up, sample.Right);
                 return sample;
             }
-            else
+
             {
                 _container.Spline.Evaluate(t, out var pos, out var tg, out var upVector);
                 var position = transform.TransformPoint(pos);

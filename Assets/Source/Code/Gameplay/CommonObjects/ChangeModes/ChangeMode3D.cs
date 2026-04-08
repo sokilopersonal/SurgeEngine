@@ -1,4 +1,3 @@
-using SurgeEngine.Source.Code.Core.Character.System;
 using UnityEngine;
 
 namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.ChangeModes

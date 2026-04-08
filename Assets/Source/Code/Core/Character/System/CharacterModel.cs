@@ -15,6 +15,9 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         private float _restoreTimer;
         private bool _isUpRestoring;
         private float _upRestoreTimer;
+        
+        private Vector3 _normal;
+        private Vector3 _normalVelocity;
 
         private CharacterBodyRotation _bodyRotation;
 
@@ -22,6 +25,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         {
             _collisionStartHeight = Collision.height;
             _collisionStartRadius = Collision.radius;
+            _normal = Vector3.up;
             
             Collision.excludeLayers |= LayerMask.GetMask("Collision"); // TODO: Move collision to kinematics
             
@@ -64,11 +68,13 @@ namespace SurgeEngine.Source.Code.Core.Character.System
                 _restoreTimer = 0;
                 _upRestoreTimer = 0;
             }
+            
+            _normal = Vector3.SmoothDamp(_normal, Character.Kinematics.Normal, ref _normalVelocity, 0.05f, Mathf.Infinity, Time.fixedDeltaTime);
         }
         
         public void RotateBody(Vector3 normal)
         {
-            _bodyRotation.RotateBody(normal);
+            _bodyRotation.RotateBody(_normal);
         }
 
         public void RotateBody(Vector3 vector, Vector3 normal, float angleDelta = 25f)
@@ -76,7 +82,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             if (_isAirRestoring || _isUpRestoring)
                 return;
             
-            _bodyRotation.RotateBody(vector, normal, angleDelta * Mathf.Rad2Deg);
+            _bodyRotation.RotateBody(vector, _normal, angleDelta * Mathf.Rad2Deg);
         }
 
         public void VelocityRotation(Vector3 vel)

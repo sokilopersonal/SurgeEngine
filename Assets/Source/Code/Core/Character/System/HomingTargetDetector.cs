@@ -18,14 +18,18 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
         private void FixedUpdate()
         {
-            if (_character.Kinematics.InAir)
-            {
-                Target = FindHomingTarget(config.findDistance, config.findAngle, config.mask, _character.Config.castLayer);
-            }
-            else
+            if (!_character.Kinematics.InAir || _character.Flags.HasFlag(FlagType.OutOfControl))
             {
                 Target = null;
+                return;
             }
+
+            Target = FindHomingTarget(
+                config.findDistance,
+                config.findAngle,
+                config.mask,
+                _character.Config.castLayer
+            );
         }
 
         private HomingTarget FindHomingTarget(float radius, float angle, LayerMask mask, LayerMask blockMask)
