@@ -7,10 +7,8 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects
     [RequireComponent(typeof(SplineContainer))]
     public class HESpline : MonoBehaviour
     {
-        [SerializeField] private DominantSide dominant = DominantSide.Left;
         [SerializeField] private SplineTag splineTag;
         [SerializeField, ReadOnly] private string id;
-        public DominantSide Dominant => dominant;
         public SplineTag SplineTag => splineTag;
         public string Id => id;
         public SplineContainer Container => _container;

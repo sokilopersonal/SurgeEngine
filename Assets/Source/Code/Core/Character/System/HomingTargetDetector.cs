@@ -47,16 +47,12 @@ namespace SurgeEngine.Source.Code.Core.Character.System
                 
                 if (col.TryGetComponent(out Rail rail))
                 {
-                    var spline = rail.Container.Spline;
                     var railTarget = rail.GetComponentInChildren<HomingTarget>();
-                    Vector3 localPos = rail.transform.InverseTransformPoint(transform.position + transform.forward * radius / 2);
-                    SplineUtility.GetNearestPoint(spline, localPos, out _, out var f);
+                    Vector3 playerPos = transform.position + transform.forward * radius / 2;
+                    var sample = rail.Data.EvaluateNearest(playerPos);
 
-                    var pos = spline.EvaluatePosition(f);
-                    var up = spline.EvaluateUpVector(f);
-
-                    Vector3 endTargetPos = pos + up * (rail.Radius + 0.5f);
-                    targetPos = rail.transform.TransformPoint(endTargetPos);
+                    Vector3 endTargetPos = sample.Position + sample.Up * (rail.Radius + 0.5f);
+                    targetPos = endTargetPos;
 
                     railTarget.transform.position = Vector3.Lerp(railTarget.transform.position, targetPos, 32 * Time.fixedDeltaTime);
                     target = railTarget;

@@ -18,6 +18,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility.Rails
         [SerializeField] private float radius;
         public SplineContainer Container => container;
         public float Radius => radius;
+        public SplineData Data { get; private set; }
 
         [Inject] private DiContainer _diContainer;
 
@@ -28,6 +29,8 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility.Rails
         {
             if (!container)
                 container = GetComponent<SplineContainer>();
+            
+            Data = new SplineData(container);
             
             _collider = GetComponentInChildren<Collider>();
             if (_collider != null && ((MeshCollider)_collider).sharedMesh == null)
@@ -45,8 +48,8 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility.Rails
                     target.OnTargetReached.AddListener(AttachToRail);
                     target.SetDistanceThreshold(1f);
 
-                    var pos = Container.Spline.EvaluatePosition(0f);
-                    target.transform.position = transform.TransformPoint(pos);
+                    var sample = Data.Evaluate(0);
+                    target.transform.position = sample.Position;
                 };
             }
             
@@ -85,25 +88,12 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility.Rails
             for (int i = 0; i <= segments; i++)
             {
                 float t = i / (float)segments;
-                if (splineCount == 2)
-                {
-                    var sample = GetSplineVectorsCurve(t);
-                    var position = container.transform.InverseTransformPoint(sample.Position);
-                    var right = container.transform.InverseTransformDirection(sample.Right);
-                    
-                    vertices.Add(position - right * effectiveRadius);
-                    vertices.Add(position + right * effectiveRadius);
-                }
-                else if (splineCount == 1)
-                {
-                    Vector3 position = spline.EvaluatePosition(t);
-                    Vector3 tangent = ((Vector3)spline.EvaluateTangent(t)).normalized;
-                    Vector3 up = spline.EvaluateUpVector(t);
-                    Vector3 right = Vector3.Cross(tangent, up).normalized;
-
-                    vertices.Add(position - right * effectiveRadius);
-                    vertices.Add(position + right * effectiveRadius);
-                }
+                var sample = Data.Evaluate(t);
+                Vector3 position = container.transform.InverseTransformPoint(sample.Position);
+                Vector3 right = container.transform.InverseTransformDirection(sample.Right);
+                
+                vertices.Add(position - right * effectiveRadius);
+                vertices.Add(position + right * effectiveRadius);
             }
 
             for (int i = 0; i < segments; i++)
@@ -138,44 +128,6 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility.Rails
             mesh.RecalculateBounds();
 
             return mesh;
-        }
-        
-        private PointSample GetSplineVectorsCurve(float t) // TODO: Move it to SplineData utility?
-        {
-            var containerTransform = container.transform;
-            var dominant = gameObject.GetComponent<HESpline>().Dominant;
-            var splineL = container.Splines[dominant == DominantSide.Left ? 0 : 1];
-            var splineR = container.Splines[dominant == DominantSide.Left ? 1 : 0];
-
-            Spline spline0 = dominant == DominantSide.Left ? splineL : splineR;
-            spline0.Evaluate(t, out float3 position0, out float3 tangent0, out _);
-            int curveIndex = spline0.SplineToCurveT(t, out float t1);
-
-            BezierCurve curve0 = spline0.GetCurve(curveIndex);
-            if ((Vector3)curve0.P0 == (Vector3)curve0.P1)
-            {
-                while ((Vector3)curve0.P0 == (Vector3)curve0.P1 && curveIndex < splineL.Count)
-                    curve0 = splineL.GetCurve(curveIndex++);
-
-                curve0 = splineL.GetCurve(curveIndex--);
-                t1 = 0;
-            }
-
-            Spline spline1 = dominant == DominantSide.Left ? splineR : splineL;
-            float3 position1 = CurveUtility.EvaluatePosition(spline1.GetCurve(curveIndex), t1);
-
-            Vector3 positionL = containerTransform.TransformPoint(dominant == DominantSide.Left ? position0 : position1);
-            Vector3 positionR = containerTransform.TransformPoint(dominant == DominantSide.Left ? position1 : position0);
-
-            Vector3 position = Vector3.Lerp(positionL, positionR, 0.5f);
-            Vector3 forward = containerTransform.TransformDirection(tangent0).normalized;
-            if (forward.magnitude < 0.5f)
-                forward = containerTransform.TransformDirection(SplineUtility.GetCatmullRomTangent(curve0.P0, curve0.P3)).normalized;
-
-            Vector3 right = Vector3.Normalize(positionR - positionL);
-            Vector3 up = Vector3.Cross(forward, right).normalized;
-
-            return new PointSample(position, forward, up, right, t);
         }
 
         private void OnTriggerEnter(Collider other)

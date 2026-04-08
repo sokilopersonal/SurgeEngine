@@ -16,10 +16,13 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
         private SplineContainer _container;
 
+        public SplineData(SplineContainer container)
+        {
+            UpdateContainer(container);
+        }
+
         public SplineData(SplineContainer container, Vector3 position)
         {
-            Dominant = DominantSide.Left;
-            
             UpdateContainer(container);
             UpdateTime(position);
         }
