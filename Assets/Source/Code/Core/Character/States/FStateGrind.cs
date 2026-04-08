@@ -72,10 +72,15 @@ namespace SurgeEngine.Source.Code.Core.Character.States
             if (_rail != null)
             {
                 _data.EvaluateWorld(out var pos,  out var tg, out var targetUp, out var right);
-                //right = Vector3.Cross(targetUp, tg).normalized;
+                right = Vector3.Cross(targetUp, tg).normalized;
                 
-                Rigidbody.linearVelocity = Vector3.ProjectOnPlane(Rigidbody.linearVelocity, targetUp);
+                if (_lastTangent != Vector3.zero)
+                {
+                    Rigidbody.linearVelocity = Quaternion.FromToRotation(_lastTangent, tg) * Rigidbody.linearVelocity;
+                }
+                
                 Rigidbody.linearVelocity = Vector3.ProjectOnPlane(Rigidbody.linearVelocity, right);
+                Rigidbody.linearVelocity = Vector3.ProjectOnPlane(Rigidbody.linearVelocity, targetUp);
                 
                 Vector3 downForce = Vector3.ProjectOnPlane(Vector3.down, targetUp) * GravityPower;
                 Rigidbody.AddForce(downForce * dt, ForceMode.Impulse);

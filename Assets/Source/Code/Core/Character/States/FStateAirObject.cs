@@ -7,8 +7,8 @@ namespace SurgeEngine.Source.Code.Core.Character.States
     {
         public bool WallDetected { get; set; }
         
-        protected float keepVelocityDistance;
-        protected float travelledDistance;
+        protected float KeepVelocityDistance;
+        protected float TravelledDistance;
 
         protected FStateAirObject(CharacterBase owner) : base(owner) { }
 
@@ -16,18 +16,18 @@ namespace SurgeEngine.Source.Code.Core.Character.States
         {
             base.OnEnter();
             
-            travelledDistance = 0;
+            TravelledDistance = 0;
         }
 
         protected void CalculateTravelledDistance()
         {
-            travelledDistance += Kinematics.Speed * Time.fixedDeltaTime;
-            if (travelledDistance > keepVelocityDistance + 0.5f && !WallDetected)
+            TravelledDistance += Kinematics.Speed * Time.fixedDeltaTime;
+            if (TravelledDistance > KeepVelocityDistance + 0.5f && !WallDetected)
             {
                 StateMachine.SetState<FStateAir>();
             }
         }
 
-        public void SetKeepVelocityDistance(float distance) => keepVelocityDistance = distance;
+        public void SetKeepVelocityDistance(float distance) => KeepVelocityDistance = distance;
     }
 }

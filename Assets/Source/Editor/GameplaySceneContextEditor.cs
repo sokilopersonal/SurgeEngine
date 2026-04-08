@@ -24,24 +24,27 @@ namespace SurgeEngine.Source.Editor
             {
                 if (iterator.propertyPath == "spawnPoint")
                 {
-                    var spawnSo = new SerializedObject(_spawnPointField.objectReferenceValue);
-                    spawnSo.Update();
-                    
                     EditorGUILayout.PropertyField(_spawnPointField);
-                    
-                    using (new GUILayout.VerticalScope("box"))
-                    {
-                        var style = new GUIStyle(EditorStyles.boldLabel);
-                        style.alignment = TextAnchor.MiddleCenter;
-                        EditorGUILayout.LabelField("Attached Spawn", style);
-                    
-                        var data = spawnSo.FindProperty("startData");
-                        EditorGUILayout.PropertyField(data.FindPropertyRelative("startType"));
-                        EditorGUILayout.PropertyField(data.FindPropertyRelative("speed"));
-                        EditorGUILayout.PropertyField(data.FindPropertyRelative("time"));
-                    }
 
-                    spawnSo.ApplyModifiedProperties();
+                    if (_spawnPointField.objectReferenceValue != null)
+                    {
+                        var spawnSo = new SerializedObject(_spawnPointField.objectReferenceValue);
+                        spawnSo.Update();
+
+                        using (new GUILayout.VerticalScope("box"))
+                        {
+                            var style = new GUIStyle(EditorStyles.boldLabel);
+                            style.alignment = TextAnchor.MiddleCenter;
+                            EditorGUILayout.LabelField("Attached Spawn", style);
+
+                            var data = spawnSo.FindProperty("startData");
+                            EditorGUILayout.PropertyField(data.FindPropertyRelative("startType"));
+                            EditorGUILayout.PropertyField(data.FindPropertyRelative("speed"));
+                            EditorGUILayout.PropertyField(data.FindPropertyRelative("time"));
+                        }
+
+                        spawnSo.ApplyModifiedProperties();
+                    }
                     
                     continue;
                 }

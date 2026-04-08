@@ -181,6 +181,9 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStat
                 }
             }
 
+            if (obj is FStateWall or FStateWallJump)
+                Active = false;
+
             if (obj is FStateGrind)
             {
                 if (_cancelBoostCoroutine != null)

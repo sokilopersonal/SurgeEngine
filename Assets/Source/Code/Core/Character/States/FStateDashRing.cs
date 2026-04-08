@@ -5,7 +5,19 @@ namespace SurgeEngine.Source.Code.Core.Character.States
 {
     public class FStateDashRing : FStateAirObject
     {
+        public Vector3 Origin { get; set; }
+        public Vector3 Direction { get; set; }
+        
+        private Vector3 _snapVelocity;
+        
         public FStateDashRing(CharacterBase owner) : base(owner) { }
+
+        public override void OnEnter()
+        {
+            base.OnEnter();
+
+            _snapVelocity = Vector3.zero;
+        }
 
         public override void OnExit()
         {
@@ -17,6 +29,13 @@ namespace SurgeEngine.Source.Code.Core.Character.States
         public override void OnFixedTick(float dt)
         {
             base.OnFixedTick(dt);
+            
+            ApplyLateralSnapping(
+                Origin, 
+                Direction, 
+                ref _snapVelocity, 
+                0.1f
+            );
             
             Model.VelocityRotation(Kinematics.Velocity.normalized);
             

@@ -1,5 +1,6 @@
 ﻿using SurgeEngine.Source.Code.Core.Character.States.BaseStates;
 using SurgeEngine.Source.Code.Core.Character.System;
+using UnityEngine;
 
 namespace SurgeEngine.Source.Code.Core.Character.States
 {
@@ -23,6 +24,22 @@ namespace SurgeEngine.Source.Code.Core.Character.States
             base.OnTick(dt);
             
             _ignoranceTime -= dt;
+        }
+        
+        protected void ApplyLateralSnapping(Vector3 origin, Vector3 direction, ref Vector3 currentSnapVelocity, float smoothTime)
+        {
+            Vector3 currentPos = Rigidbody.position;
+            Vector3 projection = Vector3.Project(currentPos - origin, direction);
+            Vector3 targetPosition = origin + projection;
+            
+            Vector3 nextStep = Vector3.SmoothDamp(
+                currentPos, 
+                targetPosition, 
+                ref currentSnapVelocity, 
+                smoothTime
+            );
+            
+            Rigidbody.MovePosition(nextStep);
         }
     }
 }

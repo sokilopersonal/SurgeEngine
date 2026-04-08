@@ -140,7 +140,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility.Rails
             return mesh;
         }
         
-        private PointSample GetSplineVectorsCurve(float t)
+        private PointSample GetSplineVectorsCurve(float t) // TODO: Move it to SplineData utility?
         {
             var containerTransform = container.transform;
             var dominant = gameObject.GetComponent<HESpline>().Dominant;

@@ -30,6 +30,8 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         public bool IsWallWalk => isWallWalk;
         public virtual Vector3 Direction => transform.up;
 
+        public virtual bool ShouldSnap => true;
+
         public override void OnEnter(Collider msg, CharacterBase context)
         {
             base.OnEnter(msg, context);
@@ -49,7 +51,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             springState.SetSpringObject(this);
             context.StateMachine.SetState<FStateSpring>();
             
-            Snap(context);
+            if (ShouldSnap) Snap(context);
             
             if (outOfControl > 0) context.Flags.AddFlag(new Flag(FlagType.OutOfControl, outOfControl));
             
@@ -66,9 +68,9 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             }
         }
 
-        protected virtual void Snap(CharacterBase context)
+        private void Snap(CharacterBase context)
         {
-            context.Kinematics.MoveToPosition(context.Kinematics.Rigidbody, transform.position, 0.1f);
+            context.Kinematics.MoveToPosition(context.Kinematics.Rigidbody, transform.position, 0.2f);
         }
 
 #if UNITY_EDITOR

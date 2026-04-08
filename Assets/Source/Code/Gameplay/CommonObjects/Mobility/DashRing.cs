@@ -22,8 +22,11 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             {
                 boost.Active = false;
             }
-            
-            context.StateMachine.GetState<FStateDashRing>().SetKeepVelocityDistance(keepVelocityDistance);
+
+            var dashRingState = context.StateMachine.GetState<FStateDashRing>();
+            dashRingState.SetKeepVelocityDistance(keepVelocityDistance);
+            dashRingState.Origin = transform.position;
+            dashRingState.Direction = -transform.forward;
             context.StateMachine.SetState<FStateDashRing>(true);
 
             Rigidbody body = context.Kinematics.Rigidbody;

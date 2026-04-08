@@ -39,7 +39,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
         {
             base.OnFixedTick(dt);
 
-            bool air = !Kinematics.CheckForGroundWithDirection(out var hit, Vector3.down);
+            bool air = !Kinematics.CheckForGroundWithDirection(out var hit, Vector3.down, 1f);
             bool isWater = hit.transform.IsWater(out var surface);
             if (isWater)
             {

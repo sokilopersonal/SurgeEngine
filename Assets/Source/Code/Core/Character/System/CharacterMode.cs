@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using SurgeEngine.Source.Code.Core.Character.States;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.ChangeModes;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.System;
@@ -127,7 +128,10 @@ namespace SurgeEngine.Source.Code.Core.Character.System
                 UpdateRelativeTime(SideSplineData);
             }
 
-            Kinematics.Project(SideSample.Right);
+            bool isGrind = _character.StateMachine.CurrentState is FStateGrind;
+
+            if (!isGrind)
+                Kinematics.Project(SideSample.Right);
 
             if (_lastTangent == Vector3.zero) _lastTangent = SideSample.Tangent;
 
@@ -142,24 +146,23 @@ namespace SurgeEngine.Source.Code.Core.Character.System
                 Rigidbody.MoveRotation(Quaternion.RotateTowards(Rigidbody.rotation, rotTarget, 720 * Time.fixedDeltaTime));
             }
 
-            Vector3 target;
             Vector3 newPos = SideSample.Position;
             Vector3 physicsTarget = newPos + Vector3.ProjectOnPlane(Rigidbody.position - newPos, SideSample.Right);
-
             if (pathEaseTime > 0f)
             {
                 ModeSide.CurrentEaseTime += Time.fixedDeltaTime / pathEaseTime;
                 ModeSide.CurrentEaseTime = Mathf.Clamp01(ModeSide.CurrentEaseTime);
                 ModeSide.StartPosition += Kinematics.Velocity * Time.fixedDeltaTime;
-
-                target = Vector3.Lerp(ModeSide.StartPosition, physicsTarget, ModeSide.CurrentEaseTime);
             }
-            else
+            
+            if (!isGrind)
             {
-                target = physicsTarget;
-            }
+                Vector3 target = pathEaseTime > 0f
+                    ? Vector3.Lerp(ModeSide.StartPosition, physicsTarget, ModeSide.CurrentEaseTime)
+                    : physicsTarget;
 
-            Rigidbody.MovePosition(target);
+                Rigidbody.MovePosition(target);
+            }
         }
 
         private void CalculatePathForward()

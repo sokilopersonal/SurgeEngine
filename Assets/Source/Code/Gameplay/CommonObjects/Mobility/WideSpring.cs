@@ -6,8 +6,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
     public class WideSpring : Spring
     {
         public override Vector3 Direction => Vector3.up;
-
-        protected override void Snap(CharacterBase context) { }
+        public override bool ShouldSnap => false;
 
         private void OnDrawGizmosSelected()
         {

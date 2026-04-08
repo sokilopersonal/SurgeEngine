@@ -469,23 +469,24 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         
         private IEnumerator MoveToPositionVelocityRoutine(Rigidbody body, Vector3 targetPosition, float duration)
         {
-            Vector3 startPos = body.position;
-            Vector3 endPos = targetPosition;
+            Vector3 currentVelocity = Vector3.zero;
             float elapsed = 0f;
 
             while (elapsed < duration)
             {
                 elapsed += Time.fixedDeltaTime;
-                float t = elapsed / duration;
+                body.position = Vector3.SmoothDamp(
+                    body.position, 
+                    targetPosition, 
+                    ref currentVelocity, 
+                    duration * 0.5f
+                );
                 
-                startPos += body.linearVelocity * Time.fixedDeltaTime;
-                endPos += body.linearVelocity * Time.fixedDeltaTime;
+                targetPosition += body.linearVelocity * Time.fixedDeltaTime;
 
-                body.MovePosition(Vector3.Lerp(startPos, endPos, t));
                 yield return new WaitForFixedUpdate();
             }
-
-            body.position = endPos;
+            body.position = targetPosition;
         }
         
         private IEnumerator MoveToPositionRoutine(Rigidbody body, Vector3 targetPosition, Vector3 velocity, float duration)

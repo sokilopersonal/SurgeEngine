@@ -6,83 +6,88 @@ namespace SurgeEngine.Source.Code.Core.Character.States
 {
     public class FStateSpring : FStateAirObject
     {
-        private Spring _springObject;
-        public Spring SpringObject => _springObject;
+        public Spring SpringObject { get; private set; }
+        
+        private Vector3 _snapVelocity;
 
         public FStateSpring(CharacterBase owner) : base(owner) { }
 
         public override void OnEnter()
         {
             base.OnEnter();
-            
             Model.StopAirRestore();
             Kinematics.SetDetachTime(0.1f);
             Model.SetLowerCollision();
+            
+            _snapVelocity = Vector3.zero;
         }
 
         public override void OnExit()
         {
             base.OnExit();
-
-            float dot = Mathf.Abs(Vector3.Dot(_springObject.transform.up, Vector3.up));
-            if (_springObject is not WideSpring && dot < 0.99f)
+            float dot = Mathf.Abs(Vector3.Dot(SpringObject.transform.up, Vector3.up));
+            if (SpringObject is not WideSpring && dot < 0.99f)
             {
                 Model.StartAirRestore(0.4f);
             }
-            
-            _springObject = null;
-
+            SpringObject = null;
             Model.ResetCollisionToDefault();
         }
 
         public override void OnFixedTick(float dt)
         {
-            base.OnFixedTick(dt);
-            
-            Vector3 dir = _springObject.Direction;
-    
-            Rigidbody.linearVelocity = dir * _springObject.Speed;
-            travelledDistance += _springObject.Speed * dt;
+            if (SpringObject == null) return;
 
-            if (_springObject)
+            Vector3 dir = SpringObject.Direction;
+
+            Rigidbody.linearVelocity = dir * SpringObject.Speed;
+            TravelledDistance += SpringObject.Speed * dt;
+
+            if (SpringObject.ShouldSnap)
             {
-                if (_springObject.IsWallWalk)
-                {
-                    Vector3 pos = _springObject.transform.position + dir * Mathf.Max(1f, travelledDistance);
-                    var ray = new Ray(pos, dir);
-                    if (Physics.Raycast(ray, out var hit, Character.Config.castDistance, Character.Config.castLayer))
-                    {
-                        Kinematics.Normal = hit.normal;
-
-                        Vector3 wallDir = Vector3.ProjectOnPlane(dir, hit.normal);
-                        Rigidbody.linearVelocity = wallDir * _springObject.Speed;
-                        Rigidbody.rotation = Quaternion.LookRotation(dir, hit.normal);
-                        
-                        StateMachine.SetState<FStateGround>();
-                        
-                        Model.StopAirRestore();
-                    }
-                }
+                ApplyLateralSnapping(
+                    SpringObject.transform.position, 
+                    SpringObject.Direction, 
+                    ref _snapVelocity, 
+                    0.12f
+                );
             }
-            
-            float targetDistance = _springObject.KeepVelocityDistance + 0.25f;
-            if (travelledDistance >= targetDistance)
+
+            if (SpringObject.IsWallWalk)
             {
-                Vector3 targetPos = _springObject.transform.position + dir * targetDistance;
-                Rigidbody.position = targetPos;
-        
+                HandleWallWalk(dir);
+            }
+
+            float targetDistance = SpringObject.KeepVelocityDistance;
+            if (TravelledDistance >= targetDistance)
+            {
                 StateMachine.SetState<FStateAir>();
+                return;
             }
-            
+
             Model.VelocityRotation(dir);
+        }
+
+        private void HandleWallWalk(Vector3 dir)
+        {
+            Vector3 pos = SpringObject.transform.position + dir * Mathf.Max(1f, TravelledDistance);
+            var ray = new Ray(pos, dir);
+            if (Physics.Raycast(ray, out var hit, Character.Config.castDistance, Character.Config.castLayer))
+            {
+                Kinematics.Normal = hit.normal;
+                Vector3 wallDir = Vector3.ProjectOnPlane(dir, hit.normal);
+                Rigidbody.linearVelocity = wallDir * SpringObject.Speed;
+                Rigidbody.rotation = Quaternion.LookRotation(dir, hit.normal);
+                StateMachine.SetState<FStateGround>();
+                Model.StopAirRestore();
+            }
         }
 
         public void SetSpringObject(Spring springObject)
         {
-            travelledDistance = 0;
-            _springObject = springObject;
-            
-            Rigidbody.linearVelocity = springObject.Direction * _springObject.Speed;
+            TravelledDistance = 0;
+            SpringObject = springObject;
+            Rigidbody.linearVelocity = springObject.Direction * SpringObject.Speed;
         }
     }
 }
