@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Linq;
 using System.Xml.Linq;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects;
+using SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility.Rails;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Splines;
@@ -195,9 +196,12 @@ namespace SurgeEngine.Source.Editor.HE1Importer
             
             if (nodeName.Contains(HEDashPathTag)) 
                 heSpline.SetSplineTag(SplineTag.DashPath);
-            
-            if (nodeName.Contains(HEGrindTag)) 
+
+            if (nodeName.Contains(HEGrindTag))
+            {
                 heSpline.SetSplineTag(SplineTag.Grind);
+                heSpline.gameObject.AddComponent<Rail>();
+            }
 
             var splines = geometry.Descendants("spline3d");
             foreach (var splineNode in splines)
