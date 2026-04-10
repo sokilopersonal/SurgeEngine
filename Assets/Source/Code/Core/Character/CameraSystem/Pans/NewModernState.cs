@@ -27,6 +27,10 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem.Pans
         private Vector3 _lookOffset;
         private float _yawAuto;
         private float _pitchAuto;
+        private Type[] _excludedStates = new []
+        {
+            typeof(FStateAfterHoming), typeof(FStateGrind), typeof(FStateGrindSquat)
+        };
 
         private const float RisingSmoothingTime = 0.6f;
         private const float FallingSmoothingTime = 0.5f;
@@ -147,9 +151,8 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem.Pans
 
         protected virtual void YLag(float min, float max)
         {
-            Type[] excludedStates = new [] { typeof(FStateAfterHoming), typeof(FStateGrind), typeof(FStateGrindSquat) };
             bool isExcludedState =
-                excludedStates.Any(state => state.IsAssignableFrom(Character.StateMachine.CurrentState.GetType()));
+                _excludedStates.Any(state => state.IsAssignableFrom(Character.StateMachine.CurrentState.GetType()));
             
             Vector3 vel = Character.Kinematics.Velocity;
             bool allowLag = !Character.Kinematics.CheckForGround(out _) && !isExcludedState; // In the air
@@ -282,11 +285,9 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem.Pans
 
         private float GetAutoAngle()
         {
-            Vector3 crossedForward = Vector3.Cross(Character.transform.right, Vector3.up);
-            Vector3 crossedCamForward = Vector3.Cross(_stateMachine.Transform.right, Vector3.up);
-            Vector3 forward = Vector3.ProjectOnPlane(crossedForward, Vector3.up).normalized;
-            Vector3 camForward = Vector3.ProjectOnPlane(crossedCamForward, Vector3.up).normalized;
-            return Vector3.SignedAngle(forward, camForward, -Vector3.up);
+            Vector3 forward = Vector3.ProjectOnPlane(Character.transform.forward, Vector3.up).normalized;
+            Vector3 camForward = Vector3.ProjectOnPlane(_stateMachine.Transform.forward, Vector3.up).normalized;
+            return Vector3.SignedAngle(camForward, forward, Vector3.up);
         }
 
         private Vector3 GetOffset()
