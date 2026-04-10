@@ -22,7 +22,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStat
                     Vector3 force = direction * config.AirBoostSpeed;
 
                     body.linearVelocity = force;
-                    character.Model.RotateBody(Vector3.up);
+                    character.Model.RotateBody();
                 }
             }
         }

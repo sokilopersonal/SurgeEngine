@@ -6,8 +6,8 @@ namespace SurgeEngine.Source.Code.Core.StateMachine.Components
 {
     public class StateAnimator : MonoBehaviour
     {
-        public Animator Animator => animator;
         [SerializeField] private Animator animator;
+        public Animator Animator => animator;
 
         private string _currentAnimation;
         public Coroutine AnimationDelayedCoroutine;

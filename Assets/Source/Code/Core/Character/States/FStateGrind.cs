@@ -87,7 +87,6 @@ namespace SurgeEngine.Source.Code.Core.Character.States
                 
                 Vector3 newPos = pos;
                 Vector3 endPos = pos + targetUp * (1 + _rail.Radius);
-                Vector3 physicsTarget = newPos + Vector3.ProjectOnPlane(Rigidbody.position - newPos, right);
                 Rigidbody.MovePosition(endPos);
                 
                 Vector3 targetTangent = _isForward ? tg : -tg;
@@ -206,6 +205,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
         private void SetCooldown(float time)
         {
             _timer = Mathf.Abs(time);
+            Kinematics.SetDetachTime(_timer);
         }
         
         public bool IsRailCooldown() => _timer > 0;

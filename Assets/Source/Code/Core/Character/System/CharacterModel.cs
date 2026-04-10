@@ -69,15 +69,15 @@ namespace SurgeEngine.Source.Code.Core.Character.System
                 _upRestoreTimer = 0;
             }
             
-            _normal = Vector3.SmoothDamp(_normal, Character.Kinematics.Normal, ref _normalVelocity, 0.05f, Mathf.Infinity, Time.fixedDeltaTime);
+            _normal = Vector3.SmoothDamp(_normal, Character.Kinematics.Normal, ref _normalVelocity, 0.02f, Character.Kinematics.Speed * 0.77f, Time.fixedDeltaTime);
         }
         
-        public void RotateBody(Vector3 normal)
+        public void RotateBody()
         {
             _bodyRotation.RotateBody(_normal);
         }
 
-        public void RotateBody(Vector3 vector, Vector3 normal, float angleDelta = 25f)
+        public void RotateBody(Vector3 vector, float angleDelta = 25f)
         {
             if (_isAirRestoring || _isUpRestoring)
                 return;

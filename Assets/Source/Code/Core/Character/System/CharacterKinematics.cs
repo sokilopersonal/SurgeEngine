@@ -369,8 +369,14 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             
             bool hit = Physics.Raycast(ray, out result,
                 castDistance, castMask, QueryTriggerInteraction.Collide);
+
+            if (hit)
+            {
+                bool predictedGround = CheckForPredictedGround(Time.fixedDeltaTime, castDistance, 6);
+                return predictedGround;
+            }
             
-            return hit;
+            return false;
         }
         
         public bool CheckForGroundWithDirection(out RaycastHit result, Vector3 direction,

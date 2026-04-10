@@ -230,9 +230,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
             float distance = config.EvaluateCastDistance(config.castDistanceCurve.Evaluate(Kinematics.Speed / config.topSpeed));
             if (Kinematics.CheckForGround(out var hit, castDistance: distance))
             {
-                bool predicted = Kinematics.CheckForPredictedGround(dt, distance, 4);
-                
-                if (predicted) Kinematics.Snap(hit.point, Kinematics.Normal);
+                Kinematics.Snap(hit.point, Kinematics.Normal);
                 Kinematics.ProjectOnNormal();
             }
             else

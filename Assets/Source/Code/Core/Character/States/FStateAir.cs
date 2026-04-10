@@ -9,6 +9,8 @@ namespace SurgeEngine.Source.Code.Core.Character.States
     {
         public bool WallDetected { get; set; }
 
+        private bool _fromSpring;
+
         public FStateAir(CharacterBase owner) : base(owner)
         {
             
@@ -17,6 +19,11 @@ namespace SurgeEngine.Source.Code.Core.Character.States
         public override void OnEnter()
         {
             base.OnEnter();
+
+            _fromSpring = false;
+            
+            if (StateMachine.PreviousState is FStateSpring)
+                _fromSpring = true;
             
             if (Mathf.Abs(Kinematics.Angle - 90) < 0.05f && Kinematics.Velocity.y > 3f)
             {
@@ -32,14 +39,14 @@ namespace SurgeEngine.Source.Code.Core.Character.States
             
             Vector3 vel = Kinematics.Velocity;
             vel.y = 0;
-            Model.RotateBody(vel, Vector3.up, 4f);
+            Model.RotateBody(vel, 4f);
         }
 
         public override void OnFixedTick(float dt)
         {
             base.OnFixedTick(dt);
 
-            bool air = !Kinematics.CheckForGroundWithDirection(out var hit, Vector3.down, 1f);
+            bool air = !Kinematics.CheckForGroundWithDirection(out var hit, Vector3.down);
             bool isWater = hit.transform.IsWater(out var surface);
             if (isWater)
             {
@@ -83,7 +90,6 @@ namespace SurgeEngine.Source.Code.Core.Character.States
             }
             else
             {
-                bool predictedGround = Kinematics.CheckForPredictedGround(dt, Character.Config.castDistance, 4);
                 if (Kinematics.GetAttachState())
                 {
                     var vel = Kinematics.Velocity;
@@ -97,6 +103,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
                     {
                         if (Kinematics.GetInputDir().magnitude < 0.1f)
                         {
+                            if (_fromSpring) Character.Flags.RemoveFlag(FlagType.OutOfControl);
                             StateMachine.SetState<FStateIdle>();
                         }
                         else

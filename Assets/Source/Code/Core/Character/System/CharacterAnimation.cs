@@ -1,6 +1,7 @@
 ﻿using SurgeEngine.Source.Code.Core.StateMachine.Base;
 using SurgeEngine.Source.Code.Core.StateMachine.Components;
 using UnityEngine;
+using NotImplementedException = System.NotImplementedException;
 
 namespace SurgeEngine.Source.Code.Core.Character.System
 {
@@ -39,8 +40,8 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             animator.SetFloat(AnimatorParams.VerticalSpeed, Character.Kinematics.Velocity.y);
             
             float targetSpeedPercent = Mathf.Clamp(Character.Kinematics.Speed / Character.Config.topSpeed, 0.02f, 1.1f);
-            float currentSpeedPercent = animator.GetFloat("SpeedPercent");
-            animator.SetFloat("SpeedPercent", Mathf.Lerp(currentSpeedPercent, targetSpeedPercent, 10f * Time.deltaTime));
+            float currentSpeedPercent = animator.GetFloat(AnimatorParams.SpeedPercent);
+            animator.SetFloat(AnimatorParams.SpeedPercent, Mathf.Lerp(currentSpeedPercent, targetSpeedPercent, 10f * Time.deltaTime));
 
             var characterForward = Vector3.ProjectOnPlane(Character.transform.forward, Vector3.up);
             var camForward = Vector3.ProjectOnPlane(Character.Camera.GetCameraTransform().forward, Vector3.up);
@@ -48,10 +49,17 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             float inputX = Character.Input.MoveVector.x;
             float angle = inputX * camDot;
             
-            animator.SetFloat(AnimatorParams.SmoothTurnAngle, Mathf.Lerp(animator.GetFloat(AnimatorParams.SmoothTurnAngle), angle, 4f * Time.deltaTime));
-            animator.SetFloat(AnimatorParams.TurnAngle, Mathf.Lerp(animator.GetFloat(AnimatorParams.TurnAngle), angle, 3f * Time.deltaTime));
+            animator.SetFloat(AnimatorParams.SmoothTurnAngle, angle, 0.4f, Time.deltaTime);
+            animator.SetFloat(AnimatorParams.TurnAngle, angle, 0.3f, Time.deltaTime);
+
+            CalculateWallRunBlend();
 
             CalculateIdleState();
+        }
+
+        private void CalculateWallRunBlend()
+        {
+            // TODO: Implement wall run blend
         }
 
         private void CalculateIdleState()
@@ -92,6 +100,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         public static readonly int VerticalSpeed = Animator.StringToHash("VerticalSpeed");
         public static readonly int TurnAngle = Animator.StringToHash("LocalTurnAngle");
         public static readonly int SmoothTurnAngle = Animator.StringToHash("SmoothTurnAngle");
+        public static readonly int SpeedPercent = Animator.StringToHash("SpeedPercent");
         public static readonly string RunCycle = "Run Cycle";
         public static readonly string AirCycle = "Air Cycle";
     }

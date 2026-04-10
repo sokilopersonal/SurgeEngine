@@ -97,19 +97,16 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
             var config = Character.Config;
             float distance = config.castDistance *
                              config.castDistanceCurve.Evaluate(Kinematics.Speed / config.topSpeed);
-            bool predictedGround = Kinematics.CheckForPredictedGround(dt, distance, 6);
             if (Kinematics.CheckForGround(out RaycastHit hit, castDistance: distance))
             {
                 Kinematics.Point = hit.point;
-
-                if (predictedGround) Kinematics.RotateSnapNormal(hit.normal);
-                else StateMachine.SetState<FStateSlip>();
+                Kinematics.RotateSnapNormal(hit.normal);
                 
                 Kinematics.Snap(hit.point, Kinematics.Normal);
                 
                 Rigidbody.linearVelocity = Vector3.MoveTowards(Rigidbody.linearVelocity, Vector3.zero, _config.deceleration * dt);
                 Rigidbody.linearVelocity = Vector3.ProjectOnPlane(Rigidbody.linearVelocity, Kinematics.Normal);
-                Model.RotateBody(hit.normal);
+                Model.RotateBody();
                 
                 Kinematics.SlopePhysics();
             }

@@ -72,8 +72,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
                 }
             }
             
-            bool predictedGround = Kinematics.CheckForPredictedGround(dt, distance, 4);
-            if (ground && predictedGround)
+            if (ground)
             {
                 Vector3 point = hit.point;
                 Vector3 targetNormal = hit.normal;
@@ -82,7 +81,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
                 Vector3 dir = Input.MoveVector;
                 _driftXDirection = Mathf.Sign(dir.x);
 
-                Model.RotateBody(Kinematics.Normal);
+                Model.RotateBody();
                 
                 Kinematics.SlopePhysics();
                 

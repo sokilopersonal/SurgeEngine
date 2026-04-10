@@ -30,7 +30,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
         {
             base.OnTick(dt);
             
-            Model.RotateBody(Kinematics.Velocity, Kinematics.Normal, 18);
+            Model.RotateBody(Kinematics.Velocity, 18);
 
             if (!Character.Flags.HasFlag(FlagType.OutOfControl))
             {
@@ -67,8 +67,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
                 }
             }
             
-            bool predictedGround = Kinematics.CheckForPredictedGround(dt, distance, 4);
-            if (ground && predictedGround)
+            if (ground)
             {
                 if (_lastNormal != Vector3.zero)
                 {

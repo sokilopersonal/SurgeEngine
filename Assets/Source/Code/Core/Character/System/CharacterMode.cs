@@ -50,8 +50,8 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             _splinesByTag = new Dictionary<SplineTag, List<HESpline>>();
             _cachedBounds = new Dictionary<HESpline, Bounds>();
 
-            foreach (SplineTag tag in Enum.GetValues(typeof(SplineTag)))
-                _splinesByTag[tag] = new List<HESpline>();
+            foreach (SplineTag heTag in Enum.GetValues(typeof(SplineTag)))
+                _splinesByTag[heTag] = new List<HESpline>();
 
             foreach (var heSpline in FindObjectsByType<HESpline>(FindObjectsSortMode.None))
             {

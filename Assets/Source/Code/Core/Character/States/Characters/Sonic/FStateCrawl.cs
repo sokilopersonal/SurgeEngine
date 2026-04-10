@@ -87,7 +87,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
                 Kinematics.ProjectOnNormal();
                 
                 Kinematics.Snap(Kinematics.Point, Vector3.up);
-                Model.RotateBody(Vector3.up);
+                Model.RotateBody();
             }
             else
             {

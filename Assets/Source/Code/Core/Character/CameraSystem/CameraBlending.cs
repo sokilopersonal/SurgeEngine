@@ -43,12 +43,75 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem
             if (BlendFactor >= 1f)
                 return (targetPos, targetRot, targetFov);
 
-            Vector3 diff = targetPos - characterPos;
-            Vector3 pos = Vector3.Slerp(_from.Position, diff, t) + characterPos;
-            Quaternion rot = Quaternion.Slerp(_from.Rotation, targetRot, t);
+            Vector3 fromDiff = _from.Position;
+            Vector3 targetDiff = targetPos - characterPos;
+
+            Vector3 pos = DirectionalSlerp(fromDiff, targetDiff, t) + characterPos;
+            Quaternion rot = SmoothedSlerp(_from.Rotation, targetRot, t);
             float fov = Mathf.Lerp(_from.FOV, targetFov, t);
 
             return (pos, rot, fov);
+        }
+
+        private static Vector3 DirectionalSlerp(Vector3 from, Vector3 to, float t)
+        {
+            float fromLen = from.magnitude;
+            float toLen = to.magnitude;
+
+            if (fromLen < 1e-5f && toLen < 1e-5f)
+                return Vector3.zero;
+
+            Vector3 fromDir = fromLen > 1e-5f ? from / fromLen : to / toLen;
+            Vector3 toDir = toLen > 1e-5f ? to / toLen : from / fromLen;
+
+            Vector3 dir = Vector3.Slerp(fromDir, toDir, t);
+            float len = Mathf.Lerp(fromLen, toLen, t);
+
+            return dir * len;
+        }
+
+        private static Quaternion SmoothedSlerp(Quaternion q1, Quaternion q2, float t)
+        {
+            float dot = q1.x * q2.x + q1.y * q2.y + q1.z * q2.z + q1.w * q2.w;
+
+            if (dot < 0f)
+            {
+                q2 = new Quaternion(-q2.x, -q2.y, -q2.z, -q2.w);
+                dot = -dot;
+            }
+
+            dot = Mathf.Clamp(dot, -1f, 1f);
+
+            const float threshold = 0.9998f;
+            if (dot > threshold)
+            {
+                Quaternion result = new Quaternion(
+                    q1.x + t * (q2.x - q1.x),
+                    q1.y + t * (q2.y - q1.y),
+                    q1.z + t * (q2.z - q1.z),
+                    q1.w + t * (q2.w - q1.w)
+                );
+                return Normalize(result);
+            }
+
+            float omega = Mathf.Acos(dot);
+            float sinOmega = Mathf.Sin(omega);
+            float scale0 = Mathf.Sin((1f - t) * omega) / sinOmega;
+            float scale1 = Mathf.Sin(t * omega) / sinOmega;
+
+            return new Quaternion(
+                scale0 * q1.x + scale1 * q2.x,
+                scale0 * q1.y + scale1 * q2.y,
+                scale0 * q1.z + scale1 * q2.z,
+                scale0 * q1.w + scale1 * q2.w
+            );
+        }
+
+        private static Quaternion Normalize(Quaternion q)
+        {
+            float mag = Mathf.Sqrt(q.x * q.x + q.y * q.y + q.z * q.z + q.w * q.w);
+            if (mag < 1e-8f) return Quaternion.identity;
+            return new Quaternion(q.x / mag, q.y / mag, q.z / mag, q.w / mag);
         }
     }
 }
