@@ -1,13 +1,14 @@
-﻿using SurgeEngine.Source.Code.Core.Character.States;
+﻿using System.Xml.Linq;
+using SurgeEngine.Source.Code.Core.Character.States;
 using SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStates;
 using SurgeEngine.Source.Code.Core.Character.System;
-using SurgeEngine.Source.Code.Infrastructure.Custom;
 using SurgeEngine.Source.Code.Infrastructure.Custom.Drawers;
+using SurgeEngine.Source.Code.Tools;
 using UnityEngine;
 
 namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 {
-    public class DashRing : StageObject
+    public class DashRing : StageObject, IHE1Importable
     {
         [SerializeField] protected float speed = 30f;
         [SerializeField] protected float keepVelocityDistance = 5f;
@@ -41,6 +42,14 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         {
             TrajectoryDrawer.DrawTrajectory(transform.position, 
                 -transform.forward, Color.green, speed, keepVelocityDistance);
+        }
+
+        public void ImportSetData(string objectName, XElement elem)
+        {
+            speed = HE1Helper.GetFloat(elem, "FirstSpeed");
+            outOfControl = HE1Helper.GetFloat(elem, "OutOfControl");
+            keepVelocityDistance = HE1Helper.GetFloat(elem, "KeepVelocityDistance");
+            cancelBoost = HE1Helper.GetBool(elem, "m_IsStopBoost");
         }
     }
 }

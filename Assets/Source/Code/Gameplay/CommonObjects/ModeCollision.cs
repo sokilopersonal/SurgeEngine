@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Xml.Linq;
 using SurgeEngine.Source.Code.Core.Character.System;
+using SurgeEngine.Source.Code.Tools;
 using UnityEngine;
 
 namespace SurgeEngine.Source.Code.Gameplay.CommonObjects
 {
-    public abstract class ModeCollision : StageObject
+    public abstract class ModeCollision : StageObject, IHE1Importable
     {
         [SerializeField] protected bool isChangeCamera;
         [SerializeField] protected bool isEnabledFromBack = true;
@@ -56,6 +58,19 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects
             float dot = Vector3.Dot(transform.forward, dir);
             
             return isEnabledFromBack && dot > 0 || isEnabledFromFront && dot < 0;
+        }
+
+        public virtual void ImportSetData(string objectName, XElement elem)
+        {
+            float width = HE1Helper.GetFloat(elem, "Collision_Width");
+            float height = HE1Helper.GetFloat(elem, "Collision_Height");
+            
+            var box = GetComponent<BoxCollider>();
+            box.size = new Vector3(width, height, box.size.z);
+
+            isChangeCamera = HE1Helper.GetBool(elem, "m_IsChangeCamera");
+            isEnabledFromBack = HE1Helper.GetBool(elem, "m_IsEnableFromBack");
+            isEnabledFromFront = HE1Helper.GetBool(elem, "m_IsEnableFromFront");
         }
     }
 

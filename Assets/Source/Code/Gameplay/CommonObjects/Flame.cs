@@ -1,14 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Xml.Linq;
 using FMOD.Studio;
 using FMODUnity;
+using SurgeEngine.Source.Code.Gameplay.CommonObjects.System;
+using SurgeEngine.Source.Code.Tools;
 using UnityEngine;
 using STOP_MODE = FMOD.Studio.STOP_MODE;
 
 namespace SurgeEngine.Source.Code.Gameplay.CommonObjects
 {
     [SelectionBase]
-    public class Flame : StageObject
+    public class Flame : StageObject, IHE1Importable, IPointMarkerLoader
     {
         [SerializeField] private float appearTime = 0.25f;
         [SerializeField] private float onTime = 1f;
@@ -147,6 +150,23 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects
                 flame.Stop(true, ParticleSystemStopBehavior.StopEmitting);
                 damageCollider.enabled = false;
             }
+        }
+
+        public void ImportSetData(string objectName, XElement elem)
+        {
+            appearTime = HE1Helper.GetFloat(elem, "AppearTime");
+            onTime = HE1Helper.GetFloat(elem, "OnTime");
+            offTime = HE1Helper.GetFloat(elem, "OffTime");
+            length = HE1Helper.GetFloat(elem, "Length");
+            phase = HE1Helper.GetInt(elem, "Phase");
+            type = HE1Helper.GetInt(elem, "Type");
+            
+            this.FillMultiSet(elem, "multiSetParam");
+        }
+
+        public void Load()
+        {
+            
         }
     }
 }

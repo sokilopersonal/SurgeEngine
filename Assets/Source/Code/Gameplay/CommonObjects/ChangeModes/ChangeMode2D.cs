@@ -1,4 +1,6 @@
-﻿using SurgeEngine.Source.Code.Core.Character.System;
+﻿using System.Xml.Linq;
+using SurgeEngine.Source.Code.Core.Character.System;
+using SurgeEngine.Source.Code.Tools;
 using UnityEngine;
 
 namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.ChangeModes
@@ -15,6 +17,13 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.ChangeModes
         protected override void RemoveMode(CharacterBase ctx)
         {
             ctx.Kinematics.Mode.Set2DMode(null);
+        }
+
+        public override void ImportSetData(string objectName, XElement elem)
+        {
+            base.ImportSetData(objectName, elem);
+            
+            pathEaseTime = HE1Helper.GetFloat(elem, "m_PathEaseTime");
         }
     }
 

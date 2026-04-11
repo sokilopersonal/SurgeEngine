@@ -1,7 +1,9 @@
-﻿using System;
+﻿using System.Xml.Linq;
 using FMODUnity;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.System;
+using SurgeEngine.Source.Code.Tools;
 using UnityEngine;
+using NotImplementedException = System.NotImplementedException;
 
 namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 {
@@ -13,7 +15,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         Falling
     }
     
-    public class MykonosFloor : StageObject, IPointMarkerLoader
+    public class MykonosFloor : StageObject, IPointMarkerLoader, IHE1Importable
     {
         [SerializeField] private float amplitude = 5f;
         [SerializeField] private float cycle = 0.5f;
@@ -144,6 +146,17 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         public void Load()
         {
             Reset();
+        }
+
+        public void ImportSetData(string objectName, XElement elem)
+        {
+            amplitude = HE1Helper.GetFloat(elem, "Amplitude");
+            cycle = HE1Helper.GetFloat(elem, "Cycle");
+            phase = HE1Helper.GetFloat(elem, "Phase");
+            gravity = HE1Helper.GetFloat(elem, "Gravity");
+            moveType = (MykonosFloorType)HE1Helper.GetInt(elem, "MoveType");
+            onFloorTime = HE1Helper.GetFloat(elem, "OnFloorTime");
+            resetTime = HE1Helper.GetFloat(elem, "ResetTime");
         }
     }
 }

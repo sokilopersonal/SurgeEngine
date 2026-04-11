@@ -1,8 +1,6 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using FMODUnity;
-using SurgeEngine.Source.Code.Core.Character.Sound;
 using SurgeEngine.Source.Code.Core.Character.System;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.Collectables;
 using UnityEngine;

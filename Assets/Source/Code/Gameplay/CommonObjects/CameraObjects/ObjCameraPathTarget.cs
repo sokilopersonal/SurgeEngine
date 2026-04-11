@@ -1,7 +1,9 @@
-﻿using SurgeEngine.Source.Code.Core.Character.CameraSystem;
+﻿using System.Xml.Linq;
+using SurgeEngine.Source.Code.Core.Character.CameraSystem;
 using SurgeEngine.Source.Code.Core.Character.CameraSystem.Pans;
 using SurgeEngine.Source.Code.Core.Character.CameraSystem.Pans.Data;
 using SurgeEngine.Source.Code.Core.Character.System;
+using SurgeEngine.Source.Code.Tools;
 
 namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.CameraObjects
 {
@@ -21,6 +23,14 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.CameraObjects
             {
                 base.RemovePan(ctx);
             }
+        }
+
+        public override void ImportSetData(string objectName, XElement elem)
+        {
+            base.ImportSetData(objectName, elem);
+            
+            float offsetOnEyePath = HE1Helper.GetFloat(elem, "OffsetOnEyePath");
+            data.offsetOnEye = offsetOnEyePath;
         }
     }
 }

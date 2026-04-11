@@ -1,9 +1,13 @@
-﻿using SurgeEngine.Source.Code.Core.Character.System;
+﻿using System.Collections.Generic;
+using System.Xml.Linq;
+using SurgeEngine.Source.Code.Core.Character.System;
+using SurgeEngine.Source.Code.Tools;
 using UnityEngine;
+using NotImplementedException = System.NotImplementedException;
 
 namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.CameraObjects
 {
-    public class ChangeVolumeCamera : StageObject
+    public class ChangeVolumeCamera : StageObject, IHE1Importable, IHE1TargetResolvable
     {
         [SerializeField] private ObjCameraBase target;
         [SerializeField] private float easeTimeEnter = 1f;
@@ -54,6 +58,25 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.CameraObjects
                 Gizmos.color = Color.red;
                 Gizmos.DrawLine(transform.position, target.transform.position);
             }
+        }
+
+        public void ImportSetData(string objectName, XElement elem)
+        {
+            easeTimeEnter = HE1Helper.GetFloat(elem, "Ease_Time_Enter");
+            easeTimeLeave = HE1Helper.GetFloat(elem, "Ease_Time_Exit");
+            priority = HE1Helper.GetInt(elem, "Priority");
+            
+            var box = GetComponent<BoxCollider>();
+            float w = HE1Helper.GetFloat(elem, "Collision_Width");
+            float h = HE1Helper.GetFloat(elem, "Collision_Height");
+            float l = HE1Helper.GetFloat(elem, "Collision_Length");
+            box.size = new Vector3(w, h, l);
+        }
+        
+        public void ResolveTarget(XElement elem, Dictionary<long, StageObject> sceneObjects)
+        {
+            if (sceneObjects.TryGetValue(HE1Helper.GetTargetID(elem), out var value))
+                target = value.GetComponent<ObjCameraBase>();    
         }
     }
 }

@@ -1,19 +1,20 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml.Linq;
 using FMODUnity;
-using SurgeEngine.Source.Code.Core.Character.HUD;
 using SurgeEngine.Source.Code.Core.Character.States;
 using SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStates;
 using SurgeEngine.Source.Code.Core.Character.System;
 using SurgeEngine.Source.Code.Infrastructure.Custom;
 using SurgeEngine.Source.Code.Infrastructure.Custom.Drawers;
+using SurgeEngine.Source.Code.Tools;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 {
-    public class TrickJumper : StageObject
+    public class TrickJumper : StageObject, IHE1Importable
     {
         private const float MaxFrameTime = 0.33f;
         
@@ -309,6 +310,22 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
                 Color.green,
                 secondSpeed
             );
+        }
+
+        public void ImportSetData(string objectName, XElement elem)
+        {
+            firstSpeed = HE1Helper.GetFloat(elem, "FirstSpeed");
+            firstPitch = HE1Helper.GetFloat(elem, "FirstPitch");
+            firstOutOfControl = HE1Helper.GetFloat(elem, "FirstOutOfControl");
+            secondSpeed = HE1Helper.GetFloat(elem, "SecondSpeed");
+            secondPitch = HE1Helper.GetFloat(elem, "SecondPitch");
+            secondOutOfControl = HE1Helper.GetFloat(elem, "SecondOutOfControl");
+            trickTime1 = HE1Helper.GetFloat(elem, "TrickTime1");
+            trickTime2 = HE1Helper.GetFloat(elem, "TrickTime2");
+            trickTime3 = HE1Helper.GetFloat(elem, "TrickTime3");
+            trickCount1 = HE1Helper.GetInt(elem, "TrickCount1");
+            trickCount2 = HE1Helper.GetInt(elem, "TrickCount2");
+            trickCount3 = HE1Helper.GetInt(elem, "TrickCount3");
         }
     }
 

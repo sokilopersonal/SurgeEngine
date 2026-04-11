@@ -1,13 +1,14 @@
+using System.Xml.Linq;
 using FMODUnity;
 using SurgeEngine.Source.Code.Core.Character.States;
 using SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStates;
 using SurgeEngine.Source.Code.Core.Character.System;
-using SurgeEngine.Source.Code.Infrastructure.Custom.Extensions;
+using SurgeEngine.Source.Code.Tools;
 using UnityEngine;
 
 namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 {
-    public class StumbleCollision : StageObject
+    public class StumbleCollision : StageObject, IHE1Importable
     {
         [Tooltip("Speed required to trigger the stumble")]
         [SerializeField] private float launchVelocity = 14;
@@ -36,6 +37,18 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
                     character.StateMachine.SetState<FStateStumble>().SetNoControlTime(noControlTime);
                 }
             }
+        }
+
+        public void ImportSetData(string objectName, XElement elem)
+        {
+            var box = GetComponent<BoxCollider>();
+            float w = HE1Helper.GetFloat(elem, "Collision_Width");
+            float h = HE1Helper.GetFloat(elem, "Collision_Height");
+            float l = HE1Helper.GetFloat(elem, "Collision_Length");
+            box.size = new Vector3(w * 1.75f, h, l);
+            
+            launchVelocity = HE1Helper.GetFloat(elem, "LaunchVelocity");
+            noControlTime = HE1Helper.GetFloat(elem, "NoControlTime");
         }
     }
 }

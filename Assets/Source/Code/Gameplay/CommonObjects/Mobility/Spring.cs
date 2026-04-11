@@ -1,11 +1,10 @@
-﻿using System;
+﻿using System.Xml.Linq;
 using FMODUnity;
 using SurgeEngine.Source.Code.Core.Character.States;
 using SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStates;
 using SurgeEngine.Source.Code.Core.Character.System;
-using SurgeEngine.Source.Code.Core.StateMachine.Base;
-using SurgeEngine.Source.Code.Infrastructure.Custom;
 using SurgeEngine.Source.Code.Infrastructure.Custom.Drawers;
+using SurgeEngine.Source.Code.Tools;
 using UnityEngine;
 
 #if UNITY_EDITOR
@@ -14,7 +13,7 @@ using UnityEditor;
 
 namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 {
-    public class Spring : StageObject
+    public class Spring : StageObject, IHE1Importable
     {
         [SerializeField] protected float speed = 30f;
         [SerializeField] protected float keepVelocityDistance = 5;
@@ -70,7 +69,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 
         private void Snap(CharacterBase context)
         {
-            context.Kinematics.MoveToPosition(context.Kinematics.Rigidbody, transform.position, 0.2f);
+            context.Kinematics.MoveToPosition(context.Kinematics.Rigidbody, transform.position);
         }
 
 #if UNITY_EDITOR
@@ -87,6 +86,16 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         private void OnDrawGizmosSelected()
         {
             TrajectoryDrawer.DrawTrajectory(transform.position, Direction, Color.green, speed, keepVelocityDistance);
+        }
+
+        public virtual void ImportSetData(string objectName, XElement elem)
+        {
+            speed = HE1Helper.GetFloat(elem, "FirstSpeed");
+            keepVelocityDistance = HE1Helper.GetFloat(elem, "KeepVelocityDistance");
+            outOfControl = HE1Helper.GetFloat(elem, "OutOfControl");
+            isTo3D = HE1Helper.GetBool(elem, "m_IsTo3D");
+            cancelBoost = HE1Helper.GetBool(elem, "m_IsStopBoost");
+            hasBase = HE1Helper.GetBool(elem, "HasBase");
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects;
@@ -11,6 +12,7 @@ using SurgeEngine.Source.Code.Gameplay.CommonObjects.Collectables;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.PhysicsObjects;
 using SurgeEngine.Source.Code.Gameplay.Enemy.EggFighter;
+using SurgeEngine.Source.Code.Tools;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -206,7 +208,7 @@ namespace SurgeEngine.Source.Editor.HE1Importer
                     float yaw = HE1Helper.GetFloat(elem, "Yaw");
                     
                     var euler = Quaternion.Euler(pitch, yaw - 180, 0);
-                    comp.transform.rotation = ToEulerYXZ(euler);
+                    comp.transform.rotation = HE1Helper.ToEulerYXZ(euler);
                 },
                 ["ObjCameraPoint"] = (go, elem) =>
                 {
@@ -476,24 +478,24 @@ namespace SurgeEngine.Source.Editor.HE1Importer
                     var ms = elem.Element("MultiSetParam");
                     if (ms != null)
                     {
-                        var parent = TryInstantiate(prefab, elem, GetObjectID(elem));
+                        var parent = TryInstantiate(prefab, elem, HE1Helper.GetObjectID(elem));
                         applyQueue.Add((name, parent, elem));
-                        SetObjectID(parent, GetObjectID(elem));
+                        HE1Helper.SetObjectID(parent, HE1Helper.GetObjectID(elem));
 
                         int i = 0;
                         foreach (var child in ms.Elements("Element"))
                         {
-                            long childId = GetMultiSetObjectID(elem, i++);
+                            long childId = HE1Helper.GetMultiSetObjectID(elem, i++);
                             var msGO = TryInstantiate(prefab, child, childId);
                             applyQueue.Add((name, msGO, child));
-                            SetObjectID(msGO, childId);
+                            HE1Helper.SetObjectID(msGO, childId);
                         }
                     }
                     else
                     {
-                        var parent = TryInstantiate(prefab, elem, GetObjectID(elem));
+                        var parent = TryInstantiate(prefab, elem, HE1Helper.GetObjectID(elem));
                         applyQueue.Add((name, parent, elem));
-                        SetObjectID(parent, GetObjectID(elem));
+                        HE1Helper.SetObjectID(parent, HE1Helper.GetObjectID(elem));
                     }
                 }
 
@@ -507,6 +509,21 @@ namespace SurgeEngine.Source.Editor.HE1Importer
 
             foreach (var (name, go, elem) in applyQueue)
                 ApplyCustom(name, go, elem);
+            
+            var sceneObjects = Object.FindObjectsByType<StageObject>(
+                    FindObjectsInactive.Include, FindObjectsSortMode.None)
+                .Where(s => s.SetID != 0)
+                .GroupBy(s => s.SetID)
+                .ToDictionary(g => g.Key, g => g.First());
+            
+            foreach (var (_, go, elem) in applyQueue)
+            {
+                foreach (var resolvable in go.GetComponents<IHE1TargetResolvable>())
+                {
+                    resolvable.ResolveTarget(elem, sceneObjects);
+                    PrefabUtility.RecordPrefabInstancePropertyModifications((Object)resolvable);
+                }
+            }
 
             Undo.CollapseUndoOperations(group);
             EditorSceneManager.MarkAllScenesDirty();
@@ -542,18 +559,18 @@ namespace SurgeEngine.Source.Editor.HE1Importer
             var asset = AssetDatabase.LoadAssetAtPath<GameObject>(path);
             if (asset == null) return null;
 
-            var go = TryInstantiate(asset, elem, GetObjectID(elem));
-            SetObjectID(go, GetObjectID(elem));
-            
+            var go = TryInstantiate(asset, elem, HE1Helper.GetObjectID(elem));
+            HE1Helper.SetObjectID(go, HE1Helper.GetObjectID(elem));
+
             var ms = elem.Element("MultiSetParam");
             if (ms != null)
             {
                 int i = 0;
                 foreach (var child in ms.Elements("Element"))
                 {
-                    long childId = GetMultiSetObjectID(elem, i++);
+                    long childId = HE1Helper.GetMultiSetObjectID(elem, i++);
                     var msGO = TryInstantiate(asset, child, childId);
-                    SetObjectID(msGO, childId);
+                    HE1Helper.SetObjectID(msGO, childId);
                 }
             }
 
@@ -582,7 +599,7 @@ namespace SurgeEngine.Source.Editor.HE1Importer
                     float.Parse(rotE.Element("w")?.Value.Trim() ?? "1", CultureInfo.InvariantCulture)
                 );
             
-            var targetRot = ToEulerYXZ(q);
+            var targetRot = HE1Helper.ToEulerYXZ(q);
             
             foreach (var stageObject in Object.FindObjectsByType<StageObject>(FindObjectsInactive.Include, FindObjectsSortMode.None))
             {
@@ -593,8 +610,13 @@ namespace SurgeEngine.Source.Editor.HE1Importer
                     return stageObject.gameObject;
                 }
             }
-            
+
             var parent = GameObject.FindWithTag("SetData").transform;
+            if (parent == null)
+            {
+                parent = new GameObject("SetData").transform;
+                parent.tag = "SetData";
+            }
 
             GameObject go;
             if (PrefabUtility.GetPrefabAssetType(prefab) != PrefabAssetType.NotAPrefab)
@@ -613,34 +635,13 @@ namespace SurgeEngine.Source.Editor.HE1Importer
             return go;
         }
 
-        private static Quaternion ToEulerYXZ(Quaternion q)
-        {
-            q.Normalize();
-            var euler = q.eulerAngles;
-            return Quaternion.Euler(euler.x, -euler.y, -euler.z);
-        }
-
-        static void SetObjectID(GameObject go, long id)
-        {
-            if (go.TryGetComponent(out StageObject stageObject))
-                stageObject.SetID = id;
-        }
-
-        static long GetObjectID(XElement elem) => long.Parse(elem.Element("SetObjectID")?.Value.Trim() ?? "0", CultureInfo.InvariantCulture);
-
-        public static long GetMultiSetObjectID(XElement parentElem, int index)
-        {
-            long parentId = GetObjectID(parentElem);
-            return parentId * 1000 + index;
-        }
-        
         static void ApplyCustom(string name, GameObject go, XElement elem)
         {
-            if (GetCustomHandlers().TryGetValue(name, out var handler))
+            foreach (var importable in go.GetComponents<IHE1Importable>())
             {
-                handler(go, elem);
-
-                RecordStageObject(go);
+                importable.ImportSetData(name, elem);
+                Undo.RecordObject((Object)importable, "Import HE1 Objects");
+                PrefabUtility.RecordPrefabInstancePropertyModifications((Object)importable);
             }
         }
 
@@ -654,209 +655,6 @@ namespace SurgeEngine.Source.Editor.HE1Importer
                     PrefabUtility.RecordPrefabInstancePropertyModifications(component);
                     
                     component.OnImport();
-                }
-            }
-        }
-    }
-
-    static class HE1Helper
-    {
-        public static float GetFloat(XElement elem, string valueName, float defaultValue = 1f)
-        {
-            var value = GetValue(elem, valueName, defaultValue.ToString(CultureInfo.InvariantCulture));
-            return float.Parse(value, CultureInfo.InvariantCulture);
-        }
-
-        public static int GetInt(XElement elem, string valueName, int defaultValue = 1)
-        {
-            var value = GetValue(
-                elem,
-                valueName,
-                defaultValue.ToString(CultureInfo.InvariantCulture)
-            );
-
-            return int.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture, out var result) ? result : defaultValue;
-        }
-        
-        public static bool GetBool(XElement elem, string valueName, bool defaultValue = false)
-        {
-            var value = GetValue(elem, valueName, defaultValue.ToString());
-            return bool.Parse(value);
-        }
-
-        public static string GetValue(XElement elem, string valueName, string defaultValue = "1")
-        {
-            if (elem.Name == "Element" && elem.Parent?.Name == "MultiSetParam")
-            {
-                var parentElem = elem.Parent.Parent;
-                return parentElem.Element(valueName)?.Value.Trim() ?? defaultValue;
-            }
-
-            return elem.Element(valueName)?.Value.Trim() ?? defaultValue;
-        }
-
-        public static void SetFloat(object obj, string name, float value)
-        {
-            try
-            {
-                var field = obj.GetType().GetField(name, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.FlattenHierarchy);
-                field?.SetValue(obj, value);
-            }
-            catch (Exception e)
-            {
-                Debug.LogError("Can't set the value to " + name + ": " + e.Message);
-            }
-        }
-
-        public static void SetInt(object obj, string name, int value)
-        {
-            try
-            {
-                var field = obj.GetType().GetField(name, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.FlattenHierarchy);
-                if (field != null) field.SetValue(obj, value);
-            }
-            catch (Exception e)
-            {
-                Debug.LogError("Can't set the value to " + name + ": " + e.Message);
-            }
-        }
-
-        public static void SetBool(object obj, string name, bool value)
-        {
-            try
-            {
-                var field = obj.GetType().GetField(name, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.FlattenHierarchy);
-                if (field != null) field.SetValue(obj, value);
-            }
-            catch (Exception e)
-            {
-                Debug.LogError("Can't set the value to " + name + ": " + e.Message);
-            }
-        }
-
-        public static void SetBoxColliderSize(BoxCollider box, XElement elem, float? depth = null)
-        {
-            float width = GetFloat(elem, "Collision_Width");
-            float height = GetFloat(elem, "Collision_Height");
-
-            if (depth.HasValue)
-            {
-                box.size = new Vector3(width, height, depth.Value);
-            }
-            else
-            {
-                float length = GetFloat(elem, "Collision_Length");
-                box.size = new Vector3(width, height, length);
-            }
-        }
-
-        public static void SetSpringProperties(object spring, XElement elem)
-        {
-            float speed = GetFloat(elem, "FirstSpeed");
-            float outOfControl = GetFloat(elem, "OutOfControl");
-            float keepVelocity = GetFloat(elem, "KeepVelocityDistance");
-            SetFloat(spring, "speed", speed);
-            SetFloat(spring, "outOfControl", outOfControl);
-            SetFloat(spring, "keepVelocityDistance", keepVelocity);
-        }
-
-        public static void SetJumpPanelProperties(object jumpPanel, XElement elem)
-        {
-            float impulseNormal = GetFloat(elem, "ImpulseSpeedOnNormal");
-            float impulseBoost = GetFloat(elem, "ImpulseSpeedOnBoost");
-            float outOfControl = GetFloat(elem, "OutOfControl");
-            SetFloat(jumpPanel, "impulseOnNormal", impulseNormal);
-            SetFloat(jumpPanel, "impulseOnBoost", impulseBoost);
-            SetFloat(jumpPanel, "outOfControl", outOfControl);
-        }
-
-        public static void SetDashRingProperties(object dashRing, XElement elem)
-        {
-            float speed = GetFloat(elem, "FirstSpeed");
-            float outOfControl = GetFloat(elem, "OutOfControl");
-            float keepDistance = GetFloat(elem, "KeepVelocityDistance");
-            SetFloat(dashRing, "speed", speed);
-            SetFloat(dashRing, "outOfControl", outOfControl);
-            SetFloat(dashRing, "keepVelocityDistance", keepDistance);
-        }
-
-        public static void SetCameraDataProperties(object cameraComponent, XElement elem, bool includeDistance = false)
-        {
-            var dataField = cameraComponent.GetType().GetField("data", BindingFlags.Instance | BindingFlags.NonPublic);
-            if (dataField == null) return;
-
-            var dataObj = dataField.GetValue(cameraComponent);
-
-            float easeTimeEnter = GetFloat(elem, "Ease_Time_Enter");
-            float easeTimeLeave = GetFloat(elem, "Ease_Time_Leave");
-            float fovy = GetFloat(elem, "Fovy");
-            bool isControllable = GetBool(elem, "IsControllable");
-            bool isCollision = GetBool(elem, "IsCollision");
-            
-            dataObj.GetType().GetField("easeTimeEnter", BindingFlags.Instance | BindingFlags.Public)?.SetValue(dataObj, easeTimeEnter);
-            dataObj.GetType().GetField("easeTimeExit", BindingFlags.Instance | BindingFlags.Public)?.SetValue(dataObj, easeTimeLeave);
-            dataObj.GetType().GetField("fov", BindingFlags.Instance | BindingFlags.Public)?.SetValue(dataObj, fovy);
-            dataObj.GetType().GetField("allowRotation", BindingFlags.Instance | BindingFlags.Public)?.SetValue(dataObj, isControllable);
-            dataObj.GetType().GetField("isCollision", BindingFlags.Instance | BindingFlags.Public)?.SetValue(dataObj, isCollision);
-
-            if (includeDistance)
-            {
-                float distance = GetFloat(elem, "Distance");
-                dataObj.GetType().GetField("distance", BindingFlags.Instance | BindingFlags.Public)?.SetValue(dataObj, distance);
-            }
-        }
-
-        public static void SetChangeMode3DProperties(object mode, XElement elem)
-        {
-            bool isChangeCamera = GetBool(elem, "m_IsChangeCamera");
-            bool isEnabledFront = GetBool(elem, "m_IsEnableFromFront");
-            bool isEnabledBack = GetBool(elem, "m_IsEnableFromBack");
-            bool isLimitEdge = GetBool(elem, "m_IsLimitEdge");
-            float pathCorrectionForce = GetFloat(elem, "m_PathCorrectionForce");
-
-            SetBool(mode, "isChangeCamera", isChangeCamera);
-            SetBool(mode, "isEnabledFromFront", isEnabledFront);
-            SetBool(mode, "isEnabledFromBack", isEnabledBack);
-            SetBool(mode, "isLimitEdge", isLimitEdge);
-            SetFloat(mode, "pathCorrectionForce", pathCorrectionForce);
-        }
-
-        public static void SetChangeMode2DProperties(object mode, XElement elem)
-        {
-            bool isChangeCamera = GetBool(elem, "m_IsChangeCamera");
-            bool isEnabledFront = GetBool(elem, "m_IsEnableFromFront");
-            bool isEnabledBack = GetBool(elem, "m_IsEnableFromBack");
-            float pathEaseTime = GetFloat(elem, "m_PathEaseTime");
-
-            SetBool(mode, "isChangeCamera", isChangeCamera);
-            SetBool(mode, "isEnabledFromFront", isEnabledFront);
-            SetBool(mode, "isEnabledFromBack", isEnabledBack);
-            SetFloat(mode, "pathEaseTime", pathEaseTime);
-        }
-
-        public static void FillMultiSet<T>(this T stageObject, XElement elem, string listFieldName) where T : StageObject
-        {
-            if (stageObject == null || elem == null) return;
-
-            if (stageObject.GetType().GetField(listFieldName, BindingFlags.NonPublic | BindingFlags.Instance)
-                    ?.GetValue(stageObject) is not List<T> list) return;
-
-            list.Clear();
-
-            var ms = elem.Element("MultiSetParam");
-            if (ms == null) return;
-
-            int i = 0;
-            foreach (var child in ms.Elements("Element"))
-            {
-                long childId = HE1ObjectsImporter.GetMultiSetObjectID(elem, i++);
-                foreach (var obj in Object.FindObjectsByType<StageObject>(FindObjectsInactive.Include, FindObjectsSortMode.None))
-                {
-                    if (obj.SetID == childId && obj is T tObj)
-                    {
-                        list.Add(tObj);
-                        break;
-                    }
                 }
             }
         }

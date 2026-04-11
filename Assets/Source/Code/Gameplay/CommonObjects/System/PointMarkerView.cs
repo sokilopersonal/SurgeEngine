@@ -1,9 +1,11 @@
+using System.Xml.Linq;
+using SurgeEngine.Source.Code.Tools;
 using UnityEngine;
 
 namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.System
 {
     [ExecuteInEditMode]
-    public class PointMarkerView : MonoBehaviour
+    public class PointMarkerView : MonoBehaviour, IHE1Importable
     {
         [SerializeField] private Transform left, right, line;
         [SerializeField] private BoxCollider _boxCollider;
@@ -41,7 +43,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.System
             UpdateView();
         }
 
-        public void UpdateView()
+        private void UpdateView()
         {
             if (!left || !right || !line || !_boxCollider) return;
             
@@ -61,6 +63,13 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.System
             leftAnimator.CrossFadeInFixedTime(Forward, 0.25f, 0);
             rightAnimator.CrossFadeInFixedTime(Forward, 0.25f, 0);
             lineAnimator.Play(FadeOut, 0);
+        }
+
+        public void ImportSetData(string objectName, XElement elem)
+        {
+            // TODO: Implement point marker height
+            
+            UpdateView();
         }
     }
 }

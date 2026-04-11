@@ -1,16 +1,18 @@
 ﻿using System.Collections;
+using System.Xml.Linq;
 using FMOD.Studio;
 using FMODUnity;
 using SurgeEngine.Source.Code.Core.Character.States;
 using SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStates;
 using SurgeEngine.Source.Code.Core.Character.System;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.System;
+using SurgeEngine.Source.Code.Tools;
 using UnityEngine;
 using STOP_MODE = FMOD.Studio.STOP_MODE;
 
 namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 {
-    public class Upreel : StageObject, IPointMarkerLoader
+    public class Upreel : StageObject, IPointMarkerLoader, IHE1Importable
     {
         [Header("Upreel")]
         [SerializeField] private float upMaxSpeed = 50;
@@ -111,12 +113,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 
         private void OnValidate()
         {
-            if (model && box && rope)
-            {
-                model.localPosition = new Vector3(model.localPosition.x, -length, model.localPosition.z);
-                box.center = new Vector3(box.center.x, model.localPosition.y + 0.15f, box.center.z);
-                PositionRope();
-            }
+            UpdateVisuals();
         }
 
         public override void OnEnter(Collider msg, CharacterBase context)
@@ -202,6 +199,16 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             _eventInstance.stop(STOP_MODE.IMMEDIATE);
         }
 
+        private void UpdateVisuals()
+        {
+            if (model && box && rope)
+            {
+                model.localPosition = new Vector3(model.localPosition.x, -length, model.localPosition.z);
+                box.center = new Vector3(box.center.x, model.localPosition.y + 0.15f, box.center.z);
+                PositionRope();
+            }
+        }
+
         public void Load()
         {
             PutModel();
@@ -212,6 +219,17 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             _currentSpeed = 0f;
             _isMovingUp = false;
             _isMovingDown = false;
+        }
+
+        public void ImportSetData(string objectName, XElement elem)
+        {
+            upMaxSpeed = HE1Helper.GetFloat(elem, "UpSpeedMax");
+            impulseVelocity = HE1Helper.GetFloat(elem, "ImpulseVelocity");
+            length = HE1Helper.GetFloat(elem, "Length");
+            outOfControl = HE1Helper.GetFloat(elem, "OutOfControl");
+            isWaitUp = HE1Helper.GetBool(elem, "IsWaitUp");
+            
+            UpdateVisuals();
         }
     }
 }

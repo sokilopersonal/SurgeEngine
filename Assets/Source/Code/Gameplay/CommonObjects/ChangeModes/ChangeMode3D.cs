@@ -1,3 +1,5 @@
+using System.Xml.Linq;
+using SurgeEngine.Source.Code.Tools;
 using UnityEngine;
 
 namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.ChangeModes
@@ -7,6 +9,14 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.ChangeModes
         [Tooltip("Prevents the player from running past the end of the path")]
         [SerializeField] protected bool isLimitEdge = true;
         [SerializeField, Range(0, 1)] protected float pathCorrectionForce = 1f;
+
+        public override void ImportSetData(string objectName, XElement elem)
+        {
+            base.ImportSetData(objectName, elem);
+            
+            isLimitEdge = HE1Helper.GetBool(elem, "m_IsLimitEdge");
+            pathCorrectionForce = HE1Helper.GetFloat(elem, "m_PathCorrectionForce");
+        }
     }
     
     public class ChangeMode3DData : ChangeModeData

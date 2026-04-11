@@ -1,17 +1,19 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 using FMODUnity;
 using SurgeEngine.Source.Code.Core.Character.System;
 using SurgeEngine.Source.Code.Infrastructure.Custom;
+using SurgeEngine.Source.Code.Tools;
 using UnityEngine;
 using Zenject;
 
 namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.System
 {
     [RequireComponent(typeof(BoxCollider))]
-    public class PointMarker : StageObject
+    public class PointMarker : StageObject, IHE1Importable
     {
-        [SerializeField, Range(0.5f, 5f)] private float length = 2f;
+        [SerializeField, Min(0)] private float length = 2f;
         public float Length => length;
         
         [Inject] private CharacterBase _character;
@@ -63,6 +65,11 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.System
             {
                 loader.Load();
             }
+        }
+
+        public void ImportSetData(string objectName, XElement elem)
+        {
+            length = HE1Helper.GetFloat(elem, "Width");
         }
     }
 

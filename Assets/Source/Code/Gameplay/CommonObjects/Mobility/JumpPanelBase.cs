@@ -1,13 +1,15 @@
-﻿using SurgeEngine.Source.Code.Core.Character.States;
+﻿using System.Xml.Linq;
+using SurgeEngine.Source.Code.Core.Character.States;
 using SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStates;
 using SurgeEngine.Source.Code.Core.Character.System;
 using SurgeEngine.Source.Code.Gameplay.Inputs;
 using SurgeEngine.Source.Code.Infrastructure.Custom;
+using SurgeEngine.Source.Code.Tools;
 using UnityEngine;
 
 namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 {
-    public abstract class JumpPanelBase : StageObject
+    public abstract class JumpPanelBase : StageObject, IHE1Importable
     {
         [SerializeField] protected float impulseOnNormal = 30;
         [SerializeField] protected float impulseOnBoost = 30;
@@ -49,6 +51,13 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             if (outOfControl > 0) context.Flags.AddFlag(new Flag(FlagType.OutOfControl, outOfControl));
 
             Rumble.Vibrate(0.3f, 0.4f);
+        }
+
+        public virtual void ImportSetData(string objectName, XElement elem)
+        {
+            impulseOnNormal = HE1Helper.GetFloat(elem, "ImpulseSpeedOnNormal");
+            impulseOnBoost = HE1Helper.GetFloat(elem, "ImpulseSpeedOnBoost");
+            outOfControl = HE1Helper.GetFloat(elem, "OutOfControl");
         }
     }
 }

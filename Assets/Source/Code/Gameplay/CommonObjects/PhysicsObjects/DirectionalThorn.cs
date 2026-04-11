@@ -1,10 +1,12 @@
 ﻿using System.Collections;
+using System.Xml.Linq;
 using SurgeEngine.Source.Code.Infrastructure.Custom;
+using SurgeEngine.Source.Code.Tools;
 using UnityEngine;
 
 namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.PhysicsObjects
 {
-    public class DirectionalThorn : StageObject
+    public class DirectionalThorn : StageObject, IHE1Importable
     {
         [SerializeField] private float moveTime = 0.5f;
         [SerializeField] private float onTime = 2f;
@@ -54,6 +56,14 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.PhysicsObjects
             }
 
             thorn.localPosition = endPos;
+        }
+
+        public void ImportSetData(string objectName, XElement elem)
+        {
+            moveTime = HE1Helper.GetFloat(elem, "MoveTime");
+            onTime = HE1Helper.GetFloat(elem, "OnTime");
+            offTime = HE1Helper.GetFloat(elem, "OffTime");
+            phase = HE1Helper.GetInt(elem, "Phase");
         }
     }
 

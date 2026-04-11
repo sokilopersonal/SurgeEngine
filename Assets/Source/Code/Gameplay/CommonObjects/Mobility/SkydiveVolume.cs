@@ -1,7 +1,5 @@
 using SurgeEngine.Source.Code.Core.Character.States;
-using SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStates;
 using SurgeEngine.Source.Code.Core.Character.System;
-using SurgeEngine.Source.Code.Infrastructure.Custom.Extensions;
 using UnityEngine;
 
 

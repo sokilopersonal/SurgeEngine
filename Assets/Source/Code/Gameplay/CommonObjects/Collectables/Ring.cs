@@ -1,14 +1,16 @@
-﻿using Alchemy.Inspector;
+﻿using System.Xml.Linq;
+using Alchemy.Inspector;
 using FMODUnity;
 using SurgeEngine.Source.Code.Core.Character.System;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.System;
 using SurgeEngine.Source.Code.Infrastructure.Custom;
 using SurgeEngine.Source.Code.Rendering;
+using SurgeEngine.Source.Code.Tools;
 using UnityEngine;
 
 namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Collectables
 {
-    public class Ring : StageObject, IPointMarkerLoader
+    public class Ring : StageObject, IPointMarkerLoader, IHE1Importable
     {
         [SerializeField] private bool isLightSpeedDashTarget = true;
         [SerializeField] private ParticleSystem particle;
@@ -142,6 +144,11 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Collectables
             transform.position = _startPosition;
             transform.rotation = _startRotation;
             gameObject.SetActive(true);
+        }
+
+        public void ImportSetData(string objectName, XElement elem)
+        {
+            isLightSpeedDashTarget = HE1Helper.GetBool(elem, "IsLightSpeedDashTarget");
         }
     }
 }

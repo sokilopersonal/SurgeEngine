@@ -1,5 +1,4 @@
-﻿using SurgeEngine.Source.Code.Core.Character.System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 {

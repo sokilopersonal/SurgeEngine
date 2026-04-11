@@ -1,9 +1,10 @@
-﻿using System;
+﻿using System.Xml.Linq;
 using SurgeEngine.Source.Code.Core.Character.States;
 using SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStates;
 using SurgeEngine.Source.Code.Core.Character.System;
 using SurgeEngine.Source.Code.Infrastructure.Custom;
 using SurgeEngine.Source.Code.Infrastructure.Custom.Drawers;
+using SurgeEngine.Source.Code.Tools;
 using UnityEngine;
 
 namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
@@ -11,7 +12,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
     /// <summary>
     /// Trigger for applying an impulse to the player
     /// </summary>
-    public class JumpCollision : StageObject
+    public class JumpCollision : StageObject, IHE1Importable
     {
         [Header("Properties")] 
         [SerializeField] private float speedMin = 20f;
@@ -22,7 +23,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         [SerializeField] private float outOfControl = 0.5f;
         [SerializeField] private float terrainIgnoreTime = 0.25f;
         
-        private const float CoyoteTime = 0.1f;
+        private const float CoyoteTime = 0.2f;
         
         private CharacterBase _character;
         private float _lastGroundedTime = float.NegativeInfinity;
@@ -56,7 +57,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             if (dot <= 0) return;
             if (context.Kinematics.Speed < speedMin) return;
 
-            bool wasRecentlyGrounded = Time.time - _lastGroundedTime <= 0.2f;
+            bool wasRecentlyGrounded = Time.time - _lastGroundedTime <= CoyoteTime;
             if ((groundOnly && !wasRecentlyGrounded) || !groundOnly) return;
 
             context.Model.DisableCollision(terrainIgnoreTime);
@@ -75,6 +76,21 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         {
             TrajectoryDrawer.DrawTrajectory(transform.position + transform.up, Utility.GetImpulseWithPitch(transform.forward, -transform.right, pitch, impulseOnNormal), Color.green, impulseOnNormal);
             TrajectoryDrawer.DrawTrajectory(transform.position + transform.up, Utility.GetImpulseWithPitch(transform.forward, -transform.right, pitch, impulseOnBoost), Color.cyan, impulseOnBoost);
+        }
+
+        public void ImportSetData(string objectName, XElement elem)
+        {
+            var boxCollider = GetComponent<BoxCollider>();
+            float w = HE1Helper.GetFloat(elem, "Collision_Width");
+            float h = HE1Helper.GetFloat(elem, "Collision_Height");
+            boxCollider.size = new Vector3(w, h, boxCollider.size.z);
+            
+            speedMin = HE1Helper.GetFloat(elem, "SpeedMin") / 2;
+            outOfControl = HE1Helper.GetFloat(elem, "OutOfControl");
+            impulseOnNormal = HE1Helper.GetFloat(elem, "ImpulseSpeedOnNormal");
+            impulseOnBoost = HE1Helper.GetFloat(elem, "ImpulseSpeedOnBoost");
+            pitch = HE1Helper.GetFloat(elem, "Pitch");
+            terrainIgnoreTime = HE1Helper.GetFloat(elem, "TerrainIgnoreTime", 0.25f);
         }
     }
 }

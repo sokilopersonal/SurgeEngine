@@ -1,9 +1,11 @@
-﻿using SurgeEngine.Source.Code.Core.Character.System;
+﻿using System.Xml.Linq;
+using SurgeEngine.Source.Code.Core.Character.System;
+using SurgeEngine.Source.Code.Tools;
 using UnityEngine;
 
 namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 {
-    public class AutorunCollision : StageObject
+    public class AutorunCollision : StageObject, IHE1Importable
     {
         [SerializeField, Tooltip("How long should this trigger keep the autorun?" +
                                  "It's useful in cases where a player somehow passes through a trigger with some weird way. " +
@@ -38,6 +40,20 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
                 flags.RemoveFlag(FlagType.Autorun);
                 flags.RemoveFlag(FlagType.OutOfControl);
             }
+        }
+
+        public void ImportSetData(string objectName, XElement elem)
+        {
+            var box = GetComponent<BoxCollider>();
+            float w = HE1Helper.GetFloat(elem, "Collision_Width");
+            float h = HE1Helper.GetFloat(elem, "Collision_Height");
+            box.size = new Vector3(w, h, box.size.z);
+            
+            keepTime = HE1Helper.GetFloat(elem, "KeepTime");
+            speed = HE1Helper.GetFloat(elem, "Speed");
+            easeTime = HE1Helper.GetFloat(elem, "EaseTime");
+            pathEaseTime = HE1Helper.GetFloat(elem, "ToPathEaseTime");
+            isFinish = objectName != "AutorunStartCollision";
         }
     }
 }

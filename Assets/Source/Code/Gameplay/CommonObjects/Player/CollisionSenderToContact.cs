@@ -1,5 +1,4 @@
 ﻿using SurgeEngine.Source.Code.Core.Character.System;
-using SurgeEngine.Source.Code.Infrastructure.Custom.Extensions;
 using UnityEngine;
 
 namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Player

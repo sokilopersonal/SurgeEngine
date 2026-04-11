@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Xml.Linq;
 using SurgeEngine.Source.Code.Core.Character.System;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.AnimationCallback;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.Interfaces;
@@ -12,6 +12,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using Zenject;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.PhysicsObjects;
+using SurgeEngine.Source.Code.Tools;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -36,7 +37,7 @@ namespace SurgeEngine.Source.Code.Gameplay.Enemy.EggFighter
         public DestroyedPiece tutorialPieces;
     }
     
-    public class EggFighter : EnemyBase, IDamageable, IPointMarkerLoader
+    public class EggFighter : EnemyBase, IDamageable, IPointMarkerLoader, IHE1Importable
     {
         [SerializeField] private new EGAnimation animation;
         [SerializeField] private EGEffects effects;
@@ -180,6 +181,14 @@ namespace SurgeEngine.Source.Code.Gameplay.Enemy.EggFighter
                 }
             }
 #endif
+        }
+
+        public void ImportSetData(string objectName, XElement elem)
+        {
+            if (objectName == "eFighterTutorial")
+                type = EggFighterType.Tutorial;
+            
+            // TODO: Change the search and punch radius
         }
     }
 }

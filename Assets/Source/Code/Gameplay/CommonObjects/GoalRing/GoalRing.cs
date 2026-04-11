@@ -1,5 +1,4 @@
-﻿using System;
-using FMODUnity;
+﻿using FMODUnity;
 using SurgeEngine.Source.Code.Core.Character.States;
 using SurgeEngine.Source.Code.Core.Character.System;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.System;

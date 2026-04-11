@@ -1,12 +1,14 @@
-﻿using SurgeEngine.Source.Code.Core.Character.States;
+﻿using System.Xml.Linq;
+using SurgeEngine.Source.Code.Core.Character.States;
 using SurgeEngine.Source.Code.Core.Character.System;
 using SurgeEngine.Source.Code.Gameplay.Inputs;
+using SurgeEngine.Source.Code.Tools;
 using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
 
 namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 {
-    public class DashPanel : StageObject
+    public class DashPanel : StageObject, IHE1Importable
     {
         [SerializeField] private float speed = 50f;
         [SerializeField] private float speedMin = 25f;
@@ -42,6 +44,16 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         private void OnDrawGizmosSelected()
         {
             Debug.DrawRay(transform.position, transform.forward * speed * outOfControl, Color.green);
+        }
+
+        public void ImportSetData(string objectName, XElement elem)
+        {
+            speed = HE1Helper.GetFloat(elem, "Speed");
+            speedMin = HE1Helper.GetFloat(elem, "SpeedMin");
+            speedMax = HE1Helper.GetFloat(elem, "SpeedMax");
+            outOfControl = HE1Helper.GetFloat(elem, "OutOfControl");
+            isConstantStartVelocity = HE1Helper.GetBool(elem, "IsConstantStartVelocity");
+            isUseDelayCamera = HE1Helper.GetBool(elem, "IsUseDelayCamera");
         }
     }
 }

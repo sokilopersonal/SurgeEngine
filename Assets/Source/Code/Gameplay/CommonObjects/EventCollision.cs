@@ -1,11 +1,13 @@
-﻿using SurgeEngine.Source.Code.Core.Character.System;
+﻿using System.Xml.Linq;
+using SurgeEngine.Source.Code.Core.Character.System;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.System;
+using SurgeEngine.Source.Code.Tools;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace SurgeEngine.Source.Code.Gameplay.CommonObjects
 {
-    public class EventCollision : StageObject, IPointMarkerLoader
+    public class EventCollision : StageObject, IPointMarkerLoader, IHE1Importable
     {
         [SerializeField] private int defaultStatus;
         [SerializeField] private bool oneTime = true;
@@ -44,6 +46,18 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects
         {
             _collider.enabled = defaultStatus == 0;
             gameObject.SetActive(true);
+        }
+
+        public void ImportSetData(string objectName, XElement elem)
+        {
+            var box = GetComponent<BoxCollider>();
+            float w = HE1Helper.GetFloat(elem, "Collision_Width");
+            float h = HE1Helper.GetFloat(elem, "Collision_Height");
+            float l = HE1Helper.GetFloat(elem, "Collision_Length");
+            box.size = new Vector3(w, h, l);
+            
+            defaultStatus = HE1Helper.GetInt(elem, "DefaultStatus");
+            durability = HE1Helper.GetInt(elem, "Durability");
         }
     }
 }

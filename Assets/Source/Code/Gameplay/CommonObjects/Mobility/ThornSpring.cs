@@ -1,6 +1,8 @@
-﻿using DG.Tweening;
+﻿using System.Xml.Linq;
+using DG.Tweening;
 using SurgeEngine.Source.Code.Core.Character.System;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.System;
+using SurgeEngine.Source.Code.Tools;
 using UnityEngine;
 
 namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
@@ -82,6 +84,14 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             _springUp = false;
             _thornTimer = 0;
             _rotationTween?.Kill(true);
+        }
+
+        public override void ImportSetData(string objectName, XElement elem)
+        {
+            base.ImportSetData(objectName, elem);
+            
+            downThornTime = HE1Helper.GetFloat(elem, "DownThornTime");
+            upThornTime = HE1Helper.GetFloat(elem, "UpThornTime");
         }
     }
 }

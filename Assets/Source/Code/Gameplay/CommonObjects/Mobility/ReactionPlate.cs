@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Xml.Linq;
 using Alchemy.Inspector;
 using Cysharp.Threading.Tasks;
 using FMODUnity;
@@ -6,6 +8,7 @@ using SurgeEngine.Source.Code.Core.Character.States;
 using SurgeEngine.Source.Code.Core.Character.System;
 using SurgeEngine.Source.Code.Core.StateMachine;
 using SurgeEngine.Source.Code.Infrastructure.Custom;
+using SurgeEngine.Source.Code.Tools;
 using UnityEngine;
 using Zenject;
 using Random = UnityEngine.Random;
@@ -32,7 +35,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         Random = 4
     }
     
-    public class ReactionPlate : StageObject
+    public class ReactionPlate : StageObject, IHE1Importable, IHE1TargetResolvable
     {
         private static readonly int InputDevice = Shader.PropertyToID("_InputDevice");
         private const float MaxFrameTime = 0.33f;
@@ -308,6 +311,30 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
                 Gizmos.color = Color.green;
                 Gizmos.DrawLine(transform.position, target.transform.position);
             }
+        }
+
+        public void ImportSetData(string objectName, XElement elem)
+        {
+            int impType = HE1Helper.GetInt(elem, "Type");
+            switch (impType)
+            {
+                case 0:
+                    type = ReactionPlateType.Spring;
+                    break;
+                case 1 | 2 | 3 | 4:
+                    buttonType = (ReactionPlateButton)impType;
+                    type = ReactionPlateType.Plate;
+                    break;
+                case 5:
+                    type = ReactionPlateType.End;
+                    break;
+            }
+        }
+
+        public void ResolveTarget(XElement elem, Dictionary<long, StageObject> sceneObjects)
+        {
+            if (sceneObjects.TryGetValue(HE1Helper.GetTargetID(elem), out var value))
+                target = value.GetComponent<ReactionPlate>();
         }
     }
 }
