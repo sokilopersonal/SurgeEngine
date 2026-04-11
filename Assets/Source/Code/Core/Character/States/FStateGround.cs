@@ -22,7 +22,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
         {
             base.OnEnter();
 
-            _lastNormal = Kinematics.Normal;
+            _lastNormal = Vector3.up;
             Kinematics.SetDetachTime(0f);
         }
 
