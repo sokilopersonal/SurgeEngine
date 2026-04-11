@@ -1,7 +1,6 @@
 ﻿using SurgeEngine.Source.Code.Core.StateMachine.Base;
 using SurgeEngine.Source.Code.Core.StateMachine.Components;
 using UnityEngine;
-using NotImplementedException = System.NotImplementedException;
 
 namespace SurgeEngine.Source.Code.Core.Character.System
 {
@@ -40,8 +39,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             animator.SetFloat(AnimatorParams.VerticalSpeed, Character.Kinematics.Velocity.y);
             
             float targetSpeedPercent = Mathf.Clamp(Character.Kinematics.Speed / Character.Config.topSpeed, 0.02f, 1.1f);
-            float currentSpeedPercent = animator.GetFloat(AnimatorParams.SpeedPercent);
-            animator.SetFloat(AnimatorParams.SpeedPercent, Mathf.Lerp(currentSpeedPercent, targetSpeedPercent, 10f * Time.deltaTime));
+            animator.SetFloat(AnimatorParams.SpeedPercent, targetSpeedPercent, 0.2f, Time.deltaTime);
 
             var characterForward = Vector3.ProjectOnPlane(Character.transform.forward, Vector3.up);
             var camForward = Vector3.ProjectOnPlane(Character.Camera.GetCameraTransform().forward, Vector3.up);

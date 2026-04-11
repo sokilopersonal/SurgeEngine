@@ -4,6 +4,8 @@ using SurgeEngine.Source.Code.Core.Character.CameraSystem.Modifiers;
 using SurgeEngine.Source.Code.Core.Character.States;
 using SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic;
 using SurgeEngine.Source.Code.Core.Character.System;
+using SurgeEngine.Source.Code.Gameplay.CommonObjects;
+using SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility;
 using UnityEngine;
 
 namespace SurgeEngine.Source.Code.Core.Character.CameraSystem.Pans
@@ -23,12 +25,20 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem.Pans
         private float _lateralLag;
         private float _lateralLagVelocity;
         private float _xLagBlend;
-
+        
+        private float _dashLagOffset;
+        private float _dashLagVelocity;
+        private float _dashLagTarget;
+        private float _dashLagTimer;
+        private const float DashLagInitial = 3f;
+        private const float DashLagSmoothTime = 0.15f;
+        private const float DashLagHoldTime = 0.25f;
+        protected virtual bool IsDashLagEnabled => true;
+        
         private Vector3 _lookOffset;
         private float _yawAuto;
         private float _pitchAuto;
-        private Type[] _excludedStates = new []
-        {
+        private readonly Type[] _excludedStates = {
             typeof(FStateAfterHoming), typeof(FStateGrind), typeof(FStateGrindSquat)
         };
 
@@ -54,7 +64,7 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem.Pans
 
         public NewModernState(CharacterBase owner) : base(owner)
         {
-            
+            ObjectEvents.OnObjectTriggered += OnObjectTriggered;
         }
 
         public override void OnEnter()
@@ -100,11 +110,21 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem.Pans
             Vector3 dir = horizontal * vertical * Vector3.back;
 
             var pos = CalculateTarget();
-            
-            float maxDist = originalDistance * 
+
+            float maxDist = originalDistance *
                 (_stateMachine.Master.GetModifier<BoostDistanceCameraModifier>(out var m) ? m.Value : 1f) + _forwardLag;
             float collDist = CalculateCollisionDistance(pos, StatePosition - pos, maxDist);
-            return pos + dir * collDist;
+
+            if (_dashLagTimer > 0f)
+            {
+                _dashLagTimer -= Time.deltaTime;
+                if (_dashLagTimer <= 0f)
+                    _dashLagTarget = 0f;
+            }
+
+            _dashLagOffset = Mathf.SmoothDamp(_dashLagOffset, _dashLagTarget, ref _dashLagVelocity, DashLagSmoothTime);
+
+            return pos + dir * (collDist + _dashLagOffset);
         }
 
         protected virtual Vector3 CalculateTarget()
@@ -139,6 +159,7 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem.Pans
         }
 
         protected virtual float GetDistance() => _master.Distance;
+
         protected virtual float GetVerticalOffset() => _master.YOffset;
 
         private void ZLag()
@@ -179,7 +200,7 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem.Pans
                 _lookOffset.y = Mathf.SmoothDamp(_lookOffset.y, 0, ref _lookVelocity, 0.5f);
             }
         }
-        
+
         private void XLag()
         {
             Vector3 localVelocity = Character.transform.InverseTransformDirection(Character.Kinematics.Velocity);
@@ -260,7 +281,7 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem.Pans
                 _lookOffset.x = Mathf.Lerp(_lookOffset.x, 0, Time.deltaTime * LateralOffsetResetSpeed);
             }
         }
-        
+
         /// <summary>
         /// Setup the camera state.
         /// </summary>
@@ -285,9 +306,16 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem.Pans
 
         private float GetAutoAngle()
         {
-            Vector3 forward = Vector3.ProjectOnPlane(Character.transform.forward, Vector3.up).normalized;
+            Vector3 velocity = Character.Kinematics.Velocity;
+            Vector3 flatVelocity = Vector3.ProjectOnPlane(velocity, Vector3.up);
+
+            if (flatVelocity.sqrMagnitude < 0.01f)
+                return 0f;
+
+            Vector3 movDir = flatVelocity.normalized;
             Vector3 camForward = Vector3.ProjectOnPlane(_stateMachine.Transform.forward, Vector3.up).normalized;
-            return Vector3.SignedAngle(camForward, forward, Vector3.up);
+
+            return Vector3.SignedAngle(camForward, movDir, Vector3.up);
         }
 
         private Vector3 GetOffset()
@@ -298,6 +326,16 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem.Pans
             Vector3 horizontal = new Vector3(_lookOffset.x, 0, 0);
             
             return vertical + _stateMachine.Transform.TransformDirection(horizontal);
+        }
+
+        private void OnObjectTriggered(StageObject obj)
+        {
+            if (!IsDashLagEnabled) return;
+            if (obj is DashPanel panel && panel.IsUseDelayCamera)
+            {
+                _dashLagTarget = DashLagInitial;
+                _dashLagTimer = DashLagHoldTime;
+            }
         }
     }
 }

@@ -41,6 +41,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         private readonly Dictionary<Type, ScriptableObject> _configs = new();
         
         [Inject] private StartData _startData;
+        public StartData StartData => _startData;
 
         public FStateMachine StateMachine { get; private set; }
         public Rigidbody Rigidbody { get; private set; }
@@ -122,12 +123,12 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         {
             AddConfig(Config);
         }
-        
+
         protected void AddConfig(ScriptableObject obj)
         {
             _configs.Add(obj.GetType(), obj);
         }
-        
+
         public void TryGetConfig<T>(out T request) where T : ScriptableObject
         {
             if (_configs.TryGetValue(typeof(T), out var result))
@@ -138,7 +139,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
             request = null;
         }
-        
+
         public virtual void Load()
         {
             Rigidbody.linearVelocity = Vector3.zero;
@@ -153,7 +154,5 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             
             StateMachine.SetState<FStateIdle>();
         }
-
-        public StartData GetStartData() => _startData;
     }
 }

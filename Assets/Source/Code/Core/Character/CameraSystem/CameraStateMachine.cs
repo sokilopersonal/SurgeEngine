@@ -67,7 +67,7 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem
 
             if (VolumeCount == 0)
             {
-                var startData = _character.GetStartData();
+                var startData = _character.StartData;
                 float exit = startData.startType == StartType.Standing ? 0.5f : 0f;
                 EaseData = new CameraEaseData(0, exit);
                 IsExiting = true;

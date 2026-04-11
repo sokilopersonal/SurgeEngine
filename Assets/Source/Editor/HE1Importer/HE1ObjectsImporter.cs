@@ -66,7 +66,7 @@ namespace SurgeEngine.Source.Editor.HE1Importer
                 ["EventCollision"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Common/EventCollision.prefab"),
                 ["MykonosFloor"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Apotos/MykonosFloor.prefab"),
                 ["ReactionPlate"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Common/ReactionPlate.prefab"),
-                ["JumpPole"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Common/SpringPole.prefab"),
+                ["JumpPole"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Common/JumpPole.prefab"),
             };
         }
 
@@ -106,10 +106,18 @@ namespace SurgeEngine.Source.Editor.HE1Importer
                 ["DashPanel"] = (go, elem) =>
                 {
                     float speed = HE1Helper.GetFloat(elem, "Speed");
+                    float speedMin = HE1Helper.GetFloat(elem, "SpeedMin");
+                    float speedMax = HE1Helper.GetFloat(elem, "SpeedMax");
                     float outOfControl = HE1Helper.GetFloat(elem, "OutOfControl");
+                    bool cameraLag = HE1Helper.GetBool(elem, "IsUseDelayCamera");
+                    bool constantVelocity = HE1Helper.GetBool(elem, "IsConstantStartVelocity");
                     var dashPanel = go.GetComponent<DashPanel>();
                     HE1Helper.SetFloat(dashPanel, "speed", speed);
+                    HE1Helper.SetFloat(dashPanel, "speedMin", speedMin);
+                    HE1Helper.SetFloat(dashPanel, "speedMax", speedMax);
                     HE1Helper.SetFloat(dashPanel, "outOfControl", outOfControl);
+                    HE1Helper.SetBool(dashPanel, "isUseDelayCamera", cameraLag);
+                    HE1Helper.SetBool(dashPanel, "isConstantStartVelocity", constantVelocity);
                 },
                 ["JumpBoard"] = (go, elem) =>
                 {

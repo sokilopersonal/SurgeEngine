@@ -21,7 +21,7 @@ namespace SurgeEngine.Source.Code.Core.Character.HUD
             _director = GetComponent<PlayableDirector>();
             _director.playOnAwake = false;
 
-            var startType = _character.GetStartData().startType;
+            var startType = _character.StartData.startType;
             if (startType != StartType.None)
             {
                 _director.Play(startType == StartType.Standing

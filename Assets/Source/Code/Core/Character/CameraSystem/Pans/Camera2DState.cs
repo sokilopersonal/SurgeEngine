@@ -5,6 +5,8 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem.Pans
 {
     public class Camera2DState : NewModernState
     {
+        protected override bool IsDashLagEnabled => false;
+
         private Vector3 _right;
         private Vector3 _rightVelocity;
         private Vector3 _tg;

@@ -17,7 +17,7 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem.Pans
 
         public CameraAnimState(CharacterBase owner) : base(owner)
         {
-            var startData = owner.GetStartData();
+            var startData = owner.StartData;
             _playerCenter = owner.transform.position;
             if (startData.startType == StartType.Standing)
             {

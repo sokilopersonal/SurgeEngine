@@ -56,7 +56,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
                 StateAnimator.TransitionToState("SkydiveDownEnd", 0f).Then(() => StateAnimator.TransitionToState("SkydiveLoop", 0f));
             }
 
-            Animator.SetFloat("Skydive", Mathf.Lerp(Animator.GetFloat("Skydive"), Character.Input.MoveVector.x, dt * 4f));
+            Animator.SetFloat("Skydive", Character.Input.MoveVector.x, 0.5f, dt);
         }
 
         public override void OnFixedTick(float dt)

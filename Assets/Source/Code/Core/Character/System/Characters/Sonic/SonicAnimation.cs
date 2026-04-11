@@ -26,7 +26,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
 
             if (obj is FStateStart)
             {
-                var data = Character.GetStartData();
+                var data = Character.StartData;
                 AnimationHandle startHandle = null;
                 if (data.startType == StartType.Standing)
                 {

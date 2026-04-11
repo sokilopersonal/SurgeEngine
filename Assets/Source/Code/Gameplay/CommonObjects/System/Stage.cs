@@ -39,7 +39,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.System
             }
 
             data.RingCount = 0;
-            data.State = _character.GetStartData().startType == StartType.None ? StageState.Playing : StageState.Start;
+            data.State = _character.StartData.startType == StartType.None ? StageState.Playing : StageState.Start;
         }
 
         private void Update()
