@@ -69,7 +69,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
                 
                 Vector3 dirNorm = dir.normalized;
                 float verticalDot = Mathf.Abs(Vector3.Dot(dirNorm, Vector3.up));
-                if (verticalDot > 0.9f) continue;
+                if (verticalDot > 0.7f) continue;
 
                 float dot = Vector3.Dot(forwardFlat, dirFlat);
                 if (dot < Mathf.Cos(angle * 0.5f * Mathf.Deg2Rad)) continue;
