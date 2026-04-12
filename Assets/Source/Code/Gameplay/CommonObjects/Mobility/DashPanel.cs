@@ -14,7 +14,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         [SerializeField] private float speedMin = 25f;
         [SerializeField] private float speedMax = 60f;
         [SerializeField] private float outOfControl = 0.5f;
-        [SerializeField] private bool isConstantStartVelocity = true;
+        [SerializeField] private bool isStartVelocityConstant = true;
         [SerializeField, Tooltip("When enabled, the camera will lag behind after triggering the dash panel.")] private bool isUseDelayCamera = true;
         public bool IsUseDelayCamera => isUseDelayCamera;
 
@@ -35,7 +35,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         
         private float GetTargetSpeed(float bodySpeed)
         {
-            if (isConstantStartVelocity)
+            if (isStartVelocityConstant)
                 return bodySpeed < speed ? speed : bodySpeed;
 
             return Mathf.Clamp(bodySpeed, speedMin, speedMax);
@@ -52,7 +52,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             speedMin = HE1Helper.GetFloat(elem, "SpeedMin");
             speedMax = HE1Helper.GetFloat(elem, "SpeedMax");
             outOfControl = HE1Helper.GetFloat(elem, "OutOfControl");
-            isConstantStartVelocity = HE1Helper.GetBool(elem, "IsConstantStartVelocity");
+            isStartVelocityConstant = HE1Helper.GetBool(elem, "IsStartVelocityConstant");
             isUseDelayCamera = HE1Helper.GetBool(elem, "IsUseDelayCamera");
         }
     }

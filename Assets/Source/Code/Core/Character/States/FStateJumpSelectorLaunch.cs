@@ -7,36 +7,27 @@ namespace SurgeEngine.Source.Code.Core.Character.States
 {
     public class FStateJumpSelectorLaunch : FCharacterState
     {
-        private float _timer;
+        private float _keepVelocityTime;
+        private float _elapsedTime;
         private bool _isFailed;
-        
+
         public FStateJumpSelectorLaunch(CharacterBase owner) : base(owner)
         {
-            
+
         }
 
         public override void OnEnter()
         {
             base.OnEnter();
 
-            _timer = 0f;
+            _elapsedTime = 0f;
+
+            Character.Flags.AddFlag(FlagType.OutOfControl);
         }
 
         public override void OnTick(float dt)
         {
             base.OnTick(dt);
-
-            if (!_isFailed)
-            {
-                if (_timer > 0)
-                {
-                    _timer -= dt;
-                }
-                else
-                {
-                    StateMachine.SetState<FStateAir>();
-                }
-            }
 
             if (Kinematics.CheckForGroundWithDirection(out var hit, Vector3.down))
             {
@@ -57,24 +48,38 @@ namespace SurgeEngine.Source.Code.Core.Character.States
         {
             base.OnFixedTick(dt);
             
-            Kinematics.ApplyGravity(Kinematics.Gravity);
+            if (!_isFailed)
+            {
+                _elapsedTime += dt;
+
+                if (_elapsedTime >= _keepVelocityTime)
+                {
+                    if (_keepVelocityTime > 0) Character.Flags.AddFlag(new Flag(FlagType.OutOfControl, _keepVelocityTime));
+                    StateMachine.SetState<FStateAir>();
+                }
+            }
+            else
+            {
+                Character.Flags.AddFlag(new Flag(FlagType.OutOfControl, 0.5f));
+                Kinematics.ApplyGravity(Kinematics.Gravity);
+            }
         }
 
-        public void SetData(float keep, JumpSelectorButton button, JumpSelectorResultType result)
+        public void SetData(float keepVelocityTime, JumpSelectorButton button, JumpSelectorResultType result)
         {
-            _timer = keep;
+            _keepVelocityTime = keepVelocityTime;
 
             var anim = Animation.StateAnimator;
             if (result == JumpSelectorResultType.OK)
             {
                 _isFailed = false;
-                
+
                 switch (button)
                 {
                     case JumpSelectorButton.A:
                         anim.TransitionToState("JumpSelectorUS", 0)
                             .Then(() => anim.TransitionToState("JumpSelectorULoop")
-                                .After(keep * 0.5f, () => anim.TransitionToState("JumpSelectorUE", 0)));
+                                .After(keepVelocityTime * 0.5f, () => anim.TransitionToState("JumpSelectorUE", 0)));
                         break;
                     case JumpSelectorButton.X:
                         anim.TransitionToState("JumpSelectorFS", 0)

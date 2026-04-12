@@ -26,7 +26,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.CameraObjects
             float distance = HE1Helper.GetFloat(elem, "Distance");
             float targetOffsetUp = HE1Helper.GetFloat(elem, "TargetOffset_Up");
             data.distance = distance;
-            data.yOffset = targetOffsetUp;
+            // data.yOffset = targetOffsetUp;
             
             float pitch = HE1Helper.GetFloat(elem, "Pitch");
             float yaw = HE1Helper.GetFloat(elem, "Yaw");

@@ -1,15 +1,17 @@
 ﻿using System;
+using System.Xml.Linq;
 using DG.Tweening;
 using SurgeEngine.Source.Code.Core.Character.States;
 using SurgeEngine.Source.Code.Core.Character.System;
 using SurgeEngine.Source.Code.Infrastructure.Custom;
 using SurgeEngine.Source.Code.Infrastructure.Custom.Drawers;
+using SurgeEngine.Source.Code.Tools;
 using UnityEngine;
 
 namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
 {
     [SelectionBase]
-    public class JumpSelector : StageObject
+    public class JumpSelector : StageObject, IHE1Importable
     {
         [SerializeField] private float downShotForce = 10f;
         [SerializeField] private float downShotOutOfControl = 0.5f;
@@ -70,13 +72,41 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         private void OnDrawGizmosSelected()
         {
             // Forward
-            TrajectoryDrawer.DrawTrajectory(transform.position, transform.forward, Color.blue, forwardShotForce);
+            TrajectoryDrawer.DrawTrajectory(transform.position, transform.forward, Color.blue, forwardShotForce, forwardShotForce * forwardShotOutOfControl);
             
             // Down
             TrajectoryDrawer.DrawTrajectory(transform.position, -transform.up, Color.red, downShotForce);
             
             // Up
             TrajectoryDrawer.DrawTrajectory(transform.position, Utility.GetImpulseWithPitch(transform.up, transform.right, upShotPitch, upShotForce), Color.green, upShotForce);
+        }
+
+        public void ImportSetData(string objectName, XElement elem)
+        {
+            downShotForce = HE1Helper.GetFloat(elem, "DownShotForce");
+            downShotOutOfControl = HE1Helper.GetFloat(elem, "DownShotOutOfControl");
+            forwardShotForce = HE1Helper.GetFloat(elem, "FrontJumpForce");
+            forwardShotOutOfControl = HE1Helper.GetFloat(elem, "FrontJumpOutOfControl");
+            upShotForce = HE1Helper.GetFloat(elem, "UpJumpForce");
+            upShotOutOfControl = HE1Helper.GetFloat(elem, "UpJumpOutOfControl");
+            upShotPitch = HE1Helper.GetFloat(elem, "UpJumpPitch");
+            
+            int buttonIndex = HE1Helper.GetInt(elem, "SuccessButton");
+            bool isQuestion = HE1Helper.GetBool(elem, "IsQuestion");
+            if (isQuestion)
+            {
+                button = JumpSelectorButton.U;
+            }
+            else
+            {
+                button = buttonIndex switch
+                {
+                    2 => JumpSelectorButton.X,
+                    1 => JumpSelectorButton.A,
+                    0 => JumpSelectorButton.B,
+                    _ => button
+                };
+            }
         }
     }
 

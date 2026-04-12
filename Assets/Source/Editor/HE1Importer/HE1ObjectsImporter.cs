@@ -69,6 +69,7 @@ namespace SurgeEngine.Source.Editor.HE1Importer
                 ["MykonosFloor"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Apotos/MykonosFloor.prefab"),
                 ["ReactionPlate"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Common/ReactionPlate.prefab"),
                 ["JumpPole"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Common/JumpPole.prefab"),
+                ["JumpSelector"] = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Source/Prefabs/HE1/Common/JumpSelector.prefab"),
             };
         }
 
