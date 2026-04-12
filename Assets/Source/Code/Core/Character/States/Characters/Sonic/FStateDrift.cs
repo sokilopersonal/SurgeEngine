@@ -55,7 +55,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
             
             var transform = Rigidbody.transform;
             var offset = -transform.up * 0.75f;
-            HurtBox.CreateAttached(Character, transform, offset, new Vector3(0.75f, 0.3f, 0.75f), HurtBoxTarget.Enemy | HurtBoxTarget.Breakable);
+            HurtBox.CreateBoxAttached(Character, transform, offset, new Vector3(0.75f, 0.3f, 0.75f), HurtBoxTarget.Enemy | HurtBoxTarget.Breakable);
             
             var physicsConfig = Character.Config;
             float distance = physicsConfig.castDistance * physicsConfig.castDistanceCurve.Evaluate(Kinematics.Speed / physicsConfig.topSpeed);

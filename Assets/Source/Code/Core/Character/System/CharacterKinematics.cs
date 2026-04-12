@@ -449,7 +449,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         {
             if (Speed > normalSpeedThreshold)
             {
-                Normal = Vector3.SmoothDamp(Normal, targetNormal, ref _normalVelocity, 0.02f, Speed);
+                Normal = Vector3.SmoothDamp(Normal, targetNormal, ref _normalVelocity, 0.01f, Mathf.Infinity);
             }
             else
             {

@@ -95,7 +95,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             if (ModeSide == null) return;
 
             Vector3 rbPos = Rigidbody.position - transform.up;
-            var newContainer = SearchSplineContainer(rbPos, SplineTag.SideView | SplineTag.Grind);
+            var newContainer = SearchSplineContainer(rbPos, SplineTag.SideView);
 
             if (SideSplineData == null)
             {
@@ -274,7 +274,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
                 if (heSpline == null) continue;
                 if (!filter.HasFlag(heSpline.SplineTag)) continue;
                 if (currentData != null && heSpline.Container == currentData.Container) continue;
-                if (heSpline.Container == null || heSpline.Container.Spline == null) continue; // <--
+                if (heSpline.Container == null || heSpline.Container.Spline == null) continue;
 
                 if (_cachedBounds.TryGetValue(heSpline, out var worldBounds) && !worldBounds.Contains(position)) continue;
 

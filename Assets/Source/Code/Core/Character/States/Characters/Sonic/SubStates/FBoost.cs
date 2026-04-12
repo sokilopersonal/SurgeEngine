@@ -193,7 +193,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStat
 
         private void CreateDamage()
         {
-            HurtBox.CreateAttached(Character, Character.transform, new Vector3(0f, 0f, -0.1f), new Vector3(0.5f, 1f, 1.15f),
+            HurtBox.CreateBoxAttached(Character, Character.transform, new Vector3(0f, 0f, -0.1f), new Vector3(0.5f, 1f, 1.15f),
                 HurtBoxTarget.Enemy | HurtBoxTarget.Breakable);
         }
 

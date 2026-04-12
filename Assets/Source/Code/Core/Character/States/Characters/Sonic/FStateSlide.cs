@@ -118,7 +118,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
             var transform = Rigidbody.transform;
             var offset = -transform.up * 0.6f;
             offset += transform.forward * 0.2f;
-            HurtBox.CreateAttached(Character, transform, offset, new Vector3(0.5f, 0.5f, 0.75f), HurtBoxTarget.Enemy | HurtBoxTarget.Breakable);
+            HurtBox.CreateBoxAttached(Character, transform, offset, new Vector3(0.5f, 0.5f, 0.75f), HurtBoxTarget.Enemy | HurtBoxTarget.Breakable);
         }
     }
 }

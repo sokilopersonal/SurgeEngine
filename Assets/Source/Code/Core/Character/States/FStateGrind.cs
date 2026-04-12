@@ -1,7 +1,5 @@
 ﻿using SurgeEngine.Source.Code.Core.Character.States.BaseStates;
 using SurgeEngine.Source.Code.Core.Character.System;
-using SurgeEngine.Source.Code.Gameplay.CommonObjects;
-using SurgeEngine.Source.Code.Gameplay.CommonObjects.ChangeModes;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility.Rails;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
@@ -117,7 +115,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
             _data = new SplineData(rail.Container, pos);
             _data.EvaluateWorld(out _, out Vector3 tg, out var up, out var right);
             
-            float dot = Vector3.Dot(Kinematics.Velocity.normalized, tg);
+            float dot = Vector3.Dot(Character.transform.forward, tg);
             _isForward = dot > 0;
             
             _rail = rail;

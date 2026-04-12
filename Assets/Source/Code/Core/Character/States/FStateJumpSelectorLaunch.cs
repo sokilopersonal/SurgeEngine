@@ -1,5 +1,6 @@
 ﻿using SurgeEngine.Source.Code.Core.Character.States.BaseStates;
 using SurgeEngine.Source.Code.Core.Character.System;
+using SurgeEngine.Source.Code.Gameplay.CommonObjects;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility;
 using UnityEngine;
 
@@ -63,6 +64,9 @@ namespace SurgeEngine.Source.Code.Core.Character.States
                 Character.Flags.AddFlag(new Flag(FlagType.OutOfControl, 0.5f));
                 Kinematics.ApplyGravity(Kinematics.Gravity);
             }
+
+            HurtBox.CreateSphereAttached(Character, Character.transform, Vector3.zero, 0.5f,
+                HurtBoxTarget.Breakable | HurtBoxTarget.Enemy);
         }
 
         public void SetData(float keepVelocityTime, JumpSelectorButton button, JumpSelectorResultType result)

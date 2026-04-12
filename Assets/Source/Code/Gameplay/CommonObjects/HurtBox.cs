@@ -16,14 +16,34 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects
         /// <param name="transform">Transform to create the hurtbox around</param>
         /// <param name="offset">Position offset</param>
         /// <param name="size">Size of the hurtbox</param>
-        /// <param name="target">What hurt box can hit?</param>
+        /// <param name="target">What can hurt box hit?</param>
         /// <returns>True, if it hits the target</returns>
-        public static bool CreateAttached(MonoBehaviour sender, Transform transform, Vector3 offset, Vector3 size, HurtBoxTarget target)
+        public static bool CreateBoxAttached(MonoBehaviour sender, Transform transform, Vector3 offset, Vector3 size, HurtBoxTarget target)
         {
             int mask = GetMask(target);
             var transformedOffset = transform.TransformVector(offset);
             var hits = Physics.OverlapBox(transform.position + transformedOffset, size, transform.rotation, mask);
 
+            if (ProcessHit(sender, hits)) return true;
+            
+            return false;
+        }
+
+        /// <summary>
+        /// Creates an attached hurtbox around the transform with the given radius
+        /// </summary>
+        /// <param name="sender">The sender of the hurt box</param>
+        /// <param name="transform">Transform to create the hurtbox around</param>
+        /// <param name="offset">Position offset</param>
+        /// <param name="radius">Size of the hurtbox</param>
+        /// <param name="target">What can hurt "sphere" hit?</param>
+        /// <returns>True, if it hits the target</returns>
+        public static bool CreateSphereAttached(MonoBehaviour sender, Transform transform, Vector3 offset, float radius, HurtBoxTarget target)
+        {
+            int mask = GetMask(target);
+            var transformedOffset = transform.TransformVector(offset);
+            var hits = Physics.OverlapSphere(transform.position + transformedOffset, radius, mask);
+            
             if (ProcessHit(sender, hits)) return true;
             
             return false;

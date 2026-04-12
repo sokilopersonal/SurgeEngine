@@ -96,7 +96,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
                 }
             }
             
-            bool foundDamageable = HurtBox.CreateAttached(Character, Character.transform, Vector3.zero, Vector3.one * 0.5f, HurtBoxTarget.Enemy | HurtBoxTarget.Breakable);
+            bool foundDamageable = HurtBox.CreateBoxAttached(Character, Character.transform, Vector3.zero, Vector3.one * 0.5f, HurtBoxTarget.Enemy | HurtBoxTarget.Breakable);
             if (foundDamageable)
             {
                 StateMachine.SetState<FStateAfterHoming>();
