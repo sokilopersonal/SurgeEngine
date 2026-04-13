@@ -187,8 +187,15 @@ namespace SurgeEngine.Source.Code.Gameplay.Enemy.EggFighter
         {
             if (objectName == "eFighterTutorial")
                 type = EggFighterType.Tutorial;
+
+            bool onlyPlayerAttack = HE1Helper.GetBool(elem, "OnlyPlayerAttack");
+            float radiusActive = HE1Helper.GetFloat(elem, "RadiusActive");
+            float radiusAttack = HE1Helper.GetFloat(elem, "RadiusAttack");
             
-            // TODO: Change the search and punch radius
+            var sensor = GetComponentInChildren<VisionSensor>();
+            sensor.SetRadius(Mathf.Sqrt(radiusActive));
+            punchRadius = Mathf.Sqrt(radiusAttack);
+            followPlayer = !onlyPlayerAttack;
         }
     }
 }

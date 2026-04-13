@@ -59,6 +59,9 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Sensors
             return new Vector3(Mathf.Sin(deg * Mathf.Deg2Rad), 0f, 
                 Mathf.Cos(deg * Mathf.Deg2Rad));
         }
+        
+        public void SetRadius(float viewRadius) => radius = Mathf.Abs(viewRadius);
+        public void SetAngle(float viewAngle) => angle = Mathf.Abs(viewAngle);
 
         private void OnDrawGizmosSelected()
         {
