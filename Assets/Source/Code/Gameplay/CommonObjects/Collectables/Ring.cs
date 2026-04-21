@@ -15,7 +15,6 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Collectables
         [SerializeField] private bool isLightSpeedDashTarget = true;
         [SerializeField] private ParticleSystem particle;
         [SerializeField] private EventReference ringSound;
-        [FoldoutGroup("GPU Instancing"), Required, SerializeField] private GameObject model;
         
         public virtual bool IsLightSpeedDashTarget => isLightSpeedDashTarget;
         public virtual bool IsSuperRing => false;
@@ -36,35 +35,6 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Collectables
         {
             _startPosition = transform.position;
             _startRotation = transform.rotation;
-        }
-
-        private void OnEnable()
-        {
-            if (!IsSuperRing)
-            {
-                var instance = RingsGPURenderer.Instance;
-                if (instance)
-                {
-                    instance.Register(transform);
-                    model.SetActive(false);
-                }
-                else
-                {
-                    model.SetActive(true);
-                }
-            }
-        }
-
-        private void OnDisable()
-        {
-            if (!IsSuperRing)
-            {
-                var instance = RingsGPURenderer.Instance;
-                if (instance)
-                {
-                    instance.Unregister(transform);
-                }
-            }
         }
 
         private void Update()

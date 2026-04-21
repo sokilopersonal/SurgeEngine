@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6769180083104733751}
   - component: {fileID: 9157802862194048415}
   - component: {fileID: 1446213983026294578}
+  - component: {fileID: 7089548128526765056}
   m_Layer: 9
   m_Name: Ring
   m_TagString: Untagged
@@ -46,6 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09af42e98110490c9542b074a33e2c21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <SetID>k__BackingField: 0
   isLightSpeedDashTarget: 1
   particle: {fileID: 1814470209572932468, guid: 28f2a6b5be5fc4846ab4d5b976f05a29, type: 3}
   ringSound:
@@ -55,7 +57,6 @@ MonoBehaviour:
       Data3: 164800185
       Data4: 1447502703
     Path: event:/CommonObjects/Ring
-  model: {fileID: 2056970377828112826}
 --- !u!135 &1446213983026294578
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -77,6 +78,25 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.4
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!205 &7089548128526765056
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6249630446023016589}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: 0, y: 0, z: -0.00000023841858}
+  m_Size: 0.5958736
+  m_FadeMode: 0
+  m_AnimateCrossFading: 0
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0.0031722942
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 543580790112237679}
+  m_Enabled: 1
 --- !u!1001 &1173955681468753131
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -142,13 +162,13 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9b8d20838e6f8c5459942bd996c63033, type: 3}
+--- !u!23 &543580790112237679 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 9b8d20838e6f8c5459942bd996c63033, type: 3}
+  m_PrefabInstance: {fileID: 1173955681468753131}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1711371180847547136 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9b8d20838e6f8c5459942bd996c63033, type: 3}
-  m_PrefabInstance: {fileID: 1173955681468753131}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &2056970377828112826 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 9b8d20838e6f8c5459942bd996c63033, type: 3}
   m_PrefabInstance: {fileID: 1173955681468753131}
   m_PrefabAsset: {fileID: 0}
