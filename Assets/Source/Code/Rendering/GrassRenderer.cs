@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.Rendering;
 using Random = UnityEngine.Random;
@@ -137,7 +138,7 @@ namespace SurgeEngine.Source.Code.Rendering
                 gpuData[i].posAndTex = new Vector4(inst.position.x, inst.position.y, inst.position.z, inst.textureIndex);
             }
             
-            int stride = Marshal.SizeOf(typeof(GPUGrassInstance));
+            int stride = UnsafeUtility.SizeOf(typeof(GPUGrassInstance));
 
             _allInstancesBuffer = new ComputeBuffer(_totalInstanceCount, stride, ComputeBufferType.Structured);
             _allInstancesBuffer.SetData(gpuData);
