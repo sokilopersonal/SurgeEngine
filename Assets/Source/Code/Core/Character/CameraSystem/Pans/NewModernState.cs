@@ -31,7 +31,7 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem.Pans
         private float _dashLagTarget;
         private float _dashLagTimer;
         private const float DashLagInitial = 3f;
-        private const float DashLagSmoothTime = 0.15f;
+        private const float DashLagSmoothTime = 0.25f;
         private const float DashLagHoldTime = 0.25f;
         protected virtual bool IsDashLagEnabled => true;
         
@@ -71,6 +71,8 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem.Pans
         {
             base.OnEnter();
             
+            ResetDashPanelLag();
+
             _pitchAuto = 0;
             _yawAuto = 0;
         }
@@ -280,6 +282,14 @@ namespace SurgeEngine.Source.Code.Core.Character.CameraSystem.Pans
             {
                 _lookOffset.x = Mathf.Lerp(_lookOffset.x, 0, Time.deltaTime * LateralOffsetResetSpeed);
             }
+        }
+
+        private void ResetDashPanelLag()
+        {
+            _dashLagTarget = 0f;
+            _dashLagTimer = 0f;
+            _dashLagOffset = 0f;
+            _dashLagVelocity = 0f;
         }
 
         /// <summary>
