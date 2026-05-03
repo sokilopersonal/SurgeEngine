@@ -87,10 +87,11 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects
     [Flags]
     public enum SplineTag
     {
-        Default = 0,
-        SideView = 1,
-        Quickstep = 2,
-        DashPath = 4,
-        Grind = 8,
+        None = 0,
+        Default = 1,
+        SideView = 2,
+        Quickstep = 4,
+        DashPath = 8,
+        Grind = 16,
     }
 }

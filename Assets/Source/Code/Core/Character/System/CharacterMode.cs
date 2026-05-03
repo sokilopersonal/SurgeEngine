@@ -272,6 +272,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             foreach (var heSpline in _allSplines)
             {
                 if (heSpline == null) continue;
+                if (heSpline.SplineTag == SplineTag.None || heSpline.SplineTag == SplineTag.Default) continue;
                 if (!filter.HasFlag(heSpline.SplineTag)) continue;
                 if (currentData != null && heSpline.Container == currentData.Container) continue;
                 if (heSpline.Container == null || heSpline.Container.Spline == null) continue;
