@@ -1,6 +1,7 @@
 ﻿using System;
 using SurgeEngine.Source.Code.Core.Character.States.BaseStates;
 using SurgeEngine.Source.Code.Core.Character.System;
+using UnityEngine;
 
 namespace SurgeEngine.Source.Code.Core.Character.States
 {
@@ -49,6 +50,11 @@ namespace SurgeEngine.Source.Code.Core.Character.States
                     Input.enabled = true;
                     StateMachine.SetState<FStateGround>();
                 }
+            }
+            else
+            {
+                Input.enabled = true;
+                StateMachine.SetState<FStateGround>();
             }
         }
 
