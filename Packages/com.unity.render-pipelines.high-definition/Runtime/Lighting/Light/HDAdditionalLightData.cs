@@ -307,7 +307,7 @@ namespace UnityEngine.Rendering.HighDefinition
                     return;
 
                 m_NonLightmappedOnly = value;
-                legacyLight.lightShadowCasterMode = value ? LightShadowCasterMode.NonLightmappedOnly : LightShadowCasterMode.Everything;
+                legacyLight.lightShadowCasterMode = value ? LightShadowCasterMode.ShadowMask : LightShadowCasterMode.DistanceShadowMask;
                 // We need to update the ray traced shadow flag as we don't want ray traced shadows with shadow mask.
                 if (lightEntity.valid)
                     HDLightRenderDatabase.instance.EditLightDataAsRef(lightEntity).useRayTracedShadows = m_UseRayTracedShadows && !m_NonLightmappedOnly;
@@ -2946,7 +2946,7 @@ namespace UnityEngine.Rendering.HighDefinition
             }
 
             // We don't use the global settings of shadow mask by default
-            light.lightShadowCasterMode = LightShadowCasterMode.Everything;
+            light.lightShadowCasterMode = LightShadowCasterMode.DistanceShadowMask;
 
             lightData.normalBias = 0.75f;
             lightData.slopeBias = 0.5f;

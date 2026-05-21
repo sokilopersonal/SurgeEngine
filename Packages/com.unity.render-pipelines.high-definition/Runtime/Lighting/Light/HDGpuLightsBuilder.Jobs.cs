@@ -301,7 +301,7 @@ namespace UnityEngine.Rendering.HighDefinition
                 if (processedEntity.isBakedShadowMask)
                 {
                     lightData.shadowMaskSelector[visibleLightBakingOutput.occlusionMaskChannel] = 1.0f;
-                    lightData.nonLightMappedOnly = visibleLightShadowCasterMode == LightShadowCasterMode.NonLightmappedOnly ? 1 : 0;
+                    lightData.nonLightMappedOnly = visibleLightShadowCasterMode == LightShadowCasterMode.ShadowMask ? 1 : 0;
                 }
                 else
                 {
@@ -610,7 +610,7 @@ namespace UnityEngine.Rendering.HighDefinition
                 {
                     var bakingOutput = visibleLightBakingOutput[lightIndex];
                     lightData.shadowMaskSelector[bakingOutput.occlusionMaskChannel] = 1.0f;
-                    lightData.nonLightMappedOnly = visibleLightShadowCasterMode[lightIndex] == LightShadowCasterMode.NonLightmappedOnly ? 1 : 0;
+                    lightData.nonLightMappedOnly = visibleLightShadowCasterMode[lightIndex] == LightShadowCasterMode.ShadowMask ? 1 : 0;
                 }
                 else
                 {

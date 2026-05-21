@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEngine.Rendering.HighDefinition;
 using UnityEditor.ShaderGraph;
 using UnityEditor.ShaderGraph.Legacy;
-
+using UnityEngine;
 using static UnityEngine.Rendering.HighDefinition.HDMaterial;
 using static UnityEditor.Rendering.HighDefinition.HDFields;
 

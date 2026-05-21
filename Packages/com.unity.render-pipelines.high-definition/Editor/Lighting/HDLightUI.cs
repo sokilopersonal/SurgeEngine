@@ -1340,7 +1340,7 @@ namespace UnityEditor.Rendering.HighDefinition
                                 Undo.RecordObjects(owner.targets, "Light Update Shadowmask Mode");
                                 serialized.nonLightmappedOnly.boolValue = fullShadowMask;
                                 foreach (Light target in owner.targets)
-                                    target.lightShadowCasterMode = shadowmask == ShadowmaskMode.Shadowmask ? LightShadowCasterMode.NonLightmappedOnly : LightShadowCasterMode.Everything;
+                                    target.lightShadowCasterMode = shadowmask == ShadowmaskMode.Shadowmask ? LightShadowCasterMode.ShadowMask : LightShadowCasterMode.DistanceShadowMask;
                             }
                         }
                         EditorGUI.EndProperty();

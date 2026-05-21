@@ -306,6 +306,11 @@ MonoBehaviour:
   m_ShapeWidth: -1
   m_ShapeHeight: -1
   m_AspectRatio: 1
+  m_Version: 14
+  m_ObsoleteShadowResolutionTier: 1
+  m_ObsoleteUseShadowQualitySettings: 0
+  m_ObsoleteCustomShadowResolution: 512
+  m_ObsoleteContactShadows: 0
   m_SpotIESCutoffPercent: 100
   m_LightDimmer: 1.66
   m_VolumetricDimmer: 1.66
@@ -420,11 +425,6 @@ MonoBehaviour:
   m_AreaLightEmissiveMeshShadowCastingMode: 0
   m_AreaLightEmissiveMeshMotionVectorGenerationMode: 0
   m_AreaLightEmissiveMeshLayer: -1
-  m_Version: 14
-  m_ObsoleteShadowResolutionTier: 1
-  m_ObsoleteUseShadowQualitySettings: 0
-  m_ObsoleteCustomShadowResolution: 512
-  m_ObsoleteContactShadows: 0
 --- !u!108 &4654693
 Light:
   m_ObjectHideFlags: 0
@@ -433,7 +433,7 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4654689}
   m_Enabled: 1
-  serializedVersion: 12
+  serializedVersion: 13
   m_Type: 1
   m_Color: {r: 1, g: 0.80438405, b: 0.6462264, a: 1}
   m_Intensity: 130000
@@ -485,7 +485,7 @@ Light:
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
-  m_ShadowRadius: 0
+  m_ShapeRadius: 0
   m_ShadowAngle: 2
   m_LightUnit: 2
   m_LuxAtDistance: 1
@@ -1501,6 +1501,11 @@ MonoBehaviour:
   m_ShapeWidth: -1
   m_ShapeHeight: -1
   m_AspectRatio: 1
+  m_Version: 14
+  m_ObsoleteShadowResolutionTier: 1
+  m_ObsoleteUseShadowQualitySettings: 0
+  m_ObsoleteCustomShadowResolution: 512
+  m_ObsoleteContactShadows: 0
   m_SpotIESCutoffPercent: 100
   m_LightDimmer: 48
   m_VolumetricDimmer: 1
@@ -1615,11 +1620,6 @@ MonoBehaviour:
   m_AreaLightEmissiveMeshShadowCastingMode: 0
   m_AreaLightEmissiveMeshMotionVectorGenerationMode: 0
   m_AreaLightEmissiveMeshLayer: -1
-  m_Version: 14
-  m_ObsoleteShadowResolutionTier: 1
-  m_ObsoleteUseShadowQualitySettings: 0
-  m_ObsoleteCustomShadowResolution: 512
-  m_ObsoleteContactShadows: 0
 --- !u!108 &77958222
 Light:
   m_ObjectHideFlags: 0
@@ -1628,7 +1628,7 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 77958220}
   m_Enabled: 1
-  serializedVersion: 12
+  serializedVersion: 13
   m_Type: 2
   m_Color: {r: 0.46598905, g: 0.45977217, b: 0.7924528, a: 1}
   m_Intensity: 3183.0989
@@ -1680,7 +1680,7 @@ Light:
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
-  m_ShadowRadius: 0
+  m_ShapeRadius: 0
   m_ShadowAngle: 0
   m_LightUnit: 0
   m_LuxAtDistance: 1
@@ -2551,6 +2551,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cded085d155cde949b60f67a11dbc3bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  version: 2
+  globalVolume: 0
   mode: 2
   size: {x: 408.87885, y: 50.17499, z: 145.14566}
   overrideRendererFilters: 0
@@ -2581,8 +2583,6 @@ MonoBehaviour:
     e33: 1
   cachedHashCode: 1055329801
   fillEmptySpaces: 0
-  version: 2
-  globalVolume: 0
 --- !u!1 &147336002
 GameObject:
   m_ObjectHideFlags: 0
@@ -2819,8 +2819,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00d133a8c31e4f57b0c3c60ead0b90ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SurgeEngine.Source.Code.Gameplay.CommonObjects.HESpline
-  dominant: 0
-  splineTag: 8
+  splineTag: 16
   id: myk_Act1_grind001@GR
 --- !u!114 &158365428
 MonoBehaviour:
@@ -3428,6 +3427,11 @@ MonoBehaviour:
   m_ShapeWidth: -1
   m_ShapeHeight: -1
   m_AspectRatio: 1
+  m_Version: 14
+  m_ObsoleteShadowResolutionTier: 1
+  m_ObsoleteUseShadowQualitySettings: 0
+  m_ObsoleteCustomShadowResolution: 512
+  m_ObsoleteContactShadows: 0
   m_SpotIESCutoffPercent: 100
   m_LightDimmer: 48
   m_VolumetricDimmer: 1
@@ -3542,11 +3546,6 @@ MonoBehaviour:
   m_AreaLightEmissiveMeshShadowCastingMode: 0
   m_AreaLightEmissiveMeshMotionVectorGenerationMode: 0
   m_AreaLightEmissiveMeshLayer: -1
-  m_Version: 14
-  m_ObsoleteShadowResolutionTier: 1
-  m_ObsoleteUseShadowQualitySettings: 0
-  m_ObsoleteCustomShadowResolution: 512
-  m_ObsoleteContactShadows: 0
 --- !u!108 &183462285
 Light:
   m_ObjectHideFlags: 0
@@ -3555,7 +3554,7 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 183462283}
   m_Enabled: 1
-  serializedVersion: 12
+  serializedVersion: 13
   m_Type: 2
   m_Color: {r: 0.46598905, g: 0.45977217, b: 0.7924528, a: 1}
   m_Intensity: 3183.0989
@@ -3607,7 +3606,7 @@ Light:
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
-  m_ShadowRadius: 0
+  m_ShapeRadius: 0
   m_ShadowAngle: 0
   m_LightUnit: 0
   m_LuxAtDistance: 1
@@ -3824,6 +3823,11 @@ MonoBehaviour:
   m_ShapeWidth: -1
   m_ShapeHeight: -1
   m_AspectRatio: 1
+  m_Version: 14
+  m_ObsoleteShadowResolutionTier: 1
+  m_ObsoleteUseShadowQualitySettings: 0
+  m_ObsoleteCustomShadowResolution: 512
+  m_ObsoleteContactShadows: 0
   m_SpotIESCutoffPercent: 100
   m_LightDimmer: 48
   m_VolumetricDimmer: 1
@@ -3938,11 +3942,6 @@ MonoBehaviour:
   m_AreaLightEmissiveMeshShadowCastingMode: 0
   m_AreaLightEmissiveMeshMotionVectorGenerationMode: 0
   m_AreaLightEmissiveMeshLayer: -1
-  m_Version: 14
-  m_ObsoleteShadowResolutionTier: 1
-  m_ObsoleteUseShadowQualitySettings: 0
-  m_ObsoleteCustomShadowResolution: 512
-  m_ObsoleteContactShadows: 0
 --- !u!108 &190089455
 Light:
   m_ObjectHideFlags: 0
@@ -3951,7 +3950,7 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 190089453}
   m_Enabled: 1
-  serializedVersion: 12
+  serializedVersion: 13
   m_Type: 2
   m_Color: {r: 0.46598905, g: 0.45977217, b: 0.7924528, a: 1}
   m_Intensity: 3183.0989
@@ -4003,7 +4002,7 @@ Light:
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
-  m_ShadowRadius: 0
+  m_ShapeRadius: 0
   m_ShadowAngle: 0
   m_LightUnit: 0
   m_LuxAtDistance: 1
@@ -5105,6 +5104,11 @@ MonoBehaviour:
   m_ShapeWidth: -1
   m_ShapeHeight: -1
   m_AspectRatio: 1
+  m_Version: 14
+  m_ObsoleteShadowResolutionTier: 1
+  m_ObsoleteUseShadowQualitySettings: 0
+  m_ObsoleteCustomShadowResolution: 512
+  m_ObsoleteContactShadows: 0
   m_SpotIESCutoffPercent: 100
   m_LightDimmer: 48
   m_VolumetricDimmer: 1
@@ -5219,11 +5223,6 @@ MonoBehaviour:
   m_AreaLightEmissiveMeshShadowCastingMode: 0
   m_AreaLightEmissiveMeshMotionVectorGenerationMode: 0
   m_AreaLightEmissiveMeshLayer: -1
-  m_Version: 14
-  m_ObsoleteShadowResolutionTier: 1
-  m_ObsoleteUseShadowQualitySettings: 0
-  m_ObsoleteCustomShadowResolution: 512
-  m_ObsoleteContactShadows: 0
 --- !u!108 &288526559
 Light:
   m_ObjectHideFlags: 0
@@ -5232,7 +5231,7 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 288526557}
   m_Enabled: 1
-  serializedVersion: 12
+  serializedVersion: 13
   m_Type: 2
   m_Color: {r: 0.46598905, g: 0.45977217, b: 0.7924528, a: 1}
   m_Intensity: 3183.0989
@@ -5284,7 +5283,7 @@ Light:
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
-  m_ShadowRadius: 0
+  m_ShapeRadius: 0
   m_ShadowAngle: 0
   m_LightUnit: 0
   m_LuxAtDistance: 1
@@ -5867,6 +5866,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cded085d155cde949b60f67a11dbc3bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  version: 2
+  globalVolume: 0
   mode: 2
   size: {x: 26.793102, y: 14.259087, z: 148.5727}
   overrideRendererFilters: 0
@@ -5897,8 +5898,6 @@ MonoBehaviour:
     e33: 1
   cachedHashCode: -632880539
   fillEmptySpaces: 0
-  version: 2
-  globalVolume: 0
 --- !u!1001 &320693109
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7038,8 +7037,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00d133a8c31e4f57b0c3c60ead0b90ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SurgeEngine.Source.Code.Gameplay.CommonObjects.HESpline
-  dominant: 0
-  splineTag: 2
+  splineTag: 4
   id: myk_Act1_quick001@QS
 --- !u!114 &355130296
 MonoBehaviour:
@@ -56879,6 +56877,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cded085d155cde949b60f67a11dbc3bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  version: 2
+  globalVolume: 0
   mode: 2
   size: {x: 42.824036, y: 20.450317, z: 42.823975}
   overrideRendererFilters: 0
@@ -56909,8 +56909,6 @@ MonoBehaviour:
     e33: 1
   cachedHashCode: 1530170456
   fillEmptySpaces: 0
-  version: 2
-  globalVolume: 0
 --- !u!1001 &572450786
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -58101,6 +58099,11 @@ MonoBehaviour:
   m_ShapeWidth: -1
   m_ShapeHeight: -1
   m_AspectRatio: 1
+  m_Version: 14
+  m_ObsoleteShadowResolutionTier: 1
+  m_ObsoleteUseShadowQualitySettings: 0
+  m_ObsoleteCustomShadowResolution: 512
+  m_ObsoleteContactShadows: 0
   m_SpotIESCutoffPercent: 100
   m_LightDimmer: 48
   m_VolumetricDimmer: 1
@@ -58215,11 +58218,6 @@ MonoBehaviour:
   m_AreaLightEmissiveMeshShadowCastingMode: 0
   m_AreaLightEmissiveMeshMotionVectorGenerationMode: 0
   m_AreaLightEmissiveMeshLayer: -1
-  m_Version: 14
-  m_ObsoleteShadowResolutionTier: 1
-  m_ObsoleteUseShadowQualitySettings: 0
-  m_ObsoleteCustomShadowResolution: 512
-  m_ObsoleteContactShadows: 0
 --- !u!108 &666257053
 Light:
   m_ObjectHideFlags: 0
@@ -58228,7 +58226,7 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 666257051}
   m_Enabled: 1
-  serializedVersion: 12
+  serializedVersion: 13
   m_Type: 2
   m_Color: {r: 0.46598905, g: 0.45977217, b: 0.7924528, a: 1}
   m_Intensity: 3183.0989
@@ -58280,7 +58278,7 @@ Light:
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
-  m_ShadowRadius: 0
+  m_ShapeRadius: 0
   m_ShadowAngle: 0
   m_LightUnit: 0
   m_LuxAtDistance: 1
@@ -98307,6 +98305,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cded085d155cde949b60f67a11dbc3bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  version: 2
+  globalVolume: 0
   mode: 2
   size: {x: 85.92337, y: 99.60689, z: 249.24985}
   overrideRendererFilters: 0
@@ -98337,8 +98337,6 @@ MonoBehaviour:
     e33: 1
   cachedHashCode: -1394665495
   fillEmptySpaces: 0
-  version: 2
-  globalVolume: 0
 --- !u!1001 &771424561
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -99911,6 +99909,11 @@ MonoBehaviour:
   m_ShapeWidth: -1
   m_ShapeHeight: -1
   m_AspectRatio: 1
+  m_Version: 14
+  m_ObsoleteShadowResolutionTier: 1
+  m_ObsoleteUseShadowQualitySettings: 0
+  m_ObsoleteCustomShadowResolution: 512
+  m_ObsoleteContactShadows: 0
   m_SpotIESCutoffPercent: 100
   m_LightDimmer: 48
   m_VolumetricDimmer: 1
@@ -100025,11 +100028,6 @@ MonoBehaviour:
   m_AreaLightEmissiveMeshShadowCastingMode: 0
   m_AreaLightEmissiveMeshMotionVectorGenerationMode: 0
   m_AreaLightEmissiveMeshLayer: -1
-  m_Version: 14
-  m_ObsoleteShadowResolutionTier: 1
-  m_ObsoleteUseShadowQualitySettings: 0
-  m_ObsoleteCustomShadowResolution: 512
-  m_ObsoleteContactShadows: 0
 --- !u!108 &918097037
 Light:
   m_ObjectHideFlags: 0
@@ -100038,7 +100036,7 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 918097035}
   m_Enabled: 1
-  serializedVersion: 12
+  serializedVersion: 13
   m_Type: 2
   m_Color: {r: 0.46598905, g: 0.45977217, b: 0.7924528, a: 1}
   m_Intensity: 3183.0989
@@ -100090,7 +100088,7 @@ Light:
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
-  m_ShadowRadius: 0
+  m_ShapeRadius: 0
   m_ShadowAngle: 0
   m_LightUnit: 0
   m_LuxAtDistance: 1
@@ -101330,15 +101328,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5054113536844244027, guid: 17fe1b2335965bf458073bda81e475b5, type: 3}
       propertyPath: startData.time
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5054113536844244027, guid: 17fe1b2335965bf458073bda81e475b5, type: 3}
       propertyPath: startData.speed
-      value: 0
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 5054113536844244027, guid: 17fe1b2335965bf458073bda81e475b5, type: 3}
       propertyPath: startData.startType
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7719288847048677561, guid: 17fe1b2335965bf458073bda81e475b5, type: 3}
       propertyPath: spawnPoint
@@ -101973,6 +101971,11 @@ MonoBehaviour:
   m_ShapeWidth: -1
   m_ShapeHeight: -1
   m_AspectRatio: 1
+  m_Version: 14
+  m_ObsoleteShadowResolutionTier: 1
+  m_ObsoleteUseShadowQualitySettings: 0
+  m_ObsoleteCustomShadowResolution: 512
+  m_ObsoleteContactShadows: 0
   m_SpotIESCutoffPercent: 100
   m_LightDimmer: 48
   m_VolumetricDimmer: 1
@@ -102087,11 +102090,6 @@ MonoBehaviour:
   m_AreaLightEmissiveMeshShadowCastingMode: 0
   m_AreaLightEmissiveMeshMotionVectorGenerationMode: 0
   m_AreaLightEmissiveMeshLayer: -1
-  m_Version: 14
-  m_ObsoleteShadowResolutionTier: 1
-  m_ObsoleteUseShadowQualitySettings: 0
-  m_ObsoleteCustomShadowResolution: 512
-  m_ObsoleteContactShadows: 0
 --- !u!108 &1041129976
 Light:
   m_ObjectHideFlags: 0
@@ -102100,7 +102098,7 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1041129974}
   m_Enabled: 1
-  serializedVersion: 12
+  serializedVersion: 13
   m_Type: 2
   m_Color: {r: 0.46598905, g: 0.45977217, b: 0.7924528, a: 1}
   m_Intensity: 3183.0989
@@ -102152,7 +102150,7 @@ Light:
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
-  m_ShadowRadius: 0
+  m_ShapeRadius: 0
   m_ShadowAngle: 0
   m_LightUnit: 0
   m_LuxAtDistance: 1
@@ -106253,6 +106251,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cded085d155cde949b60f67a11dbc3bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  version: 2
+  globalVolume: 0
   mode: 2
   size: {x: 36, y: 30.256119, z: 158.90985}
   overrideRendererFilters: 0
@@ -106283,8 +106283,6 @@ MonoBehaviour:
     e33: 1
   cachedHashCode: 224329163
   fillEmptySpaces: 0
-  version: 2
-  globalVolume: 0
 --- !u!4 &1363460580 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6468350259642137912, guid: 56224409df3545940af6aec42e2cec2a, type: 3}
@@ -106943,6 +106941,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cded085d155cde949b60f67a11dbc3bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  version: 2
+  globalVolume: 0
   mode: 2
   size: {x: 22, y: 59.42447, z: 779.56885}
   overrideRendererFilters: 0
@@ -106973,8 +106973,6 @@ MonoBehaviour:
     e33: 1
   cachedHashCode: 1846963344
   fillEmptySpaces: 0
-  version: 2
-  globalVolume: 0
 --- !u!1001 &1456510706
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -107589,6 +107587,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cded085d155cde949b60f67a11dbc3bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  version: 2
+  globalVolume: 0
   mode: 2
   size: {x: 93.668945, y: 20.776398, z: 26.200745}
   overrideRendererFilters: 0
@@ -107619,8 +107619,6 @@ MonoBehaviour:
     e33: 1
   cachedHashCode: 1646177132
   fillEmptySpaces: 0
-  version: 2
-  globalVolume: 0
 --- !u!4 &1488782083 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6769180083104733751, guid: 63d746f270eb67349b9f5d2854889351, type: 3}
@@ -108257,6 +108255,11 @@ MonoBehaviour:
   m_ShapeWidth: -1
   m_ShapeHeight: -1
   m_AspectRatio: 1
+  m_Version: 14
+  m_ObsoleteShadowResolutionTier: 1
+  m_ObsoleteUseShadowQualitySettings: 0
+  m_ObsoleteCustomShadowResolution: 512
+  m_ObsoleteContactShadows: 0
   m_SpotIESCutoffPercent: 100
   m_LightDimmer: 48
   m_VolumetricDimmer: 1
@@ -108371,11 +108374,6 @@ MonoBehaviour:
   m_AreaLightEmissiveMeshShadowCastingMode: 0
   m_AreaLightEmissiveMeshMotionVectorGenerationMode: 0
   m_AreaLightEmissiveMeshLayer: -1
-  m_Version: 14
-  m_ObsoleteShadowResolutionTier: 1
-  m_ObsoleteUseShadowQualitySettings: 0
-  m_ObsoleteCustomShadowResolution: 512
-  m_ObsoleteContactShadows: 0
 --- !u!108 &1540978299
 Light:
   m_ObjectHideFlags: 0
@@ -108384,7 +108382,7 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1540978297}
   m_Enabled: 1
-  serializedVersion: 12
+  serializedVersion: 13
   m_Type: 2
   m_Color: {r: 0.46598905, g: 0.45977217, b: 0.7924528, a: 1}
   m_Intensity: 3183.0989
@@ -108436,7 +108434,7 @@ Light:
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
-  m_ShadowRadius: 0
+  m_ShapeRadius: 0
   m_ShadowAngle: 0
   m_LightUnit: 0
   m_LuxAtDistance: 1
@@ -109445,8 +109443,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00d133a8c31e4f57b0c3c60ead0b90ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SurgeEngine.Source.Code.Gameplay.CommonObjects.HESpline
-  dominant: 0
-  splineTag: 1
+  splineTag: 2
   id: myk_Act1_path003@SV
 --- !u!114 &1681357876
 MonoBehaviour:
@@ -114124,8 +114121,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00d133a8c31e4f57b0c3c60ead0b90ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SurgeEngine.Source.Code.Gameplay.CommonObjects.HESpline
-  dominant: 0
-  splineTag: 1
+  splineTag: 2
   id: myk_Act1_path001@SV
 --- !u!114 &1835434170
 MonoBehaviour:
@@ -117139,6 +117135,11 @@ MonoBehaviour:
   m_ShapeWidth: -1
   m_ShapeHeight: -1
   m_AspectRatio: 1
+  m_Version: 14
+  m_ObsoleteShadowResolutionTier: 1
+  m_ObsoleteUseShadowQualitySettings: 0
+  m_ObsoleteCustomShadowResolution: 512
+  m_ObsoleteContactShadows: 0
   m_SpotIESCutoffPercent: 100
   m_LightDimmer: 48
   m_VolumetricDimmer: 1
@@ -117253,11 +117254,6 @@ MonoBehaviour:
   m_AreaLightEmissiveMeshShadowCastingMode: 0
   m_AreaLightEmissiveMeshMotionVectorGenerationMode: 0
   m_AreaLightEmissiveMeshLayer: -1
-  m_Version: 14
-  m_ObsoleteShadowResolutionTier: 1
-  m_ObsoleteUseShadowQualitySettings: 0
-  m_ObsoleteCustomShadowResolution: 512
-  m_ObsoleteContactShadows: 0
 --- !u!108 &1932936129
 Light:
   m_ObjectHideFlags: 0
@@ -117266,7 +117262,7 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1932936127}
   m_Enabled: 1
-  serializedVersion: 12
+  serializedVersion: 13
   m_Type: 2
   m_Color: {r: 0.46598905, g: 0.45977217, b: 0.7924528, a: 1}
   m_Intensity: 3183.0989
@@ -117318,7 +117314,7 @@ Light:
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
-  m_ShadowRadius: 0
+  m_ShapeRadius: 0
   m_ShadowAngle: 0
   m_LightUnit: 0
   m_LuxAtDistance: 5
@@ -117697,6 +117693,11 @@ MonoBehaviour:
   m_ShapeWidth: -1
   m_ShapeHeight: -1
   m_AspectRatio: 1
+  m_Version: 14
+  m_ObsoleteShadowResolutionTier: 1
+  m_ObsoleteUseShadowQualitySettings: 0
+  m_ObsoleteCustomShadowResolution: 512
+  m_ObsoleteContactShadows: 0
   m_SpotIESCutoffPercent: 100
   m_LightDimmer: 48
   m_VolumetricDimmer: 1
@@ -117811,11 +117812,6 @@ MonoBehaviour:
   m_AreaLightEmissiveMeshShadowCastingMode: 0
   m_AreaLightEmissiveMeshMotionVectorGenerationMode: 0
   m_AreaLightEmissiveMeshLayer: -1
-  m_Version: 14
-  m_ObsoleteShadowResolutionTier: 1
-  m_ObsoleteUseShadowQualitySettings: 0
-  m_ObsoleteCustomShadowResolution: 512
-  m_ObsoleteContactShadows: 0
 --- !u!108 &1970737242
 Light:
   m_ObjectHideFlags: 0
@@ -117824,7 +117820,7 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1970737240}
   m_Enabled: 1
-  serializedVersion: 12
+  serializedVersion: 13
   m_Type: 2
   m_Color: {r: 0.46598905, g: 0.45977217, b: 0.7924528, a: 1}
   m_Intensity: 3183.0989
@@ -117876,7 +117872,7 @@ Light:
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
-  m_ShadowRadius: 0
+  m_ShapeRadius: 0
   m_ShadowAngle: 0
   m_LightUnit: 0
   m_LuxAtDistance: 1
