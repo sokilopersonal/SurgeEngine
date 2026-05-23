@@ -15381,6 +15381,11 @@ MonoBehaviour:
   m_ShapeWidth: -1
   m_ShapeHeight: -1
   m_AspectRatio: 1
+  m_Version: 14
+  m_ObsoleteShadowResolutionTier: 1
+  m_ObsoleteUseShadowQualitySettings: 0
+  m_ObsoleteCustomShadowResolution: 512
+  m_ObsoleteContactShadows: 0
   m_SpotIESCutoffPercent: 100
   m_LightDimmer: 1.4
   m_VolumetricDimmer: 2
@@ -15495,11 +15500,6 @@ MonoBehaviour:
   m_AreaLightEmissiveMeshShadowCastingMode: 0
   m_AreaLightEmissiveMeshMotionVectorGenerationMode: 0
   m_AreaLightEmissiveMeshLayer: -1
-  m_Version: 14
-  m_ObsoleteShadowResolutionTier: 1
-  m_ObsoleteUseShadowQualitySettings: 0
-  m_ObsoleteCustomShadowResolution: 512
-  m_ObsoleteContactShadows: 0
 --- !u!108 &486004869
 Light:
   m_ObjectHideFlags: 0
@@ -15508,7 +15508,7 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 486004865}
   m_Enabled: 1
-  serializedVersion: 12
+  serializedVersion: 13
   m_Type: 1
   m_Color: {r: 1, g: 0.7835089, b: 0.5613208, a: 1}
   m_Intensity: 130000
@@ -15560,7 +15560,7 @@ Light:
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
-  m_ShadowRadius: 0
+  m_ShapeRadius: 0
   m_ShadowAngle: 1
   m_LightUnit: 2
   m_LuxAtDistance: 1
@@ -17251,6 +17251,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cded085d155cde949b60f67a11dbc3bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.RenderPipelines.Core.Runtime::UnityEngine.Rendering.ProbeVolume
+  version: 2
+  globalVolume: 0
   mode: 2
   size: {x: 20, y: 41, z: 472}
   overrideRendererFilters: 0
@@ -17281,8 +17283,6 @@ MonoBehaviour:
     e33: 1
   cachedHashCode: -861338193
   fillEmptySpaces: 0
-  version: 2
-  globalVolume: 0
 --- !u!1001 &546155155
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -32281,6 +32281,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cded085d155cde949b60f67a11dbc3bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.RenderPipelines.Core.Runtime::UnityEngine.Rendering.ProbeVolume
+  version: 2
+  globalVolume: 0
   mode: 2
   size: {x: 495.10382, y: 20, z: 14}
   overrideRendererFilters: 0
@@ -32311,8 +32313,6 @@ MonoBehaviour:
     e33: 1
   cachedHashCode: 1079979329
   fillEmptySpaces: 0
-  version: 2
-  globalVolume: 0
 --- !u!1001 &1079247548
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -74141,6 +74141,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cded085d155cde949b60f67a11dbc3bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.RenderPipelines.Core.Runtime::UnityEngine.Rendering.ProbeVolume
+  version: 2
+  globalVolume: 0
   mode: 2
   size: {x: 26, y: 16, z: 510}
   overrideRendererFilters: 0
@@ -74171,8 +74173,6 @@ MonoBehaviour:
     e33: 1
   cachedHashCode: -678903785
   fillEmptySpaces: 0
-  version: 2
-  globalVolume: 0
 --- !u!1001 &1399804256
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -78424,8 +78424,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00d133a8c31e4f57b0c3c60ead0b90ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SurgeEngine.Source.Code.Gameplay.CommonObjects.HESpline
-  dominant: 0
-  splineTag: 2
+  splineTag: 4
   id: myksub02_000@QS
 --- !u!114 &1540762038
 MonoBehaviour:
@@ -85836,6 +85835,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cded085d155cde949b60f67a11dbc3bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.RenderPipelines.Core.Runtime::UnityEngine.Rendering.ProbeVolume
+  version: 2
+  globalVolume: 0
   mode: 2
   size: {x: 446, y: 32, z: 16}
   overrideRendererFilters: 0
@@ -85866,8 +85867,6 @@ MonoBehaviour:
     e33: 1
   cachedHashCode: -375129577
   fillEmptySpaces: 0
-  version: 2
-  globalVolume: 0
 --- !u!4 &1736244271 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 540292491941391999, guid: 184da2d48d2038a4fbfc7b9e021cde75, type: 3}
@@ -99571,6 +99570,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cded085d155cde949b60f67a11dbc3bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.RenderPipelines.Core.Runtime::UnityEngine.Rendering.ProbeVolume
+  version: 2
+  globalVolume: 0
   mode: 2
   size: {x: 20, y: 18.999998, z: 97}
   overrideRendererFilters: 0
@@ -99601,8 +99602,6 @@ MonoBehaviour:
     e33: 1
   cachedHashCode: 1552616406
   fillEmptySpaces: 0
-  version: 2
-  globalVolume: 0
 --- !u!1001 &2143341462
 PrefabInstance:
   m_ObjectHideFlags: 0
