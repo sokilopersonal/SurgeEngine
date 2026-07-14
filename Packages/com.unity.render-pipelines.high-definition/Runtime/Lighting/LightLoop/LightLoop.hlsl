@@ -110,11 +110,13 @@ void ApplyDebug(LightLoopContext context, PositionInputs posInput, BSDFData bsdf
         lightLoopOutput.specularLighting = float3(0.0, 0.0, 0.0);
 
         const float3 s_CascadeColors[] = {
-            kDebugColorShadowCascade0.rgb,
-            kDebugColorShadowCascade1.rgb,
-            kDebugColorShadowCascade2.rgb,
-            kDebugColorShadowCascade3.rgb,
-            float3(1.0, 1.0, 1.0)
+            float3(0.4, 0.4, 0.9),  // kDebugColorShadowCascade0
+            float3(0.4, 0.9, 0.4),  // kDebugColorShadowCascade1
+            float3(0.9, 0.9, 0.4),  // kDebugColorShadowCascade2
+            float3(0.9, 0.4, 0.4),  // kDebugColorShadowCascade3
+            float3(0.4, 0.9, 0.9),  // cascade 4 (cyan)
+            float3(0.9, 0.4, 0.9),  // cascade 5 (magenta)
+            float3(0.8, 0.8, 0.8)   // fallback (beyond last cascade)
         };
 
         lightLoopOutput.diffuseLighting = Luminance(lightLoopOutput.diffuseLighting);

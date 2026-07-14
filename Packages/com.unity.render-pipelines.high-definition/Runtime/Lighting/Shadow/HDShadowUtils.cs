@@ -165,152 +165,141 @@ namespace UnityEngine.Rendering.HighDefinition
 
         // Custom CSM matrix computation supporting up to HDShadowSettings.k_MaxCascades cascades.
         // Fits an orthographic frustum to the camera sub-frustum for the cascade and orients it along the light direction.
-        // Note: Unity's built-in CullingResults.ComputeDirectionalShadowMatricesAndCullingPrimitives only supports
-        // up to 4 cascades, so for 5/6 cascades we compute the matrices ourselves here.
+        // Uses a "globally tight" stable fit: the light's orthographic size is derived from the cascade sub-frustum
+        // AABB in light space, the light-space origin is snapped to a world-space texel grid for filtering stability,
+        // and the depth range is extended backward to include shadow casters behind/beyond the sub-frustum.
+        // Produces view/projection/cullingSphere compatible with what Unity's native
+        // CullingResults.ComputeDirectionalShadowMatricesAndCullingPrimitives returns for <= 4 cascades.
         static void ComputeDirectionalShadowData(CullingResults cullResults, int lightIndex, int splitIndex, int cascadeCount, float[] cascadeRatios, int shadowmapSize, float nearPlaneOffset, Camera camera,
             out Matrix4x4 view, out Matrix4x4 proj, out ShadowSplitData splitData)
         {
             VisibleLight vl = cullResults.visibleLights[lightIndex];
 
-            // Light direction: Unity directional lights face +Z in local space.
-            // In the built-in CSM path, the light view matrix is constructed such that the camera
-            // looks along the NEGATIVE light direction (i.e. from the light toward the scene along -lightDir).
-            Vector3 lightDir = vl.localToWorldMatrix.MultiplyVector(Vector3.forward).normalized;
-            Vector3 lightUp = vl.localToWorldMatrix.MultiplyVector(Vector3.up);
+            // World forward direction of the directional light (rays travel in this direction from light to receiver).
+            Vector3 lightDir = (vl.localToWorldMatrix * new Vector4(0f, 0f, 1f, 0f)).normalized;
 
-            // Determine cascade near/far planes (normalized 0..1 along camera frustum depth).
-            // cascadeRatios[i] is the normalized split between cascade i and cascade i+1.
-            float nearCascade = splitIndex == 0 ? 0.0f : cascadeRatios[splitIndex - 1];
-            float farCascade  = splitIndex < cascadeCount - 1 ? cascadeRatios[splitIndex] : 1.0f;
+            // Determine cascade near/far planes (normalized [0..1] ratios along [camNear, camFar]).
+            float nearCascade = splitIndex == 0 ? 0.0f : (splitIndex - 1 < cascadeRatios.Length ? cascadeRatios[splitIndex - 1] : 1.0f);
+            float farCascade  = splitIndex < cascadeRatios.Length ? cascadeRatios[splitIndex] : 1.0f;
+            nearCascade = Mathf.Clamp01(nearCascade);
+            farCascade  = Mathf.Clamp(farCascade, nearCascade, 1.0f);
 
             float shadowDistance = QualitySettings.shadowDistance;
             if (shadowDistance <= 0f) shadowDistance = camera.farClipPlane;
             float camNear = camera.nearClipPlane;
             float camFar  = Mathf.Min(camera.farClipPlane, shadowDistance);
 
-            // Map normalized ratios [0..1] to actual distances along camera forward.
             float splitNear = Mathf.Lerp(camNear, camFar, nearCascade);
             float splitFar  = Mathf.Lerp(camNear, camFar, farCascade);
-            splitNear = Mathf.Max(camNear + 0.01f, splitNear - nearPlaneOffset);
+            splitNear = Mathf.Max(k_MinShadowNearPlane, splitNear - nearPlaneOffset);
 
-            // Build the 8 corners of the sub-frustum (in world space).
-            Vector3[] frustumCorners = new Vector3[8];
-            CalculateFrustumCorners(camera, splitNear, splitFar, frustumCorners);
+            // World-space corners of the split sub-frustum.
+            Vector3[] corners = new Vector3[8];
+            CalculateFrustumCorners(camera, splitNear, splitFar, corners);
 
-            // Compute centroid of the frustum
-            Vector3 frustumCenter = Vector3.zero;
-            for (int i = 0; i < 8; i++) frustumCenter += frustumCorners[i];
-            frustumCenter *= 1f / 8f;
+            // Build a stable orthonormal basis for the light camera:
+            //   right = normalize(cross(upHint, lightDir))
+            //   upCam = cross(lightDir, right)
+            // Camera "looks" along lightDir, which in Unity view space means -Z; so the third row of the view
+            // matrix is -lightDir (camera +Z points away from the light).
+            Vector3 upHint = Mathf.Abs(Vector3.Dot(lightDir, Vector3.up)) > 0.98f ? Vector3.right : Vector3.up;
+            Vector3 right  = Vector3.Cross(upHint, lightDir).normalized;
+            if (right.sqrMagnitude < 1e-6f)
+                right = Vector3.Cross(Vector3.forward, lightDir).normalized;
+            Vector3 upCam  = Vector3.Cross(lightDir, right).normalized;
+            Vector3 camBack = -lightDir; // camera +Z (away from scene)
 
-            // Build the light view matrix: place the camera far along -lightDir (so it looks back toward the frustum).
-            // In Unity's convention, the view matrix transforms world -> camera space where camera forward is -Z.
-            // So camera.forward must point along -lightDir (i.e. camera looks at the scene from the light direction).
-            Vector3 camForward = -lightDir;
-            // Pick an up vector that isn't parallel to forward.
-            Vector3 up = Mathf.Abs(Vector3.Dot(camForward, Vector3.up)) > 0.99f ? Vector3.right : Vector3.up;
-
-            // Build view matrix manually (mimicking Matrix4x4.LookAt but without needing a position offset for far plane)
-            Vector3 z = -camForward;
-            z.Normalize();
-            Vector3 x = Vector3.Cross(up, z);
-            if (x.sqrMagnitude < 1e-6f) x = Vector3.Cross(Vector3.forward, z);
-            x.Normalize();
-            Vector3 y = Vector3.Cross(z, x);
-
-            // We will construct the view matrix after determining the bounds below, so we can position
-            // the camera such that the entire frustum is within [-1..1] Z range.
-            // First, transform corners into light-relative space (rotation only, translation TBD) to find extents.
-            Matrix4x4 lightRot = Matrix4x4.identity;
-            lightRot.SetRow(0, new Vector4(x.x, x.y, x.z, 0f));
-            lightRot.SetRow(1, new Vector4(y.x, y.y, y.z, 0f));
-            lightRot.SetRow(2, new Vector4(z.x, z.y, z.z, 0f));
-            lightRot.SetRow(3, new Vector4(0, 0, 0, 1f));
-
-            float minX = float.MaxValue, maxX = float.MinValue;
-            float minY = float.MaxValue, maxY = float.MinValue;
-            float minZ = float.MaxValue, maxZ = float.MinValue;
-            for (int i = 0; i < 8; i++)
+            // Project corners onto light basis to get AABB.
+            // Use lightDir as forward depth axis (0 = at origin, increasing with distance from light into scene).
+            float minX = float.PositiveInfinity, maxX = float.NegativeInfinity;
+            float minY = float.PositiveInfinity, maxY = float.NegativeInfinity;
+            float minZ = float.PositiveInfinity, maxZ = float.NegativeInfinity;
+            for (int i = 0; i < corners.Length; i++)
             {
-                // rotate into light space
-                Vector3 c = lightRot.MultiplyPoint(frustumCorners[i]);
-                if (c.x < minX) minX = c.x;
-                if (c.x > maxX) maxX = c.x;
-                if (c.y < minY) minY = c.y;
-                if (c.y > maxY) maxY = c.y;
-                if (c.z < minZ) minZ = c.z;
-                if (c.z > maxZ) maxZ = c.z;
+                Vector3 c = corners[i];
+                float lx = Vector3.Dot(right, c);
+                float ly = Vector3.Dot(upCam, c);
+                float lz = Vector3.Dot(lightDir, c);
+                if (lx < minX) minX = lx;
+                if (lx > maxX) maxX = lx;
+                if (ly < minY) minY = ly;
+                if (ly > maxY) maxY = ly;
+                if (lz < minZ) minZ = lz;
+                if (lz > maxZ) maxZ = lz;
             }
 
-            // Guard band to avoid sampling outside the shadow map. 1 texel on each side is enough at this stage.
-            float texelSizeX = (maxX - minX) / shadowmapSize;
-            float texelSizeY = (maxY - minY) / shadowmapSize;
-            float guard = Mathf.Max(texelSizeX, texelSizeY) * 2f;
+            float sizeX = maxX - minX;
+            float sizeY = maxY - minY;
+            float texelSizeX = sizeX / shadowmapSize;
+            float texelSizeY = sizeY / shadowmapSize;
+            float texelSize = Mathf.Max(texelSizeX, texelSizeY);
+
+            // Snap AABB to texel grid for stable cascades (no texel crawling as the camera moves).
+            minX = Mathf.Floor(minX / texelSize) * texelSize;
+            maxX = Mathf.Ceil(maxX / texelSize) * texelSize;
+            minY = Mathf.Floor(minY / texelSize) * texelSize;
+            maxY = Mathf.Ceil(maxY / texelSize) * texelSize;
+            sizeX = maxX - minX;
+            sizeY = maxY - minY;
+
+            // Guard band so filter kernels never sample outside the shadow map.
+            int guardTexels = 2;
+            float guard = guardTexels * texelSize;
             minX -= guard; maxX += guard;
             minY -= guard; maxY += guard;
+            sizeX = maxX - minX;
+            sizeY = maxY - minY;
 
-            // Texel snap for stable shadows (snap the light-space origin to shadowmap texel grid).
-            {
-                // Snap the center of the ortho volume to the texel grid.
-                float centerX = (minX + maxX) * 0.5f;
-                float centerY = (minY + maxY) * 0.5f;
-                centerX = Mathf.Round(centerX / texelSizeX) * texelSizeX;
-                centerY = Mathf.Round(centerY / texelSizeY) * texelSizeY;
-                float halfSizeX = (maxX - minX) * 0.5f;
-                float halfSizeY = (maxY - minY) * 0.5f;
-                minX = centerX - halfSizeX;
-                maxX = centerX + halfSizeX;
-                minY = centerY - halfSizeY;
-                maxY = centerY + halfSizeY;
-            }
+            // Extend depth range to include casters that lie behind the sub-frustum (toward the light) or beyond it.
+            const float casterExtentMeters = 200f;
+            // In light-depth (lightDir·P) coordinates: smaller = closer to light origin, larger = deeper into scene.
+            // The near plane of the shadow camera is placed "casterExtent" in front of (closer to light than) the
+            // smallest sub-frustum depth, and the far plane casterExtent past the largest depth.
+            float nearDepth = minZ - casterExtentMeters;
+            float farDepth  = maxZ + casterExtentMeters;
 
-            // Position the light camera: set translation so that after the rotation, the volume
-            // min/max in light space sits within the orthographic projection.
-            // In camera space, the camera looks along -Z, so we want the near plane (closest to light)
-            // to be at z = -zNearCam and far at z = -zFarCam (positive distances), giving clip-space Z
-            // after GL.GetGPUProjectionMatrix.  Ortho(left,right,bottom,top,zNear,zFar) takes positive
-            // zNear/zFar as distances from the camera; in camera space the volume goes from -zFar to -zNear.
-            float zNearCam = Mathf.Max(0.1f, -maxZ); // closest to light (smallest camera-space Z when negated)
-            float zFarCam  = -minZ + 200f;            // extend far plane to include casters behind the frustum
-            if (zNearCam < 0.1f) zNearCam = 0.1f;
+            // Place the camera in world space such that (right·camPos, upCam·camPos, lightDir·camPos) == (minX, minY, nearDepth).
+            // Solving the 3x3 linear system in the orthonormal basis: camPos = right*minX + upCam*minY + lightDir*nearDepth.
+            Vector3 camPos = right * minX + upCam * minY + lightDir * nearDepth;
 
-            // Translation of the view: place camera origin such that (minX, minY) is at the light-space near corner.
-            // After rotation by lightRot, the translation t_cam maps world origin to (-x·t, -y·t, -z·t) in cam space.
-            // We want the world-space corner that maps to (minX, minY, maxZ) [near top-left in cam?] to have cam x=minX,y=minY.
-            // Simpler: construct view as TR where T is chosen so that lightRot * p + t gives cam-space pos.
-            // That is: camPos in world is such that cam.TransformPoint(camPos) = origin. Then t = -lightRot * camPos.
-            // We'll just compute the appropriate camera space origin: after rotating the frustum corners, the
-            // minimum X,Y defines the top-left. The camera should be positioned so minX maps to 0 in the projection? No -
-            // Ortho in Unity uses L,R,B,T,Znear,Zfar relative to camera space. We already have minX/maxX/minY/maxY in
-            // the rotated frame. We need to translate so the rotated-space point (minX, minY, maxZ) is at cam space
-            // (minX, minY, -zNearCam). So the translation is: t = rotatedPoint - camSpaceDesired.
-            //   camSpacePos = lightRot * worldPos + tCam  ->  tCam = camSpaceDesired - lightRot * worldPos_desired
-            // Pick worldPos_desired as the world point at (0,0,0) after rotation adjustment... easier: set the
-            // camera world-space position along -camForward offset so zNearCam matches.
-            Vector3 camPos = frustumCenter + lightDir * (zNearCam); // Move camera back along +lightDir (opposite of camera forward)
-
-            // Rebuild rotation+translation view matrix.
+            // Build the view matrix. Unity convention: rows are (right, up, camBack, -dot(axis,camPos)); camera looks down -Z.
             view = Matrix4x4.identity;
-            view.SetRow(0, new Vector4(x.x, x.y, x.z, -Vector3.Dot(x, camPos)));
-            view.SetRow(1, new Vector4(y.x, y.y, y.z, -Vector3.Dot(y, camPos)));
-            view.SetRow(2, new Vector4(z.x, z.y, z.z, -Vector3.Dot(z, camPos)));
-            view.SetRow(3, new Vector4(0, 0, 0, 1f));
+            view.SetRow(0, new Vector4(right.x, right.y, right.z, -Vector3.Dot(right, camPos)));
+            view.SetRow(1, new Vector4(upCam.x, upCam.y, upCam.z, -Vector3.Dot(upCam, camPos)));
+            view.SetRow(2, new Vector4(camBack.x, camBack.y, camBack.z, -Vector3.Dot(camBack, camPos)));
+            view.SetRow(3, new Vector4(0f, 0f, 0f, 1f));
 
-            // After translation, re-compute Z bounds (they shift) and set near/far accordingly.
-            proj = Matrix4x4.Ortho(minX, maxX, minY, maxY, zNearCam, zFarCam + zNearCam);
+            // Sanity-check: in camera space the AABB spans:
+            //   camX: right·(P - camPos) in [0, sizeX]
+            //   camY: upCam·(P - camPos) in [0, sizeY]
+            //   camZ: camBack·(P - camPos) = -lightDir·(P - camPos) = -(lightDir·P - nearDepth) in [-(farDepth-nearDepth), 0]
+            // Matrix4x4.Ortho(L,R,B,T,zNear,zFar) maps camX:[L,R]->[-1,1], camY:[B,T]->[-1,1], camZ:[-zFar,-zNear]->[-1,1].
+            // With L=0,R=sizeX,B=0,T=sizeY,zNear=0,zFar=(farDepth-nearDepth), near plane (closest to camera, where
+            // camZ = 0) corresponds to lightDir·P = nearDepth, and far plane (camZ = -zFar) corresponds to lightDir·P = farDepth.
+            float zNear = 0f;
+            float zFar  = farDepth - nearDepth;
+            proj = Matrix4x4.Ortho(0f, sizeX, 0f, sizeY, zNear, zFar);
 
-            // Build culling sphere (world space) enclosing the cascade frustum.
-            Vector3 center = frustumCenter;
-            float radius = 0f;
-            for (int i = 0; i < 8; i++)
+            // Build the culling sphere (world space) that encloses the sub-frustum. The rest of HDRP uses this
+            // to cull shadow casters per split; downstream code subtracts the camera position for camera-relative
+            // rendering, so center must be in absolute world space.
+            Vector3 centerWS = Vector3.zero;
+            for (int i = 0; i < corners.Length; i++) centerWS += corners[i];
+            centerWS *= 1f / corners.Length;
+            float radiusSq = 0f;
+            for (int i = 0; i < corners.Length; i++)
             {
-                float d = (frustumCorners[i] - center).magnitude;
-                if (d > radius) radius = d;
+                float d = (corners[i] - centerWS).sqrMagnitude;
+                if (d > radiusSq) radiusSq = d;
             }
+            float radius = Mathf.Sqrt(radiusSq) + casterExtentMeters * 0.25f;
+
             splitData = new ShadowSplitData();
-            splitData.cullingSphere = new Vector4(center.x, center.y, center.z, radius);
+            splitData.cullingSphere = new Vector4(centerWS.x, centerWS.y, centerWS.z, radius);
             splitData.cullingPlaneCount = 0;
             splitData.shadowCascadeBlendCullingFactor = 0.6f;
         }
+
 
         static void CalculateFrustumCorners(Camera camera, float near, float far, Vector3[] outCorners)
         {
