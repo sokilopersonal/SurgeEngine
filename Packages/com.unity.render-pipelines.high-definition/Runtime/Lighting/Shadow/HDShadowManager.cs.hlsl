@@ -6,11 +6,13 @@
 #define HDSHADOWMANAGER_CS_HLSL
 // Generated from UnityEngine.Rendering.HighDefinition.HDDirectionalShadowData
 // PackingRules = Exact
+// Note: MAX_SHADOW_CASCADES must stay in sync with HDShadowSettings.k_MaxCascades in C#
+#define MAX_SHADOW_CASCADES 6
 struct HDDirectionalShadowData
 {
-    float4 sphereCascades[4];
+    float4 sphereCascades[MAX_SHADOW_CASCADES];
     real4 cascadeDirection;
-    real cascadeBorders[4];
+    real cascadeBorders[MAX_SHADOW_CASCADES];
     float fadeScale;
     float fadeBias;
 };

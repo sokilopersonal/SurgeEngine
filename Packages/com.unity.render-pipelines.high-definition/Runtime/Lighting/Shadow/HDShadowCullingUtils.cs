@@ -29,7 +29,8 @@ namespace UnityEngine.Rendering.HighDefinition
             HDProcessedVisibleLightsBuilder processedVisibleLights,
             NativeArray<LightShadowCasterCullingInfo> outPerLightShadowCullingInfos,
             NativeArray<ShadowSplitData> outSplitBuffer,
-            out int outTotalSplitCount)
+            out int outTotalSplitCount,
+            Camera camera = null)
         {
             using var profilerScope = new ProfilingScope(ProfilingSampler.Get(HDProfileId.ComputeShadowCullingSplits));
 
@@ -128,7 +129,7 @@ namespace UnityEngine.Rendering.HighDefinition
             // So the first pass is a Burst job processing all the lights except the directionals. It also output a LightMetadata struct to an UnsafeList for each "valid" directional light found.
             // The second pass is then just normal C# code processing the UnsafeList of directional lights found by the Burst job.
             computeShadowCasterCullingInfosJob.Run();
-            computeShadowCasterCullingInfosJob.ProcessDirectionalLights(cullingResult, dynamicDirectionalVisibleLightsAndIndices, cachedDirectionalVisibleLightsAndIndices);
+            computeShadowCasterCullingInfosJob.ProcessDirectionalLights(cullingResult, dynamicDirectionalVisibleLightsAndIndices, cachedDirectionalVisibleLightsAndIndices, camera, shadowSettings.cascadeShadowSplits);
             outTotalSplitCount = splitBufferOffset[0];
 
             processedVisibleLights.dynamicPointVisibleLightsAndIndices = dynamicPointVisibleLightsAndIndices;
@@ -734,7 +735,9 @@ namespace UnityEngine.Rendering.HighDefinition
             [BurstDiscard]
             public void ProcessDirectionalLights(CullingResults cullingResults,
                 UnsafeList<ShadowIndicesAndVisibleLightData> dynamicVisibleLightsAndIndicesDatas,
-                UnsafeList<ShadowIndicesAndVisibleLightData> cachedVisibleLightsAndIndicesDatas)
+                UnsafeList<ShadowIndicesAndVisibleLightData> cachedVisibleLightsAndIndicesDatas,
+                Camera camera,
+                float[] cascadeSplits)
             {
                 int splitBufferOffset = inOutSplitBufferOffset[0];
                 HDShadowCullingSplit* hdSplitBufferPtr = (HDShadowCullingSplit*)outHDSplitBuffer.GetUnsafePtr();
@@ -745,11 +748,11 @@ namespace UnityEngine.Rendering.HighDefinition
                 using (computeDirectionalShadowCullingInfosMarker.Auto())
                 {
                     int dynamicSplitOffset = splitBufferOffset;
-                    int dynamicSplitCount = ComputeDirectionalShadowCullingSplits(cullingResults, dynamicVisibleLightsAndIndicesDatas, dynamicSplitOffset);
+                    int dynamicSplitCount = ComputeDirectionalShadowCullingSplits(cullingResults, dynamicVisibleLightsAndIndicesDatas, dynamicSplitOffset, camera, cascadeSplits);
                     splitBufferOffset += dynamicSplitCount;
 
                     int cachedSplitOffset = splitBufferOffset;
-                    int cachedSplitCount = ComputeDirectionalShadowCullingSplits(cullingResults, cachedVisibleLightsAndIndicesDatas, cachedSplitOffset);
+                    int cachedSplitCount = ComputeDirectionalShadowCullingSplits(cullingResults, cachedVisibleLightsAndIndicesDatas, cachedSplitOffset, camera, cascadeSplits);
                     splitBufferOffset += cachedSplitCount;
 
                     dynamicDirectionalHDSplits = new UnsafeList<HDShadowCullingSplit>(hdSplitBufferPtr + dynamicSplitOffset, dynamicSplitCount);
@@ -762,7 +765,7 @@ namespace UnityEngine.Rendering.HighDefinition
             }
 
             [BurstDiscard]
-            int ComputeDirectionalShadowCullingSplits(CullingResults cullingResults, UnsafeList<ShadowIndicesAndVisibleLightData> visibleLightsAndIndicesDatas, int initialSplitBufferOffset)
+            int ComputeDirectionalShadowCullingSplits(CullingResults cullingResults, UnsafeList<ShadowIndicesAndVisibleLightData> visibleLightsAndIndicesDatas, int initialSplitBufferOffset, Camera camera, float[] cascadeSplits)
             {
                 if (visibleLightsAndIndicesDatas.Length == 0)
                     return 0;
@@ -798,10 +801,20 @@ namespace UnityEngine.Rendering.HighDefinition
                             Matrix4x4 invViewProjection;
                             Vector4 deviceProjection;
 
-                            HDShadowUtils.ExtractDirectionalLightData(viewportSize, (uint)splitIndex, cascadeShadowSplitCount,
-                                cascadeShadowSplits, shadowNearPlaneOffset, cullingResults, lightIndex,
-                                out view, out invViewProjection, out projection,
-                                out deviceProjectionMatrix, out deviceProjection, out deviceProjectionYFlip, out splitData);
+                            if (cascadeShadowSplitCount > 4)
+                            {
+                                HDShadowUtils.ExtractDirectionalLightDataCustom(viewportSize, (uint)splitIndex, cascadeShadowSplitCount,
+                                    cascadeSplits, shadowNearPlaneOffset, cullingResults, lightIndex, camera,
+                                    out view, out invViewProjection, out projection,
+                                    out deviceProjectionMatrix, out deviceProjection, out deviceProjectionYFlip, out splitData);
+                            }
+                            else
+                            {
+                                HDShadowUtils.ExtractDirectionalLightData(viewportSize, (uint)splitIndex, cascadeShadowSplitCount,
+                                    cascadeShadowSplits, shadowNearPlaneOffset, cullingResults, lightIndex,
+                                    out view, out invViewProjection, out projection,
+                                    out deviceProjectionMatrix, out deviceProjection, out deviceProjectionYFlip, out splitData);
+                            }
 
                             hdSplit.view = view;
                             hdSplit.deviceProjectionMatrix = deviceProjectionMatrix;

@@ -21,8 +21,8 @@ namespace UnityEngine.Rendering.HighDefinition
         public static HDCachedShadowManager instance { get { return s_Instance; } }
 
         // Data for cached directional light shadows.
-        private const int m_MaxShadowCascades = 4;
-        private BitArray8 m_DirectionalShadowHasRendered;
+        private const int m_MaxShadowCascades = HDShadowSettings.k_MaxCascades;
+        private BitArray8 m_DirectionalShadowHasRendered;   // 8 bits - enough for k_MaxCascades (6)
         private BitArray8 m_DirectionalShadowPendingUpdate;
         private bool m_AllowDirectionalMixedCached = false;
 
@@ -32,7 +32,7 @@ namespace UnityEngine.Rendering.HighDefinition
         internal const int k_MinSlotSize = 64;
 
         // Helper array used to check what has been tmp filled.
-        private (int, int)[] m_TempFilled = new (int, int)[6];
+        private (int, int)[] m_TempFilled = new (int, int)[m_MaxShadowCascades];
 
         // Cached atlas
         internal HDCachedShadowAtlas punctualShadowAtlas;

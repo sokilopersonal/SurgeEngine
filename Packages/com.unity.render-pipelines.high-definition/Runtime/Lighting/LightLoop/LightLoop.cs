@@ -1332,7 +1332,8 @@ namespace UnityEngine.Rendering.HighDefinition
                 processedVisibleLights,
                 perLightShadowCullingInfos,
                 splitBuffer,
-                out totalSplitCount);
+                out totalSplitCount,
+                hdCamera.camera);
 
             ShadowCastersCullingInfos cullingInfos = default;
             cullingInfos.splitBuffer = splitBuffer.GetSubArray(0, totalSplitCount);

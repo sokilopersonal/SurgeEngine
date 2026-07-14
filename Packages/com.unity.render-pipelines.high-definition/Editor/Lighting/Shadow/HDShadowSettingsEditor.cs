@@ -12,8 +12,11 @@ namespace UnityEditor.Rendering.HighDefinition
         SerializedDataParameter m_DirectionalTransmissionMultiplier;
         SerializedDataParameter m_CascadeShadowSplitCount;
 
-        SerializedDataParameter[] m_CascadeShadowSplits = new SerializedDataParameter[3];
-        SerializedDataParameter[] m_CascadeShadowBorders = new SerializedDataParameter[4];
+        const int k_MaxSplitSlots = HDShadowSettings.k_MaxCascades - 1; // 5 split sliders for up to 6 cascades
+        const int k_MaxBorderSlots = HDShadowSettings.k_MaxCascades;     // 6 border sliders
+
+        SerializedDataParameter[] m_CascadeShadowSplits = new SerializedDataParameter[k_MaxSplitSlots];
+        SerializedDataParameter[] m_CascadeShadowBorders = new SerializedDataParameter[k_MaxBorderSlots];
         private enum Unit { Metric, Percent }
         EditorPrefBoolFlags<Unit> m_State;
 
@@ -30,13 +33,19 @@ namespace UnityEditor.Rendering.HighDefinition
             m_MaxShadowDistance = Unpack(o.Find(x => x.maxShadowDistance));
             m_DirectionalTransmissionMultiplier = Unpack(o.Find(x => x.directionalTransmissionMultiplier));
             m_CascadeShadowSplitCount = Unpack(o.Find(x => x.cascadeShadowSplitCount));
+
             m_CascadeShadowSplits[0] = Unpack(o.Find(x => x.cascadeShadowSplit0));
             m_CascadeShadowSplits[1] = Unpack(o.Find(x => x.cascadeShadowSplit1));
             m_CascadeShadowSplits[2] = Unpack(o.Find(x => x.cascadeShadowSplit2));
+            m_CascadeShadowSplits[3] = Unpack(o.Find(x => x.cascadeShadowSplit3));
+            m_CascadeShadowSplits[4] = Unpack(o.Find(x => x.cascadeShadowSplit4));
+
             m_CascadeShadowBorders[0] = Unpack(o.Find(x => x.cascadeShadowBorder0));
             m_CascadeShadowBorders[1] = Unpack(o.Find(x => x.cascadeShadowBorder1));
             m_CascadeShadowBorders[2] = Unpack(o.Find(x => x.cascadeShadowBorder2));
             m_CascadeShadowBorders[3] = Unpack(o.Find(x => x.cascadeShadowBorder3));
+            m_CascadeShadowBorders[4] = Unpack(o.Find(x => x.cascadeShadowBorder4));
+            m_CascadeShadowBorders[5] = Unpack(o.Find(x => x.cascadeShadowBorder5));
 
             (serializedObject.targetObject as HDShadowSettings).InitNormalized(m_State.value == Unit.Percent);
         }
@@ -75,28 +84,26 @@ namespace UnityEditor.Rendering.HighDefinition
 
             EditorGUI.BeginChangeCheck();
             PropertyField(m_CascadeShadowSplitCount, EditorGUIUtility.TrTextContent("Cascade Count"));
+            int cascadeCount = m_CascadeShadowSplitCount.value.intValue;
             if (EditorGUI.EndChangeCheck())
             {
                 //fix newly activated cascade split not respecting ordering
-                for (int i = 1; i < m_CascadeShadowSplitCount.value.intValue - 1; i++)
+                for (int i = 1; i < cascadeCount - 1 && i < k_MaxSplitSlots; i++)
                 {
                     if (m_CascadeShadowSplits[i - 1].value.floatValue > m_CascadeShadowSplits[i].value.floatValue)
                         m_CascadeShadowSplits[i].value.floatValue = m_CascadeShadowSplits[i - 1].value.floatValue;
                 }
             }
 
-            int cascadeCount;
+            string[] splitOrderLabels = { "first", "second", "third", "fourth", "fifth" };
+
             using (new IndentLevelScope())
             {
-                cascadeCount = m_CascadeShadowSplitCount.value.intValue;
-                Debug.Assert(cascadeCount <= 4); // If we add support for more than 4 cascades, then we should add new entries in the next line
-                string[] cascadeOrder = { "first", "second", "third" };
-
                 for (int i = 0; i < cascadeCount - 1; i++)
                 {
                     string tooltipOverride = (unit == Unit.Metric) ?
-                        $"Distance from the Camera (in meters) to the {cascadeOrder[i]} cascade split." :
-                        $"Distance from the Camera (as a percentage of Max Distance) to the {cascadeOrder[i]} cascade split.";
+                        $"Distance from the Camera (in meters) to the {splitOrderLabels[i]} cascade split." :
+                        $"Distance from the Camera (as a percentage of Max Distance) to the {splitOrderLabels[i]} cascade split.";
                     PropertyField(m_CascadeShadowSplits[i], EditorGUIUtility.TrTextContent(string.Format("Split {0}", i + 1), tooltipOverride));
                 }
 
@@ -138,7 +145,7 @@ namespace UnityEditor.Rendering.HighDefinition
             {
                 cascades[i] = new ShadowCascadeGUI.Cascade()
                 {
-                    size = i == 0 ? m_CascadeShadowSplits[i].value.floatValue : m_CascadeShadowSplits[i].value.floatValue - lastCascadePartitionSplit, // Calculate the size of cascade
+                    size = i == 0 ? m_CascadeShadowSplits[i].value.floatValue : m_CascadeShadowSplits[i].value.floatValue - lastCascadePartitionSplit,
                     borderSize = m_CascadeShadowBorders[i].value.floatValue,
                     cascadeHandleState = m_CascadeShadowSplits[i].overrideState.boolValue ? ShadowCascadeGUI.HandleState.Enabled : ShadowCascadeGUI.HandleState.Disabled,
                     borderHandleState = m_CascadeShadowBorders[i].overrideState.boolValue ? ShadowCascadeGUI.HandleState.Enabled : ShadowCascadeGUI.HandleState.Disabled,
@@ -150,7 +157,7 @@ namespace UnityEditor.Rendering.HighDefinition
             var lastCascade = cascadeCount - 1;
             cascades[lastCascade] = new ShadowCascadeGUI.Cascade()
             {
-                size = lastCascade == 0 ? 1.0f : 1 - m_CascadeShadowSplits[lastCascade - 1].value.floatValue, // Calculate the size of cascade
+                size = lastCascade == 0 ? 1.0f : 1 - m_CascadeShadowSplits[lastCascade - 1].value.floatValue,
                 borderSize = m_CascadeShadowBorders[lastCascade].value.floatValue,
                 cascadeHandleState = ShadowCascadeGUI.HandleState.Hidden,
                 borderHandleState = m_CascadeShadowBorders[lastCascade].overrideState.boolValue ? ShadowCascadeGUI.HandleState.Enabled : ShadowCascadeGUI.HandleState.Disabled,

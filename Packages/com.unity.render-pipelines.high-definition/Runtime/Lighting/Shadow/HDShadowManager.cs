@@ -102,15 +102,15 @@ namespace UnityEngine.Rendering.HighDefinition
     unsafe struct HDDirectionalShadowData
     {
         // We can't use Vector4 here because the vector4[] makes this struct non blittable
-        [HLSLArray(4, typeof(Vector4))]
-        public fixed float sphereCascades[4 * 4];
+        [HLSLArray(HDShadowSettings.k_MaxCascades, typeof(Vector4))]
+        public fixed float sphereCascades[HDShadowSettings.k_MaxCascades * 4];
 
         [SurfaceDataAttributes(precision = FieldPrecision.Real)]
         public Vector4 cascadeDirection;
 
-        [HLSLArray(4, typeof(float))]
+        [HLSLArray(HDShadowSettings.k_MaxCascades, typeof(float))]
         [SurfaceDataAttributes(precision = FieldPrecision.Real)]
-        public fixed float cascadeBorders[4];
+        public fixed float cascadeBorders[HDShadowSettings.k_MaxCascades];
 
         public float fadeScale;
         public float fadeBias;
@@ -608,7 +608,7 @@ namespace UnityEngine.Rendering.HighDefinition
     }
     internal class HDShadowManager
     {
-        public const int k_DirectionalShadowCascadeCount = 4;
+        public const int k_DirectionalShadowCascadeCount = HDShadowSettings.k_MaxCascades;
         public const int k_MinShadowMapResolution = 16;
         public const int k_OffscreenShadowMapResolution = 64;
         public const int k_MaxShadowMapResolution = 16384;
@@ -892,12 +892,16 @@ namespace UnityEngine.Rendering.HighDefinition
 
         public void UpdateDirectionalShadowResolution(int resolution, int cascadeCount)
         {
-            Vector2Int atlasResolution = new Vector2Int(resolution, resolution);
+            // Layout cascades in a grid: pick (columns, rows) so that columns*rows >= cascadeCount.
+            // For up to 4 cascades we keep the original 2x2 layout for backwards compatibility.
+            // For 5/6 cascades we use 3x2.
+            int columns, rows;
+            if (cascadeCount <= 1)       { columns = 1; rows = 1; }
+            else if (cascadeCount == 2)   { columns = 2; rows = 1; }
+            else if (cascadeCount <= 4)   { columns = 2; rows = 2; }
+            else                          { columns = 3; rows = 2; }
 
-            if (cascadeCount > 1)
-                atlasResolution.x *= 2;
-            if (cascadeCount > 2)
-                atlasResolution.y *= 2;
+            Vector2Int atlasResolution = new Vector2Int(resolution * columns, resolution * rows);
 
             m_CascadeAtlas.UpdateSize(atlasResolution);
             if (cachedShadowManager.DirectionalHasCachedAtlas())
@@ -1182,14 +1186,15 @@ namespace UnityEngine.Rendering.HighDefinition
             float maxShadowDistanceSq = maxShadowDistance * maxShadowDistance;
             float cascadeBorder;
             int splitCount = shadowSettings.cascadeShadowSplitCount.value;
-            if (splitCount == 4)
-                cascadeBorder = shadowSettings.cascadeShadowBorder3.value;
-            else if (splitCount == 3)
-                cascadeBorder = shadowSettings.cascadeShadowBorder2.value;
-            else if (splitCount == 2)
-                cascadeBorder = shadowSettings.cascadeShadowBorder1.value;
-            else
-                cascadeBorder = shadowSettings.cascadeShadowBorder0.value;
+            switch (splitCount)
+            {
+                case 6: cascadeBorder = shadowSettings.cascadeShadowBorder5.value; break;
+                case 5: cascadeBorder = shadowSettings.cascadeShadowBorder4.value; break;
+                case 4: cascadeBorder = shadowSettings.cascadeShadowBorder3.value; break;
+                case 3: cascadeBorder = shadowSettings.cascadeShadowBorder2.value; break;
+                case 2: cascadeBorder = shadowSettings.cascadeShadowBorder1.value; break;
+                default: cascadeBorder = shadowSettings.cascadeShadowBorder0.value; break;
+            }
 
             GetScaleAndBiasForLinearDistanceFade(maxShadowDistanceSq, cascadeBorder, out scale, out bias);
         }
