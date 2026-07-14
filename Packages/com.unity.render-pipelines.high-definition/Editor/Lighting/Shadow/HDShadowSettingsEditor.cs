@@ -164,7 +164,8 @@ namespace UnityEditor.Rendering.HighDefinition
             };
 
             EditorGUI.BeginChangeCheck();
-            ShadowCascadeGUI.DrawCascades(ref cascades, useMetric, baseMetric);
+            // Use our local copy that supports up to 6 cascades (core's version only has a 4-color palette).
+            HDShadowCascadeGUI.DrawCascades(ref cascades, useMetric, baseMetric);
             if (EditorGUI.EndChangeCheck())
             {
                 float lastCascadeSize = 0;
