@@ -1329,6 +1329,12 @@ namespace UnityEngine.Rendering.HighDefinition
                                 ctx.cmd.SetComputeTextureParam(cs, data.reprojectionKernel, HDShaderIDs._SsrClearCoatMaskTexture, data.clearCoatMask);
                                 ctx.cmd.SetComputeTextureParam(cs, data.reprojectionKernel, HDShaderIDs._CameraMotionVectorsTexture, data.motionVectorsBuffer);
 
+                                RTHandle stencilBuffer = data.stencilBuffer;
+                                if (stencilBuffer.rt.stencilFormat == GraphicsFormat.None)  // We are accessing MSAA resolved version and not the depth stencil buffer directly.
+                                    ctx.cmd.SetComputeTextureParam(cs, data.reprojectionKernel, HDShaderIDs._StencilTexture, data.stencilBuffer);
+                                else
+                                    ctx.cmd.SetComputeTextureParam(cs, data.reprojectionKernel, HDShaderIDs._StencilTexture, data.stencilBuffer, 0, RenderTextureSubElement.Stencil);
+
                                 ctx.cmd.DispatchCompute(cs, data.reprojectionKernel, HDUtils.DivRoundUp(data.width, 8), HDUtils.DivRoundUp(data.height, 8), data.viewCount);
                             }
 

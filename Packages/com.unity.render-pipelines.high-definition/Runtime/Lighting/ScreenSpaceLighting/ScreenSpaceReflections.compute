@@ -92,8 +92,11 @@
 TEXTURE2D_X(_DepthTexture);
 #endif
 
-#ifdef SSR_TRACE
+#if defined(SSR_TRACE) || defined(SSR_REPROJECT)
     TYPED_TEXTURE2D_X(uint2, _StencilTexture);
+#endif
+
+#ifdef SSR_TRACE
     RW_TEXTURE2D_X(float2, _SsrHitPointTexture);
 #elif defined(SSR_REPROJECT)
        TEXTURE2D_X(        _SsrHitPointTexture);
@@ -353,6 +356,84 @@ float3 GetHitColor(float2 hitPositionNDC, float perceptualRoughness, out float o
     float3 color = SampleSSRColorPyramidFiltered(prevFrameUV, mipLevel, perceptualRoughness, validWeight);
     opacity = edgeVisibility * roughnessVisibility * saturate(validWeight);
     return color;
+}
+
+void AccumulateSSRFillSample(inout float3 colorSum, inout float opacitySum, inout float weightSum, uint2 positionSS, int2 offsetSS, float perceptualRoughness, float sampleWeight)
+{
+    int2 samplePositionSS = int2(positionSS) + offsetSS;
+    if (any(samplePositionSS < int2(0, 0)) || any(samplePositionSS >= int2(_ScreenSize.xy)))
+        return;
+
+    float2 hitData = _SsrHitPointTexture[COORD_TEXTURE2D_X(samplePositionSS)].xy;
+    if (max(hitData.x, hitData.y) == 0.0f)
+        return;
+
+    float mipLevel = lerp(0.0f, (float)_SsrColorPyramidMaxMip, saturate(perceptualRoughness));
+    float sampleOpacity;
+    float3 sampleColor = GetHitColor(hitData.xy, perceptualRoughness, sampleOpacity, mipLevel);
+    if (sampleOpacity <= 0.0f || !IsPositiveFiniteColor(sampleColor))
+        return;
+
+    float distanceWeight = rcp(1.0f + length((float2)offsetSS) * 0.35f);
+    float resolveWeight = sampleWeight * sampleOpacity * distanceWeight;
+
+    colorSum += sampleColor * resolveWeight;
+    opacitySum += sampleOpacity * resolveWeight;
+    weightSum += resolveWeight;
+}
+
+bool TryFillMissingSSR(uint2 positionSS, float perceptualRoughness, out float3 color, out float opacity)
+{
+    color = 0.0f;
+    opacity = 0.0f;
+
+    if (_SsrEdgeStretch <= 0.0f)
+        return false;
+
+    float2 positionNDC = positionSS * _ScreenSize.zw + (0.5f * _ScreenSize.zw);
+    float2 edgeDistance = min(positionNDC, 1.0f - positionNDC);
+    int2 centerDir = int2(positionNDC.x < 0.5f ? 1 : -1, positionNDC.y < 0.5f ? 1 : -1);
+    bool stretchAlongX = edgeDistance.x < edgeDistance.y;
+    int2 stretchStep = stretchAlongX ? int2(centerDir.x, 0) : int2(0, centerDir.y);
+    int2 tangentStep = stretchAlongX ? int2(0, centerDir.y) : int2(centerDir.x, 0);
+
+    float3 colorSum = 0.0f;
+    float opacitySum = 0.0f;
+    float weightSum = 0.0f;
+
+    // First gather a small cross to close tiny stochastic holes without directional bias.
+    [unroll]
+    for (int radiusIndex = 0; radiusIndex < 3; ++radiusIndex)
+    {
+        int radius = 1 << radiusIndex; // 1, 2, 4 px.
+        float localWeight = (radiusIndex == 0) ? 0.65f : 0.35f;
+        AccumulateSSRFillSample(colorSum, opacitySum, weightSum, positionSS, int2( radius, 0), perceptualRoughness, localWeight);
+        AccumulateSSRFillSample(colorSum, opacitySum, weightSum, positionSS, int2(-radius, 0), perceptualRoughness, localWeight);
+        AccumulateSSRFillSample(colorSum, opacitySum, weightSum, positionSS, int2(0,  radius), perceptualRoughness, localWeight);
+        AccumulateSSRFillSample(colorSum, opacitySum, weightSum, positionSS, int2(0, -radius), perceptualRoughness, localWeight);
+    }
+
+    // Then pull samples from the interior side of the closest screen edge. This creates the
+    // Dishonored-style smooth edge stretch instead of an abrupt SSR dropout.
+    [unroll]
+    for (int stepIndex = 1; stepIndex <= 6; ++stepIndex)
+    {
+        int stretchDistance = stepIndex * stepIndex; // 1, 4, 9, 16, 25, 36 px.
+        int tangentDistance = min(stepIndex, 3);
+        float stretchWeight = rcp(1.0f + 0.18f * stretchDistance);
+        int2 stretchOffset = stretchStep * stretchDistance;
+
+        AccumulateSSRFillSample(colorSum, opacitySum, weightSum, positionSS, stretchOffset, perceptualRoughness, stretchWeight);
+        AccumulateSSRFillSample(colorSum, opacitySum, weightSum, positionSS, stretchOffset + tangentStep * tangentDistance, perceptualRoughness, stretchWeight * 0.5f);
+        AccumulateSSRFillSample(colorSum, opacitySum, weightSum, positionSS, stretchOffset - tangentStep * tangentDistance, perceptualRoughness, stretchWeight * 0.5f);
+    }
+
+    if (weightSum <= 0.0f)
+        return false;
+
+    color = colorSum / weightSum;
+    opacity = saturate(opacitySum / weightSum) * saturate(_SsrEdgeStretch);
+    return opacity > 0.0f;
 }
 
 float2 GetSampleInfo(uint2 positionSS, out float3 color, out float weight, out float opacity)
@@ -652,7 +733,7 @@ void ScreenSpaceReflectionsTracing(uint3 groupId          : SV_GroupID,
         float2 hitPositionNDC = floor(rayPos.xy) * _ScreenSize.zw + (0.5 * _ScreenSize.zw); // Should we precompute the half-texel bias? We seem to use it a lot.
         _SsrHitPointTexture[COORD_TEXTURE2D_X(positionSS)] = hitPositionNDC.xy;
     }
-    else if (!miss && tMaxIsScreenEdge && (t > tMax) && (_SsrEdgeStretch > 0.0f))
+    else if (tMaxIsScreenEdge && (_SsrEdgeStretch > 0.0f))
     {
         // If the ray simply leaves the screen, keep a clamped edge hit so the resolve pass
         // can stretch the last valid reflected pixels instead of dropping SSR to black.
@@ -675,6 +756,10 @@ void ScreenSpaceReflectionsReprojection(uint3 dispatchThreadId : SV_DispatchThre
 
     const uint2 positionSS0 = dispatchThreadId.xy;
 
+    uint stencilValue = GetStencilValue(LOAD_TEXTURE2D_X(_StencilTexture, positionSS0));
+    if ((stencilValue & _SsrStencilBit) == 0)
+        return;
+
     float3 N;
     float perceptualRoughness;
     GetNormalAndPerceptualRoughness(positionSS0, N, perceptualRoughness);
@@ -683,7 +768,12 @@ void ScreenSpaceReflectionsReprojection(uint3 dispatchThreadId : SV_DispatchThre
 
     if (max(hitPositionNDC.x, hitPositionNDC.y) == 0)
     {
-        // Miss.
+        // Miss. Fill from nearby valid SSR samples and stretch from the interior side of
+        // the closest screen edge so missing reflection wedges do not collapse to black.
+        float3 fillColor;
+        float fillOpacity;
+        if (TryFillMissingSSR(positionSS0, perceptualRoughness, fillColor, fillOpacity))
+            _SSRAccumTexture[COORD_TEXTURE2D_X(positionSS0)] = float4(fillColor, 1.0f) * fillOpacity;
         return;
     }
 
@@ -749,7 +839,7 @@ void ScreenSpaceReflectionsReprojection(uint3 dispatchThreadId : SV_DispatchThre
     {
         float3 resolvedColor = colorSum / wAll;
         float resolvedOpacity = saturate(opacitySum / wAll);
-        _SSRAccumTexture[COORD_TEXTURE2D_X(positionSS0)] = float4(resolvedColor, resolvedOpacity);
+        _SSRAccumTexture[COORD_TEXTURE2D_X(positionSS0)] = float4(resolvedColor, 1.0f) * resolvedOpacity;
     }
 #endif
 }
@@ -787,7 +877,10 @@ void MAIN_ACC(uint3 dispatchThreadId : SV_DispatchThreadID)
     roughness = clamp(roughness, MIN_GGX_ROUGHNESS, MAX_GGX_ROUGHNESS);
 
     float2 hitPositionNDC = LOAD_TEXTURE2D_X(_SsrHitPointTexture, positionSS).xy;
-    int2 hitPositionSS = clamp(int2(hitPositionNDC * _ScreenSize.xy), int2(0, 0), int2(_ScreenSize.xy) - int2(1, 1));
+    float2 positionNDC = positionSS * _ScreenSize.zw + (0.5f * _ScreenSize.zw);
+    bool hasHitPosition = max(hitPositionNDC.x, hitPositionNDC.y) != 0.0f;
+    float2 motionHitNDC = hasHitPosition ? hitPositionNDC : positionNDC;
+    int2 hitPositionSS = clamp(int2(motionHitNDC * _ScreenSize.xy), int2(0, 0), int2(_ScreenSize.xy) - int2(1, 1));
 
     float2 prevHistoryScale = _RTHandleScaleHistory.zw / _RTHandleScaleHistory.xy;
     float4 original = _SSRAccumTexture[COORD_TEXTURE2D_X(positionSS * _RTHandleScaleHistory.zw / _RTHandleScaleHistory.xy)];
@@ -795,10 +888,9 @@ void MAIN_ACC(uint3 dispatchThreadId : SV_DispatchThreadID)
     float4 previous = _SsrAccumPrev[COORD_TEXTURE2D_X(positionSS * prevHistoryScale + 0.5f / prevHistoryScale)];
 
     float2 motionVectorNDC;
-    DecodeMotionVector(SAMPLE_TEXTURE2D_X_LOD(_CameraMotionVectorsTexture, s_linear_clamp_sampler, min(hitPositionNDC.xy, 1.0f - 0.5f * _ScreenSize.zw) * _RTHandleScale.xy, 0), motionVectorNDC);
+    DecodeMotionVector(SAMPLE_TEXTURE2D_X_LOD(_CameraMotionVectorsTexture, s_linear_clamp_sampler, min(motionHitNDC.xy, 1.0f - 0.5f * _ScreenSize.zw) * _RTHandleScale.xy, 0), motionVectorNDC);
 
     float2 motionVectorCenterNDC;
-    float2 positionNDC = positionSS * _ScreenSize.zw + (0.5 * _ScreenSize.zw);
     DecodeMotionVector(SAMPLE_TEXTURE2D_X_LOD(_CameraMotionVectorsTexture, s_linear_clamp_sampler, min(positionNDC, 1.0f - 0.5f * _ScreenSize.zw) * _RTHandleScale.xy, 0), motionVectorCenterNDC);
 
 #ifdef WORLD_SPEED_REJECTION
