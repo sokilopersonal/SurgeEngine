@@ -299,15 +299,17 @@ namespace UnityEngine.Rendering.HighDefinition
             proj = Matrix4x4.Ortho(minX, maxX, minY, maxY, zNearCam, zFarCam + zNearCam);
 
             // Build culling sphere (world space) enclosing the cascade frustum.
-            Vector3 c = frustumCenter;
-            float r = 0f;
+            Vector3 center = frustumCenter;
+            float radius = 0f;
             for (int i = 0; i < 8; i++)
             {
-                float d = (frustumCorners[i] - c).magnitude;
-                if (d > r) r = d;
+                float d = (frustumCorners[i] - center).magnitude;
+                if (d > radius) radius = d;
             }
-            splitData.cullingSphere = new Vector4(c.x, c.y, c.z, r);
+            splitData = new ShadowSplitData();
+            splitData.cullingSphere = new Vector4(center.x, center.y, center.z, radius);
             splitData.cullingPlaneCount = 0;
+            splitData.shadowCascadeBlendCullingFactor = 0.6f;
         }
 
         static void CalculateFrustumCorners(Camera camera, float near, float far, Vector3[] outCorners)
