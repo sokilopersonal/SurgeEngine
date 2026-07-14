@@ -1111,6 +1111,7 @@ namespace UnityEngine.Rendering.HighDefinition
                 cb._SsrPBRSpeedRejection = Mathf.Clamp01(settings.speedRejectionParam.value);
             cb._SsrPBRBias = settings.biasFactor.value;
             cb._SsrPRBSpeedRejectionScalerFactor = Mathf.Pow(settings.speedRejectionScalerFactor.value * 0.1f, 2.0f);
+            cb._SsrEdgeStretch = settings.edgeStretch.value;
         }
 
         TextureHandle RenderSSR(RenderGraph renderGraph,

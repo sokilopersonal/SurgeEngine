@@ -132,6 +132,12 @@ namespace UnityEngine.Rendering.HighDefinition
         public ClampedFloatParameter screenFadeDistance = new ClampedFloatParameter(0.1f, 0.0f, 1.0f);
 
         /// <summary>
+        /// Controls how strongly SSR clamps and stretches the reflected image at the screen edges instead of fading it out.
+        /// </summary>
+        [Tooltip("Controls how strongly SSR clamps and stretches the reflected image at the screen edges instead of fading it out. 0 uses the classic edge fade, 1 keeps reflections visible by stretching the last valid screen pixels.")]
+        public ClampedFloatParameter edgeStretch = new ClampedFloatParameter(1.0f, 0.0f, 1.0f);
+
+        /// <summary>
         /// Controls the amount of accumulation (0 no accumulation, 1 just accumulate)
         /// </summary>
         public ClampedFloatParameter accumulationFactor = new ClampedFloatParameter(0.75f, 0.0f, 1.0f);

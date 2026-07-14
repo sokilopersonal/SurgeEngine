@@ -22,6 +22,7 @@ namespace UnityEditor.Rendering.HighDefinition
         SerializedDataParameter m_ReflectSky;
         SerializedDataParameter m_UsedAlgorithm;
         SerializedDataParameter m_ScreenFadeDistance;
+        SerializedDataParameter m_EdgeStretch;
         SerializedDataParameter m_RayMaxIterations;
         SerializedDataParameter m_DepthBufferThickness;
         SerializedDataParameter m_AccumulationFactor;
@@ -74,6 +75,7 @@ namespace UnityEditor.Rendering.HighDefinition
             m_DepthBufferThickness = Unpack(o.Find(x => x.depthBufferThickness));
             m_RayMaxIterations = Unpack(o.Find(x => x.rayMaxIterations));
             m_ScreenFadeDistance = Unpack(o.Find(x => x.screenFadeDistance));
+            m_EdgeStretch = Unpack(o.Find(x => x.edgeStretch));
             m_AccumulationFactor = Unpack(o.Find(x => x.accumulationFactor));
             m_BiasFactor = Unpack(o.Find(x => x.biasFactor));
             m_SpeedRejectionFactor = Unpack(o.Find(x => x.speedRejectionParam));
@@ -122,7 +124,8 @@ namespace UnityEditor.Rendering.HighDefinition
         static public readonly GUIContent k_TextureLodBiasText = EditorGUIUtility.TrTextContent("Texture Lod Bias", "The LOD Bias that HDRP adds to texture sampling in the reflection. A higher value increases performance and makes denoising easier, but it might reduce visual fidelity.");
         static public readonly GUIContent k_MinimumSmoothnessText = EditorGUIUtility.TrTextContent("Minimum Smoothness", "Controls the smoothness value at which HDRP activates SSR and the smoothness-controlled fade out stops.");
         static public readonly GUIContent k_SmoothnessFadeStartText = EditorGUIUtility.TrTextContent("Smoothness Fade Start", "Controls the smoothness value at which the smoothness-controlled fade out starts. The fade is in the range [Min Smoothness, Smoothness Fade Start].");
-        static public readonly GUIContent k_ScreenFaceDistanceText = EditorGUIUtility.TrTextContent("Screen Edge Fade Distance", "Controls the distance at which HDRP fades out SSR near the edge of the screen.");
+        static public readonly GUIContent k_ScreenFaceDistanceText = EditorGUIUtility.TrTextContent("Screen Edge Fade Distance", "Controls the distance over which HDRP fades or stretches SSR near the edge of the screen.");
+        static public readonly GUIContent k_EdgeStretchText = EditorGUIUtility.TrTextContent("Screen Edge Stretch", "Controls how strongly SSR clamps and stretches the reflected image at screen edges instead of fading it out. Use 0 for the classic fade, 1 to keep reflections visible with stretched edge pixels.");
         static public readonly GUIContent k_AccumulationFactorText = EditorGUIUtility.TrTextContent("Accumulation Factor", "Controls Controls the amount of accumulation (0 no accumulation, 1 just accumulate).");
         static public readonly GUIContent k_BiasFactorText = EditorGUIUtility.TrTextContent("Roughness Bias", "Controls the relative roughness offset. A low value means material roughness stays the same, a high value means smoother reflections.");
         static public readonly GUIContent k_EnableSpeedRejectionText = EditorGUIUtility.TrTextContent("World Space Speed Rejection", "When enabled, speed from will be computed in world space to reject samples.");
@@ -316,6 +319,7 @@ namespace UnityEditor.Rendering.HighDefinition
                 m_SmoothnessFadeStart.value.floatValue = Mathf.Max(m_MinSmoothness.value.floatValue, m_SmoothnessFadeStart.value.floatValue);
 
                 PropertyField(m_ScreenFadeDistance, k_ScreenFaceDistanceText);
+                PropertyField(m_EdgeStretch, k_EdgeStretchText);
                 PropertyField(m_DepthBufferThickness, k_DepthBufferThicknessText);
 
                 m_DepthBufferThickness.value.floatValue = Mathf.Clamp(m_DepthBufferThickness.value.floatValue, 0.001f, 1.0f);

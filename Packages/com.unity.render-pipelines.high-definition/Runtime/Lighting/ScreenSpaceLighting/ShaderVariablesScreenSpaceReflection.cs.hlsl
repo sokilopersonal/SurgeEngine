@@ -22,7 +22,7 @@ CBUFFER_START(ShaderVariablesScreenSpaceReflection)
     float _SsrPBRSpeedRejection;
     float _SsrPBRBias;
     float _SsrPRBSpeedRejectionScalerFactor;
-    float _SsrPBRPad0;
+    float _SsrEdgeStretch;
 CBUFFER_END
 
 
