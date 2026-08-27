@@ -15,6 +15,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
     {
         private HomingTarget _target;
         private float _timer;
+        private bool _targetReached;
 
         private readonly HomingConfig _config;
 
@@ -31,6 +32,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
                 boost.Active = false;
 
             _timer = 0f;
+            _targetReached = false;
             Timeout = _config.delay;
 
             PhysicsConfig config = Character.Config;
@@ -43,32 +45,58 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
 
             Model.ResetCollisionToDefault();
             Model.Collision.isTrigger = false;
+
             _target = null;
+            _targetReached = false;
         }
 
         public override void OnFixedTick(float dt)
         {
             base.OnFixedTick(dt);
-            
+
             if (_target != null && _target.gameObject.activeInHierarchy)
             {
-                Vector3 direction = (_target.transform.position - Rigidbody.position + Rigidbody.transform.up * 0.5f).normalized;
-                Rigidbody.linearVelocity = direction * _config.speed;
-                Rigidbody.rotation = Quaternion.LookRotation(direction, Vector3.up);
-                
-                float distance = Vector3.Distance(Rigidbody.position, _target.transform.position);
+                Vector3 targetPosition = _target.transform.position;
+                float distance = Vector3.Distance(Rigidbody.position, targetPosition);
+
                 if (distance <= _target.DistanceThreshold)
                 {
-                    _target.OnTargetReached.Invoke(Character);
+                    Rigidbody.linearVelocity = Vector3.zero;
+
+                    if (!_targetReached)
+                    {
+                        _targetReached = true;
+                        _target.OnTargetReached.Invoke(Character);
+                    }
                 }
-                
-                // If for some reason Sonic get stuck
+                else
+                {
+                    Vector3 offset =
+                        targetPosition -
+                        Rigidbody.position +
+                        Rigidbody.transform.up * 0.5f;
+
+                    Vector3 direction = offset.normalized;
+                    float maxMoveDistance = distance - _target.DistanceThreshold;
+                    float moveDistance = Mathf.Min(_config.speed * dt, maxMoveDistance);
+
+                    Rigidbody.linearVelocity = direction * (moveDistance / dt);
+                    if (direction.sqrMagnitude > 0.0001f)
+                    {
+                        Rigidbody.rotation = Quaternion.LookRotation(
+                            direction,
+                            Vector3.up);
+                    }
+                }
+
                 _timer += dt / _config.maxTime;
+
                 if (_timer >= 1f)
                 {
-                    Debug.Log("Stuck");
+                    Debug.Log($"[{GetType().Name}] <color=red>Character stuck.</color> Recovering.");
                     Kinematics.ResetVelocity();
                     StateMachine.SetState<FStateAir>();
+                    return;
                 }
             }
             else
@@ -82,21 +110,32 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
                         return;
                     }
                 }
-                
+
                 Vector3 direction = Vector3.Cross(Character.transform.right, Vector3.up);
-                Rigidbody.linearVelocity = direction * (_config.jumpDashDistance *
-                                                        _config.JumpDashCurve.Evaluate(_timer));
-                Rigidbody.rotation = Quaternion.LookRotation(direction, Vector3.up);
-                
+                Rigidbody.linearVelocity = direction * (_config.jumpDashDistance * _config.JumpDashCurve.Evaluate(_timer));
+
+                if (direction.sqrMagnitude > 0.0001f)
+                {
+                    Rigidbody.rotation = Quaternion.LookRotation(direction, Vector3.up);
+                }
+
                 _timer += dt / _config.jumpDashTime;
+
                 if (_timer >= 1f)
                 {
                     Debug.Log("Over time");
                     StateMachine.SetState<FStateAir>();
+                    return;
                 }
             }
-            
-            bool foundDamageable = HurtBox.CreateBoxAttached(Character, Character.transform, Vector3.zero, Vector3.one * 0.5f, HurtBoxTarget.Enemy | HurtBoxTarget.Breakable);
+
+            bool foundDamageable = HurtBox.CreateBoxAttached(
+                Character,
+                Character.transform,
+                Vector3.zero,
+                Vector3.one * 0.5f,
+                HurtBoxTarget.Enemy | HurtBoxTarget.Breakable);
+
             if (foundDamageable)
             {
                 StateMachine.SetState<FStateAfterHoming>();
@@ -105,13 +144,26 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
 
         public void SetTarget(HomingTarget target)
         {
-            _timer = 0;
+            _timer = 0f;
+            _targetReached = false;
             _target = target;
 
             if (_target != null)
             {
                 Model.Collision.isTrigger = true;
             }
+        }
+
+        private Vector3 GetDirection()
+        {
+            if (_target == null)
+                return Vector3.zero;
+
+            return (
+                _target.transform.position -
+                Rigidbody.position +
+                Rigidbody.transform.up * 0.5f
+            ).normalized;
         }
 
         public float Timeout { get; set; }
