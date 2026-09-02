@@ -12,5 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3a89b56ae44e4c4991545cc23a69ff5, type: 3}
   m_Name: SweepKickConfig
   m_EditorClassIdentifier: 
+  button: 1
   deceleration: 6
-  inputBufferTime: 0.215
+  eligibleAnimationStates:
+  - SitEnter
+  - SitExit
+  - Sliding
+  - SlideToSit
+  - CrawlEnter
+  - CrawlExit
+  - StompSquat

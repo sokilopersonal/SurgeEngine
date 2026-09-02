@@ -1,6 +1,5 @@
 ﻿using SurgeEngine.Source.Code.Core.Character.States.BaseStates;
 using SurgeEngine.Source.Code.Core.Character.System;
-using SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic;
 using SurgeEngine.Source.Code.Core.StateMachine.Base;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.Collectables;
@@ -11,7 +10,6 @@ using SurgeEngine.Source.Code.Infrastructure.Tools.Managers;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Zenject;
-using NotImplementedException = System.NotImplementedException;
 
 namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStates
 {
@@ -49,8 +47,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStat
 
             CanAirBoost = true;
             BoostEnergy = MaxBoostEnergy * _config.StartBoostCapacity;
-
-            owner.Input.XAction += BoostAction;
+            
             Character.StateMachine.OnStateAssign += OnStateAssign;
 
             ObjectEvents.OnObjectTriggered += OnRingCollected;
@@ -61,7 +58,6 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStat
 
         ~FBoost()
         {
-            Character.Input.XAction -= BoostAction;
             Character.StateMachine.OnStateAssign -= OnStateAssign;
 
             ObjectEvents.OnObjectTriggered -= OnRingCollected;
@@ -228,7 +224,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStat
 
         public bool CanBoost() => BoostEnergy > 0;
 
-        private void BoostAction(InputAction.CallbackContext obj)
+        public void OnInput(InputAction.CallbackContext obj)
         {
             if (Character.TryGetComponent(out HomingTargetDetector detector) && _userInput.GetData().homingOnX.Value && detector.Target != null)
                 return;

@@ -89,6 +89,12 @@ namespace SurgeEngine.Source.Code.Core.StateMachine
             Type type = typeof(T);
             return states[type] as T;
         }
+        
+        public T GetSubState<T>() where T : FSubState
+        {
+            Type type = typeof(T);
+            return _subStates[type] as T;
+        }
 
         public bool GetState<T>(out T state) where T : FState
         {

@@ -328,38 +328,4 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             trickCount3 = HE1Helper.GetInt(elem, "TrickCount3");
         }
     }
-
-    public class QTESequence
-    {
-        public List<QTEButton> buttons = new List<QTEButton>();
-        public float time;
-    }
-
-    public class QTEButton
-    {
-        public ButtonType type;
-        public QTEButton(ButtonType type)
-        {
-            this.type = type;
-        }
-    }
-
-    public enum ButtonType
-    {
-        A,
-        B,
-        X,
-        Y,
-        LB,
-        RB,
-        COUNT,
-    }
-
-    public struct QTEResult
-    {
-        public bool success;
-        
-        public static QTEResult Success => new QTEResult { success = true };
-        public static QTEResult Fail => new QTEResult { success = false };
-    }
 }

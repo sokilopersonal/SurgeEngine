@@ -53,6 +53,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             
             InitializeConfigs();
             AddStates();
+            BindInput();
         }
 
         private void Start()
@@ -123,6 +124,8 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         {
             AddConfig(Config);
         }
+        
+        protected virtual void BindInput() { }
 
         protected void AddConfig(ScriptableObject obj)
         {

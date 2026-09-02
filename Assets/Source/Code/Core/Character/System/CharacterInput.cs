@@ -1,12 +1,7 @@
 ﻿using System;
-using Alchemy.Inspector;
-using SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.DualShock;
-using UnityEngine.InputSystem.Utilities;
-using UnityEngine.InputSystem.XInput;
-using UnityEngine.UIElements;
 
 namespace SurgeEngine.Source.Code.Core.Character.System
 {
@@ -43,6 +38,9 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         public Action<InputAction.CallbackContext> BAction;
         public Action<InputAction.CallbackContext> YAction;
         public Action<InputAction.CallbackContext> BumperAction;
+        public Action<InputAction.CallbackContext> TriggerAction;
+        public Action<InputAction.CallbackContext> LeftTriggerAction;
+        public Action<InputAction.CallbackContext> RightTriggerAction;
         
         protected InputAction MovementAction => PlayerInput.actions["Movement"];
         protected InputAction LookAction => PlayerInput.actions["Camera"];
@@ -51,13 +49,15 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         protected InputAction BInputAction => PlayerInput.actions["BAction"];
         protected InputAction YInputAction => PlayerInput.actions["YAction"];
         protected InputAction BumperInputAction => PlayerInput.actions["Bumper"];
-        protected InputAction TriggerAction => PlayerInput.actions["Trigger"];
+        protected InputAction TriggerInputAction => PlayerInput.actions["Trigger"];
         public GameDevice Device { get; private set; }
 
         private bool _lockCamera;
 
         private float _noInputTimer;
         private bool _autoCamera;
+        private bool _leftTriggerActive;
+        private bool _rightTriggerActive;
 
         public event Action<ButtonType> OnButtonPressed;
         
@@ -71,20 +71,23 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
         private void OnEnable()
         {
-            PlayerInput.actions["XAction"].started += BoostInput;
-            PlayerInput.actions["XAction"].canceled += BoostInput;
+            XInputAction.started += XInput;
+            XInputAction.canceled += XInput;
 
-            PlayerInput.actions["AAction"].started += JumpInput;
-            PlayerInput.actions["AAction"].canceled += JumpInput;
+            AInputAction.started += AInput;
+            AInputAction.canceled += AInput;
             
-            PlayerInput.actions["BAction"].started += BInput;
-            PlayerInput.actions["BAction"].canceled += BInput;
+            BInputAction.started += BInput;
+            BInputAction.canceled += BInput;
             
-            PlayerInput.actions["YAction"].started += YInput;
-            PlayerInput.actions["YAction"].canceled += YInput;
+            YInputAction.started += YInput;
+            YInputAction.canceled += YInput;
             
-            PlayerInput.actions["Bumper"].started += BumperInput;
-            PlayerInput.actions["Bumper"].canceled += BumperInput;
+            BumperInputAction.started += BumperInput;
+            BumperInputAction.canceled += BumperInput;
+            
+            TriggerInputAction.started += TriggerInput;
+            TriggerInputAction.canceled += TriggerInput;
             
             PlayerInput.onControlsChanged += OnControlsChanged;
         }
@@ -94,20 +97,23 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             MoveVector = Vector3.zero;
             LookVector = Vector2.zero;
 
-            PlayerInput.actions["XAction"].started -= BoostInput;
-            PlayerInput.actions["XAction"].canceled -= BoostInput;
+            XInputAction.started -= XInput;
+            XInputAction.canceled -= XInput;
 
-            PlayerInput.actions["AAction"].started -= JumpInput;
-            PlayerInput.actions["AAction"].canceled -= JumpInput;
+            AInputAction.started -= AInput;
+            AInputAction.canceled -= AInput;
             
-            PlayerInput.actions["BAction"].started -= BInput;
-            PlayerInput.actions["BAction"].canceled -= BInput;
+            BInputAction.started -= BInput;
+            BInputAction.canceled -= BInput;
             
-            PlayerInput.actions["YAction"].started -= YInput;
-            PlayerInput.actions["YAction"].canceled -= YInput;
+            YInputAction.started -= YInput;
+            YInputAction.canceled -= YInput;
             
-            PlayerInput.actions["Bumper"].started -= BumperInput;
-            PlayerInput.actions["Bumper"].canceled -= BumperInput;
+            BumperInputAction.started -= BumperInput;
+            BumperInputAction.canceled -= BumperInput;
+            
+            TriggerInputAction.started -= TriggerInput;
+            TriggerInputAction.canceled -= TriggerInput;
             
             PlayerInput.onControlsChanged -= OnControlsChanged;
             
@@ -164,7 +170,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             }
         }
 
-        private void JumpInput(InputAction.CallbackContext obj)
+        private void AInput(InputAction.CallbackContext obj)
         {
             if (obj.started) OnButtonPressed?.Invoke(ButtonType.A);
             
@@ -176,7 +182,7 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             AAction?.Invoke(obj);
         }
 
-        private void BoostInput(InputAction.CallbackContext obj)
+        private void XInput(InputAction.CallbackContext obj)
         {
             if (obj.started) OnButtonPressed?.Invoke(ButtonType.X);
 
@@ -201,6 +207,30 @@ namespace SurgeEngine.Source.Code.Core.Character.System
                 OnButtonPressed?.Invoke(direction == -1 ? ButtonType.LB : ButtonType.RB);
             }
         }
+        
+        private void TriggerInput(InputAction.CallbackContext obj)
+        {
+            if (obj.canceled)
+            {
+                if (_leftTriggerActive) LeftTriggerAction?.Invoke(obj);
+                if (_rightTriggerActive) RightTriggerAction?.Invoke(obj);
+                _leftTriggerActive = false;
+                _rightTriggerActive = false;
+                return;
+            }
+
+            float value = obj.ReadValue<Vector2>().x;
+            if (value < 0)
+            {
+                _leftTriggerActive = true;
+                LeftTriggerAction?.Invoke(obj);
+            }
+            else if (value > 0)
+            {
+                _rightTriggerActive = true;
+                RightTriggerAction?.Invoke(obj);
+            }
+        }
 
         public void CameraLock(bool value)
         {
@@ -209,6 +239,20 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             if (_lockCamera)
             {
                 LookVector = Vector2.zero;
+            }
+        }
+        
+        public void Subscribe(ButtonType button, Action<InputAction.CallbackContext> handler)
+        {
+            switch (button)
+            {
+                case ButtonType.X: XAction += handler; break;
+                case ButtonType.A: AAction += handler; break;
+                case ButtonType.B: BAction += handler; break;
+                case ButtonType.Y: YAction += handler; break;
+                case ButtonType.LB or ButtonType.RB: BumperAction += handler; break;
+                case ButtonType.LT: LeftTriggerAction += handler; break;
+                case ButtonType.RT: RightTriggerAction += handler; break;
             }
         }
 

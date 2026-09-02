@@ -78,6 +78,15 @@ namespace SurgeEngine.Source.Code.Core.Character.System.Characters.Sonic
             _diContainer.Inject(airActions);
         }
 
+        protected override void BindInput()
+        {
+            base.BindInput();
+
+            Input.Subscribe(boostConfig.Button, StateMachine.GetSubState<FBoost>().OnInput);
+            Input.Subscribe(lightSpeedDashConfig.Button, StateMachine.GetSubState<FRingDashSearch>().OnInput);
+            Input.Subscribe(sweepKickConfig.Button, StateMachine.GetSubState<FSweepKick>().OnInput);
+        }
+
         public override void Load()
         {
             if (StateMachine.GetState(out FBoost boost))

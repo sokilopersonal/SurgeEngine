@@ -4,12 +4,13 @@ using SurgeEngine.Source.Code.Core.StateMachine.Base;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.Collectables;
 using SurgeEngine.Source.Code.Infrastructure.Config.Sonic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStates
 {
     public class FRingDashSearch : FCharacterSubState
     {
-        private LightSpeedDashConfig _config;
+        private readonly LightSpeedDashConfig _config;
         
         private readonly Collider[] _rings = new Collider[25];
         
@@ -20,21 +21,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStat
             owner.TryGetConfig(out _config);
         }
 
-        public override void OnTick(float dt)
-        {
-            base.OnTick(dt);
-
-
-            if (Active)
-            {
-                if (Character.Input.YPressed)
-                {
-                    SearchAndDash();
-                }
-            }
-        }
-
-        private void SearchAndDash()
+        public void OnInput(InputAction.CallbackContext callbackContext)
         {
             var transform = Character.transform;
             var rb = Character.Rigidbody;

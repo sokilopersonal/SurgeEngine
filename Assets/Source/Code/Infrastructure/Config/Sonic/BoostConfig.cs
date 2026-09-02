@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using SurgeEngine.Source.Code.Core.Character.System;
+using UnityEngine;
 
 namespace SurgeEngine.Source.Code.Infrastructure.Config.Sonic
 {
@@ -21,6 +22,7 @@ namespace SurgeEngine.Source.Code.Infrastructure.Config.Sonic
         [SerializeField] private float driftEnergyAddition = 6.75f;
         [SerializeField] private float inAirTime = 0.3f;
         [SerializeField] private float keepTime = 0.2f;
+        [SerializeField] private ButtonType button = ButtonType.X;
 
         public float StartSpeed => startSpeed;
         public float AirBoostSpeed => airBoostSpeed;
@@ -38,5 +40,6 @@ namespace SurgeEngine.Source.Code.Infrastructure.Config.Sonic
         public float DriftEnergyAddition => driftEnergyAddition;
         public float InAirTime => inAirTime;
         public float KeepTime => keepTime;
+        public ButtonType Button => button;
     }
 }
