@@ -11,7 +11,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStat
         {
             if (!character.Flags.HasFlag(FlagType.OutOfControl))
             {
-                if (character.StateMachine.GetState(out FBoost boost) && character.Input.XPressed && boost.CanBoost() && boost.CanAirBoost)
+                if (character.StateMachine.GetState(out FBoost boost) && character.Input.WasPressed(config.Button) && boost.CanBoost() && boost.CanAirBoost)
                 {
                     boost.CanAirBoost = false;
                     character.StateMachine.SetState<FStateAirBoost>();

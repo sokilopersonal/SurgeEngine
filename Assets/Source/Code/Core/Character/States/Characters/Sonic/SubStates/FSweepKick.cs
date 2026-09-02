@@ -18,11 +18,11 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStat
 
         public void OnInput(InputAction.CallbackContext ctx)
         {
-            /*if (!ctx.started) return;
+            if (!ctx.started) return;
             if (!_config.EligibleAnimationStates.Contains(Character.Animation.StateAnimator.GetCurrentAnimationState()))
-                return;*/
+                return;
 
-            Debug.Log("1");
+            Debug.Log($"<color=red>Zak, tell me if it's working please<color>");
             Character.StateMachine.SetState<FStateSweepKick>();
         }
     }

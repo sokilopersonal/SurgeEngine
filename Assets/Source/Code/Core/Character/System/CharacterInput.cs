@@ -192,6 +192,8 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         private void BInput(InputAction.CallbackContext obj)
         {
             if (obj.started) OnButtonPressed?.Invoke(ButtonType.B);
+            
+            BAction?.Invoke(obj);
         }
 
         private void YInput(InputAction.CallbackContext obj)
@@ -254,6 +256,22 @@ namespace SurgeEngine.Source.Code.Core.Character.System
                 case ButtonType.LT: LeftTriggerAction += handler; break;
                 case ButtonType.RT: RightTriggerAction += handler; break;
             }
+        }
+        
+        public bool WasPressed(ButtonType button)
+        {
+            return button switch
+            {
+                ButtonType.X => XPressed,
+                ButtonType.A => APressed,
+                ButtonType.B => BPressed,
+                ButtonType.Y => YPressed,
+                ButtonType.LB => LeftBumperPressed,
+                ButtonType.RB => RightBumperPressed,
+                ButtonType.LT => _leftTriggerActive,
+                ButtonType.RT => _rightTriggerActive,
+                _ => false
+            };
         }
 
         private void OnControlsChanged(PlayerInput obj)
