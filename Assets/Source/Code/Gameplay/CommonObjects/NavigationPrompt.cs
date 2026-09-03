@@ -1,7 +1,6 @@
 using Alchemy.Inspector;
 using FMODUnity;
 using SurgeEngine.Source.Code.Core.Character.System;
-using SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility;
 using SurgeEngine.Source.Code.UI;
 using UnityEngine;
 using Zenject;
@@ -22,6 +21,10 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects
         [SerializeField] private PlatformSprite lbPrompt;
         [FoldoutGroup("Button Sprites")]
         [SerializeField] private PlatformSprite rbPrompt;
+        [FoldoutGroup("Button Sprites")]
+        [SerializeField] private PlatformSprite ltPrompt;
+        [FoldoutGroup("Button Sprites")]
+        [SerializeField] private PlatformSprite rtPrompt;
 
         [Header("General")]
         [SerializeField] private ButtonType buttonType;
@@ -60,6 +63,10 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects
                     return lbPrompt.GetDeviceSprite(device);
                 case ButtonType.RB:
                     return rbPrompt.GetDeviceSprite(device);
+                case ButtonType.LT:
+                    return ltPrompt.GetDeviceSprite(device);
+                case ButtonType.RT:
+                    return rtPrompt.GetDeviceSprite(device);
                 default:
                     return null;
             }
