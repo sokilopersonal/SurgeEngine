@@ -50,6 +50,16 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
         private float _timer;
         private QTESequence _finishingSequence;
         private CharacterBase _character;
+        
+        private static readonly ButtonType[] QTEButtons =
+        {
+            ButtonType.A,
+            ButtonType.B,
+            ButtonType.X,
+            ButtonType.Y,
+            ButtonType.LB,
+            ButtonType.RB
+        };
 
         private void Awake()
         {
@@ -158,7 +168,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility
             QTESequence sequence = new QTESequence { time = time };
             for (int i = 0; i < count; i++)
             {
-                ButtonType buttonType = (ButtonType)Random.Range(0, (int)ButtonType.COUNT);
+                ButtonType buttonType = QTEButtons[Random.Range(0, QTEButtons.Length)];
                 QTEButton button = new QTEButton(buttonType);
                 sequence.buttons.Add(button);
             }

@@ -112,6 +112,8 @@ namespace SurgeEngine.Source.Code.Core.Character.HUD
         public Sprite yButtonSprite;
         public Sprite LBButtonSprite;
         public Sprite RBButtonSprite;
+        public Sprite LTButtonSprite;
+        public Sprite RTButtonSprite;
 
         public Sprite GetSprite(ButtonType type)
         {
@@ -129,6 +131,10 @@ namespace SurgeEngine.Source.Code.Core.Character.HUD
                     return LBButtonSprite;
                 case ButtonType.RB:
                     return RBButtonSprite;
+                case ButtonType.LT:
+                    return LTButtonSprite;
+                case ButtonType.RT:
+                    return RTButtonSprite;
                 case ButtonType.COUNT:
                     return null;
                 default:
