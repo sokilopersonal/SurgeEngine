@@ -22,7 +22,6 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic.SubStat
             if (!_config.EligibleAnimationStates.Contains(Character.Animation.StateAnimator.GetCurrentAnimationState()))
                 return;
 
-            Debug.Log($"<color=red>Zak, tell me if it's working please<color>");
             Character.StateMachine.SetState<FStateSweepKick>();
         }
     }
