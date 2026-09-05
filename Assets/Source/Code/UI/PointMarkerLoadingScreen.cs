@@ -56,7 +56,7 @@ namespace SurgeEngine.Source.Code.UI
             else
             {
                 yield return new WaitForSeconds(1.25f);
-                SceneLoader.LoadGameScene(SceneManager.GetActiveScene().name);
+                SceneLoader.LoadGameScene(SceneManager.GetActiveScene().name, _stage.Data.Name);
             }
         }
 
