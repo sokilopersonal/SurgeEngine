@@ -27,7 +27,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.System
         {
             _soundEvent = RuntimeManager.PathToEventReference("event:/CommonObjects/PointMarker");
 
-            _loaders = FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include, FindObjectsSortMode.None)
+            _loaders = FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include)
                 .OfType<IPointMarkerLoader>()
                 .ToList();
         }
@@ -45,17 +45,18 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects.System
         public void Load()
         {
             Vector3 currentRotation = transform.rotation.eulerAngles;
-            Vector3 newRotation = new Vector3(0f, currentRotation.y, 0f);
-            Quaternion rotation = Quaternion.Euler(newRotation);
-            
-            _character.Rigidbody.position = transform.position;
-            _character.Rigidbody.rotation = rotation;
-            _character.Kinematics.Snap(transform.position, Vector3.up);
+            Quaternion rotation = Quaternion.Euler(0f, currentRotation.y, 0f);
 
+            Vector3 goal = transform.position;
+            _character.Rigidbody.position = goal;
+            _character.Rigidbody.rotation = rotation;
+            Physics.SyncTransforms();
+
+            _character.Kinematics.Snap(goal, Vector3.up);
+            
             var euler = rotation.eulerAngles;
             _character.Camera.StateMachine.SetDirection(euler.y, euler.x);
             _character.Camera.StateMachine.ClearVolumes();
-            Physics.SyncTransforms();
             foreach (var volume in Utility.GetVolumesInBounds(_character.Rigidbody.position))
             {
                 _character.Camera.StateMachine.RegisterVolume(volume);

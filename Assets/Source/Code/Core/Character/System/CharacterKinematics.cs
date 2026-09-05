@@ -350,12 +350,12 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             switch (type)
             {
                 case CheckGroundType.Normal:
-                    origin = Character.transform.position;
+                    origin = Rigidbody.position;
                     direction = -Character.Kinematics.Normal;
                     break;
                 case CheckGroundType.Predict:
-                    origin = Character.transform.position - Character.transform.up * 0.5f;
-                    direction = Character.Kinematics.Rigidbody.linearVelocity.normalized;
+                    origin = Rigidbody.position - Rigidbody.transform.up * 0.5f;
+                    direction = Rigidbody.linearVelocity.normalized;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);

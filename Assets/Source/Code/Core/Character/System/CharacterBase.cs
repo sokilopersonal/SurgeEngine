@@ -146,16 +146,16 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         public virtual void Load()
         {
             Rigidbody.linearVelocity = Vector3.zero;
+            
             Animation.StateAnimator.TransitionToState("Idle", 0f);
             Flags.AddFlag(new Flag(FlagType.OutOfControl, 0.5f));
             Input.PlayerInput.enabled = true;
 
+            StateMachine.SetState<FStateIdle>();
             if (StateMachine.CurrentState is IPointMarkerLoader stateLoader)
             {
                 stateLoader.Load();
             }
-            
-            StateMachine.SetState<FStateIdle>();
         }
     }
 }

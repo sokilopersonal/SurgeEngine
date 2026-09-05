@@ -70,6 +70,7 @@ namespace SurgeEngine.Source.Code.Core.Character.States
                     else
                     {
                         Rigidbody.linearVelocity = Vector3.zero;
+                        StateMachine.SetState<FStateDead>();
                     }
                 }
             }
