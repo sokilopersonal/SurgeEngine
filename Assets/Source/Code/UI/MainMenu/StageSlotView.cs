@@ -1,4 +1,4 @@
-﻿using TMPro;
+﻿using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -8,8 +8,8 @@ namespace SurgeEngine.Source.Code.UI.MainMenu
     public class StageSlotView : MonoBehaviour, ISelectHandler
     {
         [SerializeField] private StageSlotAsset stageSlot;
-        [SerializeField] private Image stageImage;
-        [SerializeField] private TMP_Text stageName;
+
+        public event Action<StageSlotAsset> OnSelectEvent; 
 
         private void Awake()
         {
@@ -19,8 +19,7 @@ namespace SurgeEngine.Source.Code.UI.MainMenu
 
         public void OnSelect(BaseEventData eventData)
         {
-            stageImage.sprite = stageSlot.Image;
-            stageName.text = stageSlot.Name;
+            OnSelectEvent?.Invoke(stageSlot);
         }
     }
 }
