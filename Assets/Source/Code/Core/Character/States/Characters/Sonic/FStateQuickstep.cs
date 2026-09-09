@@ -98,6 +98,11 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
             
             if (_isSnapping)
             {
+                if (CheckWall())
+                {
+                    _isSnapping = false;
+                }
+                
                 float t = Mathf.Clamp01(_timer);
                 _snapStartPos += _snapVelocity * dt;
                 _snapTargetPos += _snapVelocity * dt;
@@ -254,6 +259,9 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
             Rigidbody.linearVelocity = Rigidbody.transform.TransformDirection(localVel);
         }
         
+        private bool CheckWall() 
+            => Rigidbody.SweepTest(Rigidbody.transform.right * (_direction == QuickstepDirection.Left ? -1f : 1f), out _, 0.4f);
+        
         public FStateQuickstep SetDirection(QuickstepDirection direction)
         {
             // Invert QS direction if we are looking in the opposite of player's forward
@@ -271,10 +279,9 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
             return this;
         }
 
-        public FStateQuickstep SetRun(bool isRun)
+        public void SetRun(bool isRun)
         {
             IsRun = isRun;
-            return this;
         }
 
         public QuickstepDirection GetDirection()
