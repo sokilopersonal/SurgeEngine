@@ -2,7 +2,6 @@ using SurgeEngine.Source.Code.Core.Character.States.BaseStates;
 using SurgeEngine.Source.Code.Core.Character.System;
 using SurgeEngine.Source.Code.Core.StateMachine.Interfaces;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects;
-using SurgeEngine.Source.Code.Gameplay.CommonObjects.ChangeModes;
 using SurgeEngine.Source.Code.Infrastructure.Config.Sonic;
 using SurgeEngine.Source.Code.Infrastructure.Custom;
 using UnityEngine;
@@ -10,289 +9,294 @@ using UnityEngine.Splines;
 
 namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
 {
-    public class FStateQuickstep : FCharacterState, IStateTimeout
-    {
-        public float Timeout { get; set; }
-        
-        private QuickstepDirection _direction;
-        private float _timer;
-        public bool IsRun { get; private set; }
+	public class FStateQuickstep : FCharacterState, IStateTimeout
+	{
+		public float Timeout { get; set; }
 
-        private Vector3 _snapStartPos;
-        private Vector3 _snapTargetPos;
-        private Vector3 _snapTangent;
-        private Vector3 _lastTangent;
-        private float _snapDot;
-        
-        private Vector3 _snapVelocity;
-        private bool _isSnapping;
+		private QuickstepDirection _direction;
+		private float _timer;
+		public bool IsRun { get; private set; }
 
-        private readonly QuickStepConfig _config;
+		private Vector3 _snapStartPos;
+		private Vector3 _snapTargetPos;
+		private Vector3 _snapTangent;
+		private Vector3 _lastTangent;
+		private float _snapDot;
 
-        public FStateQuickstep(CharacterBase owner) : base(owner)
-        {
-            owner.TryGetConfig(out _config);
-        }
+		private Vector3 _snapVelocity;
+		private bool _isSnapping;
 
-        public override void OnEnter()
-        {
-            base.OnEnter();
+		private readonly QuickStepConfig _config;
 
-            _timer = 0;
-            _isSnapping = false;
-            
-            Timeout = _config.delay;
-            
-            float speed = !IsRun ? _config.force : _config.runForce;
-            var sideDir = _direction == QuickstepDirection.Left ? -speed : speed;
-            var pathForward = Mode.ForwardSplineData;
-            var pathDash = Mode.DashSplineData;
-            if (pathForward == null && pathDash == null)
-            {
-                SetSideVelocity(sideDir);
-            }
-            else 
-            {
-                if (IsRun)
-                {
-                    SplineData quickstepPath = null;
-                    if (pathForward != null && pathForward.Tag == SplineTag.Quickstep)
-                    {
-                        quickstepPath = pathForward;
-                    }
-                    else if (pathDash != null && pathDash.Tag == SplineTag.Quickstep)
-                    {
-                        quickstepPath = pathDash;
-                    }
+		public FStateQuickstep(CharacterBase owner) : base(owner)
+		{
+			owner.TryGetConfig(out _config);
+		}
 
-                    if (quickstepPath != null)
-                    {
-                        bool snapped = SnapToSpline(quickstepPath);
-                        if (!snapped)
-                        {
-                            SetSideVelocity(sideDir);
-                        }
-                    }
-                    else
-                    {
-                        SetSideVelocity(sideDir);
-                    }
-                }
-                else
-                {
-                    SetSideVelocity(sideDir);
-                }
-            }
-            
-            if (StateMachine.PreviousState is FStateSlide)
-            {
-                Rigidbody.linearVelocity += Rigidbody.transform.forward * 8f; // TODO: Move this QSS value to config
-            }
-        }
+		public override void OnEnter()
+		{
+			base.OnEnter();
 
-        public override void OnTick(float dt)
-        {
-            base.OnTick(dt);
-            
-            _timer += dt / (!IsRun ? _config.duration : _config.runDuration);
-            
-            if (_isSnapping)
-            {
-                if (CheckWall())
-                {
-                    _isSnapping = false;
-                }
-                
-                float t = Mathf.Clamp01(_timer);
-                _snapStartPos += _snapVelocity * dt;
-                _snapTargetPos += _snapVelocity * dt;
-                Vector3 up = Rigidbody.transform.up;
-                
-                var pos = Vector3.Lerp(_snapStartPos, _snapTargetPos, Easings.Get(Easing.InOutSine, t));
-                pos.y = Rigidbody.position.y;
-                Rigidbody.MovePosition(pos);
-                    
-                var tg = _snapTangent;
-                tg *= Mathf.Sign(_snapDot);
-                
-                var rot = Quaternion.LookRotation(tg, up);
-                Rigidbody.MoveRotation(rot);
-                
-                Kinematics.RotateSnapNormal(up);
+			_timer = 0;
+			_isSnapping = false;
 
-                if (t >= 1f)
-                {
-                    var vel = Rigidbody.linearVelocity;
-                    float horizSpeed = Vector3.Dot(vel, tg.normalized);
-                    Rigidbody.linearVelocity = tg.normalized * horizSpeed + Vector3.Project(vel, up);
-                    
-                    _isSnapping = false;
-                }
-                
-                return;
-            }
-            
-            if (_timer >= 1f)
-            {
-                SetSideVelocity(0);
-                if (IsRun) StateMachine.SetState<FStateGround>();
-                else StateMachine.SetState<FStateIdle>();
-            }
-        }
+			Timeout = _config.delay;
 
-        private bool SnapToSpline(SplineData pathData)
-        {
-            var container = pathData.Container;
-            var splines = container.Splines;
-            
-            if (splines.Count < 2) 
-            {
-                Debug.LogWarning("Quickstep: Container has less than 2 splines.");
-                return false;
-            }
+			float speed = !IsRun ? _config.force : _config.runForce;
+			var sideDir = _direction == QuickstepDirection.Left ? -speed : speed;
+			var pathForward = Mode.ForwardSplineData;
+			var pathDash = Mode.DashSplineData;
+			if (pathForward == null && pathDash == null)
+			{
+				SetSideVelocity(sideDir);
+			}
+			else
+			{
+				if (IsRun)
+				{
+					SplineData quickstepPath = null;
+					if (pathForward != null && pathForward.Tag == SplineTag.Quickstep)
+					{
+						quickstepPath = pathForward;
+					}
+					else if (pathDash != null && pathDash.Tag == SplineTag.Quickstep)
+					{
+						quickstepPath = pathDash;
+					}
 
-            if (splines.Count > 2)
-            {
-                Debug.LogWarning("Quickstep: Container has more than 2 splines.");
-                return false;
-            }
+					if (quickstepPath != null)
+					{
+						bool snapped = SnapToSpline(quickstepPath);
+						if (!snapped)
+						{
+							SetSideVelocity(sideDir);
+						}
+					}
+					else
+					{
+						SetSideVelocity(sideDir);
+					}
+				}
+				else
+				{
+					SetSideVelocity(sideDir);
+				}
+			}
 
-            const float ignoreDistance = 1f;
-            const float ignoreSqr = ignoreDistance * ignoreDistance;
-            const float blend = 0.7f;
+			if (StateMachine.PreviousState is FStateSlide)
+			{
+				Rigidbody.linearVelocity += Rigidbody.transform.forward * 8f; // TODO: Move this QSS value to config
+			}
+		}
 
-            Vector3 worldPos = Rigidbody.position - Rigidbody.transform.up * 0.5f;
-            Vector3 localPos = container.transform.InverseTransformPoint(worldPos);
+		private bool SnapToSpline(SplineData pathData)
+		{
+			var container = pathData.Container;
+			var splines = container.Splines;
 
-            Spline leftSpline = splines[0];
-            Spline rightSpline = splines[1];
+			if (splines.Count < 2)
+			{
+				Debug.LogWarning("Quickstep: Container has less than 2 splines.");
+				return false;
+			}
 
-            SplineUtility.GetNearestPoint(leftSpline, localPos, out _, out var leftT);
-            SplineUtility.GetNearestPoint(rightSpline, localPos, out _, out var rightT);
+			if (splines.Count > 2)
+			{
+				Debug.LogWarning("Quickstep: Container has more than 2 splines.");
+				return false;
+			}
 
-            var potentialTargets = new (Vector3 pos, Vector3 tangent, float sqrDist, bool isValid)[3];
+			const float ignoreDistance = 1f;
+			const float ignoreSqr = ignoreDistance * ignoreDistance;
+			const float blend = 0.7f;
 
-            Vector3 leftPos = container.transform.TransformPoint(leftSpline.EvaluatePosition(leftT));
-            leftPos.y = worldPos.y;
-            potentialTargets[0] = (leftPos, container.transform.TransformDirection(leftSpline.EvaluateTangent(leftT)), (leftPos - worldPos).sqrMagnitude, false);
+			Vector3 worldPos = Rigidbody.position - Rigidbody.transform.up * 0.5f;
+			Vector3 localPos = container.transform.InverseTransformPoint(worldPos);
 
-            Vector3 rightPos = container.transform.TransformPoint(rightSpline.EvaluatePosition(rightT));
-            rightPos.y = worldPos.y;
-            potentialTargets[2] = (rightPos, container.transform.TransformDirection(rightSpline.EvaluateTangent(rightT)), (rightPos - worldPos).sqrMagnitude, false);
+			Spline leftSpline = splines[0];
+			Spline rightSpline = splines[1];
 
-            Vector3 centerPos = (leftPos + rightPos) * 0.5f;
-            Vector3 centerTangent = (potentialTargets[0].tangent + potentialTargets[2].tangent).normalized;
-            potentialTargets[1] = (centerPos, centerTangent, (centerPos - worldPos).sqrMagnitude, false);
+			SplineUtility.GetNearestPoint(leftSpline, localPos, out _, out var leftT);
+			SplineUtility.GetNearestPoint(rightSpline, localPos, out _, out var rightT);
 
-            Vector3 rightAxis = Rigidbody.transform.right;
-            float dirSign = _direction == QuickstepDirection.Right ? 1f : -1f;
-            
-            float bestDist = float.MaxValue;
-            int bestIndex = -1;
-            
-            for (int i = 0; i < 3; i++)
-            {
-                var candidate = potentialTargets[i];
-                if (candidate.sqrDist < ignoreSqr) continue;
-                
-                Vector3 toPoint = candidate.pos - worldPos;
-                float dot = Vector3.Dot(toPoint, rightAxis) * dirSign;
-                float minDot = (i == 1) ? 0f : 0.3f;
+			var potentialTargets = new (Vector3 pos, Vector3 tangent, float sqrDist, bool isValid)[3];
 
-                if (dot > minDot)
-                {
-                    if (candidate.sqrDist < bestDist)
-                    {
-                        bestDist = candidate.sqrDist;
-                        bestIndex = i;
-                    }
-                }
-            }
+			Vector3 leftPos = container.transform.TransformPoint(leftSpline.EvaluatePosition(leftT));
+			leftPos.y = worldPos.y;
+			potentialTargets[0] = (leftPos, container.transform.TransformDirection(leftSpline.EvaluateTangent(leftT)), (leftPos - worldPos).sqrMagnitude, false);
 
-            if (bestIndex == -1) return false;
+			Vector3 rightPos = container.transform.TransformPoint(rightSpline.EvaluatePosition(rightT));
+			rightPos.y = worldPos.y;
+			potentialTargets[2] = (rightPos, container.transform.TransformDirection(rightSpline.EvaluateTangent(rightT)), (rightPos - worldPos).sqrMagnitude, false);
 
-            var target = potentialTargets[bestIndex];
-            _snapStartPos = worldPos;
+			Vector3 centerPos = (leftPos + rightPos) * 0.5f;
+			Vector3 centerTangent = (potentialTargets[0].tangent + potentialTargets[2].tangent).normalized;
+			potentialTargets[1] = (centerPos, centerTangent, (centerPos - worldPos).sqrMagnitude, false);
 
-            float blendFactor = (bestIndex == 1) ? 1.0f : blend;
-            _snapTargetPos = Vector3.Lerp(_snapStartPos, target.pos, blendFactor);
-            
-            _snapTangent = target.tangent;
-            _snapDot = Vector3.Dot(Rigidbody.transform.forward, _snapTangent);
-            
-            _snapVelocity = Kinematics.Velocity;
-            _timer = 0;
-            _isSnapping = true;
-            
-            return true;
-        }
-        
-        public override void OnFixedTick(float dt)
-        {
-            base.OnFixedTick(dt);
+			Vector3 rightAxis = Rigidbody.transform.right;
+			float dirSign = _direction == QuickstepDirection.Right ? 1f : -1f;
 
-            var config = Character.Config;
-            float distance = config.EvaluateCastDistance(config.castDistanceCurve.Evaluate(Kinematics.Speed / config.topSpeed));
-            if (Kinematics.CheckForGround(out var hit, castDistance: distance))
-            {
-                Kinematics.Snap(hit.point, Kinematics.Normal);
-                Kinematics.ProjectOnNormal();
-            }
-            else
-            {
-                if ((Mode.ModeForward != null && Mode.ForwardSplineData.Tag == SplineTag.Quickstep) ||
-                    (Mode.ModeDash != null && Mode.DashSplineData.Tag == SplineTag.Quickstep))
-                {
-                    float speed = _config.runForce;
-                    var sideDir = _direction == QuickstepDirection.Left ? -speed : speed;
-                    SetSideVelocity(sideDir);
-                }
-                
-                StateMachine.SetState<FStateAir>();
-            }
-        }
+			float bestDist = float.MaxValue;
+			int bestIndex = -1;
 
-        private void SetSideVelocity(float sideDir)
-        {
-            var localVel = Rigidbody.transform.InverseTransformDirection(Rigidbody.linearVelocity);
-            localVel.x = sideDir;
-            Rigidbody.linearVelocity = Rigidbody.transform.TransformDirection(localVel);
-        }
-        
-        private bool CheckWall() 
-            => Rigidbody.SweepTest(Rigidbody.transform.right * (_direction == QuickstepDirection.Left ? -1f : 1f), out _, 0.4f);
-        
-        public FStateQuickstep SetDirection(QuickstepDirection direction)
-        {
-            // Invert QS direction if we are looking in the opposite of player's forward
-            float dot = Vector3.Dot(Rigidbody.transform.forward, Character.Camera.GetCameraTransform().forward);
-            if (direction == QuickstepDirection.Left && dot < 0)
-            {
-                direction = QuickstepDirection.Right;
-            }
-            else if (direction == QuickstepDirection.Right && dot < 0)
-            {
-                direction = QuickstepDirection.Left;
-            }
-            
-            _direction = direction;
-            return this;
-        }
+			for (int i = 0; i < 3; i++)
+			{
+				var candidate = potentialTargets[i];
+				if (candidate.sqrDist < ignoreSqr) continue;
 
-        public void SetRun(bool isRun)
-        {
-            IsRun = isRun;
-        }
+				Vector3 toPoint = candidate.pos - worldPos;
+				float dot = Vector3.Dot(toPoint, rightAxis) * dirSign;
+				float minDot = (i == 1) ? 0f : 0.3f;
 
-        public QuickstepDirection GetDirection()
-        {
-            return _direction;
-        }
-    }
-    
-    public enum QuickstepDirection
-    {
-        Left = -1,
-        Right = 1
-    }
+				if (dot > minDot)
+				{
+					if (candidate.sqrDist < bestDist)
+					{
+						bestDist = candidate.sqrDist;
+						bestIndex = i;
+					}
+				}
+			}
+
+			if (bestIndex == -1) return false;
+
+			var target = potentialTargets[bestIndex];
+			_snapStartPos = worldPos;
+
+			float blendFactor = (bestIndex == 1) ? 1.0f : blend;
+			_snapTargetPos = Vector3.Lerp(_snapStartPos, target.pos, blendFactor);
+
+			_snapTangent = target.tangent;
+			_snapDot = Vector3.Dot(Rigidbody.transform.forward, _snapTangent);
+
+			_snapVelocity = Kinematics.Velocity;
+			_timer = 0;
+			_isSnapping = true;
+
+			return true;
+		}
+
+		public override void OnFixedTick(float dt)
+		{
+			base.OnFixedTick(dt);
+
+			Move();
+
+			var config = Character.Config;
+			float distance = config.EvaluateCastDistance(config.castDistanceCurve.Evaluate(Kinematics.Speed / config.topSpeed));
+			if (Kinematics.CheckForGround(out var hit, castDistance: distance))
+			{
+				Kinematics.Snap(hit.point, Kinematics.Normal);
+				Kinematics.ProjectOnNormal();
+			}
+			else
+			{
+				if ((Mode.ModeForward != null && Mode.ForwardSplineData.Tag == SplineTag.Quickstep) ||
+					(Mode.ModeDash != null && Mode.DashSplineData.Tag == SplineTag.Quickstep))
+				{
+					float speed = _config.runForce;
+					var sideDir = _direction == QuickstepDirection.Left ? -speed : speed;
+					SetSideVelocity(sideDir);
+				}
+
+				StateMachine.SetState<FStateAir>();
+			}
+		}
+
+		private void Move()
+		{
+			float dt = Time.fixedDeltaTime;
+			_timer += dt / (!IsRun ? _config.duration : _config.runDuration);
+
+			if (_isSnapping)
+			{
+				float t = Mathf.Clamp01(_timer);
+				_snapStartPos += _snapVelocity * dt;
+				_snapTargetPos += _snapVelocity * dt;
+				Vector3 up = Rigidbody.transform.up;
+
+				var pos = Vector3.Lerp(_snapStartPos, _snapTargetPos, Easings.Get(Easing.InOutSine, t));
+				pos.y = Rigidbody.position.y;
+
+				Vector3 moveDelta = pos - Rigidbody.position;
+				float moveDist = moveDelta.magnitude;
+				if (moveDist > 0.001f
+				    && Rigidbody.SweepTest(moveDelta / moveDist, out RaycastHit sweepHit, moveDist, QueryTriggerInteraction.Ignore)
+				    && Mathf.Abs(sweepHit.normal.y) < 0.5f)
+				{
+					_isSnapping = false;
+					SetSideVelocity(0);
+					return;
+				}
+
+				Rigidbody.MovePosition(pos);
+
+				var tg = _snapTangent;
+				tg *= Mathf.Sign(_snapDot);
+
+				var rot = Quaternion.LookRotation(tg, up);
+				Rigidbody.MoveRotation(rot);
+
+				Kinematics.RotateSnapNormal(up);
+
+				if (t >= 1f)
+				{
+					var vel = Rigidbody.linearVelocity;
+					float horizSpeed = Vector3.Dot(vel, tg.normalized);
+					Rigidbody.linearVelocity = tg.normalized * horizSpeed + Vector3.Project(vel, up);
+
+					_isSnapping = false;
+				}
+
+				return;
+			}
+
+			if (_timer >= 1f)
+			{
+				SetSideVelocity(0);
+				if (IsRun) StateMachine.SetState<FStateGround>();
+				else StateMachine.SetState<FStateIdle>();
+			}
+		}
+
+		private void SetSideVelocity(float sideDir)
+		{
+			var localVel = Rigidbody.transform.InverseTransformDirection(Rigidbody.linearVelocity);
+			localVel.x = sideDir;
+			Rigidbody.linearVelocity = Rigidbody.transform.TransformDirection(localVel);
+		}
+
+		public FStateQuickstep SetDirection(QuickstepDirection direction)
+		{
+			// Invert QS direction if we are looking in the opposite of player's forward
+			float dot = Vector3.Dot(Rigidbody.transform.forward, Character.Camera.GetCameraTransform().forward);
+			if (direction == QuickstepDirection.Left && dot < 0)
+			{
+				direction = QuickstepDirection.Right;
+			}
+			else if (direction == QuickstepDirection.Right && dot < 0)
+			{
+				direction = QuickstepDirection.Left;
+			}
+
+			_direction = direction;
+			return this;
+		}
+
+		public void SetRun(bool isRun)
+		{
+			IsRun = isRun;
+		}
+
+		public QuickstepDirection GetDirection()
+		{
+			return _direction;
+		}
+	}
+
+	public enum QuickstepDirection
+	{
+		Left = -1,
+		Right = 1
+	}
 }
