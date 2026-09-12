@@ -2,6 +2,7 @@ using SurgeEngine.Source.Code.Core.Character.States.BaseStates;
 using SurgeEngine.Source.Code.Core.Character.System;
 using SurgeEngine.Source.Code.Core.StateMachine.Interfaces;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects;
+using SurgeEngine.Source.Code.Gameplay.CommonObjects.PhysicsObjects;
 using SurgeEngine.Source.Code.Infrastructure.Config.Sonic;
 using SurgeEngine.Source.Code.Infrastructure.Custom;
 using UnityEngine;
@@ -220,10 +221,13 @@ namespace SurgeEngine.Source.Code.Core.Character.States.Characters.Sonic
 
 				Vector3 moveDelta = pos - Rigidbody.position;
 				float moveDist = moveDelta.magnitude;
-				if (moveDist > 0.001f
-				    && Rigidbody.SweepTest(moveDelta / moveDist, out RaycastHit sweepHit, moveDist, QueryTriggerInteraction.Ignore)
-				    && Mathf.Abs(sweepHit.normal.y) < 0.5f)
+				bool sweep = Rigidbody.SweepTest(moveDelta / moveDist, out RaycastHit sweepHit, moveDist,
+					QueryTriggerInteraction.Ignore);
+				if (moveDist > 0.001f && sweep && Mathf.Abs(sweepHit.normal.y) < 0.5f)
 				{
+					if (sweepHit.transform.TryGetComponent(out BreakableObject breakable))
+						return;
+					
 					_isSnapping = false;
 					SetSideVelocity(0);
 					return;
