@@ -199,6 +199,8 @@ namespace SurgeEngine.Source.Code.Core.Character.System
         private void YInput(InputAction.CallbackContext obj)
         {
             if (obj.started) OnButtonPressed?.Invoke(ButtonType.Y);
+            
+            YAction?.Invoke(obj);
         }
 
         private void BumperInput(InputAction.CallbackContext obj)
@@ -207,6 +209,8 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             {
                 int direction = (int)obj.ReadValue<Vector2>().x;
                 OnButtonPressed?.Invoke(direction == -1 ? ButtonType.LB : ButtonType.RB);
+                
+                BumperAction?.Invoke(obj);
             }
         }
         
