@@ -2110,6 +2110,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 1
+  m_UseReflectionProbes: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -2243,9 +2244,9 @@ MonoBehaviour:
   ease: 21
   hintBox: {fileID: 5957973009033766403}
   textAsset: {fileID: 7343425734716314158}
-  xboxSprite: {fileID: 11400000, guid: f46ee3cd10ddfcd4ab41a48330588663, type: 2}
+  xboxSprite: {fileID: 11400000, guid: b34df1cdb01587c41b2b07f3d12bf907, type: 2}
   playstationSprite: {fileID: 11400000, guid: a782e6bdb7e53114aaf8fd0135fe763a, type: 2}
-  keyboardSprite: {fileID: 11400000, guid: b60ffa8937e9d6d44b7e91417df038ce, type: 2}
+  keyboardSprite: {fileID: 11400000, guid: 2bce0394c082bdb45889f9e0b5aec5d0, type: 2}
   letterSound:
     Guid:
       Data1: -1180805833
@@ -3031,7 +3032,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Press the <sprite=0> button to jump!
+  m_text: Press the <sprite index=0> button to jump!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f7ece2441ca34ba4aa0f4f9341214331, type: 2}
   m_sharedMaterial: {fileID: -6085641044547780390, guid: f7ece2441ca34ba4aa0f4f9341214331, type: 2}
@@ -3050,7 +3051,7 @@ MonoBehaviour:
     bottomLeft: {r: 1, g: 1, b: 1, a: 1}
     bottomRight: {r: 1, g: 1, b: 1, a: 1}
   m_fontColorGradientPreset: {fileID: 0}
-  m_spriteAsset: {fileID: 11400000, guid: f46ee3cd10ddfcd4ab41a48330588663, type: 2}
+  m_spriteAsset: {fileID: 11400000, guid: b34df1cdb01587c41b2b07f3d12bf907, type: 2}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
   m_TextStyleHashCode: -1183493901
@@ -3392,6 +3393,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
+  m_UseReflectionProbes: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0

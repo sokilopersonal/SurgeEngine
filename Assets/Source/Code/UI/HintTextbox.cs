@@ -5,8 +5,10 @@ using FMOD.Studio;
 using FMODUnity;
 using SurgeEngine.Source.Code.Core.Character.System;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects;
+using SurgeEngine.Source.Code.Input;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using Zenject;
 
 namespace SurgeEngine.Source.Code.UI
@@ -36,6 +38,7 @@ namespace SurgeEngine.Source.Code.UI
         private EventInstance _letterSoundInstance;
         
         [Inject] private CharacterBase _character;
+        [Inject] private InputIconResolver _inputIconResolver;
 
         private void Awake()
         {
@@ -73,9 +76,8 @@ namespace SurgeEngine.Source.Code.UI
             hintBox.transform.localScale = Vector3.up;
             hintBox.transform.DOScaleX(1f, easeTime).SetEase(ease);
 
-            textAsset.text = _hint.CurrentMessage.message;
-
             textAsset.spriteAsset = GetSpriteAsset();
+            textAsset.text = ReplaceButtonPrompts(_hint.CurrentMessage.message);
 
             if (_hint.CurrentMessage.animationDuration > 0f)
                 StartCoroutine(Typewriter());
@@ -160,6 +162,56 @@ namespace SurgeEngine.Source.Code.UI
         {
             _hint = hintRing;
             Show();
+        }
+
+        private string ReplaceButtonPrompts(string message)
+        {
+            if (string.IsNullOrEmpty(message))
+                return message;
+
+            TMP_SpriteAsset spriteAsset = GetSpriteAsset();
+
+            if (spriteAsset == null)
+                return message;
+
+            foreach (ButtonType button in System.Enum.GetValues(typeof(ButtonType)))
+            {
+                if (button == ButtonType.COUNT)
+                    continue;
+
+                string placeholder = $"{{{button}}}";
+
+                if (!message.Contains(placeholder))
+                    continue;
+
+                InputBinding binding = _character.Input.GetInputBinding(button);
+                Sprite sprite = _inputIconResolver.GetSprite(binding, GetIconDeviceType());
+
+                if (sprite == null)
+                    continue;
+
+                int spriteIndex = spriteAsset.GetSpriteIndexFromName(sprite.name);
+
+                if (spriteIndex < 0)
+                    continue;
+
+                message = message.Replace(
+                    placeholder,
+                    $"<sprite index={spriteIndex}>");
+            }
+
+            return message;
+        }
+
+        private InputIconDatabase.DeviceType GetIconDeviceType()
+        {
+            return _character.Input.Device switch
+            {
+                GameDevice.Keyboard => InputIconDatabase.DeviceType.Keyboard,
+                GameDevice.XboxController => InputIconDatabase.DeviceType.Xbox,
+                GameDevice.Playstation => InputIconDatabase.DeviceType.PlayStation,
+                _ => InputIconDatabase.DeviceType.Any
+            };
         }
 
         private TMP_SpriteAsset GetSpriteAsset()

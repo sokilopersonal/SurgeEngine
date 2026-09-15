@@ -262,6 +262,99 @@ namespace SurgeEngine.Source.Code.Core.Character.System
             }
         }
         
+        public InputAction GetInputAction(ButtonType button)
+        {
+            return button switch
+            {
+                ButtonType.X => XInputAction,
+                ButtonType.A => AInputAction,
+                ButtonType.B => BInputAction,
+                ButtonType.Y => YInputAction,
+                ButtonType.LB or ButtonType.RB => BumperInputAction,
+                ButtonType.LT or ButtonType.RT => TriggerInputAction,
+                _ => null
+            };
+        }
+
+        public InputBinding GetInputBinding(ButtonType button)
+        {
+            InputAction action = GetInputAction(button);
+
+            if (action == null)
+                return default;
+
+            string controlScheme = PlayerInput.currentControlScheme;
+
+            string compositePart = button switch
+            {
+                ButtonType.LB => "left",
+                ButtonType.RB => "right",
+                ButtonType.LT => "left",
+                ButtonType.RT => "right",
+                _ => null
+            };
+
+            for (int i = 0; i < action.bindings.Count; i++)
+            {
+                InputBinding binding = action.bindings[i];
+
+                if (!IsBindingForCurrentScheme(binding, controlScheme))
+                    continue;
+
+                if (compositePart != null)
+                {
+                    if (!binding.isPartOfComposite)
+                        continue;
+
+                    if (!string.Equals(
+                            binding.name,
+                            compositePart,
+                            StringComparison.OrdinalIgnoreCase))
+                    {
+                        continue;
+                    }
+
+                    return binding;
+                }
+
+                if (binding.isComposite ||
+                    binding.isPartOfComposite)
+                {
+                    continue;
+                }
+
+                return binding;
+            }
+
+            return default;
+        }
+
+        private bool IsBindingForCurrentScheme(
+            InputBinding binding,
+            string controlScheme)
+        {
+            if (string.IsNullOrEmpty(controlScheme))
+                return true;
+
+            if (string.IsNullOrEmpty(binding.groups))
+                return true;
+
+            string[] groups = binding.groups.Split(';');
+
+            for (int i = 0; i < groups.Length; i++)
+            {
+                if (string.Equals(
+                        groups[i],
+                        controlScheme,
+                        StringComparison.OrdinalIgnoreCase))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+        
         public bool WasPressed(ButtonType button)
         {
             return button switch

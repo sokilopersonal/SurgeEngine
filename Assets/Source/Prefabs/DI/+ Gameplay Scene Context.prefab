@@ -88,6 +88,7 @@ GameObject:
   - component: {fileID: 993120408517786402}
   - component: {fileID: 2857119228063774259}
   - component: {fileID: 6599226908271562438}
+  - component: {fileID: 4673379502229755971}
   m_Layer: 0
   m_Name: + Gameplay Scene Context
   m_TagString: Untagged
@@ -154,6 +155,7 @@ MonoBehaviour:
   - {fileID: 993120408517786402}
   - {fileID: 2857119228063774259}
   - {fileID: 6599226908271562438}
+  - {fileID: 4673379502229755971}
   _installerPrefabs: []
   _findSiblingMonoInstallers: 0
   _autoRun: 1
@@ -241,3 +243,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9de6deafc02047a7b8b3f91e0ea3fddf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SurgeEngine.Source.Code.Infrastructure.DI.RumbleInstaller
+--- !u!114 &4673379502229755971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3405328811069570354}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d23c682bb024e628647e0d70c109a94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SurgeEngine.Source.Code.Input.InputIconInstaller
+  database: {fileID: 11400000, guid: e157ab5880c91d54d8df3bb6b65e7a0a, type: 2}

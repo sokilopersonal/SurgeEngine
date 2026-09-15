@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using SurgeEngine.Source.Code.Core.Character.System;
 using SurgeEngine.Source.Code.Gameplay.CommonObjects.Mobility;
+using SurgeEngine.Source.Code.Input;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using Zenject;
 
@@ -18,6 +20,8 @@ namespace SurgeEngine.Source.Code.Core.Character.HUD
         [SerializeField] private GameObject qteClick;
         
         private List<QuickTimeEventUIButton> _buttons = new List<QuickTimeEventUIButton>();
+        
+        [Inject] private InputIconResolver _inputIconResolver;
 
         [Inject] private CharacterBase _character;
         private ReactionPlate _reactionPlateObject;
@@ -67,18 +71,23 @@ namespace SurgeEngine.Source.Code.Core.Character.HUD
         {
             _buttons.Capacity = sequence.buttons.Count;
             CharacterInput input = _character.Input;
+
             for (int i = 0; i < sequence.buttons.Count; i++)
             {
                 ButtonType buttonType = sequence.buttons[i].type;
                 GameDevice dv = input.Device;
                 QTEButtonSprites buttons = quickTimeEventUIButtons.Find(x => x.device == dv);
-                
+
                 QuickTimeEventUIButton tempButton = Instantiate(button, buttonParent);
 
                 bool isBumper = buttonType is ButtonType.LB or ButtonType.RB && buttons.device is not GameDevice.Keyboard;
                 float scale = isBumper ? 1.4f : 1f;
-                tempButton.SetButtonAppearence(buttons.GetSprite(buttonType), scale);
-                
+
+                InputBinding binding = input.GetInputBinding(buttonType);
+                Sprite sprite = _inputIconResolver.GetSprite(binding);
+
+                tempButton.SetButtonAppearence(sprite, scale);
+
                 if (tempButton != null)
                 {
                     _buttons.Add(tempButton);
