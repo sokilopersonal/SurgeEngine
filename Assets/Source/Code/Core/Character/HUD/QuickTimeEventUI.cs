@@ -12,8 +12,6 @@ namespace SurgeEngine.Source.Code.Core.Character.HUD
 {
     public class QuickTimeEventUI : MonoBehaviour
     {
-        [SerializeField] private List<QTEButtonSprites> quickTimeEventUIButtons = new List<QTEButtonSprites>();
-        
         [SerializeField] private QuickTimeEventUIButton button;
         [SerializeField] private Image barFill;
         [SerializeField] private Transform buttonParent;
@@ -75,16 +73,15 @@ namespace SurgeEngine.Source.Code.Core.Character.HUD
             for (int i = 0; i < sequence.buttons.Count; i++)
             {
                 ButtonType buttonType = sequence.buttons[i].type;
-                GameDevice dv = input.Device;
-                QTEButtonSprites buttons = quickTimeEventUIButtons.Find(x => x.device == dv);
-
                 QuickTimeEventUIButton tempButton = Instantiate(button, buttonParent);
 
-                bool isBumper = buttonType is ButtonType.LB or ButtonType.RB && buttons.device is not GameDevice.Keyboard;
+                bool isBumper = buttonType is ButtonType.LB or ButtonType.RB && input.Device is not GameDevice.Keyboard;
                 float scale = isBumper ? 1.4f : 1f;
 
                 InputBinding binding = input.GetInputBinding(buttonType);
-                Sprite sprite = _inputIconResolver.GetSprite(binding);
+                Sprite sprite = _inputIconResolver.GetSprite(
+                    binding,
+                    GetIconDeviceType(input.Device));
 
                 tempButton.SetButtonAppearence(sprite, scale);
 
@@ -107,6 +104,17 @@ namespace SurgeEngine.Source.Code.Core.Character.HUD
             {
                 _reactionPlateObject.OnCorrectButton -= OnCorrectButtonPressed;
             }
+        }
+
+        private static InputIconDatabase.DeviceType GetIconDeviceType(GameDevice device)
+        {
+            return device switch
+            {
+                GameDevice.Keyboard => InputIconDatabase.DeviceType.Keyboard,
+                GameDevice.XboxController => InputIconDatabase.DeviceType.Xbox,
+                GameDevice.Playstation => InputIconDatabase.DeviceType.PlayStation,
+                _ => InputIconDatabase.DeviceType.Any
+            };
         }
     }
 

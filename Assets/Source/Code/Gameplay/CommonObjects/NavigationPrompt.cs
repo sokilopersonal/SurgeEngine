@@ -1,31 +1,14 @@
-using Alchemy.Inspector;
 using FMODUnity;
 using SurgeEngine.Source.Code.Core.Character.System;
-using SurgeEngine.Source.Code.UI;
+using SurgeEngine.Source.Code.Input;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using Zenject;
 
 namespace SurgeEngine.Source.Code.Gameplay.CommonObjects
 {
     public class NavigationPrompt : StageObject
     {
-        [FoldoutGroup("Button Sprites")]
-        [SerializeField] private PlatformSprite aPrompt;
-        [FoldoutGroup("Button Sprites")]
-        [SerializeField] private PlatformSprite bPrompt;
-        [FoldoutGroup("Button Sprites")]
-        [SerializeField] private PlatformSprite xPrompt;
-        [FoldoutGroup("Button Sprites")]
-        [SerializeField] private PlatformSprite yPrompt;
-        [FoldoutGroup("Button Sprites")]
-        [SerializeField] private PlatformSprite lbPrompt;
-        [FoldoutGroup("Button Sprites")]
-        [SerializeField] private PlatformSprite rbPrompt;
-        [FoldoutGroup("Button Sprites")]
-        [SerializeField] private PlatformSprite ltPrompt;
-        [FoldoutGroup("Button Sprites")]
-        [SerializeField] private PlatformSprite rtPrompt;
-
         [Header("General")]
         [SerializeField] private ButtonType buttonType;
         [SerializeField] private float activeTime;
@@ -38,6 +21,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects
         [SerializeField] private EventReference navigationSound;
 
         [Inject] private CharacterBase _character;
+        [Inject] private InputIconResolver _inputIconResolver;
 
         public override void OnEnter(Collider msg, CharacterBase context)
         {
@@ -47,29 +31,22 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects
 
         public Sprite GetSprite()
         {
-            var device = _character.Input.Device;
-            
-            switch (buttonType)
+            InputBinding binding = _character.Input.GetInputBinding(buttonType);
+
+            return _inputIconResolver.GetSprite(
+                binding,
+                GetIconDeviceType());
+        }
+
+        private InputIconDatabase.DeviceType GetIconDeviceType()
+        {
+            return _character.Input.Device switch
             {
-                case ButtonType.A:
-                    return aPrompt.GetDeviceSprite(device);
-                case ButtonType.B:
-                    return bPrompt.GetDeviceSprite(device);
-                case ButtonType.X:
-                    return xPrompt.GetDeviceSprite(device);
-                case ButtonType.Y:
-                    return yPrompt.GetDeviceSprite(device);
-                case ButtonType.LB:
-                    return lbPrompt.GetDeviceSprite(device);
-                case ButtonType.RB:
-                    return rbPrompt.GetDeviceSprite(device);
-                case ButtonType.LT:
-                    return ltPrompt.GetDeviceSprite(device);
-                case ButtonType.RT:
-                    return rtPrompt.GetDeviceSprite(device);
-                default:
-                    return null;
-            }
+                GameDevice.Keyboard => InputIconDatabase.DeviceType.Keyboard,
+                GameDevice.XboxController => InputIconDatabase.DeviceType.Xbox,
+                GameDevice.Playstation => InputIconDatabase.DeviceType.PlayStation,
+                _ => InputIconDatabase.DeviceType.Any
+            };
         }
     }
 }

@@ -22,6 +22,7 @@ namespace SurgeEngine.Source.Code.Gameplay.CommonObjects
         }
 
         [Title("General")]
+        [HelpBox("To insert an input in the message, use '{A/X/B/Y and etc.}'. It will automatically insert the required sprite of your device button.")]
         [SerializeField] private List<HintMessage> messages = new List<HintMessage>();
         [Tooltip("The time until the hint ring can be activated again")][SerializeField] private float cooldown = 2f;
 
