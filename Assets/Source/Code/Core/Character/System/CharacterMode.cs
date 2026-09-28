@@ -362,9 +362,20 @@ namespace SurgeEngine.Source.Code.Core.Character.System
 
         public void Load()
         {
+            var savedSide = ModeSide;
+            var savedForward = ModeForward;
+            var savedDash = ModeDash;
+
             Set2DMode(null);
             SetForwardMode(null);
             SetDashPath(null);
+
+            if (savedSide != null)
+                Set2DMode(savedSide);
+            else if (savedForward != null)
+                SetForwardMode(savedForward);
+            else if (savedDash != null)
+                SetDashPath(savedDash);
         }
 
         private static bool IsPathOutOfRange(float t) => t >= 1f || t <= 0;
